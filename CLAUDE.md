@@ -23,6 +23,18 @@ not substitute another model. Astra may continue independent 3D/integration work
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
 adds Noun Project icons, and you commit + push to redeploy.
 
+
+## Films
+**Model routing for films:** every film's code and story (research, script, shots, Strudel music, pipeline code) is written by **Claude Opus 5.5 (`claude-opus-5-5`) at high effort only**, per the film brief: no fallback model. Books follow the routing above.
+
+**Films** are the long-form level above books: 20–40 minute, art-directed (silhouette /
+paper-cut), narrated and scored documentaries rendered frame-exactly in JavaScript.
+Start with **[docs/film/ARCHITECTURE.md](docs/film/ARCHITECTURE.md)** (stages, timing
+model, engine, routing). Make one with **`/new-film`** (`.claude/commands/new-film.md`);
+the stages run as saved workflows in `.claude/workflows/film-*.js` (`/film-research`,
+`/film-story`, … `/film-loop`). Film code lives in `apps/bookshelf/src/viz/film/`,
+`generator/film/`, `tools/film/`; each film's sources and provenance live in `films/<slug>/`.
+
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
   - `repo.mjs` digest · `storyboard.mjs` (retired automatic planner) · `validate.mjs`

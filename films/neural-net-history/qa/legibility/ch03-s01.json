@@ -1,0 +1,164 @@
+{
+ "shot": "ch03-s01",
+ "at": "2026-10-13T04:13:08.893Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 30,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Clue Two: A Knob That Turns",
+   "capWhileSubject": 29,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "frank rosenblatt",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "psychologist, Cornell Aeronautical Laboratory",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "L",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "E",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "F",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "R",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "G",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "H",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "S",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "W",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "N",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "7",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "J",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "U",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Y",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "5",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 43.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "B",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "M",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 44.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 44,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 27
+}

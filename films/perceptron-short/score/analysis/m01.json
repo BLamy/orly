@@ -1,0 +1,16 @@
+{
+ "id": "m01",
+ "start": 0,
+ "end": 67.75,
+ "file": "films/perceptron-short/score/renders/m01.wav",
+ "duration": 73.75,
+ "I": -25.8,
+ "LRA": 8.7,
+ "TP": -7.4,
+ "expected": 73.75,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/perceptron-short/score/analysis/m01.png",
+ "cueSeconds": 67.75,
+ "cps": 0.2975
+}

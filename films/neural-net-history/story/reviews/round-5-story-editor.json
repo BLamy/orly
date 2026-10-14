@@ -1,0 +1,111 @@
+{
+  "reviewer": "story-editor",
+  "round": 5,
+  "lens": "story, curiosity and voice",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8.5,
+    "voice": 8
+  },
+  "critical": [
+    "The film's first plant is never paid off. L0107–L0109 file the makers' own admission ('plausible-sounding but incorrect or nonsensical answers… Put that in the file.'). It is the first thing in the file and the first time the film uses its ritual. It is never mentioned again, aloud or on screen. The ch12 blurb still promises 'the first note in the file still holds', but the line that carried it (ids L1213/L1214 are missing from ch12-s06) was cut in a trim. Every other 'put that in the file' is retrieved: the 1961 language note (L1217), the 'faster GPUs' prophecy (L1112) and 'practically nothing' (L1104). The ear notices that the opening note is the one left behind. FIX, in ch12-s06, the same composition and the same day the note was written (e12-chatgpt-launch is already on the shot): add after L1215 'And the first note in the file was written that same day: plausible, and sometimes wrong.' (+14). Have a beat on 'file' lift the ch01 card back into the light.",
+    "One candle is lit aloud and never put out or reported. L0901 'A new candle: this recipe works on everything.' is the only belief whose fate the narrator never states. L0209 makes the rule explicit ('Each belief gets one, burning as long as it was held'), and the brief asks 'how long people thought that way'. The visual plan says this candle was ratified, not refuted (ch09-s05: 'its sleeve keeps growing'), but the ear is never told. It also collides with a second, different 'recipe' at L1112/L1116: 'That recipe lasted two years' can be heard as the end of the L0901 recipe, which is wrong. FIX: (a) end L0910 with 'The candle burned on.' (+4). (b) Rename the 2020 rule. L1112 becomes '…Its rule of thumb: grow the model faster than its reading…' and L1116 becomes 'That rule of thumb lasted two years. The scale candle is merely trimmed.' (+4).",
+    "Runtime is still over the gate, though better than in round 4. Narration is 3,412 words (round 4: 3,557), 12% over the 3,040 target. Air is 637 s, and minDuration adds another 64 s. The documented timing model gives 37.8 min at 130 wpm, 36.0 at 140 and 34.5 at 150. The brief asks for a slow voice, so 140 is the honest planning pace, and that is a minute over 35:00. The fixes in this card add about 35 words (the payoffs above, plus voicing the Nobel dissent) and cut about 30, so the minute has to come from air and a few low-value words. AIR: ch04-s07 minDuration 18.5 → 14; ch11-s01 minDuration 15 → 11; ch07-s06 holdAfter 9.0 → 6.0; ch03-s06 holdAfter 8.5 → 6.0; ch15-s04 holdAfter 7.5 → 5.0; ch09-s05 holdAfter 9.0 → 7.0; ch05-s04 holdAfter 7.0 → 5.5; ch12-s07 leadIn 7.0 → 5.5; ch15-s08 leadIn 6.5 → 5.0; ch01-s06 leadIn 6.0 → 5.0; L1118 pauseAfter 5.5 → 3.5; ch10-s12 minDuration 22 → 20 (about −30 s). WORDS: L1019 → 'It keeps eight sets of cards, eight heads, each asking its own question.' (−12; the 'bank to river' look is shown on screen); L0410 trim (see issues, −8); L1530 → 'The candle of now: these machines keep getting more capable, fast. By one measure, the tasks AI agents can finish double in length about every seven months.' (−2). GATE: at most 3,400 words and at most 35:00 at the pace measured at audition. If the cast voice measures under 140 wpm, also merge L0613–L0614 → 'Through many layers, or a long sentence, the messenger fades like a whisper; in 1997 a protected pipe carried it a thousand steps.' (−8), with the names on screen. Protect these from all cuts: the deaths in ch04, the thirty-six-year thread, the stencil, cards and jug mechanics, and every fairness clause."
+  ],
+  "issues": [
+    {
+      "where": "ch15-s01 L1528",
+      "problem": "'Not everyone cheered.' is followed by a 4.6 s music-only hold, and the only dissent (Dame Wendy Hall) is on screen. To the ear it is a tease with no answer. The brief asks who dissented, and this is the film's last chance to voice dissent at a moment of triumph. The quote is short and sounds good read aloud.",
+      "fix": "L1528 → 'Not everyone cheered. One computer scientist called it “a bit of a stretch.”' (+9; q12-wendy-hall, verbatim fragment; her name card and the full quote stay on screen). Cut the hold from 4.6 to 3.0."
+    },
+    {
+      "where": "ch08-s04 L0808",
+      "problem": "'On a stroke's edge, nearly four: a bright spot.' AlexNet works on photographs, so 'stroke' has no referent. Spoken, it can also be heard as the medical stroke. And 'nearly four' floats without saying it is the sum.",
+      "fix": "'Over an edge in the picture, the sum is nearly four: a bright spot. Now here is the lovely part: slide the same stencil everywhere. A convolution.' (+3)."
+    },
+    {
+      "where": "ch08-s04 L0807",
+      "problem": "'Add the nine.' The ear has not heard that there are nine holes, so 'the nine' is a cipher. It is clear only to someone watching the 3×3 grid.",
+      "fix": "'Each hole weighs the light beneath it. Add up all nine. Below zero counts as zero.' (+1)."
+    },
+    {
+      "where": "ch15-s03 L1504",
+      "problem": "'Inside a simplified copy of their own model, Anthropic's researchers found that, asked for a rhyme, it chose…' The pronoun 'their' comes before its owner, and two clauses are stacked before the verb. It is the hardest sentence in the finale to follow by ear, on the film's most delightful late discovery.",
+      "fix": "'Anthropic's researchers looked inside a simplified copy of their own model. Asked for a rhyme, it chose “rabbit” before writing the line.' (+1). Keep 'Nobody told it to plan.' as the button."
+    },
+    {
+      "where": "ch04-s06 L0410",
+      "problem": "41 words, with 'search' twice and the 'our first suspect' payoff buried in an appositive in the middle of the sentence. This is the line where Rules is finally tried. It has to land, and at this length it blurs.",
+      "fix": "'In 1973, James Lighthill's report for Britain blamed “the combinatorial explosion”: choices multiplying faster than any search. It struck our first suspect, rules, far more than nets. British funding fell for almost a decade.' (−6; e3-lighthill, e3-lighthill-neural, e3-uk-cut)."
+    },
+    {
+      "where": "ch01-s06 L0114",
+      "problem": "'To find out, we go back…' The nearest thing to find out is L0112's wall of predictions, not the case question (L0106), which was four lines and a 6 s montage earlier. The prologue's last spoken line should tie back to the case.",
+      "fix": "'To find out who, we go back eighty-three years, to a lamp in Chicago.' (+1)."
+    },
+    {
+      "where": "ch08-s11 L0821",
+      "problem": "'Their professor, the tall man, could not sit, so could not fly.' It is a riddle the ear can't solve. Coming at the emotional build-up to Florence, it makes listeners puzzle when they should feel. The bible gives the reason (e8-hinton-absent: a chronic back problem), and a few words turn confusion into sympathy.",
+      "fix": "'Their professor, the tall man, had a bad back: he could not sit, so could not fly. The room was so full that Yann LeCun stood at the back.' (+5). If 'back' twice in one line grates, end with '…stood against the wall.'"
+    },
+    {
+      "where": "ch09-s05 L0910",
+      "problem": "31 words in one sentence with two unrelated exhibits joined by 'and'. The adversarial picture and the face-software audit blur together. This line also has to carry the candle fix (critical 2).",
+      "fix": "'At the rim, doubters. Changes to a picture too small for us to see could fool these nets. Commercial face software misjudged darker-skinned women far more often than lighter-skinned men. The candle burned on.' (+3 net)."
+    },
+    {
+      "where": "ch05-s04 L0509",
+      "problem": "'Again and again: run on our exclusive-or puzzle, it learns it by itself.' The dangling participle ('run on…, it') and 'learns it' make a clumsy payoff for the film's biggest setup ('If one exists' → exclusive-or → 'Nobody in the mainstream knew how to train one'). This is the moment the hidden layer is trained, and the line should ring.",
+      "fix": "'Again and again. Set our exclusive-or puzzle, it solves it by itself.' or better: 'Again and again, until our exclusive-or puzzle is solved. By itself.' (−2; the 4.4 s pause then lands on 'By itself')."
+    },
+    {
+      "where": "ch08-s13b L0831",
+      "problem": "'after ten to fifteen years, by field.' Spoken, 'by field' sounds like a typo or a place name.",
+      "fix": "'Beside it, the fiddly-nets candle went out too, after ten to fifteen years, depending on the field.' (+2)."
+    },
+    {
+      "where": "ch14-s02 L1403",
+      "problem": "31 words joined by a semicolon. Two governments' actions fall into one breath, so Beijing's reply sounds like an afterthought, which works against the even-handed staging ('two equally lit shores').",
+      "fix": "'October 2022. Citing military uses, Washington fenced off high-end chips and the tools to make them. Beijing replied, in translation, that the US “abuses export control measures.”' (+2; two sentences, two equal shores)."
+    },
+    {
+      "where": "ch05-s09b L0522",
+      "problem": "The brief asks for the winters by name. The film names 'the first AI winter' aloud (L0406), but the second is only 'a panel warned of an AI winter'. The ear never hears that the snow came back, so the film's two-winter shape is half missing.",
+      "fix": "'In 1984, a panel warned of a second winter. By 1987 the special machines for these programs stopped selling; the money fled, and the snow returned. The knowledge candle burned about seven years.' (+4; e5-aaai84, e5-lisp-crash). Pair it with the L1019 cut."
+    },
+    {
+      "where": "ch15-s05 (L1522–L1525)",
+      "problem": "Pacing: three hard facts in a row (a Pentagon dispute, a book settlement, a sandbox breakout), all under one shot, with no line saying why we are hearing them. Right before the emotional run into the verdict, it plays like a news ticker. The fairness content must stay, but it needs a frame for the ear.",
+      "fix": "Open L1522 with a six-word frame drawn from the shot's own staging: 'The labs, under the same light. Anthropic refused…' (+6). This tells the listener that this is a ledger, held to one standard. Then trim the hold from 6.0 to 4.5."
+    },
+    {
+      "where": "ch09-s01 → ch09-s04 (L0905, L0909)",
+      "problem": "The years run 2012, then 2014, then 2016, then 'Late in 2015 came OpenAI'. The ear goes back in time without warning, just after the Seoul climax.",
+      "fix": "Word-neutral: L0909 → 'Months before Seoul, OpenAI was founded, co-chaired by Sam Altman and Elon Musk, saying…' (keep the year on screen as a date stamp)."
+    },
+    {
+      "where": "ch05-s07 L0514 (optional)",
+      "problem": "'out-prescribed' is a mouthful for a slow voice and slightly overstates the result (e5-mycin: its prescriptions were rated acceptable more often in a blinded review).",
+      "fix": "'One such program's prescriptions were rated above Stanford specialists', yet it never went into routine use.' (+2)."
+    },
+    {
+      "where": "ch15-s09 L1518",
+      "problem": "This is the only quotation that uses straight quotation marks. The other quotes in the script use curly ones. That is harmless to the voice, but the lexicon and caption passes key on consistent marks.",
+      "fix": "Use “…” to match."
+    }
+  ],
+  "strengths": [
+    "Round 4's critical about Rules is fixed with almost no added words, and the fix works well. Rules is named as the first suspect at Dartmouth (L0215). Lighthill strikes it, not nets (L0410), which is a fair irony from the bible. The chess crown comes '29 years late… won by search… A point for Rules' (L0615). So 'Not rules alone' in the verdict now completes an argument the ear has followed. The word 'alone' is earned.",
+    "Moving the stencil aside to open ch10 ('Those stencils aren't in the chat box; their lesson is.') and holding back the twenty years until L1030 both landed. Ch08 now ends on 'Thirty-six years at the edge of the light' and the pinned prophecy. Ch10 opens with a candle lit in the film's own way, and its lifetime is revealed only when it goes out.",
+    "The candle device is now the film's clock and its heart. Each lifetime is said aloud as the candle goes out: sixteen years, about seven, seventeen, about seven, thirteen, ten to fifteen, twenty, two, one match, a day. L1515 ('Some candles burned twenty years; some, two; one match, a day. The newest still burn.') is a closing chord the whole film has built towards. The refrain openings are now varied ('Another candle, lit by worry', 'A newer candle', 'The candle of the age', 'The candle of now').",
+    "The plant-and-payoff lattice is dense and rewarding. 'If one exists' leads to exclusive-or. 'Who paid for dinner?' leads to 'Each man lost one bet.' The fog leads to the clean bowl and then to 'Why choose the fog?… the net cut its own.' The warm-up returns 'in a different coat'. 'Practically nothing' pays off as 'Sensible, then.' The rulebook returns as 'No rulebook. Only odds.' Versailles comes back as 'The talk nobody remembered, remembered.' 'Remember him' is paid by Widrow's 'never got over it'. The wall of predictions is paid by Hinton taking down his own slip, and the board is paid by 'The board was a network all along.' Each one rewards attention.",
+    "The two deep dives teach in sentences a slow voice can carry: 'Nobody cut these stencils. They began as noise, like television snow.' 'Nobody told the two halves how to divide the work. One learned black and white, one colour. Every time.' 'Bank… now means the water's edge.' 'Divide by eight… and it pours softly.' 'Words talk to each other, then each thinks alone. Six times over.' 'The catch: twice the words, four times the looking.' The curtain question 'what comes next?' hands over to ch11 perfectly.",
+    "The emotional architecture is sound across 35 minutes. Act One's grief is told in three plain sentences under snow. The tall man takes his place at the rim in 1976 and is absent from his own triumph in 2012. Then come the 2 a.m. phone call and the slip he takes down himself. Widrow's death at ninety-five closes the 'Remember him' thread from 1956. The final hand-off ('Somewhere tonight a lamp is on, and someone at the rim is suspicious… Perhaps it's you.') turns the film's dissent device into an invitation, which is exactly the curiosity the brief asks for.",
+    "Fairness sounds like the narrator's own character, not a disclaimer: 'In fairness, the Navy, the press and Rosenblatt all fed the hype.' 'One book's fault? Historians still argue.' 'Fair credit: that was seven networks voting.' 'Not the research. Not the chips.' 'Its plan named no rival.' 'But people wrote the list.' 'Anthropic was not implicated.' 'The accounts differ.' China gets its own voice with Liang's 'originality and imitation', and both shores get a dated, symmetric record.",
+    "There are wry, memorable lines throughout: 'You could hear it learn. I love that.' '“At the moment, none whatever,” Dr. Rosenblatt said cheerfully.' 'A winter, then, of prestige, not of use.' 'Colleagues doubted it. So did his father.' 'Eight names, in random order.' 'Nearly right.' 'Not a new engine. A new door.' 'Then, a stampede. Case solved? Not quite.' 'A struck match, out within a day.'"
+  ]
+}

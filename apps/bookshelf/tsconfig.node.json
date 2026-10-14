@@ -1,10 +1,20 @@
+// Node-side code of the bookshelf app: the Vite config and the film editor dev-server plugin (+ its tests).
+// Checked on its own (npm run typecheck); deliberately not a project reference of tsconfig.json, which would
+// claim the shared editor contract (src/editor/model/types.ts) twice (TS6305).
 {
   "compilerOptions": {
-    "composite": true,
-    "skipLibCheck": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "editor-server.ts", "editor-server.test.ts", "src/editor/model/types.ts"]
 }

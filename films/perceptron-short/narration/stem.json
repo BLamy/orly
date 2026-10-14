@@ -1,0 +1,211 @@
+{
+ "file": "films/perceptron-short/narration/narration.wav",
+ "duration": 67.75,
+ "lineLufs": -20,
+ "rides": {
+  "L0101": {
+   "lufs": -19.8,
+   "rideDb": -0.2,
+   "levelDb": -5,
+   "clipGainDb": -6.1,
+   "trimDb": -1.1
+  },
+  "L0102": {
+   "lufs": -18,
+   "rideDb": -2,
+   "clipGainDb": 0.08,
+   "trimDb": 0.08
+  },
+  "L0103": {
+   "lufs": -20,
+   "rideDb": 0,
+   "clipGainDb": 0.83,
+   "trimDb": 0.83
+  },
+  "L0104": {
+   "lufs": -19.1,
+   "rideDb": -0.9,
+   "clipGainDb": 0.43,
+   "trimDb": 0.43
+  },
+  "L0105": {
+   "lufs": -20.1,
+   "rideDb": 0.1,
+   "clipGainDb": 0,
+   "trimDb": 0
+  },
+  "L0105b": {
+   "lufs": -20.4,
+   "rideDb": 0.4,
+   "clipGainDb": -0.57,
+   "trimDb": -0.57
+  },
+  "L0106": {
+   "lufs": -19.7,
+   "rideDb": -0.3,
+   "clipGainDb": 0.03,
+   "trimDb": 0.03
+  },
+  "L0107": {
+   "lufs": -19.4,
+   "rideDb": -0.6,
+   "words": {
+    "right": 5
+   },
+   "clipGainDb": -0.87,
+   "trimDb": -0.87
+  },
+  "L0108": {
+   "lufs": -19.4,
+   "rideDb": -0.6,
+   "levelDb": -1.5,
+   "clipGainDb": -2.56,
+   "trimDb": -1.06
+  }
+ },
+ "integratedBefore": -20,
+ "compressor": {
+  "ratio": 2.5,
+  "attack": 10,
+  "release": 120,
+  "knee": 2.8,
+  "highpassHz": 70,
+  "thresholdDb": -18,
+  "grDb": 3.47,
+  "integratedAfter": -23.3
+ },
+ "peakStage": {
+  "ratio": 4,
+  "attack": 0.3,
+  "release": 40,
+  "thresholdDb": -13,
+  "peakCutDb": 2.83,
+  "crestBefore": 18.03,
+  "crestAfter": 15.2,
+  "crestTarget": 15.23,
+  "speechGrDb": 0.62
+ },
+ "chain": "highpass=f=70,acompressor=threshold=-18dB:ratio=2.5:attack=10:release=120:knee=2.8:makeup=1:detection=rms:link=maximum,acompressor=threshold=-13dB:ratio=4:attack=0.3:release=40:knee=2:makeup=1:detection=peak:link=maximum,[per-line clip gain]",
+ "gainDb": 6.7,
+ "peakBeforeDb": -7.87,
+ "limitedDb": 0.83,
+ "integrated": -18,
+ "truePeak": -2,
+ "lra": 6.3,
+ "target": -18,
+ "levels": {
+  "tolerance": 0.5,
+  "beforeClipGain": {
+   "L0101": {
+    "M": -20.04,
+    "offsetDb": 1.12,
+    "requestedDb": -5,
+    "errorDb": 6.12
+   },
+   "L0102": {
+    "M": -21.22,
+    "offsetDb": -0.36,
+    "requestedDb": 0,
+    "errorDb": -0.36
+   },
+   "L0103": {
+    "M": -21.97,
+    "offsetDb": -1.11,
+    "requestedDb": 0,
+    "errorDb": -1.11
+   },
+   "L0104": {
+    "M": -21.57,
+    "offsetDb": -0.71,
+    "requestedDb": 0,
+    "errorDb": -0.71
+   },
+   "L0105": {
+    "M": -21.14,
+    "offsetDb": -0.27,
+    "requestedDb": 0,
+    "errorDb": -0.27
+   },
+   "L0105b": {
+    "M": -20.57,
+    "offsetDb": 0.58,
+    "requestedDb": 0,
+    "errorDb": 0.58
+   },
+   "L0106": {
+    "M": -21.17,
+    "offsetDb": -0.31,
+    "requestedDb": 0,
+    "errorDb": -0.31
+   },
+   "L0107": {
+    "M": -20.27,
+    "offsetDb": 0.89,
+    "requestedDb": 0,
+    "errorDb": 0.89
+   },
+   "L0108": {
+    "M": -20.09,
+    "offsetDb": 1.07,
+    "requestedDb": -1.5,
+    "errorDb": 2.57
+   }
+  },
+  "lines": {
+   "L0101": {
+    "M": -19.44,
+    "offsetDb": -5,
+    "requestedDb": -5,
+    "errorDb": 0
+   },
+   "L0102": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0103": {
+    "M": -14.48,
+    "offsetDb": -0.04,
+    "requestedDb": 0,
+    "errorDb": -0.04
+   },
+   "L0104": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0105": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0105b": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0106": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0107": {
+    "M": -14.44,
+    "offsetDb": 0,
+    "requestedDb": 0,
+    "errorDb": 0
+   },
+   "L0108": {
+    "M": -15.94,
+    "offsetDb": -1.5,
+    "requestedDb": -1.5,
+    "errorDb": 0
+   }
+  }
+ }
+}

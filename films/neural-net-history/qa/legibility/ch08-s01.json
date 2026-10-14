@@ -1,0 +1,149 @@
+{
+ "shot": "ch08-s01",
+ "at": "2026-10-13T15:22:03.540Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 27,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "DEEP DIVE · The Night in Florence",
+   "capWhileSubject": 26.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "lit 1999",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "FEATURES DESIGNED BY EXPERTS",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "IMAGENET CHALLENGE · 2010–2011",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "top-5 error",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "2010: 28.2% · 2011: ≈ 25.8%",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1943",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1958",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1969",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1984",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2006",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "20%",
+   "maxCap": 27.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "25%",
+   "maxCap": 27.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30%",
+   "maxCap": 27.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2010",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2011",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 20
+}

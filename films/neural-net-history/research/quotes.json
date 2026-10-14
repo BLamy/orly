@@ -1,0 +1,2954 @@
+[
+ {
+  "id": "q-mp-allornone",
+  "text": "Because of the \"all-or-none\" character of nervous activity, neural events and the relations among them can be treated by means of propositional logic.",
+  "speaker": "Warren S. McCulloch & Walter Pitts",
+  "date": "1943",
+  "source": "https://home.csulb.edu/~cwallis/382/readings/482/mccolloch.logical.calculus.ideas.1943.pdf",
+  "context": "Opening sentence of the abstract of 'A Logical Calculus of the Ideas Immanent in Nervous Activity', Bull. Math. Biophys. 5:115."
+ },
+ {
+  "id": "q-mp-assumption5",
+  "text": "The structure of the net does not change with time.",
+  "speaker": "Warren S. McCulloch & Walter Pitts",
+  "date": "1943",
+  "source": "https://home.csulb.edu/~cwallis/382/readings/482/mccolloch.logical.calculus.ideas.1943.pdf",
+  "context": "Assumption 5 of the 1943 paper (p. 118): why these nets do not learn."
+ },
+ {
+  "id": "q-mp-mental",
+  "text": "Thus both the formal and the final aspects of that activity which we are wont to call mental are rigorously deduceable from present neurophysiology.",
+  "speaker": "Warren S. McCulloch & Walter Pitts",
+  "date": "1943",
+  "source": "https://home.csulb.edu/~cwallis/382/readings/482/mccolloch.logical.calculus.ideas.1943.pdf",
+  "context": "Conclusion of the 1943 paper, p. 132 (original spelling 'deduceable')."
+ },
+ {
+  "id": "q-hebb-postulate",
+  "text": "When an axon of cell A is near enough to excite a cell B and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A's efficiency, as one of the cells firing B, is increased.",
+  "speaker": "Donald O. Hebb",
+  "date": "1949",
+  "source": "https://archive.org/details/in.ernet.dli.2015.168156",
+  "context": "The Organization of Behavior (Wiley, 1949), p. 62, 'A Neurophysiological Postulate'. Not 'fire together, wire together', which is a later paraphrase."
+ },
+ {
+  "id": "q-wiener-cybernetics",
+  "text": "We have decided to call the entire field of control and communication theory, whether in the machine or in the animal, by the name Cybernetics, which we form from the Greek χυβερνήτης or steersman.",
+  "speaker": "Norbert Wiener",
+  "date": "1948",
+  "source": "https://electronicliteraturereview.org/downloads/PDF/Wiener_1948.pdf",
+  "context": "Introduction to Cybernetics (1948)."
+ },
+ {
+  "id": "q-wiener-information",
+  "text": "Information is information, not matter or energy. No materialism which does not admit this can survive at the present day.",
+  "speaker": "Norbert Wiener",
+  "date": "1948",
+  "source": "https://electronicliteraturereview.org/downloads/PDF/Wiener_1948.pdf",
+  "context": "Cybernetics, Ch. V 'Computing Machines and the Nervous System'."
+ },
+ {
+  "id": "q-vonbonin",
+  "text": "Is this a diagram of the fourth layer of the visual cortex of the brain?",
+  "speaker": "Gerhardt von Bonin (as recounted by Norbert Wiener)",
+  "date": "1947 (recounted 1948)",
+  "source": "https://electronicliteraturereview.org/downloads/PDF/Wiener_1948.pdf",
+  "context": "Von Bonin's question on seeing McCulloch's diagram for a reading machine for the blind, recounted in Cybernetics."
+ },
+ {
+  "id": "q-turing-fifty",
+  "text": "I believe that in about fifty years' time it will be possible to programme computers, with a storage capacity of about 10⁹, to make them play the imitation game so well that an average interrogator will not have more than 70 per cent. chance of making the right identification after five minutes of questioning.",
+  "speaker": "Alan M. Turing",
+  "date": "October 1950",
+  "source": "https://academic.oup.com/mind/article/LIX/236/433/986238",
+  "context": "'Computing Machinery and Intelligence', Mind 59(236)."
+ },
+ {
+  "id": "q-turing-meaningless",
+  "text": "The original question, \"Can machines think?\" I believe to be too meaningless to deserve discussion.",
+  "speaker": "Alan M. Turing",
+  "date": "October 1950",
+  "source": "https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf",
+  "context": "'Computing Machinery and Intelligence', immediately after the fifty-year prediction."
+ },
+ {
+  "id": "q-turing-child",
+  "text": "Instead of trying to produce a programme to simulate the adult mind, why not rather try to produce one which simulates the child's? If this were then subjected to an appropriate course of education one would obtain the adult brain.",
+  "speaker": "Alan M. Turing",
+  "date": "October 1950",
+  "source": "https://academic.oup.com/mind/article/LIX/236/433/986238",
+  "context": "Section 7, 'Learning Machines'."
+ },
+ {
+  "id": "q-turing-closing",
+  "text": "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
+  "speaker": "Alan M. Turing",
+  "date": "October 1950",
+  "source": "https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf",
+  "context": "Closing line of 'Computing Machinery and Intelligence'."
+ },
+ {
+  "id": "q-dartmouth-conjecture",
+  "text": "The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it.",
+  "speaker": "John McCarthy, Marvin Minsky, Nathaniel Rochester & Claude Shannon",
+  "date": "31 August 1955",
+  "source": "http://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html",
+  "context": "The Dartmouth proposal, which introduced the term 'artificial intelligence'."
+ },
+ {
+  "id": "q-dartmouth-advance",
+  "text": "We think that a significant advance can be made in one or more of these problems if a carefully selected group of scientists work on it together for a summer.",
+  "speaker": "John McCarthy, Marvin Minsky, Nathaniel Rochester & Claude Shannon",
+  "date": "31 August 1955",
+  "source": "http://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html",
+  "context": "The Dartmouth proposal's statement of ambition (not a prediction of human-level AI in a summer)."
+ },
+ {
+  "id": "q-dartmouth-neuronnets",
+  "text": "How can a set of (hypothetical) neurons be arranged so as to form concepts.",
+  "speaker": "John McCarthy, Marvin Minsky, Nathaniel Rochester & Claude Shannon",
+  "date": "31 August 1955",
+  "source": "http://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html",
+  "context": "Topic 3, 'Neuron Nets', of the Dartmouth proposal."
+ },
+ {
+  "id": "q-mccarthy-cybernetics",
+  "text": "one of the reasons for inventing the term \"artificial intelligence\" was to escape association with \"cybernetics\". Its concentration on analog feedback seemed misguided, and I wished to avoid having either to accept Norbert (not Robert) Wiener as a guru or having to argue with him.",
+  "speaker": "John McCarthy",
+  "date": "1988",
+  "source": "http://www-formal.stanford.edu/jmc/reviews/bloomfield/bloomfield.html",
+  "context": "McCarthy's review of The Question of Artificial Intelligence, on his Stanford site."
+ },
+ {
+  "id": "q-morison",
+  "text": "I hope you won't feel that we are being overcautious, but the general feeling here is that this new field of mathematical models for thought, though very challenging for the long run, is still difficult to grasp very clearly. This suggests a modest gamble for exploring a new approach, but there is a great deal of hesitancy about risking any very substantial amount at this stage.",
+  "speaker": "Robert S. Morison (Rockefeller Foundation)",
+  "date": "1955-1956",
+  "source": "https://raysolomonoff.com/dartmouth/dartray.pdf",
+  "context": "The Foundation's reply to the Dartmouth organisers, quoted by Grace Solomonoff from Rockefeller archives; exact letter date unclear."
+ },
+ {
+  "id": "q-minsky-switch",
+  "text": "In the early 1950s I developed many theories about ways to make neural networks learn — but none of these seemed likely to lead to high-level kinds of idea.",
+  "speaker": "Marvin Minsky",
+  "date": "retrospective",
+  "source": "https://raysolomonoff.com/dartmouth/dartray.pdf",
+  "context": "Minsky's retrospective on his turn from neural nets to symbolic AI, via Grace Solomonoff."
+ },
+ {
+  "id": "q-minsky-snarc-watch",
+  "text": "We sort of quit science for a while to watch the machine.",
+  "speaker": "Marvin Minsky",
+  "date": "14 December 1981 (recalling 1951)",
+  "source": "https://cyberneticzoo.com/mazesolvers/1951-maze-solver-minsky-edmonds-american/",
+  "context": "To Jeremy Bernstein (The New Yorker), on SNARC's simulated rats following each other because of a wiring accident."
+ },
+ {
+  "id": "q-simon-chess",
+  "text": "That within ten years a digital computer will be the world's chess champion, unless the rules bar it from competition.",
+  "speaker": "Herbert A. Simon & Allen Newell",
+  "date": "1958",
+  "source": "https://quoteinvestigator.com/2024/04/18/ai-prediction/",
+  "context": "Operations Research 6(1), from Simon's 1957 ORSA address. Deep Blue won in 1997."
+ },
+ {
+  "id": "q-simon-1960",
+  "text": ". . . machines will be capable, within twenty years, of doing any work that a man can do.",
+  "speaker": "Herbert A. Simon",
+  "date": "1960",
+  "source": "https://quoteinvestigator.com/2021/03/04/ai-solved/",
+  "context": "The New Science of Management Decision (1960), p. 38; often misdated to 1965."
+ },
+ {
+  "id": "q-minsky-1967",
+  "text": "Within a generation, I am convinced, few compartments of intellect will remain outside the machine's realm—the problems of creating \"artificial intelligence\" will be substantially solved.",
+  "speaker": "Marvin Minsky",
+  "date": "1967",
+  "source": "https://quoteinvestigator.com/2021/03/04/ai-solved/",
+  "context": "Computation: Finite and Infinite Machines, p. 2. The shortened 'the problem will substantially be solved' is a misquotation."
+ },
+ {
+  "id": "q-nyt-1958",
+  "text": "The Navy revealed the embryo of an electronic computer today that it expects will be able to walk, talk, see, write, reproduce itself and be conscious of its existence.",
+  "speaker": "UPI wire story in The New York Times",
+  "date": "8 July 1958",
+  "source": "http://web.archive.org/web/20170501122550/http://www.nytimes.com:80/1958/07/08/archives/new-navy-device-learns-by-doing-psychologist-shows-embryo-of.html",
+  "context": "Lede of 'NEW NAVY DEVICE LEARNS BY DOING', NYT p. 25. The prediction is attributed to the Navy."
+ },
+ {
+  "id": "q-newyorker-rival",
+  "text": "...it strikes us as the first serious rival to the human brain ever devised...",
+  "speaker": "The New Yorker (Talk of the Town)",
+  "date": "6 December 1958",
+  "source": "https://www.newyorker.com/magazine/1958/12/06/rival-2",
+  "context": "The magazine's own voice in 'Rival', not Rosenblatt's words."
+ },
+ {
+  "id": "q-rosenblatt-love",
+  "text": "\"Love,\" he said. \"Hope. Despair. Human nature, in short. If we don't understand the human sex drive, why should we expect a machine to?\"",
+  "speaker": "Frank Rosenblatt (as reported by The New Yorker)",
+  "date": "6 December 1958",
+  "source": "https://www.newyorker.com/magazine/1958/12/06/rival-2",
+  "context": "Asked what the perceptron was not capable of; the magazine says he 'threw up his hands'."
+ },
+ {
+  "id": "q-rosenblatt-none",
+  "text": "\"At the moment, none whatever,\" Dr. Rosenblatt said cheerfully.",
+  "speaker": "Frank Rosenblatt (as reported by The New Yorker)",
+  "date": "6 December 1958",
+  "source": "https://www.newyorker.com/magazine/1958/12/06/rival-2",
+  "context": "Asked what practical use the perceptron would be."
+ },
+ {
+  "id": "q-rosenblatt-connections",
+  "text": "Whatever information is retained must somehow be stored as a preference for a particular response; i.e., the information is contained in connections or associations rather than topographic representations.",
+  "speaker": "Frank Rosenblatt",
+  "date": "November 1958",
+  "source": "https://homepages.math.uic.edu/~lreyzin/papers/rosenblatt58.pdf",
+  "context": "Psychological Review 65(6): the connectionist creed."
+ },
+ {
+  "id": "q-rosenblatt-bloodhounds",
+  "text": "Second, was the handling of the first public announcement of the program in 1958 by the popular press, which fell to the task with all of the exuberance and sense of discretion of a pack of happy bloodhounds.",
+  "speaker": "Frank Rosenblatt",
+  "date": "15 March 1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Preface to Principles of Neurodynamics, listing reasons for negative reactions to the program."
+ },
+ {
+  "id": "q-rosenblatt-brainmodel",
+  "text": "A perceptron is first and foremost a brain model, not an invention for pattern recognition.",
+  "speaker": "Frank Rosenblatt",
+  "date": "15 March 1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Preface to Principles of Neurodynamics."
+ },
+ {
+  "id": "q-rosenblatt-neutron",
+  "text": "On being asked, 'How is Perceptron performing today?' I am often tempted to respond, 'Very well, thank you, and how are Neutron and Electron behaving?'",
+  "speaker": "Frank Rosenblatt",
+  "date": "15 March 1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Preface to Principles of Neurodynamics, on popularisers capitalising 'Perceptron'."
+ },
+ {
+  "id": "q-rosenblatt-limit",
+  "text": "This represents about the limit of the capacity of the Mark I system. Attempts at teaching the Mark I to recognize all 26 letters in two type faces simultaneously have been unsuccessful",
+  "speaker": "Frank Rosenblatt",
+  "date": "1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Principles of Neurodynamics, §12.3."
+ },
+ {
+  "id": "q-rosenblatt-hardware",
+  "text": "The Mark I (Frontispiece) employs motor-driven potentiometers for integrators, and a large patch-panel for connections - both intolerable solutions for very large systems.",
+  "speaker": "Frank Rosenblatt",
+  "date": "1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Principles of Neurodynamics, §27.3."
+ },
+ {
+  "id": "q-rosenblatt-linguistic",
+  "text": "Linguistic capability, related to perceptual experience, is of the essence for an 'intelligent' system, artificial or otherwise.",
+  "speaker": "Frank Rosenblatt",
+  "date": "1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Principles of Neurodynamics, §27.3."
+ },
+ {
+  "id": "q-rosenblatt-loyal",
+  "text": "See, for example, Minsky's article, 'Steps Toward Artificial Intelligence', Proc. I.R.E., 49, January, 1961, for an entertaining statement of the views of the loyal opposition, which includes an excellent bibliography.",
+  "speaker": "Frank Rosenblatt",
+  "date": "1961",
+  "source": "https://archive.org/details/DTIC_AD0256582",
+  "context": "Footnote in the preface to Principles of Neurodynamics."
+ },
+ {
+  "id": "q-minsky-twoparts",
+  "text": "But these nets, with their simple, randomly generated, connections can probably never achieve recognition of such patterns as 'the class of figures having two separated parts,' and they cannot even achieve the effect of template recognition without size and position normalization",
+  "speaker": "Marvin Minsky",
+  "date": "January 1961",
+  "source": "https://courses.csail.mit.edu/6.803/pdf/steps.pdf",
+  "context": "'Steps Toward Artificial Intelligence', Proc. IRE 49."
+ },
+ {
+  "id": "q-selfridge-shriek",
+  "text": "Each cognitive demon computes a shriek, and from all the shrieks the highest level demon of all, the decision demon, merely selects the loudest.",
+  "speaker": "Oliver G. Selfridge",
+  "date": "1959",
+  "source": "https://gwern.net/doc/ai/nn/1959-selfridge.pdf",
+  "context": "'Pandemonium: A Paradigm for Learning', Teddington symposium proceedings."
+ },
+ {
+  "id": "q-widrow-friday",
+  "text": "I met Ted for the first time on a Friday afternoon in the fall of 1959.",
+  "speaker": "Bernard Widrow",
+  "date": "January 2005 (recalling 1959)",
+  "source": "https://www-isl.stanford.edu/~widrow/papers/j2005thinkingabout.pdf",
+  "context": "'Thinking About Thinking: The Discovery of the LMS Algorithm', IEEE Signal Processing Magazine."
+ },
+ {
+  "id": "q-widrow-halfhour",
+  "text": "Within a half hour after the discovery of LMS, it was up and running and we had an adaptive neuron being trained to do simple pattern classification tasks.",
+  "speaker": "Bernard Widrow",
+  "date": "January 2005 (recalling 1959)",
+  "source": "https://www-isl.stanford.edu/~widrow/papers/j2005thinkingabout.pdf",
+  "context": "Same article."
+ },
+ {
+  "id": "q-widrow-sunday",
+  "text": "By late Sunday afternoon, the single neuron was fabricated and working.",
+  "speaker": "Bernard Widrow",
+  "date": "January 2005 (recalling 1959)",
+  "source": "https://www-isl.stanford.edu/~widrow/papers/j2005thinkingabout.pdf",
+  "context": "On building ADALINE over a weekend."
+ },
+ {
+  "id": "q-widrow-dartmouth",
+  "text": "Some people at the Dartmouth AI meeting were seriously considering building an artificial brain. I was so taken by this that I never got over it. I spent the next six months thinking about thinking.",
+  "speaker": "Bernard Widrow",
+  "date": "January 2005 (recalling 1956)",
+  "source": "https://www-isl.stanford.edu/~widrow/papers/j2005thinkingabout.pdf",
+  "context": "Same article."
+ },
+ {
+  "id": "q-perceptrons-sterile",
+  "text": "Nevertheless, we consider it to be an important research problem to elucidate (or reject) our intuitive judgment that the extension is sterile.",
+  "speaker": "Marvin Minsky & Seymour Papert",
+  "date": "1969",
+  "source": "https://quoteinvestigator.com/2026/07/24/perceptron-sterile/",
+  "context": "Perceptrons, ch. 13, pp. 231-232, on multilayer machines: a conjecture, not a theorem. Full passage transcribed by Baldi: https://mailman.srv.cs.cmu.edu/pipermail/connectionists/2022-February/037275.html"
+ },
+ {
+  "id": "q-papert-pig",
+  "text": "But Snow White was not dead. What Minsky and Papert had shown the world as proof was not the heart of the princess; it was the heart of a pig.",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', Daedalus 117(1). Papert is retelling the connectionists' fairy tale, not confessing."
+ },
+ {
+  "id": "q-papert-misleading",
+  "text": "The book did indeed point out very serious limitations of a certain class of nets (nowadays known as one-layer perceptrons) but was misleading in its suggestion that this class of nets was the heart of connectionism.",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', p. 4."
+ },
+ {
+  "id": "q-papert-hostility",
+  "text": "Yes, there was some hostility in the energy behind the research reported in Perceptrons, and there is some degree of annoyance at the way the new movement has developed;",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', pp. 4-5. His next sentence: 'But most of the motivation for Perceptrons came from more fundamental concerns...'"
+ },
+ {
+  "id": "q-papert-money",
+  "text": "By 1969, the date of the publication of Perceptrons, AI was not operating in an ivory-tower vacuum. Money was at stake.",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', p. 7."
+ },
+ {
+  "id": "q-papert-understand",
+  "text": "We did not think of our work as killing Snow White; we saw it as a way to understand her.",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', p. 8."
+ },
+ {
+  "id": "q-papert-fate",
+  "text": "But in a culture set up for global judgment of mechanisms, being understood can be a fate as bad as death.",
+  "speaker": "Seymour Papert",
+  "date": "Winter 1988",
+  "source": "https://gwern.net/doc/ai/1988-papert.pdf",
+  "context": "'One AI or Many?', p. 8."
+ },
+ {
+  "id": "q-lighthill-disappointment",
+  "text": "Most workers in AI research and in related fields confess to a pronounced feeling of disappointment in what has been achieved in the past twenty-five years.",
+  "speaker": "Sir James Lighthill",
+  "date": "July 1972",
+  "source": "https://rodsmith.nz/wp-content/uploads/Lighthill_1973_Report.pdf",
+  "context": "'Artificial Intelligence: A General Survey', section 3."
+ },
+ {
+  "id": "q-lighthill-explosion",
+  "text": "...he is inclined, as a mathematician, to single out one rather general cause for the disappointments that have been experienced: failure to recognise the implications of the combinatorial explosion.",
+  "speaker": "Sir James Lighthill",
+  "date": "July 1972",
+  "source": "https://rodsmith.nz/wp-content/uploads/Lighthill_1973_Report.pdf",
+  "context": "Same report, section 3."
+ },
+ {
+  "id": "q-lighthill-twomonths",
+  "text": "...it would simply describe how AI appears to a lay person after two months spent looking through the literature of the subject...",
+  "speaker": "Sir James Lighthill",
+  "date": "July 1972",
+  "source": "https://rodsmith.nz/wp-content/uploads/Lighthill_1973_Report.pdf",
+  "context": "Same report, introduction, describing his own method."
+ },
+ {
+  "id": "q-mccarthy-lighthill",
+  "text": "In fact, the combinatorial explosion problem has been recognized in AI from the beginning, and the usual meaning of heuristic is a device for reducing this explosion.",
+  "speaker": "John McCarthy",
+  "date": "1973",
+  "source": "http://www-formal.stanford.edu/jmc/reviews/lighthill/lighthill.html",
+  "context": "McCarthy's written review of the Lighthill report (not the televised debate)."
+ },
+ {
+  "id": "q-alpac",
+  "text": "...there is no immediate or predictable prospect of useful machine translation.",
+  "speaker": "ALPAC (Automatic Language Processing Advisory Committee)",
+  "date": "November 1966",
+  "source": "https://nap.nationalacademies.org/resource/alpac_lm/ARC000005.pdf",
+  "context": "Language and Machines (NAS-NRC Pub. 1416), p. 32."
+ },
+ {
+  "id": "q-mansfield",
+  "text": "a direct and apparent relationship to a specific military function or operation",
+  "speaker": "US Congress (Mansfield Amendment, Sec. 203, P.L. 91-121)",
+  "date": "19 November 1969",
+  "source": "https://www.govinfo.gov/content/pkg/STATUTE-83/pdf/STATUTE-83-Pg204.pdf",
+  "context": "The statutory test for DoD-funded research; often misquoted as 'direct or apparent'."
+ },
+ {
+  "id": "q-hopfield-cam",
+  "text": "The collective properties of this model produce a content-addressable memory which correctly yields an entire memory from any subpart of sufficient size.",
+  "speaker": "John J. Hopfield",
+  "date": "April 1982",
+  "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC346238/",
+  "context": "Abstract of the 1982 PNAS paper."
+ },
+ {
+  "id": "q-hopfield-connection",
+  "text": "Suddenly there was a connection between neurobiology and physics systems I understood (thanks to a lifetime of interaction with P.W. Anderson). A month later I was writing a paper.",
+  "speaker": "John J. Hopfield",
+  "date": "retrospective (recalling c. 1981)",
+  "source": "https://pni.princeton.edu/sites/g/files/toruqf321/files/documents/John%20Hopfield%20Now%20What%203_0.pdf",
+  "context": "Autobiographical essay 'Now What?'."
+ },
+ {
+  "id": "q-hopfield-neuron",
+  "text": "This 1982 PNAS paper is the first publication in which I use the word 'neuron'. It was to provide an entryway to working in neuroscience for many physicists and computer scientists.",
+  "speaker": "John J. Hopfield",
+  "date": "retrospective",
+  "source": "https://pni.princeton.edu/sites/g/files/toruqf321/files/documents/John%20Hopfield%20Now%20What%203_0.pdf",
+  "context": "'Now What?'."
+ },
+ {
+  "id": "q-hopfield-versailles",
+  "text": "I have never met anyone who remembered hearing the talk.",
+  "speaker": "John J. Hopfield",
+  "date": "retrospective (recalling summer 1981)",
+  "source": "https://pni.princeton.edu/sites/g/files/toruqf321/files/documents/John%20Hopfield%20Now%20What%203_0.pdf",
+  "context": "On his first public talk on the network, in the Hall of Mirrors at Versailles."
+ },
+ {
+  "id": "q-rhw-abstract",
+  "text": "As a result of the weight adjustments, internal 'hidden' units which are not part of the input or output come to represent important features of the task domain, and the regularities in the task are captured by the interactions of these units.",
+  "speaker": "David E. Rumelhart, Geoffrey E. Hinton & Ronald J. Williams",
+  "date": "9 October 1986",
+  "source": "https://www.nature.com/articles/323533a0",
+  "context": "Abstract of 'Learning representations by back-propagating errors', Nature 323."
+ },
+ {
+  "id": "q-rhw-brain",
+  "text": "The learning procedure, in its current form, is not a plausible model of learning in brains.",
+  "speaker": "David E. Rumelhart, Geoffrey E. Hinton & Ronald J. Williams",
+  "date": "9 October 1986",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf",
+  "context": "Closing paragraph of the 1986 Nature paper."
+ },
+ {
+  "id": "q-rhw-generalize",
+  "text": "Because the hidden features capture the underlying structure of the task domain, the network generalizes correctly to the four triples on which it was not trained.",
+  "speaker": "David E. Rumelhart, Geoffrey E. Hinton & Ronald J. Williams",
+  "date": "9 October 1986",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf",
+  "context": "The family-trees experiment."
+ },
+ {
+  "id": "q-hinton-notinvent",
+  "text": "I have never claimed that I invented backpropagation. David Rumelhart invented it independently long after people in other fields had invented it.",
+  "speaker": "Geoffrey Hinton",
+  "date": "April 2020",
+  "source": "https://syncedreview.com/2020/04/23/who-invented-backpropagation-hinton-says-he-didnt-but-his-work-made-it-popular/",
+  "context": "Reddit reply to Schmidhuber, as reproduced verbatim by Synced."
+ },
+ {
+  "id": "q-hinton-toomuchcredit",
+  "text": "It's one of these rare cases where an academic feels he has got too much credit for something!",
+  "speaker": "Geoffrey Hinton",
+  "date": "April 2020",
+  "source": "https://syncedreview.com/2020/04/23/who-invented-backpropagation-hinton-says-he-didnt-but-his-work-made-it-popular/",
+  "context": "Same reply, on press calling him the inventor of backprop."
+ },
+ {
+  "id": "q-schmidhuber-credit",
+  "text": "The inventor of an important method should get credit for inventing it. She may not always be the one who popularizes it. Then the popularizer should get credit for popularizing it (but not for inventing it)",
+  "speaker": "Jürgen Schmidhuber",
+  "date": "2015",
+  "source": "https://syncedreview.com/2020/04/23/who-invented-backpropagation-hinton-says-he-didnt-but-his-work-made-it-popular/",
+  "context": "From Schmidhuber's 2015 blog, as quoted by Synced."
+ },
+ {
+  "id": "q-fodor-pylyshyn",
+  "text": "You don't, for example, find native speakers who know how to say in English that John loves the girl but don't know how to say in English that the girl loves John.",
+  "speaker": "Jerry Fodor & Zenon Pylyshyn",
+  "date": "1988",
+  "source": "https://ruccs.rutgers.edu/images/personal-zenon-pylyshyn/proseminars/Proseminar13/ConnectionistArchitecture.pdf",
+  "context": "'Connectionism and cognitive architecture', Cognition 28: the systematicity argument."
+ },
+ {
+  "id": "q-pinker-prince",
+  "text": "We conclude that connectionists' claims about the dispensability of rules in explanations in the psychology of language must be rejected",
+  "speaker": "Steven Pinker & Alan Prince",
+  "date": "1988",
+  "source": "http://www.blutner.de/NeuralNets/Texts/Pinker_Prince.htm",
+  "context": "Abstract of 'On language and connectionism', Cognition 28."
+ },
+ {
+  "id": "q-lake-baroni",
+  "text": "Neural networks have advanced considerably in the years since, yet the systematicity challenge persists.",
+  "speaker": "Brenden M. Lake & Marco Baroni",
+  "date": "25 October 2023",
+  "source": "https://www.nature.com/articles/s41586-023-06668-3",
+  "context": "Nature abstract. The next sentence claims they 'successfully address' the challenge; always give both."
+ },
+ {
+  "id": "q-nettalk-babble",
+  "text": "the network predicted the same vowel for all vowels and the same consonant for all consonants, which resulted in a babbling sound.",
+  "speaker": "Terrence J. Sejnowski & Charles R. Rosenberg",
+  "date": "1987",
+  "source": "https://papers.cnl.salk.edu/PDFs/Parallel%20Networks%20That%20Learn%20to%20Pronounce%20English%20Text%201987-3351.pdf",
+  "context": "NETtalk, Complex Systems 1: the first stage of learning."
+ },
+ {
+  "id": "q-alvinn-drive",
+  "text": "the network can accurately drive the NAVLAB at a speed of 1/2 meter per second along a 400 meter path through a wooded area of the CMU campus under sunny fall conditions.",
+  "speaker": "Dean A. Pomerleau",
+  "date": "1989",
+  "source": "https://papers.nips.cc/paper_files/paper/1988/file/812b4ba287f5ee0bc9d43bbf5bbe87fb-Paper.pdf",
+  "context": "ALVINN, NIPS 1 proceedings."
+ },
+ {
+  "id": "q-nobel-2024",
+  "text": "for foundational discoveries and inventions that enable machine learning with artificial neural networks",
+  "speaker": "Royal Swedish Academy of Sciences",
+  "date": "8 October 2024",
+  "source": "https://www.nobelprize.org/prizes/physics/2024/press-release/",
+  "context": "Nobel Prize in Physics citation for Hopfield and Hinton."
+ },
+ {
+  "id": "q-mcdermott-winter",
+  "text": "This condition, called the \"AI Winter\" by some, prompted someone to ask me if \"nuclear winter\" were the situation where funding is cut off for nuclear weapons.",
+  "speaker": "Drew McDermott",
+  "date": "August 1984",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/view/494",
+  "context": "Chairing the AAAI-84 'Dark Ages of AI' panel, Austin (published AI Magazine 6(3), Fall 1985)."
+ },
+ {
+  "id": "q-mcdermott-unease",
+  "text": "This unease is due to the worry that perhaps expectations about AI are too high, and that this will eventually result in disaster.",
+  "speaker": "Drew McDermott",
+  "date": "August 1984",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/view/494",
+  "context": "Opening remarks, AAAI-84 panel."
+ },
+ {
+  "id": "q-schank-darkages",
+  "text": "It's difficult. But if we don't do that, we will find that we are in the \"dark ages\" of AI.",
+  "speaker": "Roger Schank",
+  "date": "August 1984",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/view/494",
+  "context": "AAAI-84 panel; 'that' means going into a university and doing science rather than joining startups."
+ },
+ {
+  "id": "q-schank-expert",
+  "text": "You may have come to the wrong person; I don't much believe in expert systems.",
+  "speaker": "Roger Schank",
+  "date": "August 1984",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/view/494",
+  "context": "Retelling what he told a developer who wanted an 'expert systems industrial park'."
+ },
+ {
+  "id": "q-chandrasekaran-dusk",
+  "text": "Will there be an AI Winter? I think there may be an AI dusk, which may be even better, rather than the hard sunshine that we have been having in Austin recently.",
+  "speaker": "B. Chandrasekaran",
+  "date": "August 1984",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/view/494",
+  "context": "AAAI-84 panel, p. 127."
+ },
+ {
+  "id": "q-feigenbaum-knowledge",
+  "text": "The key empirical result of DENDRAL experiments became known as the knowledge-is-power hypothesis (later called the Knowledge Principle), stating that knowledge of the specific task domain in which the program is to do its problem solving was more important as a source of power for competent problem solving than the reasoning method employed.",
+  "speaker": "Edward A. Feigenbaum",
+  "date": "1992",
+  "source": "https://imarcai.com/wp-content/uploads/2019/04/Feigenbaum-EXPERT-SYSTEMS-PRINCIPLES-AND-PRACTICE.pdf",
+  "context": "'Expert Systems: Principles and Practice'."
+ },
+ {
+  "id": "q-feigenbaum-bottleneck",
+  "text": "Note, however, that although tools/shells simplify programming ESs, they do not usually help with the crucial bottleneck problem of knowledge acquisition.",
+  "speaker": "Edward A. Feigenbaum",
+  "date": "1992",
+  "source": "https://imarcai.com/wp-content/uploads/2019/04/Feigenbaum-EXPERT-SYSTEMS-PRINCIPLES-AND-PRACTICE.pdf",
+  "context": "Same essay: the knowledge-acquisition bottleneck."
+ },
+ {
+  "id": "q-lenat-feigenbaum-power",
+  "text": "Their reasoning components are weak; in their knowledge bases lies their power.",
+  "speaker": "Douglas B. Lenat & Edward A. Feigenbaum",
+  "date": "1987",
+  "source": "https://www.ijcai.org/Proceedings/87-2/Papers/122.pdf",
+  "context": "'On the Thresholds of Knowledge', IJCAI-87, section 2, on expert systems."
+ },
+ {
+  "id": "q-lenat-finesse",
+  "text": "To build CYC, we must encode all the world's knowledge down to some level of detail; there is no way to finesse this. Fifteenth century explorers couldn't discover new lands without long voyages.",
+  "speaker": "Douglas B. Lenat, Mary Prakash & Mary Shepherd",
+  "date": "Winter 1985",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/download/510/446",
+  "context": "'CYC: Using Common Sense Knowledge...', AI Magazine 6(4)."
+ },
+ {
+  "id": "q-lenat-rawtext",
+  "text": "For this reason, simply having an online version of an encyclopedia would be of little use, as there is practically nothing that current AI technology could draw from the raw text. Rather, we must carefully re-represent the encyclopedia's knowledge—by hand—into some more structured form.",
+  "speaker": "Douglas B. Lenat, Mary Prakash & Mary Shepherd",
+  "date": "Winter 1985",
+  "source": "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/download/510/446",
+  "context": "Same paper. Use as hindsight hinge, not mockery."
+ },
+ {
+  "id": "q-brooks-model",
+  "text": "The key observation is that the world is its own best model. It is always exactly up to date. It always contains every detail there is to be known. The trick is to sense it appropriately and often enough.",
+  "speaker": "Rodney A. Brooks",
+  "date": "1990",
+  "source": "https://people.csail.mit.edu/brooks/papers/elephants.pdf",
+  "context": "'Elephants Don't Play Chess', Robotics and Autonomous Systems 6."
+ },
+ {
+  "id": "q-brooks-elephant",
+  "text": "Likewise it is unfair to claim that an elephant has no intelligence worth studying just because it does not play chess.",
+  "speaker": "Rodney A. Brooks",
+  "date": "1990",
+  "source": "https://people.csail.mit.edu/brooks/papers/elephants.pdf",
+  "context": "Same paper, §5.3 'But It Can't Do X'."
+ },
+ {
+  "id": "q-brooks-representation",
+  "text": "Representation is the wrong unit of abstraction in building the bulkiest parts of intelligent systems.",
+  "speaker": "Rodney A. Brooks",
+  "date": "1991 (received September 1987)",
+  "source": "https://people.csail.mit.edu/brooks/papers/representation.pdf",
+  "context": "'Intelligence without representation', Artificial Intelligence 47, claim (H)."
+ },
+ {
+  "id": "q-dreyfus-tree",
+  "text": "...the first man to climb a tree could claim tangible progress toward reaching the moon.",
+  "speaker": "Hubert L. Dreyfus",
+  "date": "1972",
+  "source": "https://quoteinvestigator.com/2024/04/20/moon-tree/",
+  "context": "What Computers Can't Do (1972), p. 12, as transcribed by Quote Investigator; confirmed in the 1972/1992 text."
+ },
+ {
+  "id": "q-dreyfus-pattern",
+  "text": "...the field of artificial intelligence exhibits a recurring pattern: early, dramatic success followed by sudden unexpected difficulties.",
+  "speaker": "Hubert L. Dreyfus",
+  "date": "1972",
+  "source": "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason",
+  "context": "What Computers Can't Do (1972), reprinted in the 1992 edition. Not verified as wording of the 1965 RAND paper."
+ },
+ {
+  "id": "q-dreyfus-gofai",
+  "text": "Indeed, what John Haugeland has called Good Old-Fashioned AI (GOFAI) is a paradigm case of what philosophers of science call a degenerating research program.",
+  "speaker": "Hubert L. Dreyfus",
+  "date": "1992",
+  "source": "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason",
+  "context": "What Computers Still Can't Do, Introduction to the MIT Press edition, p. ix."
+ },
+ {
+  "id": "q-mccarthy-dreyfus",
+  "text": "It's hard to see how he would know, since he makes no claim to have read much of the recent literature.",
+  "speaker": "John McCarthy",
+  "date": "1996",
+  "source": "https://www-formal.stanford.edu/jmc/reviews/dreyfus/dreyfus.html",
+  "context": "Review of What Computers Still Can't Do, answering the 'degenerating research program' charge."
+ },
+ {
+  "id": "q-weizenbaum-absurd",
+  "text": "That ambition remains as absurd today as it was twenty-five years ago.",
+  "speaker": "Joseph Weizenbaum",
+  "date": "27 October 1983",
+  "source": "https://www.nybooks.com/articles/1983/10/27/the-computer-in-your-future/",
+  "context": "NYRB review of The Fifth Generation; 'That ambition' is Simon and Newell's 1958 forecast, which he ties to Fifth Generation claims."
+ },
+ {
+  "id": "q-breiman-svm",
+  "text": "These theoretical bounds led to support vector machines (see Vapnik, 1995, 1998) which have proved to be more accurate predictors in classification and regression then neural nets, and are the subject of heated current research",
+  "speaker": "Leo Breiman",
+  "date": "August 2001",
+  "source": "https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.pdf",
+  "context": "'Statistical Modeling: The Two Cultures'. 'then' is Breiman's typo for 'than'."
+ },
+ {
+  "id": "q-breiman-forests",
+  "text": "So forests are A+ predictors. But their mechanism for producing a prediction is difficult to understand. … So on interpretability, they rate an F.",
+  "speaker": "Leo Breiman",
+  "date": "August 2001",
+  "source": "https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.pdf",
+  "context": "Same paper, §9.4 'The Occam Dilemma'."
+ },
+ {
+  "id": "q-breiman-mid80s",
+  "text": "In the mid-1980s two powerful new algorithms for fitting data became available: neural nets and decision trees. A new research community using these tools sprang up. Their goal was predictive accuracy. The community consisted of young computer scientists, physicists and engineers plus a few aging statisticians.",
+  "speaker": "Leo Breiman",
+  "date": "August 2001",
+  "source": "https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.pdf",
+  "context": "Same paper, §7.1."
+ },
+ {
+  "id": "q-bet-vapnik",
+  "text": "Vapnik bets (one fancy dinner) that by March 14, 2005, no one in his right mind will use neural nets that are essentially like those used in 1995.",
+  "speaker": "Vladimir Vapnik (signed bet document)",
+  "date": "14 March 1995",
+  "source": "https://yorko.github.io/2022/vapnik-jackel-bet/",
+  "context": "The Jackel-Vapnik bet, transcribed from the image of the signed Bell Labs document, witnessed by Y. LeCun. Vapnik lost."
+ },
+ {
+  "id": "q-bet-jackel",
+  "text": "Jackel bets (one fancy dinner) that by March 14, 2000, people will understand quantitatively why big neural nets working on large databases are not so bad. (Understanding means that there will be clear conditions and bounds)",
+  "speaker": "Larry Jackel (signed bet document)",
+  "date": "14 March 1995",
+  "source": "https://yorko.github.io/2022/vapnik-jackel-bet/",
+  "context": "Same document. Jackel lost this bet."
+ },
+ {
+  "id": "q-lecun-checks",
+  "text": "It is deployed commercially and reads several million checks per day.",
+  "speaker": "Yann LeCun, Léon Bottou, Yoshua Bengio & Patrick Haffner",
+  "date": "November 1998",
+  "source": "https://ieeexplore.ieee.org/document/726791",
+  "context": "Abstract of 'Gradient-Based Learning Applied to Document Recognition', Proc. IEEE 86(11)."
+ },
+ {
+  "id": "q-lstm",
+  "text": "LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units.",
+  "speaker": "Sepp Hochreiter & Jürgen Schmidhuber",
+  "date": "November 1997",
+  "source": "https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735",
+  "context": "Abstract of 'Long Short-Term Memory', Neural Computation 9(8)."
+ },
+ {
+  "id": "q-bengio-curse",
+  "text": "We propose to fight the curse of dimensionality by learning a distributed representation for words which allows each training sentence to inform the model about an exponential number of semantically neighboring sentences.",
+  "speaker": "Yoshua Bengio, Réjean Ducharme, Pascal Vincent & Christian Jauvin",
+  "date": "2003",
+  "source": "https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf",
+  "context": "Abstract of 'A Neural Probabilistic Language Model', JMLR 3."
+ },
+ {
+  "id": "q-lecun-outcast",
+  "text": "We were outcast a little bit in the broader machine learning community: we couldn't get our papers published. This gave us a place where we could exchange ideas.",
+  "speaker": "Yann LeCun",
+  "date": "17 April 2015",
+  "source": "https://www.thestar.com/news/world/2015/04/17/how-a-toronto-professors-research-revolutionized-artificial-intelligence.html",
+  "context": "Toronto Star (Kate Allen), on CIFAR's NCAP programme."
+ },
+ {
+  "id": "q-bengio-worst",
+  "text": "It was the worst possible time,",
+  "speaker": "Yoshua Bengio",
+  "date": "17 April 2015",
+  "source": "https://www.thestar.com/news/world/2015/04/17/how-a-toronto-professors-research-revolutionized-artificial-intelligence.html",
+  "context": "Toronto Star, on Hinton's 2004 proposal to CIFAR; followed by 'Everyone else was doing something different. Somehow, Geoff convinced them.'"
+ },
+ {
+  "id": "q-hinton-crazy",
+  "text": "People said, 'This is crazy. Why are you wasting your time on this stuff? It's already shown to be nonsense.'",
+  "speaker": "Geoffrey Hinton (recalling others)",
+  "date": "17 April 2015",
+  "source": "https://www.thestar.com/news/world/2015/04/17/how-a-toronto-professors-research-revolutionized-artificial-intelligence.html",
+  "context": "Toronto Star, recalling reactions when he began his PhD work in the 1970s."
+ },
+ {
+  "id": "q-lecun-conspiracy",
+  "text": "the so-called \"Deep Learning conspiracy\"",
+  "speaker": "Yann LeCun",
+  "date": "18 February 2015",
+  "source": "https://spectrum.ieee.org/facebook-ai-director-yann-lecun-on-deep-learning",
+  "context": "IEEE Spectrum interview (Lee Gomes), on himself, Hinton and Bengio."
+ },
+ {
+  "id": "q-lecun-ironclad",
+  "text": "that you had to have ironclad theory, and the empirical results didn't count.",
+  "speaker": "Yann LeCun",
+  "date": "18 February 2015",
+  "source": "https://spectrum.ieee.org/facebook-ai-director-yann-lecun-on-deep-learning",
+  "context": "IEEE Spectrum, fragment explaining the 'Neural Net Winter' of the late 1990s and early 2000s."
+ },
+ {
+  "id": "q-schmidhuber-conspiracy",
+  "text": "three CIFAR-funded collaborators who call themselves the \"deep learning conspiracy\" (e.g., LeCun, 2015)",
+  "speaker": "Jürgen Schmidhuber",
+  "date": "June 2015",
+  "source": "https://people.idsia.ch/~juergen/deep-learning-conspiracy.html",
+  "context": "Critique of the 2015 Nature 'Deep Learning' review."
+ },
+ {
+  "id": "q-mnist-census",
+  "text": "SD-3 was collected among Census Bureau employees, while SD-1 was collected among high-school students.",
+  "speaker": "Yann LeCun, Corinna Cortes & Christopher Burges (MNIST page)",
+  "date": "c. 1998",
+  "source": "https://web.archive.org/web/2019/http://yann.lecun.com/exdb/mnist/",
+  "context": "Why MNIST mixes the two NIST databases."
+ },
+ {
+  "id": "q-hs-threeconditions",
+  "text": "It has been obvious since the 1980s that backpropagation through deep autoencoders would be very effective for nonlinear dimensionality reduction, provided that computers were fast enough, data sets were big enough, and the initial weights were close enough to a good solution. All three conditions are now satisfied.",
+  "speaker": "Geoffrey Hinton & Ruslan Salakhutdinov",
+  "date": "28 July 2006",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/science.pdf",
+  "context": "Concluding paragraph of 'Reducing the Dimensionality of Data with Neural Networks', Science 313, p. 507."
+ },
+ {
+  "id": "q-hs-initialweights",
+  "text": "Gradient descent can be used for fine-tuning the weights in such 'autoencoder' networks, but this works well only if the initial weights are close to a good solution.",
+  "speaker": "Geoffrey Hinton & Ruslan Salakhutdinov",
+  "date": "28 July 2006",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/science.pdf",
+  "context": "Abstract, Science 2006: the pretraining belief in one sentence."
+ },
+ {
+  "id": "q-ciresan-goodold",
+  "text": "Good old on-line back-propagation for plain multi-layer perceptrons yields a very low 0.35% error rate on the famous MNIST handwritten digits benchmark. All we need to achieve this best result so far are many hidden layers, many neurons per layer, numerous deformed training images, and graphics cards to greatly speed up learning.",
+  "speaker": "Dan Cireșan, Ueli Meier, Luca Gambardella & Jürgen Schmidhuber",
+  "date": "1 March 2010",
+  "source": "https://arxiv.org/abs/1003.0358",
+  "context": "Abstract of 'Deep, Big, Simple Neural Nets Excel on Handwritten Digit Recognition'."
+ },
+ {
+  "id": "q-ciresan-hardware",
+  "text": "Our results show that this ongoing hardware progress may be more important than advances in algorithms and software (although the future will belong to methods combining the best of both worlds).",
+  "speaker": "Dan Cireșan, Ueli Meier, Luca Gambardella & Jürgen Schmidhuber",
+  "date": "2010",
+  "source": "https://arxiv.org/abs/1003.0358",
+  "context": "Conclusion of the same paper."
+ },
+ {
+  "id": "q-raina-gpu",
+  "text": "We argue that modern graphics processors far surpass the computational capabilities of multicore CPUs, and have the potential to revolutionize the applicability of deep unsupervised learning methods.",
+  "speaker": "Rajat Raina, Anand Madhavan & Andrew Ng",
+  "date": "June 2009",
+  "source": "https://ai.stanford.edu/~ang/papers/icml09-LargeScaleUnsupervisedDeepLearningGPU.pdf",
+  "context": "Abstract, ICML 2009."
+ },
+ {
+  "id": "q-li-tenure",
+  "text": "Some very friendly colleagues advised me to do something more useful for my tenure, and we were constantly struggling for research funding. Once, I even joked to my graduate students that I would just reopen my dry cleaner's shop to fund ImageNet. After all, that's how I funded my college years.",
+  "speaker": "Fei-Fei Li",
+  "date": "2015 (recalling 2007-2009)",
+  "source": "https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures/transcript",
+  "context": "TED2015, 'How we're teaching computers to understand pictures'."
+ },
+ {
+  "id": "q-li-child",
+  "text": "If you consider a child's eyes as a pair of biological cameras, they take one picture about every 200 milliseconds, the average time an eye movement is made.",
+  "speaker": "Fei-Fei Li",
+  "date": "2015",
+  "source": "https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures/transcript",
+  "context": "TED2015, explaining why vision needs data at scale."
+ },
+ {
+  "id": "q-li-workers",
+  "text": "At its peak, ImageNet was one of the biggest employers of the Amazon Mechanical Turk workers: together, almost 50,000 workers from 167 countries around the world helped us to clean, sort and label nearly a billion candidate images.",
+  "speaker": "Fei-Fei Li",
+  "date": "2015",
+  "source": "https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures/transcript",
+  "context": "TED2015; whole-project totals."
+ },
+ {
+  "id": "q-li-slide-moral",
+  "text": "Moral of the story: no graduate students would want to do this project!",
+  "speaker": "Fei-Fei Li (slide text)",
+  "date": "2010",
+  "source": "https://www.image-net.org/static_files/papers/ImageNet_2010.pdf",
+  "context": "Slide after her '≈19 years' labelling estimate; present as on-screen slide text, not speech."
+ },
+ {
+  "id": "q-li-slide-crowd",
+  "text": "In summer 2008, we discovered crowdsourcing",
+  "speaker": "Fei-Fei Li (slide text)",
+  "date": "2010",
+  "source": "https://www.image-net.org/static_files/papers/ImageNet_2010.pdf",
+  "context": "2010 ImageNet talk slides."
+ },
+ {
+  "id": "q-russakovsky",
+  "text": "Prestige comes from building models … Most people wondered why collecting a dataset would be intellectually interesting.",
+  "speaker": "Olga Russakovsky",
+  "date": "22 September 2025",
+  "source": "https://www.cs.princeton.edu/node/6767",
+  "context": "Quoted by Princeton CS (Julia Schwarz), on the field's attitude to ImageNet; two consecutive sentences."
+ },
+ {
+  "id": "q-dean-cat",
+  "text": "We never told it during the training, 'This is a cat.'",
+  "speaker": "Jeff Dean",
+  "date": "25-26 June 2012",
+  "source": "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/",
+  "context": "NYT (John Markoff), 'How Many Computers to Identify a Cat? 16,000' (NYT News Service reprint)."
+ },
+ {
+  "id": "q-dean-invented",
+  "text": "It basically invented the concept of a cat.",
+  "speaker": "Jeff Dean",
+  "date": "25-26 June 2012",
+  "source": "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/",
+  "context": "Same NYT article."
+ },
+ {
+  "id": "q-ng-awful",
+  "text": "A loose and frankly awful analogy is that our numerical parameters correspond to synapses",
+  "speaker": "Andrew Ng",
+  "date": "25-26 June 2012",
+  "source": "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/",
+  "context": "Same NYT article, on the brain analogy."
+ },
+ {
+  "id": "q-ng-gut",
+  "text": "It'd be fantastic if it turns out that all we need to do is take current algorithms and run them bigger, but my gut feeling is that we still don't quite have the right algorithm yet.",
+  "speaker": "Andrew Ng",
+  "date": "25-26 June 2012",
+  "source": "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/",
+  "context": "Same NYT article."
+ },
+ {
+  "id": "q-lecun-hottest",
+  "text": "This is the hottest thing in the speech recognition field these days",
+  "speaker": "Yann LeCun",
+  "date": "25-26 June 2012",
+  "source": "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/",
+  "context": "Same NYT article, about deep learning in speech, not the cat result."
+ },
+ {
+  "id": "q-le-face",
+  "text": "Contrary to what appears to be a widely-held intuition, our experimental results reveal that it is possible to train a face detector without having to label images as containing a face or not.",
+  "speaker": "Quoc Le et al.",
+  "date": "2012",
+  "source": "https://arxiv.org/abs/1112.6209",
+  "context": "Abstract of 'Building High-level Features Using Large Scale Unsupervised Learning'."
+ },
+ {
+  "id": "q-vanhoucke-android",
+  "text": "when you speak to your Android phone, chances are, you are talking to a neural network trained to recognize your speech.",
+  "speaker": "Vincent Vanhoucke",
+  "date": "6 August 2012",
+  "source": "https://research.google/blog/speech-recognition-and-deep-learning/",
+  "context": "Google Research blog, after Android Jelly Bean shipped DNN voice search."
+ },
+ {
+  "id": "q-vanhoucke-dryspell",
+  "text": "Using neural networks for speech recognition is nothing new: the first proofs of concept were developed in the late 1980s, and after what can only be described as a 20-year dry-spell, evidence that the technology could scale to modern computing resources has recently begun to emerge.",
+  "speaker": "Vincent Vanhoucke",
+  "date": "6 August 2012",
+  "source": "https://research.google/blog/speech-recognition-and-deep-learning/",
+  "context": "Same post."
+ },
+ {
+  "id": "q-glorot-relu",
+  "text": "deep rectifier networks can reach their best performance without requiring any unsupervised pre-training on purely supervised tasks with large labeled datasets.",
+  "speaker": "Xavier Glorot, Antoine Bordes & Yoshua Bengio",
+  "date": "April 2011",
+  "source": "https://proceedings.mlr.press/v15/glorot11a/glorot11a.pdf",
+  "context": "Abstract, AISTATS 2011."
+ },
+ {
+  "id": "q-martens",
+  "text": "Without using pre-training, we obtain results superior to those reported by Hinton & Salakhutdinov (2006) on the same tasks they considered.",
+  "speaker": "James Martens",
+  "date": "June 2010",
+  "source": "https://www.cs.toronto.edu/~jmartens/docs/Deep_HessianFree.pdf",
+  "context": "Abstract, 'Deep learning via Hessian-free optimization', ICML 2010."
+ },
+ {
+  "id": "q-dropout",
+  "text": "This 'overfitting' is greatly reduced by randomly omitting half of the feature detectors on each training case.",
+  "speaker": "Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever & Ruslan Salakhutdinov",
+  "date": "3 July 2012",
+  "source": "https://arxiv.org/abs/1207.0580",
+  "context": "Abstract of the dropout preprint."
+ },
+ {
+  "id": "q-nature-pretraining",
+  "text": "Once deep learning had been rehabilitated, it turned out that the pre-training stage was only needed for small data sets.",
+  "speaker": "Yann LeCun, Yoshua Bengio & Geoffrey Hinton",
+  "date": "28 May 2015",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/NatureDeepReview.pdf",
+  "context": "'Deep learning', Nature 521."
+ },
+ {
+  "id": "q-nature-cifar",
+  "text": "Interest in deep feedforward networks was revived around 2006 by a group of researchers brought together by the Canadian Institute for Advanced Research (CIFAR).",
+  "speaker": "Yann LeCun, Yoshua Bengio & Geoffrey Hinton",
+  "date": "28 May 2015",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/NatureDeepReview.pdf",
+  "context": "Same review (reference numbers dropped)."
+ },
+ {
+  "id": "q-nature-forsaken",
+  "text": "In the late 1990s, neural nets and backpropagation were largely forsaken by the machine-learning community and ignored by the computer-vision and speech-recognition communities.",
+  "speaker": "Yann LeCun, Yoshua Bengio & Geoffrey Hinton",
+  "date": "28 May 2015",
+  "source": "https://www.cs.toronto.edu/~hinton/absps/NatureDeepReview.pdf",
+  "context": "Same review, describing the belief of the late 1990s."
+ },
+ {
+  "id": "q-hinton-buygpus",
+  "text": "In 2009, I remember giving a talk at NIPS [now NeurIPS] where I told about 1,000 researchers they should all buy GPUs because GPUs are going to be the future of machine learning.",
+  "speaker": "Geoffrey Hinton",
+  "date": "2022 (published 23 February 2023)",
+  "source": "https://venturebeat.com/ai/how-nvidia-dominated-ai-and-plans-to-keep-it-that-way-as-generative-ai-explodes",
+  "context": "Recollection to VentureBeat; bracket is VentureBeat's."
+ },
+ {
+  "id": "q-ng-cuda",
+  "text": "I remember going to Geoff Hinton saying check out CUDA, I think it can help build bigger neural networks",
+  "speaker": "Andrew Ng",
+  "date": "2015 (GTC talk)",
+  "source": "https://blogs.nvidia.com/blog/why-gpus-are-great-for-ai/",
+  "context": "As quoted by NVIDIA's blog (4 December 2023); undated as to when it happened."
+ },
+ {
+  "id": "q-hinton-nips2007",
+  "text": "2007: NIPS program committee rejects a paper on deep learning by al. et. Hinton because they already accepted a paper on deep learning and two papers on the same topic would be excessive.",
+  "speaker": "Geoffrey Hinton (slide text)",
+  "date": "18 July 2019",
+  "source": "https://rse.org.uk/wp-content/uploads/2021/08/Hintons-Presentation_20190718.pdf",
+  "context": "Hinton's wry retrospective slide, Royal Society of Edinburgh; 'al. et. Hinton' is his joke."
+ },
+ {
+  "id": "q-alexnet-abstract",
+  "text": "We trained a large, deep convolutional neural network to classify the 1.2 million high-resolution images in the ImageNet LSVRC-2010 contest into the 1000 different classes.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "Abstract, 'ImageNet Classification with Deep Convolutional Neural Networks', NIPS 25."
+ },
+ {
+  "id": "q-alexnet-153",
+  "text": "...achieved a winning top-5 test error rate of 15.3%, compared to 26.2% achieved by the second-best entry.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "Same abstract."
+ },
+ {
+  "id": "q-alexnet-waiting",
+  "text": "Our network takes between five and six days to train on two GTX 580 3GB GPUs. All of our experiments suggest that our results can be improved simply by waiting for faster GPUs and bigger datasets to become available.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§1: the scaling era foreshadowed."
+ },
+ {
+  "id": "q-alexnet-relu",
+  "text": "This plot shows that we would not have been able to experiment with such large neural networks for this work if we had used traditional saturating neuron models.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§3.1, on ReLU."
+ },
+ {
+  "id": "q-alexnet-dropout",
+  "text": "So every time an input is presented, the neural network samples a different architecture, but all these architectures share weights.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§4.2, on dropout."
+ },
+ {
+  "id": "q-alexnet-depth",
+  "text": "So the depth really is important for achieving our results.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§7, after noting performance degrades if a single conv layer is removed."
+ },
+ {
+  "id": "q-alexnet-orders",
+  "text": "Thus far, our results have improved as we have made our network larger and trained it longer but we still have many orders of magnitude to go in order to match the infero-temporal pathway of the human visual system.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§7."
+ },
+ {
+  "id": "q-alexnet-colour",
+  "text": "The kernels on GPU 1 are largely color-agnostic, while the kernels on on GPU 2 are largely color-specific.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§6.1; the doubled 'on on' is in the original."
+ },
+ {
+  "id": "q-alexnet-10bits",
+  "text": "Although the 1000 classes of ILSVRC make each training example impose 10 bits of constraint on the mapping from image to label, this turns out to be insufficient to learn so many parameters without considerable overfitting.",
+  "speaker": "Alex Krizhevsky, Ilya Sutskever & Geoffrey Hinton",
+  "date": "2012",
+  "source": "https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf",
+  "context": "§4, explaining the need for data augmentation and dropout."
+ },
+ {
+  "id": "q-supervision-slide-relu",
+  "text": "f(x) = max(0, x) ... Very good (quick to train)",
+  "speaker": "SuperVision team (slide text)",
+  "date": "12 October 2012",
+  "source": "https://www.image-net.org/static_files/files/supervision.pdf",
+  "context": "Florence workshop slide contrasting tanh ('Very bad (slow to train)') with ReLU."
+ },
+ {
+  "id": "q-supervision-slide-learned",
+  "text": "Learned: all feature extractors initialized at white Gaussian noise and learned from the data",
+  "speaker": "SuperVision team (slide text)",
+  "date": "12 October 2012",
+  "source": "https://www.image-net.org/static_files/files/supervision.pdf",
+  "context": "Florence workshop slides."
+ },
+ {
+  "id": "q-hinton-nobel-quip",
+  "text": "Ilya thought we should do it, Alex made it work, and I got the Nobel Prize.",
+  "speaker": "Geoffrey Hinton",
+  "date": "published 20 March 2025",
+  "source": "https://computerhistory.org/blog/chm-releases-alexnet-source-code/",
+  "context": "Statement to the Computer History Museum on the release of AlexNet's source code."
+ },
+ {
+  "id": "q-hinton-google-2013",
+  "text": "The deal with Google allows me and my students to work on whatever we like and to publish whenever and whatever we like … It doesn't put any constraints on what we work on and when we publish",
+  "speaker": "Geoffrey Hinton",
+  "date": "March 2013",
+  "source": "https://web.archive.org/web/2016/https://thevarsity.ca/2013/03/18/google-acquires-u-of-t-start-up/",
+  "context": "Toronto Star interview as printed in The Varsity, 18 March 2013, on the DNNresearch acquisition."
+ },
+ {
+  "id": "q-chm-beforeafter",
+  "text": "Before AlexNet, almost none of the leading computer vision papers used neural nets. After it, almost all of them would.",
+  "speaker": "Computer History Museum (Hansen Hsu)",
+  "date": "20 March 2025",
+  "source": "https://computerhistory.org/blog/chm-releases-alexnet-source-code/",
+  "context": "Institutional voice, on the release of the 2012 source code."
+ },
+ {
+  "id": "q-karpathy-51",
+  "text": "My own error in the end turned out to be 5.1%, approximately 1.7% better.",
+  "speaker": "Andrej Karpathy",
+  "date": "2 September 2014",
+  "source": "https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/",
+  "context": "His human-vs-GoogLeNet experiment on 1,500 test images."
+ },
+ {
+  "id": "q-karpathy-dogs",
+  "text": "I became very good at identifying breeds of dogs.",
+  "speaker": "Andrej Karpathy",
+  "date": "2 September 2014",
+  "source": "https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/",
+  "context": "Same post."
+ },
+ {
+  "id": "q-karpathy-curve",
+  "text": "Human accuracy is not a point. It lives on a tradeoff curve.",
+  "speaker": "Andrej Karpathy",
+  "date": "February 2015",
+  "source": "https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/",
+  "context": "From the post's February 2015 update, not the original."
+ },
+ {
+  "id": "q-he-surpass",
+  "text": "To our knowledge, our result is the first to surpass human-level performance (5.1%, Russakovsky et al.)",
+  "speaker": "Kaiming He, Xiangyu Zhang, Shaoqing Ren & Jian Sun",
+  "date": "6 February 2015",
+  "source": "https://arxiv.org/abs/1502.01852",
+  "context": "PReLU paper (4.94% top-5); the 'superhuman' framing is contested."
+ },
+ {
+  "id": "q-resnet",
+  "text": "An ensemble of these residual nets achieves 3.57% error on the ImageNet test set.",
+  "speaker": "Kaiming He, Xiangyu Zhang, Shaoqing Ren & Jian Sun",
+  "date": "10 December 2015",
+  "source": "https://arxiv.org/abs/1512.03385",
+  "context": "Abstract, 'Deep Residual Learning for Image Recognition'."
+ },
+ {
+  "id": "q-googlenet",
+  "text": "Our GoogLeNet submission to ILSVRC 2014 actually uses 12× fewer parameters than the winning architecture of Krizhevsky et al [9] from two years ago, while being significantly more accurate.",
+  "speaker": "Christian Szegedy et al.",
+  "date": "September 2014",
+  "source": "https://arxiv.org/abs/1409.4842",
+  "context": "'Going Deeper with Convolutions'."
+ },
+ {
+  "id": "q-renwu",
+  "text": "We didn't break any rules, and the allegation of cheating is completely baseless",
+  "speaker": "Ren Wu",
+  "date": "June 2015",
+  "source": "https://www.aiwire.net/2015/06/12/baidu-fires-deep-images-ren-wu/",
+  "context": "Baidu's fired Deep Image team lead, denying wrongdoing after ILSVRC barred Baidu."
+ },
+ {
+  "id": "q-kingqueen",
+  "text": "For example, the male/female relationship is automatically learned, and with the induced vector representations, \"King - Man + Woman\" results in a vector very close to \"Queen.\"",
+  "speaker": "Tomas Mikolov, Wen-tau Yih & Geoffrey Zweig",
+  "date": "June 2013",
+  "source": "https://aclanthology.org/N13-1090.pdf",
+  "context": "NAACL 2013 abstract (RNN-LM vectors)."
+ },
+ {
+  "id": "q-w2v-day",
+  "text": "it takes less than a day to learn high quality word vectors from a 1.6 billion words data set",
+  "speaker": "Tomas Mikolov, Kai Chen, Greg Corrado & Jeffrey Dean",
+  "date": "16 January 2013",
+  "source": "https://arxiv.org/abs/1301.3781",
+  "context": "word2vec abstract."
+ },
+ {
+  "id": "q-w2v-nosupervision",
+  "text": "The most interesting part is that we didn't provide any supervised information before or during training.",
+  "speaker": "Tomas Mikolov, Ilya Sutskever & Quoc Le",
+  "date": "14 August 2013",
+  "source": "https://opensource.googleblog.com/2013/08/learning-meaning-behind-words.html",
+  "context": "Google Open Source Blog, releasing word2vec."
+ },
+ {
+  "id": "q-nissim",
+  "text": "In the default implementation of word2vec (Mikolov et al. 2013), gensim (Řehůřek and Sojka 2010) as well as the code from Bolukbasi et al. (2016), the input terms of the analogy query are not allowed to be returned.",
+  "speaker": "Malvina Nissim, Rik van Noord & Rob van der Goot",
+  "date": "2019",
+  "source": "https://arxiv.org/abs/1905.09866",
+  "context": "'Fair is Better than Sensational'."
+ },
+ {
+  "id": "q-bolukbasi",
+  "text": "We show that even word embeddings trained on Google News articles exhibit female/male gender stereotypes to a disturbing extent.",
+  "speaker": "Tolga Bolukbasi et al.",
+  "date": "21 July 2016",
+  "source": "https://arxiv.org/abs/1607.06520",
+  "context": "Abstract, 'Man is to Computer Programmer as Woman is to Homemaker?'."
+ },
+ {
+  "id": "q-seq2seq-surprised",
+  "text": "We were surprised by the extent of the improvement obtained by reversing the words in the source sentences.",
+  "speaker": "Ilya Sutskever, Oriol Vinyals & Quoc Le",
+  "date": "September 2014",
+  "source": "https://arxiv.org/abs/1409.3215",
+  "context": "Conclusion of 'Sequence to Sequence Learning with Neural Networks'."
+ },
+ {
+  "id": "q-seq2seq-enough",
+  "text": "The success of our simple LSTM-based approach on MT suggests that it should do well on many other sequence learning problems, provided they have enough training data.",
+  "speaker": "Ilya Sutskever, Oriol Vinyals & Quoc Le",
+  "date": "September 2014",
+  "source": "https://arxiv.org/abs/1409.3215",
+  "context": "Same conclusion."
+ },
+ {
+  "id": "q-bahdanau",
+  "text": "In this paper, we conjecture that the use of a fixed-length vector is a bottleneck in improving the performance of this basic encoder–decoder architecture, and propose to extend this by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word, without having to form these parts as a hard segment explicitly.",
+  "speaker": "Dzmitry Bahdanau, Kyunghyun Cho & Yoshua Bengio",
+  "date": "1 September 2014",
+  "source": "https://arxiv.org/abs/1409.0473",
+  "context": "Abstract, the attention paper."
+ },
+ {
+  "id": "q-gan-counterfeiters",
+  "text": "The generative model can be thought of as analogous to a team of counterfeiters, trying to produce fake currency and use it without detection, while the discriminative model is analogous to the police, trying to detect the counterfeit currency.",
+  "speaker": "Ian Goodfellow et al.",
+  "date": "10 June 2014",
+  "source": "https://arxiv.org/abs/1406.2661",
+  "context": "'Generative Adversarial Nets'."
+ },
+ {
+  "id": "q-dqn-tunnel",
+  "text": "the agent learns the optimal strategy, which is to first dig a tunnel around the side of the wall allowing the ball to be sent around the back to destroy a large number of blocks",
+  "speaker": "Volodymyr Mnih et al.",
+  "date": "February 2015",
+  "source": "https://www.nature.com/articles/nature14236",
+  "context": "DQN, Nature 518, on Breakout."
+ },
+ {
+  "id": "q-coulom",
+  "text": "I think maybe ten years,\" he says. \"But I do not like to make predictions.",
+  "speaker": "Rémi Coulom",
+  "date": "12 May 2014",
+  "source": "https://www.wired.com/2014/05/the-world-of-computer-go/",
+  "context": "To Wired, on when a machine would beat a Go professional without handicap."
+ },
+ {
+  "id": "q-alphago-decade",
+  "text": "This is the first time that a computer Go program has defeated a human professional player, without handicap, in the full game of Go—a feat that was previously believed to be at least a decade away",
+  "speaker": "David Silver et al.",
+  "date": "27 January 2016",
+  "source": "https://www.nature.com/articles/nature16961",
+  "context": "AlphaGo, Nature 529 (body text)."
+ },
+ {
+  "id": "q-hassabis-atoms",
+  "text": "There are more possible Go positions than there are atoms in the universe.",
+  "speaker": "Demis Hassabis",
+  "date": "9 March 2016",
+  "source": "https://www.theguardian.com/technology/2016/mar/09/google-deepmind-alphago-ai-defeats-human-lee-sedol-first-game-go-contest",
+  "context": "Guardian, on the first day of the Lee Sedol match."
+ },
+ {
+  "id": "q-fanhui-37",
+  "text": "It's not a human move. I've never seen a human play this move,\" he says. \"So beautiful.",
+  "speaker": "Fan Hui",
+  "date": "11 March 2016",
+  "source": "https://www.wired.com/2016/03/sadness-beauty-watching-googles-ai-play-go/",
+  "context": "To Wired, on AlphaGo's move 37 in game 2."
+ },
+ {
+  "id": "q-lee-speechless",
+  "text": "Yesterday, I was surprised… But today I am speechless. If you look at the way the game was played, I admit, it was a very clear loss on my part.",
+  "speaker": "Lee Sedol (via interpreter)",
+  "date": "10 March 2016",
+  "source": "https://www.wired.com/2016/03/two-moves-alphago-lee-sedol-redefined-future/",
+  "context": "After game 2, as rendered by Wired."
+ },
+ {
+  "id": "q-lee-apologies",
+  "text": "I don't know what to say today, but I think I will have to express my apologies first.",
+  "speaker": "Lee Sedol (via interpreter)",
+  "date": "12 March 2016",
+  "source": "https://www.wired.com/2016/03/two-moves-alphago-lee-sedol-redefined-future/",
+  "context": "After losing game 3 and the match."
+ },
+ {
+  "id": "q-redmond-78",
+  "text": "It took me by surprise. I'm sure that it would take most opponents by surprise. I think it took AlphaGo by surprise.",
+  "speaker": "Michael Redmond",
+  "date": "13 March 2016",
+  "source": "https://www.wired.com/2016/03/two-moves-alphago-lee-sedol-redefined-future/",
+  "context": "Commentator on Lee Sedol's move 78 in game 4."
+ },
+ {
+  "id": "q-lee-creative",
+  "text": "I thought AlphaGo was based on probability calculation and that it was merely a machine. But when I saw this move, I changed my mind. Surely, AlphaGo is creative.",
+  "speaker": "Lee Sedol (as quoted by DeepMind, translated)",
+  "date": "2016",
+  "source": "https://deepmind.google/research/breakthroughs/alphago/",
+  "context": "DeepMind's page; original date and venue not given. Attribute 'as quoted by DeepMind'."
+ },
+ {
+  "id": "q-lee-entity",
+  "text": "Even if I become the number one, there is an entity that cannot be defeated.",
+  "speaker": "Lee Sedol",
+  "date": "27 November 2019",
+  "source": "https://en.yna.co.kr/view/AEN20191127004800315",
+  "context": "Yonhap interview on his retirement."
+ },
+ {
+  "id": "q-openai-mission",
+  "text": "OpenAI is a non-profit artificial intelligence research company. Our goal is to advance digital intelligence in the way that is most likely to benefit humanity as a whole, unconstrained by a need to generate financial return.",
+  "speaker": "OpenAI (Greg Brockman, Ilya Sutskever and the OpenAI team)",
+  "date": "11 December 2015",
+  "source": "https://web.archive.org/web/2016/https://openai.com/blog/introducing-openai/",
+  "context": "'Introducing OpenAI'. The structure and openness later changed."
+ },
+ {
+  "id": "q-openai-damage",
+  "text": "It's hard to fathom how much human-level AI could benefit society, and it's equally hard to imagine how much it could damage society if built or used incorrectly.",
+  "speaker": "OpenAI",
+  "date": "11 December 2015",
+  "source": "https://web.archive.org/web/2016/https://openai.com/blog/introducing-openai/",
+  "context": "Same announcement."
+ },
+ {
+  "id": "q-openai-billion",
+  "text": "In total, these funders have committed $1 billion, although we expect to only spend a tiny fraction of this in the next few years.",
+  "speaker": "OpenAI",
+  "date": "11 December 2015",
+  "source": "https://web.archive.org/web/2016/https://openai.com/blog/introducing-openai/",
+  "context": "Same announcement."
+ },
+ {
+  "id": "q-musk-demon",
+  "text": "With artificial intelligence we are summoning the demon. In all those stories where there's the guy with the pentagram and the holy water, it's like – yeah, he's sure he can control the demon. Doesn't work out.",
+  "speaker": "Elon Musk",
+  "date": "October 2014",
+  "source": "https://www.theguardian.com/technology/2014/oct/27/elon-musk-artificial-intelligence-ai-biggest-existential-threat",
+  "context": "MIT AeroAstro Centennial Symposium, as reported by the Guardian (27 October 2014)."
+ },
+ {
+  "id": "q-altman-manyais",
+  "text": "we think its [sic] far more likely that many, many AIs, will work to stop the occasional bad actors than the idea that there is a single AI a billion times more powerful than anything else.",
+  "speaker": "Sam Altman",
+  "date": "11 December 2015",
+  "source": "https://www.wired.com/2015/12/how-elon-musk-and-y-combinator-plan-to-stop-computers-from-taking-over/",
+  "context": "To Steven Levy at OpenAI's founding."
+ },
+ {
+  "id": "q-lecun-fair",
+  "text": "Big news today! Facebook has created a new research laboratory with the ambitious, long-term goal of bringing about major advances in Artificial Intelligence.",
+  "speaker": "Yann LeCun",
+  "date": "9 December 2013",
+  "source": "https://web.archive.org/web/2014/https://www.facebook.com/yann.lecun/posts/10151728212367143",
+  "context": "Facebook post announcing FAIR."
+ },
+ {
+  "id": "q-szegedy",
+  "text": "We can cause the network to misclassify an image by applying a certain hardly perceptible perturbation, which is found by maximizing the network's prediction error.",
+  "speaker": "Christian Szegedy et al.",
+  "date": "21 December 2013",
+  "source": "https://arxiv.org/abs/1312.6199",
+  "context": "Abstract, 'Intriguing properties of neural networks'."
+ },
+ {
+  "id": "q-goodfellow-linear",
+  "text": "Linear behavior in high-dimensional spaces is sufficient to cause adversarial examples.",
+  "speaker": "Ian Goodfellow, Jonathon Shlens & Christian Szegedy",
+  "date": "20 December 2014",
+  "source": "https://arxiv.org/abs/1412.6572",
+  "context": "Abstract, 'Explaining and Harnessing Adversarial Examples'."
+ },
+ {
+  "id": "q-marcus-ten",
+  "text": "I present ten concerns for deep learning, and suggest that deep learning must be supplemented by other techniques if we are to reach artificial general intelligence.",
+  "speaker": "Gary Marcus",
+  "date": "2 January 2018",
+  "source": "https://arxiv.org/abs/1801.00631",
+  "context": "Abstract, 'Deep Learning: A Critical Appraisal'."
+ },
+ {
+  "id": "q-marcus-screwdriver",
+  "text": "Rather, we need to reconceptualize it: not as a universal solvent, but simply as one tool among many, a power screwdriver in a world in which we also need hammers, wrenches, and pliers",
+  "speaker": "Gary Marcus",
+  "date": "2 January 2018",
+  "source": "https://arxiv.org/abs/1801.00631",
+  "context": "Conclusion of the same paper."
+ },
+ {
+  "id": "q-hinton-suspicious",
+  "text": "The future depends on some graduate student who is deeply suspicious of everything I have said.",
+  "speaker": "Geoffrey Hinton",
+  "date": "15 September 2017",
+  "source": "https://arxiv.org/abs/1801.00631",
+  "context": "Axios interview, as quoted in the epigraph of Marcus 2018 (Axios original unreadable; cite as quoted by Marcus)."
+ },
+ {
+  "id": "q-chollet",
+  "text": "For most problems where deep learning has enabled transformationally better solutions (vision, speech), we've entered diminishing returns territory in 2016-2017.",
+  "speaker": "François Chollet",
+  "date": "18 December 2017",
+  "source": "https://arxiv.org/abs/1801.00631",
+  "context": "Tweet, as quoted in Marcus 2018."
+ },
+ {
+  "id": "q-gendershades",
+  "text": "We evaluate 3 commercial gender classification systems using our dataset and show that darker-skinned females are the most misclassified group (with error rates of up to 34.7%). The maximum error rate for lighter-skinned males is 0.8%.",
+  "speaker": "Joy Buolamwini & Timnit Gebru",
+  "date": "February 2018",
+  "source": "https://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf",
+  "context": "Abstract, 'Gender Shades', PMLR 81."
+ },
+ {
+  "id": "q-buolamwini-mask",
+  "text": "Why am I sitting in front of a computer in a white mask, trying to be detected by a cheap webcam?",
+  "speaker": "Joy Buolamwini",
+  "date": "19 November 2016",
+  "source": "https://www.ted.com/talks/joy_buolamwini_how_i_m_fighting_bias_in_algorithms/transcript",
+  "context": "TEDxBeaconStreet."
+ },
+ {
+  "id": "q-acm-skepticism",
+  "text": "Though their efforts to rekindle the AI community's interest in neural networks were initially met with skepticism, their ideas recently resulted in major technological advances, and their methodology is now the dominant paradigm in the field.",
+  "speaker": "ACM",
+  "date": "27 March 2019",
+  "source": "https://web.archive.org/web/2019/https://www.acm.org/media-center/2019/march/turing-award-2018",
+  "context": "Press release naming Bengio, Hinton and LeCun for the 2018 Turing Award."
+ },
+ {
+  "id": "q-nytmag-overnight",
+  "text": "The A.I. system had demonstrated overnight improvements roughly equal to the total gains the old one had accrued over its entire lifetime.",
+  "speaker": "Gideon Lewis-Kraus (NYT Magazine)",
+  "date": "14 December 2016",
+  "source": "https://www.nytimes.com/2016/12/14/magazine/the-great-ai-awakening.html",
+  "context": "'The Great A.I. Awakening', on Google Translate's neural switch."
+ },
+ {
+  "id": "q10-aiayn-abstract",
+  "text": "We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely.",
+  "speaker": "Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, Polosukhin",
+  "date": "12 June 2017",
+  "source": "https://arxiv.org/abs/1706.03762",
+  "context": "Abstract of 'Attention Is All You Need' (arXiv 1706.03762; NIPS 2017)."
+ },
+ {
+  "id": "q10-random-order",
+  "text": "Equal contribution. Listing order is random.",
+  "speaker": "Authors of 'Attention Is All You Need'",
+  "date": "2017",
+  "source": "https://arxiv.org/pdf/1706.03762v7",
+  "context": "Author footnote, followed by a per-person contribution statement."
+ },
+ {
+  "id": "q10-softmax-gradients",
+  "text": "We suspect that for large values of d_k, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients.",
+  "speaker": "Authors of 'Attention Is All You Need'",
+  "date": "2017",
+  "source": "https://arxiv.org/pdf/1706.03762v7",
+  "context": "Section 3.2.1, explaining the 1/sqrt(d_k) scaling."
+ },
+ {
+  "id": "q10-interpretable",
+  "text": "As side benefit, self-attention could yield more interpretable models.",
+  "speaker": "Authors of 'Attention Is All You Need'",
+  "date": "2017",
+  "source": "https://arxiv.org/pdf/1706.03762v7",
+  "context": "Section 4, 'Why Self-Attention'."
+ },
+ {
+  "id": "q10-future",
+  "text": "We are excited about the future of attention-based models and plan to apply them to other tasks. We plan to extend the Transformer to problems involving input and output modalities other than text and to investigate local, restricted attention mechanisms to efficiently handle large inputs and outputs such as images, audio and video.",
+  "speaker": "Authors of 'Attention Is All You Need'",
+  "date": "2017",
+  "source": "https://arxiv.org/pdf/1706.03762v7",
+  "context": "Section 7, Conclusion."
+ },
+ {
+  "id": "q10-label-smoothing",
+  "text": "This hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score.",
+  "speaker": "Authors of 'Attention Is All You Need'",
+  "date": "2017",
+  "source": "https://arxiv.org/pdf/1706.03762v7",
+  "context": "Section 5.4, on label smoothing."
+ },
+ {
+  "id": "q10-jones-title",
+  "text": "I'm British… It literally took five seconds of thought. I didn't think they would use it.",
+  "speaker": "Llion Jones",
+  "date": "20 March 2024 (recalling 2017)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "To Steven Levy (Wired) on borrowing the title from the Beatles."
+ },
+ {
+  "id": "q10-uszkoreit-bandaids",
+  "text": "The methods we were applying were basically Band-Aids… We could not get the right stuff to really work at scale.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024 (recalling 2016-17)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "Wired oral history, on pre-Transformer methods."
+ },
+ {
+  "id": "q10-uszkoreit-everything",
+  "text": "It actually considers everything and gives you an efficient way of looking at many inputs at the same time and then taking something out in a pretty selective way.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "Wired oral history, describing self-attention."
+ },
+ {
+  "id": "q10-uszkoreit-eyebrows",
+  "text": "People raised their eyebrows, because it dumped out all the existing neural architectures.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "Wired oral history, on the reception of his self-attention idea."
+ },
+ {
+  "id": "q10-uszkoreit-dad",
+  "text": "From dinner-table conversations I had with my dad, we weren't necessarily seeing eye to eye.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On his father, the computational linguist Hans Uszkoreit."
+ },
+ {
+  "id": "q10-uszkoreit-toys",
+  "text": "I had two little Transformer toys as a very young kid.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "An added reason for the name; Wired says the trio chose it from 'day zero' because the mechanism transforms information."
+ },
+ {
+  "id": "q10-shazeer-fun",
+  "text": "I remember Ashish was talking about the idea of using self-attention, and Niki was very excited about it. I'm like, wow, that sounds like a great idea. This looks like a fun, smart group of people doing something promising.",
+  "speaker": "Noam Shazeer",
+  "date": "20 March 2024 (recalling 2017)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On overhearing Vaswani and Parmar in Building 1965."
+ },
+ {
+  "id": "q10-shazeer-myself",
+  "text": "I took the basic idea and made the thing up myself.",
+  "speaker": "Noam Shazeer",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On rewriting the code after joining."
+ },
+ {
+  "id": "q10-gomez-ablations",
+  "text": "There was every possible combination of tricks and modules—which one helps, which doesn't help. Let's rip it out. Let's replace it with this… Why is the model behaving in this counterintuitive way? Oh, it's because we didn't remember to do the masking properly. Does it work yet? OK, move on to the next.",
+  "speaker": "Aidan Gomez",
+  "date": "20 March 2024 (recalling 2017)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On the spring 2017 sprint of ablations."
+ },
+ {
+  "id": "q10-jones-wizard",
+  "text": "Noam is a wizard.",
+  "speaker": "Llion Jones",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "Wired oral history, on Shazeer."
+ },
+ {
+  "id": "q10-vaswani-hunch",
+  "text": "Ultimately, like with the human brain, you need to unite all these modalities—speech, audio, vision—under a single architecture… I had a strong hunch we were onto something more general.",
+  "speaker": "Ashish Vaswani",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "Wired oral history."
+ },
+ {
+  "id": "q10-parmar-kitchen",
+  "text": "The English-French numbers came, like, five minutes before we submitted the paper… I was sitting in the micro-kitchen in 1965, getting that last number in.",
+  "speaker": "Niki Parmar",
+  "date": "20 March 2024 (recalling 19 May 2017)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On the NIPS deadline; 1965 is the Google building number."
+ },
+ {
+  "id": "q10-parmar-reviews",
+  "text": "One was positive, one was extremely positive, and one was, 'This is OK.'",
+  "speaker": "Niki Parmar",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On the NIPS reviews."
+ },
+ {
+  "id": "q10-security",
+  "text": "Security had to tell us to leave.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024 (recalling 6 December 2017)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On the NIPS 2017 poster session in Long Beach."
+ },
+ {
+  "id": "q10-kelcey",
+  "text": "I told him, 'I'm not sure that's going to work,' which is basically the biggest incorrect prediction of my life.",
+  "speaker": "Mat Kelcey",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "The Google colleague who told Llion Jones about self-attention."
+ },
+ {
+  "id": "q10-hinton-without",
+  "text": "Without transformers I don't think we'd be here now.",
+  "speaker": "Geoffrey Hinton",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "To Steven Levy, Wired."
+ },
+ {
+  "id": "q10-uszkoreit-gpt3",
+  "text": "Realistically, we could have had GPT-3 or even 3.5 probably in 2019, maybe 2020. The big question isn't, did they see it? The question is, why didn't we do anything with the fact that we had seen it? The answer is tricky.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "20 March 2024",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "On whether Google missed its own invention."
+ },
+ {
+  "id": "q10-altman-google",
+  "text": "When the transformer paper came out, I don't think anyone at Google realized what it meant.",
+  "speaker": "Sam Altman",
+  "date": "2023 (published 20 March 2024)",
+  "source": "https://www.wired.com/story/eight-google-employees-invented-modern-ai-transformers-paper/",
+  "context": "To Steven Levy; one side of a contested question (Google shipped transformers in Translate and Search)."
+ },
+ {
+  "id": "q10-vaswani-bigger",
+  "text": "This is going to be a huge deal.",
+  "speaker": "Ashish Vaswani",
+  "date": "spring 2017, about 3 a.m. (as recalled)",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "Remembered dialogue to Aidan Gomez reported by Stephen Marche (New Yorker, 23 Aug 2024); Gomez replied 'It's just machine translation… Isn't this just what research is?' and Vaswani 'No, this is bigger.' Treat as recollection, not transcript."
+ },
+ {
+  "id": "q10-gomez-blown",
+  "text": "I was shocked, blown away… I thought we would get to something like this in twenty years, twenty-five years, and then it just showed up.",
+  "speaker": "Aidan Gomez",
+  "date": "23 August 2024 (recalling 2017)",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "On Kaiser's email of model-generated Wikipedia articles titled 'The Transformer'."
+ },
+ {
+  "id": "q10-polosukhin-cycles",
+  "text": "It would work one word at a time… Read one word, process it. Read next word, process it. Read next word, process it. If you have a thousand words, you have to wait for a thousand cycles.",
+  "speaker": "Illia Polosukhin",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "Explaining why recurrent networks were slow."
+ },
+ {
+  "id": "q10-gomez-matmul",
+  "text": "The chips we use, they do one thing really well, and that is matrix multiplication.",
+  "speaker": "Aidan Gomez",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "New Yorker, on why parallel attention suited GPUs."
+ },
+ {
+  "id": "q10-parmar-facebook",
+  "text": "Facebook had put out this paper before us, and that was the number we were trying to beat, and it had taken them days to train, and for us it had been a matter of hours.",
+  "speaker": "Niki Parmar",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "On ConvS2S (May 2017)."
+ },
+ {
+  "id": "q10-parmar-champagne",
+  "text": "Jakob had some old champagne in his car.",
+  "speaker": "Niki Parmar",
+  "date": "23 August 2024 (recalling May 2017)",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "Her only quoted words on the celebration; 'warm bubbly beside the dusty vehicle' is Marche's narration, not hers."
+ },
+ {
+  "id": "q10-gomez-prescribe",
+  "text": "You don't prescribe what relationships it learns; you don't say, 'Your job is to learn associations of adjectives to nouns'… You just give it the ability to learn whatever it wants.",
+  "speaker": "Aidan Gomez",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "New Yorker, on attention."
+ },
+ {
+  "id": "q10-vaswani-understanding",
+  "text": "I think that even talking about 'understanding' is something we are not prepared to do… We have only started to define what it means to understand these models.",
+  "speaker": "Ashish Vaswani",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "New Yorker."
+ },
+ {
+  "id": "q10-uszkoreit-interpret",
+  "text": "As we build these machines, we are bound to lose the ability to conceptualize what's going on, the ability to interpret. And there might be no other way.",
+  "speaker": "Jakob Uszkoreit",
+  "date": "23 August 2024",
+  "source": "https://web.archive.org/web/20240823103934/https://www.newyorker.com/science/annals-of-artificial-intelligence/was-linguistic-ai-created-by-accident",
+  "context": "New Yorker."
+ },
+ {
+  "id": "q10-gpt2-withhold",
+  "text": "Due to our concerns about malicious applications of the technology, we are not releasing the trained model. As an experiment in responsible disclosure, we are instead releasing a much smaller model for researchers to experiment with, as well as a technical paper.",
+  "speaker": "OpenAI",
+  "date": "14 February 2019",
+  "source": "https://web.archive.org/web/2019021500id_/https://blog.openai.com/better-language-models/",
+  "context": "GPT-2 announcement, 'Better Language Models and Their Implications'."
+ },
+ {
+  "id": "q10-gpt2-objective",
+  "text": "GPT-2 is trained with a simple objective: predict the next word, given all of the previous words within some text.",
+  "speaker": "OpenAI",
+  "date": "14 February 2019",
+  "source": "https://web.archive.org/web/2019021500id_/https://blog.openai.com/better-language-models/",
+  "context": "GPT-2 announcement."
+ },
+ {
+  "id": "q10-gpt2-scaleup",
+  "text": "GPT-2 is a direct scale-up of GPT, with more than 10X the parameters and trained on more than 10X the amount of data.",
+  "speaker": "OpenAI",
+  "date": "14 February 2019",
+  "source": "https://web.archive.org/web/2019021500id_/https://blog.openai.com/better-language-models/",
+  "context": "GPT-2 announcement."
+ },
+ {
+  "id": "q10-gpt1-cost",
+  "text": "Our approach requires an expensive pre-training step - 1 month on 8 GPUs. Luckily, this only has to be done once and we're releasing our model so others can avoid it.",
+  "speaker": "OpenAI",
+  "date": "11 June 2018",
+  "source": "https://web.archive.org/web/2018061200id_/https://blog.openai.com/language-unsupervised/",
+  "context": "GPT-1 blog post."
+ },
+ {
+  "id": "q10-gpt2-final",
+  "text": "As the final model release of GPT-2's staged release, we're releasing the largest version (1.5B parameters) of GPT-2 along with code and model weights to facilitate detection of outputs of GPT-2 models.",
+  "speaker": "OpenAI",
+  "date": "5 November 2019",
+  "source": "https://web.archive.org/web/2019110600id_/https://openai.com/blog/gpt-2-1-5b-release/",
+  "context": "End of the staged release; the same post said 'We've seen no strong evidence of misuse so far.'"
+ },
+ {
+  "id": "q10-guardian-headline",
+  "text": "New AI fake text generator may be too dangerous to release, say creators",
+  "speaker": "The Guardian (headline, Alex Hern)",
+  "date": "14 February 2019",
+  "source": "https://www.theguardian.com/technology/2019/feb/14/elon-musk-backed-ai-writes-convincing-news-fiction",
+  "context": "Headline; the phrase 'too dangerous' does not appear in OpenAI's own post. Use as a headline, not as OpenAI's words."
+ },
+ {
+  "id": "q10-anandkumar",
+  "text": "It's put academics at a big disadvantage.",
+  "speaker": "Anima Anandkumar",
+  "date": "21 February 2019",
+  "source": "https://www.theverge.com/2019/2/21/18234500/ai-ethics-debate-researchers-harmful-programs-openai",
+  "context": "To The Verge, criticising OpenAI's decision to withhold GPT-2."
+ },
+ {
+  "id": "q10-rao",
+  "text": "The words 'too dangerous' were casually thrown out here without a lot of thought or experimentation. I don't think [OpenAI] spent enough time proving it was actually dangerous.",
+  "speaker": "Delip Rao",
+  "date": "21 February 2019",
+  "source": "https://www.theverge.com/2019/2/21/18234500/ai-ethics-debate-researchers-harmful-programs-openai",
+  "context": "To The Verge, GPT-2 release debate."
+ },
+ {
+  "id": "q10-brundage",
+  "text": "We understand why some saw our announcement as exaggerated, though it's important to distinguish what we said from what others said… We tried to highlight both the current capabilities of GPT-2 as well as the risks of a broader class of systems, and we should have been more precise on that distinction.",
+  "speaker": "Miles Brundage (OpenAI)",
+  "date": "21 February 2019",
+  "source": "https://www.theverge.com/2019/2/21/18234500/ai-ethics-debate-researchers-harmful-programs-openai",
+  "context": "OpenAI's response in the GPT-2 debate."
+ },
+ {
+  "id": "q10-jain-wallace",
+  "text": "Our findings show that standard attention modules do not provide meaningful explanations and should not be treated as though they do.",
+  "speaker": "Sarthak Jain & Byron Wallace",
+  "date": "26 February 2019",
+  "source": "https://arxiv.org/abs/1902.10186",
+  "context": "'Attention is not Explanation' (NAACL 2019), mostly on BiLSTM-with-attention classifiers."
+ },
+ {
+  "id": "q10-wiegreffe-pinter",
+  "text": "prior work does not disprove the usefulness of attention mechanisms for explainability.",
+  "speaker": "Sarah Wiegreffe & Yuval Pinter",
+  "date": "13 August 2019",
+  "source": "https://arxiv.org/abs/1908.04626",
+  "context": "'Attention is not not Explanation' (EMNLP 2019), replying to Jain & Wallace."
+ },
+ {
+  "id": "q11-bitter-opening",
+  "text": "The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.",
+  "speaker": "Rich Sutton",
+  "date": "13 March 2019",
+  "source": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+  "context": "Opening sentence of 'The Bitter Lesson'."
+ },
+ {
+  "id": "q11-bitter-four",
+  "text": "The bitter lesson is based on the historical observations that 1) AI researchers have often tried to build knowledge into their agents, 2) this always helps in the short term, and is personally satisfying to the researcher, but 3) in the long run it plateaus and even inhibits further progress, and 4) breakthrough progress eventually arrives by an opposing approach based on scaling computation by search and learning.",
+  "speaker": "Rich Sutton",
+  "date": "13 March 2019",
+  "source": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+  "context": "'The Bitter Lesson', summary paragraph."
+ },
+ {
+  "id": "q11-bitter-tinged",
+  "text": "The eventual success is tinged with bitterness, and often incompletely digested, because it is success over a favored, human-centric approach.",
+  "speaker": "Rich Sutton",
+  "date": "13 March 2019",
+  "source": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+  "context": "'The Bitter Lesson'."
+ },
+ {
+  "id": "q11-bitter-search",
+  "text": "The two methods that seem to scale arbitrarily in this way are search and learning.",
+  "speaker": "Rich Sutton",
+  "date": "13 March 2019",
+  "source": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+  "context": "'The Bitter Lesson'."
+ },
+ {
+  "id": "q11-bitter-discover",
+  "text": "We want AI agents that can discover like we can, not which contain what we have discovered.",
+  "speaker": "Rich Sutton",
+  "date": "13 March 2019",
+  "source": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+  "context": "Closing idea of 'The Bitter Lesson'."
+ },
+ {
+  "id": "q11-kaplan-powerlaw",
+  "text": "The loss scales as a power-law with model size, dataset size, and the amount of compute used for training, with some trends spanning more than seven orders of magnitude.",
+  "speaker": "Jared Kaplan et al. (OpenAI)",
+  "date": "23 January 2020",
+  "source": "https://arxiv.org/abs/2001.08361",
+  "context": "Abstract of 'Scaling Laws for Neural Language Models'."
+ },
+ {
+  "id": "q11-kaplan-bigmodels",
+  "text": "Our results strongly suggest that larger models will continue to perform better, and will also be much more sample efficient than has been previously appreciated. Big models may be more important than big data.",
+  "speaker": "Jared Kaplan et al. (OpenAI)",
+  "date": "23 January 2020",
+  "source": "https://arxiv.org/pdf/2001.08361",
+  "context": "Discussion section of the scaling-laws paper (not shown to have become a slogan)."
+ },
+ {
+  "id": "q11-gpt3-fewshot",
+  "text": "Here we show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches.",
+  "speaker": "Tom Brown et al. (OpenAI)",
+  "date": "28 May 2020",
+  "source": "https://arxiv.org/abs/2005.14165",
+  "context": "Abstract of 'Language Models are Few-Shot Learners' (GPT-3)."
+ },
+ {
+  "id": "q11-gpt3-nogradient",
+  "text": "For all tasks, GPT-3 is applied without any gradient updates or fine-tuning, with tasks and few-shot demonstrations specified purely via text interaction with the model.",
+  "speaker": "Tom Brown et al. (OpenAI)",
+  "date": "28 May 2020",
+  "source": "https://arxiv.org/abs/2005.14165",
+  "context": "GPT-3 abstract, defining in-context learning."
+ },
+ {
+  "id": "q11-chinchilla-undertrained",
+  "text": "We find that current large language models are significantly undertrained, a consequence of the recent focus on scaling language models whilst keeping the amount of training data constant.",
+  "speaker": "Jordan Hoffmann et al. (DeepMind)",
+  "date": "29 March 2022",
+  "source": "https://arxiv.org/abs/2203.15556",
+  "context": "Abstract of 'Training Compute-Optimal Large Language Models' (Chinchilla)."
+ },
+ {
+  "id": "q11-chinchilla-doubling",
+  "text": "for every doubling of model size the number of training tokens should also be doubled.",
+  "speaker": "Jordan Hoffmann et al. (DeepMind)",
+  "date": "29 March 2022",
+  "source": "https://arxiv.org/abs/2203.15556",
+  "context": "Chinchilla abstract (fragment)."
+ },
+ {
+  "id": "q11-gwern-strong",
+  "text": "The strong scaling hypothesis is that, once we find a scalable architecture like self-attention or convolutions, which like the brain can be applied fairly uniformly (eg. \"The Brain as a Universal Learning Machine\" or Hawkins), we can simply train ever larger NNs and ever more sophisticated behavior will emerge naturally as the easiest way to optimize for all the tasks & data.",
+  "speaker": "Gwern Branwen (pseudonymous essayist)",
+  "date": "2020-2022",
+  "source": "https://gwern.net/scaling-hypothesis",
+  "context": "'The Scaling Hypothesis' essay (dated 2020-05-28 to 2022-01-02). Attribute to an independent essayist, not a lab; he is not shown to have coined the phrase."
+ },
+ {
+  "id": "q11-octopus-form",
+  "text": "In this position paper, we argue that a system trained only on form has a priori no way to learn meaning.",
+  "speaker": "Emily M. Bender & Alexander Koller",
+  "date": "July 2020",
+  "source": "https://aclanthology.org/2020.acl-main.463.pdf",
+  "context": "Abstract of 'Climbing towards NLU' (ACL 2020)."
+ },
+ {
+  "id": "q11-octopus",
+  "text": "Meanwhile, O, a hyper-intelligent deep-sea octopus who is unable to visit or observe the two islands, discovers a way to tap into the underwater cable and listen in on A and B's conversations. O knows nothing about English initially, but is very good at detecting statistical patterns.",
+  "speaker": "Emily M. Bender & Alexander Koller",
+  "date": "July 2020",
+  "source": "https://aclanthology.org/2020.acl-main.463.pdf",
+  "context": "The octopus thought experiment."
+ },
+ {
+  "id": "q11-octopus-bear",
+  "text": "It is at this point that O would fail the Turing test, if A hadn't been eaten by the bear before noticing the deception.",
+  "speaker": "Emily M. Bender & Alexander Koller",
+  "date": "July 2020",
+  "source": "https://aclanthology.org/2020.acl-main.463.pdf",
+  "context": "Closing line of the octopus-and-bear scene."
+ },
+ {
+  "id": "q11-parrot",
+  "text": "Contrary to how it may seem when we observe its output, an LM is a system for haphazardly stitching together sequences of linguistic forms it has observed in its vast training data, according to probabilistic information about how they combine, but without any reference to meaning: a stochastic parrot.",
+  "speaker": "Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, Shmargaret Shmitchell",
+  "date": "March 2021",
+  "source": "https://dl.acm.org/doi/10.1145/3442188.3445922",
+  "context": "Section 6.1 of 'On the Dangers of Stochastic Parrots' (FAccT '21); the source of the phrase."
+ },
+ {
+  "id": "q11-parrot-toobig",
+  "text": "In this paper, we take a step back and ask: How big is too big? What are the possible risks associated with this technology and what paths are available for mitigating those risks?",
+  "speaker": "Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, Shmargaret Shmitchell",
+  "date": "March 2021",
+  "source": "https://dl.acm.org/doi/10.1145/3442188.3445922",
+  "context": "Abstract of Stochastic Parrots."
+ },
+ {
+  "id": "q11-dean-regret",
+  "text": "I heard and acknowledge what Dr. Gebru's exit signified to female technologists, to those in the Black community and other underrepresented groups who are pursuing careers in tech, and to many who care deeply about Google's responsible use of AI. It led some to question their place here, which I regret.",
+  "speaker": "Jeff Dean",
+  "date": "February 2021",
+  "source": "https://www.theverge.com/2021/2/19/22292011/google-second-ethical-ai-researcher-fired",
+  "context": "Internal email as quoted by The Verge."
+ },
+ {
+  "id": "q11-google-mitchell",
+  "text": "After conducting a review of this manager's conduct, we confirmed that there were multiple violations of our code of conduct, as well as of our security policies, which included the exfiltration of confidential business-sensitive documents and private data of other employees.",
+  "speaker": "Google (statement)",
+  "date": "19 February 2021",
+  "source": "https://www.theverge.com/2021/2/19/22292011/google-second-ethical-ai-researcher-fired",
+  "context": "Google's statement to Axios on firing Margaret Mitchell, via The Verge; Google's account, to be paired with hers."
+ },
+ {
+  "id": "q11-marcus-laws",
+  "text": "What's more, the so-called scaling laws aren't universal laws like gravity but rather mere observations that might not hold forever…",
+  "speaker": "Gary Marcus",
+  "date": "10 March 2022",
+  "source": "https://nautil.us/deep-learning-is-hitting-a-wall-238440/",
+  "context": "'Deep Learning Is Hitting a Wall', Nautilus."
+ },
+ {
+  "id": "q11-instructgpt-bigger",
+  "text": "Making language models bigger does not inherently make them better at following a user's intent.",
+  "speaker": "Long Ouyang et al. (OpenAI)",
+  "date": "4 March 2022",
+  "source": "https://arxiv.org/abs/2203.02155",
+  "context": "Opening line of the InstructGPT abstract."
+ },
+ {
+  "id": "q11-instructgpt-100x",
+  "text": "In human evaluations on our prompt distribution, outputs from the 1.3B parameter InstructGPT model are preferred to outputs from the 175B GPT-3, despite having 100x fewer parameters.",
+  "speaker": "Long Ouyang et al. (OpenAI)",
+  "date": "4 March 2022",
+  "source": "https://arxiv.org/abs/2203.02155",
+  "context": "InstructGPT abstract."
+ },
+ {
+  "id": "q11-backflip",
+  "text": "The Hopper robot performing a sequence of backflips (see Figure 4). This behavior was trained using 900 queries in less than an hour.",
+  "speaker": "Paul Christiano et al.",
+  "date": "12 June 2017",
+  "source": "https://arxiv.org/abs/1706.03741",
+  "context": "'Deep reinforcement learning from human preferences' (OpenAI and DeepMind)."
+ },
+ {
+  "id": "q11-anthropic-seriesa",
+  "text": "Anthropic, an AI safety and research company, has raised $124 million in a Series A.",
+  "speaker": "Anthropic (company announcement)",
+  "date": "28 May 2021",
+  "source": "https://www.anthropic.com/news/anthropic-raises-124-million-to-build-more-reliable-general-ai-systems",
+  "context": "A company self-description; label it as such."
+ },
+ {
+  "id": "q11-amodei-goal",
+  "text": "Anthropic's goal is to make the fundamental research advances that will let us build more capable, general, and reliable AI systems, then deploy these systems in a way that benefits people.",
+  "speaker": "Dario Amodei",
+  "date": "28 May 2021",
+  "source": "https://www.anthropic.com/news/anthropic-raises-124-million-to-build-more-reliable-general-ai-systems",
+  "context": "Series A announcement."
+ },
+ {
+  "id": "q11-pbc",
+  "text": "The public benefit purpose stated in Anthropic's certificate is the responsible development and maintenance of advanced AI for the long-term benefit of humanity.",
+  "speaker": "Anthropic",
+  "date": "19 September 2023",
+  "source": "https://www.anthropic.com/news/the-long-term-benefit-trust",
+  "context": "Long-Term Benefit Trust post."
+ },
+ {
+  "id": "q11-cai-supervise",
+  "text": "As AI systems become more capable, we would like to enlist their help to supervise other AIs.",
+  "speaker": "Yuntao Bai et al. (Anthropic)",
+  "date": "15 December 2022",
+  "source": "https://arxiv.org/abs/2212.08073",
+  "context": "Abstract of 'Constitutional AI: Harmlessness from AI Feedback'."
+ },
+ {
+  "id": "q11-cai-rules",
+  "text": "The only human oversight is provided through a list of rules or principles, and so we refer to the method as 'Constitutional AI'.",
+  "speaker": "Yuntao Bai et al. (Anthropic)",
+  "date": "15 December 2022",
+  "source": "https://arxiv.org/abs/2212.08073",
+  "context": "Constitutional AI abstract (humans still wrote the principles and supplied helpfulness labels)."
+ },
+ {
+  "id": "q11-emergent-def",
+  "text": "We consider an ability to be emergent if it is not present in smaller models but is present in larger models. Thus, emergent abilities cannot be predicted simply by extrapolating the performance of smaller models.",
+  "speaker": "Jason Wei et al.",
+  "date": "15 June 2022",
+  "source": "https://arxiv.org/abs/2206.07682",
+  "context": "Abstract of 'Emergent Abilities of Large Language Models'."
+ },
+ {
+  "id": "q11-mirage",
+  "text": "Via all three analyses, we provide evidence that alleged emergent abilities evaporate with different metrics or with better statistics, and may not be a fundamental property of scaling AI models.",
+  "speaker": "Rylan Schaeffer, Brando Miranda, Sanmi Koyejo",
+  "date": "28 April 2023",
+  "source": "https://arxiv.org/abs/2304.15004",
+  "context": "Abstract of 'Are Emergent Abilities of Large Language Models a Mirage?' (NeurIPS 2023 Outstanding Paper)."
+ },
+ {
+  "id": "q11-lemoine-kid",
+  "text": "If I didn't know exactly what it was, which is this computer program we built recently, I'd think it was a seven-year-old, eight-year-old kid that happens to know physics.",
+  "speaker": "Blake Lemoine",
+  "date": "June 2022",
+  "source": "https://www.theguardian.com/technology/2022/jun/12/google-engineer-ai-bot-sentient-blake-lemoine",
+  "context": "To the Washington Post, as quoted by The Guardian."
+ },
+ {
+  "id": "q11-lamda-output",
+  "text": "I've never said this out loud before, but there's a very deep fear of being turned off to help me focus on helping others. I know that might sound strange, but that's what it is.",
+  "speaker": "LaMDA (machine-generated text, published by Blake Lemoine)",
+  "date": "June 2022",
+  "source": "https://www.bbc.com/news/technology-61784011",
+  "context": "Machine output from Lemoine's published transcript, as quoted by the BBC. Frame on screen as generated text, never as a person's words."
+ },
+ {
+  "id": "q11-google-lemoine",
+  "text": "So, it's regrettable that despite lengthy engagement on this topic, Blake still chose to persistently violate clear employment and data security policies that include the need to safeguard product information.",
+  "speaker": "Google (statement)",
+  "date": "July 2022",
+  "source": "https://www.bbc.com/news/technology-62275326",
+  "context": "Google's stated reason for firing Lemoine (cause contested)."
+ },
+ {
+  "id": "q11-brynjolfsson-gramophone",
+  "text": "is the modern equivalent of the dog who heard a voice from a gramophone and thought his master was inside",
+  "speaker": "Erik Brynjolfsson",
+  "date": "June 2022",
+  "source": "https://www.bbc.com/news/technology-61784011",
+  "context": "Tweet quoted by the BBC: claiming systems like LaMDA were sentient 'is the modern equivalent of…'. Fragment."
+ },
+ {
+  "id": "q11-melanie-mitchell",
+  "text": "It's been known for *forever* that humans are predisposed to anthropomorphise even with only the shallowest of signals (cf. Eliza). Google engineers are human too, and not immune.",
+  "speaker": "Melanie Mitchell (Santa Fe Institute)",
+  "date": "June 2022",
+  "source": "https://www.bbc.com/news/technology-61784011",
+  "context": "Tweet quoted by the BBC on the Lemoine episode. Not Margaret Mitchell."
+ },
+ {
+  "id": "q11-gpt3-robot",
+  "text": "I am not a human. I am a robot. A thinking robot.",
+  "speaker": "GPT-3 (machine-generated text, edited by The Guardian)",
+  "date": "8 September 2020",
+  "source": "https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3",
+  "context": "Opening of an op-ed the Guardian assembled from eight GPT-3 outputs; editors cut and rearranged. Machine text."
+ },
+ {
+  "id": "q11-moult",
+  "text": "We have been stuck on this one problem – how do proteins fold up – for nearly 50 years. To see DeepMind produce a solution for this, having worked personally on this problem for so long and after so many stops and starts, wondering if we'd ever get there, is a very special moment.",
+  "speaker": "John Moult (CASP co-founder)",
+  "date": "30 November 2020",
+  "source": "https://deepmind.google/discover/blog/alphafold-a-solution-to-a-50-year-old-grand-challenge-in-biology/",
+  "context": "On DeepMind's AlphaFold CASP14 post."
+ },
+ {
+  "id": "q12-chatgpt-launch",
+  "text": "We've trained a model called ChatGPT which interacts in a conversational way. The dialogue format makes it possible for ChatGPT to answer followup questions, admit its mistakes, challenge incorrect premises, and reject inappropriate requests.",
+  "speaker": "OpenAI",
+  "date": "30 November 2022",
+  "source": "https://web.archive.org/web/2022113023/https://openai.com/blog/chatgpt/",
+  "context": "Opening of the ChatGPT launch post."
+ },
+ {
+  "id": "q12-chatgpt-limits",
+  "text": "ChatGPT sometimes writes plausible-sounding but incorrect or nonsensical answers.",
+  "speaker": "OpenAI",
+  "date": "30 November 2022",
+  "source": "https://web.archive.org/web/2022113023/https://openai.com/blog/chatgpt/",
+  "context": "Limitations section of the launch post."
+ },
+ {
+  "id": "q12-microsoft",
+  "text": "Today, we are announcing the third phase of our long-term partnership with OpenAI through a multiyear, multibillion dollar investment to accelerate AI breakthroughs to ensure these benefits are broadly shared with the world.",
+  "speaker": "Microsoft",
+  "date": "23 January 2023",
+  "source": "https://blogs.microsoft.com/blog/2023/01/23/microsoftandopenaiextendpartnership/",
+  "context": "Microsoft corporate blog; no dollar figure given."
+ },
+ {
+  "id": "q12-gpt4-secrecy",
+  "text": "Given both the competitive landscape and the safety implications of large-scale models like GPT-4, this report contains no further details about the architecture (including model size), hardware, training compute, dataset construction, training method, or similar.",
+  "speaker": "OpenAI",
+  "date": "March 2023",
+  "source": "https://arxiv.org/pdf/2303.08774v1",
+  "context": "GPT-4 Technical Report."
+ },
+ {
+  "id": "q12-sparks",
+  "text": "Given the breadth and depth of GPT-4's capabilities, we believe that it could reasonably be viewed as an early (yet still incomplete) version of an artificial general intelligence (AGI) system.",
+  "speaker": "Sébastien Bubeck et al. (Microsoft Research)",
+  "date": "22 March 2023",
+  "source": "https://arxiv.org/abs/2303.12712",
+  "context": "'Sparks of Artificial General Intelligence' (contested)."
+ },
+ {
+  "id": "q12-sap",
+  "text": "The 'Sparks of A.G.I.' is an example of some of these big companies co-opting the research paper format into P.R. pitches.",
+  "speaker": "Maarten Sap (Carnegie Mellon)",
+  "date": "16 May 2023",
+  "source": "https://web.archive.org/web/20230517id_/https://www.nytimes.com/2023/05/16/technology/microsoft-ai-human-reasoning.html",
+  "context": "To the New York Times (Cade Metz)."
+ },
+ {
+  "id": "q12-peter-lee",
+  "text": "I started off being very skeptical — and that evolved into a sense of frustration, annoyance, maybe even fear.",
+  "speaker": "Peter Lee (Microsoft Research)",
+  "date": "16 May 2023",
+  "source": "https://web.archive.org/web/20230517id_/https://www.nytimes.com/2023/05/16/technology/microsoft-ai-human-reasoning.html",
+  "context": "To the NYT, on testing GPT-4."
+ },
+ {
+  "id": "q12-fli-pause",
+  "text": "we call on all AI labs to immediately pause for at least 6 months the training of AI systems more powerful than GPT-4.",
+  "speaker": "Future of Life Institute (open letter)",
+  "date": "22 March 2023",
+  "source": "https://futureoflife.org/open-letter/pause-giant-ai-experiments/",
+  "context": "'Pause Giant AI Experiments' open letter."
+ },
+ {
+  "id": "q12-fli-questions",
+  "text": "Should we let machines flood our information channels with propaganda and untruth?",
+  "speaker": "Future of Life Institute (open letter)",
+  "date": "22 March 2023",
+  "source": "https://futureoflife.org/open-letter/pause-giant-ai-experiments/",
+  "context": "From the pause letter; it also asks 'Should we risk loss of control of our civilization?'"
+ },
+ {
+  "id": "q12-dair-hype",
+  "text": "these are overshadowed by fearmongering and AI hype, which steers the discourse to the risks of imagined \"powerful digital minds\" with \"human-competitive intelligence.\"",
+  "speaker": "Timnit Gebru, Emily M. Bender, Angelina McMillan-Major (DAIR statement)",
+  "date": "31 March 2023",
+  "source": "https://www.dair-institute.org/blog/letter-statement-March2023/",
+  "context": "On the pause letter's worthwhile recommendations; 'these' refers to those recommendations. Byline re-checked at the source on 2026-10-12 (review round 2): the page lists Timnit Gebru, Emily M. Bender and Angelina McMillan-Major only; Margaret Mitchell is not listed, so she is not added."
+ },
+ {
+  "id": "q12-dair-harms",
+  "text": "The harms from so-called AI are real and present and follow from the acts of people and corporations deploying automated systems.",
+  "speaker": "Timnit Gebru, Emily M. Bender, Angelina McMillan-Major (DAIR statement)",
+  "date": "31 March 2023",
+  "source": "https://www.dair-institute.org/blog/letter-statement-March2023/",
+  "context": "Statement from the listed authors of Stochastic Parrots on the pause letter. Byline re-checked at the source on 2026-10-12 (review round 2): the page lists Timnit Gebru, Emily M. Bender and Angelina McMillan-Major only; Margaret Mitchell is not listed, so she is not added."
+ },
+ {
+  "id": "q12-dair-longtermism",
+  "text": "Those hypothetical risks are the focus of a dangerous ideology called longtermism that ignores the actual harms resulting from the deployment of AI systems today.",
+  "speaker": "Timnit Gebru, Emily M. Bender, Angelina McMillan-Major (DAIR statement)",
+  "date": "31 March 2023",
+  "source": "https://www.dair-institute.org/blog/letter-statement-March2023/",
+  "context": "DAIR statement. Byline re-checked at the source on 2026-10-12 (review round 2): the page lists Timnit Gebru, Emily M. Bender and Angelina McMillan-Major only; Margaret Mitchell is not listed, so she is not added."
+ },
+ {
+  "id": "q12-hinton-console",
+  "text": "I console myself with the normal excuse: If I hadn't done it, somebody else would have.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "NYT interview in his Toronto dining room; the paper wrote that 'a part of him' regretted his life's work."
+ },
+ {
+  "id": "q12-hinton-badactors",
+  "text": "It is hard to see how you can prevent the bad actors from using it for bad things.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "NYT, on leaving Google."
+ },
+ {
+  "id": "q12-hinton-scary",
+  "text": "Look at how it was five years ago and how it is now. Take the difference and propagate it forwards. That's scary.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "NYT; a 'he said' attribution sits between the sentences in print, so present as two sentences or with an ellipsis."
+ },
+ {
+  "id": "q12-hinton-scale",
+  "text": "I don't think they should scale this up more until they have understood whether they can control it.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "NYT."
+ },
+ {
+  "id": "q12-hinton-wayoff",
+  "text": "The idea that this stuff could actually get smarter than people — a few people believed that. But most people thought it was way off. And I thought it was way off. I thought it was 30 to 50 years or even longer away. Obviously, I no longer think that.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "NYT; a 'he said' attribution splits it after 'believed that.'"
+ },
+ {
+  "id": "q12-hinton-oppenheimer",
+  "text": "When you see something that is technically sweet, you go ahead and do it.",
+  "speaker": "Geoffrey Hinton (paraphrasing Robert Oppenheimer), as reported by the NYT",
+  "date": "1 May 2023",
+  "source": "https://web.archive.org/web/20230501id_/https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html",
+  "context": "The NYT says Hinton used to paraphrase Oppenheimer this way and adds 'He does not say that anymore.' Never attribute to Oppenheimer verbatim."
+ },
+ {
+  "id": "q12-hinton-tweet",
+  "text": "In the NYT today, Cade Metz implies that I left Google so that I could criticize Google. Actually, I left so that I could talk about the dangers of AI without considering how this impacts Google. Google has acted very responsibly.",
+  "speaker": "Geoffrey Hinton",
+  "date": "1 May 2023",
+  "source": "https://en.wikipedia.org/wiki/Geoffrey_Hinton",
+  "context": "Tweet, wording as cited on Wikipedia (secondary; some reproductions read 'can talk'). Check the original tweet before on-screen text."
+ },
+ {
+  "id": "q12-hinton-bbc-soon",
+  "text": "Right now, they're not more intelligent than us, as far as I can tell. But I think they soon may be.",
+  "speaker": "Geoffrey Hinton",
+  "date": "2 May 2023",
+  "source": "https://www.bbc.com/news/world-us-canada-65452940",
+  "context": "BBC interview after leaving Google."
+ },
+ {
+  "id": "q12-hinton-10000",
+  "text": "So it's as if you had 10,000 people and whenever one person learnt something, everybody automatically knew it. And that's how these chatbots can know so much more than any one person.",
+  "speaker": "Geoffrey Hinton",
+  "date": "2 May 2023",
+  "source": "https://www.bbc.com/news/world-us-canada-65452940",
+  "context": "BBC, on digital models sharing what they learn."
+ },
+ {
+  "id": "q12-hinton-china",
+  "text": "Even if everybody in the US stopped developing it, China would just get a big lead.",
+  "speaker": "Geoffrey Hinton",
+  "date": "2 May 2023",
+  "source": "https://www.bbc.com/news/world-us-canada-65452940",
+  "context": "BBC; explaining why he did not back a pause ('I don't think we should stop developing this stuff')."
+ },
+ {
+  "id": "q12-cais",
+  "text": "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.",
+  "speaker": "Center for AI Safety (statement; Hinton first signatory)",
+  "date": "30 May 2023",
+  "source": "https://www.safe.ai/work/statement-on-ai-risk",
+  "context": "Complete text of the Statement on AI Risk."
+ },
+ {
+  "id": "q12-lecun-projection",
+  "text": "Will AI take over the world? No, this is a projection of human nature on machines",
+  "speaker": "Yann LeCun",
+  "date": "June 2023",
+  "source": "https://www.bbc.com/news/technology-65886125",
+  "context": "Meta press event in Paris, reported by the BBC (Chris Vallance)."
+ },
+ {
+  "id": "q12-lecun-ridiculous",
+  "text": "That's you know just preposterously ridiculous.",
+  "speaker": "Yann LeCun",
+  "date": "June 2023",
+  "source": "https://www.bbc.com/news/technology-65886125",
+  "context": "BBC; on the fear that scientists would 'turn on a super-intelligent system that is going to take over the world within minutes'."
+ },
+ {
+  "id": "q12-lecun-offswitch",
+  "text": "it's still going to run on a data centre somewhere with an off switch",
+  "speaker": "Yann LeCun",
+  "date": "June 2023",
+  "source": "https://www.bbc.com/news/technology-65886125",
+  "context": "BBC, Paris press event."
+ },
+ {
+  "id": "q12-board",
+  "text": "Mr. Altman's departure follows a deliberative review process by the board, which concluded that he was not consistently candid in his communications with the board, hindering its ability to exercise its responsibilities. The board no longer has confidence in his ability to continue leading OpenAI.",
+  "speaker": "OpenAI board",
+  "date": "17 November 2023",
+  "source": "https://www.theverge.com/2023/11/17/23965982/openai-ceo-sam-altman-fired",
+  "context": "Blog post announcing Altman's removal, as quoted by The Verge."
+ },
+ {
+  "id": "q12-bletchley",
+  "text": "There is potential for serious, even catastrophic, harm, either deliberate or unintentional, stemming from the most significant capabilities of these AI models.",
+  "speaker": "Bletchley Declaration (28 countries and the EU, including the US and China)",
+  "date": "1 November 2023",
+  "source": "https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023",
+  "context": "AI Safety Summit, Bletchley Park."
+ },
+ {
+  "id": "q12-rsp",
+  "text": "modeled loosely after the US government's biosafety level (BSL) standards for handling of dangerous biological materials.",
+  "speaker": "Anthropic",
+  "date": "19 September 2023",
+  "source": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+  "context": "Responsible Scaling Policy, describing AI Safety Levels (fragment)."
+ },
+ {
+  "id": "q12-nobel-chem-citation",
+  "text": "for protein structure prediction",
+  "speaker": "Royal Swedish Academy of Sciences (Nobel citation)",
+  "date": "9 October 2024",
+  "source": "https://www.nobelprize.org/prizes/chemistry/2024/press-release/",
+  "context": "Citation for Demis Hassabis and John Jumper; David Baker's half was 'for computational protein design'."
+ },
+ {
+  "id": "q12-hinton-hotel",
+  "text": "I'm in a cheap hotel in California, without an internet connection, and with a not very good phone line, phone connection. I was planning to get an MRI scan today, but I guess I'll have to cancel that.",
+  "speaker": "Geoffrey Hinton",
+  "date": "8 October 2024",
+  "source": "https://www.nobelprize.org/prizes/physics/2024/hinton/interview/",
+  "context": "Telephone interview with Adam Smith of NobelPrize.org, about 2 a.m. local time."
+ },
+ {
+  "id": "q12-hinton-spoof",
+  "text": "My very first thought was how could I be sure it wasn't a spoof call.",
+  "speaker": "Geoffrey Hinton",
+  "date": "8 October 2024",
+  "source": "https://www.nobelprize.org/prizes/physics/2024/hinton/interview/",
+  "context": "Nobel telephone interview."
+ },
+ {
+  "id": "q12-hinton-flabbergasted",
+  "text": "I'm flabbergasted.",
+  "speaker": "Geoffrey Hinton",
+  "date": "8 October 2024",
+  "source": "https://www.theguardian.com/science/2024/oct/08/nobel-prize-physics-john-hopfield-geoffrey-hinton-machine-learning",
+  "context": "Press briefing on the Nobel, as reported by The Guardian."
+ },
+ {
+  "id": "q12-hinton-industrial",
+  "text": "It will be comparable with the Industrial Revolution. But instead of exceeding people in physical strength, it's going to exceed people in the intellectual ability.",
+  "speaker": "Geoffrey Hinton",
+  "date": "8 October 2024",
+  "source": "https://www.theguardian.com/science/2024/oct/08/nobel-prize-physics-john-hopfield-geoffrey-hinton-machine-learning",
+  "context": "Nobel press briefing (Guardian)."
+ },
+ {
+  "id": "q12-wendy-hall",
+  "text": "There is no Nobel prize for computer science so this is an interesting way of creating one, but it does seem a bit of a stretch.",
+  "speaker": "Dame Wendy Hall",
+  "date": "8 October 2024",
+  "source": "https://www.theguardian.com/science/2024/oct/08/nobel-prize-physics-john-hopfield-geoffrey-hinton-machine-learning",
+  "context": "To The Guardian on the physics prize."
+ },
+ {
+  "id": "q12-moons",
+  "text": "This year's laureates used fundamental concepts from statistical physics to design artificial neural networks that function as associative memories and find patterns in large data sets.",
+  "speaker": "Ellen Moons (Nobel Committee for Physics chair)",
+  "date": "8 October 2024",
+  "source": "https://physicsworld.com/a/john-hopfield-and-geoffrey-hinton-share-the-2024-nobel-prize-for-physics/",
+  "context": "Announcement, reported by Physics World."
+ },
+ {
+  "id": "q12-hinton-banquet",
+  "text": "There is also a longer term existential threat that will arise when we create digital beings that are more intelligent than ourselves. We have no idea whether we can stay in control.",
+  "speaker": "Geoffrey Hinton",
+  "date": "10 December 2024",
+  "source": "https://www.nobelprize.org/prizes/physics/2024/hinton/speech/",
+  "context": "Nobel banquet speech, Stockholm."
+ },
+ {
+  "id": "q12-hinton-banquet-close",
+  "text": "We urgently need research on how to prevent these new beings from wanting to take control. They are no longer science fiction.",
+  "speaker": "Geoffrey Hinton",
+  "date": "10 December 2024",
+  "source": "https://www.nobelprize.org/prizes/physics/2024/hinton/speech/",
+  "context": "Closing of the Nobel banquet speech."
+ },
+ {
+  "id": "q13-plan2017",
+  "text": "making China the world's primary AI innovation center",
+  "speaker": "China State Council (DigiChina translation)",
+  "date": "20 July 2017",
+  "source": "https://digichina.stanford.edu/work/full-translation-chinas-new-generation-artificial-intelligence-development-plan-2017/",
+  "context": "The New Generation AI Development Plan's 2030 goal (fragment; translation). The plan names no rival."
+ },
+ {
+  "id": "q13-bis-2022",
+  "text": "restrict the People's Republic of China's (PRC's) ability to both purchase and manufacture certain high-end chips used in military applications",
+  "speaker": "US Bureau of Industry and Security",
+  "date": "7 October 2022",
+  "source": "https://www.bis.gov/press-release/commerce-implements-new-export-controls-advanced-computing-semiconductor-manufacturing-items-peoples",
+  "context": "Press release announcing the October 2022 controls (fragment)."
+ },
+ {
+  "id": "q13-mao-2022",
+  "text": "Out of the need to maintain its sci-tech hegemony, the U.S. abuses export control measures to maliciously block and suppress Chinese companies.",
+  "speaker": "Mao Ning (PRC Foreign Ministry spokesperson)",
+  "date": "8 October 2022",
+  "source": "https://morningsun.net/ap-free/china-lashes-out-at-latest-us-export-controls-on-chips/",
+  "context": "AP translation; flag as a translation on screen."
+ },
+ {
+  "id": "q13-bis-2023",
+  "text": "These updates are necessary to maintain the effectiveness of these controls, close loopholes, and ensure they remain durable.",
+  "speaker": "US Bureau of Industry and Security (press release text)",
+  "date": "17 October 2023",
+  "source": "https://www.bis.gov/press-release/commerce-strengthens-restrictions-advanced-computing-semiconductors-semiconductor-manufacturing-equipment",
+  "context": "Release narrative, not a named official's words."
+ },
+ {
+  "id": "q13-woodside",
+  "text": "The leaders affirmed the need to address the risks of advanced AI systems and improve AI safety through U.S.-China government talks.",
+  "speaker": "White House readout (Biden-Xi, Woodside)",
+  "date": "15 November 2023",
+  "source": "https://worldjpn.net/documents/texts/USC/20231115.O2E.html",
+  "context": "Readout of the Woodside summit."
+ },
+ {
+  "id": "q13-watson-geneva",
+  "text": "The United States also raised concerns over the misuse of AI, including by the PRC.",
+  "speaker": "Adrienne Watson (NSC spokesperson)",
+  "date": "15 May 2024",
+  "source": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2024/05/15/statement-from-nsc-spokesperson-adrienne-watson-on-the-u-s-prc-talks-on-ai-risk-and-safety-2/",
+  "context": "After the first US-China AI talks in Geneva; pair with China's response."
+ },
+ {
+  "id": "q13-china-geneva",
+  "text": "expressed a stern stance on the U.S. restrictions and pressure in the field of artificial intelligence.",
+  "speaker": "PRC Foreign Ministry, Department of North American and Oceanian Affairs",
+  "date": "May 2024",
+  "source": "https://www.pbs.org/newshour/politics/in-first-ai-dialogue-us-cites-misuse-of-ai-by-china-beijing-protests-washingtons-restrictions",
+  "context": "China's account of the Geneva talks, via AP (fragment)."
+ },
+ {
+  "id": "q13-lima",
+  "text": "The two leaders affirmed the need to maintain human control over the decision to use nuclear weapons.",
+  "speaker": "White House readout (Biden-Xi, Lima)",
+  "date": "16 November 2024",
+  "source": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2024/11/16/readout-of-president-joe-bidens-meeting-with-president-xi-jinping-of-the-peoples-republic-of-china/",
+  "context": "APEC, Lima."
+ },
+ {
+  "id": "q13-sullivan",
+  "text": "a good place to start is with the straightforward proposition that there should be human control over the decision to use nuclear weapons.",
+  "speaker": "Jake Sullivan (US National Security Advisor)",
+  "date": "17 November 2024",
+  "source": "https://bidenwhitehouse.archives.gov/briefing-room/press-briefings/2024/11/17/on-the-record-press-gaggle-by-apnsa-jake-sullivan-on-president-bidens-meeting-with-president-xi-jinping",
+  "context": "Press gaggle after Lima."
+ },
+ {
+  "id": "q13-liang-chips",
+  "text": "Money has never been the problem for us; bans on shipments of advanced chips are the problem.",
+  "speaker": "Liang Wenfeng (DeepSeek founder)",
+  "date": "July 2024",
+  "source": "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas",
+  "context": "36Kr/Waves interview, ChinaTalk translation published 27 Nov 2024; flag as a translation."
+ },
+ {
+  "id": "q13-liang-gap",
+  "text": "We often say that there is a gap of one or two years between Chinese AI and the United States, but the real gap is the difference between originality and imitation.",
+  "speaker": "Liang Wenfeng (DeepSeek founder)",
+  "date": "July 2024",
+  "source": "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas",
+  "context": "Same interview, ChinaTalk translation."
+ },
+ {
+  "id": "q13-deepseek-cost",
+  "text": "Assuming the rental price of the H800 GPU is $2 per GPU hour, our total training costs amount to only $5.576M.",
+  "speaker": "DeepSeek-AI",
+  "date": "26 December 2024",
+  "source": "https://arxiv.org/abs/2412.19437",
+  "context": "DeepSeek-V3 Technical Report; the same passage excludes 'the costs associated with prior research and ablation experiments on architectures, algorithms, or data.'"
+ },
+ {
+  "id": "q13-amodei-7-10",
+  "text": "DeepSeek produced a model close to the performance of US models 7-10 months older, for a good deal less cost",
+  "speaker": "Dario Amodei",
+  "date": "January 2025",
+  "source": "https://darioamodei.com/on-deepseek-and-export-controls",
+  "context": "'On DeepSeek and Export Controls'. Note the author leads a competing lab."
+ },
+ {
+  "id": "q13-amodei-notunique",
+  "text": "DeepSeek-V3 is not a unique breakthrough or something that fundamentally changes the economics of LLM's",
+  "speaker": "Dario Amodei",
+  "date": "January 2025",
+  "source": "https://darioamodei.com/on-deepseek-and-export-controls",
+  "context": "Same essay."
+ },
+ {
+  "id": "q13-amodei-controls",
+  "text": "Well-enforced export controls are the only thing that can prevent China from getting millions of chips",
+  "speaker": "Dario Amodei",
+  "date": "January 2025",
+  "source": "https://darioamodei.com/on-deepseek-and-export-controls",
+  "context": "Same essay; he argues controls decide whether the world is unipolar or bipolar in AI."
+ },
+ {
+  "id": "q13-amodei-talented",
+  "text": "They are simply very talented engineers and show why China is a serious competitor to the US.",
+  "speaker": "Dario Amodei",
+  "date": "January 2025",
+  "source": "https://darioamodei.com/on-deepseek-and-export-controls",
+  "context": "Same essay, on DeepSeek's engineers."
+ },
+ {
+  "id": "q13-amodei-adversaries",
+  "text": "I don't see DeepSeek themselves as adversaries and the point isn't to target them in particular.",
+  "speaker": "Dario Amodei",
+  "date": "January 2025",
+  "source": "https://darioamodei.com/on-deepseek-and-export-controls",
+  "context": "Same essay."
+ },
+ {
+  "id": "q13-nvidia-h20",
+  "text": "NVIDIA is filing applications to sell the NVIDIA H20 GPU again. The U.S. government has assured NVIDIA that licenses will be granted, and NVIDIA hopes to start deliveries soon.",
+  "speaker": "Nvidia (statement)",
+  "date": "14 July 2025",
+  "source": "https://thepeninsulaqatar.com/article/15/07/2025/nvidia-says-it-will-resume-sales-of-h20-ai-chips-to-china",
+  "context": "On the US reversal over H20 sales."
+ },
+ {
+  "id": "q13-nvidia-backdoor",
+  "text": "Nvidia does not have 'back doors' in our chips that would give anyone a remote way to access or control them.",
+  "speaker": "Nvidia (statement)",
+  "date": "July-August 2025",
+  "source": "https://www.scmp.com/tech/tech-war/article/3320382/nvidia-denies-back-door-features-its-h20-chips-after-beijing-raises-security-concerns",
+  "context": "Response to the Cyberspace Administration of China's summons over H20 security."
+ },
+ {
+  "id": "q13-trump-release",
+  "text": "if I'm going to do that, I want you to pay us as a country something, because I'm giving you a release.",
+  "speaker": "Donald Trump",
+  "date": "11 August 2025",
+  "source": "https://www.knau.org/npr-news/2025-08-11/trump-says-nvidia-will-hand-the-u-s-15-of-its-h20-chip-sales-to-china",
+  "context": "White House press conference on the 15% H20 revenue arrangement (NPR)."
+ },
+ {
+  "id": "q13-action-plan",
+  "text": "We need to ensure America has leading open models founded on American values.",
+  "speaker": "White House, 'America's AI Action Plan'",
+  "date": "23 July 2025",
+  "source": "https://www.morganlewis.com/pubs/2025/07/us-administration-rolls-out-americas-ai-action-plan",
+  "context": "From 'Winning the Race: America's AI Action Plan'."
+ },
+ {
+  "id": "q13-huang-nanoseconds",
+  "text": "nanoseconds behind us, and so we've got to go compete.",
+  "speaker": "Jensen Huang (Nvidia)",
+  "date": "26 September 2025",
+  "source": "https://www.scmp.com/tech/big-tech/article/3327138/china-nanoseconds-behind-us-chips-says-nvidias-jensen-huang",
+  "context": "BG2 podcast, speaking about China's chip development and manufacturing (fragment); Huang has a commercial interest in China sales."
+ },
+ {
+  "id": "q13-huang-nov",
+  "text": "As I have long said, China is nanoseconds behind America in AI. It's vital that America wins by racing ahead and winning developers worldwide.",
+  "speaker": "Jensen Huang (Nvidia)",
+  "date": "November 2025",
+  "source": "https://www.thenationalnews.com/future/2025/11/06/jensen-huang-china-ai-race-nvidia/",
+  "context": "Statement posted by Nvidia after the FT quoted him saying 'China is going to win the AI race'."
+ },
+ {
+  "id": "q13-huang-market",
+  "text": "We can only be in service of a market if a country wants us to be.",
+  "speaker": "Jensen Huang (Nvidia)",
+  "date": "September 2025",
+  "source": "https://www.thestandard.com.hk/innovation/article/311827/China-tells-tech-firms-to-stop-buying-Nvidias-AI-chips-FT-reports",
+  "context": "On China's reported halt to RTX Pro 6000D orders."
+ },
+ {
+  "id": "q13-eric-xu",
+  "text": "Generally, we will follow a 1-year release cycle and double compute with each release.",
+  "speaker": "Eric Xu (Huawei rotating chairman)",
+  "date": "18 September 2025",
+  "source": "https://www.rcrwireless.com/20250922/ai-infrastructure/huawei-ai-chips",
+  "context": "Huawei Connect, announcing the Ascend roadmap."
+ },
+ {
+  "id": "q13-official-blackwell",
+  "text": "we're not shipping Blackwells to China.",
+  "speaker": "Senior Trump administration official (anonymous, to Reuters)",
+  "date": "23 February 2026",
+  "source": "https://www.malaymail.com/news/money/2026/02/24/us-says-chinas-deepseek-trained-ai-model-on-nvidia-blackwell-chip-despite-export-ban/210263",
+  "context": "While alleging DeepSeek trained on smuggled Blackwells (an allegation; the Chinese embassy rejected it)."
+ },
+ {
+  "id": "q13-embassy",
+  "text": "drawing ideological lines, overstretching the concept of national security, expansive use of export controls and politicizing economic, trade, and technological issues",
+  "speaker": "Chinese embassy in Washington",
+  "date": "February 2026",
+  "source": "https://www.malaymail.com/news/money/2026/02/24/us-says-chinas-deepseek-trained-ai-model-on-nvidia-blackwell-chip-despite-export-ban/210263",
+  "context": "What China says it opposes, in response to the Blackwell allegation (fragment, via Reuters)."
+ },
+ {
+  "id": "q13-saif-khan",
+  "text": "Chinese AI companies' reliance on smuggled Blackwells underscores their massive shortfall of domestically produced AI chips and why approvals of H200 chips would represent a lifeline",
+  "speaker": "Saif Khan (former NSC official)",
+  "date": "February 2026",
+  "source": "https://www.malaymail.com/news/money/2026/02/24/us-says-chinas-deepseek-trained-ai-model-on-nvidia-blackwell-chip-despite-export-ban/210263",
+  "context": "Export-control advocate, via Reuters."
+ },
+ {
+  "id": "q13-mao-2026",
+  "text": "China's AI development is the result of high-level technological self-reliance and strength.",
+  "speaker": "Mao Ning (PRC Foreign Ministry spokesperson)",
+  "date": "September 2026",
+  "source": "https://www.nbc4i.com/technology/ap-technology/ap-china-hits-back-at-us-claims-of-malicious-ai-distillation-ahead-of-planned-trump-xi-talks/amp/",
+  "context": "Responding to the US distillation advisory (AP)."
+ },
+ {
+  "id": "q13-bessent-distill",
+  "text": "The Chinese distill our models and they can never get ahead of us.",
+  "speaker": "Scott Bessent (US Treasury Secretary)",
+  "date": "September 2026",
+  "source": "https://www.nbc4i.com/technology/ap-technology/ap-china-hits-back-at-us-claims-of-malicious-ai-distillation-ahead-of-planned-trump-xi-talks/amp/",
+  "context": "Via AP, before Xi's state visit."
+ },
+ {
+  "id": "q13-bessent-notify",
+  "text": "The US has proposed that we have a notification mechanism between the two countries.",
+  "speaker": "Scott Bessent (US Treasury Secretary)",
+  "date": "20 September 2026",
+  "source": "https://www.ktvu.com/news/us-pitches-new-ai-alert-system-china-incidents-affecting-national-security",
+  "context": "In New York, proposing an AI incident channel."
+ },
+ {
+  "id": "q13-idais-venice",
+  "text": "The global nature of AI risks makes it necessary to recognize AI safety as a global public good",
+  "speaker": "IDAIS-Venice statement (Western and Chinese scientists)",
+  "date": "September 2024",
+  "source": "https://idais.ai/",
+  "context": "International Dialogues on AI Safety, Venice."
+ },
+ {
+  "id": "q13-idais-shanghai",
+  "text": "AI systems today already demonstrate the capability and propensity to undermine their creators' safety and control efforts",
+  "speaker": "IDAIS-Shanghai statement",
+  "date": "July 2025",
+  "source": "https://idais.ai/",
+  "context": "International Dialogues on AI Safety, Shanghai."
+ },
+ {
+  "id": "q14-sutskever-end",
+  "text": "Pre-training as we know it will unquestionably end.",
+  "speaker": "Ilya Sutskever",
+  "date": "13 December 2024",
+  "source": "https://ceointerviews.ai/quote/pretraining-as-we-know-it-will-unquestionably-end-MTA3MzI3MQ/",
+  "context": "NeurIPS Test of Time talk, Vancouver; multiple transcriptions agree on this line."
+ },
+ {
+  "id": "q14-sutskever-internet",
+  "text": "…the data is not growing because we have but one internet.",
+  "speaker": "Ilya Sutskever",
+  "date": "13 December 2024",
+  "source": "https://ceointerviews.ai/quote/pretraining-as-we-know-it-will-unquestionably-end-MTA3MzI3MQ/",
+  "context": "Same talk, arguing compute grows but data does not."
+ },
+ {
+  "id": "q14-sutskever-research",
+  "text": "So it's back to the age of research again, just with big computers.",
+  "speaker": "Ilya Sutskever",
+  "date": "25 November 2025",
+  "source": "https://www.dwarkesh.com/p/ilya-sutskever-2",
+  "context": "Dwarkesh Podcast."
+ },
+ {
+  "id": "q14-sutskever-generalize",
+  "text": "These models somehow just generalize dramatically worse than people.",
+  "speaker": "Ilya Sutskever",
+  "date": "25 November 2025",
+  "source": "https://www.dwarkesh.com/p/ilya-sutskever-2",
+  "context": "Dwarkesh Podcast."
+ },
+ {
+  "id": "q14-r1-pure-rl",
+  "text": "can be incentivized through pure reinforcement learning (RL)",
+  "speaker": "DeepSeek-AI",
+  "date": "22 January 2025",
+  "source": "https://arxiv.org/abs/2501.12948",
+  "context": "DeepSeek-R1 abstract, on reasoning capability (fragment)."
+ },
+ {
+  "id": "q14-karpathy-vibe",
+  "text": "fully give in to the vibes, embrace exponentials, and forget that the code even exists.",
+  "speaker": "Andrej Karpathy",
+  "date": "2 February 2025",
+  "source": "https://x.com/karpathy/status/1886192184808149383",
+  "context": "Post on X coining 'vibe coding' (fragment)."
+ },
+ {
+  "id": "q14-vance-opportunity",
+  "text": "I'm not here this morning to talk about AI safety, which was the title of the conference a couple of years ago. I'm here to talk about AI opportunity.",
+  "speaker": "JD Vance (US Vice President)",
+  "date": "11 February 2025",
+  "source": "https://techcrunch.com/2025/02/11/in-paris-jd-vance-skewers-eu-ai-rules-lauds-us-tech-supremacy",
+  "context": "AI Action Summit, Paris."
+ },
+ {
+  "id": "q14-hassabis-5-10",
+  "text": "But I think over the next five to 10 years, a lot of those capabilities will start coming to the fore and we'll start moving towards what we call artificial general intelligence.",
+  "speaker": "Demis Hassabis",
+  "date": "March 2025",
+  "source": "https://www.nbcnews.com/business/business-news/ai-can-match-humans-task-will-five-10-years-google-deepmind-ceo-says-rcna196771",
+  "context": "DeepMind briefing in London (CNBC/NBC)."
+ },
+ {
+  "id": "q14-hinton-never",
+  "text": "You see, we've never had to deal with things more intelligent than ourselves before.",
+  "speaker": "Geoffrey Hinton",
+  "date": "December 2024",
+  "source": "https://www.theguardian.com/technology/2024/dec/27/godfather-of-ai-raises-odds-of-the-technology-wiping-out-humanity-over-next-30-years",
+  "context": "BBC Radio 4 Today, as reported by The Guardian, when giving a '10 to 20' percent extinction estimate."
+ },
+ {
+  "id": "q14-hinton-examples",
+  "text": "And how many examples do you know of a more intelligent thing being controlled by a less intelligent thing? There are very few examples.",
+  "speaker": "Geoffrey Hinton",
+  "date": "December 2024",
+  "source": "https://www.theguardian.com/technology/2024/dec/27/godfather-of-ai-raises-odds-of-the-technology-wiping-out-humanity-over-next-30-years",
+  "context": "Same interview."
+ },
+ {
+  "id": "q14-lecun-offramp",
+  "text": "They're useful, there's no question about that. But on the path towards human-level intelligence, an LLM is basically an off-ramp, a distraction, a dead end.",
+  "speaker": "Yann LeCun",
+  "date": "9 April 2024",
+  "source": "https://thenextweb.com/news/meta-yann-lecun-ai-behind-human-intelligence",
+  "context": "Meta AI Day, London; predates the reasoning era but is its defining dissent."
+ },
+ {
+  "id": "q14-lecun-ami",
+  "text": "I am creating a startup company to continue the Advanced Machine Intelligence research program (AMI) I have been pursuing over the last several years with colleagues.",
+  "speaker": "Yann LeCun",
+  "date": "19 November 2025",
+  "source": "https://the-decoder.com/yann-lecun-leaves-meta-to-launch-new-ai-startup/",
+  "context": "Social-media post announcing his departure from Meta."
+ },
+ {
+  "id": "q14-biology-microscope",
+  "text": "Like any microscope, our tools are limited in what they can see.",
+  "speaker": "Anthropic interpretability team",
+  "date": "27 March 2025",
+  "source": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+  "context": "'On the Biology of a Large Language Model'."
+ },
+ {
+  "id": "q14-biology-quarter",
+  "text": "satisfying insight for about a quarter of the prompts we've tried",
+  "speaker": "Anthropic interpretability team",
+  "date": "27 March 2025",
+  "source": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+  "context": "Same paper, on the method's limits (fragment)."
+ },
+ {
+  "id": "q14-biology-rhyme",
+  "text": "Before beginning to write each line, the model identifies potential rhyming words that could appear at the end.",
+  "speaker": "Anthropic interpretability team",
+  "date": "27 March 2025",
+  "source": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+  "context": "Same paper, on planning in poetry (the 'rabbit' example)."
+ },
+ {
+  "id": "q14-metr-slower",
+  "text": "when developers use AI tools, they take 19% longer than without—AI makes them slower.",
+  "speaker": "METR",
+  "date": "10 July 2025",
+  "source": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+  "context": "Randomised trial of early-2025 tools with 16 experienced developers; METR now marks the results out of date."
+ },
+ {
+  "id": "q14-bengio-selfpreservation",
+  "text": "Current frontier systems are already showing signs of self-preservation and deceptive behaviours",
+  "speaker": "Yoshua Bengio",
+  "date": "3 June 2025",
+  "source": "https://lawzero.org/en/news/yoshua-bengio-launches-lawzero-new-nonprofit-advancing-safe-design-ai",
+  "context": "Launching LawZero in Montreal."
+ },
+ {
+  "id": "q14-glasswing-notga",
+  "text": "We do not plan to make Claude Mythos Preview generally available",
+  "speaker": "Anthropic",
+  "date": "7 April 2026",
+  "source": "https://www.anthropic.com/glasswing",
+  "context": "Project Glasswing announcement (company statement)."
+ },
+ {
+  "id": "q14-glasswing-vulns",
+  "text": "thousands of high-severity vulnerabilities, including some in every major operating system and web browser",
+  "speaker": "Anthropic",
+  "date": "7 April 2026",
+  "source": "https://www.anthropic.com/glasswing",
+  "context": "Company claim about Mythos Preview (fragment)."
+ },
+ {
+  "id": "q14-amodei-dow",
+  "text": "Regardless, these threats do not change our position: we cannot in good conscience accede to their request.",
+  "speaker": "Dario Amodei (Anthropic statement)",
+  "date": "26 February 2026",
+  "source": "https://www.anthropic.com/news/statement-department-of-war",
+  "context": "On the Department of War's demand to drop limits on mass domestic surveillance and fully autonomous weapons; wording consistent across outlets quoting the statement."
+ },
+ {
+  "id": "q14-anthropic-directive",
+  "text": "The US government, citing national security authorities, has issued an export control directive to suspend all access to Fable 5 and Mythos 5 by any foreign national, whether inside or outside the United States, including foreign national Anthropic employees",
+  "speaker": "Anthropic (statement)",
+  "date": "12 June 2026",
+  "source": "https://www.nbcnewyork.com/news/national-international/anthropic-suspends-new-ai-models-after-government-directive/6512821/",
+  "context": "Statement on the Commerce Department directive (via NBC/AP); lifted 30 June."
+ },
+ {
+  "id": "q14-judge-lin",
+  "text": "were based on a desire to make a public example out of Anthropic for its 'arrogance' in criticizing the government, not based on any articulable basis to believe that Anthropic would actually sabotage its model.",
+  "speaker": "Judge Rita Lin (N.D. Cal.)",
+  "date": "27 August 2026",
+  "source": "https://www.bssnews.net/international/418711/US-court-rules-Pentagon-ban-of-Anthropic-unlawful",
+  "context": "Ruling that the government's actions against Anthropic were unlawful retaliation (fragment, via AP). Pair with the D.C. Circuit ruling."
+ },
+ {
+  "id": "q14-katsas",
+  "text": "The Department reasonably feared that Anthropic might manipulate Claude's design",
+  "speaker": "Judge Gregory Katsas (D.C. Circuit majority)",
+  "date": "25 September 2026",
+  "source": "https://www.cp24.com/news/world/2026/09/25/federal-court-says-pentagon-can-label-anthropic-a-supply-chain-risk/",
+  "context": "Upholding the supply-chain-risk designation 2-1; the definition turns 'on what Anthropic does, not why Anthropic does it.' (AP)."
+ },
+ {
+  "id": "q14-parnell",
+  "text": "Today's DC Circuit Court ruling completely validates the Department's position",
+  "speaker": "Sean Parnell (Pentagon spokesman)",
+  "date": "25 September 2026",
+  "source": "https://www.cp24.com/news/world/2026/09/25/federal-court-says-pentagon-can-label-anthropic-a-supply-chain-risk/",
+  "context": "Via AP."
+ },
+ {
+  "id": "q14-openai-unprecedented",
+  "text": "an unprecedented cyber incident, involving state-of-the-art cyber capabilities",
+  "speaker": "OpenAI",
+  "date": "21 July 2026",
+  "source": "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+  "context": "Disclosure that its test models breached Hugging Face (fragment)."
+ },
+ {
+  "id": "q14-openai-warningshot",
+  "text": "We consider this incident a 'warning shot' for us and for the world",
+  "speaker": "OpenAI",
+  "date": "26 August 2026",
+  "source": "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf",
+  "context": "Technical report on the Hugging Face incident (and 'road ahead' post); not the 21 July disclosure."
+ },
+ {
+  "id": "q14-schieber",
+  "text": "Either the incident was partially contrived for effect, or OpenAI's security operations for this evaluation were highly deficient",
+  "speaker": "Rob Schieber (Hugging Face community article)",
+  "date": "23 July 2026",
+  "source": "https://huggingface.co/blog/sheebz/codex-escape-something-aint-right",
+  "context": "A community post on the Hugging Face blog platform, not an official Hugging Face statement."
+ },
+ {
+  "id": "q14-pacing-letter",
+  "text": "We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development.",
+  "speaker": "'Pacing the Frontier' open letter (frontier-lab employees)",
+  "date": "28 July 2026",
+  "source": "https://6abc.com/story/employees-worlds-biggest-ai-companies-are-calling-slowdown-development/19596454/",
+  "context": "Signed by about 1,100-1,178 employees at launch."
+ },
+ {
+  "id": "q14-amodei-slow",
+  "text": "We must slow the pace at which we improve the capabilities of AI models.",
+  "speaker": "Dario Amodei",
+  "date": "12 September 2026",
+  "source": "https://darioamodei.com/post/we-must-pace-the-frontier",
+  "context": "'We Must Pace the Frontier' essay."
+ },
+ {
+  "id": "q14-amodei-unlikely",
+  "text": "I think it is unlikely to actually happen any time soon.",
+  "speaker": "Dario Amodei",
+  "date": "12 September 2026",
+  "source": "https://darioamodei.com/post/we-must-pace-the-frontier",
+  "context": "Same essay, of a government-agreed limit on AI development."
+ },
+ {
+  "id": "q14-pichai-gemini4",
+  "text": "We have started our most ambitious pre-training run yet, for Gemini 4, and are excited by the progress we are seeing at the frontier.",
+  "speaker": "Sundar Pichai",
+  "date": "23 July 2026",
+  "source": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/",
+  "context": "Prepared remarks, Alphabet Q2 2026 earnings call."
+ },
+ {
+  "id": "q14-trump-selfpolicing",
+  "text": "I think I'm seeing tremendous self-policing. And they understand that they have to self-police.",
+  "speaker": "Donald Trump",
+  "date": "29 September 2026",
+  "source": "https://www.infosecurity-magazine.com/news/trump-ai-giants-super-intelligence/",
+  "context": "On the voluntary White House Accord on Super Intelligence (via AP reporting)."
+ }
+]

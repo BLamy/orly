@@ -1,0 +1,66 @@
+{
+  "format": 3,
+  "kind": "film",
+  "slug": "perceptron-short",
+  "title": "The Machine That Learned to See",
+  "subtitle": "a one-minute silhouette short",
+  "accent": "#a01f3c",
+  "film": {
+    "runtime": 67.75,
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "timing": "locked",
+    "master": null,
+    "captions": "film.vtt",
+    "voice": {
+      "name": "Peter (library voice EapdDtSsMC291mjfSNe7) - middle-aged, well-spoken British factual narrator; replaces the too-old AK voice",
+      "voiceId": "EapdDtSsMC291mjfSNe7",
+      "model": "eleven_multilingual_v2"
+    },
+    "score": {
+      "engine": "strudel",
+      "cues": 1,
+      "musicSeconds": 67.8
+    },
+    "loudness": {
+      "I": -15.9,
+      "TP": -2.4,
+      "LRA": 4.5
+    },
+    "logline": "A grid of four hundred light cells, a nest of wires, and a rule for learning from mistakes.",
+    "vhs": {
+      "subject": "Computer Science",
+      "theme": "cosmos",
+      "icons": [
+        "crt",
+        "lightbulb",
+        "neuron",
+        "gear"
+      ],
+      "tagline": "Watch a machine learn to see!"
+    }
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Machine That Learned to See",
+      "blurb": "Rosenblatt's Mark I Perceptron learns from its mistakes.",
+      "scene": "films/perceptron-short",
+      "audio": "audio/chapter-1.m4a",
+      "cues": [
+        1.2,
+        5.608,
+        10.358,
+        16.058,
+        23.45,
+        28.513,
+        34.625,
+        41.484,
+        48.639
+      ],
+      "duration": 67.75,
+      "filmStart": 0
+    }
+  ]
+}

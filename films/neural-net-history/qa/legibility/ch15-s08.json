@@ -1,0 +1,509 @@
+{
+ "shot": "ch15-s08",
+ "at": "2026-10-14T01:25:45.005Z",
+ "minCapPx": 22,
+ "sampled": 64,
+ "texts": 99,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "1984–2023 · 39",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "RULES",
+   "capWhileSubject": 26.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "LEARNING",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "DATA",
+   "capWhileSubject": 26.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "FIRE",
+   "capWhileSubject": 26.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "capWhileSubject": 46.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "IT?",
+   "capWhileSubject": 46.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2014–2016 · 2",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "JAN 2025 · a day",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "How, exactly, does it",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "reach its answer?",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "THE FIELD, 2019–2025",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“satisfying insight for about a quarter of the",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "prompts we’ve tried”",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "anthropic, 2025",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“Attention is not Explanation”",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "jain & wallace, 2019",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOW FAR?",
+   "capWhileSubject": 36.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOW FAST?",
+   "capWhileSubject": 36.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "CASE FILE",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "STATUS: OPEN",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 19.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ANTHROPIC · 28 MAY 2021",
+   "maxCap": 19.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 13.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "years",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 18.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "said.",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HASSABIS · 2025",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "AGI in 5 to 10 years",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "· about even odds",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a",
+   "maxCap": 36.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 20.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1943",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 20.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1958",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 20.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1969",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 21.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1997",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1999",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2006",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2012",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2014",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2020",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2023",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "COMPUTE IS THE CHOKEPOINT",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2022",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHINA IS A YEAR OR TWO BEHIND",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE GAP IS MONTHS, NOT YEARS",
+   "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2025",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 22.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1970",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1986",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 17.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1989",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2017",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 19.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2018",
+   "maxCap": 26.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "as of October 2026",
+   "maxCap": 9.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WHO TAUGHT IT?",
+   "maxCap": 12.3,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 77
+}

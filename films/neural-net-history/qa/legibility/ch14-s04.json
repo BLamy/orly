@@ -1,0 +1,64 @@
+{
+ "shot": "ch14-s04",
+ "at": "2026-10-13T07:23:10.981Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 10,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "SEP 2024 · OPENAI o1",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LONG CHAIN OF THOUGHT,",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HIDDEN BY DESIGN",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "20 JANUARY 2025 · PREMIER’S SYMPOSIUM",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "liang wenfeng",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "founder of DeepSeek",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "27 JANUARY 2025",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "NVIDIA −17% · −$589B",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "RECORD 1-DAY LOSS FOR A US FIRM",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "R1",
+   "maxCap": 27.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 1
+}

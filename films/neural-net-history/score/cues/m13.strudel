@@ -1,0 +1,368 @@
+// m13 — THE SLIP, then DEEP DIVE II: Everything Looks at Everything (ch09-s05's hold + ch10).
+// Window 1239.34–1457.228 s (217.888 s) on the 2159.9583 s clock. One composer, one ostinato.
+// ROUND-2 RE-FIT (2026-10-13): L1013 was re-narrated ("About half runs to river: softmax, to the trade.", now
+//    93.83–101.70 cue-local) and everything after "river" moved +2.13 s; every anchor below is re-read from
+//    narration/timeline.json (cue-local = absolute − 1239.34). Review round 2 applied: THE CANDLE OUT is now heard:
+//    M1's rising fourth (E→A) and its held suspension sound in the clear gap between L1027 and L1030 (177.97–181.01)
+//    at about -20 LUFS momentary in the master, the suspension arriving on the cut to the candle (180.41); the fall
+//    A→G# lands in the clear after "two years" (186.66). MASKING: the cup, the "water's edge" bloom, the eight-heads
+//    glow and the ledger cadence had slid under L1013/L1014/L1019/L1025 on the new clock; they are back in the gaps,
+//    and the 300 Hz–3 kHz layers under those lines are thinned.
+// Key: the slip motif in D (A→D over A-E, solo celesta), then A minor (the scribe) → A MAJOR on "at once"
+// (the dominant: everything looks at everything) → the curtain's tap on C#, which steps up to D on "next"
+// (the pivot into m14's D major). 90 BPM where there is a grid; each section's grid is re-anchored to its
+// own picture beat. All times below are CUE-LOCAL seconds (absolute − 1239.34). Notes below this line that
+// quote times are from earlier clocks (history); the code's anchors are the authority.
+//
+// RE-FIT (review round 1): every hit moved to the new clock through its beat/word name. Review notes applied:
+//  * the score plucks of "two, nothing, four, two" sit in the micro-gaps AFTER each number, at D6 and above,
+//    soft; the halving repeats them in the gap after "them"; no harp doubling under the numbers
+//  * the pour arpeggio sounds A5 and above (celesta written ≥ a4) and lands on the cup AFTER "river"
+//  * the string bed is high-passed at 150 Hz everywhere; ch10-s05..s07 are thinned (no low string drone,
+//    no pulse under the cards, bells moved to D6+, the bass pulse halved in level)
+//  * the join: m13 enters at 1221.59 (0.8 s fade-in) inside the gap 1221.29–1227.43; the slip sounds alone
+// VOICE PASS (2026-10-11): measured speech-to-music per line (narration stem vs this render at gainDb, pre-duck) and
+//    cleared every line to >= 8 dB: the scribe's pizz step and cello softer under L1002; lunch's string chords moved
+//    above the voice (A4-E5, pp); the "at once" chord voiced in the outer registers only (A1-A2 + A4-A5) and the pulse
+//    entering pp, because "The Transformer" follows the word "once" by 0.9 s; the heads and the matrix voices softer
+//    under L1019 / L1025, with the dive's peak moved into the clear 3.4 s after "best" (IV-V-I, the ledger's cadence);
+//    the six-blocks climb soft under L1021 and blooming after it; bass and pulse trimmed under the curtain.
+// CRITIC r1 (2026-10-11): the densest technical lines were masked in 1-4 kHz. The high, bright voices (celesta, music box,
+//    vibraphone, harp, woodblock, attention piano) now drop 6-8 dB under every line (uv(); SPEECH below) and keep their
+//    level in the breaths; under L1015 the divide-by-eight arpeggio is full only in the breaths; the jam is a 0.6 s
+//    burst from "tips" that stops before "cup"; the frozen E6 lands on the line's end (1337.69); the jug figure under
+//    "Four words" plays only in L1011's breaths; the worked numbers sit dry and short in L1012's micro-gaps; the cup
+//    chord, the unison's high octave and the M1 strings under L1030 thinner. Median 1-4 kHz margin 2.5 → 8.7 dB.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): the window moved bodily +17.75 s (no line inside it changed length; every
+//    cue-local time below was checked against narration/timeline.json and still matches to the hundredth).
+// WORD PASS (2026-10-12): margins measured per spoken word (1-4 kHz, narration vs render at gainDb): the cards' last bell
+//    and the jug's first glint are gone before "Four"; the halving's last pluck is short and the pour starts in the
+//    micro-gap after "Pour"; the six blocks' top 'think' notes release before "Why"; the at-once chord's tails shortened
+//    before "Its title"; the at-once ostinato keeps only its downbeats under "Attention Is All You Need"; M1's high
+//    strings under L1030 a little thinner.
+//
+//   0.00–  3.74 THE SLIP        celesta A→D landing on slipPinned 2.10, A-E fifth beneath; again softer on draught 3.30
+//   3.74– 13.62 THE SCRIBE      solo cello lights M1 in A (E2→A2 on "candle" 6.24); a plucked step on twos, each quieter
+//  13.62– 26.70 ATTENTION       the cello holds; piano pairs high (≥E5), the 2nd note where the light lands; F lift on "bend"
+//  26.70– 41.79 LUNCH           low pizz + high celesta in conversation, cutlery ticks; M1's suspension (A over E-B) on "doubted"
+//  41.79– 49.11 SILENCE         "Drop the word-by-word reader" in silence; darkBeat 45.57 is the darkest point
+//  49.11– 61.58 ALL AT ONCE     every voice of A major struck together on "once"; the machine ostinato locks to downbeats
+//  61.58– 78.24 THREE CARDS     bells (sounding E6 / C#6 / A5) on q / k / v; M3 forward (A C# E A → C#) after "messenger"
+//  78.24–106.29 THE JUG         sparse high figure; the scores in the gaps after the numbers; a pour landing after "river";
+//                               a small high pour on "messages"; IV→I on "water's edge", blooming in the gap
+// 106.29–126.29 DIVIDE BY 8     the arpeggio jams on one note (slam 113.26), freezes (115.53); flows warm on "soft" 117.46
+// 126.29–136.91 EIGHT HEADS     on "eight" 129.35 eight voices enter one by one (M5d in A, panned); full chord in the gap 132.84
+// 136.91–150.45 CLOCKS         a shuffled figure that sums the same; three ticking layers from "clock" 144.12
+// 150.45–159.58 SIX BLOCKS     talk/think figure six times, a step higher each time, over the pulse; the lane pedal
+// 159.58–178.29 THE MATRIX     all eight voices in UNISON on "multiplication" 165.47; cadence on "records" 171.44; the low crowd
+// 178.29–189.87 CANDLE OUT     high strings carry M1 in full: E→A lit on candleOut, A over E-B, A→G# on "two" 183.75
+// 189.87–215.76 THE CURTAIN    a typesetter's tap on C#; on "next" 211.03 it steps up to D (celesta), over nothing
+const DUR = 217.888, BPM = 90
+const VEL = 2.45         // global velocity scale (loudness trim: about -21 LUFS integrated)
+// ---- seconds-based event compiler (shared by m13-m18) ----------------------------------------
+// Events are [startSec, holdSec, notes, velocity, {per-event params}] in cue-local seconds. Each lane
+// is compiled to one mini-notation sequence that spans SPAN seconds, then slowed to SPAN·cps cycles,
+// so every onset lands exactly where the clock needs it, independent of the tempo grid.
+const CPS = BPM / 240
+setcps(CPS)
+const SPAN = Math.ceil(DUR) + 4
+const DFLT = { pan: .5, lpf: 18000, attack: .01, release: .3 }
+const r4 = (x) => (Math.round(x * 10000) / 10000).toFixed(4)
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = evs.filter((e) => e && e[0] < DUR).sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = new Set(Object.keys(defs))
+  for (const e of sorted) if (e[4]) for (const k of Object.keys(e[4])) keys.add(k)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + r4(e[0] - pos))
+      out.push(val(e) + '@' + r4(e[1]))
+      pos = e[0] + e[1]
+    }
+    if (SPAN - pos > 1e-6) out.push('~@' + r4(SPAN - pos))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => r4(Math.min(1, e[3] * VEL))))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DFLT[k] != null ? DFLT[k] : 0)))
+    return p.slow(SPAN * CPS)
+  }))
+}
+// a run of notes on a grid: from t0 (inclusive) to t1 (exclusive), one onset every `step` seconds,
+// cycling through `notes`; vel may be a number or a function of (i, t); len = hold as a fraction of step
+function run(t0, t1, step, notes, vel, len, params) {
+  const out = []
+  for (let i = 0, t = t0; t < t1 - 1e-6; i++, t = t0 + i * step) {
+    const n = notes[i % notes.length]
+    if (n === '~') continue
+    const v = typeof vel === 'function' ? vel(i, t) : vel
+    if (v <= 0) continue
+    out.push([t, step * (len || 1), n, +v.toFixed(3), typeof params === 'function' ? params(i, t) : params])
+  }
+  return out
+}
+// the narrator's lines (cue-local seconds, narration/timeline.json): the high, bright voices (celesta, music box,
+// vibraphone, harp, woodblock, high piano) are written around them. uv(evs, k) scales an event's velocity by k and
+// shortens its release when its onset falls inside a line (or 0.12 s before one); events tagged 'x' in slot 5
+// are placed hits that keep their level (they sit in micro-gaps or on a picture beat).
+const SPEECH = [[5.84, 12.21], [14.22, 24.59], [27.30, 33.06], [33.61, 39.35], [43.19, 50.93], [51.53, 59.95], [62.18, 75.61], [78.84, 87.85], [88.40, 93.23], [93.83, 101.70], [102.25, 106.61], [109.01, 114.40], [114.95, 118.20], [118.80, 126.97], [130.01, 134.96], [139.63, 144.39], [145.00, 150.87], [153.18, 157.38], [162.30, 170.96], [174.36, 177.97], [181.01, 186.66], [192.59, 205.57], [206.12, 213.59]]
+const speaking = (t) => SPEECH.some(([a, b]) => t >= a - .12 && t < b)
+function uv(evs, k, rel) {
+  return evs.map((e) => (!e || e[5] === 'x' || !speaking(e[0]) ? e
+    : [e[0], e[1], e[2], +(e[3] * k).toFixed(4), Object.assign({}, e[4] || {}, { release: Math.min(rel || .7, (e[4] && e[4].release) || 9) })]))
+}
+const X = (e) => (e[5] = 'x', e)                    // keep this hit's level
+// ------------------------------------------------------------------------------------------------
+const B = 60 / BPM, E = B / 2, S16 = B / 4          // beat .6667, eighth .3333, sixteenth .1667
+const fade = (v0, k) => (i) => v0 * Math.pow(k, i)
+
+// ---- anchors (cue-local seconds, from narration/timeline.json) ----
+const SLIP = 2.10, DRAUGHT = 3.30, CUT = 3.74                       // slipPinned, draught, the cut into ch10
+const CANDLE = 6.24                                                  // candleLit ("candle")
+const ATT = 13.62, BEND = 23.92                                      // ch10-s02, bend ("attention")
+const LUNCH = 26.70, DOUBT = 33.58, HOLD_END = 41.70                 // ch10-s03, "Colleagues doubted it", the reading hold
+const ONCE = 49.11                                                   // allLight ("once")
+const Q = 67.04, K = 69.53, V = 71.60, MSG_END = 75.61, ALLCARDS = 77.01
+const JUG = 78.24, MULT_END = 86.89, ADD_END = 87.85
+const N1 = 89.63, N2 = 90.44, N3 = 91.16, N4 = 91.85                // the micro-gaps after "two", "nothing", "four", "two"
+// round-2 clock: L1013 now runs on past "river" (99.47) to "trade" (101.70); everything after it is +2.13 s
+const THEM_END = 93.24, POUR = 93.83, RIVER = 99.47, TRADE_END = 101.72, MESSAGES = 103.19, EDGE = 106.13, EDGE_END = 106.63
+const DIV = 108.41, SLAM = 115.39, FREEZE = 117.65, FREEZE_END = 118.22, SOFT = 119.59, HALVED = 126.45
+const EIGHT = 131.47, GLOW = 134.99
+const SHUFFLE = 139.63, CLOCK = 146.25
+const TALK = 153.61
+const UNISON = 167.60, IV_ = 171.03, V_ = 172.37, RECORDS = 173.57, CATCH = 174.54, FOUR_T = 176.45, LOOKING_END = 177.97
+const LIT = 178.62, CUT_OUT = 180.41, L1030_ON = 181.01                // THE CANDLE OUT: lit in the clear, doubted on the cut
+const OUT_ = 181.32, ORDER_END = 183.73, TWO = 185.88, LINE_END = 186.66
+const CURTAIN = 191.99, NEXT = 213.16, NEXT_END = 213.64
+const HALVED_END = 127.02                                            // the clear after "so we halved" (L1017 ends 126.97)
+const SH = 2.13                                                      // the round-2 shift, for grid literals after "river"
+// ROUND-2 VOICE PASS (render 2): 1-4 kHz trims under L1002 (scribe), L1009 (the at-once chord), L1012 (the numbers),
+//    L1016 (the jam), L1017 (the soft pour) and L1025 (the unison's high voices), each 2-3 dB.
+// section grids carried over from the earlier clock, each re-anchored on its own picture beat
+const A1 = ONCE - 41.90       // ALL AT ONCE, on "once"
+const HD = EIGHT - 122.15     // EIGHT HEADS, on "eight"
+const BLK = TALK - 138.40     // SIX BLOCKS, on "talk"
+const MAT = UNISON - 152.39   // THE MATRIX, on "multiplication"
+
+// ═══ CELLO (solo; the scribe, the lift, the doubt, the honest card) ═══════════════════════════════════════
+$: line([
+  [CUT, 2.0, 'a2', .16, { attack: .6, release: .8 }],             // the scribe's A enters at the cut, under the slip's fifth
+  [CANDLE - .38, .38, 'e2', .19, { attack: .08, release: .6 }],    // M1 lit: rising fourth E→A on "candle"
+  [CANDLE, 6.0, 'a2', .13, { attack: .15, release: 1.6 }],
+  [ATT - .3, 4.4, 'a2', .11, { attack: .6, release: 1.2 }],        // the cello holds under "attention" (re-struck: the bow swell sits in gaps)
+  [ATT + 4.2, 5.8, 'a2', .10, { attack: .8, release: 1.2 }],
+  [BEND, 3.0, 'f2', .22, { attack: .5, release: 1.8 }],            // the lift on "bend"
+  [DOUBT, 8.1, 'e2', .11, { attack: .5, release: .9 }],            // the doubt's floor (E under the held A)
+  [LIT - .3, .3, 'e3', .13, { attack: .06, release: .3 }],          // the candle's fourth, doubled low (in the clear)
+  [LIT, CUT_OUT - LIT + .3, 'a3', .13, { attack: .1, release: .4 }],
+  [LINE_END + 1.4, 4.0, 'e2', .13, { attack: 1.2, release: 1.6 }],  // the honest card: one sustained note
+], { attack: .3, release: 1.5 }).s('gm_cello').lpf(900).hpf(40).room(.35).rsize(3).orbit(1)
+
+// ═══ CONTRABASS (the floor) ════════════════════════════════════════════════════════════════════════════
+$: line([
+  [ONCE, 5.2, 'a1', .10, { attack: .05, release: 1 }],
+  [A1 + 47.23, 2.6, 'f#1', .12], [A1 + 49.90, 2.6, 'd2', .12], [A1 + 52.57, 1.8, 'e2', .15],
+  [RIVER, 2.4, 'a1', .09, { attack: .1, release: .8 }],            // the cup fills (on "river": the cups settle)
+  [EDGE + .15, .35, 'd2', .14], [EDGE_END, 1.9, 'a1', .19, { release: 1.2 }],
+  [GLOW, 3.9, 'a1', .22, { attack: .2, release: 1.4 }],            // the hall glows
+  [BLK + 142.40, 4.0, 'a1', .20, { attack: 1.2, release: 1 }],   // the highway lane pedal
+  [UNISON, 3.2, 'a1', .11, { attack: .02, release: 1 }],           // unison
+  [IV_, 1.3, 'd2', .21], [V_, 1.2, 'e2', .19], [RECORDS, .8, 'a1', .16, { release: 1.2 }],
+  [CATCH - .1, 3.6, '[a1,bb1]', .10, { attack: .6, release: .8 }], // the crowd
+  [LIT, CUT_OUT - LIT, 'a1', .13, { attack: .25, release: .5 }],    // THE CANDLE OUT: lit (A) ...
+  [CUT_OUT, LINE_END - CUT_OUT, 'e2', .10, { attack: .3, release: .6 }],   // ... doubted (E under the held A) ...
+  [LINE_END + .19, 2.2, 'e2', .12, { attack: .1, release: 1.4 }],  // ... gone (E major: A falls to G#)
+  [CURTAIN + .5, 5.6, 'a1', .12, { attack: 1.5 }], [CURTAIN + 6.6, 4.4, 'f#1', .11, { attack: 1 }],
+  [CURTAIN + 11.4, 5.2, 'd2', .11, { attack: 1 }], [CURTAIN + 16.9, 3.3, 'e2', .11, { attack: .8, release: .6 }],
+], { attack: .3, release: 1.2 }).s('gm_contrabass').lpf(380).hpf(40).room(.3).rsize(3).orbit(1)
+
+// ═══ PIZZ: the scribe's step on twos (each a touch quieter), lunch's low talk, the jug's pulse, the six blocks' "talk" ═══
+const LUNCH_PAT = ['a2', '~', 'e3', 'c3', '~', 'e3', 'a2', '~', 'g2', '~', 'd3', 'b2', '~', 'g2', 'c3', '~']
+$: line([
+  ...run(CANDLE, 19.6, 2 * B, ['a2', 'e3', 'c3', 'e3'], fade(.15, .9), .5),
+  // LUNCH: the low half of the conversation (8ths, below 300 Hz)
+  ...run(LUNCH + .16, DOUBT - .3, E, LUNCH_PAT, (i, t) => (t < 30.4 ? .15 : .12), .6),
+  // THE JUG: a soft bass pulse in halves (thinned: review asked for room under ch10-s06)
+  ...run(JUG + .6, RIVER - .1, 2 * B, ['a2', 'e2'], .10, .6),
+  // DIVIDE BY EIGHT: quarters under the arpeggio; drop out on the slam; back on "soft"
+  ...run(DIV + .3, SLAM - .1, B, ['a2', 'e2', 'a2', 'c#3'], .10, .6),
+  ...run(SOFT, HALVED - .2, B, ['a2', 'e2', 'a2', 'c#3'], .10, .6),
+  // SIX BLOCKS: "talk" = two plucks a third apart, a step higher each time (A B C# D E F#)
+  ...[['a2', 'c#3'], ['b2', 'd3'], ['c#3', 'e3'], ['d3', 'f#3'], ['e3', 'g#3'], ['f#3', 'a3']].flatMap(([x, y], r) => [
+    [BLK + 138.40 + r * 2 * B, E * .8, x, [.13, .14, .15, .24, .27, .30][r]], [BLK + 138.40 + r * 2 * B + E, E * .8, y, [.13, .14, .15, .24, .27, .30][r]]]),
+], { release: .5 }).s('gm_pizzicato_strings').lpf(1400).room(.4).rsize(3).orbit(4)
+
+// ═══ PIANO: attention pairs (high), the "at once" chord, the eight-heads floor, the cadence ═══════════════
+$: line([
+  ...uv([...[['e5', 'a5'], ['c6', 'b5'], ['a5', 'e6'], ['d6', 'c6'], ['e6', 'a5'], ['b5', 'e6']].flatMap(([x, y], i) => [
+    [ATT + 4.29 + i, .3, x, .12], [ATT + 4.29 + i + .33, .6, y, .15]]),
+  ], .5),
+  X([24.62, .3, 'f6', .16]), X([24.95, 1.4, 'e6', .19]),                     // the lift: F colour, in the breath after "attention" (round 2)
+  [ONCE, 1.6, '[a1,a2,a4,e5,a5]', .04, { release: .8 }],                 // EVERY VOICE, AT ONCE (outer registers: 'The Transformer' follows at once)
+  [GLOW, 1.4, '[a1,a2]', .24, { release: 1.6 }],
+  [UNISON, 1.4, '[a1,a2]', .06, { release: 1.6 }],                              // unison (the high A is left to the bells)
+  [RECORDS, 1.0, '[a1,a2,e3,a3,c#4]', .115, { release: .9 }],                  // the ledger's cadence
+], { release: 1.4 }).s('piano').lpf(3200).room(.5).rsize(4).orbit(7)
+
+// ═══ STRINGS (gm_string_ensemble_1): soft harmony (hpf 150, lpf), swells only in the gaps ═════════════════
+$: line([
+  [SLIP + .45, 4.2, '[a2,e3]', .08, { attack: .9, release: 1.8, lpf: 900 }],  // the slip's A-E fifth slides in beneath
+  [BEND, 3.3, '[f3,a3,c4,e4]', .14, { attack: 1, release: 2 }],               // the lift (gap 24.59–27.30)
+  [LUNCH + .6, 2.9, '[a4,c5,e5]', .035, { lpf: 1700 }], [LUNCH + 3.5, 1.9, '[g4,c5,e5]', .035, { lpf: 1700 }], [LUNCH + 5.4, 1.5, '[f4,a4,c5]', .035, { lpf: 1700 }],
+  [DOUBT, 8.1, '[b2,e3]', .07, { attack: .6, release: .9 }],                    // DOUBTED: E-B under the held A
+  [DOUBT, 8.1, 'a5', .065, { attack: .8, release: .9, lpf: 1900 }],            // the flame (A), unmoved, above the voice
+  [ONCE, .9, '[a4,c#5,e5,a5]', .028, { attack: .25, release: 1.0, lpf: 2600 }],
+  [A1 + 42.60, 1.97, '[e3,a3,c#4]', .05, { attack: .8 }],
+  [A1 + 44.57, 2.66, '[e3,a3,c#4]', .055], [A1 + 47.23, 2.67, '[f#3,a3,c#4]', .055],
+  [A1 + 49.90, 2.67, '[f#3,a3,d4]', .055], [A1 + 52.57, 2.4, '[e3,g#3,b3]', .10, { attack: .9, release: 2 }],
+  [ALLCARDS - .2, 1.6, '[e3,a3,c#4]', .10, { attack: .6, release: 1.4 }],     // under the M3 forward pass (no drone under the cards)
+  [EDGE + .15, .35, '[d3,f#3,a3]', .05, { attack: .2, release: .4 }],          // IV (on "edge", soft) ...
+  [EDGE_END, 1.6, '[e3,a3,c#4,e4]', .14, { attack: .3, release: .9, lpf: 1800 }],   // ... I: "water's edge", in the gap
+  [SOFT, 6.8, '[e3,a3,c#4]', .055, { attack: 1.2, release: 1.2, lpf: 1100 }],             // warmer: it pours softly
+  [GLOW, 3.9, '[a2,e3,a3,c#4,e4,a4]', .16, { attack: .25, release: 1.4, lpf: 2400 }],  // the hall glows
+  [GLOW, 3.9, '[c#6,e6]', .12, { attack: .4, release: 1.4, lpf: 4000 }],
+  [SHUFFLE - .2, 12.6, '[e3,a3]', .055, { attack: 1.5, release: 1 }],         // shuffle + clocks' held chord
+  [BLK + 142.30, 4.3, '[e3,a3]', .11, { attack: 1.5, release: .8 }],         // the lane
+  [MAT + 146.60, 5.6, '[e3,a3,c#4]', .05, { attack: 1.5, release: .3 }],
+  [UNISON, 3.2, '[a2,a3]', .05, { attack: .03, release: 1 }],                  // UNISON
+  [UNISON, 2.2, '[a5,a6]', .025, { attack: .1, release: 1, lpf: 3500 }],
+  [IV_, 1.3, '[d3,f#3,a3,d4,f#4]', .21, { attack: .15 }],                          // cadence in the gap: IV ...
+  [V_, 1.2, '[e3,g#3,b3,e4,g#4]', .175, { attack: .1 }],                           // ... V ...
+  [RECORDS, .6, '[a2,e3,a3,c#4,e4]', .16, { attack: .05, release: .7, lpf: 2000 }],  // ... I on "records"
+  // M1 IN FULL, high and thin over a low E-B, as the read-in-order candle goes out:
+  // E→A lit on candleOut, A held while E-B slides under (doubted), A→G# on "two" (gone)
+  // review round 2: it is HEARD now. LIT in the clear after "looking" (E→A over A major), the suspension arriving on
+  // the cut to the candle (E-B slides under the held A), the line rides over a thin low E-B and a pp A, and the
+  // fall (A→G#, E major: the half-cadence) lands in the clear after "two years", under the honest card.
+  [LIT - .3, .3, 'e5', .15, { attack: .07, release: .3, lpf: 2400 }],
+  [LIT, CUT_OUT - LIT + .25, 'a5', .16, { attack: .12, release: .45, lpf: 2400 }],
+  [LIT, CUT_OUT - LIT, '[a2,e3,a3,c#4]', .13, { attack: .3, release: .5 }],
+  [CUT_OUT, L1030_ON - CUT_OUT - .05, '[e3,b3]', .11, { attack: .25, release: .35 }],
+  [CUT_OUT, LINE_END - CUT_OUT, '[e2,b2]', .07, { attack: .3, release: .6 }],
+  [L1030_ON - .25, LINE_END - L1030_ON + .25, 'a5', .035, { attack: .5, release: .4, lpf: 1600 }],
+  [LINE_END + .19, 1.8, 'g#5', .15, { attack: .1, release: 1.8, lpf: 2200 }],
+  [LINE_END + .19, 1.8, '[e2,b2,e3,g#3]', .10, { attack: .2, release: 1.8 }],
+  // THE CURTAIN: a slow A – F#m – D – E under the two lines, then nothing beneath the D
+  [CURTAIN + .5, 6.1, '[e3,a3]', .06, { attack: 2 }], [CURTAIN + 6.6, 4.8, '[f#3,a3]', .055, { attack: 1.2 }],
+  [CURTAIN + 11.4, 5.5, '[f#3,a3]', .055, { attack: 1.2 }], [CURTAIN + 16.9, 3.4, '[e3,g#3,b3]', .055, { attack: 1, release: .6 }],
+], { attack: .8, release: 1.5, lpf: 1300 }).s('gm_string_ensemble_1').hpf(150).room(.6).rsize(4).orbit(2)
+
+// ═══ CELESTA (sounds an octave above the written note) ═════════════════════════════════════════════════
+const heads = ['e4', 'a4', 'c#5', 'e5', 'f#5', 'g#5', 'a5', 'b5']     // written: sounding E5 A5 C#6 E6 F#6 G#6 A6 B6
+$: line(uv([
+  // THE SLIP MOTIF (m12's pitches, as m21 resolves them): A→D landing on slipPinned; again, softer, on the draught
+  [SLIP - .25, .25, 'a3', .34, { release: 1.2 }], [SLIP, 1.0, 'd4', .36, { release: 2.2 }],
+  [DRAUGHT - .25, .25, 'a3', .21, { release: 1.2 }], [DRAUGHT, 2.4, 'd4', .22, { release: 2.6 }],
+  // LUNCH: the high half of the conversation
+  ...run(LUNCH + .16 + 4 * E, DOUBT - .3, E, ['e5', '~', 'c5', '~', '~', '~', '~', '~', 'd5', '~', 'b4', '~', '~', '~', '~', '~'], .12, 1),
+  // ALL AT ONCE: struck with the chord, then a soft high ostinato (A E C# E) locked to the downbeat
+  [ONCE, 1.2, '[a4,c#5,e5]', .09, { release: .9 }],
+  ...run(A1 + 44.57, A1 + 54.2, E, ['a4', 'e5', 'c#5', 'e5'], (i, t) => (i % 4 === 0 ? .11 : t > 52.55 && t < 54.55 ? 0 : .08), 1),  // downbeats only under the paper's title
+  // THREE CARDS: one bell per card on its word (sounding E6 / C#6 / A5: above the voice), soft
+  [Q, 2.3, 'e5', .16, { release: 2.5 }], [K, 2.0, 'c#5', .15, { release: 2.5 }], [V, 2.2, 'a4', .14, { release: 2.5 }],
+  // M3 forward after "messenger" (in the clear: A C# E A), landing on the third (C#) on allCards
+  [MSG_END + .05, .3, 'a3', .2], [MSG_END + .31, .3, 'c#4', .2], [MSG_END + .57, .3, 'e4', .22], [MSG_END + .83, .5, 'a4', .24],
+  [ALLCARDS, 1.0, 'c#5', .26, { release: .6 }],
+  // THE JUG: the high figure only in the breaths of L1011 (before "Four", after "bank", "label", "way")
+  [JUG + .05, .35, 'a4', .06, { release: .35 }], X([80.95, .3, 'e5', .07, { release: .5 }]), X([83.40, .3, 'c#5', .07, { release: .5 }]), X([85.83, .3, 'e5', .07, { release: .5 }]),
+  // the jug pours: falling arpeggios through A – D – F#m – E, all sounding A5 and above, landing after "river"
+  ...['e6', 'c#6', 'a5', 'e5', 'f#6', 'd6', 'a5', 'f#5', 'e6', 'c#6', 'a5', 'f#5', 'e6', 'b5', 'g#5', 'e5']
+    .map((n, i) => [POUR + .3 + i * (5.0 / 16), .4, n, +(.10 - i * .002).toFixed(3)]),
+  [RIVER, 1.0, '[a4,c#5,e5]', .07, { release: .8 }],                           // the cup fills on "river" (under the line: uv)
+  ...['e6', 'c#6', 'a5', 'e5'].map((n, i) => [MESSAGES + i * .25, .3, n, .07]),   // a second, smaller pour, very high
+  [EDGE_END + .03, 1.8, 'c#5', .14],                                          // the top of "water's edge"
+  // DIVIDE BY EIGHT: the arpeggio, then it jams on one note (slam), then nothing (freeze)
+  ...run(DIV + .3, SLAM - .1, E, ['a4', 'c#5', 'e5', 'c#5'], .08, 1, (i, t) => (t > 112.2 + SH ? { release: .45 } : undefined)),
+  // the jam: a 0.6 s stuck burst from "tips", stopping well before "cup" (the freeze lands after the line)
+  ...run(SLAM, SLAM + .6, S16, ['e5'], (i) => .058 - .009 * i, 1, { release: .2 }).map(X),
+  X([HALVED_END, .28, 'e5', .17]), X([HALVED_END + .28, 1.2, 'a5', .19]),    // the bright tag after "so we halved" (round 2: in the clear)
+  // EIGHT HEADS (voices 0, 2, 4, 6 here; 1 on vibraphone, 3, 5, 7 on music box below)
+  ...[0, 2, 4, 6].flatMap((k) => run(EIGHT + k * .45, GLOW + 3.8, B, [heads[k]], (i, t) => (t > HD + 127.5 ? .06 : t < GLOW - .05 ? .07 : .12), 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  // CLOCKS: under "shuffle", a four-note figure and its shuffle (same notes, same sum), very soft
+  ...['e4', 'c#5', 'a4', 'e5', 'a4', 'e5', 'c#5', 'e4'].map((n, i) => [SHUFFLE + .1 + i * B, B, n, .07]),
+  ...['e4', 'c#5', 'a4', 'e5'].map((n, i) => [SHUFFLE + 5.0 + i * B, B, n, .06]),
+  // the minute hand (one note every two beats) from "clock"
+  ...run(CLOCK, 150.2 + SH, 2 * B, ['e5', 'c#5'], .10, 1, { pan: .7 }),
+  // SIX BLOCKS: "think" = one held note, a step higher each time (sounding A5 B5 C#6 D6 E6 F#6)
+  ...['a4', 'b4', 'c#5', 'd5', 'e5', 'f#5'].map((n, r) => [BLK + 138.40 + r * 2 * B + B, B * 1.2, n, .15 + r * .015, r > 3 ? { release: .45 } : undefined]),
+  // THE MATRIX: the heads return scattered, then everything converges on A
+  ...[0, 2, 4, 6].flatMap((k) => run(MAT + 148.60 + k * .27, UNISON - .19, B, [heads[k]], .05, 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  [UNISON, 1.2, '[a4,a5]', .055],
+  ...run(UNISON + E, MAT + 155.6, E, ['a4'], (i) => .08 - i * .006, 1),
+  [RECORDS, .8, '[e4,a4,c#5]', .12, { release: .8 }],
+  // THE CURTAIN: the typesetter's tap on C# (sounding C#6), thinning under the second line ... and on
+  // "next" it steps up to D (sounding D6), over nothing
+  ...run(CURTAIN + .6, 203.4 + SH, B, ['c#5'], .09, .5),
+  ...run(204.0 + SH, NEXT - 1.0, 2 * B, ['c#5'], .08, .5),
+  X([NEXT, .45, 'c#5', .07]), X([NEXT_END, 3.0, 'd5', .19, { release: 3.6 }]),  // round 2: C# on "next", the step to D just after it
+], .4), { release: 1.4 }).s('gm_celesta').room(.65).rsize(4).orbit(3)
+
+// ═══ DRY CELESTA: the worked numbers, placed in the micro-gaps of L1012, short and nearly dry so nothing rings
+// into the next number ("two, nothing, four, two" = sounding F#6 D6 A6 F#6; halved: an octave lower, after "them")
+$: line([
+  [N1, .3, 'f#5', .05], [N2, .26, 'd5', .046], [N3, .26, 'a5', .05], [N4, .3, 'f#5', .05],
+  [THEM_END + .02, .14, 'f#4', .065], [THEM_END + .16, .14, 'd4', .06], [THEM_END + .30, .14, 'a4', .065], [THEM_END + .44, .14, 'f#4', .06],
+], { release: .3 }).s('gm_celesta').room(.15).rsize(1.5).orbit(8)
+
+// ═══ VIBRAPHONE (export hangs at E6 and above: keep it at or below C6) / MUSIC BOX / HARP ═══════════════
+$: line(uv([
+  X([HALVED_END + .28, 1.2, 'a5', .11]),
+  ...[1].flatMap((k) => run(EIGHT + k * .45, GLOW + 3.8, B, ['a5'], (i, t) => (t > HD + 127.5 ? .065 : t < GLOW - .05 ? .075 : .13), 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  ...[1].flatMap((k) => run(MAT + 148.60 + k * .27, UNISON - .19, B, ['a5'], .05, 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  [UNISON, 1.6, '[a4,a5]', .045],
+], .5), { release: 2 }).s('gm_vibraphone').room(.6).rsize(4).orbit(3)
+
+$: line(uv([
+  [Q, 2.0, 'e6', .07], [K, 2.0, 'c#6', .07], [V, 2.0, 'a5', .07],                 // the cards' bells, doubled pp
+  ...run(SLAM, SLAM + .6, S16, ['e6'], .025, 1),                                   // the jam, cold (a burst)
+  ...[3, 5, 7].flatMap((k) => run(EIGHT + k * .45, GLOW + 3.8, B, [{ 3: 'e6', 5: 'g#6', 7: 'a6' }[k]], (i, t) => (t > HD + 127.5 ? .06 : t < GLOW - .05 ? .07 : .12), 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  ...[3, 5, 7].flatMap((k) => run(MAT + 148.60 + k * .27, UNISON - .19, B, [{ 3: 'e6', 5: 'g#6', 7: 'a6' }[k]], .045, 1, { pan: +(.12 + k * .108).toFixed(3) })),
+  [UNISON, 1.2, 'a6', .045],
+  X([NEXT_END, 2.5, 'd6', .1, { release: 2.5 }]),                                      // the D, doubled pp
+], .4), { release: 1.5 }).s('gm_music_box').room(.6).rsize(4).orbit(3)
+
+$: line(uv([
+  X([MULT_END + .02, .3, 'e5', .10, { release: .5 }]), [ADD_END + .05, .25, 'a5', .09, { release: .3 }],              // "multiply, and add": in the gaps, high
+  [RIVER, 1.0, '[a4,c#5,e5]', .05, { release: .8 }],                          // the cup, light
+  [EDGE, .5, '[d4,f#4,a4]', .09], [EDGE_END, 1.8, '[a3,e4,a4,c#5,e5]', .15],      // IV → I, blooming in the gap
+  ...run(SOFT, HALVED - .2, E, ['a5', 'c#6', 'e6'], (i) => (i % 3 === 0 ? .07 : .045), 1),   // it pours softly (three notes)
+  ...run(CLOCK, 150.2 + SH, 4 * B, ['a2'], .10, 1, { pan: .5 }),                                 // the hour hand
+  [UNISON, 1.6, '[a2,a3]', .06],
+], .5), { release: 1.6 }).s('gm_orchestral_harp').room(.5).rsize(3).orbit(4)
+
+// ═══ GLASS (gm_pad_bowed): the freeze ════════════════════════════════════════════════════════════════════
+$: line([
+  [FREEZE_END, .9, 'e6', .09, { attack: .05, release: .5 }],                     // frozen: on the line's end, in the clear
+]).s('gm_pad_bowed').lpf(5000).room(.6).orbit(3)
+
+// ═══ WOOD: cutlery at lunch, the second hand ═════════════════════════════════════════════════════════════
+$: line(uv([
+  ...[.92, 1.65, 2.52, 2.88, 3.90, 4.77, 5.13, 6.04].map((t, i) => [LUNCH + t, .1, i % 2 ? 'e6' : 'a6', .07]),
+  ...run(CLOCK, 150.2 + SH, E, ['a6', 'e6'], (i) => (i % 2 ? .05 : .07), 1, { pan: .3 }),
+], .5)).s('gm_woodblock').room(.2).orbit(6)
+
+// ═══ THE MACHINE PULSE (oscillator, M5 in A): at once, eight heads, six blocks, the matrix, the crowd ═══
+$: line([
+  ...run(ONCE, A1 + 54.30, E, ['a1', 'a2', 'e2', 'a2'], (i, t) => (t < 50.9 ? .07 : t < 51.5 ? .13 : .11) + (i % 4 === 0 ? .02 : 0), .6),
+  ...run(A1 + 54.38, Q - .2, 2 * B, ['a1'], .11, .5),                            // thinned, then gone under the cards
+  ...run(HD + 119.38, HD + 129.5, E, ['a1', 'a2', 'e2', 'a2'], (i, t) => (t < 127.7 + SH ? .17 + Math.min(.05, (t - HD - 119.38) * .02) : t < 132.8 + SH ? .12 : .2), .6),
+  ...run(CLOCK, 150.2 + SH, B, ['a1'], .10, .5),
+  ...run(BLK + 137.38, BLK + 146.5, E, ['a1', 'a2', 'e2', 'a2'], (i, t) => (t < 155.3 + SH ? .11 : .15 + (t - 155.3 - SH) * .025), .6),
+  ...run(MAT + 146.5, UNISON - .09, E, ['a1', 'a2', 'e2', 'a2'], (i, t) => (t < 160.1 + SH ? .2 : .12), .6),
+  ...run(UNISON, MAT + 155.7, E, ['a1', 'a2'], (i, t) => (t < 168.85 + SH ? .09 : .16), .6),                         // UNISON
+  ...run(CATCH - .07, FOUR_T - .03, E, ['[a1,bb1]', '[a1,bb1]', '[a1,bb1,c2]', '[a1,bb1,c2]', '[a1,bb1,c2]'], .11, .6),   // twice the words
+  ...run(FOUR_T, LOOKING_END + .2, S16, ['[a1,bb1,c2]'], .12, .7),               // four times the looking
+]).s('sawtooth').lpf(520).hpf(40).decay(.18).sustain(0).gain(.32).room(.2).orbit(5)
+
+// loudness trim (render 1 measured -23.6 LUFS integrated; speech -24.9 / gaps -21.8 momentary)
+all((x) => x.postgain(1.32))

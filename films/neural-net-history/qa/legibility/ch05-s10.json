@@ -1,0 +1,194 @@
+{
+ "shot": "ch05-s10",
+ "at": "2026-10-13T04:13:29.393Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 36,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "jerry fodor · zenon pylyshyn",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1988",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "THE GIRL LOVES JOHN",
+   "capWhileSubject": 34.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "JOHN LOVES THE GIRL",
+   "capWhileSubject": 34.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "still argued · a 2023 reply claims to meet it",
+   "capWhileSubject": 25.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 47.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 47.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 19.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 19.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 19.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 18.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL · 1958",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL ·",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHESS CHAMPION BY",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1968",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 1968",
+   "maxCap": 19,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 20.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 21.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 31
+}

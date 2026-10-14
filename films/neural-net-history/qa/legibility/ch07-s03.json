@@ -1,0 +1,74 @@
+{
+ "shot": "ch07-s03",
+ "at": "2026-10-13T04:13:40.477Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "fei-fei li",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "with Kai Li · Princeton",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "PRINCETON · 2007",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…do something more useful",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "for my tenure…",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Fei-Fei Li, TED 2015",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "ImageNet",
+   "capWhileSubject": 22.5,
+   "why": "named: \"imagenet\""
+  },
+  {
+   "text": "≈ 50,000 workers · 167 countries",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "contest: 1,000 categories",
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "3",
+   "maxCap": 108.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "13",
+   "maxCap": 108.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "19",
+   "maxCap": 108.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 3
+}

@@ -1,0 +1,124 @@
+{
+  "reviewer": "story-editor",
+  "round": 3,
+  "lens": "story, curiosity and voice",
+  "scores": {
+    "accuracy": 8,
+    "depth": 7.5,
+    "clarity": 7,
+    "story": 7.5,
+    "curiosity": 8,
+    "visual": 8.5,
+    "voice": 7.5
+  },
+  "critical": [
+    "The tall man disappears from the narration at his own climax. L0415–L0416 plant him ('He would spend most of thirty-six years at the edge of the light'; 1976 plus 36 is 2012), and L0505 names him. After that the ear never connects him to Toronto, AlexNet or Florence. L0703 ('they wrote') hides that the 2006 'All three conditions are now satisfied' paper is Hinton and Salakhutdinov's. L0803 puts Sutskever and Krizhevsky 'In Toronto' with no professor. The round-2 Florence line (L0821, the professor who could not sit) was cut rather than fixed, so his absence, and LeCun against the back wall, exist only in pictures (ch08-s11 visual). As a result L0902 ('the tall man auctioned his company') lands on nothing: the ear doesn't know what company, or why anyone would bid. The 36-year plant, the film's strongest human thread in Act One, is never paid aloud. Fix (about +30 words, paid for by the trims below): L0703 → 'Fast computers, big data, good starting weights: “All three conditions are now satisfied,” the tall man and a student wrote. Nearly right.' (e7-autoencoder). L0803 → 'In the tall man's lab in Toronto, Ilya Sutskever believed these networks would grow with data, and talked Alex Krizhevsky into trying.' After L0820, restore one line: 'Their professor could not sit, and so could not fly. The room was so full that Yann LeCun stood at the back.' (e8-hinton-absent; keep 'by Fei-Fei Li's account' on screen). In ch08-s13b, after L0832 or as the shot's last line: 'Thirty-six years at the edge of the light.' Let the music take the rest.",
+    "Credit for back-propagation. The 1986 paper is never given its authors, and David Rumelhart, its first author, is never named. The only person tied to it is Hinton, through 'The tall man at the rim was Geoffrey Hinton' (L0505) and his quote (L0512). The quote is cut off just before the sentence that gives the credit away. This is the most contested credit in the field (bible: priority debate, e4-backprop-priority), and the even-handed answer is already in quotes.json. Fix: read the whole of q-hinton-notinvent at L0512: 'Hinton later wrote: “I have never claimed that I invented backpropagation. David Rumelhart invented it independently long after people in other fields had invented it.”' (+15 words). Optionally L0507 → 'October 1986. A paper by David Rumelhart, Hinton and Ronald Williams. Light flows up...' (e4-rhw). Either way, the ear should hear that it was three people's paper and that the trick had several inventors."
+  ],
+  "issues": [
+    {
+      "where": "Runtime: whole script (3,179 narration words; holdAfter total 334 s, leadIn 142 s, pauses 145 s)",
+      "problem": "Round 2's cuts landed: 3,431 words are down to 3,179. That is still 139 over the 3,040 target. Timing the lines with every leadIn, hold, pause and minDuration floor gives 37.5 min at 120 wpm, 34.7 at 135 and 32.5 at 150. The brief asks for a slow voice, so the realistic figure is the top of the 30–35 minute range or past it, and that is before the roughly 45 words added by the two critical fixes.",
+      "fix": "Cut about 170 words and about 45 s of air. Word cuts: L0412 recast (−8, see below); L1403 → 'October 2022: Washington fenced off high-end chips and the tools to make them; Beijing replied, in translation, that the US “abuses export control measures.”' (−4); L1025 → 'Why did it win? One huge multiplication, what these chips do best: twelve hours on one machine, and an English-to-German record.' (−7, the compute fraction goes on screen); L0610 simplify (−8, see below); L0815 → 'Sixty million weights, and too few labels: it could simply memorise.' (−4); L1019 → 'A trained model learns to look from bank straight to river. Eight heads, each asking its own question.' (−3); L0304 → 'In fairness, the Navy, the press and Rosenblatt all fed the hype.' (−3); L1116 → 'The old recipe lasted two years. The big candle, scale, is merely trimmed.' (−7); L1529 → 'The next day, DeepMind's Demis Hassabis and John Jumper won the chemistry prize, for protein shapes.' (−3). Air: ch15-s04 leadIn 4.8 → 2.0, ch15-s06 leadIn 4.8 → 3.0, ch15-s08 leadIn 7.0 → 5.0, ch03-s06 holdAfter 6.5 → 4.5, ch05-s03 holdAfter 6.5 → 4.5, ch08-s13b holdAfter 7.0 → 5.5 (keep it if the 'Thirty-six years' line is added there), ch13-s02 holdAfter 6.5 → 5.0."
+    },
+    {
+      "where": "ch04-s01 to ch04-s04 (L0401, L0404, L0406, L0408)",
+      "problem": "The ear is never told that the first winter starts in 1969. The date exists only on screen (ch04-s01 onScreenText). Neither the book (L0404) nor Congress (L0406) gets a year, so 'That May, Walter Pitts died alone' (L0408) points to no year at all. The first year the ear hears in this chapter is 1971. The chapter also opens cold on a definition ('Exclusive-or: light up if...') straight after the cliffhanger 'Then someone wrote a book about why' (L0320), so that cliffhanger is never connected to its answer.",
+      "fix": "L0401 → 'The book's sharpest puzzle is called exclusive-or: light up if one input is on, but not both...' (+5). L0404 → 'In 1969, Minsky and Papert's book proved what one layer cannot do.' (+2). L0406 → 'That same year, Congress tied defence-funded research to military uses, and the snow began.' (+3) (e3-mansfield, e1-pitts-death)."
+    },
+    {
+      "where": "ch04-s02 L0405 → ch05-s04 L0521",
+      "problem": "Every other belief candle is lit aloud ('We light a second candle', 'A new candle', 'The candle of the age'). The 'sterile extension' candle is lit only in the picture, on the word 'sterile'. 'That candle burned seventeen years' (L0521) works only because it follows the word 'sterile'. The candle that sets the length of the first winter should be lit for the ear.",
+      "fix": "Add after the quote in L0405: 'A third candle, then: many layers are a dead end.' (+9). Or, word-neutrally, L0521 → 'The sterile extension, it turns out, was not. That belief burned seventeen years.'"
+    },
+    {
+      "where": "ch14-s01 to ch14-s07 (whole chapter)",
+      "problem": "Round 2 raised this and it is still open. Ch14 is the least human chapter. The Chinese side speaks only through a ministry statement, and the American side through 'one lab chief' and 'a chip seller'. DeepSeek arrives with no introduction (L1406, 'DeepSeek's V3'), although it is the chapter's protagonist. quotes.json has two verbatim lines from its founder, and neither is used. The gap debate (L1417–L1418) is exactly where his voice belongs.",
+      "fix": "L1406 → 'December 2024: a Chinese lab, DeepSeek, trained its V3 model for about five and a half million dollars.' After L1421: 'DeepSeek's founder, in translation: “Money has never been the problem for us; bans on shipments of advanced chips are the problem.”' (q13-liang-chips). Or put q13-liang-gap ('the real gap is the difference between originality and imitation') before L1418, which gives the gap debate a human answer from the other shore."
+    },
+    {
+      "where": "ch14-s04 L1410",
+      "problem": "'The one-to-three-years candle went out too, after two.' Three bare numbers in seven words, and 'after two' could mean two years, two days or two candles. It also comes straight after 'out within a day', so the ear has to sort a day, one to three years, and two.",
+      "fix": "'Markets briefly bet that compute didn't matter: a struck match, out within a day. And the belief that China trailed by years? It burned about two.'"
+    },
+    {
+      "where": "ch15-s07 L1511 (payoff of L0216–L0217 'Remember him')",
+      "problem": "The ear last heard of Widrow 30 minutes earlier, in a single sentence. 'Last year, Bernard Widrow died at ninety-five' gives no reminder of who he is. 'He never did get over the dream' paraphrases words of his own that the ear never heard, and they are in quotes.json.",
+      "fix": "'Last year, Bernard Widrow, the young engineer who fell for the dream, died at ninety-five. He had written that he was so taken by it “that I never got over it.”' (q-widrow-dartmouth, e2-widrow-death). If budget is tight: 'Last year, Bernard Widrow, the young man who fell for the dream, died at ninety-five. He never did get over it.'"
+    },
+    {
+      "where": "ch04-s07 L0412",
+      "problem": "This is a strong plant, but it is hard to say aloud. 'the case's key clue' is a run of k and s sounds a slow voice will stumble over. 'nobody in the warm houses' is a picture the ear doesn't have, because the houses are only on screen. At 28 words it is also the longest sentence in Act One.",
+      "fix": "'Yet a few windows stayed lit. In one of them, in Helsinki, our most important clue sat in a student's thesis about rounding errors, and nobody was looking.' (−3, e3-linnainmaa)."
+    },
+    {
+      "where": "ch06-s05 L0610",
+      "problem": "This is the setup for a lovely payoff ('Each man lost one bet'), but the ear has to hold an unintroduced name (Jackel), two dates and two clauses split by a semicolon. A listener who misses it gets nothing from L0701.",
+      "fix": "'In 1995, two colleagues bet a dinner. One said that by 2000, we'd know why big nets work. Vapnik said that by 2005, “no one in his right mind” would use them.' (Jackel's name goes on screen; −2.)"
+    },
+    {
+      "where": "ch08-s12 L0823 → L0834",
+      "problem": "'A cliff.' is the film's first climax, and the ensemble caveat follows it within 1.5 s. The caveat is honest and should stay, but here it deflates the moment before it lands. Round 2 asked for the caveat to move to the next shot.",
+      "fix": "L0823 pauseAfter 1.52 → 2.5. Move L0834 to the start of ch08-s13 ('Fair credit: that was seven networks voting; the best single one, nearer eighteen. And a Swiss lab's nets had already won contests on graphics chips.'), merged with L0825."
+    },
+    {
+      "where": "ch05-s04 L0520",
+      "problem": "Round 2 raised this. The text still ends on 'unasked', and the direction still asks for 'the film's nobody-told-it refrain'. 'Unasked' is a soft, Latinate landing for a moment of wonder, and it breaks a refrain the film otherwise keeps ('Nobody told the towers', 'Nobody told it to plan').",
+      "fix": "'Shown family trees, a bigger net's hidden lanterns sorted people by nationality and by generation. Nobody told them to.' (+3; it rhymes with L0818 and L1505)."
+    },
+    {
+      "where": "ch15-s09 L1517",
+      "problem": "Round 2 raised this. 'The last slip is Hinton's.' comes about 15 minutes after ch13's Hinton slip ('It is his own', L1302), so the ear may think it is the same slip, and the silent ch09-s05 plant loses its surprise.",
+      "fix": "'The last slip is Hinton's, too: pinned up years ago, and waiting.' (+6). At minimum: 'The last slip is Hinton's, too.'"
+    },
+    {
+      "where": "ch01-s03 L0104",
+      "problem": "'seven hundred million people use them weekly': 'them' has no antecedent. The ear has heard about one 'something that is not a person'. In a cold open every word has to point somewhere.",
+      "fix": "'By one count, seven hundred million people use such machines every week.' (e14-bengio)"
+    },
+    {
+      "where": "ch14-s07 L1415",
+      "problem": "'the shores ended up on the same page' is the script's only stock idiom, and it is flat. It also mixes metaphors: shores don't have pages.",
+      "fix": "'Yet this September, the two shores reached across the water: an AI dialogue, and an incident channel.'"
+    },
+    {
+      "where": "ch02-s07 L0215",
+      "problem": "'...and Minsky turned to symbols and rules. Our first suspect.' Spoken, the tag attaches to the nearest noun phrase, and the nearest person is Minsky. The ear can hear Minsky as a suspect in a case whose suspects are ideas.",
+      "fix": "'Then the field got a name, artificial intelligence, and Minsky turned to symbols and rules: our first suspect, Rules.'"
+    },
+    {
+      "where": "ch15-s08 L1515",
+      "problem": "'One, a single day' recalls the market panic, but L1410 called that a struck match, not a candle, so the finale's tally counts something the film said wasn't a candle. A careful listener feels the mismatch at the emotional peak.",
+      "fix": "Either make L1410 'a candle lit and snuffed within a day', or L1515 → 'Some candles burned twenty years. Some, two. One match, a single day. The newest haven't finished burning.'"
+    },
+    {
+      "where": "ch09 (L0905–L0907), the only human beat on the Go board",
+      "problem": "Ch09 has 91 words, the lightest chapter, and Lee Sedol, who was quoted in round 2, is now silent. 'won humanity's only game' is lovely. The verbatim line from his retirement is the most moving sentence on the subject in quotes.json, and it gives the audience a human feeling three minutes before the transformer deep dive.",
+      "fix": "Optional, if the trims above make room: after L0907, 'He later retired, saying: “Even if I become the number one, there is an entity that cannot be defeated.”' (q-lee-entity, +17). If budget forbids, skip it."
+    },
+    {
+      "where": "Voice, film-wide",
+      "problem": "This is better again. 'Now here is the lovely part' (L0808) and 'that, you see, is why we halved' (L1017) are exactly right, and L0209 carries the candle rule in one flowing breath. But the register is still staccato: 362 sentences averaging 8.8 words, 86 (24%) of four words or fewer, and 20 of 18 words or more. Fragment chains still read like captions: L1105–L1107; L1212–L1215 (four fragments in a row before 'Not a new engine. A new door.', which would hit harder after one flowing sentence); L1301–L1302; and L0203–L0207 (five short sentences in a row).",
+      "fix": "Word-neutral merges. L1212–L1213 → 'November 2022, and the dark room again: an existing model, tuned by human choices, in a free chat box.' L1105–L1106 → 'Show it the words so far, and it pours one jug of light across every word it knows.' (L1107's 'Pick one. Ask again. No rulebook. Only odds.' then lands as the aphorism). L0204–L0205 → 'Enough signals together, and it fired; wire a few together, and you had logic.' Add one more note of the teacher's own pleasure at the Uszkoreit beat or at L0309 ('You could hear it learn. I love that.')."
+    },
+    {
+      "where": "Directions out of sync with text (narrate stage): L1104, L0216",
+      "problem": "Most round-2 mismatches are fixed. L1104's direction still asks for 'a pause before Then', but the text is '...“the raw text.” Sensible, then.' L0216's direction says 'the card shows his words', but no card text supports that now, and if the L1511 fix uses the quote, the card belongs there instead.",
+      "fix": "L1104 direction → 'gentle and fond; the quoted words read plainly; a small pause before \"Sensible, then\", said without mockery.' Re-check L0216 against its onScreenText."
+    },
+    {
+      "where": "logline and ch01 blurb ('An old teacher')",
+      "problem": "The brief's production parameters, updated by the user on 2026-10-05, ask for a mid-life narrator, 'not an old-man voice'. The script's logline and blurb still describe 'an old teacher'. Narrate-stage casting reads these fields.",
+      "fix": "Logline and ch01 blurb: 'An old teacher' → 'A teacher'. Audit line directions for 'old' or 'elderly' cues before casting."
+    }
+  ],
+  "strengths": [
+    "Most of round 2's structural fixes landed. The candle-clock rule is now spoken once, in one graceful breath (L0209). The trio is assembled at the rim (L0609) and paid twice (L1312, L1509). The board is planted aloud (L0110), so 'The board was a network all along' (L1514) is a real reveal. The cards collision is gone (GPUs are now 'chips'), and ch15-s05 keeps its promise ('Two labs, under the same light'), with the answer-key image spoken.",
+    "The plant-and-payoff lattice is the film's spine and is now dense and satisfying. Rosenblatt's 1961 'Linguistic capability' comes back as 'Sixty-one years early.' 'Who paid for dinner?' becomes 'Each man lost one bet.' 'So why would anyone choose the fog?' is answered by 'Given data and fire, it led somewhere better.' 'Remember that word, pre-training. It will return in a different coat.' returns as 'Here it is.' The 1985 'practically nothing' meets GPT-2's one-sentence goal. 'The talk nobody remembered, remembered.' Turing's child machine is 'at school'. The ear is rewarded for paying attention, which is what sparks curiosity.",
+    "The deep dives teach for the ear. The pierced-lantern convolution with 'Now here is the lovely part' (L0808). 'Nobody cut these stencils. They began as noise, like television snow.' The two towers that 'Every time' split into black-and-white and colour. The transformer's cards, jug and cups, with a worked toy whose halving is explained ('Our toy had four, and that, you see, is why we halved'). 'Words talk to each other, then each thinks alone. Six times over.' And the curtain that ends ch10 on 'what comes next?', an ideal chapter-ending question.",
+    "Some lines are memorable and right for a slow, wry voice: 'You could hear it learn.' '“At the moment, none whatever,” Dr. Rosenblatt said cheerfully.' 'Buffalo, again.' 'A winter, then, of prestige, not of use.' 'Colleagues doubted it. So did his father.' 'No rulebook. Only odds.' 'Not a new engine. A new door.' 'Sensible, then.' 'The paper that put it out had Pitts's own name on it.'",
+    "The emotional architecture of Act One is restrained and strong. Pitts and McCulloch die in one sentence, and Rosenblatt drowns on his birthday with no comment. The snow and the lit windows carry the grief. The act break ('Case solved? / Not quite.') and Hinton taking down his own slip ('It is his own.') turn the film properly into its third act.",
+    "Fairness is woven into the voice rather than bolted on: 'In fairness, the Navy, the papers and Rosenblatt himself all fed the hype.' 'One book's fault? Historians still argue; there were several blows.' 'Fair credit: a Swiss lab's nets had already won...' 'But people wrote the list.' 'Six months, says one lab chief. Nanoseconds, says a chip seller. Too little compute, says a lab in China.' Dame Wendy Hall's dissent on the Nobel.",
+    "The ending is now grammatically right. The dark lantern is named ('how, exactly, it reaches its answers'). The graduate-student slip, silently pinned in ch09, comes back as the last quotation. The final line ('someone at the rim is suspicious. That is where new candles come from. Perhaps it's you.') reconciles the film's two devices, belief and doubt, into one invitation."
+  ]
+}

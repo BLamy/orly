@@ -1,0 +1,232 @@
+{
+  "round": 5,
+  "pass": false,
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.58,
+    "clarity": 8.33,
+    "story": 8.5,
+    "visual": 8.17,
+    "sync": 8.5,
+    "sound": 8.17,
+    "curiosity": 8.67
+  },
+  "mean": 8.43,
+  "bar": 8.5,
+  "weighting": "mean across 5 reviewers; owning lens counted double (historian:accuracy; teacher:depth,clarity; story:story,curiosity; art:visual,sync; sound:sound)",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 8.5,
+      "depth": 8.5,
+      "clarity": 8,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8.5
+    },
+    "teacher": {
+      "accuracy": 8.5,
+      "depth": 9,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8.5
+    },
+    "story": {
+      "accuracy": 8.5,
+      "depth": 8.5,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 9
+    },
+    "art": {
+      "accuracy": 8.5,
+      "depth": 8.5,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8.5,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8.5
+    },
+    "sound": {
+      "accuracy": 8.5,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8.5,
+      "curiosity": 8.5
+    }
+  },
+  "criticalIssues": 0,
+  "belowBar": [],
+  "gate": {
+    "everyDimensionAtLeast8": true,
+    "meanAtLeast8.5": false,
+    "noCritical": true
+  },
+  "ledgerAudit": {
+    "round4-shots": "PRESENT and finalized (21:43:49Z): 25 ids, 24 fixed / 1 partial. Sheets were re-rendered 21:48-22:05Z, after every recordedAt, so they show the ledgered code. All five reviewers checked ids at the recorded word times.",
+    "confirmedFixed": [
+      "ch15-s06 (closed after three rounds: no hand, no Hassabis caption at +0.29/+0.88/+1.79/+2.67)",
+      "ch10-s12 (closed after four rounds: one fact, '12 hours · one machine, 8 GPUs'; no ratio in any spelling)",
+      "ch10-s10",
+      "ch09-s05 (Marcus card readable about 2.5 s)",
+      "ch08-s06",
+      "ch15-s04",
+      "ch15-s05 (four labs lettered; settlement label kept)",
+      "ch15-s01 (Versailles refit, JOHN HOPFIELD card)",
+      "ch15-s09 (verdict slip; stamp on the CASE FILE)",
+      "ch14-s07 (stamp on 'stands')",
+      "ch14-s02",
+      "ch12-s03",
+      "ch01-s06",
+      "ch02-s08",
+      "ch13-s01",
+      "ch13-s03",
+      "ch13-s04",
+      "ch06-s04"
+    ],
+    "markedFixedButNot": {
+      "ch14-s04b": "Text and row fixed, but the same round's critic delayed DECISIVE · AMODEI (ANTHROPIC) to T.wordEnd('years') + 0.4 (source line 134). The showrunner's look at the sheet: two tags at +10.71, three only at +12.67. Re-routed as MAJOR with an absent check on the delay.",
+      "ch15-s10": "Ledger says 'layout unchanged', but the round-3/4 disclosure card was replaced by a CREDITS card from credits.json whose card and footer no longer state that Anthropic is a lab in this story (showrunner read credits.json: footer is only the Strudel line). Re-routed as MAJOR."
+    },
+    "partialResolved": {
+      "ch15-s08": "Partial only because the note check missed the literal 'open'; the shot anchors on T.beat('stamp') = T.word(L1516b,'open') by design. Teacher, story, art and sound confirm the stamp struck in red on 'open' (+37.92) and the printed case file. Closed as fixed; residual final-hold clutter routed as a new note; checker fix routed globally."
+    },
+    "round4-global open items": "Human name sign-off still pending (fifth round), routed again as a hand-off. L0114 retake landed at 194 wpm (from 221): no longer a QA failure, re-routed as optional."
+  },
+  "showrunnerChecks": [
+    "Weighted scores computed from the five scorecards (owning lens double, /6).",
+    "Read ch14-s04b sheet: HELPS HUAWEI and SELF-DEFEATING up at +6.83 through +10.71; DECISIVE appears only by +12.67, in the silent tail. grep: line 134 lit: [T.beat('tag1'), T.beat('tag2'), T.wordEnd('L1410b', 'years') + 0.4]. Confirmed regression.",
+    "Read apps/bookshelf/src/viz/films/neural-net-history/credits.json: card rows plus footer 'Every music cue’s Strudel source: on the film’s page'; the 'Anthropic is a lab in this story' sentence exists only in credits.mjs role detail. Confirmed regression.",
+    "Read ch15-s09 sheet: STATUS: OPEN at +12.75/+13.92/+15.25 is a faint red box half off the folder's right edge, behind CASE FILE. Confirmed.",
+    "Timeline: L1504 ends 11.235 and L1505 starts 11.835 in ch15-s03, so the 'snuff' sentence cannot fit in the gap; routed as a new solo line (L1504b) instead of rewriting L1505, so L1505's tuned gainEnvelope survives.",
+    "Bible checks for new text: Hopfield net Apr 1982; Boltzmann machines 1983-85 (paper 1985); 'suppressing it yields habit' in claims.json; Hinton took the Nobel call in a cheap hotel at about 2 a.m. (q12-hinton-hotel), so a sleeping figure in the existing hotel room is grounded.",
+    "Clock: 2164.00 of 2172 s. L1504b (~+2.4 s) plus the L1502 rewrite (~+0.5 to +1 s) fit in the 8.0 s headroom."
+  ],
+  "fixes": {
+    "shots": {
+      "ch15-s10": "DONE by hand 2026-10-13 (verify only; change nothing): the CREDITS card footer now carries the maker disclosure \"Claude is made by Anthropic, a lab in this story, held to the same sources as every other.\" (wrapped, 22 px cap italic mono) above the Strudel pointer; credits.json footer is an array; timing unchanged. Keep the user direction to credit every model and tool.",
+      "ch14-s04b": "MAJOR (fairness regression; historian, confirmed on the sheet: two tags at +10.71, the third alone at +12.67). A round-4 critic note delayed DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) to T.wordEnd('L1410b','years') + 0.4, so the position of the narrator's maker arrives 5-6 s after the other two, alone in the silent tail, and holds as the shot's last word: it reads as the verdict. Bring the three in as one row: tag1 5.59 (HELPS HUAWEI, left), tag2 6.19 (SELF-DEFEATING, centre), DECISIVE at tag2 + 0.6 (about 6.79, right). Remove the wordEnd('years') + 0.4 timing. Keep size, warm-grey paper, order, the named card on 'behind' and the sleeve on 'two#2'. No tag gets a solo beat, light change or push. Critics may not re-delay any of the three tags. Verify at 7.0 (all three at full ink), 10.26 and 14.5.",
+      "ch15-s03": "Re-fit to the NEW solo line L1504b ('Snuff that plan out, and it rhymes with “habit” instead.'), inserted between L1504 and L1505 (teacher and story agree: the picture shows the decisive intervention, rabbit snuffed and habit chosen, but the narration never says it). Anchor the snuffer drop on T.word('L1504b','Snuff') and HABIT lighting on T.word('L1504b','habit'). The 'rabbit → (suppressed) → habit' caption may stay as a texture-role echo after 'habit', never before it. The slugs finish before 'plan' (L1505). Keep RABBIT on T.word('L1504','rabbit') and L1505's anchor on 'plan'. Verify stills at 'Snuff', 'habit' + 0.3 and 'plan'.",
+      "ch15-s01": "Three reviewers, one shot. (1) STORY/SYNC: the Nobel call, the peak of Hinton's arc, plays to an empty hotel room, and the handset lights about 0.7 s after 'rings'. Put Hinton in the room from about +5.3 ('October'): a sleeping figure under the turned-back blanket on the L5 bed edge, head on the pillow with the cast.ts sweptBack 2020s hair, no face detail. On 'phone' the handset on the bedside table lights cool white. On 'rings' it shivers with a 2-frame jitter (mechanical, no glow bloom) and the head lifts toward it. The cut to the Nobel hall stays where it is. (2) VISUAL: the citation ribbon sits at 55 % alpha over the audience for about 10 s, a double exposure. Make it opaque, and when the medallion push starts ('memories' - 0.2) slide it out of frame with the camera or fade it fully to 0 over 0.4 s. Never hold an intermediate alpha. (3) DEPTH: the two prize ideas on the medallion are unnamed. Add two small paper tags on the medallion rim (>= 22 px cap, texture role about 80 %): 'HOPFIELD NET · 1982' on 'downhill', then 'BOLTZMANN MACHINE · 1983–85' on 'cools' (bible: Hopfield Apr 1982, Boltzmann machines 1983-85), using textSwap so only one is at full value, both gone before 'cheered'. Also re-fit to the L1502 rewrite (anchors 'Hopfield', 'Versailles', 'memories', 'downhill', 'cools' are all still in the new text). Verify stills at 6.0, 'phone', 'rings' + 0.1, 16.4, 'downhill' + 0.3, 'cools' + 0.3 and 25.7.",
+      "ch15-s09": "The film's final STATUS: OPEN stamp, the loudest of the three in sound (-29), is the faintest in picture: a low-saturation red rectangle half off the CASE FILE folder's right edge (+12.75, +13.92, +15.25; confirmed on the sheet). Keep it on b3 (12.75) and on the folder, not on the question card. Move it fully onto the folder face, centred under 'CASE FILE' with at least 20 px clear of the edge, at ch15-s08's size (>= 22 px cap), the same full-ink red and a 2-3° tilt, struck at full opacity on the b3 frame and held readable until the lamp-off on b4. ART: the match hand (+19.8 to +22.1) is the crudest puppet piece in the film (a faceted mitten with no thumb and three stacked cuff slabs). Swap in the kit's articulated paper-cut hand (thumb-and-forefinger pinch on the matchstick, one cuff with a 2 px warm rim and a single button). Keep every round-4 time: verdict slip under WHO TAUGHT IT?, lamp off on b4, cyan pinprick +15.79, neighbour's lamp, hand on 'suspicious', strike on 'new', flare on 'candles', the lit hold. Verify at 12.8, 13.9, 15.2, 20.5, 21.4 and 21.9.",
+      "ch14-s07": "Story and art both see the same double exposure around 'liang' (+7.2 to +8.3): the move from the close gap-candle framing to the wide is a dissolve between two framings, so at +7.50 the 2022 candles are about 50 % transparent, the tags are still about 60-80 % and cropped, and the Liang quote is at 20-30 %. Replace the dissolve with one continuous pull-back (ease.move, about 1.0 s) on a single opaque shelf plane. Finish the tags' textSwapOut before 7.2, and start the quote's fade-in only after they clear. Keep the STATUS: OPEN stamp on 'stands' exactly as it is (fx-stamp-fence is synced to it). Verify stills at 7.3, 7.5 and 7.8.",
+      "ch15-s05": "Art finishing note (the finial has now been routed three times). (a) In the opening wide every lab is named twice: brass plates plus hanging tags (eight labels for four objects). Keep the four lab names on the brass plates (GOOGLE DEEPMIND / ANTHROPIC / OPENAI / META, equal size and light), drop the name line from the hanging tags, and show 'as of October 2026' ONCE as a single small line under the row. (b) The defocused finial is still a soft, round-headed blob at the bottom edge (x about 89 %, 0-1 s) that reads as a head: give it a turned, rim-lit profile (knob plus collar, 2 px warm rim) or move it fully below frame. (c) Under the OpenAI 'warning shot' quote (+35.8 to +38.0) the dark plate reads as a rectangular smudge: feather it to >= 40 px or drop it. Keep the settlement label, the two judges' quotes and the shot length exactly. Verify stills at 0.4, 0.9 and 36.5.",
+      "ch15-s08": "Close the round-4 partial as FIXED in the ledger (four reviewers confirm on the sheet: push on 'stays', STATUS: OPEN struck in red on 'open' at +37.92, printed CASE FILE page; the partial came only from the note check missing the literal 'open', because the shot correctly anchors on T.beat('stamp')). New, small: the last 1.5 s (+41.8 to 43.3) are crowded. Keep THE FIELD 2019-2025 card off frame after the pull-back (it has had its 3 s), and remove the loose second WHO TAUGHT IT? slip on the desk (the one clipped to the case file already carries it). The dark lantern stays near frame centre for the final 2 s. Verify at 39.5, 42.3 and the last frame.",
+      "ch04-s07": "The 1 s crossfade in from ch04-s06 (0.0 to about 0.7) double-exposes the outgoing frame's whole text load (Papert quote, TRANSLATION 1966 / MANSFIELD 1969 / PERCEPTRONS 1969 / LIGHTHILL 1973 cards, A-B-C card) at 40-50 % over the winter valley (art, full frame at +0.17). Change ch04-s07's transitionIn to 'cut' and let the house windows lighting carry the change, or fade ch04-s06's cards out over its last 0.6 s so the crossfade blends picture into picture. Verify stills at +0.1, +0.3 and +0.5 with no readable outgoing text.",
+      "ch09-s05": "Small: ', still argued' types onto the LEARNED FEATURES card at 30 cps on 'argued' and the cut to the Wall comes about 0.3 s after the last character, so it reads as a flicker. Type at 45 cps starting 0.3 s earlier and hold the finished line at least 0.8 s before the cut. Keep the GARY MARCUS card's 2.5 s readable hold exactly. Verify a still at cut - 0.1 showing the complete line.",
+      "ch13-s03": "Small: on 'letter' (+7.83) the pause letter falls in as a blank pale rectangle and its ruled lines appear only at about +8.9. Print it (header line, ruled text, signature scrawl at about 60 % ink) from its first visible frame and add cardProbe. Verify a still at 7.9."
+    },
+    "cues": {
+      "m19": "Two changes. (1) Shape (sound): the E-A swell after 'plan' climbs 45 dB in half a second (to -17.3 M master at 1975.9) and is still about -21 M when 'The candle' starts: after the film's quietest line it plays as a sting, not the unresolved breath the cue notes describe. Leave about 0.3 s of near-silence after 'plan', ramp over about 1.0 s to a crest of about -21 M master, and be at -30 M or lower by the next line's first word. (2) Re-fit the ch15-s03 microscope section to the new solo line L1504b inserted before L1505: under L1504b and L1505 keep only the thin high tail (lineMasking >= 13 dB on both), and shift every later m19 figure by the measured clock delta (L1502 rewrite and L1504b). Leave the rest of m19 untouched. QA swells, fadeAfterStrike and lineMasking must pass.",
+      "m02": "L0220's direction is 'let the silence after it do the work', but the X-ray D enters 0.30 s after 'name on it' ends (195.21 → 195.51) and the G 0.5 s later, so the master sits at -19 to -20 M through the gap. Move the D to at least 1.0 s after 'it' (>= 196.2) and the G about 0.5 s after that, both at -22 M master or quieter, with the fade inside the gap (>= 1.6 s after the last strike; it may overlap m03's 2 s fade-in). If the picture's xray beat (ch02-s08 19.512) must stay pinned, keep the D there but 6 dB quieter and hold the G until 197.0."
+    },
+    "lines": {
+      "L1504b": "NEW SOLO LINE, inserted in ch15.json between L1504 and L1505 (teacher T501 and story agree; L1504 and L1505 text and takes are unchanged, so L1505's tuned gainEnvelope stays). Text: 'Snuff that plan out, and it rhymes with “habit” instead.' Claims: the same as L1504 (claims.json, Anthropic 'On the Biology of a Large Language Model': 'rabbit' before the line; suppressing it yields 'habit'). Direction: plain and curious, one even beat, 'habit' said simply, no push; leave a breath (about 0.6 s) before L1505 so 'Nobody told it to plan' keeps its quiet. About 2.4 s. ch15-s03 anchors on 'Snuff' and 'habit'; m19 re-fits.",
+      "L1502": "Clarity (teacher T502 and sound agree): one 15 s sentence with three nested clauses, and 'he wrote' is barely set off (0.14 s), so it parses as 'the talk he wrote' or as Hinton. Rewrite into three plain sentences, same facts, same length (36 → 39 words): 'A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.' This keeps 'nobody he met' (q-hopfield-versailles; never widen it to 'nobody remembered'), 'Hinton co-invented' and every ch15-s01 anchor word. Same warm direction as now: a faint smile on the Versailles sentence, the two reasons one beat each, a small smile on 'cools'. Re-narrate SOLO at 140-150 wpm, keep only a take with STT WER 0.",
+      "L0114": "Optional, minor (three reviewers): 'Our story starts all the way back in World War Two.' runs 194 wpm against a 150 film median. Within the user's 2026-10-13 direction (plain, warm, the voice's own delivery, no inserted gaps, no ellipsis, no excitement, text unchanged): try ONE more solo take at tts speed 0.84 and keep it only if it lands at 3.7-4.0 s, sounds plain, and has STT WER 0. Otherwise keep the current take and close the item for good. If replaced, ch01-s06 re-fits by T.word ('starts', 'Two', 'Chicago'), m01's dead cut stays >= 0.2 s before 'Our', and L0114b's 0.8 s pause stays."
+    },
+    "global": [
+      "CLOCK: rebuild ONCE after the L1502 rewrite, the new L1504b and any L0114 take (expected about +3 s; headroom is 8.0 s, 2164 of 2172). Then re-fit every cue whose window shifts (m19 and the ch15 cues after it, m21 end cards) and re-sheet ch15-s01 through ch15-s10. QA timeline.fresh and ceiling must pass.",
+      "FOLEY (sound): fx-stamp-howfar starts on the onset of 'open', the motto's last word, at the default wet level with no under-word limits, so its transient sits 6-12 dB over the 'o-' for 50-100 ms. In score/foley.json give it the fence stamp's treatment: underWord 'open', wetDb -16, maxDur 0.6, lufsS -32 (fx-stamp at -29 stays the strongest). Re-mix and confirm mix.foley passes and the 2103.89-2104.21 window sits <= 3 dB over narration + 3.6.",
+      "SPEC HYGIENE (historian and teacher): story/script.json onScreenText still lists three texts the review removed: ch10-s10 'untrained toy weights: real bindings', ch10-s12 '12 hours · one machine, 8 GPUs · ≈ 1/7 the compute of GNMT+RL (derived)' and ch15-s06 'Hassabis, 2025 · AGI in 5 to 10 years · about even odds'. ch10-s12 was re-added by respelling three times from exactly this kind of stale spec. Delete them in story/chapters/ch10.json and ch15.json, set ch10-s12's label to '12 hours · one machine, 8 GPUs', drop e10-flops from ch10-s12's claims (keep it in claims.json), rename the unused 'seventh' beat (for example 'gpus'; nothing anchors to it), and reassemble script.json. No line changes.",
+      "LEDGER CHECKER (teacher T503): shot-ledger check downgraded ch15-s08 to partial for a missing literal 'open', although the shot correctly anchors on T.beat('stamp'), which round-4 global defined as T.word(L1516b,'open'). Teach the check to resolve named clock beats: when a required word key is missing, accept T.beat(name) if the timeline beat equals that word's time within one frame. Record ch15-s08's round-4 outcome as fixed.",
+      "TRANSITION GHOSTS (art): the ghostText QA checks text layers within one shot, so cross-shot ghosts in the 42 one-second crossfades (such as ch04-s07 +0.17) pass unseen. In cards.mjs, for each transitionIn other than cut, composite both shots' recorded text boxes weighted by the transition and apply the same 25 % / 0.25 s overlap rule; list offenders per incoming shot in sheets.ghostText.",
+      "CROWDS (art, minor): the ch15-s01 Nobel audience is rows of identical round-headed busts. In the crowd kit give audience busts 4 head/hair variants (bald, parted, bun, grey wave), a collar or lapel notch, a 1 px warm rim on the lit side and about 6 % scale variation. Re-sheet ch15-s01 and ch12-s08.",
+      "HUMAN HAND-OFF before publish (fifth round open; historian and sound): a person listens to the seven names (Uszkoreit L1006, Amodei L1206, Hochreiter and Schmidhuber L0614, Rumelhart L0507, LeCun L0821, Lenat L1104) via `npm run film:voice -- listen --slug neural-net-history` and records each with `film:voice signoff --term <term> --by <name> --verdict ok|reject`. A rejection becomes a solo retake with a lexicon respelling. Not a blocker for the gate."
+    ]
+  },
+  "fixChecks": {
+    "ch15-s10": {
+      "present": [
+        "a lab in this story"
+      ],
+      "files": [
+        "credits.json"
+      ]
+    },
+    "ch14-s04b": {
+      "present": [
+        "DECISIVE",
+        "HELPS HUAWEI",
+        "SELF-DEFEATING",
+        "'behind'"
+      ],
+      "absent": [
+        "'years') + 0.4"
+      ]
+    },
+    "ch15-s03": {
+      "present": [
+        "'Snuff'",
+        "'habit'",
+        "'plan'"
+      ]
+    },
+    "ch15-s01": {
+      "present": [
+        "HOPFIELD NET · 1982",
+        "BOLTZMANN MACHINE · 1983–85",
+        "'Hopfield'",
+        "'Versailles'",
+        "'rings'",
+        "'cools'"
+      ]
+    },
+    "ch15-s09": {
+      "present": [
+        "STATUS: OPEN",
+        "LEARNING + ACCOMPLICES",
+        "NEVER ONE PERSON",
+        "'suspicious'",
+        "'new'",
+        "'candles'"
+      ]
+    },
+    "ch15-s05": {
+      "present": [
+        "GOOGLE DEEPMIND",
+        "ANTHROPIC",
+        "OPENAI",
+        "META",
+        "as of October 2026",
+        "$1.5B SETTLEMENT"
+      ]
+    },
+    "ch15-s08": {
+      "present": [
+        "HOW FAR? HOW FAST?",
+        "STATUS: OPEN",
+        "CASE FILE"
+      ]
+    },
+    "ch09-s05": {
+      "present": [
+        "GARY MARCUS",
+        "Deep Learning: A Critical Appraisal"
+      ]
+    }
+  },
+  "summary": "Round 5 does NOT pass: mean 8.43 against the 8.5 bar, though every dimension is now at or above 8 and no issue is critical. The long-running failures are finally closed on their sheets: ch15-s06 (Hassabis pin gone), ch10-s12 (one fact, no compute ratio), the stamp foley, L1505's level and the m19 placement. Sound rose from 7.67 to 8.17. Two fairness regressions came in with round 4's critic and credits passes, both about the narrator's own maker: Anthropic's export-control position now lands last and alone in silence (ch14-s04b), and the end card lost the on-screen disclosure that Anthropic is a lab in this story (ch15-s10). Both are major and cheap to fix. The rest of the gap is clarity, visual and sound polish concentrated in the final chapter: say the rabbit/habit experiment aloud (new line L1504b), split the 15-second Nobel sentence (L1502), put Hinton in the Nobel bedroom and clear the translucent ribbon (ch15-s01), make the final stamp legible and the match hand real (ch15-s09), and remove the three double exposures (ch14-s07, ch04-s07, ch15-s05). On sound: tuck the how-far stamp under 'open', soften the m19 swell and give L0220 its silence (m02).",
+  "dimensionNotes": {
+    "accuracy": "Every quote is verbatim, every claim id exists, and contested history (who invented backprop, how far behind China is) is shown as contested. It stops at 8.5 because two late edits weakened fairness toward the narrator's own maker: the end card dropped the line saying Anthropic is a lab in this story, and Anthropic's export-control position now arrives last and alone in silence.",
+    "depth": "AlexNet and the transformer are worked step by step with real numbers a viewer can check by pencil, from a 3x3 edge stencil to a hand-computed softmax over 'river bank' and a quadratic-cost hall that grows from 100 to 400 pairs. Each era gets its belief, a named dissenter and how long the belief lasted.",
+    "clarity": "Almost every idea arrives as a picture before a symbol, so a curious teenager can follow it. What holds it back is the final chapter: the planning experiment (rabbit switched off, habit chosen) is shown but never said, and the Nobel line is a 15-second sentence with nested clauses.",
+    "story": "The case-file frame pays off its plants: the dinner bet, Widrow's lantern, Hopfield's forgotten Versailles talk, and an ending that answers 'who taught it?' while leaving the file open. The present-day stretch is still dense, and the Nobel call, the peak of Hinton's arc, plays to an empty room.",
+    "visual": "The paper-cut silhouette style is consistent and often striking, from the stencil cathedral to the all-pairs attention hall, and the long-running card and figure problems are now fixed. A handful of frames still read as double exposures (a translucent citation ribbon, a dissolve between framings, a crossfade full of old cards), and the last stamp and match hand are the weakest pieces in the closing shot.",
+    "sync": "Picture lands on the spoken word almost everywhere: the stamps strike on 'stands' and 'open', the candle flares on 'candles', the named card rises on 'behind'. Small misses remain, such as the Nobel phone lighting just after 'rings' and a type-on that flickers past before the cut.",
+    "sound": "The mix is clean (-16 LUFS, every line at least 10.9 dB over the music), 'Nobody told it to plan' is now fully present, and the three STATUS: OPEN stamps form an audible motif. It sits just above the bar because one stamp clacks over the word it names, a music swell after the quietest line plays as a sting, the turn into the story is still brisk, and no person has yet signed off on how the narrator says real names.",
+    "curiosity": "The film opens on a riddle ('who taught it?') and keeps adding open questions (who paid for dinner, can a fence around chips hold, how far and how fast) that pull a viewer through 36 minutes. It ends on an honest open file and a dark lantern rather than a tidy verdict."
+  },
+  "at": "2026-10-13T22:22:12Z"
+}

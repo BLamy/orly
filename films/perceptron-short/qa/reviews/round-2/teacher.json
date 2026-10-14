@@ -1,0 +1,92 @@
+{
+  "reviewer": "teacher",
+  "lens": "clarity & depth",
+  "round": 2,
+  "note": "This is a one-minute Mark I short, so the lens items on AlexNet and the transformer are out of scope and are not scored. The lens item on what people believed, who dissented and for how long is now in scope: claims.json has limit-linear (Minsky and Papert, 1969, and the 1970s slump), but the film does not use it. I checked the s03 frames at 25 extra times extracted from render/film.mp4, because the sheet has only 6 samples over 34.75 s.",
+  "roundOneCheck": {
+    "L0106 'nudge each dial' wrong rule": "fixed: 'the dials that had a say'. At 37.2 and 38.0 s only the fed dials glow and turn, with visible arrows.",
+    "missing mechanism (weighted sum)": "fixed: L0105b was added with the mk1-sum claim. Threads light on 'tugs', the needle swings, and VERTICAL bolds on 'decides' (34.0 s).",
+    "retina cropped at the payoff": "fixed: at 47.2 s the vertical bar, the needle on VERTICAL and the flared lantern are all in frame.",
+    "one right answer reads as luck": "fixed: try 5 (horizontal, right) has the try 1 caption ghosted beneath it (49.5 s), so the same shape before and after reads as one comparison. Best teaching beat in the film.",
+    "8x8 dial count vs 400 cells": "partly fixed: there is now a tangle column between the retina and the dials, but nothing says why 400 cells feed 64 dials. I am not re-raising it, because the opening 'an illustration of the rule' caption covers it.",
+    "thin dial pointers": "fixed: the arc arrows read at 37.2 to 42.6 s.",
+    "L0104 overclaim": "fixed.",
+    "clipped ending / short runtime": "fixed: 60.4 s, with a bookend and a coda.",
+    "L0101 clip head / stem level": "fixed: QA shows clean edges and the stem at -18 LUFS."
+  },
+  "scores": {
+    "accuracy": 8,
+    "depth": 6,
+    "clarity": 7.5,
+    "story": 7.5,
+    "visual": 8,
+    "sync": 8,
+    "sound": 7.5,
+    "curiosity": 6.5
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The picture during 'It could learn only simple patterns' (48.97-51.6 s) contradicts the line. The 'both learned shapes ghosted side by side' plate draws the short horizontal bar and the vertical bar almost touching, so it reads as one new L/T-shaped figure. Meanwhile the needle still sits on HORIZONTAL, the lantern is still lit and the caption still says 'try 5 · said horizontal · right' (verified at 50.3 and 50.8 s). A 15-year-old sees the machine succeed on a harder-looking shape at the exact moment the narrator says it could only learn simple ones. Then the iris closes on the lantern, and the limit is never shown.",
+      "fix": "At b.limit (50.48), fade the try-5 caption, settle the needle to centre and dim the lantern to its idle glow before showing anything new. Then show the two learned shapes as two clearly separate small plates (at least one bar-length apart, with a thin divider), captioned 'what it could learn: simple patterns'. Hold them about 1 s before the iris starts, which means starting the iris at 'patterns' end (about 51.6 s), not at 'simple'. Only if the real trainPerceptron model is run on a non-separable pair (for example an XOR-style 'one bar or the other, not both' task) and it really fails, add a third plate with a cold lantern and the caption 'beyond it'. Do not fake the failure."
+    },
+    {
+      "owner": "line",
+      "id": "L0108",
+      "severity": "major",
+      "problem": "Depth stops at 'it could learn only simple patterns'. The film never says who showed the limit or what it cost, even though claims.json now carries limit-linear (Minsky and Papert's 1969 'Perceptrons'; the decline of neural-network research in the 1970s). Belief, dissent and its duration are the lens's history test, and the evidence is already verified. The jump from 1960 to 'today's neural networks' leaves no sense that the idea nearly died, which is also why curiosity stays at 6.5.",
+      "fix": "Rewrite within limit-linear and lineage-mlp: 'It could learn only simple patterns. In 1969, Marvin Minsky and Seymour Papert showed how simple, and for years the idea fell out of favour. Its descendants, today's neural networks, still learn from mistakes.' This adds about 4 s (64 s against 'about 1 minute'). If length is fixed, trim L0103 ('Behind it, wires, and racks of dials that motors could turn.'). Add an era stamp '1969 · PERCEPTRONS · MINSKY & PAPERT' in ch01-s03 on 'Minsky' (a book silhouette, never a likeness). Re-narrate, re-lock the clock, re-fit m01's coda."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "'And the total decides' (33.12-34.39 s) needs a threshold, but the gauge's decision line is an unlabelled top-centre tick. A young viewer cannot see why the needle's position means VERTICAL, and an expert notices the threshold is missing from the picture of the mk1-sum rule.",
+      "fix": "On 'total' (33.23 s), brighten the centre tick into a short engraved line labelled 'threshold' in the 20-24 px caption face, so the needle visibly falls on one side of it on 'decides'. Fade the label after try 1's verdict."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'right answer' that every nudge moves toward is never shown before the verdict. The retina shows a bar, and the viewer only learns which answer was correct from the 'wrong' caption after the fact. The supervision signal, the teacher's answer, is the heart of error-correction, and right now it is implied.",
+      "fix": "Add a small era-type tag beside the retina when each shape appears ('answer: horizontal' / 'answer: vertical'), set dim and fading on the verdict. It costs no narration and makes 'toward the right answer' concrete."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "'Its descendants, today's neural networks' (52.38-55.4 s) plays over the 1960 lab bookend. Nothing on screen says 'descendants' or 'today', so the lineage claim is heard but not seen.",
+      "fix": "Keep the bookend. Over 'descendants' to 'networks', let the window light behind the eye throw two or three faint layered retina-and-dial silhouettes (stacked planes, a nod to the multilayer lineage-mlp claim) that fade before 'still learn from mistakes'. Or add a small '1958 → today' stamp under the title. Either way, no invented specifics."
+    },
+    {
+      "owner": "line",
+      "id": "L0106",
+      "severity": "minor",
+      "problem": "As written, 'the dials that had a say a little toward the right answer' parses as 'had a say a little'. The spoken take pauses after 'say' (38.76 to 39.71 s), but the caption (VTT cue 8) runs 'that had a say a little / toward the right answer' with no comma, which trips readers watching with captions on.",
+      "fix": "Change the script text to 'When it guesses wrong, the motors nudge the dials that had a say, a little, toward the right answer.' Captions only: the audio already phrases it this way, so no re-narration is needed unless L0108 forces a re-lock anyway."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The mix reports a duck depth of 5.52 dB against a 3 dB target (mix/loudness.json). The QA check passes it, but the quiet celesta 'wrong' cells (E6/F6 at 42.91-43.07 s) that teach the error beat may sink further than the composer planned.",
+      "fix": "Lower the duck threshold sensitivity or the ratio until the measured depth is 3-4 dB, then confirm on score/analysis that the F6 'wrong' cell sits within 8-10 dB of speech."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Lens note: AlexNet and the transformer cannot be explained in a one-minute Mark I short, and they are not scored against this film.",
+      "fix": "None for this film. If a sequel is wanted, brief it as its own film. The L0108 rewrite above is the one history beat this short can carry."
+    }
+  ],
+  "best_moments": [
+    "ch01-s03, 49.5 s: 'try 5 · said horizontal · right' with 'try 1 · said vertical · wrong' ghosted beneath it. The same shape before and after learning, in one frame. This is the clearest proof that it learned, not lucked.",
+    "ch01-s03, 36.9-38.9 s: on 'nudge ... the dials that had a say', only the fed dials glow and turn with arc arrows, and the rest stay dark. The picture now teaches the true perceptron rule, and the line agrees with it.",
+    "ch01-s03, 46.2 to 47.2 s: the vertical bar is shown, the needle hangs at centre through 'quite suddenly...', then swings to VERTICAL and the lantern flares on 'right' (47.06). The retina stays in frame, so the viewer sees what it got right.",
+    "ch01-s03, 29.1-34.4 s: threads light from the lit cells through the tangle on 'tugs', the needle travels, and VERTICAL bolds on 'decides'. The weighted-sum mechanism is now on screen.",
+    "ch01-s02, 8.0-11.2 s: '400 light cells' and the 20/20 brackets land on 'four hundred' and 'twenty by twenty'. The number is taught by the picture.",
+    "ch01-s02, 23.3-24.2 s: the name card sits beside an upright Rosenblatt on his name, and the PERCEPTRON plate is visible on the rack. Every round-1 staging note is addressed."
+  ]
+}

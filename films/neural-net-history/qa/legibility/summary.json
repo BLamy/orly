@@ -1,0 +1,975 @@
+{
+ "shots": {
+  "ch05-s05": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 0,
+   "texts": 3,
+   "at": "2026-10-13T04:13:24.626Z",
+   "fail": false
+  },
+  "ch06-s02": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 24,
+   "texts": 28,
+   "at": "2026-10-13T04:15:30.436Z",
+   "fail": false
+  },
+  "ch14-s05": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 0,
+   "texts": 3,
+   "at": "2026-10-13T09:35:10.073Z",
+   "fail": false
+  },
+  "ch01-s01": {
+   "offenders": [],
+   "subjects": 0,
+   "texture": 0,
+   "texts": 0,
+   "at": "2026-10-13T04:12:51.243Z",
+   "fail": false
+  },
+  "ch01-s02": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 9,
+   "texts": 10,
+   "at": "2026-10-13T04:12:51.678Z",
+   "fail": false
+  },
+  "ch01-s03": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 10,
+   "texts": 12,
+   "at": "2026-10-13T04:12:52.211Z",
+   "fail": false
+  },
+  "ch01-s04": {
+   "offenders": [],
+   "subjects": 11,
+   "texture": 2,
+   "texts": 13,
+   "at": "2026-10-13T04:56:04.773Z",
+   "fail": false
+  },
+  "ch01-s05": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 2,
+   "texts": 5,
+   "at": "2026-10-13T04:12:53.544Z",
+   "fail": false
+  },
+  "ch01-s06": {
+   "offenders": [],
+   "subjects": 0,
+   "texture": 11,
+   "texts": 11,
+   "at": "2026-10-13T23:04:03.004Z",
+   "fail": false
+  },
+  "ch01-s07": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 0,
+   "texts": 3,
+   "at": "2026-10-13T04:12:56.877Z",
+   "fail": false
+  },
+  "ch02-s01": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 10,
+   "texts": 14,
+   "at": "2026-10-13T04:12:57.327Z",
+   "fail": false
+  },
+  "ch02-s02": {
+   "offenders": [],
+   "subjects": 15,
+   "texture": 6,
+   "texts": 21,
+   "at": "2026-10-13T04:12:58.194Z",
+   "fail": false
+  },
+  "ch02-s03": {
+   "offenders": [],
+   "subjects": 10,
+   "texture": 6,
+   "texts": 16,
+   "at": "2026-10-13T04:12:58.594Z",
+   "fail": false
+  },
+  "ch02-s04": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 21,
+   "texts": 29,
+   "at": "2026-10-13T04:12:59.411Z",
+   "fail": false
+  },
+  "ch02-s05": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 12,
+   "texts": 16,
+   "at": "2026-10-13T04:12:59.844Z",
+   "fail": false
+  },
+  "ch02-s05b": {
+   "offenders": [],
+   "subjects": 17,
+   "texture": 13,
+   "texts": 30,
+   "at": "2026-10-13T04:13:00.444Z",
+   "fail": false
+  },
+  "ch02-s07": {
+   "offenders": [],
+   "subjects": 25,
+   "texture": 9,
+   "texts": 34,
+   "at": "2026-10-13T04:13:07.293Z",
+   "fail": false
+  },
+  "ch02-s08": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 17,
+   "texts": 23,
+   "at": "2026-10-13T20:31:00.623Z",
+   "fail": false
+  },
+  "ch03-s01": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 27,
+   "texts": 30,
+   "at": "2026-10-13T04:13:08.893Z",
+   "fail": false
+  },
+  "ch03-s02": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 19,
+   "texts": 22,
+   "at": "2026-10-13T04:13:09.593Z",
+   "fail": false
+  },
+  "ch03-s03": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 17,
+   "texts": 21,
+   "at": "2026-10-13T04:13:10.226Z",
+   "fail": false
+  },
+  "ch03-s04": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 29,
+   "texts": 36,
+   "at": "2026-10-13T04:13:11.196Z",
+   "fail": false
+  },
+  "ch03-s05": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 24,
+   "texts": 26,
+   "at": "2026-10-13T04:13:11.796Z",
+   "fail": false
+  },
+  "ch03-s06": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 17,
+   "texts": 25,
+   "at": "2026-10-13T14:36:43.415Z",
+   "fail": false
+  },
+  "ch03-s08": {
+   "offenders": [],
+   "subjects": 12,
+   "texture": 47,
+   "texts": 59,
+   "at": "2026-10-13T04:13:13.327Z",
+   "fail": false
+  },
+  "ch03-s09": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 17,
+   "texts": 18,
+   "at": "2026-10-13T04:13:14.027Z",
+   "fail": false
+  },
+  "ch04-s01": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 15,
+   "texts": 19,
+   "at": "2026-10-13T04:13:15.029Z",
+   "fail": false
+  },
+  "ch04-s02": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 19,
+   "texts": 25,
+   "at": "2026-10-13T04:13:15.794Z",
+   "fail": false
+  },
+  "ch04-s03": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 26,
+   "texts": 27,
+   "at": "2026-10-13T04:13:17.527Z",
+   "fail": false
+  },
+  "ch04-s04": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 0,
+   "texts": 2,
+   "at": "2026-10-13T04:13:17.926Z",
+   "fail": false
+  },
+  "ch04-s05": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 8,
+   "texts": 9,
+   "at": "2026-10-13T04:13:18.393Z",
+   "fail": false
+  },
+  "ch04-s06": {
+   "offenders": [],
+   "subjects": 28,
+   "texture": 5,
+   "texts": 33,
+   "at": "2026-10-13T04:13:19.326Z",
+   "fail": false
+  },
+  "ch04-s07": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 8,
+   "texts": 13,
+   "at": "2026-10-13T23:12:45.212Z",
+   "fail": false
+  },
+  "ch04-s08": {
+   "offenders": [],
+   "subjects": 12,
+   "texture": 28,
+   "texts": 40,
+   "at": "2026-10-13T04:13:20.660Z",
+   "fail": false
+  },
+  "ch05-s01": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 1,
+   "texts": 10,
+   "at": "2026-10-13T04:13:21.626Z",
+   "fail": false
+  },
+  "ch05-s03": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 7,
+   "texts": 15,
+   "at": "2026-10-13T04:13:22.327Z",
+   "fail": false
+  },
+  "ch05-s04": {
+   "offenders": [],
+   "subjects": 13,
+   "texture": 39,
+   "texts": 52,
+   "at": "2026-10-13T14:43:47.847Z",
+   "fail": false
+  },
+  "ch05-s06": {
+   "offenders": [],
+   "subjects": 13,
+   "texture": 27,
+   "texts": 40,
+   "at": "2026-10-13T04:13:25.694Z",
+   "fail": false
+  },
+  "ch05-s07": {
+   "offenders": [],
+   "subjects": 12,
+   "texture": 41,
+   "texts": 53,
+   "at": "2026-10-13T14:45:24.899Z",
+   "fail": false
+  },
+  "ch05-s08": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 3,
+   "texts": 12,
+   "at": "2026-10-13T04:13:27.659Z",
+   "fail": false
+  },
+  "ch05-s09b": {
+   "offenders": [],
+   "subjects": 12,
+   "texture": 15,
+   "texts": 27,
+   "at": "2026-10-13T04:13:28.660Z",
+   "fail": false
+  },
+  "ch05-s10": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 31,
+   "texts": 36,
+   "at": "2026-10-13T04:13:29.393Z",
+   "fail": false
+  },
+  "ch06-s01": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 14,
+   "texts": 22,
+   "at": "2026-10-13T04:15:29.903Z",
+   "fail": false
+  },
+  "ch06-s03": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 8,
+   "texts": 13,
+   "at": "2026-10-13T04:13:32.307Z",
+   "fail": false
+  },
+  "ch06-s03b": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 5,
+   "texts": 8,
+   "at": "2026-10-13T14:37:55.764Z",
+   "fail": false
+  },
+  "ch06-s04": {
+   "offenders": [],
+   "subjects": 14,
+   "texture": 42,
+   "texts": 56,
+   "at": "2026-10-13T20:24:10.249Z",
+   "fail": false
+  },
+  "ch06-s05": {
+   "offenders": [],
+   "subjects": 28,
+   "texture": 53,
+   "texts": 81,
+   "at": "2026-10-13T05:07:09.347Z",
+   "fail": false
+  },
+  "ch06-s06": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 13,
+   "texts": 21,
+   "at": "2026-10-13T04:13:36.575Z",
+   "fail": false
+  },
+  "ch06-s07": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 41,
+   "texts": 48,
+   "at": "2026-10-13T04:13:37.176Z",
+   "fail": false
+  },
+  "ch06-s08": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 30,
+   "texts": 32,
+   "at": "2026-10-13T04:13:37.576Z",
+   "fail": false
+  },
+  "ch07-s01": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 40,
+   "texts": 47,
+   "at": "2026-10-13T23:12:16.268Z",
+   "fail": false
+  },
+  "ch07-s02": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 31,
+   "texts": 40,
+   "at": "2026-10-13T05:11:09.305Z",
+   "fail": false
+  },
+  "ch07-s03": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 3,
+   "texts": 12,
+   "at": "2026-10-13T04:13:40.477Z",
+   "fail": false
+  },
+  "ch07-s04": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 0,
+   "texts": 4,
+   "at": "2026-10-13T04:13:41.209Z",
+   "fail": false
+  },
+  "ch07-s06": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 40,
+   "texts": 45,
+   "at": "2026-10-13T04:13:41.644Z",
+   "fail": false
+  },
+  "ch08-s01": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 20,
+   "texts": 27,
+   "at": "2026-10-13T15:22:03.540Z",
+   "fail": false
+  },
+  "ch08-s02": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 0,
+   "texts": 8,
+   "at": "2026-10-13T04:13:43.243Z",
+   "fail": false
+  },
+  "ch08-s03": {
+   "offenders": [],
+   "subjects": 15,
+   "texture": 5,
+   "texts": 20,
+   "at": "2026-10-13T04:13:43.909Z",
+   "fail": false
+  },
+  "ch08-s04": {
+   "offenders": [],
+   "subjects": 17,
+   "texture": 7,
+   "texts": 24,
+   "at": "2026-10-13T04:13:44.976Z",
+   "fail": false
+  },
+  "ch08-s05": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 2,
+   "texts": 7,
+   "at": "2026-10-13T15:13:24.670Z",
+   "fail": false
+  },
+  "ch08-s06": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 1,
+   "texts": 2,
+   "at": "2026-10-13T20:21:49.032Z",
+   "fail": false
+  },
+  "ch08-s07": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 0,
+   "texts": 1,
+   "at": "2026-10-13T04:13:47.442Z",
+   "fail": false
+  },
+  "ch08-s08": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 0,
+   "texts": 5,
+   "at": "2026-10-13T04:13:48.441Z",
+   "fail": false
+  },
+  "ch08-s08b": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 1,
+   "texts": 2,
+   "at": "2026-10-13T04:13:49.175Z",
+   "fail": false
+  },
+  "ch08-s09": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 1,
+   "texts": 4,
+   "at": "2026-10-13T04:13:49.942Z",
+   "fail": false
+  },
+  "ch08-s10": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 12,
+   "texts": 14,
+   "at": "2026-10-13T04:13:50.376Z",
+   "fail": false
+  },
+  "ch08-s11": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 0,
+   "texts": 5,
+   "at": "2026-10-13T05:11:41.119Z",
+   "fail": false
+  },
+  "ch08-s12": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 8,
+   "texts": 10,
+   "at": "2026-10-13T04:13:51.474Z",
+   "fail": false
+  },
+  "ch08-s13": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 10,
+   "texts": 17,
+   "at": "2026-10-13T04:13:52.026Z",
+   "fail": false
+  },
+  "ch08-s13b": {
+   "offenders": [],
+   "subjects": 11,
+   "texture": 47,
+   "texts": 58,
+   "at": "2026-10-13T15:16:42.776Z",
+   "fail": false
+  },
+  "ch08-s14": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 43,
+   "texts": 52,
+   "at": "2026-10-13T05:11:41.721Z",
+   "fail": false
+  },
+  "ch09-s01": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 7,
+   "texts": 11,
+   "at": "2026-10-13T04:13:55.259Z",
+   "fail": false
+  },
+  "ch09-s03a": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 32,
+   "texts": 38,
+   "at": "2026-10-13T04:13:55.625Z",
+   "fail": false
+  },
+  "ch09-s03": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 39,
+   "texts": 47,
+   "at": "2026-10-13T06:12:07.878Z",
+   "fail": false
+  },
+  "ch09-s04": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 39,
+   "texts": 46,
+   "at": "2026-10-13T06:11:59.202Z",
+   "fail": false
+  },
+  "ch09-s05": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 36,
+   "texts": 41,
+   "at": "2026-10-13T23:03:33.764Z",
+   "fail": false
+  },
+  "ch10-s01": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 10,
+   "texts": 13,
+   "at": "2026-10-13T04:13:59.325Z",
+   "fail": false
+  },
+  "ch10-s02": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 14,
+   "texts": 18,
+   "at": "2026-10-13T04:13:59.892Z",
+   "fail": false
+  },
+  "ch10-s03": {
+   "offenders": [],
+   "subjects": 8,
+   "texture": 0,
+   "texts": 8,
+   "at": "2026-10-13T04:14:00.642Z",
+   "fail": false
+  },
+  "ch10-s04": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 8,
+   "texts": 12,
+   "at": "2026-10-13T14:56:54.284Z",
+   "fail": false
+  },
+  "ch10-s05": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 15,
+   "texts": 18,
+   "at": "2026-10-13T06:21:05.504Z",
+   "fail": false
+  },
+  "ch10-s06": {
+   "offenders": [],
+   "subjects": 14,
+   "texture": 14,
+   "texts": 28,
+   "at": "2026-10-13T06:20:56.438Z",
+   "fail": false
+  },
+  "ch10-s07": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 38,
+   "texts": 44,
+   "at": "2026-10-13T04:14:04.376Z",
+   "fail": false
+  },
+  "ch10-s08": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 13,
+   "texts": 16,
+   "at": "2026-10-13T04:14:04.909Z",
+   "fail": false
+  },
+  "ch10-s09": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 18,
+   "texts": 20,
+   "at": "2026-10-13T04:14:05.508Z",
+   "fail": false
+  },
+  "ch10-s10": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 11,
+   "texts": 14,
+   "at": "2026-10-14T00:39:22.423Z",
+   "fail": false
+  },
+  "ch10-s12": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 21,
+   "texts": 24,
+   "at": "2026-10-14T00:39:29.406Z",
+   "fail": false
+  },
+  "ch10-s13b": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 66,
+   "texts": 71,
+   "at": "2026-10-14T00:39:39.776Z",
+   "fail": false
+  },
+  "ch10-s14": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 16,
+   "texts": 17,
+   "at": "2026-10-13T20:47:45.158Z",
+   "fail": false
+  },
+  "ch11-s01": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 66,
+   "texts": 71,
+   "at": "2026-10-13T04:14:08.875Z",
+   "fail": false
+  },
+  "ch11-s02": {
+   "offenders": [],
+   "subjects": 18,
+   "texture": 71,
+   "texts": 89,
+   "at": "2026-10-13T15:21:05.237Z",
+   "fail": false
+  },
+  "ch11-s03": {
+   "offenders": [],
+   "subjects": 3,
+   "texture": 33,
+   "texts": 36,
+   "at": "2026-10-13T04:14:10.792Z",
+   "fail": false
+  },
+  "ch11-s05": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 109,
+   "texts": 116,
+   "at": "2026-10-13T20:55:35.646Z",
+   "fail": false
+  },
+  "ch11-s08": {
+   "offenders": [],
+   "subjects": 19,
+   "texture": 90,
+   "texts": 109,
+   "at": "2026-10-13T15:49:36.641Z",
+   "fail": false
+  },
+  "ch12-s01": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 50,
+   "texts": 54,
+   "at": "2026-10-13T04:14:13.358Z",
+   "fail": false
+  },
+  "ch12-s02": {
+   "offenders": [],
+   "subjects": 5,
+   "texture": 1,
+   "texts": 6,
+   "at": "2026-10-13T04:14:14.274Z",
+   "fail": false
+  },
+  "ch12-s06": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 1,
+   "texts": 5,
+   "at": "2026-10-13T04:14:15.173Z",
+   "fail": false
+  },
+  "ch12-s07": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 71,
+   "texts": 78,
+   "at": "2026-10-13T16:19:18.666Z",
+   "fail": false
+  },
+  "ch12-s08": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 81,
+   "texts": 90,
+   "at": "2026-10-14T00:33:26.757Z",
+   "fail": false
+  },
+  "ch12-s03": {
+   "offenders": [],
+   "subjects": 13,
+   "texture": 56,
+   "texts": 69,
+   "at": "2026-10-13T20:52:28.974Z",
+   "fail": false
+  },
+  "ch13-s01": {
+   "offenders": [],
+   "subjects": 15,
+   "texture": 51,
+   "texts": 66,
+   "at": "2026-10-13T21:19:23.791Z",
+   "fail": false
+  },
+  "ch13-s02": {
+   "offenders": [],
+   "subjects": 2,
+   "texture": 24,
+   "texts": 26,
+   "at": "2026-10-13T04:14:19.524Z",
+   "fail": false
+  },
+  "ch13-s03": {
+   "offenders": [],
+   "subjects": 18,
+   "texture": 56,
+   "texts": 74,
+   "at": "2026-10-14T00:28:44.804Z",
+   "fail": false
+  },
+  "ch13-s04": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 12,
+   "texts": 21,
+   "at": "2026-10-13T21:20:07.577Z",
+   "fail": false
+  },
+  "ch13-s06": {
+   "offenders": [],
+   "subjects": 1,
+   "texture": 77,
+   "texts": 78,
+   "at": "2026-10-13T07:01:09.907Z",
+   "fail": false
+  },
+  "ch14-s01": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 5,
+   "texts": 12,
+   "at": "2026-10-13T07:23:08.080Z",
+   "fail": false
+  },
+  "ch14-s02": {
+   "offenders": [],
+   "subjects": 13,
+   "texture": 5,
+   "texts": 18,
+   "at": "2026-10-13T21:39:35.130Z",
+   "fail": false
+  },
+  "ch14-s03": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 2,
+   "texts": 8,
+   "at": "2026-10-13T07:23:09.947Z",
+   "fail": false
+  },
+  "ch14-s04": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 1,
+   "texts": 10,
+   "at": "2026-10-13T07:23:10.981Z",
+   "fail": false
+  },
+  "ch14-s04b": {
+   "offenders": [],
+   "subjects": 10,
+   "texture": 11,
+   "texts": 21,
+   "at": "2026-10-14T00:47:16.198Z",
+   "fail": false
+  },
+  "ch14-s06": {
+   "offenders": [],
+   "subjects": 9,
+   "texture": 5,
+   "texts": 14,
+   "at": "2026-10-13T09:35:11.756Z",
+   "fail": false
+  },
+  "ch14-s07": {
+   "offenders": [],
+   "subjects": 15,
+   "texture": 19,
+   "texts": 34,
+   "at": "2026-10-14T00:47:18.104Z",
+   "fail": false
+  },
+  "ch15-s01": {
+   "offenders": [],
+   "subjects": 14,
+   "texture": 2,
+   "texts": 16,
+   "at": "2026-10-14T01:32:50.868Z",
+   "fail": false
+  },
+  "ch15-s03": {
+   "offenders": [],
+   "subjects": 4,
+   "texture": 10,
+   "texts": 14,
+   "at": "2026-10-14T01:33:25.373Z",
+   "fail": false
+  },
+  "ch15-s04": {
+   "offenders": [],
+   "subjects": 10,
+   "texture": 84,
+   "texts": 94,
+   "at": "2026-10-14T01:33:36.911Z",
+   "fail": false
+  },
+  "ch15-s05": {
+   "offenders": [],
+   "subjects": 20,
+   "texture": 5,
+   "texts": 25,
+   "at": "2026-10-14T01:11:06.615Z",
+   "fail": false
+  },
+  "ch15-s06": {
+   "offenders": [],
+   "subjects": 7,
+   "texture": 61,
+   "texts": 68,
+   "at": "2026-10-14T01:33:52.924Z",
+   "fail": false
+  },
+  "ch15-s07": {
+   "offenders": [],
+   "subjects": 6,
+   "texture": 0,
+   "texts": 6,
+   "at": "2026-10-14T01:13:36.090Z",
+   "fail": false
+  },
+  "ch15-s08": {
+   "offenders": [],
+   "subjects": 22,
+   "texture": 77,
+   "texts": 99,
+   "at": "2026-10-14T01:25:45.005Z",
+   "fail": false
+  },
+  "ch15-s09": {
+   "offenders": [],
+   "subjects": 15,
+   "texture": 23,
+   "texts": 38,
+   "at": "2026-10-14T01:26:47.381Z",
+   "fail": false
+  },
+  "ch15-s10": {
+   "offenders": [],
+   "subjects": 22,
+   "texture": 3,
+   "texts": 25,
+   "at": "2026-10-14T01:13:45.285Z",
+   "fail": false
+  }
+ },
+ "at": "2026-10-14T01:33:52.944Z",
+ "minCapPx": 22,
+ "rule": "review round 2: subject text (kit cards, script onScreenText, or named by the narrator while visible) fails under minCapPx; texture is exempt"
+}

@@ -1,0 +1,204 @@
+{
+ "shot": "ch15-s09",
+ "at": "2026-10-14T01:26:47.381Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 38,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "experience, is of the",
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "capWhileSubject": 32.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "The future depends on",
+   "capWhileSubject": 25.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "some graduate student",
+   "capWhileSubject": 25.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "who is deeply suspicious",
+   "capWhileSubject": 25.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "of everything I have",
+   "capWhileSubject": 25.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "said.",
+   "capWhileSubject": 25.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "CASE FILE",
+   "capWhileSubject": 33.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "The future depends on some graduate",
+   "capWhileSubject": 33.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "student who is deeply suspicious of",
+   "capWhileSubject": 33.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "everything I have said.",
+   "capWhileSubject": 33.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "— Geoffrey Hinton, 2017, as quoted by Gary Marcus",
+   "capWhileSubject": 27.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LEARNING + ACCOMPLICES",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "NEVER ONE PERSON",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "STATUS: OPEN",
+   "capWhileSubject": 34.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 16.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HASSABIS · 2025",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AGI in 5 to 10 years",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "· about even odds",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CASE FILE · WHO TAUGHT IT?",
+   "maxCap": 13.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2022",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2025",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 23
+}

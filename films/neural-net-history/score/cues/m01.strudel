@@ -1,0 +1,212 @@
+// m01 "The Wonder in the Dark Room" (neural-net-history), 0-76.27 s, prologue, rubato.
+// RE-FIT (round 4, 2026-10-13) to the current clock (narration/timeline.json, 2164 s): L0114 was re-narrated slower
+// ("Our story starts all the way back in World War Two.", 61.867-65.269, 'starts' 62.622, 'Two' 64.909), L0114b now
+// 66.069-67.996, ch01-s07 starts 68.50 ('title' 69.50, 'subtitle' 71.50, 'wickCatch' 76.90), window 0-76.2667.
+// Nothing before ch01-s06 moved. setcps(1): one cycle = one second, so every event sits at its absolute film second
+// (cue start = 0). Body = 76.2667 cycles. Events: [startSec, lenSec, notes, velocity, {params}], compiled by line()
+// into mini-notation lanes (overlaps go to new lanes).
+//
+//  0.0-9.0    black: a low D (contrabass) breathes in under tape hiss, thin under L0101 (the soft opening line).
+//             The ONE piano E6 answers "wonder" in the breath right after the word (4.78; the word ends 4.64): the
+//             ninth, a question with no third.
+//  9.0-18.5   the drone stays; soft woody ticks as the type sorts drop: the question's sorts from "question"
+//             (10.13) across the rest of L0102, then one sort per word on "writes" 15.35, "back" 15.82,
+//             "word" 16.74, "by" 17.26, "word" 17.54. Almost a clock, no melody.
+//  18.7-29.1  the camera rises ('rise' 18.74): the drone opens into a wide Dadd9 (d2 a2 e3 low + f#5 a5 very soft
+//             above the voice, lpf 1300) under L0104; the high wash is released after "people" and gone by "week"; it thins to ONE
+//             held note (string E5, the box's question an octave down) on "rulebook" (27.45) and sits in the
+//             silence after it.
+//  29.4-30.4  silence under the lamp click ('lamp' 30.08, foley).
+//  30.5-46.1  M2 the walk (pizz, D dorian, D2 F2 G2 G#2 | A2 ~ C3 A2), low, dry, inquisitive, from just after the
+//             click under "So. Who taught it?"; the second phrase climbs (C3 D3) and stops dead, damped, as "Put
+//             that in the case file" begins (46.19).
+//  46.0-49.3  THE FILE SEAL, the first of five (review round 3: L0109 had the film's thinnest voice margin, the seal
+//             was struck on "file" and the walk's D3 rang over "Put"). Now nothing is struck under a word of
+//             L0109: the A (a muted pizz A2, a breath of low clarinet A3) drops softly into the breath between
+//             "that" (ends 46.74) and "in" (47.27); the falling fifth's D (pizz D2 + clarinet D3, full weight)
+//             closes the drawer just after "file" (ends 48.31), damped by 49.2, before L0110 (49.33). The hiss is 3 dB down across 46.0-48.4 and the
+//             study drone's re-strike moved off the line.
+//  51.6-58.4  three plucks for the three suspects: "Rules" 51.63 (D3), "Knowledge" 52.38 (E3), "learning"
+//             53.51 (A3 + a warm harp under it); under the shelf ('shelf' 54.14) a faint high celesta shimmer.
+//  58.42-61.67 THE REWIND: a reversed swell (string chord Bb-F-D-A-E with a long attack, a backwards noise
+//             "cymbal", a warbling triangle pad) under the backward images ('rewind' 58.42, 'goStone' 58.67 ...
+//             'knob' 60.92), sucked back and cut dead (release tails included) exactly as the fifth image, the
+//             dying wick, appears ('wick' 61.667), 0.2 s before "Our" (61.867).
+//  61.7-68.1  "Our story starts all the way back in World War Two." (the slower retake), the 0.8-s pause, "To a
+//             lamp, in Chicago." over room tone only: ONE unbroken sine D at about -30 dB under both halves and the
+//             pause (the near-silent bed), released after "Chicago" (ends 68.00).
+//  68.0-69.5  the title's first beat in silence.
+//  69.5-76.27 M1, first statement, celesta in D: A (sounding A4) on the title card ('title' 69.50) -> D (sounding
+//             D5) 70.12, held by strings over D major (lit), a slow harp roll blooming the chord; on the subtitle
+//             ('subtitle' 71.50) the harmony drops to A-E under the held D (Asus4: doubted; the harp voices it);
+//             the fall is held back. Last onset 71.76. The title is the prologue's peak. The suspension rings into
+//             the fade (73.77-76.27), where m02 (74.27) takes the held D as the fifth of G; the wick glint
+//             ('wickCatch' 76.90) is m02's first note.
+setcps(1)
+
+const N = 77       // cycles covered by each compiled lane (body 76.2667)
+const G = 2.3      // level (the integrated target is about -21 LUFS)
+const GT = 1.6     // the title's celesta (M1 itself): the prologue's peak (music only, about -16 LUFS momentary at most)
+const GS = 1.5     // the title's strings and bass, a little under the celesta (their bow swell peaks ~1 s in)
+const GR = 1.3     // the rewind's level (under the title)
+const TITLE = 69.50, SUB = 71.50   // ch01-s07 beats 'title' and 'subtitle'
+
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  // every param named in defs OR on any event becomes a lane; a missing value falls back to defs, then DEF
+  const DEF = { attack: .01, release: .3, decay: 0, sustain: 1, lpf: 18000, pan: .5 }
+  const keys = [...new Set([...Object.keys(defs), ...evs.flatMap((e) => Object.keys(e[4] || {}))])]
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DEF[k])))
+    return p.slow(N)
+  }))
+}
+
+// ---------------------------------------------------------------- M2: the lit box (drone + hiss + E6)
+// contrabass D2, re-struck with long overlapping attacks so the bow swell never peaks under a word;
+// it opens into the chord on the rise, falls away on "rulebook"; after the lamp click a fainter study drone.
+$: line([
+  [0.3, 9.0, 'd2', .18, { attack: 3 }],          // thin under L0101 (the soft line)
+  [8.3, 10.2, 'd2', .2, { attack: 2.5 }],
+  [18.1, 9.4, '[d2,a2]', .135, { attack: 2.2, release: 2.2 }],
+  [30.4, 8.2, 'd2', .11, { attack: 2.5 }],                // thinner under "So. Who taught it?" (the 80-250 Hz band)
+  [38.0, 7.9, 'd2', .11, { attack: 2.5, release: 1.2 }],   // and under L0108
+  [45.9, 6.4, 'd2', .12, { attack: 2.4, release: 1.2 }],   // re-struck before "Put" with a slow bow: no swell under L0109
+  [51.9, 6.0, 'd2', .12, { attack: 2, release: .8 }],
+], { attack: 2, release: 3 })
+  .s('gm_contrabass').gain(G).lpf(380).room(.4).rsize(4).orbit(1)
+
+// tape hiss: one long breath, gone under the lamp click, back in the study (3 dB down under "Put that in the case
+// file"), gone with the rewind
+// (three abutting segments in the study, crossfaded in 60 ms, so the dip has no attack swell)
+$: s("~@0.2 pink@29.2 ~@1.2 pink@15.4 pink@2.4 pink@10 ~@18.6").slow(N)
+  .gain("0@0.2 .013@29.2 0@1.2 .013@15.4 .0092@2.4 .013@10 0@18.6".slow(N))
+  .attack("2@0.2 2@29.2 2@1.2 2@15.4 .06@2.4 .06@10 2@18.6".slow(N))
+  .release("1@0.2 .8@29.2 1@1.2 .06@15.4 .06@2.4 .8@10 1@18.6".slow(N))
+  .hpf(2600).lpf(9000).orbit(5)
+
+// the one tone: E6 in the breath after "wonder" (the word ends 4.64)
+$: line([
+  [4.78, 7, 'e6', .42],
+])
+  .s('piano').gain(G).release(3).room(.8).rsize(6).orbit(2)
+
+// soft woody ticks: the question's sorts drop in (from "question"), then one sort per word of the answer
+const sorts = [10.13, 10.5, 10.88, 11.25, 11.63, 12.0, 12.37]
+const answer = [15.35, 15.82, 16.74, 17.26, 17.54]
+$: line([
+  ...sorts.map((t, i) => [t, .18, i % 2 ? 'g5' : 'd5', .065]),
+  ...answer.map((t, i) => [t, .18, i % 2 ? 'a5' : 'd5', .085]),
+])
+  .s('gm_woodblock').gain(G).lpf(3200).room(.3).rsize(2).orbit(3)
+
+// ---------------------------------------------------------------- the rise: Dadd9 opening, then one held note
+$: line([
+  [18.7, 5.4, '[d2,a2,e3]', .095, { attack: 2.2, release: 1.6 }],         // under "seven hundred million": low, below the voice;
+                                                                          // it thins over "every week" (the bass holds the D)
+  [18.9, 4.5, '[f#5,a5]', .065, { attack: 2.6, release: 1.1 }],           // the high wash above the voice, released after "people": gone by "week"
+  [27.45, 1.6, 'e5', .11, { attack: .8, release: .6 }],                  // ONE held note on "rulebook"
+], { attack: 2, release: 2 })
+  .s('gm_string_ensemble_1').gain(G * .8).lpf(1300).room(.6).rsize(5).orbit(4)
+
+// ---------------------------------------------------------------- M2: the walk and the file seal
+// D dorian, quarter = 1 s (pp: under the lines, about 1.4 dB under the round-2 walk); first phrase plain, second climbs (C3 D3, quicker) and stops dead, damped, before "Put".
+const THAT_IN = 46.80, FILE_END = 48.42       // the breath after "that"; just after "file"
+$: line([
+  [30.5, .9, 'd2', .357], [31.5, .9, 'f2', .323], [32.5, .9, 'g2', .34], [33.5, .9, 'g#2', .34],
+  [34.5, 1.8, 'a2', .357], [36.5, .9, 'c3', .323], [37.5, 1.8, 'a2', .323],
+  [40.3, .9, 'd2', .34], [41.3, .9, 'f2', .306], [42.3, .9, 'g2', .323], [43.3, .9, 'g#2', .323],
+  [44.3, .9, 'a2', .323], [45.3, .4, 'c3', .289, { release: .25 }], [45.72, .3, 'd3', .264, { release: .15 }],
+  // the seal: A -> D, falling fifth, both strikes in the clear of L0109's words
+  [THAT_IN, .34, 'a2', .2, { release: .12 }], [FILE_END, .48, 'd2', .37, { release: .25 }],
+  // three suspects, rising; the third warmer
+  [51.63, .9, 'd3', .37], [52.38, .9, 'e3', .39], [53.51, 1.8, 'a3', .43],
+], { release: .5 })
+  .s('gm_pizzicato_strings').gain(G * .85).lpf(1500).room(.35).rsize(3).orbit(3)
+
+// the seal's soft low clarinet (A3 -> D3), and the warm harp under "learning"
+$: line([
+  [THAT_IN, .34, 'a3', .07, { attack: .04, release: .1 }],
+  [FILE_END, .46, 'd3', .14, { attack: .06, release: .25 }],
+])
+  .s('gm_clarinet').gain(G).lpf(1200).room(.4).rsize(3).orbit(3)
+$: line([
+  [53.51, 3, '[d3,a3]', .15],
+])
+  .s('gm_orchestral_harp').gain(G).release(2).lpf(2400).room(.5).rsize(4).orbit(3)
+
+// under the shelf: a faint high shimmer (celesta sounds an octave up), not yet the candle
+$: line([
+  [54.25, 1, 'e5', .09], [54.85, 1, 'a5', .08], [55.55, 1, 'd6', .07], [56.3, 1, 'b5', .065], [57.05, 1.3, 'e6', .06],
+])
+  .s('gm_celesta').gain(G).room(.7).rsize(5).orbit(2)
+
+// ---------------------------------------------------------------- THE REWIND ('rewind' 58.42 -> 'wick' 61.67), cut dead
+$: line([
+  [58.42, 3.217, '[bb1,f2,d3,a3,e4]', .42, { attack: 3.12, release: .03 }],   // gone by 'wick' 61.667, 0.2 s before "Our"
+])
+  .s('gm_string_ensemble_1').gain(GR).lpf(2600).orbit(6)
+$: line([
+  [58.42, 3.217, '[d3,a3,e4]', .07, { attack: 3.17, release: .03 }],
+])
+  .s('triangle').gain(GR).vib(5.5).vibmod(.18).lpf(1800).orbit(6)
+$: s("~@58.6 white@3.047 ~@15.353").slow(N)
+  .attack(2.98).release(.02).gain(.1).hpf(5000).lpf(14000).orbit(6)
+
+// room tone under "Our story starts ... World War Two.", the 0.8-s pause and "To a lamp, in Chicago." (the slower
+// L0114 retake): a sine D at about -30 dB, one unbroken bed, released after "Chicago" (ends 68.00)
+$: line([
+  [61.68, 6.42, 'd2', .5, { attack: .5, release: .7 }],
+])
+  .s('sine').gain(.03).lpf(300).orbit(1)
+
+// ---------------------------------------------------------------- THE TITLE: M1, first statement
+// celesta sounds an octave up: written A3 -> D4 = heard A4 -> D5; the D re-struck softly as the harmony drops.
+// The title layers have their own orbits and a drier send (per-orbit reverb IRs vary between renders).
+const LIT = TITLE + .62
+$: line([
+  [TITLE + .02, .6, 'a3', .44],
+  [LIT, 1.4, 'd4', .5],
+  [SUB + .02, 3, 'd4', .26],
+])
+  .s('gm_celesta').gain(GT).room(.45).rsize(5).orbit(7)
+
+// the flame: strings hold D4 (lit, then doubted); harmony D major -> A-E under it (Asus4); no fall
+$: line([
+  [LIT, 5.6, 'd4', .26, { attack: .7, release: 2.5 }],
+  [LIT, 1.4, '[d3,f#3,a3]', .2, { attack: .8, release: 1.4 }],
+  [SUB + .02, 4.3, '[a2,e3,a3]', .19, { attack: 1.2, release: 2.5 }],
+], { attack: .8, release: 2 })
+  .s('gm_string_ensemble_1').gain(GS).lpf(1700).room(.45).rsize(5).orbit(8)
+$: line([
+  [LIT, 1.4, 'd2', .2, { attack: .8, release: 1.4 }],
+  [SUB + .02, 4.3, 'a1', .22, { attack: 1.2, release: 2.5 }],
+])
+  .s('gm_contrabass').gain(GS).lpf(420).room(.35).rsize(4).orbit(9)
+// the harp: the lit chord blooms (a slow roll up D major as the D lands), then the doubt is voiced in the same hand
+// (A-E-A under the held D: the Asus4). Music only (the title runs in the clear until L0201); last onset 71.36.
+$: line([
+  [LIT, 3, 'd2', .1], [LIT + .08, 3, 'a2', .1], [LIT + .16, 3, 'f#3', .1], [LIT + .24, 3, 'a3', .1], [LIT + .32, 3, 'd4', .1],
+  [SUB + .02, 4, 'a1', .08], [SUB + .1, 4, 'e2', .08], [SUB + .18, 4, 'a2', .085], [SUB + .26, 4, 'e3', .085],
+])
+  .s('gm_orchestral_harp').gain(GS).release(3).lpf(2600).room(.5).rsize(5).orbit(8)

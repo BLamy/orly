@@ -1,0 +1,1095 @@
+{
+ "id": "ch06",
+ "number": 6,
+ "title": "The Quiet Years",
+ "blurb": "1988–2006. Classical machine learning, done justice. At Bell Labs a pierced stencil learns ZIP codes from Buffalo's mail and later reads cheques by the million: a winter of prestige, not of use. Statistics beat hand-written rules in speech and translation, forests of decision trees vote, and the support vector machine offers the widest street and one clean bowl with a proof at the bottom. A candle is lit for 'fiddly, and beaten anyway', with a few stubborn holdouts at its rim, among them Hinton, LeCun and Bengio; a dinner bet is signed; the messenger's whisper fades and a protected pipe carries it; a chess machine wins twenty-nine years late. So why would anyone choose the fog?",
+ "shots": [
+  {
+   "id": "ch06-s01",
+   "kind": "scene",
+   "setting": "Holmdel, New Jersey · 1988–1989 · night · a Bell Labs lab bench under a desk lamp",
+   "era": "1980s",
+   "mood": "duskRose",
+   "leadIn": 1.6,
+   "holdAfter": 3.2,
+   "transitionIn": "fadeBlack",
+   "visual": "THIS SHOT: Bell Labs, 1989: a pierced tin stencil slides over a handwritten digit as LeCun's net learns to read ZIP codes, and a mail sack from Buffalo spills onto the bench. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Quiet Years', drops down from the frame's top edge at top-left, like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. The picture fades up from black in duskRose; the tab rides over the first line. Establishing beat: a vast low building of mirrored glass at dusk, a whole sky reflected in it (no logos, no signage). Inside, a lab bench: a beige PC, a small video camera on a gooseneck stand bent over a handwritten digit under a desk lamp, a CRT glowing beside it. A man (LeCun) leans in at the bench, standing. Teaching machine, brief preview: stencilLantern. The digit on the bench becomes the stitched tapestry '4'; a small 3×3 pierced tin lantern (kernel 'vertical') slides across it for the first dozen positions, and the wall beside the bench fills the first row of the feature map, cell by cell, in raster order; showKernel off, showSum off (the full mechanics belong to chapter 8). On the CRT, the recognised digit appears in phosphor. On 'Buffalo', a canvas mail sack slumps onto the bench, stencilled BUFFALO, N.Y., and envelopes with handwritten ZIP codes slide out. Just after the line, wordless (the aside 'Buffalo, again' was cut in round 8; the picture keeps the rhyme), a ghost of chapter 3's typewriter date stamp, BUFFALO · 1958–60 (the same stamp used in ch03-s04, ch08-s03 and ch15-s08), prints itself faintly over the sack and then fades, and for a moment a faint ghost of the Mark I's silhouette (chapter 3's knob machine) shows in the post-office window behind the sack: the case keeps passing through the same city. Numbers on screen only.",
+   "lines": [
+    {
+     "id": "L0601",
+     "text": "1989, Bell Labs: Yann LeCun's network learns to read handwritten ZIP codes from Buffalo's mail.",
+     "spoken": "Nineteen eighty-nine, Bell Labs: Yann Le Cun's network learns to read handwritten zip codes from Buffalo's mail.",
+     "direction": "unhurried, one long rolling sentence; a teacher settling in to a favourite story",
+     "pauseAfter": 0.45
+    }
+   ],
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'The Quiet Years' drops down from the frame's top edge at top-left, holds, slides back up"
+    },
+    {
+     "id": "bench",
+     "at": {
+      "line": "L0601",
+      "word": "Bell",
+      "edge": "start"
+     },
+     "what": "mirrored building, then the lab bench; place stamp; LeCun name card"
+    },
+    {
+     "id": "stencil",
+     "at": {
+      "line": "L0601",
+      "word": "learns"
+     },
+     "what": "stencil lantern slides over the digit; feature-map row fills"
+    },
+    {
+     "id": "sack",
+     "at": {
+      "line": "L0601",
+      "word": "Buffalo's",
+      "edge": "start"
+     },
+     "what": "mail sack stencilled BUFFALO, N.Y. lands; envelopes spill"
+    },
+    {
+     "id": "again",
+     "at": {
+      "line": "L0601",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "wordless: ghost stamp BUFFALO · 1958–60 prints over the sack and fades; a faint ghost of the Mark I in the post-office window"
+    }
+   ],
+   "cast": [
+    "lecun"
+   ],
+   "props": [
+    "mirrored-glass building",
+    "gooseneck camera",
+    "desk lamp",
+    "CRT",
+    "beige PC",
+    "pierced tin stencil lantern",
+    "mail sack stencilled BUFFALO, N.Y.",
+    "envelopes"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "The Quiet Years",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "place",
+     "text": "HOLMDEL, NEW JERSEY · 1989",
+     "beat": "bench"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yann LeCun · Bell Labs",
+     "beat": "bench"
+    },
+    {
+     "kind": "label",
+     "text": "9,298 digits · 5.0% test error",
+     "beat": "sack"
+    },
+    {
+     "kind": "date",
+     "text": "BUFFALO · 1958–60",
+     "beat": "again"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "The quiet years' instrument arrives: solo piano, unhurried, in duskRose, intensity 2. A small two-note figure on each stencil step (on twos). A warm, slightly amused grace note on 'Buffalo's mail'. A second, smaller grace note as the ghost stamp prints."
+   },
+   "claims": [
+    "e6-lecun-belllabs",
+    "e6-lecun-1989",
+    "e2-mark1-build"
+   ]
+  },
+  {
+   "id": "ch06-s02",
+   "kind": "scene",
+   "setting": "a bank's back room · late 1990s · night · a cheque sorter running; snow on a lecture hall across the street",
+   "era": "1990s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 2.7,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: a bank's cheque sorter runs warm, a stencil flashing over every amount, while across the street snow lies on a dark lecture hall: used, not admired. A bank's back room at night, lit warm: a long cheque-sorting machine, belts and rollers in silhouette, cheques flicking through one after another like playing cards. Above the rollers a tiny stencil lantern (the same one from shot 1) flashes over the handwritten amount on each cheque as it passes, and the amount appears in clean type on a small display. Date stamp in IBM Plex Mono: 1998. The quote card rises over the machine. Then the camera drifts to the window: across the street, a grand lecture hall with tall dark windows stands under falling snow, its lamps out and a single noticeboard frosted over. Inside the bank, the machine keeps running, warm. The image holds both at once: the cold outside is about prestige; the work inside never stopped. Small label (set in just after 'winter', as the drift to the window begins, low in frame, riding the drift back inside): fielded from 1996, and at work on about one US cheque in ten, by LeCun's estimate; it holds through the music-only hold so it can be read in silence. TEXT RULE: besides stamps and name cards, at most two text items in this shot. SCRIPT NOTE (review round 1): the quote card is verbatim US spelling from the 1998 abstract: 'reads several million checks per day' (not 'cheques').",
+   "lines": [
+    {
+     "id": "L0603",
+     "text": "By 1998, a descendant “reads several million checks per day.”",
+     "direction": "plain, a little pride on behalf of the machine",
+     "spoken": "By nineteen ninety-eight, a descendant “reads several million checks per day.”"
+    },
+    {
+     "id": "L0604",
+     "text": "A winter, then, of prestige, not of use.",
+     "direction": "a gentle correction of the usual story; weight on 'prestige' and 'use'"
+    }
+   ],
+   "beats": [
+    {
+     "id": "sorter",
+     "at": {
+      "line": "L0603",
+      "word": "descendant",
+      "edge": "start"
+     },
+     "what": "cheque sorter running; stencil flashes over each amount; date stamp"
+    },
+    {
+     "id": "quote",
+     "at": {
+      "line": "L0603",
+      "word": "reads",
+      "edge": "start",
+      "offset": -0.16
+     },
+     "what": "quote card rises over the machine"
+    },
+    {
+     "id": "window",
+     "at": {
+      "line": "L0604",
+      "word": "winter",
+      "edge": "start"
+     },
+     "what": "camera drifts to the window: snow on a dark lecture hall across the street"
+    },
+    {
+     "id": "tally",
+     "at": {
+      "line": "L0604",
+      "word": "winter",
+      "edge": "start",
+      "offset": 0.3
+     },
+     "what": "small label sets in low in frame as the drift to the window begins, and rides the drift back inside: fielded 1996, about one US cheque in ten"
+    },
+    {
+     "id": "use",
+     "at": {
+      "line": "L0604",
+      "word": "not",
+      "edge": "start"
+     },
+     "what": "back inside: the machine still running warm"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "cheque-sorting machine",
+    "cheques",
+    "small stencil lantern",
+    "lecture hall under snow",
+    "frosted noticeboard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "1998",
+     "beat": "sorter"
+    },
+    {
+     "kind": "quote",
+     "text": "It is deployed commercially and reads several million checks per day. — LeCun et al., 1998",
+     "beat": "quote"
+    },
+    {
+     "kind": "label",
+     "text": "fielded 1996 · ~1 US cheque in 10, per LeCun",
+     "beat": "tally"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "The piano continues; a steady, modest pulse in the left hand like the sorter's rollers. At the window, the texture cools: bowed glass and a high harmonic for the snow. Back inside, the warm pulse resumes underneath, unbothered."
+   },
+   "claims": [
+    "e6-checks"
+   ]
+  },
+  {
+   "id": "ch06-s03",
+   "kind": "plate",
+   "setting": "the rivals' gallery, then Vapnik's blackboard · 1987–2001 · evening · statistics over rules, forests that vote; the widest street between two crowds; then one clean bowl beside the misty hills",
+   "era": "1990s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 1.1,
+   "transitionIn": "paperWipe",
+   "visual": "THIS SHOT: the rivals' gallery unrolls (statistics pairing translations, forests of trees voting), then Vapnik opens the widest street between two crowds and the plate tilts into one clean bowl. Opening: a short paper strip unrolls across the stage, the rivals' gallery, played in the spoken order. On 'translation': a parchment of two bilingual columns (English and French, the Canadian parliament's record; text is texture only), threads of light pairing line to line, while a small hand-cut rulebook beside it is set aside, closed (statistics learned from data over hand-written rules). On 'Forests': a little forest of cut-paper decision trees, each tree a few branching cuts, each raising a tiny paper flag; the majority colour wins. On 'Vapnik's' the strip rolls aside onto the favourite. A blackboard (Vapnik, stocky, chalk in hand; name card crediting his collaborators Cortes, Guyon and Boser) with two crowds of dots. The board becomes a paper-cut street scene: two crowds of small paper lanterns, warm on the left, cool on the right, and between them the widest possible empty street, with a lit centre line. The few lanterns standing right on each kerb glow brighter and get small chalk circles (the support vectors; drawn, not labelled). A narrower street is tried first (faint, wrong, then erased) so the 'widest' reads as a choice. The margin equation inks onto the board margin. On 'landscape', the street plate tilts away and becomes a side-on paper landscape (the mistyHills kit with a convex loss: lossF(x) = x², no fog; KIT WORK, blocking: mistyHills {lossF, lossDf, minima} per staging.kitWork): ONE CLEAN BOWL, smooth, no ridges. A ball of light set anywhere on its rim rolls straight to the single bottom (do it twice from opposite sides; both reach the same point). Beside it, smaller and to the right, chapter 5's misty hills return in miniature, fog and hollow and all, the timid traveller still stuck. On 'with a proof', a small parchment tag pins to the bowl's floor: 'one global optimum'. This is the fairest case for the age's belief: present it with real admiration. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The strip's two panels are pictures, not text items (no captions). (Breiman's 2001 SVM sentence, and his concession that a hand-built net beat his forest on ZIP codes, move to the end-credits sources card.)",
+   "lines": [
+    {
+     "id": "L0605",
+     "text": "The rivals were good: classical machine learning. In speech and translation, statistics learned from data beat hand-written rules. Forests of decision trees voted.",
+     "direction": "sincere; no irony at all; a short, admiring tour, each rival its own small picture and its own small breath",
+     "pauseAfter": 0.5
+    },
+    {
+     "id": "L0606",
+     "text": "The favourite, Vladimir Vapnik's support vector machine, finds the widest street between two crowds.",
+     "direction": "clear and visual; slight pleasure on 'widest street'"
+    },
+    {
+     "id": "L0607",
+     "text": "Its landscape is one clean bowl, with a proof you'll reach the bottom.",
+     "direction": "admiring; let 'one clean bowl' be slow",
+     "tts": {
+      "solo": true,
+      "speed": 0.84
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "rivals",
+     "at": {
+      "line": "L0605",
+      "word": "rivals",
+      "edge": "start"
+     },
+     "what": "a paper strip unrolls: the rivals' gallery"
+    },
+    {
+     "id": "translation",
+     "at": {
+      "line": "L0605",
+      "word": "translation",
+      "edge": "start"
+     },
+     "what": "parchment of bilingual columns, threads pairing line to line; the hand-cut rulebook is closed and set aside"
+    },
+    {
+     "id": "forest",
+     "at": {
+      "line": "L0605",
+      "word": "Forests",
+      "edge": "start"
+     },
+     "what": "a little forest of cut-paper decision trees raises flags; the majority wins"
+    },
+    {
+     "id": "board",
+     "at": {
+      "line": "L0606",
+      "word": "Vapnik's",
+      "edge": "start"
+     },
+     "what": "strip rolls aside; Vapnik at the blackboard; name card"
+    },
+    {
+     "id": "street",
+     "at": {
+      "line": "L0606",
+      "word": "widest",
+      "edge": "start"
+     },
+     "what": "a narrow street is tried and erased; the widest street opens; the kerb lanterns are circled in chalk"
+    },
+    {
+     "id": "eq",
+     "at": {
+      "line": "L0606",
+      "word": "crowds",
+      "edge": "end"
+     },
+     "what": "margin equation inks onto the board"
+    },
+    {
+     "id": "bowl",
+     "at": {
+      "line": "L0607",
+      "word": "bowl",
+      "edge": "start"
+     },
+     "what": "plate tilts into one clean bowl; misty hills in miniature beside it"
+    },
+    {
+     "id": "proof",
+     "at": {
+      "line": "L0607",
+      "word": "with",
+      "edge": "start"
+     },
+     "what": "on 'with a proof': balls from both rims roll to the single bottom; tag 'one global optimum'"
+    }
+   ],
+   "cast": [
+    "vapnik"
+   ],
+   "props": [
+    "paper strip (the rivals' gallery)",
+    "bilingual parchment columns",
+    "small hand-cut rulebook",
+    "cut-paper decision-tree forest with flags",
+    "blackboard",
+    "chalk",
+    "two crowds of paper lanterns",
+    "clean bowl",
+    "miniature misty hills",
+    "parchment tag"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Vladimir Vapnik · with Corinna Cortes, Isabelle Guyon, Bernhard Boser · Bell Labs",
+     "beat": "board"
+    },
+    {
+     "kind": "equation",
+     "text": "widest street:  min ½‖w‖²  subject to  yᵢ(w·xᵢ + b) ≥ 1",
+     "beat": "eq"
+    },
+    {
+     "kind": "label",
+     "text": "convex: one global optimum",
+     "beat": "proof"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "Under the rivals' gallery, two small, bright piano figures, one per panel, polite and competent. Then the piano turns lucid and classical: a clean, balanced phrase in a major key, perfectly resolved, for the bowl. When the misty hills appear beside it, a faint, fogged echo of chapter 5's unresolved note sits underneath. Intensity 3."
+   },
+   "claims": [
+    "e6-ibm-smt",
+    "e6-randomforest",
+    "e6-svm",
+    "e6-vapnik"
+   ]
+  },
+  {
+   "id": "ch06-s03b",
+   "kind": "plate",
+   "setting": "Vapnik's blackboard turned workbench · 1992–2012 · evening · the classical recipe as a two-stage machine: hand-cut features, then a simple learner; the kernel trick lifts two crowds onto a hill",
+   "era": "1990s",
+   "mood": "duskRose",
+   "leadIn": 0.8,
+   "holdAfter": 1.8,
+   "minDuration": 21,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the classical recipe staged as a two-stage paper machine, so the viewer sees what 'clean learning, hand-made seeing' means. CAMERA: a slow lateral track left to right along a workbench below Vapnik's blackboard (same duskRose as ch06-s03), then a gentle rise for the lift. STAGE ONE, on 'expert': a pair of hands (an expert's, shirt-sleeved; not the narrator's tweed cuffs) cuts a small TIN STENCIL with snips: a few hand-chosen shapes (an edge, a corner, a loop), the same kind of pierced stencil that returns in ch08-s04 (rhyme it: same tin, same pierced dots); each photo slid under the stencil becomes a short row of numbers. STAGE TWO, on 'line': a simple learner (a small brass ruler on a pivot) swings over a field of paper dots, warm on one side, cool on the other, and settles on one straight chalk line between them. On 'kernel': the two crowds are mixed so no straight line can part them (a warm ring around a cool cluster, flat on the board); the date card sets in (1992 · Boser, Guyon & Vapnik). On 'lifted': the board's paper plane rises into a gentle HILL (the warm ring stays low on the slopes, the cool cluster rides up to the summit), side-lit so the height reads. On 'flat cut': one flat sheet of vellum slides in horizontally and slices the hill between them: one flat cut parts the crowds; drop back down to the flat board and the cut becomes a closed chalk ring around the cool cluster. On 'clean': the brass ruler and the vellum sheet glow softly (the learning: tidy, provable). On 'hand-made': the camera settles back on the expert's tin stencil at the left of the bench, snips beside it, lamp-lit: the seeing was cut by hand. Hold on it. TEXT RULE: besides stamps and name cards, at most two text items in this shot: the date card and the term label 'kernel trick'. SCRIPT NOTE (review round 9): the recipe is now two lines, using the old silent tail: L0607b (the expert's stencil, the ruler's line) and L0607c (the kernel lift and flat cut; 'clean' and 'hand-made'); the beats keep their words.",
+   "lines": [
+    {
+     "id": "L0607b",
+     "text": "An expert chose what to measure, by hand; the machine only drew the line.",
+     "direction": "clear and fair, a teacher laying out a recipe; 'by hand' lightly; 'only drew the line' plain",
+     "pauseAfter": 0.9
+    },
+    {
+     "id": "L0607c",
+     "text": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.",
+     "pauseAfter": 0.5,
+     "direction": "let 'lifted' and 'one flat cut' be visual; then the last sentence slower, the two halves balanced, the weight on 'clean' and 'hand-made'"
+    }
+   ],
+   "beats": [
+    {
+     "id": "expert",
+     "at": {
+      "line": "L0607b",
+      "word": "expert",
+      "edge": "start"
+     },
+     "what": "an expert's hands cut a tin stencil of hand-chosen shapes; photos become rows of numbers"
+    },
+    {
+     "id": "learner",
+     "at": {
+      "line": "L0607b",
+      "word": "machine",
+      "edge": "start"
+     },
+     "what": "a brass ruler on a pivot swings over the dots"
+    },
+    {
+     "id": "line",
+     "at": {
+      "line": "L0607b",
+      "word": "line",
+      "edge": "start"
+     },
+     "what": "the ruler settles; one straight chalk line between warm and cool"
+    },
+    {
+     "id": "kernel",
+     "at": {
+      "line": "L0607c",
+      "word": "kernel",
+      "edge": "start"
+     },
+     "what": "mixed crowds (a warm ring around a cool cluster); date card 1992 · Boser, Guyon & Vapnik; term label 'kernel trick'"
+    },
+    {
+     "id": "lift",
+     "at": {
+      "line": "L0607c",
+      "word": "lifted",
+      "edge": "start"
+     },
+     "what": "the plane rises into a hill; the cool cluster rides up"
+    },
+    {
+     "id": "cut",
+     "at": {
+      "line": "L0607c",
+      "word": "flat",
+      "edge": "start"
+     },
+     "what": "a flat vellum sheet slices the hill; back down it is a chalk ring"
+    },
+    {
+     "id": "clean",
+     "at": {
+      "line": "L0607c",
+      "word": "clean",
+      "edge": "start"
+     },
+     "what": "ruler and vellum glow: the learning, tidy and provable"
+    },
+    {
+     "id": "handmade",
+     "at": {
+      "line": "L0607c",
+      "word": "hand-made",
+      "edge": "start"
+     },
+     "what": "camera settles on the expert's tin stencil and snips"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "tin stencil and snips",
+    "brass ruler on a pivot",
+    "paper dots",
+    "vellum sheet",
+    "blackboard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "1992 · Boser, Guyon & Vapnik",
+     "beat": "kernel"
+    },
+    {
+     "kind": "label",
+     "text": "kernel trick",
+     "beat": "lift"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "The piano continues from ch06-s03 under the recipe: a two-part figure (left hand: the stencil's careful steps; right hand: the ruler's simple line); a soft lift in register on 'lifted', a single clear chime on 'flat cut'; resolves quietly on 'hand-made'."
+   },
+   "claims": [
+    "e6-svm",
+    "e8-vision-belief",
+    "e7-ilsvrc2010"
+   ]
+  },
+  {
+   "id": "ch06-s04",
+   "kind": "scene",
+   "setting": "the study candle shelf, then the candle stage · late 1990s to 2004 · night · the quiet-years candle; a few stubborn holdouts at the rim, three of them named: Toronto, Holmdel, Montréal",
+   "era": "1990s–2000s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 0.8,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the quiet-years candle is lit for the age's verdict on nets, and at its rim three small holdouts lift their hand-lanterns: Hinton, LeCun and Bengio. CAMERA: SHELF (low macro; the candle lit), then the flame push onto the stage. Cut to the candle shelf below the case board, with crossfadeMood duskRose→candleAmber, 0.7 s, no dip, under the cut (so the previous plate's duskRose does not pop to the study's candleAmber), settling into the study's candleAmber. The hands light a new candle: NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY (small caps, IBM Plex Mono era face). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. On 'candle' push into the flame onto the stage (the push-into-the-flame cue, done in-shot), tint-crossfading (crossfadeMood) from candleAmber to duskRose as the camera passes through the flame; on the stage the candle stands huge and casts a wide duskRose pool. Inside the pool, facing the flame: a large, comfortable crowd of generic silhouettes (conference-goers, reviewers with stacks of papers, a whiteboard showing the clean bowl). At the rim, half in shadow and facing out, long shadows across the floor, a few small figures each holding a small hand-lantern, spaced far apart along the dark edge. Most stay unnamed and faint (the circle was wider than three: the bible's holdouts include Bottou, Hochreiter, Schmidhuber and the CIFAR circle; Hochreiter and Schmidhuber get their own shot next). Three are nearer the camera, each at their own place in the dark: LeCun standing (stamp HOLMDEL / NEW YORK); the tall man SEATED at a desk by a Toronto window (Hinton, seated, never standing in this era; stamp TORONTO); and Bengio standing (stamp MONTRÉAL). Each hand-lantern lifts as its owner is named, in the spoken order: Hinton's (seated), then LeCun's, then Bengio's; each name card appears with its lift. These three are the film's named holdouts who return at the rim in later chapters, never presented as the only ones. During the hold: a thin thread of light runs between the hand-lanterns through the dark, the three named ones and two of the fainter ones (one of them Fleet's, unnamed on screen but for the label), with the label '2004 · CIFAR's NCAP: Hinton, Bengio, Fleet and others'; the joined hand-lanterns brighten slightly. The thread starts as LeCun's quoted words begin ('We couldn't get our papers published' is said of exactly this circle, which 'gave us a place where we could exchange ideas'), so the label has the rest of the line and the whole hold to be read. The big pool does not notice. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The spoken LeCun quote needs no card; the stamps HOLMDEL / NEW YORK, TORONTO and MONTRÉAL are place stamps, not text items; the Bengio and Hinton testimony and LeCun's 'conspiracy' phrase move to the end-credits sources card. STUDY LOCK (staging rule): every beat in the study, at the case board, on the candle shelf or at the Wall of Forecasts is candleAmber; era colour enters the study only through practicals (the window's sky, a glowing prop); a shot that crosses between the study and a stage or era location tint-crossfades (crossfadeMood) at the moment it crosses, and the shot's mood field names its opening location.",
+   "lines": [
+    {
+     "id": "L0608",
+     "text": "The candle of the age: neural nets are fiddly, they stall in the fog, and they're beaten anyway.",
+     "direction": "even, fair: this was a reasonable belief",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L0609",
+     "text": "At its rim, a few stubborn holdouts, among them Geoffrey Hinton, Yann LeCun and Yoshua Bengio. “We couldn't get our papers published,” LeCun said.",
+     "direction": "warmer, quieter; 'a few' plainly, then each name its own small step; the quote plainly",
+     "spoken": "At its rim, a few stubborn holdouts, among them Geoffrey Hinton, Yann Le Cun and Yoshua Bengio. “We couldn't get our papers published,” Le Cun said."
+    }
+   ],
+   "beats": [
+    {
+     "id": "lit",
+     "at": {
+      "line": "L0608",
+      "word": "candle",
+      "edge": "start"
+     },
+     "what": "the quiet-years candle is lit on the study shelf (candleAmber); push through the flame onto the stage, tint-crossfading to duskRose"
+    },
+    {
+     "id": "rim",
+     "at": {
+      "line": "L0609",
+      "word": "rim",
+      "edge": "start"
+     },
+     "what": "camera finds the rim: a few small figures with hand-lanterns in the dark, three of them nearer"
+    },
+    {
+     "id": "hinton",
+     "at": {
+      "line": "L0609",
+      "word": "Geoffrey",
+      "edge": "start"
+     },
+     "what": "Hinton, seated by a Toronto window, lifts his hand-lantern; name card"
+    },
+    {
+     "id": "lecun",
+     "at": {
+      "line": "L0609",
+      "word": "Yann",
+      "edge": "start"
+     },
+     "what": "LeCun, standing, lifts his hand-lantern; name card"
+    },
+    {
+     "id": "bengio",
+     "at": {
+      "line": "L0609",
+      "word": "Yoshua",
+      "edge": "start"
+     },
+     "what": "Bengio, standing, lifts his hand-lantern; name card"
+    },
+    {
+     "id": "thread",
+     "at": {
+      "line": "L0609",
+      "word": "We",
+      "edge": "start",
+      "offset": -0.46
+     },
+     "what": "on LeCun's quoted words (about this very circle): 2004, a thread of light joins the hand-lanterns, the three named and fainter others; NCAP label"
+    }
+   ],
+   "cast": [
+    "lecun",
+    "hinton-young",
+    "bengio",
+    "narrator-hands"
+   ],
+   "props": [
+    "candle: NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+    "three hand-lanterns",
+    "Toronto window and desk",
+    "whiteboard with clean bowl",
+    "thread of light"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+     "beat": "lit"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton · Toronto",
+     "beat": "hinton"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yann LeCun · Bell Labs, then NYU",
+     "beat": "lecun"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yoshua Bengio · Montréal",
+     "beat": "bengio"
+    },
+    {
+     "kind": "label",
+     "text": "2004 · CIFAR NCAP · Hinton, Bengio, others",
+     "beat": "thread"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "Candle motif on solo piano: the rising fourth = lit, played softly and plainly on the lighting. Then a held suspension (doubt) that stays under the rim figures, with a soft rising step as each of the three names is spoken. When the thread joins the three hand-lanterns, three soft notes in the high register answer each other: a small private chord inside the big room's silence. Intensity 2–3."
+   },
+   "claims": [
+    "e6-nn-winter",
+    "e6-outcast",
+    "e6-ncap",
+    "e4-hinton-cv",
+    "e6-svm"
+   ]
+  },
+  {
+   "id": "ch06-s05",
+   "kind": "scene",
+   "setting": "Bell Labs, Holmdel · 14 March 1995 · evening · one typed sheet on a table; then a restaurant table",
+   "era": "1990s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 1.96,
+   "minDuration": 14,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: top-down on the typed 1995 bet sheet: two wagers, three signatures, and the question card WHO PAID FOR DINNER? pinned on the oxblood thread. CAMERA: top-down on the bet sheet at Bell Labs (era location), then BOARD (the Q2 pin as an insert). Top-down: one typed sheet on a table under a lamp, two numbered bets separated by a row of asterisks. The camera reads it the way a detective reads a document, panning slowly line by line; the typed text is texture, not to be read, except the phrase the narrator speaks: first Jackel's bet (on 'One' a soft lamp glow passes over its line (his name appears only on the one combined name card at the signing, never spoken)), then Vapnik's. As the camera reaches Vapnik's bet, the short quote card of that sentence lifts off the sheet (early, so it can be read); on 'no one in his right mind', those words are underlined by the narrator's pen. Three signatures write themselves in at the bottom in sequence, each dated 3/14/95: V. Vapnik, L. Jackel, and 'Witnessed by Y. LeCun'. Side view: three seated silhouettes at a table (Jackel, Vapnik, LeCun), a fountain pen passed hand to hand, two wine glasses set out for the dinners to come. On 'who paid', the study (tint-crossfade, crossfadeMood, from the Bell Labs duskRose to the study's candleAmber as the board comes into frame): the hands pin a new card on the oxblood question-card thread along the top of the case board, WHO PAID FOR DINNER?, in slot Q2 (Q1 burned out in ch05-s06), and it sways a little. The sheet itself is then pinned below the thread (ch07-s01 finds it there), with Vapnik's quote card still on it, so the full sentence stays readable to the end of the shot. TEXT RULE: besides stamps and name cards, at most two text items in this shot. STUDY LOCK (staging rule): every beat in the study, at the case board, on the candle shelf or at the Wall of Forecasts is candleAmber; era colour enters the study only through practicals (the window's sky, a glowing prop); a shot that crosses between the study and a stage or era location tint-crossfades (crossfadeMood) at the moment it crosses, and the shot's mood field names its opening location.",
+   "lines": [
+    {
+     "id": "L0610",
+     "text": "In 1995, at Bell Labs, two colleagues signed a pair of bets, a fancy dinner each. Larry Jackel bet that by 2000 we would understand why big neural nets work. Vladimir Vapnik bet that by 2005 “no one in his right mind” would use nets like those.",
+     "spoken": "In nineteen ninety-five, at Bell Labs, two colleagues signed a pair of bets, a fancy dinner each. Larry Jackel bet that by two thousand we would understand why big neural nets work. Vladimir Vapnik bet that by two thousand and five “no one in his right mind” would use nets like those.",
+     "direction": "amused, the narrator likes these men; three short sentences, a small breath after each; read the quoted fragment exactly, with a twinkle and no judgement",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L0612",
+     "text": "So who paid for dinner? Keep that question.",
+     "direction": "a light question for the viewer to keep NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88, target 140-160 wpm; the text is unchanged.",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "sheet",
+     "at": {
+      "line": "L0610",
+      "word": "bet",
+      "edge": "start"
+     },
+     "what": "top-down on the typed sheet"
+    },
+    {
+     "id": "jackel",
+     "at": {
+      "line": "L0610",
+      "word": "One",
+      "edge": "start"
+     },
+     "what": "lamp glow passes over Jackel's line (his name only on the combined name card at the signing)"
+    },
+    {
+     "id": "vapnik",
+     "at": {
+      "line": "L0610",
+      "word": "Vapnik",
+      "edge": "start"
+     },
+     "what": "camera reaches Vapnik's bet; the short quote card lifts off the sheet"
+    },
+    {
+     "id": "underline",
+     "at": {
+      "line": "L0610",
+      "word": "mind",
+      "edge": "end"
+     },
+     "what": "pen underlines 'no one in his right mind' on the sheet and on the card"
+    },
+    {
+     "id": "sign",
+     "at": {
+      "line": "L0610",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "three signatures write in; side view of the three at the table"
+    },
+    {
+     "id": "card",
+     "at": {
+      "line": "L0612",
+      "word": "paid",
+      "edge": "start"
+     },
+     "what": "tint-crossfade to the study's candleAmber; the hands pin WHO PAID FOR DINNER? on the oxblood thread"
+    }
+   ],
+   "cast": [
+    "jackel",
+    "vapnik",
+    "lecun",
+    "narrator-hands"
+   ],
+   "props": [
+    "typed bet sheet",
+    "fountain pen",
+    "two wine glasses",
+    "table and lamp",
+    "oxblood-thread question card"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "BELL LABS · 14 MARCH 1995",
+     "beat": "sheet",
+     "until": "card"
+    },
+    {
+     "kind": "quote",
+     "text": "…no one in his right mind will use neural nets that are essentially like those used in 1995. — Vapnik's bet",
+     "beat": "vapnik"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Larry Jackel · Vapnik · LeCun (witness)",
+     "beat": "jackel",
+     "until": "card"
+    },
+    {
+     "kind": "label",
+     "text": "WHO PAID FOR DINNER?",
+     "beat": "card"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "A small, slightly mischievous piano waltz, three beats (three signatures), intensity 3. It stops on an unresolved chord as the card is pinned: a question left hanging until chapter 7."
+   },
+   "claims": [
+    "e6-bet"
+   ]
+  },
+  {
+   "id": "ch06-s06",
+   "kind": "plate",
+   "setting": "a long line of lanterns · 1991–1997 · night · a whisper fading; a protected pipe",
+   "era": "1990s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 1.9,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: a long chain of lanterns: the messenger bead halves at every lantern and fades like a whisper, until a protected pipe carries it at full strength past a thousand steps. Teaching machine: a deep chain built from the lanternNetwork kit: twelve paper lanterns in a long horizontal line on one string, receding in perspective (layers, or the words of a long sentence read one at a time; on 'word by word' a faint word-tag hangs under each lantern for a moment, then fades; on 'sentence' a small warm glow is handed along the string from lantern to lantern, the net's memory of what it has read so far). KIT WORK, blocking: lanternNetwork {topology: custom layer sizes + fixed weights} per staging.kitWork. At the right end, the error glows bright (strength 1.0) and the messenger bead sets off to the left. At each lantern it passes, the bead's ring of light is multiplied by the same factor, 0.5 (a tiny diagram mark on the first lantern, '× 0.5', tagged 'illustrative'), and visibly shrinks; a small readout under each lantern prints its strength: 1 → 0.5 → 0.25 → 0.125 → … By the eighth lantern the bead is a faint speck; by the twelfth (≈ 0.0005) it is gone, and the first lanterns never feel it: a whisper fading down a long line. Label (on the whisper's end): 'vanishing gradients · found by Hochreiter, 1991, and independently by Bengio, Simard & Frasconi, 1994'. Then on 'protected pipe' a second line is drawn below: the same lanterns, but threaded through a straight paper pipe with a self-loop marked '× 1.0' and two small hinged valves (input gate, output gate). The bead enters the pipe and travels the whole length at full brightness, and the camera pulls back as the pipe extends far past the frame, with a counter ticking past 1,000 steps. Hochreiter at the end of the pipe (name card as the names are spoken), standing. No quote card: the narration carries the thousand steps, and the 1997 abstract goes to the end-credits sources card. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The per-lantern strength readouts and the pipe's '× 1.0' loop mark and two valves are diagram marks of the teaching machine, kept small. Plant: this pipe will meet its replacement in chapter 10.",
+   "lines": [
+    {
+     "id": "L0613",
+     "text": "Through many layers, or a long sentence read word by word, the messenger fades like a whisper.",
+     "direction": "slower, softer as the whisper fades; almost dropping to a whisper on the last word"
+    },
+    {
+     "id": "L0614",
+     "text": "In 1997, Hochreiter and Schmidhuber’s protected pipe carried it over a thousand steps.",
+     "direction": "a small relief in the voice; the two names said plainly. PRONUNCIATION: audition 'Hochreiter' and 'Schmidhuber' as written; respell in spoken only if they fail ('Hoke-ryter', 'Shmid-hoober'); STT and human listen targets.",
+     "spoken": "In nineteen ninety-seven, Hochreiter and Schmidhuber’s protected pipe carried it over a thousand steps.",
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "Hochreiter",
+       "Schmidhuber"
+      ]
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "chain",
+     "at": {
+      "line": "L0613",
+      "word": "messenger",
+      "edge": "start"
+     },
+     "what": "twelve-lantern chain; error glows at the right end"
+    },
+    {
+     "id": "fade",
+     "at": {
+      "line": "L0613",
+      "word": "fades",
+      "edge": "start"
+     },
+     "what": "bead shrinks ×0.5 per lantern; readouts 1 → 0.5 → 0.25 …"
+    },
+    {
+     "id": "gone",
+     "at": {
+      "line": "L0613",
+      "word": "whisper",
+      "edge": "end"
+     },
+     "what": "bead gone before the first lanterns; vanishing-gradient label"
+    },
+    {
+     "id": "names",
+     "at": {
+      "line": "L0614",
+      "word": "Hochreiter",
+      "edge": "start"
+     },
+     "what": "Hochreiter at the far end of the pipe, standing; name card"
+    },
+    {
+     "id": "pipe",
+     "at": {
+      "line": "L0614",
+      "word": "pipe",
+      "edge": "start",
+      "offset": -0.46
+     },
+     "what": "the protected pipe with ×1.0 loop and two valves; bead travels at full brightness"
+    },
+    {
+     "id": "thousand",
+     "at": {
+      "line": "L0614",
+      "word": "thousand",
+      "edge": "start"
+     },
+     "what": "pull back; pipe extends past frame; counter past 1,000"
+    }
+   ],
+   "cast": [
+    "hochreiter"
+   ],
+   "props": [
+    "twelve-lantern chain",
+    "messenger bead",
+    "straight paper pipe with self-loop and two valves",
+    "step counter"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "vanishing gradients · Hochreiter 1991; Bengio, Simard & Frasconi 1994",
+     "beat": "gone"
+    },
+    {
+     "kind": "label",
+     "text": "LSTM · × 1.0 loop · input gate · output gate",
+     "beat": "pipe"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Sepp Hochreiter & Jürgen Schmidhuber · LSTM, 1997",
+     "beat": "names"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "The messenger's descending arpeggio from chapter 5, now on piano, each note half as loud as the last until it vanishes into the room tone (a real diminuendo, not a fade). Silence for one beat. Then the same figure returns inside the pipe at steady, even volume, sustained by a soft organ-like pedal: the protected pipe. Intensity 2 → 3."
+   },
+   "claims": [
+    "e5-vanishing",
+    "e6-lstm"
+   ]
+  },
+  {
+   "id": "ch06-s07",
+   "kind": "scene",
+   "setting": "the Wall of Forecasts beside the case board · May 1997, then the year 2000 · night",
+   "era": "1997–2000",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 2.36,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: on the Wall, the yellowed chess slip is unpinned and corrected to 1997, twenty-nine years late, a point for RULES; then a 2000 calendar leaf drifts by and Turing's slip curls. CAMERA: the reverse flame push out to SHELF, then WALL (a short truck to W2), a 1–2 s BOARD insert on the RULES pin, a FILE insert (the slip laid face down), then WALL again for W1. Reverse flame push back to the study (no lamp change, no black): the bead of light in the previous shot's protected pipe becomes a candle flame filling the frame, and the camera pulls back out of the flame of the quiet-years candle onto the study's candle shelf, tint-crossfading (crossfadeMood) from duskRose to candleAmber as it clears the flame; then a short pan from the shelf to the Wall. The study is locked to candleAmber. The Wall of Forecasts, pinned beside the board, in its fixed slot order from the lamp outward: Turing's slip (1950), the chess slip (Simon and Newell, 1958), Rosenblatt's 1961 slip; then empty pin-holes for slips still to come; and toward the dark end, beyond the lamp's pool, one slip hanging in shadow, only its corner half-lit, its text unreadable (the 30-to-50-years slip, planted in ch01-s05, never mentioned here; corner only); the far end beyond it is bare. The chess slip, already yellowed and curled since chapter 4, is in the lamp's pool; its typed prediction is the slip's own text, seen before, not a new card. On 'promised' the slip catches the light as the narrator voices its forecast. On 'came', a small paper-cut vignette plays inside the slip's frame: a quiet wood-panelled room, a chessboard, a player's silhouette leaning back, and behind him two tall black towers (no logos). Date stamp in Plex Mono: NEW YORK · 11 MAY 1997. On 'late' the hands unpin the chess slip and turn it over; on the back the fountain pen writes '1968 → 1997 · 29 years late'. On 'search', a small label: '200 million positions a second' (the narration carries 'no neural network'). On 'Rules', the camera glances to the case board's RULES suspect card (the paper-cut key over a branching tree, ch01-s05 and ch02) and the hands press one brass pin beside it: the first point Rules scores in the film, given fairly. The chess slip is laid face down in the file, leaving its pin empty in its slot. Then, without narration: a calendar leaf reading 2000 drifts down past the Wall, and Turing's slip (the first forecast, 1950; its own typed fragment 'in about fifty years' time' visible as before) curls at its edges as the date passes. It is not taken down. Its pin stays. TEXT RULE: besides stamps and name cards, at most two text items in this shot. STUDY LOCK (staging rule): every beat in the study, at the case board, on the candle shelf or at the Wall of Forecasts is candleAmber; era colour enters the study only through practicals (the window's sky, a glowing prop); a shot that crosses between the study and a stage or era location tint-crossfades (crossfadeMood) at the moment it crosses, and the shot's mood field names its opening location.",
+   "lines": [
+    {
+     "id": "L0615",
+     "text": "The chess crown, promised for 1968, came twenty-nine years late, won by search, not by a neural network. A point for Rules.",
+     "spoken": "The chess crown, promised for nineteen sixty-eight, came twenty-nine years late, won by search, not by a neural network. A point for Rules.",
+     "direction": "dry and fond; the old promise plainly; a tiny pause before 'twenty-nine years late'; 'A point for Rules' fair and level, a scorekeeper's aside, no sneer"
+    }
+   ],
+   "beats": [
+    {
+     "id": "forecast",
+     "at": {
+      "line": "L0615",
+      "word": "promised",
+      "edge": "start"
+     },
+     "what": "the yellowed chess slip in the lamp's pool catches the light"
+    },
+    {
+     "id": "match",
+     "at": {
+      "line": "L0615",
+      "word": "came",
+      "edge": "start"
+     },
+     "what": "vignette inside the chess slip: the room, the board, the two towers; date stamp"
+    },
+    {
+     "id": "late",
+     "at": {
+      "line": "L0615",
+      "word": "late",
+      "edge": "start"
+     },
+     "what": "the hands unpin the chess slip; the pen writes 1968 → 1997 · 29 years late"
+    },
+    {
+     "id": "search",
+     "at": {
+      "line": "L0615",
+      "word": "search",
+      "edge": "start"
+     },
+     "what": "label: 200 million positions a second"
+    },
+    {
+     "id": "rules",
+     "at": {
+      "line": "L0615",
+      "word": "Rules",
+      "edge": "start"
+     },
+     "what": "glance to the RULES suspect card on the case board; the hands press one brass pin beside it"
+    },
+    {
+     "id": "turing",
+     "at": {
+      "line": "L0615",
+      "edge": "end",
+      "offset": 0.5
+     },
+     "what": "calendar leaf 2000 drifts past; Turing's slip curls but stays pinned"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "Wall of Forecasts in fixed slot order",
+    "chess slip (yellowed)",
+    "Turing's slip",
+    "Rosenblatt 1961 slip",
+    "30-to-50-years slip in shadow (corner only)",
+    "calendar leaf 2000",
+    "fountain pen",
+    "manila file"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "NEW YORK · 11 MAY 1997",
+     "beat": "match"
+    },
+    {
+     "kind": "label",
+     "text": "1968 → 1997 · 29 years late",
+     "beat": "late"
+    },
+    {
+     "kind": "label",
+     "text": "200 million positions a second",
+     "beat": "search"
+    },
+    {
+     "kind": "date",
+     "text": "2000",
+     "beat": "turing"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "Study texture returns: the lamp's hum, low clarinet with the piano. The chess slip's long-held suspension from chapter 3 finally resolves, falling, as the slip comes down, but drily, in a slightly wrong key (right answer, wrong reason). For Turing's curling slip, a single held high note that does not resolve."
+   },
+   "claims": [
+    "e6-deepblue",
+    "e1-chess-prediction",
+    "e1-turing-prediction"
+   ]
+  },
+  {
+   "id": "ch06-s08",
+   "kind": "scene",
+   "setting": "the detective's study · timeless · night · the case board; the fog card pinned on oxblood thread",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 2.6,
+   "holdAfter": 1.4,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: a clue card is pinned, the clean bowl catches the light, and the question card WHY WOULD ANYONE CHOOSE THE FOG? is pinned as fog drifts across the board. CAMERA: BOARD (the C2-d pin and the Q3 card as inserts), with one FILE-camera insert (top-down on the desk) for the bowl and the hills. The case board under the green lamp. The hands pin this chapter's clue card into slot C2-d at the foot of column C2, beneath the 1986 bead card in C2-b (the scissors card in C2-a above both): a pierced tin stencil (1989), with a small straight pipe drawn beside it. Threads of light tie it to the bead card and, faintly, to the 1958 knob card in C1-b. Then (still in the lead-in), on the desk in front of the board, two small paper objects are set side by side in the lamp's pool by the hands: the clean bowl from shot 3 (a ball sitting calmly at its single bottom) and a miniature of the misty hills, fog curling, the tiny traveller with his lantern still in the hollow. The shot is silent until the card: the narrator voices its question once (L0616) as it is pinned, and ch08-s13b answers it. First the bowl catches the light (the picture alone says one clean bowl, no fog, no traps); then the hands pin a new card on the oxblood question-card thread along the top of the board, next to WHO PAID FOR DINNER?: WHY WOULD ANYONE CHOOSE THE FOG? Slow push in to the card; as the card settles, the hills' fog drifts across the bowl's edge. In the last seconds of the hold, a wisp of fog drifts in front of the card, and behind it the traveller's lantern, far away, still glows. STUDY LOCK (staging rule): every beat in the study, at the case board, on the candle shelf or at the Wall of Forecasts is candleAmber; era colour enters the study only through practicals (the window's sky, a glowing prop); a shot that crosses between the study and a stage or era location tint-crossfades (crossfadeMood) at the moment it crosses, and the shot's mood field names its opening location. SCRIPT NOTE (review round 1): new line L0616 'Put that in the file: why would anyone choose the fog?' starts at the end of the lead-in; the card is pinned on 'why'.",
+   "lines": [
+    {
+     "id": "L0616",
+     "text": "Put that in the file: why would anyone choose the fog?",
+     "pauseAfter": 0.6,
+     "direction": "the refrain, varied: quiet and deliberate, slightly slower; 'why would anyone choose the fog?' a real question, asked plainly as the card is pinned, left open",
+     "tts": {
+      "solo": true,
+      "speed": 0.84
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "clue",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "clue card pinned: pierced tin stencil and pipe; threads to the bead card and the 1958 knob card"
+    },
+    {
+     "id": "bowl",
+     "at": {
+      "shotTime": 1.4
+     },
+     "what": "silent: the clean bowl catches the light (the picture says 'one clean bowl, no fog, no traps')"
+    },
+    {
+     "id": "card",
+     "at": {
+      "line": "L0616",
+      "word": "why"
+     },
+     "what": "WHY WOULD ANYONE CHOOSE THE FOG? pinned on the oxblood thread as the narrator asks it (L0616); slow push in"
+    },
+    {
+     "id": "fog",
+     "at": {
+      "shotTime": 3.6
+     },
+     "what": "silent: the hills' fog drifts across the bowl's edge"
+    },
+    {
+     "id": "lantern",
+     "at": {
+      "shotTime": 5.6
+     },
+     "what": "fog drifts in front of the card; the traveller's far lantern still glows"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "case board",
+    "clue card: pierced tin stencil and pipe",
+    "clean bowl miniature",
+    "misty hills miniature",
+    "oxblood-thread question card"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "WHY WOULD ANYONE CHOOSE THE FOG?",
+     "beat": "card"
+    }
+   ],
+   "music": {
+    "cue": "ch06-quiet",
+    "note": "Piano alone, very quiet (intensity 1–2). The clean, resolved phrase from shot 3 plays once for the bowl; then, as the question card is pinned, the misty hills' unresolved note returns and is held under the silent card. End on that suspension, leading into chapter 7's dawnGold."
+   },
+   "claims": [
+    "e6-svm",
+    "e6-lecun-1989"
+   ],
+   "minDuration": 7
+  }
+ ]
+}

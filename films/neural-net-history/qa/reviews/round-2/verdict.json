@@ -1,0 +1,167 @@
+{
+  "round": 2,
+  "pass": false,
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.08,
+    "clarity": 7.67,
+    "story": 8,
+    "visual": 7.67,
+    "sync": 7.58,
+    "sound": 7.5,
+    "curiosity": 8.17
+  },
+  "mean": 7.83,
+  "bar": 8.5,
+  "weighting": "mean across 5 reviewers; owning lens counted double (historian:accuracy; teacher:depth,clarity; story:story,curiosity; art:visual,sync; sound:sound)",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 8,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "teacher": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "story": {
+      "accuracy": 8,
+      "depth": 8.5,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8.5
+    },
+    "art": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "sound": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8
+    }
+  },
+  "criticalIssues": 0,
+  "belowBar": [
+    "clarity",
+    "visual",
+    "sync",
+    "sound"
+  ],
+  "carriedOverUnapplied": [
+    "ch15-s09",
+    "ch10-s04",
+    "ch15-s08",
+    "ch15-s10",
+    "ch14-s05",
+    "ch14-s04b",
+    "ch12-s07",
+    "ch09-s05"
+  ],
+  "fixes": {
+    "shots": {
+      "ch15-s09": "MAJOR, routed in round 1 and still not applied (story + art; I checked the sheet: +16.5 to +22.1 s is near-black under L1520, and the match flares at +22.38, after the line ends). From +15.0, keep a warm desk lamp or monitor glow clearly lit (pool at least 25% luma) with the cursor steady, so 'a lamp is on' shows a lamp. Bring the hand and matchbox in on 'suspicious' (~19.1), strike on 'new' (~21.14), catch the wick on 'candles' (~21.4) and let the flame settle by 'from' (22.09). Hold the lit candle at least 2 s before the cut. Verify on the regenerated sheet at those four word times.",
+      "ch10-s04": "MAJOR, routed in round 1 and still not applied (teacher + art). allLight is still at 7.32 and darkBeat at 3.78. Shorten darkBeat to a dip of 0.5 s or less that ends by 3.3. On 'every' (4.79), light every slip. Draw arcs between EVERY pair of slips, including the far end of the hall and not just the first 4-5, building through 'every other' (~5.9-6.6). Make 'all at once' (~7.3) the brightness peak. Keep THE TRANSFORMER banner as it is now (small, low, inked on 'Transformer' 8.4).",
+      "ch15-s08": "MAJOR (art + teacher; round-1 note unapplied) plus minor (story, balance). (1) Replace the static wide under L1527 with short pushes, about 1.6x for 0.4 s, onto each card on its word: rules 6.35, knowledge 7.74, Learning 9.94, data 11.77, fire 12.49, messenger 13.36, people 14.52. Pull back to the full board on 'Never one person' (16.04) so the board-to-network morph reads full-frame. (2) On the dark lantern ('how, exactly, it reaches its answers'), pin an independent card next to the Anthropic one: 'Jain & Wallace, 2019: Attention is not Explanation' [e10-attention-explanation]. Label the pair 'the field, 2019-2025', so the open question belongs to the whole field, not one lab.",
+      "ch15-s10": "MAJOR (art; historian + story minor; round-1 note unapplied, and the file is unchanged since Oct 7). Re-render from the current script.json. The SOURCES card must show the real location, 'orly.brett-lamy.workers.dev/generated/neural-net-history/sources' (read it from manifest film.sourcesUrl), plus 'claims.json · quotes.json', at 28 px cap or larger, held at least 4 s. Start on the Turing card already inked: no grey first frame. Crossfade text to text, with no blank card stock (at the current +0.5, +11.3 and +23.5 s). Trim the card section to about 22 s, and keep the lit candle from ch15-s09 faintly behind the parchment so the last image is still the new flame. This works with the m21 pad.",
+      "ch14-s05": "MAJOR (art + story + historian; round-1 note unapplied, file unchanged since Oct 7). Re-fit to the rewritten two-sentence L1416: the 'studied' beat goes on its first sentence, and the re-route goes on 'employed'. Per this chapter's window plan, AMERICA IS THE LEFT SHORE. On 'employed', visibly lift the threads and swing them so the left shore holds the clearly largest bundle (do not count it; the bible gives only 'leading place they worked'), and brighten its lanterns while the other side dims. Set the stat card at 22 px cap or larger, with two lines: 'FIRST DEGREE: CHINA 47% · US 18%' and 'WHERE THEY WORK: US FIRST · ~60% OF TOP AI INSTITUTIONS (MacroPolo)' [e13-talent]. Hold both together at least 2 s. Cut the 'OCT 2025 · OPEN QWEN PASSES LLAMA' tag from this shot.",
+      "ch14-s04b": "MAJOR overall (historian + teacher + art, all minor this round; it was major in round 1 and is still unapplied). Double the three position tags (to at least 22 px cap). Hang them in one row at equal height and size, with each speaker line horizontal. Light them one at a time, 1.5-2 s each, in the 4.5 s silent tail (~10.9 / 12.4 / 13.9), ordered Huang 'HELPS HUAWEI', China MFA 'SELF-DEFEATING', then Amodei/Khan 'DECISIVE', so the Anthropic-attributed tag is not first. Push in on the match from 'struck' (4.20) to 'match' (4.59) so its 'COMPUTE MATTERS LESS?' lettering reaches 22 px or more. Reframe so no candle is cropped at the edge.",
+      "ch15-s05": "MAJOR (historian + story + art). Re-fit to L1522b (rewritten) and the new L1522d. (1) Hang a name tag on each lamp plinth, 'ANTHROPIC' and 'OPENAI', from the lab's first mention to the end of the shot. (2) Relabel the settlement card 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS · approved July 2026' [e14-copyright]. Play it under the new L1522d, at least 3 s with narration, and clear it before L1525 starts. (3) Under 'Two courts have split', pair the two rulings at equal size beneath the two courthouses: Lin, 'not based on any articulable basis to believe that Anthropic would actually sabotage its model' (q14-judge-lin), and Katsas, 'The Department reasonably feared that Anthropic might manipulate Claude's design' (q14-katsas). Both verbatim. (4) Reframe so every date and as-of tag sits inside the 5% safe area (it currently crops to 'as o', '26' and 'VED 2026' at 22-35 s). Crossfade straight from beat to beat, with no near-empty shelf frames (~16.5-17.0).",
+      "ch05-s04": "MAJOR (teacher; art minor; partly applied). From 'messenger' (16.83) through 'blame' (23.98), the lantern loom must fill about 70% of the frame (teacher measured about 45%). Either double the blame-formula card and set it between the loom and the right post, inside the safe area, at 22 px cap or larger, or drop it and make the +/- tug ticks large. Make each knob's tug a visible rotation on 'lantern by lantern' (20.37). In the 30.8-35.2 silent beat, either cut 2 s or show the 1986 Nature quote card at a legible size.",
+      "ch08-s13b": "MAJOR overall (teacher + art minor; it completes round-1's major thesis-image fix). Hold the fog plate through 29.2, not 27.7. On 'cut its own' (25.8), raise the learned stencil mosaic from ch08-s06 out of the fog, filling at least a quarter of the frame. On 'many layers deep' (26.9), stack it into the ch08-s05 tower silhouette, so 'deep learning' lands on its picture. Return to the shelf only for L0832b. Bring the tall man's silhouette into the widening lamp pool on 'found' (36.72), fully lit on 'him' (37.07), and hold 1.5 s into the m11 swell.",
+      "ch06-s03b": "minor (teacher + art). Re-fit to the split lines L0607b and L0607c, which fill the 8.5 s silent tail. Under L0607b, label the readout 'features, chosen by hand', and use the second readout here as a second example, labelled the same way. Under L0607c, hold the lifted cone and the flat glass cut at least 3 s on 'lifted ... flat cut'. Lock the camera after 'hand-made', with the bowl plate fully in frame and no empty board in the upper right. No unexplained counters.",
+      "ch12-s03": "MAJOR (story; follows the L1208 cut). Re-fit with L1208 removed from narration. The ledger under the lamp stays, but as a brief insert of about 3-4 s after L1207, with its rows written in pen as card text: '$500M · FTX (later exposed as fraud; Anthropic not implicated)' and 'billions · Amazon, Google'. Spend the freed seconds on the race. Under L1219b the four chips land one per beat: BARD on 'Bard'; LLAMA on 'shared', then flagged 'weights leaked' on 'leaked'; then GPT-4 and CLAUDE struck together on 'same March day'. The runner silhouettes keep moving through the end of the shot so the stampede energy carries on.",
+      "ch05-s07": "major (teacher, depth; brief requirement: each era's named dissenter). Re-fit to the new L0514b. On 'Hubert Dreyfus', the small figure at the knowledge candle's rim becomes a named silhouette, with the name card 'HUBERT DREYFUS · What Computers Can't Do, 1972'. On the quoted fragment, ink a quote card with the verbatim text '…early, dramatic success followed by sudden unexpected difficulties.' (q-dreyfus-pattern). Keep the generic connectionist lantern-bearer too, or set Dreyfus on the opposite rim. TEXT RULE: the name card plus the quote card take the shot's two text slots, so drop any other text item.",
+      "ch14-s02": "major (story, Act 3 plant). Re-fit to the extended L1405, about 2.5 s longer. On 'can a fence around chips hold?', pin a new question card to the case board, 'CAN A FENCE AROUND CHIPS HOLD?', in the same hand as 'WHO TAUGHT IT?'. It pays off in ch14-s07.",
+      "ch14-s07": "minor (art + story payoff). Re-fit to the rewritten L1418. On 'The fence still stands', show the question card from ch14-s02 stamped 'OPEN'. Halve the fog in front of the gap candle, add a warm reflection on the water under it, and give its flame twice the glow radius of the other candles, so the new taper reads at once.",
+      "ch09-s05": "minor (teacher; round-1 note unapplied). In the silent tail (21.0-24.9), pin a horizontal name card, 'Gary Marcus, 2018: Deep Learning: A Critical Appraisal' [e9-marcus], at 22 px cap or larger, held at least 2 s. This sets up the Marcus card in ch11-s08.",
+      "ch10-s05": "minor (teacher, sync). Bring the six-number column in on 'numbers' (~3.0) and keep it visible. On 'question' (5.5), 'label' (7.9) and 'message' (10.0), draw a thin thread from the column through a small knob bank to each card, so each card visibly comes from the same numbers turned by different knobs.",
+      "ch10-s12": "minor (teacher). Merge the sundial, '12 hours' and 'one machine, 8 GPUs' into one card. Either drop '≈ 1/7 the compute', or hold it at least 2 s by trimming the matrix beat.",
+      "ch08-s05": "minor (teacher). Replace the '55 · 27 · 13 · 13 · 13 → 4096 · 4096 · 1000' card with '5 stencil layers → 2 great halls of 4,096 → 1,000 answers', still on 'halls'. Keep the 60M / 650k card.",
+      "ch03-s06": "minor (story). On 'Love. Hope. Despair.', replace the arms-up cheer with a stilled pose. On 'Love' Rosenblatt lowers his hands and turns his head to the window, on 'Hope' a hand rests on the sill, and on 'Despair' his head dips slightly and he holds still until the slip. Keep the cheerful 'none whatever' gesture earlier, for contrast.",
+      "ch13-s04": "minor (historian + art). Check the DAIR statement byline against https://www.dair-institute.org/blog/letter-statement-March2023/. If Margaret Mitchell is listed (we believe she is), set the card to 'Gebru, Bender, McMillan-Major & Mitchell' (see global for the quotes.json fix). Enlarge '2018 A.M. TURING AWARD · Bengio · Hinton · LeCun' (about 7 px now) to 22 px cap or larger, or push in while it is named.",
+      "ch15-s06": "minor (historian, present-day lab balance). Under LeCun's holdout silhouette, add the label 'left Meta, Nov 2025, to build world models (AMI Labs)' [e14-lecun], at 22 px cap or larger.",
+      "ch15-s04": "minor (historian + art). If the shot has an era strip or frontier-release row, add 'GEMINI 3 · Google · Nov 2025' [e14-google] beside the OpenAI and Anthropic entries. Enlarge the METR hour labels (about 14 px) to 22 px cap or larger.",
+      "ch11-s08": "minor (art). On the twoAccounts beat (16.6-17.0), bring in the 'She says she was fired' and 'Google says it accepted her resignation' cards already inked, with no blank grey cards first.",
+      "ch12-s07": "minor (art; round-1 note unapplied). Remove the 0.6 s murky teal opening: start the tilt framed on the lit X-ray cabinet's lower slot, or cut in at 0.6 s.",
+      "ch14-s03": "minor (art, depth check). From 8.5 to 11.0 s, add a near occluder on its own parallax layer (a rain-streaked railing or a lamp post) during the pull-back, so the shot holds at least 3 planes."
+    },
+    "cues": {
+      "m21": "minor (sound + story's end-card note). Keep the suspension alive under the end cards. After the new-candle Asus4, hold the A-E fifth plus D as a ppp bowed or string pad (lpf about 1.2 kHz, about -32 LUFS short-term) through the Turing card. Thin it to the D alone under the disclosure card and fade it to the room-tone floor by the end of the trimmed card section (ch15-s10 is being trimmed to about 22 s). Optionally add one soft celesta D on the SOURCES card. No cadence; it stays unresolved. Rewrite the m21 notes so they give one consistent end time from the current clock, and re-fit to the new ch15-s09 strike times (strike on 'new', wick on 'candles').",
+      "m13": "minor (sound). THE CANDLE OUT is inaudible. Sound the M1 rising fourth and held suspension in the clear 1397.5-1400.4 gap, at about -20 LUFS M like the other music-only candle moments, rather than dropping to the floor. Let the falling resolution land in the gap after L1030, or sit above D5 at low velocity if it must be under speech. Re-fit to the ch10-s04 and ch10-s05 re-timings.",
+      "m10": "minor (sound). The ch08 deep dive has the thinnest voice-to-music margins (L0819 10.0, L0812 10.3, L0810 10.9 dB; K-weighted p10 on L0802 3.6 dB). Under L0802-L0819, thin m10 to intensity 0.3 or below in the 250 Hz-3 kHz band. Move sustained mid voices above D5 or below D3, and keep the ostinato pulse out of 100-250 Hz while he speaks. Target at least 13 dB for every line in mix.lineMasking.",
+      "m12": "minor (sound). Move the MOVE 37 'strange, high note' off the spoken 'thirty-seven' into the micro-gap after it (~1167.8-1168.0), before 'a one-in-ten-thousand move'. If it must overlap, voice it at D6 or above at half velocity. Re-fit it after L0906 is re-narrated.",
+      "m11": "re-fit only. Re-place the post-'A cliff' hits after the L0821 re-narration (ch08-s11 grows by about 1-2 s) and the ch08-s13b hold extension (the tall man on 'found him' sits under the swell).",
+      "m16": "re-fit only. ch12-s03 loses L1208 and becomes a race beat. Keep the stampede energy rising through the four chips to the end of the shot, with no settling under a ledger.",
+      "m18": "re-fit only. Re-fit to the longer L1405 (ch14-s02), the two-sentence L1416 (ch14-s05), the rewritten L1418 (ch14-s07) and the ch14-s04b tags lit in its silent tail. Keep the tag reveals in clear air.",
+      "m19": "re-fit only. Re-fit ch15-s05 to the rewritten L1522b and the new L1522d. Also check that L1501 ('Two in the morning') sits hushed once the global line-offset fix lands.",
+      "m07": "re-fit only. Re-fit ch05-s07 to the new L0514b (Dreyfus, about 7 s).",
+      "m08": "re-fit only. Re-fit ch06-s03b to the split L0607b and L0607c, which fill the former silent tail."
+    },
+    "lines": {
+      "L1522d": "NEW line after L1522c (historian, major; restores lab balance in 'the labs, under the same light'). Text: 'And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.' [e14-copyright]. Narrate it solo, in the same even register as L1525. It plays under the relabelled settlement card in ch15-s05.",
+      "L1522b": "minor (historian; replaces the unsourced paraphrase of the government's rationale). New text: 'The Pentagon named it a supply-chain risk, and signed with OpenAI instead.' [e14-dow]. The government's reasoning goes on screen through the Katsas quote paired with Lin's in ch15-s05.",
+      "L1416": "MAJOR (story + historian; the orphaned 'But'). New text: 'Nearly half the top researchers first studied in China. But America employed the most of them.' [e13-talent: 47% undergrad in China, NeurIPS 2022 authors; the US the leading place they worked]. Re-narrate solo at about 0.9 speed. ch14-s05's silent lead-in absorbs the extra length.",
+      "L1405": "MAJOR (story; Act 3 has no planted question). New text: 'Two new candles: computing power is the chokepoint, and China is one to three years behind. A new question for the file: can a fence around chips hold?' Do not use 'Put that in the file' here: L0828 is its fifth and last use. Paid off in L1418.",
+      "L1418": "MAJOR (story; payoff of L1405). New text: 'The fence still stands, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.' This is grounded in L1415 ('Chip rules unchanged', Sept 2026) and in e13 gap estimates.",
+      "L1208": "MAJOR (story; lab balance in the race). CUT from narration. Its content moves to the ledger insert in ch12-s03 as card text, keeping the FTX caveat word for word: '$500M · FTX (later exposed as fraud; Anthropic not implicated)' and 'billions · Amazon, Google'. Keep L1206 and L1207 as they are.",
+      "L1219b": "minor (historian; Meta's release was deliberate, and 'within days' had no clear referent). New text: 'Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.' [e12-bard, e12-llama-leak, e12-gpt4, e12-claude-launch]. Keep spoken 'Llama' and 'G P T four'.",
+      "L0514b": "NEW line after L0514 (teacher, major depth; the symbolic-AI era's named dissenter, as the brief requires). Text: 'At its rim stood a philosopher, Hubert Dreyfus: real expertise is intuition, not rules. He saw a pattern: “early, dramatic success followed by sudden unexpected difficulties.”' [e5-dreyfus, q-dreyfus-pattern; the quoted span is verbatim]. About 7 s.",
+      "L0607b": "minor (teacher). Split it to use ch06-s03b's 8.5 s silent tail. New L0607b: 'An expert chose what to measure, by hand; the machine only drew the line.' [e6-svm, e8-vision-belief].",
+      "L0607c": "NEW line after L0607b (the second half of the split). Text: 'When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.' [e6-svm]. Slower on the last sentence, with the weight on 'clean' and 'hand-made'.",
+      "L0821": "MAJOR (sound + teacher + story; QA pacing FAIL at 224 wpm). Same text. Re-narrate solo at speed 0.84-0.86, spoken: 'A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.' Target 150-165 wpm (6.0-6.5 s). ch08-s11 absorbs it, and m11 is re-fitted.",
+      "L0828": "minor (sound). The refrain's fifth and last use runs at 242 wpm. Re-narrate solo at speed 0.82-0.85, spoken: 'Put that... in the file.' Target 1.9-2.2 s, matching L0109. Keep pauseAfter at 0.66 s.",
+      "L1505": "minor (sound). The direction says slow, but it runs at 223 wpm. Re-narrate solo at speed 0.85, spoken: 'Nobody told it... to plan.' Target about 2.0 s. Re-fit ch15-s03 by word names.",
+      "L0906": "minor (sound). STT hears 'movie 37'. Re-narrate solo at speed 0.88, spoken: 'Seoul, twenty sixteen. AlphaGo played move... thirty-seven, a one-in-ten-thousand move.' Add 'move thirty-seven' to this line's STT expected terms.",
+      "L0114": "minor (sound). It still runs at 195 wpm, and the ellipsis produced no pause. Re-narrate solo, spoken: 'We go back to the war years. ... To a lamp, in Chicago.' Target 4.5-5 s. ch01-s06's silent hold absorbs the extra time.",
+      "L1206": "minor (sound). STT heard 'Ahmoudai'. A human listens to L1206, L1006, L0614 and L0507 and runs film:voice signoff for Amodei, Uszkoreit, Hochreiter, Schmidhuber and Rumelhart. If Amodei comes out with 'moo' or 'dye', respell it 'Ah-moh-day', re-narrate L1206 solo and re-check STT.",
+      "L1517": "minor (story). New text: 'The last word goes to the man from the edge of the light, back in 2017.' This closes the L0416/L0832b epithet thread, and the 'HINTON · SEPT 2017' card keeps the name clear.",
+      "L1013": "minor (teacher; voice one trade term). New text: 'Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade.' The SOFTMAX label already lands here."
+    },
+    "global": [
+      "MAJOR (process). Several round-1 shot fixes were never applied. ch14-s05.tsx, ch15-s08.tsx and ch15-s10.tsx are unchanged since Oct 7. ch10-s04 kept allLight 7.32, and ch15-s09 was re-fitted but still plays near-black under L1520. ch12-s07 and ch09-s05 are also unapplied. This round, the fix stage must apply every routed shot note, regenerate that shot's sheet and check it against the note's named word times before handing off. Record a per-id outcome (fixed / partial / skipped with a reason) in film.json stages.fixes, so round 3 reviews against a ledger.",
+      "MAJOR (sound). The quiet-line fix over-corrected. Per-line rides already level every line to about -20 LUFS, and the round-1 offsets (+3 dB L1307b/L1417/L1501, +2 dB L0312/L1011) stacked on top. These five lines now peak at -6.9 to -8.6 LUFS momentary, against about -11 to -14 for every other line. L1501, the hushed 2 a.m. Nobel call, is the loudest spoken moment in the film. Set those offsets to 0, or at most +0.5 dB, and re-run film-assemble. Add a QA warn when a line's momentary peak exceeds the narration's p95 (about -11 LUFS) by more than 2 dB, or when offset plus ride moves a line more than 1.5 dB from lineLufs.",
+      "minor (sound). The mix flattens the narrator. Cap line rides at ±3 dB. Add an optional per-line `level` hint ('soft' = -2 dB relative to lineLufs) that the ride honours, and apply it to L0101, L0109, L1501 and L1520, so asides and closing lines sit 1.5-3 dB under exposition. Relax or drop the speech peak stage (ratio 2). Reach -16 LUFS by trimming the music-only swell peaks about 2 dB (2060.8, 1355.2, 1066.3) instead of limiting speech, and aim for at most 1.5 dB GR on the master limiter.",
+      "minor (sound). Add a sparse foley bus, no more than about 10 events in the film, each in a speech gap or under a last word. At minimum: the STATUS: OPEN stamp (~2094.8), the lamp click (~2097.3) and the match strike and flare in ch15-s09. Mix each dry plus a small-room reverb at about -28 to -32 LUFS short-term, in the same room-tone character.",
+      "MAJOR (art; legibility). Text that is the subject of the line is still under 22 px cap in many shots. In the legibility check, tag every text item as 'subject' (named or meant to be read) or 'texture', and fail any subject text under 22 px cap. Fix the flagged shots by enlarging the text or pushing in while it is named. Known cases: ch14-s04b tags (11.5) and match (6.5); ch13-s04 Turing award (~7); ch09-s01 'LEARNED FEATURES…' (15); ch05-s09b 'AAAI-84 · AUSTIN · THE DARK AGES OF AI' (10); ch10-s14 'decoder only · Liu et al. / OpenAI GPT' chip (~12, low contrast); ch15-s04 METR labels (~14); ch05-s04 formula card; ch14-s05 stat.",
+      "MAJOR (art; cast.ts). LeCun, Bengio and Hassabis are still the same plain mannequin, and in ch15-s06 they differ only by caption. Give LeCun a broader, rounder head with glasses and a heavier build; Bengio curly hair and a slight beard line; Hassabis a shorter, close-cropped figure. Add a 1-2 px warm rim on the light-facing edge and 2 interior cut lines (collar, sleeve) to every named puppet. Re-render every shot that uses them (ch09-s03, ch13-s03, ch13-s04, ch15-s06 and any others).",
+      "minor (art). The X-ray cabinet face is still flat saturated cyan. Desaturate it to about 40%, add paper grain and a soft inner vignette, and dim it to about 60% except on beats where a slot lights. This affects ch11-s01, ch12-s01, ch12-s07, ch13-s06 and ch15-s04.",
+      "minor (research). Check the DAIR 31 March 2023 statement byline at the source. If Margaret Mitchell is listed, add her to the speaker field of q12-dair-hype, q12-dair-harms and q12-dair-longtermism in quotes.json (and quotes.lock.json), and to the ch13-s04 card.",
+      "minor (score docs). Regenerate the headline of score/motifs.md (it still says 2121.42 s) and every cue's time references from the current timeline after this round's re-fit. Keep one 'current clock' paragraph per cue and archive the re-fit history separately, so composers don't place hits from stale numbers."
+    ]
+  },
+  "summary": "Round 2 FAILS the gate, but it is a clear step up from round 1 (mean 7.42 → 7.83). Weighted means: accuracy 8.00, depth 8.08, clarity 7.67, story 8.00, visual 7.67, sync 7.58, sound 7.50, curiosity 8.17. The bar is 8.5, with every dimension at 8 or above. There are no critical issues. Reviewers agree that most round-1 notes landed: quote integrity is airtight and the sources page is published; the prologue pace, chunk ghosts, cue joins and masking are fixed; ch12 is reordered; the AlphaGo board, ledger, kernel shot and BY HAND bowl are in; and the deep dives are expert-grade. Four dimensions are still below 8. SOUND (7.50): the +3 dB quiet-line offsets stacked on top of rides, so five lines now jump out (L1501 is the loudest line in the film); L0821 fails pacing; the end cards run on hiss. SYNC (7.58), VISUAL and CLARITY (7.67): five round-1 shot fixes were never applied, and three of those files are untouched since Oct 7. The worst are ch15-s09 (near-black under the last line, which I confirmed on the sheet), ch10-s04 (all-pairs attention arrives late), ch15-s08 (static recap), ch15-s10 (placeholder end cards) and ch14-s05. Subject text under 22 px and generic LeCun/Bengio/Hassabis puppets add to it. Accuracy and story hold at 8, with three structural notes: a spoken Anthropic settlement line, so 'the labs, under the same light' is even-handed; L1208 cut to a ledger card so Anthropic stops being the only runner with a founding story; and a voiced Act-3 question (L1405 → L1418) to turn the docket into a case. Highest leverage, in order: (1) actually apply and sheet-verify the carried-over shot fixes (ch15-s09, ch10-s04, ch15-s08, ch15-s10, ch14-s05, ch14-s04b, ch05-s04, ch08-s13b); (2) zero the stacked line offsets and re-narrate L0821/L0828/L1505/L0906/L0114; (3) the balance and plant lines (L1522d, L1522b, L1208 cut, L1405/L1418, L1416) with their shot re-fits; (4) the Dreyfus line (L0514b) and the L0607b split; (5) the kit-wide legibility rule and figure silhouettes; (6) the m21 end-card pad, m13 candle-out and m10 thinning.",
+  "at": "2026-10-13T00:56:57Z",
+  "dimensionNotes": {
+    "sound": "Round 1's boost for quiet lines was added on top of the per-line level matching, so five lines now jump out; the hushed 2 a.m. Nobel call is the loudest line in the film. L0821 runs too fast (224 words a minute), and the closing cards play over 22 s with no music.",
+    "sync": "Five round-1 shot fixes never actually landed. The final shot (ch15-s09) is still near-black under the last spoken line, and its match strikes only after the line ends.",
+    "visual": "Some on-screen text the narration points to is still below the 22 px legibility floor, and LeCun, Bengio and Hassabis are still the same generic puppet.",
+    "clarity": "Three line changes are proposed: Anthropic's $1.5B pirated-books settlement gets a spoken line, its funding line moves to an on-screen card, and the US–China act gets a question it later answers. The symbolic-AI era is missing its dissenter (Hubert Dreyfus)."
+  },
+  "dimensionNotesBy": "transcribed from the round-2 showrunner summary on 2026-10-13 (before the schema asked for them)"
+}

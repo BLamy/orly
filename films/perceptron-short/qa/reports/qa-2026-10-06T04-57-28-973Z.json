@@ -1,0 +1,28 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T04:57:28.973Z",
+ "summary": {
+  "pass": 1,
+  "warn": 0,
+  "fail": 1,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m01: render dropped notes ([webaudio] error: no soundfont zone found for preset) — fix and re-render",
+   "problems": [
+    "m01: render dropped notes ([webaudio] error: no soundfont zone found for preset) — fix and re-render"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "0.7 min of music over 1.0 min (74%)"
+  }
+ ]
+}

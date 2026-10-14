@@ -1,0 +1,351 @@
+{
+  "round": 2,
+  "pass": false,
+  "mean": 7.43,
+  "scores": {
+    "accuracy": 8.08,
+    "depth": 6.42,
+    "clarity": 7.5,
+    "story": 7.25,
+    "visual": 7.83,
+    "sync": 8.0,
+    "sound": 7.58,
+    "curiosity": 6.75
+  },
+  "gate": {
+    "minDimension": 8,
+    "minMean": 8.5,
+    "noCritical": true,
+    "failing": [
+      "depth",
+      "clarity",
+      "story",
+      "visual",
+      "sound",
+      "curiosity"
+    ],
+    "criticalOpen": 0
+  },
+  "weighting": "mean across 5 reviewers, owning lens counted double (historian: accuracy; teacher: depth, clarity; story: story, curiosity; art: visual, sync; sound: sound); divisor 6",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 8.5,
+      "depth": 7,
+      "clarity": 8,
+      "story": 7.5,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 7
+    },
+    "teacher": {
+      "accuracy": 8,
+      "depth": 6,
+      "clarity": 7.5,
+      "story": 7.5,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 6.5
+    },
+    "story": {
+      "accuracy": 8,
+      "depth": 7,
+      "clarity": 7,
+      "story": 7,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 6.5
+    },
+    "art": {
+      "accuracy": 7.5,
+      "depth": 6.5,
+      "clarity": 8,
+      "story": 7.5,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7,
+      "curiosity": 7
+    },
+    "sound": {
+      "accuracy": 8,
+      "depth": 6,
+      "clarity": 7,
+      "story": 7,
+      "visual": 8,
+      "sync": 8,
+      "sound": 8,
+      "curiosity": 7
+    }
+  },
+  "delta": {
+    "round1Mean": 6.65,
+    "round1Scores": {
+      "accuracy": 7.5,
+      "depth": 5.17,
+      "clarity": 7.0,
+      "story": 6.5,
+      "visual": 7.33,
+      "sync": 7.33,
+      "sound": 6.42,
+      "curiosity": 5.92
+    }
+  },
+  "previousRounds": "Round 1's fixes largely landed and were verified by all five reviewers: retina in frame at the payoff, the real seed-1950 record (W W W R R), the L0106 rule correction, the L0104 credit correction, the 'right' level, the extended tail with a bookend and a fade, clean clip heads, linear normalisation, and m01 recomposed with zero render errors. Partly fixed: Rosenblatt staging (upright and in shirtsleeves, but still enters from the frame edge and faces away on his name), the lab set craft, s01 giving the machine away early, and the duck (5.5 dB against a 3 dB target). New this round: the tail retina morph at about 50 s.",
+  "showrunnerChecks": [
+    "Extracted render/film.mp4 frames at 49.6, 50.3 and 50.9 s. Confirmed: at 49.6 s the clean try-5 horizontal bar; at 50.3 s a short horizontal bar beside a vertical bar on one plate, while the caption reads 'try 5 · said horizontal · right', the needle sits on HORIZONTAL and the lantern is lit. Three reviewers flagged it independently; it is the top shot fix.",
+    "Checked the proposed rewrites against research/claims.json. L0108's Minsky and Papert sentence fits limit-linear only without a causal verb ('for years, interest faded', not 'killed'). The story reviewer's 'No one told it which shape was which' would be false (the error signal is the right answer), so L0105 is rewritten as 'Nobody gave it the rule', gated on a new mk1-trained claim.",
+    "Runtime: the line additions and gaps add roughly 5-6 s, offset by the L0103 trim and the shorter L0104. Ceiling set at 66 s against the brief's 'about 1 minute'."
+  ],
+  "fixes": {
+    "shots": {
+      "ch01-s03": "Re-anchor every beat to the re-locked clock (L0105, L0105b, L0106 and L0108 are re-narrated; see lines and global). (1) TAIL RETINA GLITCH [major; art, story, teacher; showrunner confirmed on render/film.mp4 at 50.3 s: a short horizontal bar beside a vertical bar on one plate, while the caption still reads 'try 5 · said horizontal · right', the needle sits on HORIZONTAL and the lantern is lit]. Never animate lit cells after try 5. Order the tail like this. (a) Try 5 (hbar, answered HORIZONTAL) flares in the clear air after 'right' (the new gap before L0108; see L0108), with its caption and the try-1 ghost held at least 1.2 s on a clean, frozen try-5 bar. (b) On 'It could learn only simple patterns', first fade the try-5 caption, return the needle to centre and dim the lantern to idle. Then show the two learned shapes on two clearly separate small plates (at least one bar-length apart, with a thin divider), each tagged in era type with its learned answer (VERTICAL / HORIZONTAL), under a caption 'what it could learn: simple patterns'. Hold them about 1 s. Do not show a failing third shape unless the real trainPerceptron model is run on a non-separable task and actually fails; never fake it. (c) On the new Minsky and Papert sentence (L0108), add an era stamp '1969 · PERCEPTRONS · MINSKY & PAPERT' with a closed-book silhouette (never a likeness), and let the stage lights dim a notch on 'for years'. (d) Start the K3 push, the curtain and the iris only after that sentence ends, keeping the lantern-to-eye match dissolve (the film's best transition) into the bookend on 'descendants'. (2) BOOKEND LIFE [minor; art, story]: add a slow dolly back (about 3%) across the hold, and give Rosenblatt one motivated gesture on 'mistakes' (lower the arm and half-turn his head toward the eye's lit bar). Then hold still into the fade, with the title brightening and the fade starting about 1.2 s after 'mistakes' ends. Optional (teacher): a small '1958 → today' stamp under the title over 'descendants'. (3) TEACH THE DECISION [minor; teacher]: on 'total', brighten the gauge's centre tick into an engraved line labelled 'threshold' (20-24 px caption face, claim mk1-sum), so the needle visibly falls on one side of it on 'decides'. Fade it after try 1's verdict. When each shape appears, add a small dim era-type tag beside the retina ('answer: horizontal' / 'answer: vertical') that fades on the verdict, so 'toward the right answer' is visible. (4) CAPTIONS [minor; art, story]: each verdict caption finishes its 0.2 s fade-in 0.1 s before its verdict word (currently late on 'wrong again' 43.54 s and 'right' 47.06 s), and the outgoing caption clears at least 0.3 s earlier. Set the verdict word in roman small caps. Raise the try-1 ghost line to 24-26 px, cream at 55-60% opacity, with a 'then' / 'now' label pair, and flash a ghost needle at VERTICAL for about 0.6 s as the real needle settles on HORIZONTAL.",
+      "ch01-s02": "ROSENBLATT BLOCKING [major; art; partly fixed from round 1]: he still enters from the right frame edge (absent at 18.0 s, mid-stride at 19.0 s) and faces away from the machine during his own name. Block him already standing between the PERCEPTRON rack and the window before 'Mark' (or stepping out from behind the end rack), facing left toward the machine. On 'Frank' (new L0104 timing) he lifts and turns his near arm toward the plate, holding through 'Rosenblatt' while the name card resolves beside him. Puppet: two separated legs with slight contrapposto, bent elbows, relaxed hands, a tie and shirt-cuff silhouette, and a window-side rim instead of the full outline. Re-anchor the 'dials' sweep, the 'Perceptron' plate glint and the name card to the re-narrated L0103 and L0104 (L0104 now gets a 0.8 s pre-gap; see global).",
+      "ch01-s01": "[minor; story, art; carried over from round 1] Keep the racks and stand below about 15% luminance in s01, so only the window light, the blind shafts and (on 'see', 2.79 s) a single glint across the eye's cells read. Do not light the eye's bar before s02 'eye'. End s01 on the camera that s02 opens with, so the crossfade reads as one continuous push rather than a soft jump cut, and let the s02 crossfade bring up the machine."
+    },
+    "cues": {
+      "m01": "Re-fit after the clock is re-locked (new L0103-L0106 and L0108, the L0104 pre-gap, and the longer gap before L0108). (1) Keep 'right' on a downbeat with the bare F#6 plus low D and the unique full bloom. (2) Slide the bar-7 cello pickup (A2-B2-D3) so it enters right after the end of 'Rosenblatt', not on a trailing fragment. (3) [story] Answer the try-5 flare in the new gap before L0108 with a small, quiet echo of the 'right' figure (celesta or music-box D6-F#6 over D, about 6 dB under the first). Keep the full bloom unique to the first 'right'. (4) Let the bed darken under the new Minsky and Papert sentence (withhold the third again, or a low open fifth), then re-open into D for 'descendants ... still learn from mistakes', and complete M1 in the clear air after 'mistakes' as now, decaying to silence before the picture's fade completes. (5) After the mix-stage duck fix (global), confirm on score/analysis that the 'nudge' pizz plucks and the F6 'wrong' cell sit about 8-11 dB under speech."
+    },
+    "lines": {
+      "L0104": "[major; sound] Heard aloud, '...built by psychologist Frank Rosenblatt's project' sounds like a misreading: the possessive turns 'project' into an afterthought, and that fragment takes the cello answer meant for the name. Rewrite so the name ends the sentence, within mk1-builder: 'It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.' This keeps the project credit and does not imply he built it alone. Give the line a 0.8 s pre-gap. After narration, run one ElevenLabs STT round trip on the clip and assert that 'Rosenblatt' comes back, then mark the lexicon note confirmed. QA stt must not be 'skip' for this line.",
+      "L0108": "[major; teacher, story] Depth stops at 'simple patterns', and try 5's flare is spoken over. (a) Rewrite within limit-linear and lineage-mlp, respecting both caveats: 'It could learn only simple patterns. In 1969, Marvin Minsky and Seymour Papert showed just how simple, and for years, interest faded. Its descendants, today's neural networks, still learn from mistakes.' Do not use a causal verb ('killed', 'ended'): the claim says only that the book is often thought to have contributed. Do not say neural networks were shown useless. (b) Lengthen the gap before L0108 from 1.5 s to about 2.6 s so try 5 flares in clear air. (c) Delivery: quieter and reflective (levelDb -1.5; see global), with a small breath after 'patterns' and after 'faded'. Lexicon: 'Papert' as PAP-ert.",
+      "L0105": "[major; story; gated on research] Plant the question before the answer. When research has verified that the Mark I was trained by example and error correction rather than given its rule (see global research), rewrite as: 'Nobody gave it the rule. Show it a shape, and it guesses.' Do NOT write 'no one told it which shape was which': the machine was told the right answer after each guess (that is the error signal), so the line would be false. If the claim cannot be verified, keep the line as it is.",
+      "L0105b": "[minor; historian] 'tugs the needle through its dial' implies one dial per cell, but the Mark I reached its response unit through a randomly wired association layer and the picture already fans each cell into several dials. Rewrite: 'Each lit cell tugs the needle through the dials it feeds, and the total decides.' Keep the light lift on 'total'.",
+      "L0106": "[minor; sound, teacher] Fix the text so script, captions and delivery agree: 'When it guesses wrong, the motors nudge the dials that had a say, a little, toward the right answer.' Re-narrate it with the re-lock and accept the take only if there is no gap over 0.15 s inside 'had a say'. Keep 'nudge' on a downbeat (or move m01's pizz with it).",
+      "L0103": "[runtime offset; teacher] Trim to pay for the L0108 addition: 'Behind it, wires, and racks of dials that motors could turn.' Cite the new mk1-patchboard claim on ch01-s02 (see global research)."
+    },
+    "global": [
+      "RESEARCH FIRST (accuracy and curiosity gate; before any line is re-narrated): verify and add two claims to research/claims.json with sources fetched and read. (1) mk1-trained: the Mark I was trained by being shown examples and corrected on its errors, not programmed with the rule for each shape (Rosenblatt 1958, Psychological Review 65(6); Wikipedia 'Perceptron'; NMAH object 334414). This gates the L0105 rewrite. (2) mk1-patchboard: the photocells were connected to the association units through a patch board with randomly wired connections. This backs L0103 and L0105b. Then cite the claims per shot in script.json.",
+      "STORY AND RE-LOCK ORDER: apply the line rewrites (L0103, L0104, L0105 if verified, L0105b, L0106, L0108), then re-narrate only those lines, re-lock the clock, re-fit m01 and re-anchor s02 and s03. Add two per-line fields to script.json and honour them in film-narrate and the mix: preGap (default 0.45 s; L0104 0.8 s, L0108 about 2.6 s) and levelDb (L0101 -3 dB, L0108 -1.5 dB), applied after the word rides and before the speech compressor. Check that L0101 peaks at or below about -14 LUFS momentary in the master and that the D-major bloom stays the loudest non-speech moment. Runtime ceiling 66 s ('about a minute'); if it runs over, shorten the bookend hold before cutting any new line.",
+      "MIX DUCK: the mixer measures 5.52 dB of ducking against m01's 3 dB target, and QA passes it. Treat a cue's depthDb as a ceiling (lower the ratio or raise the threshold until the measured depth is within 1 dB of the target), and make QA warn when the measured duck exceeds the target by more than 1.5 dB.",
+      "LAB SET CRAFT [minor; art; sets/lab.ts, used by s01, s02 and the s03 bookend]: drop the outline on edges that do not face the window. Push the foreground plane (stool, chair, desk) to near-black with a slight blur and faster parallax. Vary the rack faces (one meter panel, one patch-panel end, different louvre counts), and add one hand-cut detail per prop (a cable bundle draped over a rack corner, caster wheels, a clipboard on the eye stand)."
+    ]
+  },
+  "deferred": [
+    "no-diegetic-sound (sound, optional): a sparse foley stem (fluorescent hum, servo ticks on the weight updates). Deferred so this round stays focused; revisit if sound is still under 8 after the duck and dynamics fixes.",
+    "teacher lens note: AlexNet and the transformer are out of scope for a one-minute Mark I short; not scored and no fix.",
+    "ch01-s03 lineage silhouettes over 'descendants' (teacher, optional): only the small '1958 → today' stamp is suggested, to avoid clutter in the bookend."
+  ],
+  "issuesMerged": [
+    {
+      "reviewer": "historian",
+      "owner": "line",
+      "id": "L0105b",
+      "severity": "minor",
+      "problem": "\"Each lit cell tugs the needle through its dial\" says each photocell has its own dial wired straight to the needle. The film's own bible says the Mark I reached the response unit 'through a randomly wired association layer', and the weights (claim mk1-weights) sat on those connections, not on the 400 cells. The picture is already more faithful than the line: at 34.29 s the lit cells' threads pass through the patch tangle and fan out to several dials (about 80 on the board, not 400). The 'an illustration of the rule' caption covers the simplified board, but this narrated sentence is about 'it', the Mark I."
+    },
+    {
+      "reviewer": "historian",
+      "owner": "line",
+      "id": "L0103",
+      "severity": "minor",
+      "problem": "\"Behind it ran a nest of wires\" is supported only by the bible ('patch board of tangled cables'), not by research/claims.json, which the brief makes the only allowed source. Racks, dials and motors are covered by mk1-weights; the wiring is not."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The picture during 'It could learn only simple patterns' (48.97-51.6 s) contradicts the line. The 'both learned shapes ghosted side by side' plate draws the short horizontal bar and the vertical bar almost touching, so it reads as one new L/T-shaped figure. Meanwhile the needle still sits on HORIZONTAL, the lantern is still lit and the caption still says 'try 5 · said horizontal · right' (verified at 50.3 and 50.8 s). A 15-year-old sees the machine succeed on a harder-looking shape at the exact moment the narrator says it could only learn simple ones. Then the iris closes on the lantern, and the limit is never shown."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "line",
+      "id": "L0108",
+      "severity": "major",
+      "problem": "Depth stops at 'it could learn only simple patterns'. The film never says who showed the limit or what it cost, even though claims.json now carries limit-linear (Minsky and Papert's 1969 'Perceptrons'; the decline of neural-network research in the 1970s). Belief, dissent and its duration are the lens's history test, and the evidence is already verified. The jump from 1960 to 'today's neural networks' leaves no sense that the idea nearly died, which is also why curiosity stays at 6.5."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "'And the total decides' (33.12-34.39 s) needs a threshold, but the gauge's decision line is an unlabelled top-centre tick. A young viewer cannot see why the needle's position means VERTICAL, and an expert notices the threshold is missing from the picture of the mk1-sum rule."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The 'right answer' that every nudge moves toward is never shown before the verdict. The retina shows a bar, and the viewer only learns which answer was correct from the 'wrong' caption after the fact. The supervision signal, the teacher's answer, is the heart of error-correction, and right now it is implied."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "'Its descendants, today's neural networks' (52.38-55.4 s) plays over the 1960 lab bookend. Nothing on screen says 'descendants' or 'today', so the lineage claim is heard but not seen."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "line",
+      "id": "L0106",
+      "severity": "minor",
+      "problem": "As written, 'the dials that had a say a little toward the right answer' parses as 'had a say a little'. The spoken take pauses after 'say' (38.76 to 39.71 s), but the caption (VTT cue 8) runs 'that had a say a little / toward the right answer' with no comma, which trips readers watching with captions on."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The mix reports a duck depth of 5.52 dB against a 3 dB target (mix/loudness.json). The QA check passes it, but the quiet celesta 'wrong' cells (E6/F6 at 42.91-43.07 s) that teach the error beat may sink further than the composer planned."
+    },
+    {
+      "reviewer": "teacher",
+      "owner": "global",
+      "id": null,
+      "severity": "minor",
+      "problem": "Lens note: AlexNet and the transformer cannot be explained in a one-minute Mark I short, and they are not scored against this film."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The proof of discrimination is muddied by the 'simple patterns' pair. At about 50.0-50.8 s, while the caption still reads 'try 5 · said horizontal · right' and the needle points at HORIZONTAL, the retina morphs into a single '-|' glyph: the horizontal bar shifted left and a vertical bar beside it on the same 20x20 plate. A viewer reads it as the machine now seeing a strange new shape and calling it horizontal. It is not read as 'the two shapes it learned', so the clean before/after that try 5 just set up gets blurred right before the iris."
+    },
+    {
+      "reviewer": "story",
+      "owner": "line",
+      "id": "L0108",
+      "severity": "major",
+      "problem": "The second triumph has no room. Try 5's flare (about 49.3-49.7 s) lands under 'It could learn only simple patterns' (which starts at 48.97). The film's proof that it really learned is spoken over by the deflating limit, and the D-major bloom is already closing by 49.0. The emotional sequence 'right, and right again... and yet only simple patterns' is compressed into one overlapping moment, so neither the joy nor the honest limit fully lands."
+    },
+    {
+      "reviewer": "story",
+      "owner": "global",
+      "id": "wonder-question",
+      "severity": "major",
+      "problem": "Curiosity is still the weakest lens. The film never plants the question that makes the perceptron astonishing: nobody told it which shape was which, and it found the rule from its own mistakes. It goes straight from a 20-second parts inventory (s02: eye, wires, dials, name) to 'Show it a shape, and it guesses'. The viewer is never made to wonder 'how could a machine possibly learn that?' before the answer arrives, so the payoff feels like a demonstration rather than a revelation."
+    },
+    {
+      "reviewer": "story",
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The second correct answer (the try-5 lantern flare) has no musical answer. The bloom on 'right' closes by 49.0, and the spectrogram shows the bed simply resuming. Musically the film says 'right' once, which undersells the proof that it learned both shapes."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The bookend's human beat is inert. From 53.5 to 59.8 s Rosenblatt holds the same outstretched presenting pose he struck in s02 while 'Its descendants, today's neural networks, still learn from mistakes' plays. The last emotional image belongs to a statue, not to a person who has just watched his machine learn."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The verdict captions that carry the struggle and the comparison are still small italic type. The ghosted 'try 1 · said vertical · wrong' under try 5 is roughly 15-18 px high at 1080p and faint, and it is the one piece of text that turns try 5 into a before/after."
+    },
+    {
+      "reviewer": "story",
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "Carried over from round 1, still partly open. From about 2.5 s the eye, its stand and all three racks are shown in clear silhouette under the title, so s02's part-by-part reveal ('Its eye... Behind it... racks of dials') repeats what has already been seen and slows the setup."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "New retina glitch in the tail, under the closing line L0108 ('It could learn only simple patterns'). From about 50.0 to 51.3 s the try-5 horizontal bar shrinks from the right while a vertical column grows at about col 16, so the grid shows an L/T hybrid and then a short dash plus a vertical bar. Meanwhile the caption still reads 'try 5 · said horizontal · right' and the needle sits on HORIZONTAL. It looks like a sixth presentation (or the ghost of an earlier shape) starting during the curtain and push-out. It reintroduces the round-1 overlap problem and contradicts the caption at the moment the film states its limit."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "major",
+      "problem": "The Rosenblatt acting still misses the name beat. He is absent at 18.0 s and mid-stride at 19.0 s, so he still comes in from the right frame edge. His one presenting gesture lands at 21.0 to 22.0 s on 'built', with the arm thrown back toward the racks while his face points right, toward the window. On 'Frank Rosenblatt's' (22.85 to 24.2 s) and through the name card he faces away from the machine. His arms hang stiff with splayed fingers, the rear arm is hyperextended, and the legs read as one fused column. He has no tie, cuffs or pencil, and a thin full-body outline is still visible. Next to the reference figures (period silhouettes with costume detail, poised and turned toward each other or an object) the puppet reads as a generic mannequin."
+    },
+    {
+      "reviewer": "art",
+      "owner": "global",
+      "id": null,
+      "severity": "minor",
+      "problem": "The lab set (sets/lab.ts, used by s01, s02 and the s03 bookend) is better than in round 1, with cable garlands, louvres, haze and a stool and chair. But it is still below the reference. Every rack, window and stand carries the same thin light outline. The dial racks are identical repeated grids. The foreground stool and chair (21.0 s) are the same value as the racks, so the planes do not separate. The reference gets its depth from near-black foreground furniture, ornamented mid-plane cut-outs and a hazed back wall."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "Some verdict captions arrive after their words. At 43.6 s the 'try 3 · said vertical · wrong' caption is barely visible while 'wrong again' is spoken (43.54 s), and it reaches full strength only around 44.2 s. At 47.0 s the 'try 4 · said vertical · right' caption is faint just before 'right' (47.06 s) and reaches full strength around 47.6 s. Try 1 (35.6 s) and try 2 (42.6 s) land on time."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The before/after comparison barely reads. The ghost line 'try 1 · said vertical · wrong' under the try-5 caption (49.6 s) is small (about 22 px), grey on amber, and close to illegible at 1080p. The retina gives no visual echo of try 1, so 'same shape, now right' rests on a line of faint text."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The bookend (53.4 to 59.2 s) is a well-composed frame: Rosenblatt facing the eye, the stimulus card and the eye both showing the bar, and the title back. But it is nearly static for about 5 s under 'Its descendants, today's neural networks, still learn from mistakes', so no visual beat lands on 'descendants' (52.77 s), 'neural networks' (54.57 s) or 'mistakes' (56.99 s). The title simply sits there."
+    },
+    {
+      "reviewer": "art",
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "The s01-to-s02 crossfade (5.8 to 6.3 s) dissolves between two near-identical framings of the eye on its stand, with the same windows and a slightly tighter scale. It reads as a soft jump-cut rather than a change of view. The eye is also already lit with its bar from about 3.5 s, which spends the 'Its eye' reveal (6.92 s) early."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "line",
+      "id": "L0104",
+      "severity": "major",
+      "problem": "The protagonist is introduced with a sentence that sounds like a misreading when heard: 'It was the Mark I Perceptron, built by psychologist Frank Rosenblatt's project.' The ear parses 'built by psychologist Frank Rosenblatt', then hits the possessive and '...'s project' (24.17-24.80) as an afterthought. That fragment also lands where the M4 cello was meant to answer the name: the cue notes say the cello A2 at 24.79 now 'answers project' rather than the name. The line copies claim mk1-builder word for word, which reads fine on paper but not aloud."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "line",
+      "id": "rosenblatt-unverified",
+      "severity": "minor",
+      "problem": "The name is still not verified for the new voice (Peter, speed 0.8). QA stt is 'skip', and voice/lexicon.json says ROH-zen-blat is 'still to be confirmed by ear'. The timing (0.81 s) and level (-23.9 dB, the same as 'psychologist') look healthy, but this is the only proper name in the film and nothing has checked it."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "global",
+      "id": "line-dynamics-flattened",
+      "severity": "minor",
+      "problem": "The per-line normaliser removed the intended delivery dynamics. Every line sits between -18.4 and -19.7 dB RMS in the master. L0101 ('quiet, a storyteller beginning') is the single loudest momentary point of the film (-11.3 LUFS M at 2.1 s), louder than the D-major bloom (-13.2 at 48.0). It enters from near-silence (music -36 LUFS M at 1.1 s), so the first word lands hard on a black screen. L0108 ('quieter, reflective') is no quieter than the explanatory lines. Round 1's fix asked for explicit per-line offsets for intended dynamics, and none were added."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "global",
+      "id": "duck-overshoot",
+      "severity": "minor",
+      "problem": "m01 asks for depthDb 3, but the mixer measures 5.52 dB of ducking under 46.1 s of speech, and QA passes it anyway. The cue was pre-levelled for a 3 dB duck. The low under-speech machine figures (the pizz 'sum' D2-A2-D3-E3 under 'tugs the needle', the three A2 'nudge' plucks at 36.93) end up about 15 dB under the voice (music -26.5 raw, about -32 in the master vs about -17.5 speech on 'nudge'). These are the score's sonic stand-in for the motors, and at that level they are probably lost."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "line",
+      "id": "L0106",
+      "severity": "minor",
+      "problem": "A hesitation inside an idiom: 'the dials that had a [0.28 s] say [0.45 s] a little toward the right answer' (pauses at 38.76 and 39.71). The first pause splits 'had a | say', so the clause sounds unsure. The sentence is already the longest in the film (6.6 s) and hard to parse by ear ('a say a little')."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "global",
+      "id": "no-diegetic-sound",
+      "severity": "minor",
+      "problem": "The soundtrack is still voice plus score only. The picture shows motors turning dials, needles swinging and a lantern flaring on 'right', yet there is no relay click, motor whirr or tube hum anywhere. With the duck overshoot, the pizz stand-ins are also buried under speech."
+    },
+    {
+      "reviewer": "sound",
+      "owner": "global",
+      "id": "within-chunk-gaps",
+      "severity": "minor",
+      "problem": "Inside each narration chunk the lines are still joined by the same mechanical 0.45 s gap (L0102 > L0103 > L0104, L0105 > L0105b > L0106). The turn from describing the machine to naming it (17.57 to 18.02) gets no more air than a mid-description breath, so 'It was the Mark I Perceptron' runs straight on from 'motors could turn'."
+    }
+  ],
+  "summary": "FAIL (round 2). Mean 7.43 (round 1: 6.65), with sync now at the bar (8.0) and accuracy just over (8.08). Depth (6.42) and curiosity (6.75) are still lowest, followed by story (7.25). No critical issues. Most round-1 fixes landed. The high-leverage fixes: (1) remove the tail retina morph at about 50 s (confirmed on the render) and give try 5 its own clear air before L0108; (2) deepen L0108 with the verified Minsky and Papert 1969 limit (no causal verb) and plant the curiosity question in L0105 ('Nobody gave it the rule'), gated on a new mk1-trained claim; (3) re-word L0104 so the name ends the sentence, and STT-check 'Rosenblatt'; (4) re-block Rosenblatt in s02 so he faces the machine on his name; (5) fix the mix duck overshoot and add per-line preGap and levelDb. Runtime ceiling 66 s.",
+  "at": "2026-10-06T09:59:34Z"
+}

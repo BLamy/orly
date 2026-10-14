@@ -1,0 +1,93 @@
+{
+  "reviewer": "teacher",
+  "round": 6,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [
+    "ERA 5 HAS NO SPOKEN DISSENTER (ch05-s07 to ch05-s09b, L0513-L0522). The brief asks, for every era, who dissented. Every other candle has a voice at its rim: Gerard, Minsky, Fodor and Pylyshyn, the holdouts, Ciresan, Sutskever, Uszkoreit, the octopus and the parrots, the three camps, Liang, METR. The knowledge candle has none. L0515 (Lenat) speaks for the belief, not against it, and e5-aaai84 is cited on ch05-s09b but never spoken. The bible names the dissent: insiders at the AAAI-84 'Dark Ages of AI' panel (bible Era 5 'Who dissented'; q-mcdermott-winter, q-schank-expert). FIX: insert a new L0522a before L0522: 'In 1984, at a panel called The Dark Ages of AI, insiders warned of a coming winter. One, Roger Schank, said: “I don't much believe in expert systems.”' (+27; claims e5-aaai84, quote q-schank-expert, verbatim). Then trim L0522 to: 'By 1987 the special machines for these programs stopped selling, and the snow returned: a second winter. The knowledge candle burned about seven years.' (-4). On ch05-s09b, add OST 'AAAI-84 · AUSTIN · “THE DARK AGES OF AI” (panel)' and 'Roger Schank'. Bonus for the teenager: the film finally hears where the phrase 'AI winter' came from (bible H-nuclear).",
+    "RUNTIME: 3,459 narration words against the 3,040 target (+14%). At the cast pace (about 95 words a minute, net of silences) that projects to about 36 minutes, past the brief's 30-35. My additions below come to about +95 words if all are taken. MUST-TAKE are the Era 5 dissent (+23 net), the AlexNet flip (+15), the L1410 rewrite (+5) and the parrots gloss (+9). OPTIONAL are Widrow's LMS (+22), the Boltzmann naming (+6), the stencil payoff (+5) and the Turing gloss (+3). Low-cost cuts that lose no teaching: L1024 'Eight names, in random order.' (-5, already on screen as 'Listing order is random'); L0902 'from a laptop' (-3); L0213 SNARC line (-10; the SNARC card is on screen, though it costs the Minsky irony). The story editor still needs to find about 300 more words, and should cut from atmosphere, not mechanism."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s13b L0826 (AlexNet: how fast the belief died)",
+      "problem": "Still open from round 5. The candle's age is spoken ('burned thirteen years'), but not the most striking duration fact of the AlexNet era: how fast it went out. The bible's Era 8 'How long it lasted' says 'The flip was fast': one CNN entry in 2012, then all top five classification teams on convnets by 2013. That is exactly the brief's 'how long did people think that way', and it is what makes L0823 'A cliff.' mean something to a teenager. e8-ilsvrc2013 is already in ch08-s13's claims, yet the line is unspoken.",
+      "fix": "L0826 → 'The hand-cut stencil candle burned thirteen years. It went out in one: at the next contest, all top five teams used such nets.' (+15; claims e8-vision-belief, e8-ilsvrc2013)."
+    },
+    {
+      "where": "ch14-s04b L1410 (three beliefs in two sentences)",
+      "problem": "L1405 lights two candles: compute is the chokepoint, and China is one to three years behind. L1410 then says 'Markets bet that computing power didn't matter: a struck match, one day's panic.' The ear can't tell whether the chokepoint candle went out, or whether the match is a third belief. A teenager comes away thinking 'chips don't matter' was briefly true. An expert notices that the live export-control dispute (e13-export-debate) is on screen only (DECISIVE · AMODEI | HELPS HUAWEI · HUANG), so the chokepoint candle's dissent is never heard.",
+      "fix": "L1410 → 'For one day, markets bet that chips no longer mattered: a struck match. The chokepoint candle still burns, argued over: decisive, says one lab chief; a gift to Huawei, says the chipmaker's. And China trailing by years? That belief burned about two.' (+14; claims e13-crash, e13-export-debate, e13-gap). Both views are attributed, so it stays even-handed. If words are tight, drop the attributions and keep 'The chokepoint candle still burns, argued over.' (+5)."
+    },
+    {
+      "where": "ch11-s08 L1118 ('stochastic parrots' never glossed)",
+      "problem": "'Another paper called such models stochastic parrots.' A 15-year-old doesn't know 'stochastic', so the dissent's content is lost. Only the octopus line carries meaning. The paper's own definition is in quotes.json, verbatim.",
+      "fix": "L1118 → 'Another paper called such models stochastic parrots, “haphazardly stitching together” words “without any reference to meaning.” One co-author, Timnit Gebru, left Google; the accounts differ.' (+9; claim e11-parrots; both fragments verbatim from the Stochastic Parrots quote in quotes.json, attributed to the paper on screen: 'Bender, Gebru, McMillan-Major & Mitchell (as Shmitchell), 2021')."
+    },
+    {
+      "where": "ch08-s01 L0802 ('stencils' used four lines before it is taught)",
+      "problem": "'To see, a machine needs stencils cut by experts.' The stencil is first explained at L0806 ('Hold a tin stencil...'). On first hearing the metaphor is opaque, and the deep dive's best device is spent before it is built. The OST already says 'FEATURES DESIGNED BY EXPERTS'.",
+      "fix": "L0802 → 'Since about 1999, the belief: to see, a machine needs patterns designed by experts, by hand. With five guesses, the best still missed over one in four.' (±0). The stencil arrives at L0806, and L0826 ('hand-cut stencil candle') and L0832 ('stencils cut by hand') then pay it off correctly."
+    },
+    {
+      "where": "ch08-s09 L0818 (close the stencil loop)",
+      "problem": "The deep dive builds a hand-set edge stencil (L0806-L0808), then says 'Nobody cut these stencils' (L0811). It never says the payoff that makes the whole sequence click for a teenager and pleases an expert: the stencils the network cut for itself in its first layer were edge detectors, like the toy one. The bible (AlexNet primer, 'What the first layer learned') supports 'colour-agnostic edges on one, colour blobs on the other'.",
+      "fix": "L0818 → 'Nobody told the two halves how to divide the work. One cut black-and-white edges, like our toy stencil; the other, colour. Every time.' (+5; claims e8-gpu-split). Visual: on 'like our toy stencil', the tin toy stencil from ch08-s04 slides in beside one of the learned 11×11 kernels for a beat."
+    },
+    {
+      "where": "ch02-s07 L0216-L0217 → ch03 (Widrow: 'Remember him' never says what he did)",
+      "problem": "Widrow is planted with 'Remember him' and paid off only by his death (L1511). The film never says what he built. That costs the teenager the payoff and the expert the link: Widrow and Hoff's LMS rule (1959, ADALINE) measured error as a number and slid downhill, 'an ancestor of backprop's gradient thinking' (bible Primer A). It would also pre-teach the 'downhill on a landscape of error' idea that L0510 now introduces cold, and the 'bowl' that L0607 relies on.",
+      "fix": "Add L0308b after L0308: 'At Stanford, Widrow and a student built a cousin in one weekend. It measured how wrong it was, and slid downhill, toward less wrong.' (+24; claims e2-lms, e2-adaline). The ch03-s04 visual gets a cut-out of the shoebox ADALINE, its meter needle easing toward zero. Then L0510's 'downhill' is a callback, not a new idea."
+    },
+    {
+      "where": "ch15-s01 L1502 + L1528 (the Nobel: what Hinton's half was for, and why 'physics')",
+      "problem": "'For memories that roll downhill, and nets that learn.' Hopfield's half is clear (callback to L0524). Hinton's half is so vague that the ear hears 'back-propagation' or 'ChatGPT', which the bible rules out (e12-nobel-physics-debate: 'not for transformers or LLMs'). The Boltzmann machine is never spoken (only the ch05-s03 card). So L1528 'Was this physics?' has no handle: the teenager never learns the physics link (heat and cooling, statistical physics) that the committee argued from.",
+      "fix": "L1502 → 'A Nobel Prize in physics, shared with the man from Versailles: for memories that roll downhill, and the tall man's Boltzmann machine, a net that learns as it cools. The talk nobody remembered, remembered.' (+6; claims e4-boltzmann, e12-nobel-physics, e12-nobel-physics-debate). 'Learns as it cools' matches the ch05-s03 card, so the eye and ear agree."
+    },
+    {
+      "where": "ch13-s04 L1312 ('Turing Award' unexplained)",
+      "problem": "'Hinton, Bengio and LeCun had shared the Turing Award.' The line only lands if you know what the award is. A teenager doesn't, so 'Two signed. The third stood apart.' loses its weight.",
+      "fix": "L1312 → 'Hinton, Bengio and LeCun had shared computing's million-dollar Turing Award. Two signed. The third stood apart.' (+3; claim e9-turing: $1 million)."
+    },
+    {
+      "where": "ch10-s01 L1002 → ch10-s13b L1030 (when the read-in-order candle was lit)",
+      "problem": "L1002 says 'lit long before', and L1030 says 'burned twenty years'. The ear never hears a start date, so the twenty years can't be checked. The bible dates it 1997-2017, the LSTM era. The film has already shown that moment (L0614, the protected pipe), so the callback is free.",
+      "fix": "L1002 → 'Another candle, lit in 1997 with that protected pipe: language must be read in order, one word at a time.' (+4; claims e10-rnn-belief, e6-lstm)."
+    },
+    {
+      "where": "ch05-s07 L0513 (knowledge candle's start)",
+      "problem": "'Meanwhile, our second suspect lit its candle' comes straight after October 1986, so the ear dates the lighting to about 1986. L0522 then says it 'burned about seven years', ending in 1987. A teenager does the arithmetic and gets lost. The bible dates the belief to about 1980-1987.",
+      "fix": "L0513 → 'Meanwhile, since about 1980, our second suspect had its own candle: intelligence is knowledge, typed in by hand.' (+3; claim e5-knowledge-principle; bible Era 5 'How long it lasted')."
+    },
+    {
+      "where": "ch07-s01 L0701 (why each man lost)",
+      "problem": "'Each man lost one bet.' This is wry, but it teaches nothing unless the ear knows why. A teenager wants the punchline: no theory of big nets arrived by 2000, and nets were still in use in 2005.",
+      "fix": "Optional, if words allow: L0701 → 'Who paid for dinner? Each man lost one bet: no theory by 2000; and in 2005, nets still in use.' (+11; claim e6-bet; bible Debates 'each man lost one dinner'). Otherwise leave it to the OST 'JACKEL, 2000: LOST · VAPNIK, 2005: LOST'."
+    },
+    {
+      "where": "ch15-s04 L1530 + ch15-s05 L1525 ('AI agents' undefined)",
+      "problem": "'Agent' is first heard in L1530 ('the tasks AI agents can finish') and again in L1525 ('OpenAI's agents broke out of their sandbox'), and it is never glossed. A teenager knows the chat box from ch01 but not the idea of a model that takes actions on a computer, step after step, for hours. Without that idea, both METR's measure and the sandbox escape are abstract.",
+      "fix": "L1530 → '...By one measure, the tasks AI agents, models that work on a computer on their own, can finish double in length about every seven months.' (+9; claim e14-metr-horizon). Alternatively, gloss it on screen only: 'agent: a model that takes actions, step after step'."
+    },
+    {
+      "where": "ch07-s02 L0703 ('Nearly right.')",
+      "problem": "'Nearly right' is wry, but it lands only if the ear connects it to L0707 ('no warm-up') and L0710. A teenager won't know which of the three conditions was wrong.",
+      "fix": "L0703 end → '...Nearly right: the warm-up would turn out to be optional.' (+6; claim e7-pretraining-belief, 'was only needed for small data sets'). Or leave it and let L0707/L0710 resolve it, if words are tight."
+    }
+  ],
+  "strengths": [
+    "The AlexNet deep dive is now genuinely complete and correct, and pitched at both audiences. It covers pixels as numbers; a worked 3×3 stencil (the OST arithmetic checks: 3.88); the ReLU spoken as 'below zero counts as zero' and paid off as a weir that keeps the messenger's tug strong (with the 6× CIFAR test); overlapping pooling ('keeps only its brightest spot'); the 96-kernel, five-conv, three-FC shape; the 60M-weights-versus-12M-bits argument for augmentation; dropout with its reason ('no lantern could count on another'); the unprompted two-GPU split; the learning-rate schedule tied back to L0510; top-5 explained before 15.3 vs 26.2; and fair credit (seven-net ensemble, IDSIA's earlier wins).",
+    "The transformer deep dive is the best piece of teaching in the film. Attention's motive comes first (the 2014 bottleneck). Q/K/V are speakable cards. The dot product is a callback to the stencil ('multiply, and add'). The worked 'river bank' example has correct softmax arithmetic ([1,0,2,1] gives ≈ 0.53 to river, so 'about half' is right). The √dₖ answer is exact (64 → 8; the toy's 4 → 2), with the paper's reason ('learning freezes'). Multi-head, sinusoidal position as clock faces, 'talk, then think alone' × 6, parallelism, the n² catch, and the causal 'curtain' for decoder-only next-word prediction are all correct against e10-architecture, e10-sqrt, e10-results (the base model's 12-hour record is right).",
+    "Round 5's critical gaps are fixed. Classical machine learning now has statistics over rules, forests, boosting and the SVM's 'widest street'. 'Machine learning', 'deep learning' and 'language model' are each spoken at the right moment. GPT-3's few-shot surprise explains why scale became a belief. AlphaGo introduces learning from reward, which ch12 and ch15 rely on. METR's trial gives the present era a spoken, experimental dissent. The reasoning model is glossed where it first appears (L1408).",
+    "The candle-clock device answers the brief's 'what people believed, who dissented, how long' in a way a 15-year-old can follow. Durations are spoken and check out against the bible's eras: 16, about 7, 17, about 7, 10-15, 13, 20 and 2 years, plus 'merely trimmed' and 'still burning'. Each candle except Era 5 has a named figure at its rim.",
+    "Terms mostly arrive before use, through physical metaphors that are reused rather than replaced: knob = weight, messenger = back-propagation, fog against a clean bowl = non-convex against convex, jug of light = softmax, judge = reward model, curtain = causal mask. The callbacks (the Helsinki student, Rosenblatt's 1961 note, Cyc's 'practically nothing', the talk nobody remembered) reward an attentive viewer.",
+    "Contested matters are handled with two voices and no adjudication: backprop credit, Gebru's departure, the Nobel-as-physics question, the three 2023 camps, DeepSeek's cost caveat, the size of the US-China gap, and Anthropic's Pentagon dispute alongside its $1.5B settlement."
+  ]
+}

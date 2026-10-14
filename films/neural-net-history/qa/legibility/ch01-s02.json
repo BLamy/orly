@@ -1,0 +1,64 @@
+{
+ "shot": "ch01-s02",
+ "at": "2026-10-13T04:12:51.678Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 10,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "illustration",
+   "capWhileSubject": 28.3,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Why",
+   "maxCap": 52.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "is",
+   "maxCap": 52.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sky",
+   "maxCap": 52.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "blue?",
+   "maxCap": 52.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Sunlight",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "scatters",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "air.",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "in",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 9
+}

@@ -1,0 +1,94 @@
+{
+ "shot": "ch02-s05",
+ "at": "2026-10-13T04:12:59.844Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 16,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“…A’s efficiency, as one of the cells firing B, is increased.”",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "donald hebb",
+   "capWhileSubject": 27.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "— Hebb, 1949",
+   "capWhileSubject": 22.9,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "psychologist, McGill",
+   "capWhileSubject": 29.7,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 33.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "B",
+   "maxCap": 33.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "M",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "N",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "R",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "E",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "L",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 12
+}

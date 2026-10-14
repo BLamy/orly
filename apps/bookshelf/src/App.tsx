@@ -10,6 +10,14 @@ const BookPlayer = lazy(() =>
 const BlogOnly = lazy(() =>
   import('./player/BlogOnly').then((m) => ({ default: m.BlogOnly }))
 );
+// films: frame-exact render harness (?film-render=<slug>) and review studio (?film-studio=<slug>)
+const FilmHarness = lazy(() => import('./viz/film/core/harness'));
+const FilmStudio = lazy(() => import('./viz/film/core/studio'));
+// films on the shelf are VHS tapes; ?film=<slug> is the tape playing in the VCR
+const FilmPlayer = lazy(() => import('./player/FilmPlayer'));
+// the film editor (?film-edit=<slug>, docs/film/EDITOR.md) and its frame-exact export harness (?film-edit-render=<slug>)
+const FilmEditor = lazy(() => import('./editor/ui/Editor'));
+const EditRenderHarness = lazy(() => import('./editor/render/EditRenderHarness'));
 
 function param(name: string): string | null {
   if (typeof window === 'undefined') return null;
@@ -35,6 +43,33 @@ export function App() {
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
   }, []);
+
+  const filmRender = param('film-render');
+  const filmStudio = param('film-studio');
+  const filmPlay = param('film');
+  const filmEdit = param('film-edit');
+  const filmEditRender = param('film-edit-render');
+  if (filmEdit || filmEditRender) {
+    return (
+      <Suspense fallback={null}>
+        {filmEditRender ? <EditRenderHarness slug={filmEditRender} /> : <FilmEditor key={filmEdit} slug={filmEdit!} />}
+      </Suspense>
+    );
+  }
+  if (filmPlay) {
+    return (
+      <Suspense fallback={null}>
+        <FilmPlayer key={filmPlay} slug={filmPlay} />
+      </Suspense>
+    );
+  }
+  if (filmRender || filmStudio) {
+    return (
+      <Suspense fallback={null}>
+        {filmRender ? <FilmHarness slug={filmRender} /> : <FilmStudio slug={filmStudio!} />}
+      </Suspense>
+    );
+  }
 
   // A blog link is intentionally a reader-only surface: no chapter video,
   // chapter sidebar, mobile shelf, or autoplaying normal player is mounted.

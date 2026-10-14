@@ -1,0 +1,88 @@
+{
+  "reviewer": "art-director",
+  "round": 9,
+  "lens": "visual direction",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug neural-net-history --check: 0 errors, 1 warning, est. 34.7 min (2081.8 s at the locked 143.5 wpm) against a 32.0 min target (ceiling 35.2). Inside the brief's 30-35 min range, so runtime is not critical, but only about 18 s of headroom remains under 35.0. The fixes on this card add about +5.0 s net (about 34.78 min). Most are time-neutral re-anchors. If the editor wants zero growth, take it from the round-8 cut list (L1529 first).",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 8.5,
+    "voice": 8
+  },
+  "critical": [
+    "THE TRANSFORMER DEEP DIVE'S 'BEFORE' IMAGE IS CRUSHED (ch10-s01). The scribe passing one fading lamp down the hall is what all of ch10 argues against: ch10-s04 opens with him setting the lamp down. Yet scribeWalks fires on 'read' (6.0 s) and pullBack on 'order' (6.9 s). The fade to a glow-worm comes at 8.4 s in an 8.69 s shot that hard-cuts to ch10-s02, so the walk, the slow track, the pull-back and the vanishing light all fit in about 2.7 s, and the glow-worm is on screen for 0.3 s. The opening is worse: fadeBlack is 1.6 s and straddles the cut, so the picture is not up until about 0.8 s. stencilGhost at 0.3 s and indexTab at 0.1 s therefore land in black, and the ghost stencil (meant to teach 'convolution does not carry on, its lesson does') is invisible. FIX: leadIn 0.6 -> 2.0, holdAfter 1.4 -> 2.4. Cut beat stencilGhost and its sentence from the visual; a wordless ghost cannot carry that idea in under a second. indexTab -> shotTime 0.9. scribeWalks -> shotTime 1.0 (wordless: the scribe sets off and hands the flame across the first slips while the hall establishes, so the procession is already under way when the line starts). candleLit stays on 'candle' (now about 2.4 s). pullBack -> {line L1002, word 'read'} (about 7.4 s). fade -> {line L1002, edge end, offset 1.2} (about 9.9 s), so the glow-worm holds about 1.2 s before the cut. +2.4 s.",
+    "TWO PAYOFF IMAGES END INSIDE THE CUT, AND BOTH FIXES ARE TIME-NEUTRAL (ch03-s01, ch08-s14). (a) ch03-s01 is the film's first machine that learns. Beat 'learned' (tally reaches 50; the correct lamp lights on every card; the reporter starts writing) sits at L0302's end, 11.4 s, in an 11.87 s shot that hard-cuts to the newsboy, so the payoff is on screen for 0.5 s. FIX: learned -> {line L0302, word 'sort'} (about 8.9 s). The hopper still has about 5 s to flick its 50 cards. The left and right lamps then light correctly under the spoken 'cards marked left or right', and the payoff holds about 3 s. 0 s. (b) ch08-s14's 'handoff' (the LED inset pushed to full frame, crossfadeMood candleAmber -> serverCyan over 0.8 s, last frame a single green LED) resolves at 14.94 s in a 15.04 s shot. ch09-s01 enters on a plain cut, so the chapter's bridge image never renders. FIX: clue -> {line L0828, edge end, offset 0.5}; handoff -> {line L0828, edge end, offset 1.2} (about 13.9 s), leaving about 1.1 s for the push and the tint. 0 s."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s13b (beats chm, push, desk; holdAfter)",
+      "problem": "The Computer History Museum card is 116 characters and needs about 11.2 s to read. It rises on 'data' (26.5 s), the same instant the new candle LEARNED FEATURES, GIVEN DATA AND ARITHMETIC is lit with its 42 characters of wax lettering. The narration over both is 'given data and fire, the net cut its own, many layers deep: deep learning', so the viewer has two texts to read while hearing a third. The chapter's coining of 'deep learning' and the candle-lighting lose the eye to the card.",
+      "fix": "chm -> {line L0832, word 'learning', edge end, offset 0.2} (about 32.1 s, in the 2.2 s pause); push -> {line L0832, edge end, offset 1.0}; desk -> {line L0832, edge end, offset 1.8}; holdAfter 1.0 -> 2.5, so the card holds its full 11.2 s and the lit desk holds about 4 s after 'Now' (+1.5 s). The candle and its lettering then get about 5.6 s on their own. PRODUCTION NOTE (non-blocking): at 41.8 s, with four camera destinations (shelf, board, shelf, stage), this is the film's heaviest single shot. Consider splitting it at the 'push' beat into ch08-s13b (study) and ch08-s13c (the candle stage and desk, L0832b), with the flame push as s13b's last move and s13c entering on a crossfade, so each location is authored and contact-sheeted on its own."
+    },
+    {
+      "where": "ch04-s06 (beats explosion, gloss; L0410)",
+      "problem": "On 'explosion' (5.2 s), two beats ask for incompatible framings at the same instant. One is a wide of 'the debate below' with Michie's name card and the place stamp ROYAL INSTITUTION · LONDON · 1973 (two text items). The other is the wordless ink-tree gloss on the sheaf in Lighthill's hand, which needs a close-up. The gloss is the only picture of what 'combinatorial explosion' means, and it gets 1.3 s before 'rules' pulls the camera to the A/B/C page.",
+      "fix": "Move the debate wide, the place stamp and Michie's card to the head of the shot: explosion -> shotTime 0.3 (wide of the theatre and the pit, place stamp). Michie's name card stays with the pit and is gone before 'James'. lectern stays on 'James'. gloss stays on 'explosion' as a close insert on the sheaf. L0410 insertGaps {\"explosion\": 0.7}, so the tree has about 2 s to blacken the page before 'rules'. holdAfter 4.8 -> 4.2 (the Papert card keeps about 11.4 s, the four-card row about 7.1 s) (+0.1 s)."
+    },
+    {
+      "where": "ch10-s10 (beats sixBlocks, lane; onScreenText)",
+      "problem": "Both labels land on the same word ('Six', 4.4 s), even though the 'lane' beat says 'in the hold'. One label is crew jargon: 'untrained toy weights: real bindings' means nothing to a viewer ('bindings' is a production term for data bound to the picture). Two captions arriving together in a 9.1 s shot compete with the truck through six blocks.",
+      "fix": "Use the device already established in ch10-s06 and ch10-s08: a small corner tag at shotTime 0.4 reading 'ILLUSTRATIVE · untrained weights' (cue it on a new beat 'tag' at shotTime 0.4). Move beat lane to {line L1021, edge end, offset 0.4}, wordless: the highway lane is picked out with no caption. sixBlocks keeps 'attention → feed-forward, × 6' (0 s)."
+    },
+    {
+      "where": "ch05-s04 (beats family, features, quote)",
+      "problem": "After the XOR check ends (about 30.6 s), a second, unnarrated experiment is packed into 2.1 s before the 'sterile' pull-back (33.5 s): two family trees drop in (31.4), the hidden lanterns tint them by nationality and then by generation (31.9), and a 72-character quote card rises at the same instant (31.9). No viewer can parse Hinton's family-trees task wordlessly in two seconds, and it pulls the eye off the backprop deep dive's resolution.",
+      "fix": "Cut beats family and features and their sentences in the visual. quote -> {line L0509, edge end, offset 2.4}: the card rises over the trained loom, whose two hidden lanterns now hold opposite patterns, which is exactly what 'come to represent important features of the task domain' describes. It stays through the pull-back (about 9.5 s on screen) (0 s)."
+    },
+    {
+      "where": "ch08-s11 (beats aisles, lecun; onScreenText label)",
+      "problem": "The order is inverted. 'aisles' (slow pan along the packed, standing aisles) resolves at 7.6 s, 0.1 s after 'lecun' (7.5 s), where the pan has already arrived at LeCun on the rear wall. The full room, which is the evidence for 'a packed room', is never panned. Two text items (the name card and 'the full room, by Fei-Fei Li's account') also land together on 'Yann'.",
+      "fix": "aisles -> {line L0821, word 'Hinton', edge end} (about 6.6 s), so the pan runs about 0.9 s along the aisles before LeCun. Cue the 'the full room, by Fei-Fei Li's account' label on beat aisles rather than lecun, so the name card arrives alone (0 s)."
+    },
+    {
+      "where": "ch01-s05 (beats burning, wall, wide; holdAfter)",
+      "problem": "Beat 'wide' says 'hold to the shot end (about 1.5 s)', but it resolves at 8.63 s in a 9.18 s shot, which gives 0.55 s. That is not enough for the film's first true full wide of the study apparatus before the hard cut into the Rewind.",
+      "fix": "burning -> end+1.7, wall -> end+2.7, wide -> end+3.4; holdAfter 4.5 -> 4.9. The wide then holds about 1.5 s (+0.4 s)."
+    },
+    {
+      "where": "ch15-s08 (beats ff1-ff5; leadIn)",
+      "problem": "lampChange is 3 s and straddles the cut, so the study relights with its stutter over shot-time 0-1.5 s. ff1 (1.0 s) and part of ff2 (1.75 s) flash while the lamp is still stuttering up. The Fast-Forward's first image, which should mirror the Rewind exactly, is half-lit.",
+      "fix": "Shift ff1..ff5 to 1.6 · 2.35 · 3.1 · 3.85 · 4.6 (the same 0.75 s pitch), leadIn 4.8 -> 5.4, so 'Who' still comes 0.8 s after the last flash (+0.6 s)."
+    },
+    {
+      "where": "ch02-s05 (beats quoteUp, hebbStamp; onScreenText)",
+      "problem": "Three text items arrive in the first second of a paper-wiped plate, while the wipe is still clearing: the Hebb quote card at 0.9 s (73 characters), the place stamp MONTREAL · 1949 at 1.0 s, and Hebb's name card at 1.0 s. They compete with the two lanterns that are the plate's lesson.",
+      "fix": "Merge the stamp into the name card ('Donald Hebb · McGill, Montreal · 1949') and delete the separate place item. quoteUp -> {line L0211, word 'when'} (about 1.9 s), so the name card lands alone and the quote follows after a breath (about 6.6 s on screen; a reading warning at most) (0 s)."
+    },
+    {
+      "where": "ch15-s01 (visual: match cut on 'Hopfield' vs beats b4b, b4c)",
+      "problem": "The staging contradicts itself. On 'Hopfield' the medallion's rim 'becomes the arch of a mirror' (a match cut into the Hall), but b4b ('on the medallion's blank face a faint engraved hollow') and b4c (the haze around the medallion cools) then act on a medallion the cut has just turned into architecture. The 139-character physics citation (about 13 s to read) has to survive that cut. A shot author will either drop the medallion or drop the Hall.",
+      "fix": "Add to the visual: 'After the match cut the medallion hangs centred in the mirror arch that its rim became, and its citation ribbon hangs beneath it, so the citation reads across the cut; the hollow, the rolling ball and the cooling all play on it there while the mirrored figures turn below; on chemistry's the second medallion hangs in the next arch.' (0 s)"
+    },
+    {
+      "where": "ch05-s06 (beats rumelhart, others, falseClue, falseClueTurn)",
+      "problem": "falseClueTurn (the hands turn the 1961 card to show its pencilled back: the plant) resolves 0.4 s before the cut, so the turn is still in motion when the shot ends.",
+      "fix": "rumelhart end+0.2, others end+0.6, falseClue end+1.0, falseClueTurn end+1.7, so the pencilled back holds about 1.1 s (0 s)."
+    },
+    {
+      "where": "ch02-s08 (beat xrayFade); ch09-s05 (beat draught)",
+      "problem": "Tail beats are lost to the cut. ch02-s08's xrayFade sits at end+3.3 (20.5 s of 20.6 s), inside ch03-s01's 1.4 s inkBleed, so band 1 never visibly fades. ch09-s05's draught (the slip's corner lifts once) gets 0.4 s.",
+      "fix": "xrayFade -> {line L0220, edge end, offset 2.4} (band 1 still holds about 1.6 s alone); draught -> {line L0910, edge end, offset 3.0} (0 s)."
+    },
+    {
+      "where": "ch10-s08 (visual prose vs beats)",
+      "problem": "Since the round-8 retime, the visual still says 'on 'real' the slip 'bank' lifts its lantern' and 'on 'Eight', the camera pulls back and the single colour of light splits'. The beats now put bankQuery at shotTime 0.6 (wordless, before the line) and heads on 'heads'. The shot author will be given two clocks.",
+      "fix": "Edit the prose: 'In the lead-in, wordless, the slip bank lifts its lantern…' and 'on heads the camera pulls back and the single colour splits'. Beats unchanged (0 s)."
+    }
+  ],
+  "strengths": [
+    "Every round-8 critical is fixed and verified on the clock. ch08-s06's learned mosaic now holds about 2 s and ch08-s05's rose-window vignettes have breathing room. ch12-s06's lit city lands at 20.7 s of 22.5 s. ch13-s06's reflected shelf over the water holds about 1.9 s. ch03-s01 and ch05-s04 meet the inkBleed and iris lead-in rule. The validator's edge:'end' bug is fixed and it now errors on any beat past its shot, so no beat in the film resolves after its cut.",
+    "The deep dives teach with real, bound mechanisms drawn from the actual kit (stencilLantern, alexnetCathedral, mistyHills, attentionMath, threadsOfLight, transformerLoom, typeSlugs). Examples: a 3 × 3 tin stencil sums light to a real number. A cathedral has true layer widths. A jug of light pours into cups at the real softmax shares (0.20 · 0.07 · 0.53 · 0.20). The unscaled jug freezes the gradient arrows. Position is clock faces with their sine strips behind. The causal curtain snaps forward threads to zero. None of it is boxes and arrows.",
+    "Every shot now leads with a one-sentence 'THIS SHOT:' idea, and each is specific and drawable in the silhouette language. Across 120 shots there is not one talking head. Even the founding and deaths shots carry a picture (a lamp going dark across the snow, a dedication opened by hands, two hand-lanterns on one nail).",
+    "The study apparatus is a genuine piece of information design. Belief candles whose dark sleeves are bars of years, the case board that is revealed as a lantern network, the X-ray column lighting one band per era and the Wall of Forecasts give a 32-minute history a visible clock and a running ledger of who believed what, and for how long. The finale cashes it in with one continuous pull-back.",
+    "Fairness is composed into the frames rather than only stated. Both shores are mirror-balanced at equal warmth. Founding rows are identical for OpenAI and Anthropic. Lab lamps are the same scale under 'the same light'. Gebru's departure has two equal cards. The study candles appear over the strait only as a reflection."
+  ]
+}

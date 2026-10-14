@@ -1,0 +1,54 @@
+{
+ "shot": "ch14-s03",
+ "at": "2026-10-13T07:23:09.947Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "26 DECEMBER 2024 · DEEPSEEK V3 TECHNICAL REPORT",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "FINAL RUN ONLY",
+   "capWhileSubject": 27.5,
+   "why": "named: \"final run\""
+  },
+  {
+   "text": "EXCLUDES PRIOR RESEARCH",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "THE REPORT’S CAVEAT",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "~50,000 CHIPS",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "(SEMIANALYSIS EST.)",
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "$5.576M",
+   "maxCap": 69.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AT RENTAL PRICES",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
+}

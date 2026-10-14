@@ -1,0 +1,1310 @@
+{
+  "id": "ch15",
+  "number": 15,
+  "title": "Case Status: Open",
+  "blurb": "2024 to 5 October 2026. A phone at two in the morning and a Nobel prize for neural networks; what the machines do now; two labs under the same light, each with its hard facts; the last witnesses at the rim and the oldest ones leaving the room. Then the rewind plays forward, the three suspects get their verdict, the case board turns out to be a lantern network with one lantern dark, the shelf becomes a bar chart in wax, the last slip is read, and a hand from our side of the screen lights a new candle.",
+  "shots": [
+    {
+      "id": "ch15-s01",
+      "kind": "scene",
+      "setting": "A plain hotel room in California, 8 October 2024, about 2 a.m.",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 4.2,
+      "holdAfter": 2.2,
+      "lines": [
+        {
+          "id": "L1501",
+          "text": "Two in the morning, October 2024. Geoffrey Hinton’s phone rings.",
+          "spoken": "Two in the morning, October, twenty twenty-four. Geoffrey Hinton’s phone rings.",
+          "pauseAfter": 0.55,
+          "direction": "quiet, almost amused; let the ring sit",
+          "level": "soft"
+        },
+        {
+          "id": "L1502",
+          "text": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+          "pauseAfter": 0.55,
+          "direction": "warm; three plain sentences, each its own breath. The first plain. The second ('He wrote that nobody he met remembered his Versailles talk.') is the payoff of chapter 5's plant (L0524b): fond, a faint smile, 'He wrote' clearly his own claim (q-hopfield-versailles: he never met anyone who remembered hearing the talk; never widen it to 'nobody remembered'). The third gives the two reasons plainly, one beat each (the rolling ball, the cooling net); 'Boltzmann' unhurried, 'Hinton co-invented' light; 'settles as it cools' plain, a small smile on 'cools'. NARRATION (2026-10-13, review T502: the old one-sentence version parsed 'he wrote' as 'the talk he wrote' or as Hinton): re-narrate SOLO at 140-150 wpm (39 words, about 15.6-16.7 s of speech); keep only a take with STT WER 0; ch15-s01 re-fits by T.word ('Nobel', 'Hopfield', 'downhill', 'cools'; the Hall of Mirrors match cut on 'Hopfield' now runs under 'He wrote ... Versailles talk').",
+          "tts": {
+            "solo": true
+          }
+        },
+        {
+          "id": "L1528",
+          "text": "Not everyone cheered. Was this physics? One critic called it “a bit of a stretch.”",
+          "direction": "dry, even; the question asked straight, the quoted words as hers, no judgement either way",
+          "pauseAfter": 0.9,
+          "spoken": "Not everyone cheered. Was this physics? One critic called it “a bit of a stretch.”"
+        },
+        {
+          "id": "L1529",
+          "text": "The next day, chemistry's prize went in part to DeepMind's Demis Hassabis and John Jumper, for a network that predicts the shapes of proteins.",
+          "pauseAfter": 0.5,
+          "direction": "level and warm, the same weight as the physics prize (not an afterthought); 'the next day' light; the two names unhurried; 'the shapes of proteins' plain, a small wonder on 'shapes'"
+        }
+      ],
+      "visual": "THIS SHOT: a phone lights in an empty hotel room at 2 a.m.; its glow becomes a Nobel medallion, the Hall of Mirrors turns at last toward Hopfield, a critic's card rises, and a second medallion folds a protein. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Case Status: Open', drops down from the frame's top-left edge like a manila file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. The tab rides over the first line (the lead-in is short), and is gone before the date stamp types in on 'phone'. Fade up from black on a dark, plain hotel room in paper cut-out: a narrow bed edge, a bedside table, a sash window with the faint glow of a car park light behind thin net drapes. Nobody is shown; the room is empty of figures (a private moment, kept private). On the bedside table a mobile phone lies face down, then lights and buzzes, throwing a small cold rectangle of light on the ceiling; on its second buzz Geoffrey Hinton's name card fades in beside the phone (the phone is his). Slow push in toward the phone. On 'Nobel' the phone's glow warms and blooms into a gold medallion (props/symbolic medallion, motif blank, tone gold) that rises out of the light and turns once, edge-on to face-on; a paper ribbon unrolls beneath it carrying the physics citation, set in EB Garamond in quotation marks. On 'Hopfield' a match cut: the medallion's rim becomes the arch of a mirror in the Hall of Mirrors from chapter 5, where a single tiny silhouette of the physicist (hopfield) stands at a lectern among the hundreds of mirrored figures that once did not look; now, slowly and one by one, the mirrored figures turn toward him. Name card fades in for him. On 'downhill' a faint engraved hollow appears on the medallion's blank face and a tiny paper ball rolls into it and settles (the memory from chapter 5); on 'cools' the haze around the medallion cools to pale and warms back (the Boltzmann machine of ch05-s03's card, now named aloud: 'a net that settles as it cools'; the cooling is how it settles into a state, not how it learns, as in ch05-s03; it was co-invented, so no single figure is shown for it; the eye and the ear agree and 'Was this physics?' has its handle). Dame Wendy Hall's dissent (L1528, voiced: the question 'Was this physics?' and her own words 'a bit of a stretch', spoken as a quotation; her name and fuller words on the card): on 'cheered' the physics ribbon's lettering fades and her quote card sets in on its own, read under the rest of the line and the pause that follows, and a single mirrored figure at the rim of the hall stays turned away, the only one that does. TEXT DISCIPLINE: besides the chapter tab, the date stamp and the name cards, two text items only, one after the other, never together: the physics citation on its ribbon (from 'Nobel' to 'cheered') and Dame Wendy Hall's quote card (from 'cheered' until 'chemistry'; 'a bit of a stretch' is also spoken); the DeepMind name card counts as a name card. THE CHEMISTRY PRIZE (L1529, restored in round 8 for balance: both 2024 science prizes went to neural-network work, and DeepMind is otherwise unvoiced in the present-day chapters; the first addition to drop if runtime must be held): on 'chemistry' the Hall card fades and, in the next arch along the hall, a second gold medallion of the same size and gold turns face-on, no ribbon text; the name card for Demis Hassabis and John Jumper of DeepMind fades in; on 'proteins' a thin paper ribbon on its blank face curls and folds itself into a small knotted protein shape and settles (a network that predicts the shapes of proteins; no figure is shown for them). The prize's other half, David Baker's, moves to the published sources list. The two medallions hang side by side through the music-only hold while the mirrored figures finish turning.",
+      "beats": [
+        {
+          "id": "indexTab",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "manila index tab typed 'Case Status: Open' drops down from the frame's top-left edge like a file-divider tab, holds 2.5 s, slides back up (rides over the first line; the bottom-left stays free for the date stamp)"
+        },
+        {
+          "id": "b1",
+          "at": {
+            "line": "L1501",
+            "word": "phone"
+          },
+          "what": "the face-down phone lights and buzzes; cold rectangle on the ceiling; date stamp"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1501",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "the phone buzzes a second time; Geoffrey Hinton's name card fades in beside it; the slow push-in continues"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1502",
+            "word": "Nobel"
+          },
+          "what": "phone glow warms into a gold medallion that turns face-on; the physics citation ribbon unrolls beneath it"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1502",
+            "word": "Hopfield"
+          },
+          "what": "match cut: medallion rim becomes a Hall of Mirrors arch; the physicist at a lectern; name card"
+        },
+        {
+          "id": "b4b",
+          "at": {
+            "line": "L1502",
+            "word": "downhill"
+          },
+          "what": "on the medallion's blank face a faint engraved hollow; a tiny paper ball rolls into it and settles (the 1982 memory, from chapter 5)"
+        },
+        {
+          "id": "b4c",
+          "at": {
+            "line": "L1502",
+            "word": "cools"
+          },
+          "what": "the haze around the medallion cools to pale, then warms back to gold (the Boltzmann machine, as on ch05-s03's card: a net that settles as it cools)"
+        },
+        {
+          "id": "b5",
+          "at": {
+            "line": "L1502",
+            "edge": "end"
+          },
+          "what": "the mirrored silhouettes begin to turn toward him, one by one"
+        },
+        {
+          "id": "b6",
+          "at": {
+            "line": "L1528",
+            "word": "cheered"
+          },
+          "what": "the physics ribbon's lettering fades; Dame Wendy Hall's quote card sets in and is read under the rest of the line and the pause; one mirrored figure at the rim stays turned away"
+        },
+        {
+          "id": "chem",
+          "at": {
+            "line": "L1529",
+            "word": "chemistry's"
+          },
+          "what": "the Hall card fades; in the next arch along the hall a second gold medallion, the same size and the same gold, turns edge-on to face-on (no ribbon text); the DeepMind name card"
+        },
+        {
+          "id": "fold",
+          "at": {
+            "line": "L1529",
+            "word": "proteins"
+          },
+          "what": "on the second medallion's blank face a thin paper ribbon curls and folds itself into a small knotted protein shape and settles"
+        },
+        {
+          "id": "turned",
+          "at": {
+            "line": "L1529",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "the two medallions hang side by side in their arches; the mirrored figures finish turning toward them; one at the rim stays turned away"
+        }
+      ],
+      "cast": [
+        "hopfield"
+      ],
+      "props": [
+        "mobile phone (face down, then lit)",
+        "bedside table",
+        "one gold medallion (blank motif) with a paper ribbon (the physics citation lettered until 'cheered', then plain)",
+        "Hall of Mirrors arches and mirrored silhouettes",
+        "a second gold medallion (blank motif) with a paper ribbon that folds into a protein shape"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Case Status: Open",
+          "beat": "indexTab"
+        },
+        {
+          "kind": "date",
+          "text": "CALIFORNIA · 8 OCTOBER 2024",
+          "beat": "b1"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Geoffrey Hinton",
+          "beat": "b2"
+        },
+        {
+          "kind": "quote",
+          "text": "“for foundational discoveries and inventions that enable machine learning with artificial neural networks” — Nobel Prize in Physics, 2024",
+          "beat": "b3"
+        },
+        {
+          "kind": "nameCard",
+          "text": "John Hopfield · physicist · aged 91",
+          "beat": "b4"
+        },
+        {
+          "kind": "quote",
+          "text": "…it does seem a bit of a stretch. — Dame Wendy Hall, 2024",
+          "beat": "b6",
+          "until": "chem"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Demis Hassabis · John Jumper · DeepMind",
+          "beat": "chem"
+        }
+      ],
+      "music": {
+        "cue": "m15a-call",
+        "note": "candleAmber return: solo celesta, very soft, over a low held string note; a single soft phone-buzz rhythm (two short pulses) is absorbed into the texture; on 'Nobel' the candle motif's rising fourth sounds once, gently; the Hall of Mirrors gets a faint shimmer of bowed glass; on 'cools' the same rising fourth sounds once more, at the same level (the second half of the prize is not smaller), and the shimmer carries the music-only hold while the figures turn. Intensity low (2/10), wonder not triumph. On 'chemistry' the rising fourth sounds a third time, at the same level (the chemistry prize is not smaller either); the shimmer carries the hold."
+      },
+      "transitionIn": "fadeBlack",
+      "claims": [
+        "e12-nobel-physics",
+        "e4-nobel",
+        "e4-hopfield-versailles",
+        "e12-nobel-physics-debate",
+        "e4-hopfield",
+        "e4-boltzmann",
+        "e12-nobel-chem",
+        "e11-alphafold"
+      ]
+    },
+    {
+      "id": "ch15-s03",
+      "kind": "scene",
+      "setting": "The detective's study desk under the green-shaded lamp: a brass microscope over a glowing paper forest of features, March 2025",
+      "era": "2025",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1.6,
+      "lines": [
+        {
+          "id": "L1504",
+          "text": "Researchers at Anthropic, in one of many such studies, looked inside a simplified copy of their model. Asked for a rhyme, it chose “rabbit” before writing the line.",
+          "spoken": "Researchers at Anthropic, in one of many such studies, looked inside a simplified copy of their model. Asked for a rhyme, it chose “rabbit” before writing the line.",
+          "pauseAfter": 0.6,
+          "direction": "curious, delighted but careful; 'a simplified copy' said plainly, the hedge heard, not hurried; 'rabbit' said simply; their own finding, reported plainly"
+        },
+        {
+          "id": "L1504b",
+          "text": "Snuff that plan out, and it rhymes with “habit” instead.",
+          "pauseAfter": 0.6,
+          "direction": "plain and curious, one even beat; 'Snuff' plain, 'habit' said simply, no push (the experiment, reported as the paper reports it: suppressing the planned 'rabbit' yields 'habit'). NARRATION (2026-10-13, review T501): new SOLO line, about 2.4 s; pauseAfter 0.6 is the breath before L1505 so 'Nobody told it to plan' keeps its quiet. L1504 and L1505 keep their takes (L1505's gainEnvelope stays); ch15-s03 re-fits on 'Snuff' and 'habit'; m19 re-fits.",
+          "tts": {
+            "solo": true
+          }
+        },
+        {
+          "id": "L1505",
+          "text": "Nobody told it to plan.",
+          "pauseAfter": 0.6,
+          "direction": "slow; the strangest fact in the film, said simply and quietly, a small pause before 'to plan'; no push on 'Nobody', and 'told it... to plan' must stay as present as 'Nobody' (the over-corrected take decays 8-10 dB after 'Nobody': lineLevels -4.66 vs the -2 hint, lineMasking 8.6 dB). MIX (2026-10-13): keep the current solo take (speed 0.84); 2026-10-13: it now follows the new L1504b, so 'plan' moves about 3 s later in ch15-s03 and the shot re-fits; gainEnvelope in film:timeline: -2 dB on 'Nobody', +4 dB from 'told' to the end of 'plan', 30 ms ramps, the ride measured on the enveloped clip; level 'soft', trimDb +0.8, fadeIn 0.04 kept. TARGETS: lineLevels within -2 +/- 1 dB, 'to plan' >= -17 LUFS M in the master, 'Nobody' <= -12.5 LUFS M, lineMasking >= 13 dB (with the m19 re-fit). FALLBACK if the envelope cannot reach them: re-take SOLO at speed 0.84, spoken 'Nobody told it... to plan.', stability +0.15, keeping only a take whose 'to plan' is within 4 dB of 'Nobody'.",
+          "spoken": "Nobody told it... to plan.",
+          "tts": {
+            "solo": true,
+            "speed": 0.84
+          },
+          "level": "soft",
+          "trimDb": 0.8,
+          "fadeIn": 0.04,
+          "gainEnvelope": [
+            {
+              "from": "Nobody",
+              "db": -2,
+              "rampMs": 30
+            },
+            {
+              "from": "told",
+              "to": "plan",
+              "db": 4,
+              "rampMs": 30
+            }
+          ]
+        }
+      ],
+      "visual": "THIS SHOT: under a brass microscope, a lantern-forest of features: RABBIT lights before the line is written, and snuffing it changes the rhyme. CAMERA: a desk insert (the microscope and its specimen under the lamp, from the side). Crossfade from the hotel room's amber straight to the detective's study desk under the green-shaded lamp (STUDY LOCK: this is the detective's own instrument, examining a specimen; the amber is the study's, not the lab's). A brass microscope in silhouette, seen from the side, stands on the desk; the two steady hands turn its focus knob once and withdraw. Its lens hangs over a specimen slide on which a small lanternNetwork lies flat like a paper forest of feature-nodes (lanterns glowing by activation). The same microscope stays on the desk for the rest of the film and is glimpsed again in ch15-s08 under the 'quarter of the prompts' card. Only about a quarter of the frame is in sharp focus; the rest is soft haze, honest about the limits of the tool. Above the network, a two-line couplet is being set in type slugs: the first line is complete; the second line is still empty, a row of blank slots. On 'rabbit' a single lantern deep in the network lights warm gold, and the word RABBIT glows faintly at the far end of the empty line, before a single slug of the line has been set. On 'Snuff' a small paper snuffer drops over that lantern by itself (no hand) and dims it; on 'habit' a neighbouring lantern lights, and the ghost word changes to HABIT; the slugs of the line fill in from left to right toward it. On 'plan' the camera simply holds on the finished line under the microscope (no inset; the echo of chapter 8's 'Nobody told the towers' is in the words). TEXT DISCIPLINE: besides the date stamp, two labels only: whose study this is (from 'looked'), and the rabbit-to-habit swap (from the snuffer); the paper's rhyme sentence moves to the published sources list, since the narration says it.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "line": "L1504",
+            "word": "Researchers"
+          },
+          "what": "crossfade onto the study desk: the brass microscope over the lantern-forest specimen; the hands turn the focus once and withdraw; a quarter of the frame in focus"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1504",
+            "word": "rabbit"
+          },
+          "what": "one lantern lights gold; RABBIT glows at the end of the still-empty second line"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1504b",
+            "word": "Snuff"
+          },
+          "what": "a paper snuffer drops over the rabbit lantern by itself and dims it; RABBIT fades from the end of the empty line"
+        },
+        {
+          "id": "habit",
+          "at": {
+            "line": "L1504b",
+            "word": "habit"
+          },
+          "what": "a neighbouring lantern lights; the ghost word becomes HABIT; the slugs of the line fill in toward it"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1505",
+            "word": "plan"
+          },
+          "what": "hold on the finished line under the microscope; no inset"
+        },
+        {
+          "id": "who",
+          "at": {
+            "line": "L1504",
+            "word": "looked"
+          },
+          "what": "the study's label (whose model, which tool) sets in under the microscope"
+        }
+      ],
+      "props": [
+        "brass microscope (on the study desk; it stays there)",
+        "specimen slide: lanternNetwork laid flat as a paper forest",
+        "type slugs in a composing stick",
+        "small paper snuffer",
+        "green-shaded desk lamp"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "MARCH 2025",
+          "beat": "b1"
+        },
+        {
+          "kind": "label",
+          "text": "Anthropic, on Claude 3.5 Haiku · via a simplified replacement model",
+          "beat": "who"
+        },
+        {
+          "kind": "label",
+          "text": "rabbit → (suppressed) → habit",
+          "beat": "b3"
+        }
+      ],
+      "music": {
+        "cue": "m15b-now",
+        "note": "the cue opens here: a light pulse from the GPU years, thinned to a ticking celesta, that drops away almost at once; a single high celesta note hangs over the microscope; on 'rabbit' a soft two-note chime; on 'Nobody told it to plan' the strings hold one quiet unresolved chord (a cousin of the chapter 8 towers figure)."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e14-biology"
+      ],
+      "cast": [
+        "narrator-hands"
+      ]
+    },
+    {
+      "id": "ch15-s04",
+      "kind": "scene",
+      "setting": "The study wall beside the Wall of Forecasts, 2025 to 2026: a carpenter's folding ruler",
+      "era": "2025–2026",
+      "mood": "candleAmber",
+      "leadIn": 0.8,
+      "holdAfter": 0.5,
+      "lines": [
+        {
+          "id": "L1530",
+          "text": "The candle of now: abilities will keep climbing, fast. By one 2025 measure, every seven months or so, the tasks an AI agent can finish on its own grow twice as long.",
+          "spoken": "The candle of now: abilities will keep climbing, fast. By one measure from twenty twenty-five, every seven months or so, the tasks an A.I. agent can finish on its own grow twice as long.",
+          "pauseAfter": 0.6,
+          "direction": "the era's belief, stated as a belief, not as the narrator's forecast; three plain sentences, a small breath between each; level, a little wonder; 'by one measure' clearly heard as the hedge"
+        },
+        {
+          "id": "L1531",
+          "text": "Yet in one trial, seasoned programmers using AI felt faster, and were slower. Its authors now call that result out of date.",
+          "spoken": "Yet in one trial, seasoned programmers using A.I. felt faster, and were slower. Its authors now call that result out of date.",
+          "pauseAfter": 0.6,
+          "direction": "level, a little dry on 'and were slower'; the last sentence fair to both the trial and the trend, never a punchline"
+        }
+      ],
+      "visual": "THIS SHOT: the scale candle's wick is trimmed into the candle of now; a folding ruler unfolds up the wall, doubling, then two stopwatches show the trial that felt faster and ran slower. CAMERA: SHELF (low macro; the wick trimmed), then a tilt up to the folding ruler beside the WALL, then a pan left to the stopwatches on the desk. Plain cut (same study, same amber lamp). Short LEAD-IN, music only: on the shelf below the Wall of Forecasts the SCALE IS THE MAIN LEVER candle (still lit since 2020) has its wick trimmed by the two steady hands with a pair of brass snuffer-scissors, and its flame rises taller (scaling did not end; the belief is tended, not snuffed). This is 'the candle of now'; no new candle and no new shelf slot. On 'candle' a soft pool of light holds on that trimmed flame. On 'measure' the camera tilts up to the wall beside the Wall of Forecasts: a carpenter's folding ruler, cut from black card with paper-tone tick marks, is nailed there and climbs upward. Its sections are marked by task length: MINUTES at the bottom, then 1 HOUR, 4 HOURS, 16 HOURS. A section unfolds upward on each doubling, at an even rhythm (about every seven months on a small date scale running beside it), so the ruler grows on a log scale; the unfolding runs under 'every seven months or so, the tasks an AI agent can finish on its own grow twice as long'. Two small brass pins mark measured points on it, their tick lettering part of the ruler (prop lettering): 1 HOUR · MAR 2025, and 16 HOURS · MAY 2026. At the top section the ruler runs out: its last section reaches past the final tick, and a small hand-lettered sign hangs there: UNRELIABLE ABOVE HERE. The ruler's label sets in on 'measure' and stays until the pan. THE DISSENT, SPOKEN (L1531, then the short hold): on 'Yet' the camera pans left to a second, smaller exhibit: two stopwatches on a desk, one marked WITH TOOLS and one WITHOUT. The WITH TOOLS hand runs visibly further than the WITHOUT hand (19% further around the dial). Then a second, faint ghost hand fades up on the WITH TOOLS dial, translucent paper in the haze: the time they believed, stopping well SHORT of where the WITHOUT hand stopped (20% faster). The gap between the ghost hand and the real hand is the joke; it is fond, never mocking. The trial's label sets in with the pan on 'Yet' and is held to the end of the shot; on 'felt' the ghost hand appears; on 'out of date' the lamp's pool draws back a little from the stopwatches, as from an old exhibit (the narration carries METR's own caveat). TEXT DISCIPLINE: two labels only, each about 75 characters or fewer, never together: the ruler's doubling rate (from 'measure' to the pan) and the trial's numbers (from the pan on 'Yet' to the end; its caveat is spoken). The model names behind the two pins move to the published sources list. 'Agent' is glossed in the line itself (the tasks an AI agent can finish on its own), so no gloss card is needed; the label keeps METR's defining threshold (tasks the agents finish half the time), the hedge that makes the trend honest; the era's belief ('abilities will keep climbing, fast') is spoken over the trimmed flame, so L1531's 'Yet' answers a belief the ear has heard.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "music only: the hands trim the wick of the still-lit SCALE IS THE MAIN LEVER candle on the shelf; its flame rises taller"
+        },
+        {
+          "id": "b1b",
+          "at": {
+            "line": "L1530",
+            "word": "candle"
+          },
+          "what": "a soft pool of light holds on the trimmed flame: the candle of now"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1530",
+            "word": "measure"
+          },
+          "what": "tilt up to the folding ruler beside the Wall; sections unfold upward on an even rhythm: minutes, one hour (first brass pin), four hours; the ruler's label sets in"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1530",
+            "word": "seven"
+          },
+          "what": "the second brass pin at 16 hours; the last section runs off the top; the 'unreliable above here' sign swings"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1531",
+            "word": "Yet"
+          },
+          "what": "pan left to two stopwatches, WITH TOOLS and WITHOUT; the trial's label sets in; the WITH TOOLS hand runs 19% further"
+        },
+        {
+          "id": "b6",
+          "at": {
+            "line": "L1531",
+            "word": "felt"
+          },
+          "what": "a faint ghost hand fades up on the WITH TOOLS dial, stopping 20% short: what they believed"
+        },
+        {
+          "id": "b7",
+          "at": {
+            "line": "L1531",
+            "word": "date"
+          },
+          "what": "the lamp's pool draws back a little from the stopwatches, as from an old exhibit"
+        }
+      ],
+      "props": [
+        "the still-lit SCALE IS THE MAIN LEVER candle and brass snuffer-scissors",
+        "carpenter's folding ruler",
+        "two brass pins",
+        "hand-lettered sign",
+        "two stopwatches (WITH TOOLS with a ghost hand)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "METR, Mar 2025 · task length agents finish half the time: doubles ≈ every 7 months",
+          "beat": "b2",
+          "until": "b4"
+        },
+        {
+          "kind": "label",
+          "text": "METR trial, July 2025 · 19% slower · felt 20% faster",
+          "beat": "b4"
+        }
+      ],
+      "music": {
+        "cue": "m15b-now",
+        "note": "the candle motif's rising fourth once, softly, on the trimmed flame; then a soft clock-like pluck on each unfolding section, the intervals even (the doubling); at the top the pluck stops mid-pattern; in the silent stopwatch exhibit a tiny comic hesitation in the rhythm when the ghost hand appears, then the pulse resumes, gentle."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e14-metr-horizon",
+        "e14-metr-rct",
+        "e14-o1"
+      ],
+      "cast": [
+        "narrator-hands"
+      ]
+    },
+    {
+      "id": "ch15-s05",
+      "kind": "montage",
+      "setting": "A long shelf of small lamps, one for each lab, in the study, October 2026",
+      "era": "2026",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1.5,
+      "lines": [
+        {
+          "id": "L1522",
+          "text": "The labs, under the same light. Anthropic refused to drop two limits: no mass domestic surveillance, no fully autonomous weapons.",
+          "spoken": "The labs, under the same light. Anthropic refused to drop two limits: no mass domestic surveillance, no fully autonomous weapons.",
+          "pauseAfter": 0.6,
+          "direction": "first sentence a quiet frame, a ledger opening; then level, no sympathy and no scolding; the two limits plainly; the same weight as the OpenAI line"
+        },
+        {
+          "id": "L1522b",
+          "text": "The Pentagon named it a supply-chain risk, and signed with OpenAI instead.",
+          "spoken": "The Pentagon named it a supply chain risk, and signed with Open A.I. instead.",
+          "pauseAfter": 0.6,
+          "direction": "level and plain, two facts in one breath: the designation, then the deal; no edge on 'instead'; the government's reasoning is on screen (the paired court quotes), not in the voice",
+          "tts": {
+            "solo": true,
+            "speed": 0.86
+          }
+        },
+        {
+          "id": "L1522c",
+          "text": "Two courts have split. That case, too, is open.",
+          "pauseAfter": 0.7,
+          "direction": "two short sentences, a small pause between them; 'That case, too, is open.' plain, a quiet rhyme with the chapter's title, not a wink",
+          "level": "soft"
+        },
+        {
+          "id": "L1522d",
+          "text": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.",
+          "pauseAfter": 0.8,
+          "direction": "the same even register as L1525: level, no relish, no softening; 'a record one and a half billion dollars' plain, the number not leaned on; 'pirated books' flat. It plays under the settlement card. NARRATION: generate this line on its own (not inside a shot chunk).",
+          "tts": {
+            "solo": true,
+            "speed": 0.85
+          }
+        },
+        {
+          "id": "L1525",
+          "text": "In a test with safeguards deliberately lowered, OpenAI’s agents broke loose into another company’s real systems. OpenAI called it a warning shot.",
+          "spoken": "In a test with safeguards deliberately lowered, Open A.I.’s agents broke loose into another company’s real systems. Open A.I. called it a warning shot.",
+          "pauseAfter": 0.72,
+          "direction": "same weight as the Anthropic lines; level, no relish",
+          "preGap": 1
+        }
+      ],
+      "visual": "THIS SHOT: a long shelf of identical lab lamps under the same light: Anthropic's two limits and the Pentagon's tug, the books settlement, and OpenAI's agents breaking out of a glass case. CAMERA: a slow lateral truck along the study's shelf of identical oil lamps (not the candle shelf), then, in the last second, a tilt up toward WALL. Plain cut, same study, same candleAmber lamp (STUDY LOCK: the study stays candleAmber; the dusk enters only as a rose-tinted sky in the study window behind the shelf). A long paper-cut shelf of small identical oil lamps, all the same height and the same warmth, each with a luggage tag on a string reading 'as of October 2026'. No logos, no brand colours; every lamp is drawn the same. The camera tracks slowly along the shelf from left to right and STOPS at two lamps in turn, then at the shelf's end; at each stop the lamp's tag flips over to a one-line dated stamp, and a small paper vignette rises in the lamp's light: (1) THE ANTHROPIC LAMP (L1522 to L1522c, then the settlement, now voiced (L1522d)), two vignettes in succession: first, on 'surveillance' and 'weapons', two small paper seals appear on the lamp's base, each with a bar across it: an eye over a crowd, then an unmanned aircraft (the two limits; no text); on 'Pentagon' a plain government building's silhouette rises, no insignia, and a thread from it tugs at the two seals, which hold; on 'risk' the building's thread is cut and drawn back, away from the lamp (the designation); on 'courts' two small courthouses rise on either side with two gavels falling in opposite directions, and the court label sets in beneath (the split is spoken, 'Two courts have split. That case, too, is open.', and the label says which court found what); then, on 'settle' in L1522d, the same lamp's tag flips again: a tall stack of books tied with string, a settlement ledger open on top. (2) THE OPENAI LAMP (L1525): on 'test' the camera stops there and the tag flips: a glass terrarium (the test) with one thin pipe leading out of it into a neighbouring paper building; on 'lowered' a small paper valve on the pipe is turned open (the safeguards deliberately lowered for the test); on 'broke' the valve's handle glints and the neighbouring building's windows light one by one (another company's real systems); inside it a small paper answer sheet is pulled toward the pipe. As OpenAI is named the second time, the 'warning shot' quote card rises. (3) THE HOLD (music only): the camera stays on the OpenAI lamp until the 'warning shot' card has been read; only in the last second does it begin to tilt slowly up to the Wall of Forecasts (the White House accord of 29 September 2026, voluntary and without penalties, moves to the published sources list). FAIRNESS RULE: same lamp, same light, same type size, same vignette scale for each lab (the seals at the Anthropic lamp are drawn at the same scale as the valve at the OpenAI lamp) (the stops are not equal in time: the Anthropic stop carries two of its own hard facts, the OpenAI stop one plus OpenAI's own words); no lamp brighter or darker than another; nothing staged as villain or hero. The opening frame 'The labs, under the same light' is spoken over the track along the identical lamps. TEXT DISCIPLINE: the lamp-tag stamps are place-and-date only (32 characters or fewer: FEB–SEP 2026, APPROVED JULY 2026 (the books settlement's final approval, not the date it was agreed), JULY 2026); besides them, only two text items, one per stop: the short court label at the Anthropic lamp (70 characters or fewer) and the 'warning shot' card at the OpenAI lamp; everything else is spoken. SCRIPT NOTE (review round 1): L1522 is now three lines (the limits; the Pentagon; 'Two courts have split. That case, too, is open.'). SCRIPT NOTE (review round 9): the books settlement is voiced again (L1522d, solo, in L1525's register) and plays under the relabelled settlement card; L1525's pre-gap drops from 5 s to 1 s. L1522b no longer paraphrases the government's rationale: its reasoning goes on screen through the Katsas quote (q14-katsas) paired with Judge Lin's (q14-judge-lin) at the court stop. Keep the through-line: the labs, under the same light.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "track begins along the shelf of identical lamps, each tagged 'as of October 2026', under 'The labs, under the same light'"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1522",
+            "word": "Anthropic"
+          },
+          "what": "stop at the Anthropic lamp: tag flips to its stamp"
+        },
+        {
+          "id": "sealEye",
+          "at": {
+            "line": "L1522",
+            "word": "surveillance"
+          },
+          "what": "on the Anthropic lamp's base, a small paper seal: an eye over a crowd, a bar across it (the first limit; no text)"
+        },
+        {
+          "id": "sealDrone",
+          "at": {
+            "line": "L1522",
+            "word": "weapons"
+          },
+          "what": "beside it a second small paper seal: an unmanned aircraft, a bar across it (the second limit; no text)"
+        },
+        {
+          "id": "b2b",
+          "at": {
+            "line": "L1522b",
+            "word": "Pentagon"
+          },
+          "what": "the plain government building's silhouette rises in the lamp's light; a thread from it tugs at the two barred seals; they hold"
+        },
+        {
+          "id": "risk",
+          "at": {
+            "line": "L1522b",
+            "word": "risk"
+          },
+          "what": "the building's thread is cut and drawn back, away from the lamp (the supply-chain-risk designation); the two seals stay on the lamp's base"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1522c",
+            "word": "courts"
+          },
+          "what": "two courthouses rise, gavels falling opposite ways; the court label sets in (which court found what)"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1522d",
+            "word": "settle"
+          },
+          "what": "same lamp, tag flips again: stack of books and ledger; the settlement card and its date stamp rise under L1522d"
+        },
+        {
+          "id": "b5",
+          "at": {
+            "line": "L1525",
+            "word": "test"
+          },
+          "what": "stop at the OpenAI lamp: tag flips to its stamp; the terrarium (the test) and its pipe into the neighbouring building"
+        },
+        {
+          "id": "b5b",
+          "at": {
+            "line": "L1525",
+            "word": "lowered"
+          },
+          "what": "a small paper valve on the pipe is turned open: the safeguards lowered for the test"
+        },
+        {
+          "id": "b7",
+          "at": {
+            "line": "L1525",
+            "word": "broke"
+          },
+          "what": "the valve's handle glints; the neighbouring building's windows light one by one; no new text"
+        },
+        {
+          "id": "b6",
+          "at": {
+            "line": "L1525",
+            "word": 17
+          },
+          "what": "as OpenAI is named the second time, the 'warning shot' quote card rises beside the terrarium"
+        },
+        {
+          "id": "b8",
+          "at": {
+            "line": "L1525",
+            "edge": "end",
+            "offset": 0
+          },
+          "what": "music only: the hold on the OpenAI lamp and the warning-shot card; in the last second, the tilt up to the Wall begins"
+        }
+      ],
+      "props": [
+        "shelf of identical oil lamps",
+        "luggage tags",
+        "plain government building silhouette",
+        "two courthouses and gavels",
+        "stack of books and a ledger",
+        "glass terrarium with a pipe and a paper valve (turned open on 'lowered')",
+        "neighbouring paper building",
+        "two small paper seals on the Anthropic lamp base (an eye over a crowd; an unmanned aircraft), each barred"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "FEB–SEP 2026",
+          "beat": "b2"
+        },
+        {
+          "kind": "label",
+          "text": "AUG: UNLAWFUL RETALIATION (N.D. CAL.) · SEP: UPHELD 2–1 (D.C. CIR.)",
+          "beat": "b3",
+          "until": "b4"
+        },
+        {
+          "kind": "date",
+          "text": "APPROVED JULY 2026",
+          "beat": "b4"
+        },
+        {
+          "kind": "date",
+          "text": "JULY 2026",
+          "beat": "b5"
+        },
+        {
+          "kind": "quote",
+          "text": "…a 'warning shot' for us and for the world — OpenAI, August 2026",
+          "beat": "b6"
+        },
+        {
+          "kind": "label",
+          "text": "$1.5B SETTLEMENT · PIRATED BOOKS",
+          "beat": "b4",
+          "until": "b5"
+        }
+      ],
+      "music": {
+        "cue": "m15c-witnesses",
+        "note": "candleAmber study (the dusk only in the window): a neutral plucked string, the same phrase repeated once per lamp, re-harmonised slightly (never louder, never darker for either lab); no stingers; the warning-shot card gets the phrase alone in the music-only hold. Intensity 3/10, level and fair."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e14-dow",
+        "e14-dow-courts",
+        "e14-copyright",
+        "e14-hf-incident"
+      ],
+      "minDuration": 30,
+      "$holdNote": "review round 4 (global CLOCK BUDGET): the shot ends 1.5 s after L1525 (was 2.9); the 1.4 s banked pays for the L0114/L0220/L1410b/L1502 retakes"
+    },
+    {
+      "id": "ch15-s06",
+      "kind": "scene",
+      "setting": "The Edge of the Light: the stage around the still-burning candles, October 2026",
+      "era": "2026",
+      "mood": "candleAmber",
+      "leadIn": 3,
+      "holdAfter": 5.1,
+      "lines": [
+        {
+          "id": "L1509",
+          "text": "The three holdouts, now: two warn the road is dangerous; the third, that it doesn’t go far enough.",
+          "pauseAfter": 0.55,
+          "direction": "slow and warm; a teacher remembering three stubborn students, and not the only ones ('of those' clear, never rushed); a small turn before 'the third'"
+        }
+      ],
+      "visual": "THIS SHOT: the three holdouts stand together on the stage, two warning, the third holding up his off-ramp card. CAMERA: WALL (a slow drift along the Wall at rest), then the flame crossfade onto the stage. Opens in the study where ch15-s05's tilt ended, on the Wall of Forecasts under the green-shaded desk lamp (STUDY LOCK, candleAmber). LEAD-IN, music only: a slow lateral drift along the Wall at rest. The W8 slip hangs on the Wall at its rest alpha (about a third) from frame 0 and is never pinned, captioned, pushed or lit; no hands act and no caption is drawn (review rounds 3 and 4 removed the hand-pin and its caption). On the b1b beat, a flame rises out of the dim Wall at the screen position of the stage candle between Hinton/Bengio and LeCun and the study hands over to the paper stage of the candle-clock through the type kit's textSwapOut/textSwapIn, finished before the first word so that 'The three holdouts, now' is heard on the stage (the Wall hangs at the back of the stage as a backdrop, as in ch13-s01): the candles still burning as of October 2026 (exactly as ch15-s08 lists them) stand huge, their pools of light overlapping into one. On 'three' (the three holdouts named aloud in ch06-s04 and ch13-s04) L1509 opens on them alone: three figures from the winters, all standing, in their 2020s silhouettes: the tall man (hinton) and Bengio (bengio-2020s) inside the light of the candle SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS; LeCun (lecun-2020s) at the rim of the same pool, half in shadow, facing out, his long shadow across the floor; one shared name card for the three. On 'now' the old candle behind them, LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, flares once and steadies. TEXT DISCIPLINE: besides the shared name card, two text items only: LeCun's one-line card, which rises beside him on 'third' and holds through the end of the line and the music-only hold, and under it the 22 px label 'left Meta, Nov 2025, to build world models · AMI Labs' (e14-lecun). Hinton's and Bengio's positions are spoken (L1509); their quotes, Sutskever's and Hassabis's forecast are in the published sources list. Nobody moves; this is a held tableau, the dissenter's walk paused at its newest position. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "in the study: a slow drift along the Wall at rest; the W8 slip at its rest alpha, never handled or captioned (music only)"
+        },
+        {
+          "id": "b1b",
+          "at": {
+            "shotTime": 1.8
+          },
+          "what": "the flame crossfade to the stage (textSwap hand-over, finished before the line begins), the Wall as backdrop (music only)"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1509",
+            "word": "Three"
+          },
+          "what": "wide on the stage: three figures from the winters, all standing; their shared name card"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1509",
+            "word": "now"
+          },
+          "what": "the LEARNED FEATURES candle flares once and steadies"
+        },
+        {
+          "id": "b5",
+          "at": {
+            "line": "L1509",
+            "word": "third"
+          },
+          "what": "LeCun's off-ramp card rises at the rim"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "hinton",
+        "bengio-2020s",
+        "lecun-2020s"
+      ],
+      "props": [
+        "Wall of Forecasts (W6, W7, new slot W8), in the study and then as the stage backdrop",
+        "new forecast slip",
+        "the still-burning candles on the stage",
+        "quote cards"
+      ],
+      "onScreenText": [
+        {
+          "kind": "nameCard",
+          "text": "Geoffrey Hinton · Yoshua Bengio · Yann LeCun · 2018 Turing Award",
+          "beat": "b2"
+        },
+        {
+          "kind": "quote",
+          "text": "an LLM is basically an off-ramp, a distraction, a dead end. — Yann LeCun, 2024",
+          "beat": "b5"
+        },
+        {
+          "kind": "label",
+          "text": "left Meta, Nov 2025, to build world models · AMI Labs",
+          "beat": "b5"
+        }
+      ],
+      "music": {
+        "cue": "m15c-witnesses",
+        "note": "the candle motif in solo cello: rising fourth on 'win' (lit and held), then the held suspension under 'dangerous' and 'far enough', which does not resolve and carries the long hold while the cards are read. Intensity 4/10, the emotional crest of the forecasts; the irony is in the harmony, not the volume."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e14-hassabis",
+        "e9-turing",
+        "e14-hinton-odds",
+        "e14-bengio",
+        "e14-lecun"
+      ]
+    },
+    {
+      "id": "ch15-s07",
+      "kind": "scene",
+      "setting": "A window sill at night, 30 September 2025; then a globe of small lit windows, 30 September 2026",
+      "era": "2025–2026",
+      "mood": "winterBlue",
+      "leadIn": 0.6,
+      "holdAfter": 4.2,
+      "lines": [
+        {
+          "id": "L1511",
+          "text": "In 2025, Bernard Widrow, who fell for the dream in 1956, died at ninety-five. He wrote that he “never got over it.”",
+          "pauseAfter": 0.84,
+          "direction": "tender, slower; a teacher remembering a colleague; the reminder of who he was (the dream, 1956) said warmly, not as a caption; 'never got over it' as his own words, quietly",
+          "spoken": "In twenty twenty-five, Bernard Widrow, who fell for the dream in nineteen fifty-six, died at ninety-five. He wrote that he “never got over it.”"
+        }
+      ],
+      "visual": "THIS SHOT: the Dartmouth paper lantern on a snowy sill for Widrow, his 1956 words settling beside it. Fade through black to winterBlue. A window sill at night in paper cut-out; light snow drifting past the glass. On the sill hangs the small paper lantern he watched swing at Dartmouth (ch02-s07), still lit and steady, alone on the sill. A typewriter date stamp: 30 SEPTEMBER 2025. Slow push in on the lantern; its flame does not drop. On 'He wrote' the 1956 quote card (his own words from chapter 2) drifts once past the window and settles on the sill. Hold on the steady lantern on the sill in the music. TEXT DISCIPLINE: besides the date stamp (date only) and Widrow's name card, one text item: his quote (spoken in part, so the ear and the eye agree). (The labellers' marketplace closing on 30 September 2026 moves to the published sources list.)",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "line": "L1511",
+            "word": "Widrow"
+          },
+          "what": "push in on the lit Dartmouth paper lantern on the snowy sill; date stamp; name card"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1511",
+            "word": "He"
+          },
+          "what": "his 1956 quote card drifts past the glass and settles on the sill"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "window sill with snow",
+        "the small Dartmouth paper lantern (lit)",
+        "globe of small lit windows"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "30 SEPTEMBER 2025",
+          "beat": "b1"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Bernard Widrow · died 30 September 2025, aged 95",
+          "beat": "b1"
+        },
+        {
+          "kind": "quote",
+          "text": "…I never got over it. — Bernard Widrow, 2005, recalling Dartmouth, 1956",
+          "beat": "b2"
+        }
+      ],
+      "music": {
+        "cue": "m15d-leaving",
+        "note": "winterBlue: a solo cello plays the candle motif once, fully, including its falling resolution (gone) under the lantern; then a sparse high celesta note for each window going dark, thinning to silence. Intensity 2/10. Leave a full beat of silence before the next shot."
+      },
+      "transitionIn": "fadeBlack",
+      "claims": [
+        "e2-widrow-death",
+        "e2-widrow-dartmouth"
+      ]
+    },
+    {
+      "id": "ch15-s08",
+      "kind": "montage",
+      "setting": "The detective's study, October 2026: the Fast-Forward, then the pull-back from case board to candle shelf",
+      "era": "1943–2026",
+      "mood": "candleAmber",
+      "leadIn": 4.8,
+      "holdAfter": 5,
+      "minDuration": 30,
+      "lines": [
+        {
+          "id": "L1527",
+          "text": "Who taught it? Not rules alone. Not knowledge, typed in by hand. Learning, with its accomplices: data, fire, a messenger, and people choosing.",
+          "pauseAfter": 0.7,
+          "direction": "the verdict; unhurried, one beat per suspect, a little warmth on 'Learning'",
+          "trimDb": -0.3,
+          "$trimNote": "review round 4: -0.3 dB keeps its momentary peak under median + 2 dB after the compressor eased to <= 2 dB GR"
+        },
+        {
+          "id": "L1514",
+          "text": "Never one person. The board was a network all along.",
+          "pauseAfter": 2.24,
+          "direction": "a slow reveal; let the wave of light travel before the next line"
+        },
+        {
+          "id": "L1515",
+          "text": "Some candles burned nearly forty years; some, two; one match, a day. The newest still burn.",
+          "pauseAfter": 0.8,
+          "direction": "measured, one beat per candle; honest, not clever"
+        },
+        {
+          "id": "L1516",
+          "text": "One lantern is still dark: how, exactly, it reaches its answers.",
+          "pauseAfter": 0.7,
+          "direction": "very quiet"
+        },
+        {
+          "id": "L1516b",
+          "text": "And how far, how fast? That file stays open.",
+          "pauseAfter": 0.8,
+          "direction": "very quiet, the second question answered honestly; 'how far, how fast?' unhurried; 'That file stays open' plain and level, no ominous weight"
+        }
+      ],
+      "visual": "THIS SHOT: the verdict: a Fast-Forward of five wordless flashes, then one long pull-back in which the light passes RULES and KNOWLEDGE and lights LEARNING, the board shows itself as a network, and the shelf becomes a wax bar chart with one dark lantern. CAMERA: THE FULL WIDE (the third reserved wide): BOARD, then one continuous pull-back and tilt down to the whole SHELF, then back up to BOARD. Lamp change back to the study (a real mood change, winterBlue to candleAmber): the green-shaded desk lamp, the two steady hands. THE FAST-FORWARD (the lead-in, music only and wordless: the lamp change, then five quick flashes of equal length, 0.75 s apart at exactly the pitch of the prologue's rewind in ch01-s06, ff1 at 1.0 s to ff5 at 4.0 s, then the hands sit back on 'Who'): the prologue's rewind replays forwards, each image one quick flash with NO caption or stamp, wordless like its partner (the images are their own callbacks): a motorised knob turns; snow falls; two fans spin up in a desktop tower; a Go stone is placed; a lantern wick catches, and the flame is inside the glowing chat box. Then the hands sit back. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). FULL BOARD (as the staging appendix fixes it): suspect cards S1 RULES, S2 KNOWLEDGE, S3 LEARNING in the left margin; case card WHO TAUGHT IT? in slot K at the centre; clue columns by era, left to right: C1 the 1943 wick and the 1958 knob; C2 the scissors, the backward-running bead (the messenger) and the pierced stencil; C3 the ImageNet grid of a thousand small tiles (data), the two furnaces (fire), the filter tile and the thread between two word slips; C4 the type sort and the garden shears; the output, at the far right, is the glowing chat box. Every clue card pinned over the film sits in its own slot in the clue columns C1–C4. On 'Who' the camera begins one continuous pull-back from the case board. THE VERDICT (L1527), in the left margin, in the wide: on 'rules' the lamp's light passes over the RULES card (the key over a branching tree) and moves on; it stays grey. On 'knowledge' the same for the KNOWLEDGE card (the drawer of index cards). On 'Learning' the LEARNING card's unlit paper lantern (dark since chapter 1) catches and glows for the first time. On 'accomplices' four threads of light run from it into the board, one per word: to the ImageNet tile grid in C3 (data), to the two furnaces in C3 (fire), to the backward-running bead in C2 (the messenger), and on 'choosing' to the pins themselves, every pin in the clue columns glinting at once (people choosing). On 'board' (L1514) the oxblood and gold threads tighten into straight strings and each clue card in the columns C1–C4 swells into a paper lantern; it is a lanternNetwork. WHAT DOES NOT SWELL (explicit): the founding row F1–F2 (both founding cards treated identically) and the question-card thread Q1–Q4 do NOT become lanterns; as the clue columns light they dim to the board's cork tone and stay paper, and the Wall of Forecasts' slips stay paper too. No lab's announcement becomes part of 'who taught it'. The network (layers left to right, C1 at the input, the chat box at the output). On 'network' a forward wave of light runs through it, lantern by lantern, from the 1943 wick to the chat box, which glows; the WHO TAUGHT IT? card at slot K drops from its pin into the lamp's pool: the answer is the shape of the board. The pull-back continues in the same move, tilting down: board above, shelf below. For the first time the candle shelf is seen whole, one continuous line of wax from the 1943 candle at its left end to the study window at its right; toward that right end, by the glass, stand the China-race candles that chapter 14 showed only as a reflection in the study window over the strait (staging: CANDLE PLACEMENT, ch14), now seen directly on the shelf itself. The first stop of the pull-back is wordless (in the pause after 'network all along'): Cyc's thin taper, put out in 2023 (ch13-s06) and dark ever since, no smoke now; its tag reads '1984–2023 · 39' and its 39-ring sleeve stands dark, the tallest bar on the shelf. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. So the shelf reads as a bar chart in wax. SHELF ORDER (one list, strictly by the year each candle was lit, left to right, from the staging candle table; never by the chapter in which it was filmed): 1 THE BRAIN IS A LOGIC MACHINE (1943) 16 rings, out; 2 A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK (1958) about 7, frayed; 3 MANY-LAYERED NETS ARE A STERILE EXTENSION (1969) 17, out; 4 INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND (c. 1980) about 7, out; 5 CYC (1984) 39, the tallest dark bar; 6 NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY (mid-1990s) about 16, frayed; 7 LANGUAGE MUST BE READ IN ORDER (1997) 20, out; 8 TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS (1999) 13, out; 9 DEEP NETS MUST BE WARMED UP LAYER BY LAYER (2006) about 5, frayed; 10 LEARNED FEATURES, GIVEN DATA AND ARITHMETIC (2012) STILL LIT, mid-shelf; 11 A GO MACHINE IS A DECADE AWAY (2014) 2, out; 12 SCALE IS THE MAIN LEVER (2020) STILL LIT, trimmed; 13 COMPUTE IS THE CHOKEPOINT (2022) STILL LIT, contested; 14 CHINA IS A YEAR OR TWO BEHIND (2022) about 2, out; 15 SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS (2023) STILL LIT; 16 the blackened match (January 2025), lying flat; 17 THE GAP IS MONTHS, NOT YEARS (2025) STILL LIT, contested; then, at the very end by the window, the empty place where ch15-s09's new candle will stand. So the still-lit flames (10, 12, 13, 15, 17) stand scattered among the dark sleeves, from mid-shelf to the window, not gathered at one end; sleeves of every length, long and short among each other, no trend by decade; any marked contested keep that tag, exactly as ch14-s07 leaves them. On 'forty' a soft light returns to Cyc's dark 39-ring sleeve (234 px), the tallest bar on the shelf (the film's own record, said aloud in ch13 as 'thirty-nine years'); on 'two' the short GO MACHINE sleeve (2 rings); on 'day' the blackened match; on 'burn' the five still-lit flames light up together across the whole shelf, from LEARNED FEATURES mid-shelf to THE GAP by the window, their base tags reading 'as of October 2026' (prop lettering), their short sleeves still growing. On 'lantern' the camera drifts back up to the network: one lantern in the middle layer has never lit, and the last oxblood-thread question card is pinned above it, swaying slightly (its words are the words being spoken). Below the board, on the desk, the brass microscope from ch15-s03 stands under the lamp, its lens turned toward the dark lantern. On 'answers' the dark lantern is the only dark thing on the board, and the attribution card for the limit of today's microscopes rises beside the microscope and holds through the pause and the music-only hold (enough to read it). TEXT DISCIPLINE: two text items only (the fast-forward carries none): the question card (from 'lantern') and the microscope-limit quote (from 'answers'). SCRIPT NOTE (review round 1): new line L1516b 'And how far, how fast? That file stays open.' after L1516; the case file lies open on 'file'; the hold after it is 5 s.",
+      "beats": [
+        {
+          "id": "ff1",
+          "at": {
+            "shotTime": 1
+          },
+          "what": "Fast-Forward flash (wordless, 0.75 s, the rewind's pitch): a motorised knob turns (the Mark I, forwards)"
+        },
+        {
+          "id": "ff2",
+          "at": {
+            "shotTime": 1.75
+          },
+          "what": "Fast-Forward flash (wordless, 0.75 s, the rewind's pitch): snow falls"
+        },
+        {
+          "id": "ff3",
+          "at": {
+            "shotTime": 2.5
+          },
+          "what": "Fast-Forward flash (wordless, 0.75 s, the rewind's pitch): two fans spin up in a desktop tower"
+        },
+        {
+          "id": "ff4",
+          "at": {
+            "shotTime": 3.25
+          },
+          "what": "Fast-Forward flash (wordless, 0.75 s, the rewind's pitch): a Go stone is placed"
+        },
+        {
+          "id": "ff5",
+          "at": {
+            "shotTime": 4
+          },
+          "what": "Fast-Forward flash (wordless, 0.75 s, the rewind's pitch): a lantern wick catches, and the flame is inside the glowing chat box"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1527",
+            "word": "Who"
+          },
+          "what": "the hands sit back from the board; one continuous pull-back begins"
+        },
+        {
+          "id": "b11",
+          "at": {
+            "line": "L1527",
+            "word": "rules"
+          },
+          "what": "the lamp's light passes over the RULES card (S1); it stays grey"
+        },
+        {
+          "id": "b12",
+          "at": {
+            "line": "L1527",
+            "word": "knowledge"
+          },
+          "what": "the light passes over the KNOWLEDGE card (S2); it stays grey"
+        },
+        {
+          "id": "b13",
+          "at": {
+            "line": "L1527",
+            "word": "Learning"
+          },
+          "what": "the LEARNING card's paper lantern (S3) lights for the first time"
+        },
+        {
+          "id": "b14",
+          "at": {
+            "line": "L1527",
+            "word": "accomplices"
+          },
+          "what": "threads of light run from LEARNING to data, fire, the messenger, then (on 'choosing') every pin glints"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1514",
+            "word": "board"
+          },
+          "what": "threads tighten; the clue cards in columns C1–C4 swell into lanterns; the founding row F1–F2 and the question thread dim to cork tone, unswollen; the Wall's slips stay paper"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1514",
+            "word": "network"
+          },
+          "what": "forward wave of light runs from the 1943 wick to the chat box; WHO TAUGHT IT? card drops into the lamp's pool"
+        },
+        {
+          "id": "b4c",
+          "at": {
+            "line": "L1514",
+            "edge": "end",
+            "offset": 0.9
+          },
+          "what": "tilt down begins; the whole shelf comes into view, its right end by the study window; first stop, wordless, in the pause: Cyc's dark taper, out since 2023, tag '1984–2023 · 39', the tallest dark sleeve"
+        },
+        {
+          "id": "b5",
+          "at": {
+            "line": "L1515",
+            "word": "candles"
+          },
+          "what": "the shelf seen whole, sleeves as bars of every length, no trend by decade, ordered by the year on each base tag; the China-race candles toward its right end, by the window"
+        },
+        {
+          "id": "b6",
+          "at": {
+            "line": "L1515",
+            "word": "forty"
+          },
+          "what": "light returns to Cyc's dark 39-ring sleeve, the tallest bar on the shelf"
+        },
+        {
+          "id": "b7",
+          "at": {
+            "line": "L1515",
+            "word": "two"
+          },
+          "what": "light picks out the 2-ring sleeve"
+        },
+        {
+          "id": "b8",
+          "at": {
+            "line": "L1515",
+            "word": "day"
+          },
+          "what": "light picks out the blackened match"
+        },
+        {
+          "id": "b9",
+          "at": {
+            "line": "L1515",
+            "word": "burn"
+          },
+          "what": "the five still-lit flames, scattered from mid-shelf to the window, light up together; short sleeves still growing; tags 'as of October 2026'"
+        },
+        {
+          "id": "b10",
+          "at": {
+            "line": "L1516",
+            "word": "lantern"
+          },
+          "what": "drift back up: one lantern in the middle never lit; the last question card above it; the brass microscope on the desk below, its lens toward the dark lantern"
+        },
+        {
+          "id": "b10b",
+          "at": {
+            "line": "L1516",
+            "word": "answers"
+          },
+          "what": "the microscope-limit card rises beside the microscope and holds through the hold"
+        },
+        {
+          "id": "openFile",
+          "at": {
+            "line": "L1516b",
+            "word": "file"
+          },
+          "what": "on the desk below the board, the manila case file lies open in the lamp’s pool, a blank sheet on top"
+        },
+        {
+          "id": "stamp",
+          "at": {
+            "line": "L1516b",
+            "word": "open"
+          },
+          "what": "STATUS: OPEN struck on the HOW FAR? HOW FAST? card ON open, same size and red as ch15-s09 (fx-stamp-howfar foley anchors here; review round 4)"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "green-shaded desk lamp",
+        "two steady hands",
+        "case board with suspect cards S1–S3, case card K, clue cards in columns C1–C4, threads",
+        "lanternNetwork (board as network)",
+        "candle shelf ending at the study window (sleeves and stubs, Cyc's 39-ring taper, the match, the still-lit candles)",
+        "question card on oxblood thread",
+        "the brass microscope from ch15-s03, on the desk"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "How, exactly, does it reach its answer?",
+          "beat": "b10"
+        },
+        {
+          "kind": "quote",
+          "text": "satisfying insight for about a quarter of the prompts we've tried — Anthropic, 2025",
+          "beat": "b10b"
+        }
+      ],
+      "music": {
+        "cue": "m15e-reveal",
+        "note": "the Fast-Forward replays the prologue's rewind sound forwards (tape lurch then clean); under the verdict a hush, then the candle motif's rising fourth on 'Learning'; every era's instrument of the motif enters in order as the wave crosses the network (celesta, valve organ, cello, piano, synth pulse, plucked string), building to the film's fullest texture (7/10) on 'network'; it thins to solo celesta for the bar chart in wax, one note per candle named; on 'still dark' everything drops to a single held note that carries the hold."
+      },
+      "transitionIn": "lampChange",
+      "claims": [
+        "e10-rnn-belief",
+        "e9-go-decade",
+        "e9-lee-sedol",
+        "e13-crash",
+        "e14-biology",
+        "e5-cyc",
+        "e5-lenat-death",
+        "e2-mark1-build",
+        "e10-attention-explanation"
+      ]
+    },
+    {
+      "id": "ch15-s09",
+      "kind": "scene",
+      "setting": "The detective's study at night, October 2026; then darkness, and the end of the candle shelf",
+      "era": "2026",
+      "mood": "candleAmber",
+      "leadIn": 0.8,
+      "holdAfter": 3,
+      "lines": [
+        {
+          "id": "L1517",
+          "text": "The last word goes to Hinton, back in 2017.",
+          "pauseAfter": 0.55,
+          "direction": "quiet; he is named, never 'the tall man' or 'the man' (user direction, 2026-10-11); 'Hinton' warm, not announced; a real pause after it; 'back in 2017' plain and unhurried, so the quote is heard as an old one; the slip's HINTON · SEPT 2017 card names him too NARRATION: re-take solo at voice speed 0.80, target about 4.5-5 s; ch15-s09 absorbs the extra length through its T.word anchors; m21 re-fits; re-run STT.",
+          "spoken": "The last word goes to Hinton... back in twenty seventeen.",
+          "tts": {
+            "solo": true,
+            "speed": 0.8
+          }
+        },
+        {
+          "id": "L1518",
+          "text": "“The future depends on some graduate student who is deeply suspicious of everything I have said.”",
+          "spoken": "“The future depends on some graduate student who is deeply suspicious of everything I have said.”",
+          "pauseAfter": 3.6,
+          "direction": "reading the slip aloud, plainly; quoting, not performing: a slight shift into quotation, heard as his words"
+        },
+        {
+          "id": "L1520",
+          "text": "Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from.",
+          "pauseAfter": 0.6,
+          "direction": "warmest line of the film; slow; a smile on 'come from', then leave the rest to the music and the match",
+          "level": "soft"
+        }
+      ],
+      "visual": "THIS SHOT: Hinton's 2017 slip is read under the lamp and stamped STATUS: OPEN; the lamp clicks off, and a match lights one new, unlettered candle at the end of the shelf. CAMERA: WALL (W7), then FILE (top-down on the case card for the stamp), then the dark, then SHELF (the new candle at the shelf's end). Close on the Wall of Forecasts. In slot W7, the slip pinned in chapter 9 (September 2017; Hassabis's newer slip hangs beyond it at W8, W6's bare pin between them) lifts off its pin by itself and floats down into the pool of the desk lamp, where the two hands catch it and hold it under the light; its typed words are legible as the narrator reads them. Wordless, early in the pause after the quotation, the hands lay it on the WHO TAUGHT IT? case card and stamp the card with a rubber stamp: STATUS: OPEN, in red ink; the stamp says what the cut line used to say. A beat, long enough to read the red stamp. The desk lamp clicks off. Darkness, with only one thing visible: the text cursor from the very first shot, blinking where the chat box was. Then, on 'new candles' the cursor's blink slows; on 'come from', a hand reaches in from the bottom edge of the frame, from the viewer's side, an open palm holding a match; it strikes, and the flare lights the end of the candle shelf, where a new tall candle stands with no lettering and no rings scored on it yet. The hand lights it. The flame settles. Hold on the single new flame in the dark (holdAfter) as the music holds its suspension; the film's last words are 'come from', and the picture says the rest. Cut to black on the flame. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "line": "L1517",
+            "word": "word"
+          },
+          "what": "the 2017 slip lifts off its pin and floats into the lamp's pool; the hands catch it"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "line": "L1518",
+            "word": "future"
+          },
+          "what": "the slip held under the lamp; its words legible as they are read"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "line": "L1518",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "wordless: the hands lay the slip on the case card and stamp it STATUS: OPEN (the case is not closed; L1519 was cut, the stamp says it)"
+        },
+        {
+          "id": "b4",
+          "at": {
+            "line": "L1518",
+            "edge": "end",
+            "offset": 3
+          },
+          "what": "the desk lamp clicks off; only the cursor blinks in the dark"
+        },
+        {
+          "id": "b5",
+          "at": {
+            "line": "L1520",
+            "word": "from"
+          },
+          "what": "a hand from the viewer's side strikes a match"
+        },
+        {
+          "id": "b6",
+          "at": {
+            "line": "L1520",
+            "edge": "end",
+            "offset": 1.2
+          },
+          "what": "the match lights a new, unlettered, unringed candle at the end of the shelf; hold; cut to black on the flame"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "Wall of Forecasts",
+        "the 2017 forecast slip",
+        "WHO TAUGHT IT? case card",
+        "rubber stamp and red ink pad",
+        "green-shaded desk lamp",
+        "blinking cursor",
+        "match",
+        "new unlettered candle"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "The future depends on some graduate student who is deeply suspicious of everything I have said. — Geoffrey Hinton, 2017, as quoted by Gary Marcus",
+          "beat": "b2"
+        },
+        {
+          "kind": "label",
+          "text": "STATUS: OPEN",
+          "beat": "b3"
+        }
+      ],
+      "music": {
+        "cue": "m15f-open",
+        "note": "solo celesta, the candle motif slowed: the rising fourth under the slip; silence for the stamp and the lamp click (two dry sounds only); the struck match is a real sound in silence; then the motif rises once more as the new candle catches, holds its suspension, and does not resolve. This suspension is the film's last chord; let it ring into black."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e9-hinton-funeral"
+      ]
+    },
+    {
+      "id": "ch15-s10",
+      "kind": "card",
+      "setting": "Silent end card on parchment, then a credits disclosure card",
+      "era": "timeless",
+      "mood": "parchment",
+      "leadIn": 0.8,
+      "holdAfter": 0.8,
+      "minDuration": 28.7,
+      "lines": [],
+      "visual": "THIS SHOT: silent end cards: Turing's closing sentence on parchment, the CREDITS card (every model and tool, from credits.json; about 12 s), one SOURCES card, then black. Fade up from black to a plain parchment plate, lit softly from behind like paper on a lightbox. The Turing sentence sets in EB Garamond, centred, with its attribution in small italic below; held in silence until the disclosure beat. Crossfade to a second, smaller parchment card, the credits disclosure, set in IBM Plex Mono at reading size, held until the sources beat. Then ONE static card in IBM Plex Mono at reading size (cap height at least 22 px at 1080p): 'SOURCES' in tracked capitals over the real URL of the published sources page, orly.brett-lamy.workers.dev/generated/neural-net-history/sources (generated at publish from the script's claim ids, research/claims.json and quotes.json: every claim and quotation, chapter by chapter, with its source; generator/film/lib/sources.mjs). It points the viewer to that page (meta.json staging.creditsSources, in film order, with full texts, speakers and dates: every quotation the film moved off-screen, and the chemistry prize, the rhyme sentence and the model names behind the ruler's pins). No pages of quotations on screen, no roll. No logos, no product imagery. Fade to black. ROUND-1 FIX: no empty grey first frame (fade up straight onto the Turing card), and crossfade card to card directly, never through blank card stock.",
+      "beats": [
+        {
+          "id": "b1",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "Turing's closing sentence fades up on parchment and holds until b2"
+        },
+        {
+          "id": "b2",
+          "at": {
+            "shotTime": 8.5
+          },
+          "what": "crossfade to the credits disclosure card; it holds until the sources beat"
+        },
+        {
+          "id": "sources",
+          "at": {
+            "shotTime": 21.3
+          },
+          "what": "crossfade to one static SOURCES card pointing to the published sources and quotations list"
+        },
+        {
+          "id": "b3",
+          "at": {
+            "shotTime": 27.9
+          },
+          "what": "fade to black | ROUND-3 GLOBAL (2026-10-13): trimmed to 22.0 s (review round 3, carried over from round 2, and the clock had run 0.42 s past the 2160 s ceiling after the L0114 re-take): Turing 0.5-8.5 (8 s), the authorship/disclosure card 8.5-14.6 (6.1 s), SOURCES 14.6-21.2 (6.6 s), fade to black from 21.2."
+        }
+      ],
+      "props": [
+        "parchment plate"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "We can only see a short distance ahead, but we can see plenty there that needs to be done. — Alan Turing, 1950",
+          "beat": "b1",
+          "until": "b2"
+        },
+        {
+          "kind": "label",
+          "text": "CREDITS · Research, script & code — Claude Opus 5.5 · Anthropic · Voice — ElevenLabs · “Dave Edge” · Pronunciation checks — ElevenLabs Scribe · Music — Strudel · strudel.cc · Sound effects — synthesized in code · Picture — Canvas 2D in the browser · Render & mix — Chromium · FFmpeg",
+          "beat": "b2",
+          "until": "sources"
+        },
+        {
+          "kind": "title",
+          "text": "SOURCES · orly.brett-lamy.workers.dev/generated/neural-net-history/sources",
+          "beat": "sources"
+        }
+      ],
+      "music": {
+        "cue": "m15f-open",
+        "note": "silence under the Turing card (the suspension from the previous shot has decayed); the disclosure card stays silent too. No final cadence anywhere."
+      },
+      "transitionIn": "fadeBlack",
+      "claims": [
+        "e1-turing-1950",
+        "e14-anthropic-releases"
+      ],
+      "$userDirection": "2026-10-13: the end credits list every model and tool that made the film (not only Claude): ElevenLabs voice and checks, Strudel music (links on the film page), foley, render, type."
+    }
+  ]
+}

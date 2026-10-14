@@ -1,0 +1,218 @@
+{
+ "shot": "ch05-s06",
+ "at": "2026-10-13T19:54:43.839Z",
+ "step": 0.0833,
+ "sampled": 246,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@1041,484",
+   "probed": false,
+   "from": 3.38,
+   "to": 4.3,
+   "seconds": 0.92,
+   "rect": {
+    "x": 912,
+    "y": 484,
+    "w": 214,
+    "h": 134
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@850,457",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@852,818",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1296,459",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1308,794",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@877,319",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@468,896",
+   "probed": false,
+   "from": 1.633,
+   "to": 1.883,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1041,484",
+   "probed": false,
+   "from": 3.383,
+   "to": 4.217,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@683,369",
+   "probed": false,
+   "from": 4.3,
+   "to": 20.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-66,385",
+   "probed": false,
+   "from": 4.3,
+   "to": 4.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-66,670",
+   "probed": false,
+   "from": 4.3,
+   "to": 4.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@233,74",
+   "probed": false,
+   "from": 4.3,
+   "to": 4.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@234,290",
+   "probed": false,
+   "from": 4.3,
+   "to": 20.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@233,492",
+   "probed": false,
+   "from": 4.3,
+   "to": 20.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@500,75",
+   "probed": false,
+   "from": 4.3,
+   "to": 4.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@507,275",
+   "probed": false,
+   "from": 4.3,
+   "to": 19.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@233,727",
+   "probed": false,
+   "from": 4.3,
+   "to": 20.967,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@422,632",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@602,634",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@782,634",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@960,632",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@443,736",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@801,736",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@980,735",
+   "probed": false,
+   "from": 4.55,
+   "to": 20.967,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "fillRect@629,734",
+   "probed": false,
+   "from": 4.633,
+   "to": 20.967,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "fillRect@-148,43",
+   "probed": false,
+   "from": 20.55,
+   "to": 20.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-147,521",
+   "probed": false,
+   "from": 20.55,
+   "to": 20.967,
+   "minInkWhilePaper": 1
+  }
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:24.589Z"
+}

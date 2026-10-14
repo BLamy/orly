@@ -1,0 +1,128 @@
+// m04 "The Cold Case, part 1" (neural-net-history), 318.68-365.45 s (46.77 s). D minor, 56 BPM where metric.
+// RE-BASED 2026-10-13 to the current clock (narration/timeline.json, 2159.9583 s): the window moved bodily -0.25 s with
+// its first shot (no line inside it changed length), so every absolute time in this file, code and comments, was moved
+// -0.25 s and checked against its word; S = the current window start. Older clock notes below are history.
+// VOICE-BAND PASS (critic r1, 2026-10-12): the sterile candle's rising fourth moved into the breath before "A third
+// candle" (A3 360.6, D4 on the lighting beat 361.2, released by "A" 361.5; the cello D3 carries the held D under
+// "many layers are a dead end"); the stuck E under L0402 -5 dB; the cold glass (sounding D6/A6) -7 dB under the quote.
+// Every line >= 8.0 dB clear in both voice bands (L0405 was 3.8 in 1-4k, L0402 5.7 in 250-2k).
+// Masking pass (score round 2): the two-cuts chords (L0403) trimmed ~1.6 dB, piano and cello.
+// Review round 1 re-fit: every hit is placed on the NEW clock (narration/timeline.json, film 2121.42 s).
+// setcps(1): one cycle = one second; events at ABSOLUTE film seconds (line() subtracts S).
+// The colour turns from labGreen to duskRose: muted piano (lpf 1100, short notes), a low cello, a dark low
+// clarinet for the third candle, a few counter ticks, and a breath of bowed glass for the cold.
+//
+//  318.68-322.45 IN (join gap 317.42-322.43): a soft cello D2 under m03's fading D, then the muted-piano clock's
+//               first low D (320.7): D minor sounds alone 1.7 s before L0401.
+//  320.65-333.15  the puzzle: the muted-piano clock on low D/A (one pulse every two beats) over a soft cello D2
+//               floor under L0401; on
+//               "square" (329.93) four soft corner notes, the two lit corners brighter (D5, A5).
+//  333.85-335.05  "No straight cut can separate them": from the scissor "sweep" (333.84), one muted note per
+//               wrong-side count, STUCK on one repeated E (it cannot get out).
+//  335.05-336.05  the pause: only the counter's ticks.
+//  336.05-344.95  "Two cuts can": a consonant chord at last, D minor on "Two" (336.02) -> F major on "hidden"
+//               (337.5), piano + soft cello; it HANGS on an unresolved Bb(add9) on "train one" (342.89).
+//  345.05-353.65  the verdict (L0404 345.52-350.57): only a low cello pedal D2.
+//  352.55-361.15  the quoted "intuitive judgment that the extension is sterile" in near silence: a breath of
+//               bowed glass, high and thin.
+//  360.6-361.55 M1 in D minor on a dark colour, in the breath 360.17-361.5: low clarinet A3 (360.6) -> D4 on the
+//               picture's lighting beat (361.2), over a cello D2-A2 fifth: a belief held.
+//  361.25-365.45  the held D passes to the cello (D3, bowed in under the clarinet) and the texture thins to the cold. Last onset 361.25; every
+//               voice is released by about 363.35 (critic r1: the loop swell had made the end the cue's loudest
+//               moment), so the candle fades into the cold under "dead end" (364.09-364.63) and the cue is all but
+//               silent at the fade (364.7-365.45); m05's slow-attack cello D2 (364.75) carries the D across the join.
+setcps(1)
+
+const S = 318.68
+const N = 48
+const G = 3.5
+const B = 60 / 56
+
+function line(evs, defs) {
+  defs = defs || {}
+  evs = evs.map((e) => [e[0] - S, e[1], e[2], e[3], e[4]])
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const DEF = { attack: .01, release: .3, decay: 0, sustain: 1, lpf: 18000, pan: .5 }
+  const keys = [...new Set([...Object.keys(defs), ...evs.flatMap((e) => Object.keys(e[4] || {}))])]
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DEF[k])))
+    return p.slow(N)
+  }))
+}
+
+// ------------------------------------------------------------------ muted piano: the puzzle machine
+$: line([
+  // the clock: low D / A every two beats under the puzzle's statement (the first one in the clear)
+  ...[0, 1, 2, 3].map((k) => [320.7 + k * 2 * B, .5, k % 2 ? '[a1,a2]' : '[d2,d3]', k ? .17 : .19]),
+  // "On a square": four corners, the two lit ones brighter (opposite corners)
+  [329.93, .4, 'f4', .12], [330.39, .5, 'd5', .22], [330.81, .4, 'c4', .12], [331.31, .6, 'a5', .22],
+  // the sweep: one note per wrong-side count, stuck on E
+  // voice-band pass: the stuck E is pinned to the sweep, so it falls on the words: 5 dB down
+  ...[333.84, 334.19, 334.54, 334.89].map((t, k) => [t, .2, 'e4', .11 + (k % 2) * .015]),
+  // "Two cuts can": D minor -> F major, then the hang
+  [336.02, 1.4, '[d3,f3,a3]', .165],
+  [337.5, 2.4, '[f3,a3,c4]', .165],
+  [342.89, 2.2, '[bb2,f3,c4]', .15],
+], { release: .25 })
+  .s('piano').gain(G).lpf(1100).room(.4).rsize(3).orbit(1)
+
+// the counter's ticks in the pause after "them"
+$: line([
+  [335.09, .2, 'g5', .12], [335.44, .2, 'g5', .1], [335.77, .2, 'g5', .08],
+])
+  .s('gm_woodblock').gain(G).lpf(3000).room(.25).orbit(1)
+
+// ------------------------------------------------------------------ cello: the join, the soft chord, the pedal, the handover
+$: line([
+  [318.85, 3.6, 'd2', .1, { attack: 1.6, release: 1.5 }],           // IN: the key, under m03's fading D
+  [322.15, 6.0, 'd2', .075, { attack: 2, release: 1.2 }],          // the puzzle's floor: a soft low pedal under L0401
+  [327.95, 6.3, 'd2', .07, { attack: 1.8, release: 1 }],            // ... re-bowed, through the stuck sweep (no holes)
+  [336.02, 1.5, 'd2', .135, { attack: .3, release: .8 }],
+  [337.5, 4.0, 'f2', .135, { attack: .3, release: 1.2 }],
+  [342.89, 2.0, 'bb1', .15, { attack: .3, release: 1.4 }],
+  [345.05, 4.6, 'd2', .18, { attack: 1.5, release: 1.5 }],           // the verdict: only the pedal
+  [349.35, 4.3, 'd2', .15, { attack: 2, release: 1.5 }],             // re-bowed so the swell never peaks under a word
+  // critic r1: the bowed samples swell 1 s and 3 s after onset, so the fifth and the D3 are released by
+  // about 363.35 (the 364.2 swell falls inside the release) and the cue dies into the cold: m05's slow cello D2
+  // (364.75) carries the pedal across the join.
+  [360.6, 1.5, '[d2,a2]', .12, { attack: .6, release: 1.4 }],       // the fifth under the dark candle
+  [361.25, 2.1, 'd3', .09, { attack: .7, release: 1.3 }],            // the held D passes to the cello (from the lighting)
+], { attack: 1, release: 2 })
+  .s('gm_cello').gain(G).lpf(700).room(.5).rsize(4).orbit(2)
+
+// ------------------------------------------------------------------ low clarinet: the sterile candle (M1, dark)
+$: line([
+  // critic r1: the D had been struck on the word "candle" (361.95) in the voice's fundamental range (-8.9 dB).
+  // Now the whole rising fourth sits in the 1.34-s breath 360.17-361.5 before "A third candle": A3 at 360.6,
+  // D4 on the picture's lighting beat (361.2), released fast so it is ~8 dB down by "A" (361.5); the held D
+  // passes to the cello D3, bowed in under it, which carries the belief under "many layers are a dead end".
+  [360.6, .55, 'a3', .17, { attack: .06, release: .15 }],
+  [361.2, .14, 'd4', .16, { attack: .08, release: .3 }],
+])
+  .s('gm_clarinet').gain(G).lpf(1300).room(.5).rsize(4).orbit(3)
+
+// ------------------------------------------------------------------ the cold: a breath of bowed glass
+$: line([
+  [352.55, 7.4, '[d4,a4]', .022, { attack: 2.5, release: 2 }],     // sounds D6/A6, in the band: 7 dB down (voice-band pass)
+  [361.25, 1.6, 'a4', .018, { attack: 1.2, release: 1.4 }],
+])
+  .s('gm_pad_bowed').gain(G).lpf(4000).room(.7).rsize(6).orbit(4)

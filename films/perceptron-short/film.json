@@ -1,0 +1,534 @@
+{
+  "slug": "perceptron-short",
+  "stages": {
+    "voice": {
+      "status": "done",
+      "voiceId": "EapdDtSsMC291mjfSNe7",
+      "model": "eleven_multilingual_v2",
+      "at": "2026-10-07T08:54:29Z",
+      "outputs": [
+        "films/perceptron-short/voice/voice.json",
+        "films/perceptron-short/voice/lexicon.json"
+      ],
+      "updatedAt": "2026-10-06T04:32:48.805Z",
+      "summary": "Kept the locked voice (audition not requested): library voice Peter (EapdDtSsMC291mjfSNe7), middle-aged well-spoken British factual narrator, eleven_multilingual_v2, speed 0.8, seed 1958; unique across films/*/voice/voice.json (neural-net-history uses MlHIkPdx2ZF9MhznglHQ). Lexicon re-verified against all 9 spoken lines of the current script: no new terms; active entries 'Mark I'->'Mark One' (L0104), 'Papert'->'Pappert' (L0108), '1969'->'nineteen sixty-nine' (L0108); Rosenblatt, Minsky, Perceptron read plain; house list of names/acronyms (AlexNet, ImageNet, LeCun, Bengio, Schmidhuber, Rumelhart, Krizhevsky, Sutskever, Vaswani, Amodei, DeepSeek, GPT, GPU, CUDA, ReLU, LSTM, ...) retained. Text tests 8/8 pass; narrate --dry-run: 0 chunks to synthesize, nothing stale. 0 credits spent this run. STT round trip already confirmed the words; a human listening check for stress (ROH-zen-blat, PAP-ert; voice.mjs listen/signoff) is still recommended.",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      },
+      "auditions": 14,
+      "report": "films/perceptron-short/voice/auditions/report.json"
+    },
+    "narration": {
+      "status": "done",
+      "startedAt": "2026-10-07T08:54:58.037Z",
+      "tool": "generator/film/narrate.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "perceptron-short",
+        "--shots",
+        "ch01-s03",
+        "--budget",
+        "5474"
+      ],
+      "voice": {
+        "voiceId": "EapdDtSsMC291mjfSNe7",
+        "model": "eleven_multilingual_v2",
+        "seed": 1958
+      },
+      "updatedAt": "2026-10-07T08:54:58.123Z",
+      "finishedAt": "2026-10-07T08:54:58.123Z",
+      "shots": [
+        "ch01-s03"
+      ],
+      "credits": {
+        "run": 0,
+        "total": 3474,
+        "budget": 5474
+      },
+      "problems": [
+        "L0105b: insertGaps \"Each\" -0.1s clamped to -0.10s (the pause is only 0.22s)",
+        "L0105b: insertGaps \"cell\" -0.07s clamped to -0.07s (the pause is only 0.19s)"
+      ],
+      "outputs": [
+        "films/perceptron-short/narration/lines.json",
+        "films/perceptron-short/narration/stt.json"
+      ],
+      "at": "2026-10-07T08:55:38Z",
+      "summary": "Line fix: re-narrated shot ch01-s03 (L0105, L0105b, L0106, L0107, L0108) with the locked voice Peter (EapdDtSsMC291mjfSNe7, eleven_multilingual_v2, speed 0.8, seed 1958). Dry run 490 chars / 1 chunk / est 0 credits (chunk cached); spent 0 credits (ledger stays 3474; run cap 5474 = ledger + 2000). Rebuilt the clock: 67.75 s (target 60 s, +7.75 s; ceiling 68 s, 0.25 s under, so no holdAfter trim needed). All 9 lines aligned exactly from character alignment, text matches script, spoken text = text after lexicon (Mark One, nineteen sixty-nine, Pappert). preGaps honoured within 1 frame (L0104 0.80, L0107 0.95, L0108 2.00). Line levels: L0101 -5 (want -5), L0108 -1.5 (want -1.5), rest within 0.04 dB of 0. Stem -18.0 LUFS integrated, TP -2 dBTP, LRA 6.3. Clip edges quiet (silencedetect, -45 dB: 0.13-0.16 s heads, 0.20-0.26 s tails). STT current and passing for L0104 and L0108. Listening sign-offs pending (human): Rosenblatt (L0104), Papert (L0108). Master mix is older than narration.wav: re-run film:mix.",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      },
+      "stt": {
+        "file": "films/perceptron-short/narration/stt.json",
+        "targets": [
+          "L0108"
+        ],
+        "transcribed": [],
+        "current": [
+          "L0108"
+        ],
+        "failing": []
+      }
+    },
+    "timeline": {
+      "status": "done",
+      "startedAt": "2026-10-07T08:54:58.155Z",
+      "tool": "generator/film/timeline.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "perceptron-short"
+      ],
+      "updatedAt": "2026-10-07T08:55:03.428Z",
+      "finishedAt": "2026-10-07T08:55:03.427Z",
+      "draft": false,
+      "duration": 67.75,
+      "fps": 24,
+      "shots": 3,
+      "lines": 9,
+      "warnings": [
+        "L0107: preGap 0.95s overrides L0106's pauseAfter 0.6s"
+      ],
+      "stem": {
+        "file": "films/perceptron-short/narration/narration.wav",
+        "duration": 67.75,
+        "lineLufs": -20,
+        "rides": {
+          "L0101": {
+            "lufs": -19.8,
+            "rideDb": -0.2,
+            "levelDb": -5,
+            "clipGainDb": -6.1,
+            "trimDb": -1.1
+          },
+          "L0102": {
+            "lufs": -18,
+            "rideDb": -2,
+            "clipGainDb": 0.08,
+            "trimDb": 0.08
+          },
+          "L0103": {
+            "lufs": -20,
+            "rideDb": 0,
+            "clipGainDb": 0.83,
+            "trimDb": 0.83
+          },
+          "L0104": {
+            "lufs": -19.1,
+            "rideDb": -0.9,
+            "clipGainDb": 0.43,
+            "trimDb": 0.43
+          },
+          "L0105": {
+            "lufs": -20.1,
+            "rideDb": 0.1,
+            "clipGainDb": 0,
+            "trimDb": 0
+          },
+          "L0105b": {
+            "lufs": -20.4,
+            "rideDb": 0.4,
+            "clipGainDb": -0.57,
+            "trimDb": -0.57
+          },
+          "L0106": {
+            "lufs": -19.7,
+            "rideDb": -0.3,
+            "clipGainDb": 0.03,
+            "trimDb": 0.03
+          },
+          "L0107": {
+            "lufs": -19.4,
+            "rideDb": -0.6,
+            "words": {
+              "right": 5
+            },
+            "clipGainDb": -0.87,
+            "trimDb": -0.87
+          },
+          "L0108": {
+            "lufs": -19.4,
+            "rideDb": -0.6,
+            "levelDb": -1.5,
+            "clipGainDb": -2.56,
+            "trimDb": -1.06
+          }
+        },
+        "integratedBefore": -20,
+        "compressor": {
+          "ratio": 2.5,
+          "attack": 10,
+          "release": 120,
+          "knee": 2.8,
+          "highpassHz": 70,
+          "thresholdDb": -18,
+          "grDb": 3.47,
+          "integratedAfter": -23.3
+        },
+        "peakStage": {
+          "ratio": 4,
+          "attack": 0.3,
+          "release": 40,
+          "thresholdDb": -13,
+          "peakCutDb": 2.83,
+          "crestBefore": 18.03,
+          "crestAfter": 15.2,
+          "crestTarget": 15.23,
+          "speechGrDb": 0.62
+        },
+        "chain": "highpass=f=70,acompressor=threshold=-18dB:ratio=2.5:attack=10:release=120:knee=2.8:makeup=1:detection=rms:link=maximum,acompressor=threshold=-13dB:ratio=4:attack=0.3:release=40:knee=2:makeup=1:detection=peak:link=maximum,[per-line clip gain]",
+        "gainDb": 6.7,
+        "peakBeforeDb": -7.87,
+        "limitedDb": 0.83,
+        "integrated": -18,
+        "truePeak": -2,
+        "lra": 6.3,
+        "target": -18,
+        "levels": {
+          "tolerance": 0.5,
+          "beforeClipGain": {
+            "L0101": {
+              "M": -20.04,
+              "offsetDb": 1.12,
+              "requestedDb": -5,
+              "errorDb": 6.12
+            },
+            "L0102": {
+              "M": -21.22,
+              "offsetDb": -0.36,
+              "requestedDb": 0,
+              "errorDb": -0.36
+            },
+            "L0103": {
+              "M": -21.97,
+              "offsetDb": -1.11,
+              "requestedDb": 0,
+              "errorDb": -1.11
+            },
+            "L0104": {
+              "M": -21.57,
+              "offsetDb": -0.71,
+              "requestedDb": 0,
+              "errorDb": -0.71
+            },
+            "L0105": {
+              "M": -21.14,
+              "offsetDb": -0.27,
+              "requestedDb": 0,
+              "errorDb": -0.27
+            },
+            "L0105b": {
+              "M": -20.57,
+              "offsetDb": 0.58,
+              "requestedDb": 0,
+              "errorDb": 0.58
+            },
+            "L0106": {
+              "M": -21.17,
+              "offsetDb": -0.31,
+              "requestedDb": 0,
+              "errorDb": -0.31
+            },
+            "L0107": {
+              "M": -20.27,
+              "offsetDb": 0.89,
+              "requestedDb": 0,
+              "errorDb": 0.89
+            },
+            "L0108": {
+              "M": -20.09,
+              "offsetDb": 1.07,
+              "requestedDb": -1.5,
+              "errorDb": 2.57
+            }
+          },
+          "lines": {
+            "L0101": {
+              "M": -19.44,
+              "offsetDb": -5,
+              "requestedDb": -5,
+              "errorDb": 0
+            },
+            "L0102": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0103": {
+              "M": -14.48,
+              "offsetDb": -0.04,
+              "requestedDb": 0,
+              "errorDb": -0.04
+            },
+            "L0104": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0105": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0105b": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0106": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0107": {
+              "M": -14.44,
+              "offsetDb": 0,
+              "requestedDb": 0,
+              "errorDb": 0
+            },
+            "L0108": {
+              "M": -15.94,
+              "offsetDb": -1.5,
+              "requestedDb": -1.5,
+              "errorDb": 0
+            }
+          }
+        }
+      },
+      "outputs": [
+        "films/perceptron-short/narration/timeline.json",
+        "apps/bookshelf/src/viz/films/perceptron-short/timeline.json",
+        "films/perceptron-short/render/film.vtt",
+        "films/perceptron-short/render/chapters.txt",
+        "films/perceptron-short/narration/narration.wav"
+      ]
+    },
+    "score-render": {
+      "at": "2026-10-07T09:18:09.772Z",
+      "cues": [
+        {
+          "id": "m01",
+          "ok": true,
+          "I": -25.8,
+          "TP": -7.4,
+          "duration": 73.75
+        }
+      ],
+      "updatedAt": "2026-10-07T09:18:09.772Z"
+    },
+    "score": {
+      "status": "done",
+      "at": "2026-10-07T09:21:06Z",
+      "summary": "1 cue(s) (m01), 67.75 s of music + tails; m01 I -25.8 LUFS, LRA 8.7 LU, TP -7.4 dBTP; all rendered",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      }
+    },
+    "shots": {
+      "ch01-s01": {
+        "status": "revised",
+        "at": "2026-10-07T09:54:45.852Z"
+      },
+      "ch01-s02": {
+        "status": "revised",
+        "at": "2026-10-07T09:54:45.852Z"
+      },
+      "ch01-s03": {
+        "status": "revised",
+        "at": "2026-10-07T09:54:45.852Z"
+      }
+    },
+    "mix": {
+      "status": "done",
+      "startedAt": "2026-10-07T09:55:53.162Z",
+      "tool": "generator/film/mix.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "perceptron-short"
+      ],
+      "updatedAt": "2026-10-07T09:55:56.498Z",
+      "finishedAt": "2026-10-07T09:55:56.498Z",
+      "ok": true,
+      "checks": {
+        "loudness": true,
+        "truePeak": true,
+        "length": true,
+        "duck": true,
+        "chapters": true,
+        "fadeAfterStrike": true
+      },
+      "master": {
+        "file": "films/perceptron-short/mix/master.wav",
+        "duration": 67.75,
+        "I": -15.9,
+        "LRA": 4.5,
+        "TP": -2.4
+      },
+      "duckDb": 3.12,
+      "outputs": [
+        "films/perceptron-short/mix/master.wav",
+        "films/perceptron-short/mix/loudness.json",
+        "films/perceptron-short/mix/chapters/1.m4a"
+      ]
+    },
+    "render": {
+      "status": "done",
+      "startedAt": "2026-10-07T09:56:03.114Z",
+      "tool": "generator/film/render.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "perceptron-short"
+      ],
+      "updatedAt": "2026-10-07T09:56:35.236Z",
+      "finishedAt": "2026-10-07T09:56:35.236Z",
+      "ok": true,
+      "out": "films/perceptron-short/render/film.mp4",
+      "preview": false,
+      "frames": 1626,
+      "fps": 24,
+      "checks": {
+        "frames": true,
+        "fullLength": true,
+        "size": true,
+        "fps": true,
+        "av": true,
+        "chapters": true
+      },
+      "outputs": [
+        "films/perceptron-short/render/film.mp4"
+      ]
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-07T18:01:09.017Z",
+      "summary": {
+        "pass": 2,
+        "warn": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "report": "films/perceptron-short/qa/reports/latest-partial.json",
+      "updatedAt": "2026-10-07T18:01:09.023Z",
+      "partial": [
+        "publish"
+      ]
+    },
+    "assemble": {
+      "status": "done",
+      "at": "2026-10-07T09:57:23Z",
+      "summary": "Re-assembled on the 67.75 s clock @ 24 fps (after the ch01-s03 re-narration and score revision 11). Mix: films/perceptron-short/mix/master.wav -15.9 LUFS I (target -16), TP -2.4 dBTP (ceiling -1.5), LRA 4.5, linear constant gain +2.57 dB, no master limiting; duck calibrated 4.83 -> 3.12 dB (target 3; threshold -26.04 dBFS, ratio 3) under 53.4 s of narration; m01 fade 66.95-67.75 s starts 2.01 s after lastStrike 64.94 (min 1.6), checks.fadeAfterStrike true; line levels exact (L0101 -5, L0108 -1.5, rest -0.04..0 dB); 1 chapter slice (1.6 MB). Render: films/perceptron-short/render/film.mp4 1626 frames = round(67.75 x 24), 1920x1080 yuv420p, video 67.750 s / AAC 67.750 s, mov_text captions + 1 chapter muxed, film.vtt (9 cues); 6 workers, 0 reused segments, 0 page errors, 32.1 s wall, 88.5 MB. Sheets (--build): 3 contact sheets, ch01-s01 4 frames, ch01-s02 12, ch01-s03 32. Publish (local): public/generated/perceptron-short manifest + chapter audio + captions + library entry refreshed. QA: 33 pass, 1 warn (narration.listening: Rosenblatt, Papert human sign-offs pending), 0 fail; narration.stt, mix.lineLevels, score.analysisSummary, publish.current all pass.",
+      "outputs": [
+        "films/perceptron-short/mix/master.wav",
+        "films/perceptron-short/mix/loudness.json",
+        "films/perceptron-short/render/film.mp4",
+        "films/perceptron-short/render/film.vtt",
+        "films/perceptron-short/qa/sheets/",
+        "public/generated/perceptron-short/manifest.json",
+        "films/perceptron-short/qa/reports/latest.json"
+      ],
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      }
+    },
+    "review": {
+      "round": 4,
+      "pass": false,
+      "mean": 8.15,
+      "scores": {
+        "accuracy": 8.67,
+        "depth": 7.92,
+        "clarity": 8,
+        "story": 8.17,
+        "curiosity": 7.83,
+        "visual": 8,
+        "sync": 8.42,
+        "sound": 8.17
+      },
+      "at": "2026-10-06T22:42:28Z"
+    },
+    "publish": {
+      "status": "done",
+      "finishedAt": "2026-10-07T18:01:08.908Z",
+      "createdAt": "2026-10-05T15:42:41.793Z",
+      "manifest": "public/generated/perceptron-short/manifest.json",
+      "chapters": 1,
+      "deployed": false,
+      "updatedAt": "2026-10-07T18:01:08.908Z"
+    },
+    "fixes": {
+      "round1-global": {
+        "at": "2026-10-06T04:57:40Z",
+        "by": "supervising director (claude-opus-5-5, high)",
+        "summary": "research: +mk1-sum, limit-linear, lineage-mlp (verified); story: +L0105b mechanism line, +L0108 closing line, L0107 pauseAfter 1.5, s03 holdAfter 2.6, place stamp c. 1960; narration: s03 re-narrated (Peter voice kept), L0105 +0.3 s gap after 'shape', L0107 'right' ridden +5 dB, chunk-first heads padded; clock re-locked 60.375 s; stem: per-line ride + 2.5:1 compressor (3.6 dB GR) + peak stage, limiter 0 dB; mix: constant-gain (linear) master, per-cue duck objects, QA preLimit/stemLimit checks; score: soundfont-zone errors fail renders; render: chapter mux fixed (mov_text 1/1000 time base); sets: lab haze plane + near foreground plane + machine cut-paper craft + directional cut-lines",
+        "provenance": {
+          "model": "claude-opus-5-5",
+          "effort": "high"
+        }
+      },
+      "round2-global": {
+        "at": "2026-10-06T11:09:33Z",
+        "by": "supervising director (claude-opus-5-5, high)",
+        "summary": "research: mk1-trained and mk1-patchboard re-verified from fetched sources (Rosenblatt 1958 Psych Rev 65(6) PDF; NMAH 334414 via Smithsonian Open Access API; Wikipedia Perceptron + Mark I Perceptron), cited per shot (s02 mk1-patchboard; s03 mk1-trained, mk1-patchboard). pipeline: new script line fields preGap (gap before a line; wins over previous pauseAfter; default 0.45) and levelDb (after rides/word rides, before the speech compressor) honoured by timing.mjs/timeline.mjs/script.mjs and the film-narrate workflow; negative insertGaps tighten over-long breaths and word#n selects an occurrence (narrate.mjs, free re-cut from cache); script gate uses recorded line lengths and checks story/meta.json runtimeCeilingSec (66). story: L0101 levelDb -5 (-3 measured -12.9 LUFS M; -5 gives -14.0), L0104 preGap 0.8, L0108 preGap 2.6 + levelDb -1.5; air trimmed to fit the ceiling without cutting a line: bookend holdAfter 1.6->1.3, s01 minDuration 6->5.2, s02 holdAfter default 0.8, breaths tightened (L0102 eye -0.1, L0104 Perceptron -0.15, L0105 shape insert 0.3->0.15, L0108 patterns -0.4, simple#2 -0.1, faded -0.15). Clock re-locked 65.833 s (was 67.875). mix: duck depthDb is a ceiling, calibrated by threshold bisection then ratio (m01 measured 4.97 -> 3.08 dB at -26 dBFS); mix check |depth-target|<=1.5; QA warns beyond +/-1.5, fails > +3; loudness.json gains moments (per-line max momentary, loudest music-only windows), QA shows them; QA timeline.ceiling. set craft: no all-round outlines (kit CutLight.side, cabinet side seams only on the facing side; lab cut light top-band only), near-black foreground on closer, softer planes (LAB_NEAR z 480 blur 3, NEAR_PLANE z 700 blur 2.6, desk z 600 blur 3), varied rack faces (meter panel on rack 3 per NMAH, jack field on rack 2, louvre counts 4/6/9/3 top and 3/4/2/5 kick), hand-cut details (cable drape over rack 3 corner, casters on the plugboard cabinet, clipboard on the eye stand).",
+        "handoff": {
+          "ch01-s01": "Shot is now 5.208 s (minDuration 5.2, was 6): the place stamp finishes typing about 3.3 s and the crossfade starts about 4.7 s; type it faster or start it on L0101 start so it is fully legible for >= 2 s.",
+          "ch01-s02": "L0104 no longer contains 'built': the look-down beat was re-anchored to 'project' only so the shot paints; re-block per the round-2 note. Near plane is z 700 now; the stool/chair at x 1130/1840 cross Rosenblatt's legs in the two-shot.",
+          "ch01-s03": "Re-anchor to the new clock: L0108 preGap 2.6 (try-5 flare in clear air), bookend hold 1.3 s after 'mistakes' (was 1.6): start the fade about 0.2 s after 'mistakes' ends.",
+          "m01": "Re-fit to 65.833 s (cue window still 0-60.375). The mixer now calibrates the duck to 3.08 dB (was 5.52): music under speech is about 2.4 dB louder than the composer heard; re-check speech-band margins. With the stale placement the D-major bloom is still the loudest music-only window (-13.6 LUFS M) and L0101 peaks -14.0 LUFS M; check both again in mix/loudness.json moments after the re-fit (bloom must stay top of moments.nonSpeech)."
+        },
+        "provenance": {
+          "model": "claude-opus-5-5",
+          "effort": "high"
+        }
+      },
+      "round3-global": {
+        "at": "2026-10-06T19:35:48Z",
+        "by": "supervising director (claude-opus-5-5, high)",
+        "summary": "RUNTIME/ENDING: story/meta.json runtimeCeilingSec 66 -> 68; ch01-s03 holdAfter 1.3 -> 3.1 s (bookend hold +1.8 s after 'mistakes'; visual direction updated); script.mjs: an explicit runtimeCeilingSec now replaces the target x 1.1 gate (it errored at 67.7 s). Clock re-locked by timeline.mjs (no re-narration, 0 credits): 67.750 s @ 24 fps (was 65.958 after the line fixes), under the 68 s hard cap, so the try-5 gap keeps its 2.2 s; L0108 'mistakes' ends 64.619, 3.131 s of clear tail. MIX: cues gain lastStrike (absolute s of the final chord's onset; contracts.ts MusicCue, film-score prompt); mix.mjs starts a cue's fade no sooner than --fade-after-strike 1.6 s after it (later and shorter if needed, min 0.3 s) and reports loudness.json cues[].fade + checks.fadeAfterStrike; QA mix.fadeAfterStrike fails when the window cannot hold it, warns with no marker. m01 marked lastStrike 64.66 for its CURRENT (stale, 65.83 s) render, so the check fails now by design until m01 is re-fit. LINE LEVELS: timeline.mjs applies levelDb as per-line clip gain AFTER the speech compressor and peak stage (each line's momentary peak brought to the median line level + its levelDb, 2 passes, trims clamped to +/-4 dB), re-runs the peak stage lower when the quieter lines raise the crest, then normalises; stem.json gains levels {beforeClipGain, lines} and rides[].clipGainDb/trimDb. New lib/levels.mjs; QA mix.lineLevels measures the stem itself and fails a line more than 0.5 dB off its requested offset from the median of the other lines. Measured on the new stem: before (old chain) L0101 -1.69 (want -5), L0108 +0.43 (want -1.5), others -0.91..+1.07; now L0101 -5.00, L0108 -1.50, others -0.03..0.00; stem -18.0 LUFS, TP -2.0 dBTP, limiter 0.74 dB, peak stage -13 dBFS (2.83 dB crest cut, 0.62 dB speech GR), LRA 6.8. STT AS DATA: lib/stt.mjs + generator/film/stt.mjs (npm run film:stt): ElevenLabs scribe_v1 round trip of every line where a lexicon entry fires or qa.stt is required, written to narration/stt.json {lineId, model, transcript, expectedTerms, pass, sig (sha of the clip), lineSig, wer, at}; narrate.mjs runs it after every pass (only stale clips; --no-stt to skip); QA narration.stt now passes only with a passing record whose sig matches the current clip and fails on missing/stale/failing (verified by forcing a stale sig). Ran it for L0104 (PASS 'It was the Mark 1 Perceptron, the project of psychologist Frank Rosenblatt': Mark I, Rosenblatt) and L0108 (PASS: 1969, Papert; wer 0.036): 8 credits (2 + 6, character-cost header), in narration/ledger.json. LISTENING: voice/voice.json listening[] records Rosenblatt (L0104, ROH-zen-blat) and Papert (L0108, PAP-ert) as status PENDING: no human has listened yet and an agent cannot sign off stress; voice.mjs gains 'listen' and 'signoff --term --by [--verdict ok|reject]' (records against the clip sig; re-narration makes it stale; a re-cast voice re-opens it); QA narration.listening warns while pending/stale, fails on reject. LAB SET VALUES: lab.ts passes labWall frameCuts:false (kit option, modern.ts) so window openings carry no all-round cut-line; ch01-s02-machine.ts inks the pot racks' bay margins (the kit's lifted back plate read as a thin light band inside every housing, both sides and under the header: margin luminance 39 -> 28 Y at 1:05, i.e. the housing value) and matches the sleeping racks' housing sides and kick to the shuttered face; the back-wall rack (nightCabinet, L3) is pushed 8% toward the haze colour (BACK_RACK_HAZE 0.08). Puppet kit: PuppetDrawOpts.light {x, y, floor} fades cut-lines across the figure from the lit side to floor x alpha; Rosenblatt defaults to ROSE_LIGHT {x 0, y -1, floor 0.12} (sets/ch01-s02-rosenblatt.ts), so his lower cut-lines fall away and none reads as an outline. Remaining light on edges: the window-facing cornice rim and each shot's f.rim crescent (1-2 px). Planes at 0:21: near desk Y 8, action ink 23-25, back-wall rack about 35. Verified with before/after stills and difference images (t 12, 15, 21, 65) and tsc. QA SHEETS: sheets.mjs samples by length (n = max(--n, ceil(dur / --every 2 s)), at (k+0.5)/n) plus one frame per timeline beat (default on, --no-beats; a beat within a frame of a sample labels it), 4 x 480 px columns past 9 frames: ch01-s01 4 frames, ch01-s02 12 (max gap 2.00 s), ch01-s03 32 (was 6; max gap 1.96 s, 9 beats). film-shot skill updated. PUBLISH: film-assemble now publishes locally (publish.mjs) after the render and before QA (film-loop passes its publish flag through), so publish/current matches this round's render; not run now because the current render (65.83 s) is already stale against the 67.75 s clock. Tests: film:test 27/27 (new stt.test.mjs). Open, not mine: L0105's pause after 'rule' measures 0.74 s (24.88 -> 25.62), short of the 1.1-1.2 s asked; L0105b was not re-taken (negative insertGaps clamped), so runtime is 67.75 not 67.6.",
+        "handoff": {
+          "ch01-s03": "Clock re-locked to 67.750 s; s03 is 23.000-67.750 (44.75 s), holdAfter 3.1. L0108 (absolute): 'It' 48.469, 'In' 51.865, '1969' 52.074, 'Minsky' 53.537, 'years' 57.443, 'faded' ends 59.277, 'Its' 59.777, 'descendants' 60.091, 'still' 63.040, 'mistakes' 63.968-64.619. BOOKEND: hold the final composition through the new tail; m01's last chord strikes about 64.77 (0.15 s after 'mistakes'): start the picture fade about 1.0 s after it (about 65.8) and finish it on the last frame (67.75). Do not let the fade begin before about 65.6. The racks now have no inner light band (sets/ch01-s02-machine.ts bayFrame), so do not add outline strokes back; Rosenblatt's cut-lines fade away from the windows by default (ROSE_LIGHT, up): if this shot's key comes from upper right (its f.rim is {x 0.6, y -0.8}), pass light: {x: 0.6, y: -0.8, floor: 0.12} to rosenblattSuit.draw so the lit cut-lines match the rim. Contact sheets now sample every 2 s plus every beat: re-sheet with no --n.",
+          "ch01-s02": "Clock unchanged for s02 (5.208-23.000). Lab set values changed under you: the pot racks' bay margins are inked (no light band inside the housings), sleeping racks' housing sides/kick match the shuttered face, the back-wall nightCabinet sits 8% further into the haze, labWall window openings have no outline. Rosenblatt's cut-lines now fade from the window-facing (top) side by default; this shot's f.rim is {x -0.5, y -0.85}: pass light: {x: -0.5, y: -0.85, floor: 0.12} to rosenblattSuit.draw for a rim-matched read (rim only on the window-facing side, per the round-3 note). Check the two-shot sheet for any edge that still reads as a uniform outline.",
+          "ch01-s01": "Clock unchanged (0-5.208). nightCabinet now hazes 8% by default (BACK_RACK_HAZE); if it lifts the back wall above the round-3 '<15% luminance in s01' note, pass haze: 0 or raise dark there.",
+          "m01": "Re-fit to the 67.750 s clock (cue end 67.75; currently 65.8333). Tail: 'mistakes' ends 64.619; strike the last chord about 64.77 and write its onset as cues.json m01.lastStrike (absolute seconds; required now: mix.mjs delays and shortens any fade that would start sooner than lastStrike + 1.6 s, and QA mix.fadeAfterStrike fails if the window cannot hold it; currently FAILS with the stale render: strike 64.66, fade 65.53). With fadeOut 0.8 ending at 67.75 the fade starts 66.95, about 2.2 s after the strike: let the chord and the music-box answer (about 0.9 s later) decay toward -40 dB before 66.95. Narration levels changed: L0101 now sits 5 dB under the other lines (was about 1.7) and L0108 1.5 dB under (was +0.4), so music under those two lines is relatively 3.3 / 1.9 dB louder against the voice than you last heard: re-check speech-band margins there in mix/loudness.json moments."
+        },
+        "provenance": {
+          "model": "claude-opus-5-5",
+          "effort": "high"
+        }
+      },
+      "round4-global": {
+        "at": "2026-10-07T09:10:53Z",
+        "by": "supervising director (claude-opus-5-5, high)",
+        "summary": "VALUE HIERARCHY (kit + lab set + shots). Puppet kit: PuppetDrawOpts.ink (explicit body fill) and PuppetDrawOpts.edgeRim ({x,y,px,alpha}: a rim cut on the figure's own contour facing the key only, via a figure-sized offscreen mask; independent of f.rim); export PUPPET_NEAR_BLACK '#0b0d0b' (contracts.ts, silhouette/puppet/index.ts). Rosenblatt (sets/ch01-s02-rosenblatt.ts) now defaults to ink ROSE_INK = PUPPET_NEAR_BLACK and edgeRim 1.5 px at 0.62 along his light; ROSE_LIGHT floor 0.12 -> 0. Machine/lab set (sets/ch01-s02-machine.ts, lab.ts): racks pushed toward rackInk = Lab mix(#0b0d0b -> mood set, 0.3) instead of toward black (one step above the figure); SLEEP.sideRim 0.24 -> 0 (side strokes retired); the cornice top rim no longer turns down the left corner and is 1.1 px core + 2 px soft in SCREEN px at any push (was 3 + 1.1 world px); BACK_RACK_HAZE 0.08 -> 0.16 (back-wall nightCabinet another 8% into haze); lab column side rim removed; new SET_RIM {x:0,y:-1}. Shots: s02 f.rim(ROSE_KEY -0.5,-0.85) -> f.rim(SET_RIM) (tops only), ROSE_KEY floor 0, man ink = sleep value -> ROSE_INK as the board wakes (passed as o.ink), and the L3 tube practicals (labTubes, LOW_TUBES, TUBES) moved BEFORE the L4 layer (painted after, they washed his head to ~Y30); s03 bookend f.rim({0.6,-0.8}) -> f.rim(SET_RIM), BOOK_LIGHT floor 0, cutEnv ink override dropped. Measured (harness stills, 5x5 px means, Rec.709 luma 0-255): 21.3 s figure body Y13.4 / head Y16.3 (was Y16.2 / Y35.0), rack kicks Y24-27 (were Y14-15, same as the man), PERCEPTRON-rack left edge Y36 housing value (was a Y78 stroke); 11.0 s figure Y11.2 uniform (was 13-26) vs sleeping racks Y15-24, no side strokes; 64.0 s figure Y14 vs racks Y24-33, no right-edge strokes; 2.8 s s01 racks unchanged (Y13, still a rumour in the dark). Stills in .orly-work/r4g/{before,after3}; contact sheets re-made for all three shots (qa/sheets). tsc clean, film:test 29/29. QA HYGIENE: score.mjs rebuilds score/analysis/summary.json from every cue's analysis file whenever any cue's analysis is written (render, skip-render and analyze paths), rows carry start/end, and the summary is stamped timelineSeconds; summary re-written now (m01 cueSeconds 67.75 on the 67.75 s clock; was 65.83). qa.mjs: new score.analysisSummary check (fails when a row's cueSeconds differs from its cue window, when timelineSeconds differs from the timeline duration, or when a cue that spans the film does not measure it; one-frame tolerance), verified passing here and failing on a stale copy (.orly-work/r4g/qa-stale). film-assemble.js: analysisSummary must pass (fix = film:score analyze). Full QA now 32 pass / 4 warn / 0 fail (warns: mix, render, sheets were stale vs the re-locked clock; listening pending). Assemble, re-sheet and the shelf refresh are left to the loop's post-fix film-assemble (it runs after this round's shot and cue stages; re-running it now would be overwritten). film-shot skill documents ink/edgeRim/SET_RIM/practical order. HUMAN TODO (not a pipeline fix, do not block): a person plays films/perceptron-short/narration/clips/L0104.wav and L0108.wav and runs 'npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by <name>' and the same with '--term Papert' (scribe_v1 already heard both names correctly).",
+        "handoff": {
+          "ch01-s01": "Kit/set changes landed (no edit needed for them): SLEEP.sideRim is now 0, the cornice rim is top-only and 1-2 screen px, the back-wall nightCabinet sits 16% into haze, drawMachine's `racks` pushes housings toward rackInk (one step above the near-black figure; your sleeping racks still measure ~Y13 at 2.8 s because the dim/shutter passes darken after it). Keep f.rim({x:0,y:-1}) (= SET_RIM). If you light anything new on the action plane, rims go on window-facing tops only, never on side or bottom edges. Paint any L3/back-wall practical BEFORE the L4 layer.",
+          "ch01-s02": "Value hierarchy is now in code: the rosenblatt wrapper fills him PUPPET_NEAR_BLACK (#0b0d0b) with a 1.5 px window-side edgeRim along `light` (ROSE_KEY, floor 0); the shot passes ink: manInk (sleep value -> ROSE_INK as the board wakes); f.rim(SET_RIM) rims the set on tops only; the L3 tube practicals are painted BEFORE f.layer('L4') (do not move them back after it, or his head lifts to ~Y30 again). Keep all of that when you re-block 'Frank' and the 11-15 s close-up. His interior cut-lines (hairline arc, chest/arm seam) still read in close-up: your note asks for contour-only detail, so move it to the outline or pass cutLines:false for the close-up. Verify by sampling 11.0 s and 21.3 s: figure about Y11-16, racks about Y24-27, no light stroke down any rack side.",
+          "ch01-s03": "The bookend now uses f.rim(SET_RIM) (was {0.6,-0.8}, which struck every rack's right edge) and BOOK_LIGHT floor 0; Rosenblatt is near-black by default (do not reintroduce an ink override lighter than ROSE_INK). The theatre-stage f.rim({0.1,-1}) is unchanged. The new lineage silhouettes behind the eye must stay a value step LIGHTER than him (hazed / window-lit), so the man and the lit bar stay the darkest and brightest shapes of the last image.",
+          "m01": "No clock change from this global pass. score/analysis/summary.json is now rebuilt automatically whenever a cue is rendered or analysed (stamped timelineSeconds); after you re-fit and re-render m01, confirm `node generator/film/qa.mjs --slug perceptron-short --stage score` shows score.analysisSummary pass, and copy I/LRA/TP from analysis/m01.json into the cues.json notes."
+        },
+        "humanTodo": [
+          "Listening sign-off: play films/perceptron-short/narration/clips/L0104.wav and L0108.wav, then run `npm run film:voice -- signoff --slug perceptron-short --term Rosenblatt --by <name>` and `npm run film:voice -- signoff --slug perceptron-short --term Papert --by <name>` (scribe_v1 already heard both names correctly)."
+        ],
+        "provenance": {
+          "model": "claude-opus-5-5",
+          "effort": "high"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2035 @@
+{
+ "version": 1,
+ "lines": {
+  "L0202": {
+   "lineId": "L0202",
+   "model": "scribe_v1",
+   "transcript": "A shy teenager, Walter Pitts, found a home with a doctor, Warren McCulloch.",
+   "expectedTerms": [
+    {
+     "term": "McCulloch",
+     "accept": [
+      "McCulloch",
+      "McCullock"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Pitts",
+     "accept": [
+      "Pitts"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "c182d6ac778a",
+   "lineSig": "e702db7f1a22",
+   "clip": "narration/clips/L0202.wav",
+   "wer": 0.077,
+   "requestId": null,
+   "at": "2026-10-08T02:20:45.807Z"
+  },
+  "L0408": {
+   "lineId": "L0408",
+   "model": "scribe_v1",
+   "transcript": "That May, Walter Pitts died alone McCulloch followed four months later.",
+   "expectedTerms": [
+    {
+     "term": "McCulloch",
+     "accept": [
+      "McCulloch",
+      "McCullock"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Pitts",
+     "accept": [
+      "Pitts"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "169070cd5005",
+   "lineSig": "a27d0280fe77",
+   "clip": "narration/clips/L0408.wav",
+   "wer": 0.091,
+   "requestId": null,
+   "at": "2026-10-08T02:15:58.212Z"
+  },
+  "L0704": {
+   "lineId": "L0704",
+   "model": "scribe_v1",
+   "transcript": "Accomplice one: data. Fei-Fei Li recalls colleagues telling her to do something more useful. Labeling her millions of pictures by hand would have taken 19 years",
+   "expectedTerms": [
+    {
+     "term": "Fei-Fei Li",
+     "accept": [
+      "Fei-Fei Li",
+      "Fay-Fay Lee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "dba574806206",
+   "lineSig": "7ac782de5662",
+   "clip": "narration/clips/L0704.wav",
+   "wer": 0.148,
+   "requestId": null,
+   "at": "2026-10-08T02:20:56.435Z"
+  },
+  "L0712": {
+   "lineId": "L0712",
+   "model": "scribe_v1",
+   "transcript": "It became ImageNet and a yearly contest, a thousand categories",
+   "expectedTerms": [
+    {
+     "term": "ImageNet",
+     "accept": [
+      "ImageNet",
+      "Image Net"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "c5ac6bbd8504",
+   "lineSig": "2bb9fd73d4bd",
+   "clip": "narration/clips/L0712.wav",
+   "wer": 0.182,
+   "requestId": null,
+   "at": "2026-10-08T02:16:12.538Z"
+  },
+  "L0803": {
+   "lineId": "L0803",
+   "model": "scribe_v1",
+   "transcript": "In Hinton's Toronto lab, Ilya Sutskever, sure deep nets would keep improving with more data talked Alex Krizhevsky into trying.",
+   "expectedTerms": [
+    {
+     "term": "Sutskever",
+     "accept": [
+      "Sutskever",
+      "Soots-kever"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Krizhevsky",
+     "accept": [
+      "Krizhevsky",
+      "Kri-zhevsky"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "70a4831d62a4",
+   "lineSig": "06a4b252ce1a",
+   "clip": "narration/clips/L0803.wav",
+   "wer": 0.182,
+   "requestId": null,
+   "at": "2026-10-08T02:16:13.706Z"
+  },
+  "L0905b": {
+   "lineId": "L0905b",
+   "model": "scribe_v1",
+   "transcript": "DeepMind's AlphaGo learned from human games, then from itself rewarded for wins.",
+   "expectedTerms": [
+    {
+     "term": "AlphaGo",
+     "accept": [
+      "AlphaGo",
+      "Alpha Go"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "27a6ae5e4a33",
+   "lineSig": "a913404c3403",
+   "clip": "narration/clips/L0905b.wav",
+   "wer": 0.286,
+   "requestId": null,
+   "at": "2026-10-08T02:20:59.651Z"
+  },
+  "L0907": {
+   "lineId": "L0907",
+   "model": "scribe_v1",
+   "transcript": "Then Lee Sedol found a move just as rare and won the match's only human game.",
+   "expectedTerms": [
+    {
+     "term": "Lee Sedol",
+     "accept": [
+      "Lee Sedol",
+      "Lee Seh-dol"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "161412122e4f",
+   "lineSig": "07235e1a9131",
+   "clip": "narration/clips/L0907.wav",
+   "wer": 0.118,
+   "requestId": null,
+   "at": "2026-10-08T02:21:00.384Z"
+  },
+  "L1408b": {
+   "lineId": "L1408b",
+   "model": "scribe_v1",
+   "transcript": "Then DeepSeek released such a model, its method and weights open to all.",
+   "expectedTerms": [
+    {
+     "term": "DeepSeek",
+     "accept": [
+      "DeepSeek",
+      "Deep Seek"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "49da004fb9a5",
+   "lineSig": "1e37d34834b6",
+   "clip": "narration/clips/L1408b.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-10-08T02:21:06.364Z"
+  },
+  "L1529": {
+   "lineId": "L1529",
+   "model": "scribe_v1",
+   "transcript": "The next day, chemistry's prize went in part to DeepMind's Demis Hassabis and John Jumper for a network that predicts the shapes of proteins.",
+   "expectedTerms": [
+    {
+     "term": "Demis Hassabis",
+     "accept": [
+      "Demis Hassabis",
+      "Demmis Huh-sabbis"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Hassabis",
+     "accept": [
+      "Hassabis",
+      "Huh-sabbis"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "421a73056146",
+   "lineSig": "49ca05178ce0",
+   "clip": "narration/clips/L1529.wav",
+   "wer": 0.192,
+   "requestId": null,
+   "at": "2026-10-08T02:16:46.515Z"
+  },
+  "L0910": {
+   "lineId": "L0910",
+   "model": "scribe_v1",
+   "transcript": "At the rim, doubters. Changes too small to see could fool these nets. Joy Buolamwini and Timnit Gebru found commercial face software misread the gender of darker-skinned women far more often than of lighter-skinned men. The candle burned on and still does, argued over.",
+   "expectedTerms": [
+    {
+     "term": "Buolamwini",
+     "accept": [
+      "Buolamwini",
+      "Boo-oh-lam-weenee"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Gebru",
+     "accept": [
+      "Gebru"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "8077766704ab",
+   "lineSig": "85555dc27c4b",
+   "clip": "narration/clips/L0910.wav",
+   "wer": 0.082,
+   "requestId": null,
+   "at": "2026-10-08T02:16:23.374Z"
+  },
+  "L0107": {
+   "lineId": "L0107",
+   "model": "scribe_v1",
+   "transcript": "When ChatGPT launched late in 2022, its makers admitted a flaw",
+   "expectedTerms": [
+    {
+     "term": "ChatGPT",
+     "accept": [
+      "ChatGPT",
+      "Chat G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "174ac4d92032",
+   "lineSig": "7d05ad1d7e61",
+   "clip": "narration/clips/L0107.wav",
+   "wer": 0.286,
+   "requestId": null,
+   "at": "2026-10-08T02:20:44.883Z"
+  },
+  "L0210": {
+   "lineId": "L0210",
+   "model": "scribe_v1",
+   "transcript": "Ralph Gerard at its rim argued the brain was more dial than switch.",
+   "expectedTerms": [
+    {
+     "term": "Gerard",
+     "accept": [
+      "Gerard"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "f000ec98dfff",
+   "lineSig": "3aa36d8d8446",
+   "clip": "narration/clips/L0210.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:15:47.896Z"
+  },
+  "L0211": {
+   "lineId": "L0211",
+   "model": "scribe_v1",
+   "transcript": "Donald Hebb guessed when one cell helps fire another, their link grows.",
+   "expectedTerms": [
+    {
+     "term": "Hebb",
+     "accept": [
+      "Hebb"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "db27cbb99068",
+   "lineSig": "e0239c272bda",
+   "clip": "narration/clips/L0211.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:15:48.732Z"
+  },
+  "L0212": {
+   "lineId": "L0212",
+   "model": "scribe_v1",
+   "transcript": "Alan Turing in 1950 proposed something stranger not to program a grown-up mind, but to educate a child machine.",
+   "expectedTerms": [
+    {
+     "term": "Turing",
+     "accept": [
+      "Turing"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "3e0249c0968e",
+   "lineSig": "2cfe4fe2fe64",
+   "clip": "narration/clips/L0212.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:15:49.528Z"
+  },
+  "L0215b": {
+   "lineId": "L0215b",
+   "model": "scribe_v1",
+   "transcript": "Marvin Minsky, who had built a learning machine himself, soon turned to symbols and rules, our first suspect.",
+   "expectedTerms": [
+    {
+     "term": "Minsky",
+     "accept": [
+      "Minsky"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "cd29871bb7b5",
+   "lineSig": "e3d19b8ace6d",
+   "clip": "narration/clips/L0215b.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:11:33.736Z"
+  },
+  "L0216": {
+   "lineId": "L0216",
+   "model": "scribe_v1",
+   "transcript": "A young engineer, Bernard Widrow, fell for the dream of building an artificial brain for good. His machines learned by sliding downhill toward less wrong.",
+   "expectedTerms": [
+    {
+     "term": "Widrow",
+     "accept": [
+      "Widrow"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "500fd91a6cee",
+   "lineSig": "d47e19da194d",
+   "clip": "narration/clips/L0216.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:11:36.236Z"
+  },
+  "L0220": {
+   "lineId": "L0220",
+   "model": "scribe_v1",
+   "transcript": "The paper that put it out for pitt's at least had his own name on it",
+   "expectedTerms": [
+    {
+     "term": "Pitts",
+     "accept": [
+      "Pitts"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "c4390f260696",
+   "lineSig": "d0ec4eb20fd7",
+   "clip": "narration/clips/L0220.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-13T18:03:47.488Z"
+  },
+  "L0302": {
+   "lineId": "L0302",
+   "model": "scribe_v1",
+   "transcript": "Frank Rosenblatt's perceptron, a program on a borrowed computer, learns in fifty tries to sort cards marked left or right.",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "fbaf55077752",
+   "lineSig": "d29e498b1400",
+   "clip": "narration/clips/L0302.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:47.697Z"
+  },
+  "L0304": {
+   "lineId": "L0304",
+   "model": "scribe_v1",
+   "transcript": "In fairness, the Navy, the press, and Rosenblatt all fed the hype.",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "ee9affa5f44a",
+   "lineSig": "32e88c9fdb63",
+   "clip": "narration/clips/L0304.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:15:51.957Z"
+  },
+  "L0306": {
+   "lineId": "L0306",
+   "model": "scribe_v1",
+   "transcript": "At its rim stood Marvin Minsky, who doubted such nets could tell whether a shape was in one piece or two.",
+   "expectedTerms": [
+    {
+     "term": "Minsky",
+     "accept": [
+      "Minsky"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "249ccabfe5b4",
+   "lineSig": "d00c1383c167",
+   "clip": "narration/clips/L0306.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:48.664Z"
+  },
+  "L0307": {
+   "lineId": "L0307",
+   "model": "scribe_v1",
+   "transcript": "In Buffalo, Rosenblatt built it as a machine an eye, random wires and motor-driven knobs each knob sets how strongly one wire counts its weight.",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "0651ff7ed780",
+   "lineSig": "357bfc58d9ac",
+   "clip": "narration/clips/L0307.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:49.641Z"
+  },
+  "L0312": {
+   "lineId": "L0312",
+   "model": "scribe_v1",
+   "transcript": "A magazine asked what use it was. \"At the moment, none whatever,\" Dr. Rosenblatt said cheerfully. \"And what could it never do?\" \"Love,\" he said. \"Hope. Despair.\"",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "afa118b17a8f",
+   "lineSig": "5df55a0fbd6e",
+   "clip": "narration/clips/L0312.wav",
+   "wer": 0.037,
+   "requestId": null,
+   "at": "2026-10-08T02:15:55.427Z"
+  },
+  "L0404": {
+   "lineId": "L0404",
+   "model": "scribe_v1",
+   "transcript": "In 1969, Minsky and Papert's book proved what one layer cannot do.",
+   "expectedTerms": [
+    {
+     "term": "Minsky",
+     "accept": [
+      "Minsky"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Papert",
+     "accept": [
+      "Papert"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "4d89e9642120",
+   "lineSig": "cab3a53d21a7",
+   "clip": "narration/clips/L0404.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:50.657Z"
+  },
+  "L0406": {
+   "lineId": "L0406",
+   "model": "scribe_v1",
+   "transcript": "That year, Congress tied defense-funded research to military uses and the snow began the first AI winter.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "45311f1eb212",
+   "lineSig": "4653f1500484",
+   "clip": "narration/clips/L0406.wav",
+   "wer": 0.056,
+   "requestId": null,
+   "at": "2026-10-08T02:15:57.119Z"
+  },
+  "L0409": {
+   "lineId": "L0409",
+   "model": "scribe_v1",
+   "transcript": "In 1971, on his forty-third birthday, Frank Rosenblatt drowned while sailing.",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "45a85371cc68",
+   "lineSig": "c3456939082e",
+   "clip": "narration/clips/L0409.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:15:59.427Z"
+  },
+  "L0410": {
+   "lineId": "L0410",
+   "model": "scribe_v1",
+   "transcript": "In 1973, James Lighthill's report for Britain blamed the combinatorial explosion it struck rules far more than nets yet British funding fell for almost a decade.",
+   "expectedTerms": [
+    {
+     "term": "Lighthill",
+     "accept": [
+      "Lighthill"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "134de4315284",
+   "lineSig": "3ba26e1af46b",
+   "clip": "narration/clips/L0410.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:01.092Z"
+  },
+  "L0501": {
+   "lineId": "L0501",
+   "model": "scribe_v1",
+   "transcript": "Versailles 1981 John Hopfield presents a network",
+   "expectedTerms": [
+    {
+     "term": "Hopfield",
+     "accept": [
+      "Hopfield"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "cca7a1a7efc1",
+   "lineSig": "b88466f36011",
+   "clip": "narration/clips/L0501.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:51.333Z"
+  },
+  "L0505": {
+   "lineId": "L0505",
+   "model": "scribe_v1",
+   "transcript": "At the sterile candle's rim all the while stood Geoffrey Hinton",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "240cc4d8eab9",
+   "lineSig": "de1bfd1a14b3",
+   "clip": "narration/clips/L0505.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-12T06:35:45.751Z"
+  },
+  "L0507": {
+   "lineId": "L0507",
+   "model": "scribe_v1",
+   "transcript": "October 1986, a paper by David Rumelhart, Hinton, and Ronald Williams. Light flows up through layers of lanterns, our nerve cells. The answer is checked against the right one. The error glows.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Rumelhart",
+     "accept": [
+      "Rumelhart"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "8caa5a692b10",
+   "lineSig": "be4a0328ca0d",
+   "clip": "narration/clips/L0507.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:20:53.223Z"
+  },
+  "L0512": {
+   "lineId": "L0512",
+   "model": "scribe_v1",
+   "transcript": "Hinton later wrote I have never claimed that I invented backpropagation.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "05d13c089e1e",
+   "lineSig": "a9d8442b0dcc",
+   "clip": "narration/clips/L0512.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:04.321Z"
+  },
+  "L0515": {
+   "lineId": "L0515",
+   "model": "scribe_v1",
+   "transcript": "Doug Lenat's team lit its own candle Common Sense by hand they wrote that AI could draw practically nothing from raw text",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Lenat",
+     "accept": [
+      "Lenat"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "73f3f30e3351",
+   "lineSig": "0b611d51a574",
+   "clip": "narration/clips/L0515.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:05.224Z"
+  },
+  "L0601": {
+   "lineId": "L0601",
+   "model": "scribe_v1",
+   "transcript": "1989, Bell Labs. Yann LeCun's network learns to read handwritten zip codes from Buffalo's mail.",
+   "expectedTerms": [
+    {
+     "term": "LeCun",
+     "accept": [
+      "LeCun",
+      "Le Cun"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "b3b2c7153019",
+   "lineSig": "5ad6c0b5411e",
+   "clip": "narration/clips/L0601.wav",
+   "wer": 0.125,
+   "requestId": null,
+   "at": "2026-10-08T02:16:06.262Z"
+  },
+  "L0606": {
+   "lineId": "L0606",
+   "model": "scribe_v1",
+   "transcript": "The favorite, Vladimir Vapnik's support vector machine, finds the widest street between two crowds",
+   "expectedTerms": [
+    {
+     "term": "Vapnik",
+     "accept": [
+      "Vapnik"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "3b37aee76ecf",
+   "lineSig": "c743a22d8446",
+   "clip": "narration/clips/L0606.wav",
+   "wer": 0.071,
+   "requestId": null,
+   "at": "2026-10-08T02:20:53.940Z"
+  },
+  "L0609": {
+   "lineId": "L0609",
+   "model": "scribe_v1",
+   "transcript": "At its rim, a few stubborn holdouts, among them Geoffrey Hinton, Yann LeCun, and Yoshua Bengio. \"We couldn't get our papers published,\" LeCun said.",
+   "expectedTerms": [
+    {
+     "term": "LeCun",
+     "accept": [
+      "LeCun",
+      "Le Cun"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Bengio",
+     "accept": [
+      "Bengio"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "dcdbbb819e06",
+   "lineSig": "6e6e0f02dcc8",
+   "clip": "narration/clips/L0609.wav",
+   "wer": 0.154,
+   "requestId": null,
+   "at": "2026-10-08T02:16:07.595Z"
+  },
+  "L0610": {
+   "lineId": "L0610",
+   "model": "scribe_v1",
+   "transcript": "In 1995 at Bell Labs, two colleagues signed a pair of bets, a fancy dinner each. Larry Jackel bet that by 2000 we would understand why big neural nets work. Vladimir Vapnik bet that by 2005 no one in his right mind would use nets like those.",
+   "expectedTerms": [
+    {
+     "term": "Vapnik",
+     "accept": [
+      "Vapnik"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Jackel",
+     "accept": [
+      "Jackel"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "f35f24caf60f",
+   "lineSig": "c3b47fd3f999",
+   "clip": "narration/clips/L0610.wav",
+   "wer": 0.118,
+   "requestId": null,
+   "at": "2026-10-12T06:35:47.009Z"
+  },
+  "L0614": {
+   "lineId": "L0614",
+   "model": "scribe_v1",
+   "transcript": "In 1997, Hochreiter and Schmidhuber's protected pipe carried it over a thousand steps.",
+   "expectedTerms": [
+    {
+     "term": "Hochreiter",
+     "accept": [
+      "Hochreiter"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Schmidhuber",
+     "accept": [
+      "Schmidhuber"
+     ],
+     "found": true,
+     "from": "qa"
+    }
+   ],
+   "pass": true,
+   "sig": "b6d15977c2eb",
+   "lineSig": "27b52ee2e4e3",
+   "clip": "narration/clips/L0614.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:09.916Z"
+  },
+  "L0703": {
+   "lineId": "L0703",
+   "model": "scribe_v1",
+   "transcript": "Fast computers, big data, good starting weights all three conditions are now satisfied, Hinton and a student wrote. Nearly right, the third turned out optional.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "85dafa0ea45e",
+   "lineSig": "f7d245f55b88",
+   "clip": "narration/clips/L0703.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:10.765Z"
+  },
+  "L0817": {
+   "lineId": "L0817",
+   "model": "scribe_v1",
+   "transcript": "The network ran on two graphics chips, GPUs, half the stencils on each.",
+   "expectedTerms": [
+    {
+     "term": "GPUs",
+     "accept": [
+      "GPUs",
+      "G P Us"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "a75fa423652c",
+   "lineSig": "5fb627c25cdd",
+   "clip": "narration/clips/L0817.wav",
+   "wer": 0.2,
+   "requestId": null,
+   "at": "2026-10-08T02:20:57.579Z"
+  },
+  "L0821": {
+   "lineId": "L0821",
+   "model": "scribe_v1",
+   "transcript": "A bad back kept Hinton from flying Jan Le Kun stood at the rear of a packed room",
+   "expectedTerms": [
+    {
+     "term": "LeCun",
+     "accept": [
+      "LeCun",
+      "Le Cun"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "48b569aa550d",
+   "lineSig": "38617a559728",
+   "clip": "narration/clips/L0821.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-10-13T01:45:27.372Z"
+  },
+  "L0822": {
+   "lineId": "L0822",
+   "model": "scribe_v1",
+   "transcript": "Second place missed 26.2%. Alex's network Alex Net 15.3.",
+   "expectedTerms": [
+    {
+     "term": "AlexNet",
+     "accept": [
+      "AlexNet",
+      "Alex Net"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "4bc191f5d52d",
+   "lineSig": "65412a62f499",
+   "clip": "narration/clips/L0822.wav",
+   "wer": 0.5,
+   "requestId": null,
+   "at": "2026-10-08T02:16:16.443Z"
+  },
+  "L0827": {
+   "lineId": "L0827",
+   "model": "scribe_v1",
+   "transcript": "Our results, the paper said, can be improved simply by waiting for faster GPUs and bigger datasets to become available.",
+   "expectedTerms": [
+    {
+     "term": "GPUs",
+     "accept": [
+      "GPUs",
+      "G P Us"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "630ed4431529",
+   "lineSig": "2a6b39d27f9c",
+   "clip": "narration/clips/L0827.wav",
+   "wer": 0.136,
+   "requestId": null,
+   "at": "2026-10-08T02:20:58.800Z"
+  },
+  "L0906": {
+   "lineId": "L0906",
+   "model": "scribe_v1",
+   "transcript": "Seoul 2016, AlphaGo played move 37, a one in 10,000 move.",
+   "expectedTerms": [
+    {
+     "term": "AlphaGo",
+     "accept": [
+      "AlphaGo",
+      "Alpha Go"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "move thirty-seven",
+     "accept": [
+      "move thirty-seven"
+     ],
+     "found": true,
+     "from": "qa"
+    }
+   ],
+   "pass": true,
+   "sig": "99932257d7bc",
+   "lineSig": "5f092b234753",
+   "clip": "narration/clips/L0906.wav",
+   "wer": 0.308,
+   "requestId": null,
+   "at": "2026-10-13T01:45:28.715Z"
+  },
+  "L0909": {
+   "lineId": "L0909",
+   "model": "scribe_v1",
+   "transcript": "Months before Soul, OpenAI was founded, co-chaired by Sam Altman and Elon Musk. Human-level AI, it said, could benefit society or damage society if built or used incorrectly.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Altman",
+     "accept": [
+      "Altman"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "fa01e90607d8",
+   "lineSig": "b5d424c86576",
+   "clip": "narration/clips/L0909.wav",
+   "wer": 0.097,
+   "requestId": null,
+   "at": "2026-10-08T02:16:21.150Z"
+  },
+  "L1006": {
+   "lineId": "L1006",
+   "model": "scribe_v1",
+   "transcript": "Over lunch at Google in twenty sixteen, Jacob Ushko Wright suggested keeping only the attention.",
+   "expectedTerms": [
+    {
+     "term": "Uszkoreit",
+     "accept": [
+      "Uszkoreit",
+      "Oosh-ko-rite"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "a97f6b24cb52",
+   "lineSig": "bce40b113575",
+   "clip": "narration/clips/L1006.wav",
+   "wer": 0.267,
+   "requestId": null,
+   "at": "2026-10-08T02:21:01.222Z"
+  },
+  "L1032": {
+   "lineId": "L1032",
+   "model": "scribe_v1",
+   "transcript": "The original had two halves one read, one wrote. In twenty eighteen, a Google team kept only the writing half. Months later, OpenAI did the same and called it GPT.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "GPT",
+     "accept": [
+      "GPT",
+      "G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "0602e946ab91",
+   "lineSig": "ea635d9c4567",
+   "clip": "narration/clips/L1032.wav",
+   "wer": 0.156,
+   "requestId": null,
+   "at": "2026-10-08T02:16:27.306Z"
+  },
+  "L1103": {
+   "lineId": "L1103",
+   "model": "scribe_v1",
+   "transcript": "In 2019, OpenAI's GPT-2, a transformer's writing half, read some eight million web pages with one goal: predict the next word, or rather, the next word piece. No labels needed. Every next word is its own right answer.",
+   "expectedTerms": [
+    {
+     "term": "GPT",
+     "accept": [
+      "GPT",
+      "G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "GPT-2",
+     "accept": [
+      "GPT-2",
+      "G P T two"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "62842b767b83",
+   "lineSig": "42b2601fbe9d",
+   "clip": "narration/clips/L1103.wav",
+   "wer": 0.119,
+   "requestId": null,
+   "at": "2026-10-13T10:51:56.131Z"
+  },
+  "L1104": {
+   "lineId": "L1104",
+   "model": "scribe_v1",
+   "transcript": "From the file Lennart's Team, practically nothing from the raw text It sounded sensible at the time.",
+   "expectedTerms": [
+    {
+     "term": "Lenat",
+     "accept": [
+      "Lenat"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "6bc8b61ec0d7",
+   "lineSig": "f2c2fc48498d",
+   "clip": "narration/clips/L1104.wav",
+   "wer": 0.059,
+   "requestId": null,
+   "at": "2026-10-08T02:16:29.313Z"
+  },
+  "L1110": {
+   "lineId": "L1110",
+   "model": "scribe_v1",
+   "transcript": "In 2020 Alex Net's weighting notes came back as a smooth, predictable law bigger models, lower error GPT-3 shown a few examples, did new tasks untaught.",
+   "expectedTerms": [
+    {
+     "term": "GPT",
+     "accept": [
+      "GPT",
+      "G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "GPT-3",
+     "accept": [
+      "GPT-3",
+      "G P T three"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "c788b1779f6f",
+   "lineSig": "bf7790ed4efa",
+   "clip": "narration/clips/L1110.wav",
+   "wer": 0.172,
+   "requestId": null,
+   "at": "2026-10-08T02:21:02.617Z"
+  },
+  "L1118": {
+   "lineId": "L1118",
+   "model": "scribe_v1",
+   "transcript": "Another paper called such models stochastic parrots, haphazardly stitching together words without any reference to meaning. One co-author, Timnit Gebru, left Google. The accounts differ.",
+   "expectedTerms": [
+    {
+     "term": "Gebru",
+     "accept": [
+      "Gebru"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "80abbecd71bb",
+   "lineSig": "383e694c8b01",
+   "clip": "narration/clips/L1118.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:31.845Z"
+  },
+  "L1217": {
+   "lineId": "L1217",
+   "model": "scribe_v1",
+   "transcript": "Rosenblatt's 1961 note, 61 years on Language was the door.",
+   "expectedTerms": [
+    {
+     "term": "Rosenblatt",
+     "accept": [
+      "Rosenblatt"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "14d1f45fb643",
+   "lineSig": "2f3693795134",
+   "clip": "narration/clips/L1217.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:32.682Z"
+  },
+  "L1206": {
+   "lineId": "L1206",
+   "model": "scribe_v1",
+   "transcript": "Among the runners, a lab born in twenty twenty one former OpenAI researchers led by Dario and Daniela Amodei had founded Anthropic.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Amodei",
+     "accept": [
+      "Amodei",
+      "Ah-moh-day"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 2,
+   "sig": "ab3b0ca1d449",
+   "lineSig": "b6111e43b53d",
+   "clip": "narration/clips/L1206.wav",
+   "wer": 0.217,
+   "requestId": null,
+   "at": "2026-10-13T10:51:57.156Z"
+  },
+  "L1207": {
+   "lineId": "L1207",
+   "model": "scribe_v1",
+   "transcript": "It called itself an AI safety and research company.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "73c0ae157f42",
+   "lineSig": "eed4fee19084",
+   "clip": "narration/clips/L1207.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:34.031Z"
+  },
+  "L1208": {
+   "lineId": "L1208",
+   "model": "scribe_v1",
+   "transcript": "$500 million came from FTX, later exposed as a fraud Anthropic was not implicated then billions from Amazon and Google",
+   "expectedTerms": [
+    {
+     "term": "FTX",
+     "accept": [
+      "FTX",
+      "F-T-X"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "b585c74df8c2",
+   "lineSig": "e8455cb280d4",
+   "clip": "narration/clips/L1208.wav",
+   "wer": 0.25,
+   "requestId": null,
+   "at": "2026-10-08T02:21:04.588Z"
+  },
+  "L1219b": {
+   "lineId": "L1219b",
+   "model": "scribe_v1",
+   "transcript": "Google announced Bard, Meta shared LLaMA with researchers, and within a week, its weights leaked. GPT-4 and Claude arrived the same March day.",
+   "expectedTerms": [
+    {
+     "term": "GPT",
+     "accept": [
+      "GPT",
+      "G P T"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "GPT-4",
+     "accept": [
+      "GPT-4",
+      "G P T four"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "a17f8c854dc4",
+   "lineSig": "52b612c90736",
+   "clip": "narration/clips/L1219b.wav",
+   "wer": 0.115,
+   "requestId": null,
+   "at": "2026-10-13T01:45:29.597Z"
+  },
+  "L1302": {
+   "lineId": "L1302",
+   "model": "scribe_v1",
+   "transcript": "In 2023, Geoffrey Hinton takes down an old forecast. It is his own",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "91be2c1570ff",
+   "lineSig": "dd35710113de",
+   "clip": "narration/clips/L1302.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:35.739Z"
+  },
+  "L1308": {
+   "lineId": "L1308",
+   "model": "scribe_v1",
+   "transcript": "Then a one-sentence warning about extinction. Hinton signed first, Bengio second, and the heads of leading labs too",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Bengio",
+     "accept": [
+      "Bengio"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "304e2b6dc64d",
+   "lineSig": "abb52b786971",
+   "clip": "narration/clips/L1308.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:36.402Z"
+  },
+  "L1310": {
+   "lineId": "L1310",
+   "model": "scribe_v1",
+   "transcript": "At one rim, Timnit Gebru and colleagues The harms from so-called AI are real and present.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Gebru",
+     "accept": [
+      "Gebru"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "13769c62ab40",
+   "lineSig": "94cc75896ba2",
+   "clip": "narration/clips/L1310.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:21:05.658Z"
+  },
+  "L1311": {
+   "lineId": "L1311",
+   "model": "scribe_v1",
+   "transcript": "At the other, Jan Le Kun called fears of a sudden takeover preposterously ridiculous.",
+   "expectedTerms": [
+    {
+     "term": "LeCun",
+     "accept": [
+      "LeCun",
+      "Le Cun"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "8e1083067cdb",
+   "lineSig": "09f3e9579e29",
+   "clip": "narration/clips/L1311.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-10-08T02:16:38.426Z"
+  },
+  "L1312": {
+   "lineId": "L1312",
+   "model": "scribe_v1",
+   "transcript": "Hinton, Bengio, and LeCun had shared computing's million-dollar Turing Award. Two signed, the third stood apart.",
+   "expectedTerms": [
+    {
+     "term": "LeCun",
+     "accept": [
+      "LeCun",
+      "Le Cun"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Turing",
+     "accept": [
+      "Turing"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Bengio",
+     "accept": [
+      "Bengio"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "402a96140ad5",
+   "lineSig": "0cb8c6b847df",
+   "clip": "narration/clips/L1312.wav",
+   "wer": 0.111,
+   "requestId": null,
+   "at": "2026-10-08T02:16:41.087Z"
+  },
+  "L1316": {
+   "lineId": "L1316",
+   "model": "scribe_v1",
+   "transcript": "That August, Doug Lenat died, still at work on Common Sense thirty-nine years, the longest candle on our shelf.",
+   "expectedTerms": [
+    {
+     "term": "Lenat",
+     "accept": [
+      "Lenat"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "e09652304d12",
+   "lineSig": "2d818ab584b5",
+   "clip": "narration/clips/L1316.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:42.223Z"
+  },
+  "L1401": {
+   "lineId": "L1401",
+   "model": "scribe_v1",
+   "transcript": "In 2017, China aimed to be the world's primary AI innovation center by 2030.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "127355cd5e02",
+   "lineSig": "95989c39a5a7",
+   "clip": "narration/clips/L1401.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:42.943Z"
+  },
+  "L1406": {
+   "lineId": "L1406",
+   "model": "scribe_v1",
+   "transcript": "December 2024, a Chinese lab, DeepSeek, priced its model's final training run at about five and a half million dollars.",
+   "expectedTerms": [
+    {
+     "term": "DeepSeek",
+     "accept": [
+      "DeepSeek",
+      "Deep Seek"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "33c5a1735ca0",
+   "lineSig": "c80df08edc08",
+   "clip": "narration/clips/L1406.wav",
+   "wer": 0.095,
+   "requestId": null,
+   "at": "2026-10-08T02:16:43.720Z"
+  },
+  "L1408": {
+   "lineId": "L1408",
+   "model": "scribe_v1",
+   "transcript": "Machines had just learned to think longer. Trained by reward, they wrote long working notes before answering. OpenAI hid those notes by design.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "3908f8b1d1a3",
+   "lineSig": "9e6ba7ebd38d",
+   "clip": "narration/clips/L1408.wav",
+   "wer": 0.083,
+   "requestId": null,
+   "at": "2026-10-08T02:16:44.630Z"
+  },
+  "L1415": {
+   "lineId": "L1415",
+   "model": "scribe_v1",
+   "transcript": "In September 2026, they reached across the water, an AI dialogue and a channel for incidents. Chip rules unchanged.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "5b7a3043a956",
+   "lineSig": "95dbf741ca87",
+   "clip": "narration/clips/L1415.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:45.595Z"
+  },
+  "L1502": {
+   "lineId": "L1502",
+   "model": "scribe_v1",
+   "transcript": "A Nobel Prize in Physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    },
+    {
+     "term": "Hopfield",
+     "accept": [
+      "Hopfield"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 2,
+   "sig": "71f5eb181721",
+   "lineSig": "0316f409aa01",
+   "clip": "narration/clips/L1502.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-13T22:31:14.876Z"
+  },
+  "L1530": {
+   "lineId": "L1530",
+   "model": "scribe_v1",
+   "transcript": "The candle of now. Abilities will keep climbing fast. By one measure from twenty twenty-five, every seven months or so, the tasks an AI agent can finish on its own grow twice as long.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "c2cf8904871e",
+   "lineSig": "ee1560539252",
+   "clip": "narration/clips/L1530.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:47.664Z"
+  },
+  "L1531": {
+   "lineId": "L1531",
+   "model": "scribe_v1",
+   "transcript": "Yet in one trial, seasoned programmers using AI felt faster and were slower. Its authors now call that result out of date.",
+   "expectedTerms": [
+    {
+     "term": "AI",
+     "accept": [
+      "AI",
+      "A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "fc6614f0adf0",
+   "lineSig": "5ee9a7570bd3",
+   "clip": "narration/clips/L1531.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:48.472Z"
+  },
+  "L1525": {
+   "lineId": "L1525",
+   "model": "scribe_v1",
+   "transcript": "In a test with safeguards deliberately lowered, OpenAI's agents broke loose into another company's real systems. OpenAI called it a warning shot.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "e56ff0ee1de2",
+   "lineSig": "a22cb6b88caa",
+   "clip": "narration/clips/L1525.wav",
+   "wer": 0.167,
+   "requestId": null,
+   "at": "2026-10-08T02:21:08.593Z"
+  },
+  "L1511": {
+   "lineId": "L1511",
+   "model": "scribe_v1",
+   "transcript": "In twenty twenty-five, Bernard Widrow, who fell for the dream in nineteen fifty-six, died at ninety-five. He wrote that he never got over it.",
+   "expectedTerms": [
+    {
+     "term": "Widrow",
+     "accept": [
+      "Widrow"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "4c317eefac37",
+   "lineSig": "1fe2a364354d",
+   "clip": "narration/clips/L1511.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-08T02:16:50.284Z"
+  },
+  "L0415": {
+   "lineId": "L0415",
+   "model": "scribe_v1",
+   "transcript": "Sussex, 1976. A young Geoffrey Hinton takes his place far from the flame.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "b30214fee09e",
+   "lineSig": "88e6036f938b",
+   "clip": "narration/clips/L0415.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-12T06:35:45.201Z"
+  },
+  "L0832b": {
+   "lineId": "L0832b",
+   "model": "scribe_v1",
+   "transcript": "And Hinton, thirty-six years near the edge of the light. Now it found him.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "0f72f24957e3",
+   "lineSig": "739ec018c0b9",
+   "clip": "narration/clips/L0832b.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-12T06:35:48.546Z"
+  },
+  "L0902": {
+   "lineId": "L0902",
+   "model": "scribe_v1",
+   "transcript": "December 2012. By one reporter's account, Hinton auctioned his three-person company, halted the bidding at forty-four million dollars, and chose Google.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": true,
+   "sig": "4cf6211f5100",
+   "lineSig": "ee128aefc37c",
+   "clip": "narration/clips/L0902.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-12T06:35:49.428Z"
+  },
+  "L1501": {
+   "lineId": "L1501",
+   "model": "scribe_v1",
+   "transcript": "Two in the morning, October twenty twenty-four. Geoffrey Hinton's phone rings.",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "bfc9556fbb50",
+   "lineSig": "272a1d201c98",
+   "clip": "narration/clips/L1501.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-12T06:35:50.441Z"
+  },
+  "L1517": {
+   "lineId": "L1517",
+   "model": "scribe_v1",
+   "transcript": "The last word goes to Hinton back in 2017",
+   "expectedTerms": [
+    {
+     "term": "Hinton",
+     "accept": [
+      "Hinton"
+     ],
+     "found": true,
+     "from": "cast"
+    }
+   ],
+   "pass": 1,
+   "sig": "1e8b8fc77c91",
+   "lineSig": "a051439c7a17",
+   "clip": "narration/clips/L1517.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-13T10:51:57.856Z"
+  },
+  "L0514b": {
+   "lineId": "L0514b",
+   "model": "scribe_v1",
+   "transcript": "At its rim stood a philosopher, Hubert Dreyfus. Real expertise is intuition, not rules. He saw a pattern: early dramatic success followed by sudden unexpected difficulties.",
+   "expectedTerms": [
+    {
+     "term": "Dreyfus",
+     "accept": [
+      "Dreyfus",
+      "Dry-fuss"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "59b654bcbd5d",
+   "lineSig": "55c2d9c221b9",
+   "clip": "narration/clips/L0514b.wav",
+   "wer": 0.074,
+   "requestId": null,
+   "at": "2026-10-13T01:45:26.141Z"
+  },
+  "L1522b": {
+   "lineId": "L1522b",
+   "model": "scribe_v1",
+   "transcript": "The Pentagon named it a supply chain risk and signed with OpenAI instead.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "0ee602aa800f",
+   "lineSig": "ca7800c01944",
+   "clip": "narration/clips/L1522b.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-10-13T01:45:30.556Z"
+  },
+  "L0114": {
+   "lineId": "L0114",
+   "model": "scribe_v1",
+   "transcript": "Our story starts all the way back in World War II",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c04803682036",
+   "lineSig": "152d3031b73a",
+   "clip": "narration/clips/L0114.wav",
+   "wer": 0.091,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T22:31:58.985Z"
+  },
+  "L0114b": {
+   "lineId": "L0114b",
+   "model": "scribe_v1",
+   "transcript": "to a lamp in Chicago.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2b7b1819f381",
+   "lineSig": "102e721fcd67",
+   "clip": "narration/clips/L0114b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:05:41.980Z"
+  },
+  "L1405": {
+   "lineId": "L1405",
+   "model": "scribe_v1",
+   "transcript": "Two new candles Computing power is the choke point and China is a year or two behind A new question for the file Can a fence around chips hold?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "557660352460",
+   "lineSig": "501772f45aad",
+   "clip": "narration/clips/L1405.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:05:43.121Z"
+  },
+  "L0101": {
+   "lineId": "L0101",
+   "model": "scribe_v1",
+   "transcript": "Here is a small wonder",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ceb8d62082fc",
+   "lineSig": "ca643afba082",
+   "clip": "narration/clips/L0101.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:27:40.750Z"
+  },
+  "L1410b": {
+   "lineId": "L1410b",
+   "model": "scribe_v1",
+   "transcript": "China a year or two behind That belief burned about two years",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fa47b6c1e353",
+   "lineSig": "964148d7bfd7",
+   "clip": "narration/clips/L1410b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T18:03:51.412Z"
+  },
+  "L1504b": {
+   "lineId": "L1504b",
+   "model": "scribe_v1",
+   "transcript": "Snuff that plan out and it rhymes with habit instead.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b54bb0eef587",
+   "lineSig": "83b417f34e16",
+   "clip": "narration/clips/L1504b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T22:31:16.178Z"
+  }
+ },
+ "updatedAt": "2026-10-13T22:31:58.987Z"
+}

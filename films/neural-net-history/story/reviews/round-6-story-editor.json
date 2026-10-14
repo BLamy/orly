@@ -1,0 +1,86 @@
+{
+  "reviewer": "story-editor",
+  "round": 6,
+  "lens": "story, curiosity and voice",
+  "scores": {"accuracy": 8.5, "depth": 8.5, "clarity": 8, "story": 8, "curiosity": 8, "visual": 8.5, "voice": 8.5},
+  "critical": [
+    "The film's longest promise is kept only in pictures. L0416 ('He would spend most of thirty-six years at the edge of the light.', directed as 'a promise') is the emotional spine of Acts 1-2. Its payoff is silent: ch08-s13b's visual note says the Sussex desk lamp clicks on and calls the thread 'paid off in picture'. Meanwhile L0821, the one Florence line about the tall man, is still the riddle round 5 flagged: 'could not sit, so could not fly'. The bad-back clause was cut, so the ear cannot solve it. As it stands, a listener hears the promise at about minute 9 and never hears it kept. FIX (two edits, +16 words): (a) L0821 becomes 'The tall man was not even there: a bad back, so he could not sit, so could not fly. Yann LeCun stood at the back of a packed room.' (e8-hinton-absent already gives the reason.) (b) In ch08-s13b, add a new line between L0831 and L0832, timed to the existing 'desklamp' beat: 'Thirty-six years at the edge of the light. Not any more.' Direction: quiet, warm, no triumph; pauseAfter 1.0. Claim: e4-hinton-cv (Sussex, 1976).",
+    "Runtime is still over. The assembler (`script.mjs assemble --check`) reports 3,542 words and 35.0 min at 140 wpm against the 32.0 min target. The brief asks for a slow voice. At 130 wpm that is about 36-37 min, which is outside the brief's 30-35. This card's additions are about +45 words, so at least that much must come out, plus some air. WORDS: L0410 drop the gloss 'choices multiplying faster than any search' and keep it on screen (-6); L0605 drop '; so did teams of weak guessers' (-6, the forests already carry classical ensembles); L1403 split and trim (see issues, -4); L0909 drop 'saying human-level AI' and lead the quote with 'promising AI' (-2); L1530 drop 'these machines keep getting more capable, fast.' and keep 'The candle of now:' followed directly by the METR clause (-7); L0834 'Fair credit: that was seven networks voting; the best single one, nearer eighteen.' becomes 'Fair credit: seven networks voted; the best alone scored nearer eighteen.' (-2). AIR: ch03-s06 holdAfter 7.1 → 5.0; ch13-s03 holdAfter 7.2 → 5.0; ch05-s03 holdAfter 6.6 → 5.0; ch04-s06 holdAfter 6.1 → 4.5; ch08-s02 holdAfter 5.4 → 4.0; ch15-s05 holdAfter 4.8 → 3.5 (about -10 s). GATE: the assembler reports ≤ 34.5 min at 140 wpm. Protect from cuts: the ch04 deaths, the stencil/cards/jug mechanics, every fairness clause, and the new payoffs in this card."
+  ],
+  "issues": [
+    {
+      "where": "ch13-s06 (silent shot, minDuration 8.1)",
+      "problem": "The tallest bar on the candle shelf goes out without a word. The Cyc taper burns 39 rings, the longest belief in the film, and gutters in an unnarrated shot. The ear was told at L0522 that 'the knowledge candle burned about seven years', so a listener has no idea a wick of it burned on, or that it went out in 2023, the same year the raw-text machines took over. That is the best irony in the film, already set up at L0515 and L1104 ('practically nothing' from 'the raw text'). Left silent, the shot also plays as dead air between 'Three camps' and Two Shores.",
+      "fix": "Voice the shot, inside its existing minDuration so it is almost time-neutral: 'That August, Doug Lenat died, still at work on the common sense he began typing in 1984. Thirty-nine years: the longest candle on our shelf.' (+25). Claims: e5-lenat-death, e5-cyc. Then L1515 can read 'Some candles burned nearly forty years; some, two; one match, a day.' (+1), so the verdict spans the full shelf."
+    },
+    {
+      "where": "ch11-s05 L1110",
+      "problem": "The Florence note (L0827-L0828, 'simply by waiting for faster GPUs and bigger datasets… Put that in the file.') is paid off only by a glinting pin during a music hold. The round-5 card counted it as retrieved at L1112, but that wording was rewritten in the candle fix. Now 'put that in the file' is said three times and retrieved aloud only twice. The ear notices the one left behind.",
+      "fix": "L1110 opening becomes 'In 2020, the note from Florence grew into a smooth, predictable law: bigger models, lower error.' (+6). Keep the pin glint on 'Florence'."
+    },
+    {
+      "where": "ch13-s01 L1301",
+      "problem": "'On our wall of predictions' is the first time the ear hears of any wall. The ch01 line that planted it (L0112) was cut, and the spoken device has always been 'the file' (L0109, L0318, L0828, L1104, L1216). Three names for one prop (file, wall of predictions, and Wall of Forecasts on screen) make 'our' sound unearned at the act's turning point.",
+      "fix": "Change L1301 to 'In our file, one slip has hung in shadow.' (-2). That keeps the spoken vocabulary to the one device the audience knows. L1517 ('The last slip is Hinton's, too') then reads consistently."
+    },
+    {
+      "where": "ch14-s02 L1405 → ch14-s04b L1410",
+      "problem": "Two candles are lit aloud (L1405: 'computing power is the chokepoint' and 'China is one to three years behind'), then a match is struck ('Markets bet that computing power didn't matter'), then only the second candle's fate is told. To the ear, the market's match sounds like it is the chokepoint candle, and that candle's actual fate (still burning, chip rules unchanged) is never stated. This is the only place the candle grammar blurs.",
+      "fix": "L1410 becomes 'Markets bet that computing power didn't matter: a struck match, one day's panic. The chokepoint candle burns on. China trailing by years? That belief burned about two.' (+5; the -4 from L1403 below offsets it)."
+    },
+    {
+      "where": "ch14-s02 L1403",
+      "problem": "This is round 5's issue and it is not fixed. Two governments' actions share one breath (31 words), so Beijing's reply arrives as a subordinate afterthought. That undercuts the 'two equally lit shores' staging.",
+      "fix": "'October 2022. Citing military uses, Washington fenced off high-end chips, and the tools to make them. Beijing replied that America “abuses export control measures.”' Keep 'in translation' on the on-screen attribution (it already reads 'AP translation'). (-4, two equal sentences.)"
+    },
+    {
+      "where": "ch12-s03/s04 → ch12-s06 (L1206-L1212)",
+      "problem": "The chapter's emotional job is the return to the opening scene: 'November 2022, and our little lit box.' Just before it comes a 46-word detour into Anthropic's founding and funding. Constitutional AI is stamped 15 December 2022, after the ChatGPT launch it precedes, so the date stamps run backwards right before the circle closes. The FTX and Amazon/Google sentence matters for fairness but stalls the run-in.",
+      "fix": "Move ch12-s03 and ch12-s04 to follow ch12-s06, before ch12-s07 or straight after it, and open L1206 with 'A year earlier, in 2021, …'. The return to the lit box then follows directly from the hedge-gardener line (L1205 → L1212), and the chronology runs forward. If reordering is too costly, at least cut 'Then billions from Amazon and Google.' to the on-screen card (-6)."
+    },
+    {
+      "where": "ch13-s03 L1307",
+      "problem": "'Machines smarter than us may be years away, and dangerous.' Without 'only', 'years away' sounds like reassurance. The worry is the opposite: years, not decades, which is exactly what Hinton's slip in L1303 just said.",
+      "fix": "'Another candle, lit by worry: machines smarter than us may be only years away, and dangerous.' (+1)"
+    },
+    {
+      "where": "ch15-s05 (L1522-L1525)",
+      "problem": "The frame 'The labs, under the same light' helps, but the beat is still three news items in a row right before the emotional run into the verdict. It also opens with a 30-word Pentagon sentence that has two subordinate clauses, the hardest sentence in the finale to follow by ear.",
+      "fix": "Split L1522: 'The labs, under the same light. Anthropic refused to drop two limits: no mass domestic surveillance, no fully autonomous weapons. The Pentagon said a supplier may not set such limits, and named it a supply-chain risk.' (≈0 net). Keep L1524 and L1525 as they are. They balance the beat, and the ear now has three short facts instead of one long one."
+    },
+    {
+      "where": "ch10-s01 L1002 → ch10-s13b L1030",
+      "problem": "'The read-in-order candle burned twenty years' pays a candle lit 'long before', a time the ear was never given. Twenty years from when? The deep dive deserves an exact clock.",
+      "fix": "L1002 becomes 'Another candle, lit back in the nineties: language must be read in order, one word at a time.' (+3). Or, if there is no budget, L1030 becomes 'The read-in-order candle burned twenty years, since that protected pipe of 1997.'"
+    },
+    {
+      "where": "ch04-s06 L0410",
+      "problem": "Still 32 words. 'Search' is heard alongside the gloss, and the line that finally tries the first suspect (Rules) is buried mid-sentence ('It struck rules far more than nets').",
+      "fix": "'In 1973, James Lighthill’s report for Britain blamed “the combinatorial explosion”. It struck rules far more than nets. Yet British funding fell for almost a decade.' (-6; the gloss moves to an on-screen label.)"
+    },
+    {
+      "where": "Film-wide: line openings",
+      "problem": "36 of 230 lines open on a date ('In 1950,' 'By 1956,' 'In 1959,' 'In 2014,' …). The run is densest in ch02 (L0201 to L0218: five date-led one-liners in a row: Hebb, Turing, Minsky, Dartmouth, frog). At a slow pace this becomes a roll-call cadence just as the audience is deciding whether to stay.",
+      "fix": "In ch02, put the date second in at least two lines: L0212 'Alan Turing, in 1950, proposed educating a child machine.' and L0218 'Then a study of the frog's eye, in 1959, found it picking out features before the brain saw a thing.' Elsewhere, let the on-screen date stamp carry the year when a shot already shows one (for example L0301 'Washington, 1958.' is fine, but L0213 can drop 'In 1951,' because the stamp says HARVARD · SUMMER 1951)."
+    },
+    {
+      "where": "ch15-s09 L1520",
+      "problem": "Optional. 'Perhaps it's you.' tips the wry narrator toward a poster slogan in the film's last spoken words. The line before it, 'That is where new candles come from.', is the stronger close and lands the candle device.",
+      "fix": "Either end on 'That is where new candles come from.' (-3) and give the hold to the music, or soften to 'Perhaps yours.' (-1). The direction should stay unhurried, with no lift."
+    },
+    {
+      "where": "ch01-s05 → ch15-s08 L1514",
+      "problem": "'The board was a network all along' is the film's central reveal, but the narrator names the board aloud only once before it (L0110). The accomplices (data L0704, fire L0706, the person choosing L1201) are never said to be pinned to it. The reveal therefore lands on the picture alone, not on a pattern the ear has been tracking.",
+      "fix": "Add two short pins with no new claims: L0706 ends '…up to seventy times faster. Another card for the board.' (+5), and L1201 ends '…which is better? The board's last card.' (+4). With these, 'the board was a network all along' pays off a thread the ear has heard grow."
+    }
+  ],
+  "strengths": [
+    "Round 5's three criticals are resolved: the first note in the file is retrieved on the same day it was written (L1216), the deep-learning candle is told 'The candle burned on' (L0910), and the Nobel dissent is now voiced verbatim and attributed ('a bit of a stretch', L1528, which matches quotes.json).",
+    "The plant-and-payoff web is the film's great strength: Widrow's 'Remember him' (L0217 → L1511), the Helsinki thesis (L0412 → L0511), the dinner bet (L0612 → L0701), 'why choose the fog?' (L0617 → L0832), Hopfield's forgotten talk (L0502 → 'The talk nobody remembered, remembered', L1502), and 'nobody ever wrote one a rulebook' (L0105 → 'No rulebook. Only odds.', L1107).",
+    "Both deep dives teach real mechanics by ear with one consistent metaphor machine: the tin stencil and its nine holes, the weir, the snuffed lanterns, and the two halves that split colour from black and white; then the question, label and message cards, the jug of light, and 'divide by eight… so we halved'. Each reuses the messenger, so the mechanics feel inherited rather than introduced.",
+    "The candle-clock grammar gives a 30-minute film a felt sense of time and directly answers the brief's 'how long people thought that way'. Every major belief is lit aloud and its fate stated, with the doubters consistently 'at the rim'. The last line turns that device on the viewer ('someone at the rim is suspicious').",
+    "The best lines are genuinely beautiful for a slow, wry voice: 'Here is a small wonder.', 'You could hear it learn. I love that.', 'A winter, then, of prestige, not of use.', 'Eight names, in random order.', 'Sensible, then.', 'Not a new engine. A new door.', 'Then, a stampede. Case solved? Not quite.', 'Geoffrey Hinton takes it down. It is his own.'",
+    "Fairness is woven into the story's grain rather than appended. Examples: 'In fairness, the Navy, the press and Rosenblatt all fed the hype'; 'Historians still argue; there were several blows'; the accounts of Gebru's exit that differ; 'Not two teams. Three camps.'; Anthropic's FTX money, pirated-books settlement and Pentagon dispute under the same light as OpenAI's sandbox breakout; and two equally lit shores.",
+    "The emotional low point of Act 1 (Pitts dying alone, McCulloch four months later, Rosenblatt drowning on his forty-third birthday) is plainly told and given air. It earns the long climb to Florence and the Nobel phone call at two in the morning."
+  ]
+}

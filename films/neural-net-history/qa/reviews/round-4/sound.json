@@ -1,0 +1,82 @@
+{
+  "reviewer": "sound",
+  "round": 4,
+  "at": "2026-10-13",
+  "method": "No playback. I metered mix/master.wav (built 17:21Z, 2153.54 s), narration/narration.wav and the m01/m19 renders with ffmpeg ebur128, using momentary readings every 0.2 s. I checked: L0109 (45.5-49.5), L0114/L0114b (60.5-69), L1504/L1505 (1960.5-1969.5), and the ending plus end cards (2104-2153.5). I also read mix/loudness.json (rides, moments, lineMasking, foley, cue fades), qa/reports/latest.json (17:43Z), the narration/timeline.json word times for every re-taken line, narration/stt.json, voice/voice.json listening and sttHeard, voice/lexicon.json, the script directions for L0114, L0220, L1505 and L1517, the cues.json notes for m01/m19/m21, the m19 spectrogram, and the ch15-s08 and ch15-s09 sheets. All of it was checked against the round-3 verdict and the film.json ledgers round3-global and round3-shots.",
+  "scores": { "accuracy": 8.5, "depth": 8, "clarity": 8, "story": 8.5, "visual": 8, "sync": 8, "sound": 8, "curiosity": 8.5 },
+  "round3_followup": {
+    "fixed": [
+      "L1517: 4.62 s at 130 wpm, with a 0.58 s breath between 'Hinton' and 'back' (2108.4-2109.0 reads -50.9 M, so it is clear). The line is left bare after the slip celesta, and its STT record now matches the current text ('The last word goes to Hinton back in 2017').",
+      "L1206 Amodei: with the 'Ah-moh-day' respelling, scribe_v1 now transcribes 'Daniela Amodei' literally (it was 'Ahmoudai'), and the term matcher is literal. A human sign-off is still pending in voice.json (see the minor global).",
+      "L1405 ('a year or two behind') and L1103 ('or rather, the next word-piece') were re-taken at 172 and 144 wpm. STT is clean on both.",
+      "m01 / L0109: the music under 'Put that in the case file' sits around -35 M after cue gain (render -31 to -32 M). The seal's A falls in the 'that'/'in' gap (47.0-47.2) and its D lands after 'file' (48.6-48.8, -19.7 M in clear air). Voice momentary is -13.7 to -15 M, so the first refrain is now the clearest statement of the motto. The reversed swell is cut dead before 'Our' (render -25 to -53 M at 61.9-62.2), and the 0.8 s pause before 'To a lamp' sits at -49 M.",
+      "m21 end cards: under the disclosure card the master holds -32 to -34 M from 2141 to 2146 (it was about -40), the SOURCES celesta rises to -29 M at 2146.5, and the music rings down to the -58 floor by 2153. The cards no longer sound finished early.",
+      "Speech chain and line spread: the stem limiter is at 1.05 dB (was 3.01-3.16). Line momentaries run from -10.3 (L1011/L1019/L1033) to -15.2 (L0217, soft), with a median of -12.0, and no line is more than 2 dB over the median. The residual trims on L1307b/L1011/L0312/L1417/L1527 are 0, and L0217 and L1522c are tagged soft.",
+      "STT staleness: records carry lineSig and are invalidated on a new take, and every re-narrated line is transcribed. QA narration.stt passes on current takes.",
+      "Score docs: QA score.notesClock passes, and no cue body carries a stale absolute time.",
+      "Ledger: round2-shots (back-filled) and round3-shots both exist, with word times per id. In the sound lens, ch15-s09 is consistent with the foley bus. fx-match-strike is at 2127.343 ('new' 2127.34) and fx-match-flare at 2127.564 ('candles' 2127.56). On the sheet, the hand holds an unlit match at +21.38, and the flame stands lit at +22.79 (b5). The stamp sounds at b3 (2118.25) with the card stamped at +12.75, and the lamp clicks off at b4 (2120.75) as the room goes black at +15.79."
+    ],
+    "partly_fixed_or_regressed": [
+      "L1505 (MAJOR, regressed in the other direction). The level is off the top: 'Nobody' now peaks at -12.9 M, against -8.9 before. However, the take falls 8-10 dB after 'Nobody': stem -16.5 M on 'Nobody', -25 to -31 on 'told it', and -24.4 to -26.8 on 'to plan'. The -2.1 dB ride, computed from the loud onset, pushes the tail down further. Meanwhile m19's low A-D floor re-enters at full low-band energy right on 'told' (spectrogram: broadband 20-350 Hz energy returns at about cue +51.8 s, which is 1966.1). Measured in the master, music is about -27 M under 'to plan' while the voice is -21 to -23 M, and under 'told it' the margin is 2-6 dB. QA lineMasking warns at 8.6 dB (the film's only line under 10), and lineLevels fails at -4.66 dB against the -2 hint. The film's 'strangest fact' now has its punch-word half-buried.",
+      "L0114 (open). After the user's rewording the line reads 'Our story starts all the way back in World War Two.' It is 11 words in 2.98 s, 221 wpm, with no gap over 0.25 s. QA narration.pacing FAILS. round3-global logged it as OPEN, and no slower take was made.",
+      "ch15-s08 (ledger: partial). STATUS: OPEN is stamped on 'stays open' (visible on the sheet at +38.33), but score/foley.json has no event for it. The reviser handed this off ('needs an fx-stamp event at ch15-s08 L1516b stays +0.2 s') and nobody picked it up. ch14-s07's stamp on 'stands' (ch14-s07.tsx:332) is also silent. Of the film's three STATUS: OPEN stamps, only the last one sounds.",
+      "Speech compressor: unchanged at 3.42 dB GR (QA stemLimit and stem warn). This is acceptable now that the limiter is at 1.05 dB, but it is not addressed."
+    ]
+  },
+  "summary": "Sound clears the bar again, and most round-3 sound items have landed. The first refrain is now clear (L0109 sits about 20 dB over m01), L1517 is unhurried with a real breath, and Amodei is now transcribed literally. The end cards hold a living D at -33 M under the disclosure card and get a celesta on SOURCES. The speech chain is far less pressed: the stem limiter is at 1.05 dB and every line is within 2 dB of the -12 M median. The final 30 s are tight sound-for-picture: stamp, lamp-off, about 2 s of room tone, then the cello walk, the match on 'new' and the flare on 'candles', which the ch15-s09 picture now matches. The master measures -16.0 LUFS, -2.1 dBTP and LRA 5.7, with every cue fade clear of its last strike. The one real regression is L1505. Taking the trim off fixed the shout, but the take decays sharply after 'Nobody', and m19's low floor re-enters on 'told'. 'Nobody told it... to plan' now has the film's thinnest voice margin (8.6 dB, about 4-6 dB broadband on 'to plan'), and it is the only lineLevels failure. L0114's new user wording reads at 221 wpm, which fails QA pacing on the turn into the story. Two of the three STATUS: OPEN stamps are silent. Fix L1505 (a gain envelope or calmer take, plus an m19 re-fit) and slow L0114, and sound moves to about 8.5.",
+  "issues": [
+    {
+      "owner": "line",
+      "id": "L1505",
+      "severity": "major",
+      "problem": "This is an over-correction. With trimDb +0.8, level 'soft' and a -2.1 dB ride computed from the loud 'Nobody' onset, the tail of the take is buried. In narration.wav, 'Nobody' reads -16.5 M, while 'told it' reads -25 to -31 and 'to plan' -24.4 to -26.8, a decay of 8-10 dB within the line. QA lineLevels FAILS (-4.66 dB against the -2 hint), and lineMasking is 8.6 dB, the only line under 10 in the film. In the master, 'to plan' (1967.79-1968.27) reads -20 to -21 M with music around -27 M under it. The line's direction asks for it 'said simply and quietly'. It should be quiet, not masked.",
+      "fix": "Keep the take's timing (ch15-s03 anchors 'plan' at 13.79). Apply a per-word clip-gain envelope in timeline.mjs: -2 dB on 'Nobody' (1965.84-1966.45) and +4 dB from 'told' to the end of 'plan' (1966.51-1968.27), with 30 ms ramps. Recompute the ride on the enveloped clip, so the loud onset no longer drags the tail down. Alternatively, re-take solo at speed 0.84, spoken 'Nobody told it... to plan.', with stability raised about 0.15 for an even delivery, and keep the take whose 'to plan' is within 4 dB of 'Nobody'. Targets: lineLevels within -2 +/- 1 dB, 'to plan' at -17 M or louder in the master, lineMasking 13 dB or more, and 'Nobody' at -12.5 M or quieter. Re-mix, then confirm the QA lineLevels and lineMasking pass."
+    },
+    {
+      "owner": "cue",
+      "id": "m19",
+      "severity": "major",
+      "problem": "Under L1505, m19's low A-D floor re-enters at full low-band energy on 'told' (spectrogram: broadband 20-350 Hz returns at about cue +51.8 s / 1966.1, after a 7 s gap). The 'unresolved E-A swell' was placed on the START of 'plan' (1967.79) rather than in the clear after it (the word ends 1968.27). The render climbs from -46 M at 1965.7 to -24 M at 1967.5, so the music crests under the punch-words. The cue was not re-composed in round 3 (render 05:06Z, v17). It was voiced against the old +3.5 dB L1505 and never re-checked when the line came down 2.7 dB.",
+      "fix": "Re-fit only the ch15-s03 microscope section. Under 'Nobody told it... to plan' (1965.84-1968.27), keep only the thin high E in the ellipsis (1966.91-1967.55), held at least 14 dB under the line in 1-4 kHz, and hold the low A-D floor out entirely, or at least 12 dB lower and above 120 Hz. Start the E-A swell and the floor's re-entry at 1968.35, after 'plan' ends, and let it crest in the 1968.3-1970.8 clear before 'The candle' (1970.87). Confirm with QA that lineMasking L1505 is 13 dB or more after the L1505 envelope fix, and leave the rest of m19 untouched."
+    },
+    {
+      "owner": "line",
+      "id": "L0114",
+      "severity": "major",
+      "problem": "The turn into the story, 'Our story starts all the way back in World War Two.' (user wording, 2026-10-13), runs 2.98 s for 11 words, 221 wpm. That is 47% over the film's 150 wpm average, with no gap over 0.25 s. QA narration.pacing FAILS on it alone. round3-global logged it OPEN ('needs a slower solo take, tts speed about 0.8'), but no take was made. The direction itself asks for 'the voice's normal pace', and 221 wpm is not this narrator's normal pace.",
+      "fix": "Keep the user's text and direction (no inserted pause inside the line). Re-take solo at tts speed 0.80-0.85, spoken unchanged, and keep the take at 3.9-4.3 s (155-170 wpm). Keep pauseAfter 0.8 before L0114b. ch01-s06 rides T.word ('starts', 'Two', 'Chicago'), so it absorbs the extra length. Re-fit m01's reversed swell so its dead cut still lands at least 0.2 s before 'Our', and keep the near-silent bed (-49 M render) under both halves. Re-run STT and QA narration.pacing."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Foley bus: the film shows three STATUS: OPEN stamps, and only the last one sounds. ch15-s08 stamps 'HOW FAR? HOW FAST?' on 'stays open' (sheet +38.33; ledger round3-shots ch15-s08 'partial', with the hand-off 'needs an fx-stamp event at ch15-s08 L1516b stays +0.2 s'), and ch14-s07 stamps the fence card on 'stands' (ch14-s07.tsx:332). foley.json has only the ch15-s09 stamp, so the sound motif the round-3 note asked for ('the same stamp and foley as ch14-s07 and ch15-s09') is not built.",
+      "fix": "Add fx-stamp-ch15s08 at {shot: ch15-s08, line: L1516b, word: 'stays'} +0.2 s, under the line's last words, at lufsS -32, and fx-stamp-ch14s07 at the shot's stamp beat on 'stands' (L1418), at lufsS -34 with a drier, shorter press (0.6 s), so it sits under the line without masking 'stands'. The count goes to 7 (max 10). Make sure m18 and m21 have no struck onset within 0.3 s of either stamp. Re-mix and confirm the foley checks pass."
+    },
+    {
+      "owner": "line",
+      "id": "L0220",
+      "severity": "minor",
+      "problem": "'The paper that put it out, for Pitts at least, had his own name on it.' runs 4.9 s, 196 wpm, at tts speed 0.8. Its own direction says 'target 140-160 wpm' and 'quiet, with tenderness for Pitts; let the silence after it do the work'. It is on QA's fast list, 4 wpm under the fail line, and it is the chapter-2 turn.",
+      "fix": "Re-take solo at tts speed 0.75 with spoken 'The paper that put it out... for Pitts, at least... had his own name on it.', and keep the take at 5.8-6.4 s (150-165 wpm). ch02-s08 absorbs the difference in its silent hold, and m02 re-fits only if a hit names a word in this line."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "No human has listened to the names yet. voice.json listening is still pending for Amodei, Uszkoreit, Hochreiter, Schmidhuber, Rumelhart, LeCun and Lenat, all with clipSig null (QA listening warn). STT now passes Amodei literally, but STT hears spelling, not stress. 'Ah-moh-day' could still come out AH-moh-day rather than ah-moh-DAY, and LeCun and Uszkoreit pass only through sttHeard variants.",
+      "fix": "Before publish, have a human play the seven clips (narration/clips/L1206, L1006, L0614, L0507, L0821, L1104) and run film:voice signoff for each one. Any rejection becomes a solo re-take with an adjusted respelling. Record clipSig so a later re-take re-opens the sign-off."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The speech compressor still applies 3.42 dB of GR (QA stem/stemLimit warn). The limiter fix worked (1.05 dB), but the RMS compressor was not touched, and with capped rides it does most of the levelling a second time.",
+      "fix": "Raise the speech compressor threshold by about 2 dB, or lower its ratio from 3:1 to 2:1, so it averages 2 dB GR or less. Re-check that linePeaks still holds median + 2 dB and that the limiter stays at 1.5 dB or less."
+    }
+  ],
+  "best_moments": [
+    "The last 35 seconds: Hinton's quote over the held D, a dry stamp at 2118.25 in clear air, about 2 s of room tone at -57 M, and the lamp click as the room goes black. Then the cello walk under 'Somewhere tonight a lamp is on', the scratch on 'new' and the flare on 'candles', which the picture now matches (unlit match at +21.38, flame standing at +22.79), and celesta M1 in the clear after 'from' into the unresolved Asus4.",
+    "The end cards now breathe instead of dying: a ppp A-E + D pad through the Turing card, the lone D held at -32 to -34 M under the disclosure card, one celesta D on SOURCES (-29 M), and a ring-down to the floor exactly at black.",
+    "The motto's first statement, 'Put that in the case file.': the music falls to about -35 M under it, the seal's A drops into the breath between 'that' and 'in', and its D closes the drawer after 'file'.",
+    "The prologue rewind: the reversed swell is cut dead before 'Our', the 0.8 s pause before 'To a lamp, in Chicago' sits in near silence (-49 M), and about 1.2 s of true silence follows before the title's M1, a scored hush that makes the title land.",
+    "Mix hygiene: -16.0 LUFS, -2.1 dBTP, LRA 5.7, a stem limiter at 1.05 dB, every line within 2 dB of the -12 M median, the loudest music moment (the bloom at 2083.5) at -13.8 M in clear air, every cue fade more than 1.6 s past its last strike, and a -58 LUFS room-tone floor."
+  ]
+}

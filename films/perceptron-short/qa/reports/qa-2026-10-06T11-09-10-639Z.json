@@ -1,0 +1,210 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T11:09:10.639Z",
+ "summary": {
+  "pass": 23,
+  "warn": 5,
+  "fail": 2,
+  "skip": 1
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "9 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "pass",
+   "detail": "130 wpm overall",
+   "wpm": 130.5,
+   "perShot": {
+    "ch01-s01": 181.4,
+    "ch01-s02": 121.5,
+    "ch01-s03": 131.5
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all clip edges quiet",
+   "loud": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -18 LUFS (target -18), TP -1.9 dBTP, limiter 0.12 dB, compressor 3.3 dB GR, line rides ≤ 2.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "skip",
+   "detail": "STT round-trip on names not automated (no local STT; ElevenLabs speech-to-text would spend credits) — listen to lines with lexicon entries"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "15 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "1.1 min vs target 1.0 min (110%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "65.83 s vs ceiling 66 s (story/meta.json runtimeCeilingSec)"
+  },
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "1 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "1.0 min of music over 1.1 min (92%)"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-15.8 LUFS (target -16), LRA 3.2, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-2.5 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "fail",
+   "detail": "60.375s vs film 65.8333s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "warn",
+   "detail": "music ducks 5.52 dB (target 3, ceiling; warn beyond ±1.5) under 46.1s of narration"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0 dB; speech compressor 3.58 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 slices"
+  },
+  {
+   "stage": "mix",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "master is older than narration.wav, cues.json or a cue render — re-run film:mix"
+  },
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "fail",
+   "detail": "1449 frames (expected 1580 = round(65.8333 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 60.375s, audio 60.375s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "render",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 chapters muxed (timeline has 1)"
+  },
+  {
+   "stage": "render",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "film.mp4 is older than the master or the timeline — re-render"
+  },
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "warn",
+   "detail": "older than the timeline: ch01-s03"
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "pass",
+   "detail": "1 chapters, kind film"
+  },
+  {
+   "stage": "publish",
+   "id": "current",
+   "status": "warn",
+   "detail": "shelf copy is stale (runtime 60.375 s ≠ timeline 65.8333 s): re-run film:publish"
+  }
+ ]
+}

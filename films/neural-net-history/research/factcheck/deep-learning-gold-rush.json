@@ -1,0 +1,147 @@
+{
+ "id": "deep-learning-gold-rush",
+ "checked": 118,
+ "confirmed": 100,
+ "corrected": 13,
+ "unverifiable": 4,
+ "contested": 1,
+ "corrections": [
+  {
+   "original": "Sutskever, Vinyals & Le scored 34.8 BLEU with one 4-layer, 384M-parameter LSTM",
+   "verdict": "corrected",
+   "fix": "34.81 BLEU came from an ensemble of 5 reversed deep LSTMs (384M parameters each, beam 12); best single reversed LSTM 30.59, single forward 26.17; ~10 days training is per model.",
+   "sources": [
+    "https://arxiv.org/pdf/1409.3215"
+   ]
+  },
+  {
+   "original": "AlphaGo Zero beat AlphaGo Lee 100-0 after 72 hours on a single machine with 4 TPUs",
+   "verdict": "corrected",
+   "fix": "The single 4-TPU machine was the hardware it PLAYED the evaluation match on; training ran on Google Cloud with 64 GPU workers and 19 CPU parameter servers (Methods). Do not say it trained on one machine.",
+   "sources": [
+    "https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf"
+   ]
+  },
+  {
+   "original": "Marcus had argued since 2012 that deep learning was only 'the beginning of the resurgence'",
+   "verdict": "corrected",
+   "fix": "Misreading: Marcus wrote deep learning 'may well be approaching a wall, much as I anticipated earlier, at beginning of the resurgence (Marcus, 2012)' - the phrase dates his warning, it is not his description of deep learning.",
+   "sources": [
+    "https://arxiv.org/pdf/1801.00631"
+   ]
+  },
+  {
+   "original": "IBM and Microsoft subsequently announced improvements; Raji & Buolamwini 2019 measured them [KNOWLEDGE]",
+   "verdict": "corrected",
+   "fix": "Actionable Auditing (AIES, Jan 2019): all three targets (IBM, Microsoft, Face++) released new API versions within 7 months; darker-female error fell 17.7-30.4%; non-targets Amazon and Kairos at 31.37% and 22.50%.",
+   "sources": [
+    "https://www.media.mit.edu/publications/actionable-auditing-investigating-the-impact-of-publicly-naming-biased-performance-results-of-commercial-ai-products/"
+   ]
+  },
+  {
+   "original": "Marcus-LeCun NYU debate, October 2017 [date not verified]",
+   "verdict": "corrected",
+   "fix": "5 Oct 2017, NYU Center for Mind, Brain and Consciousness, 'Does Artificial Intelligence Need More Innate Machinery?'",
+   "sources": [
+    "https://wp.nyu.edu/consciousness/innate-ai/"
+   ]
+  },
+  {
+   "original": "DeepMind Technologies Ltd incorporated 23 Sep 2010",
+   "verdict": "corrected",
+   "fix": "Company 07386350 was incorporated 23 Sep 2010 under the name 'Friars 2022 Limited' and renamed DeepMind Technologies Limited on 15 Nov 2010.",
+   "sources": [
+    "https://find-and-update.company-information.service.gov.uk/company/07386350"
+   ]
+  },
+  {
+   "original": "Without the exclusion constraint the answer to man:king::woman:? is usually 'king' itself",
+   "verdict": "corrected",
+   "fix": "Nissim et al. report the aggregate drop (Google analogy 0.74 -> 0.21, 'in most cases' the second term returned) and use 'man is to king as woman is to king' as illustration; they do not report the specific king query. Say the method usually returns one of the input words.",
+   "sources": [
+    "https://arxiv.org/pdf/1905.09866"
+   ]
+  },
+  {
+   "original": "Bahdanau et al.: each model trained for approximately 5 days",
+   "verdict": "corrected",
+   "fix": "Text says ~5 days but Table 2 lists RNNsearch-50* (the 28.45/36.15 model) at 252 hours (~10.5 days) on a Quadro K-6000.",
+   "sources": [
+    "https://arxiv.org/pdf/1409.0473"
+   ]
+  },
+  {
+   "original": "'Linear behavior in high-dimensional spaces is sufficient to cause adversarial examples' labelled a paraphrase",
+   "verdict": "corrected",
+   "fix": "It is verbatim from the abstract of Goodfellow, Shlens & Szegedy; relabelled.",
+   "sources": [
+    "https://arxiv.org/pdf/1412.6572"
+   ]
+  },
+  {
+   "original": "GAN conceived at Les 3 Brasseurs and coded the same night 'by Goodfellow's own account'",
+   "verdict": "corrected",
+   "fix": "The story is MIT Technology Review's narration (Giles, 21 Feb 2018) with no direct quote from Goodfellow; attribute as 'as MIT Technology Review tells it'. Details (bar, sleeping girlfriend, worked first time) confirmed in that article.",
+   "sources": [
+    "https://www.technologyreview.com/2018/02/21/145289/the-ganfather-the-man-whos-given-machines-the-gift-of-imagination/"
+   ]
+  },
+  {
+   "original": "Lee Sedol in 2019 credited his win to 'a bug'",
+   "verdict": "corrected",
+   "fix": "Yonhap paraphrase, not a direct quote: 'Lee attributed his win to a bug in the AlphaGo program.'",
+   "sources": [
+    "https://en.yna.co.kr/view/AEN20191127004800315"
+   ]
+  },
+  {
+   "original": "DQN reached at least 75% of a professional tester's score on 29 games",
+   "verdict": "corrected",
+   "fix": "Paper wording: 'more than 75% of the human score on more than half of the games (29 games)'.",
+   "sources": [
+    "https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf"
+   ]
+  },
+  {
+   "original": "'zone economique europeenne' alignment example [KNOWLEDGE]",
+   "verdict": "corrected",
+   "fix": "Upgraded to VERIFIED-PRIMARY: Fig. 3(a) of Bahdanau et al. aligns [European Economic Area] with [zone economique europeen].",
+   "sources": [
+    "https://arxiv.org/pdf/1409.0473"
+   ]
+  },
+  {
+   "original": "Hassabis: 'Solve intelligence, and then use that to solve everything else' [UNVERIFIED]",
+   "verdict": "unverifiable",
+   "fix": "Exact wording still untraced; verified alternative added: MIT TR (Simonite, 31 Mar 2016) - effort aimed at 'solving intelligence, and then using that to solve everything else' (quoted fragment in reporter's sentence).",
+   "sources": [
+    "https://www.technologyreview.com/2016/03/31/161234/how-google-plans-to-solve-artificial-intelligence/"
+   ]
+  },
+  {
+   "original": "Google acquired DeepMind for a reported GBP 400m (~$650m)",
+   "verdict": "contested",
+   "fix": "Guardian text says '£400m ($650m)' but its own photo caption says 'around $400m'; reports range $400m-$650m (Wikipedia); never officially confirmed. Say 'a reported £400 million'.",
+   "sources": [
+    "https://www.theguardian.com/technology/2014/jan/27/google-acquires-uk-artificial-intelligence-startup-deepmind",
+    "https://en.wikipedia.org/wiki/Google_DeepMind"
+   ]
+  },
+  {
+   "original": "Hinton (Axios, 15 Sep 2017): 'Science progresses one funeral at a time...' and 'throw it all away'",
+   "verdict": "unverifiable",
+   "fix": "Axios original unreachable (403); cite the epigraph only as quoted in Marcus 2018 (verified there); 'throw it all away' remains UNVERIFIED.",
+   "sources": [
+    "https://arxiv.org/pdf/1801.00631"
+   ]
+  },
+  {
+   "original": "Musk's MIT remark on 24 Oct 2014",
+   "verdict": "unverifiable",
+   "fix": "Guardian (27 Oct 2014) confirms quote and AeroAstro Centennial Symposium but gives no day; 24 Oct is unconfirmed in this pass.",
+   "sources": [
+    "https://www.theguardian.com/technology/2014/oct/27/elon-musk-artificial-intelligence-ai-biggest-existential-threat"
+   ]
+  }
+ ]
+}

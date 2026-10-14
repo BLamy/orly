@@ -1,0 +1,4 @@
+/* Old-school educational VHS sleeve faces (self-hosted, latin subset). */
+@font-face { font-family: 'Anton'; font-style: normal; font-weight: 400; font-display: block; src: url('Anton.woff2') format('woff2'); }
+@font-face { font-family: 'Archivo Black'; font-style: normal; font-weight: 400; font-display: block; src: url('ArchivoBlack.woff2') format('woff2'); }
+@font-face { font-family: 'Bowlby One'; font-style: normal; font-weight: 400; font-display: block; src: url('BowlbyOne.woff2') format('woff2'); }

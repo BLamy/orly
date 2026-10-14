@@ -1,0 +1,76 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 4,
+  "scores": {"accuracy": 9, "depth": 8.5, "clarity": 8, "story": 8.5, "visual": 8, "sync": 8, "sound": 7.5, "curiosity": 8.5},
+  "summary": "Every accuracy and fairness item from round 3 has landed. I checked each one on the regenerated sheets (13:21-13:35 local, after the 14:28-15:03Z ledger records). Marcus card (ch09-s05): 'GARY MARCUS · 2018 · Deep Learning: A Critical Appraisal' is pinned from 22.0 through 23.21. Dreyfus quote card (ch05-s07): the verbatim q-dreyfus-pattern text, attributed '— Hubert Dreyfus, 1972', is on screen from 26.46 to 30.38, under a name card reading 'What Computers Can't Do, 1972'. LeCun / AMI Labs label (ch15-s06): it reads 'left Meta, Nov 2025, to build world models · AMI Labs' from 8.08 to the end and matches e14-lecun. The three ch14-s04b position tags now hang in one row at equal size: HELPS HUAWEI, then SELF-DEFEATING, then DECISIVE (12.42, 14.33). The settlement label (ch15-s05) carries the 'ANTHROPIC ·' prefix from 22.79. The plinths also carry GOOGLE DEEPMIND and META tags (film frame at 33:13.6). L1405 now says 'a year or two behind' [e13-gap] in script, timeline and VTT, and so do the candle labels in ch14-s02, ch14-s04b and the ch15-s04 shelf. A grep of the shot sources finds no remaining 'one to three'. A fresh machine check found 0 mismatches between quotes.json and every narrated or on-screen quotation. Script text equals timeline.json for all 233 lines. Every cited claim id exists, and every claim marked contested is framed in the film as contested. The FTX caveat, the paired Lin and Katsas quotes, the MacroPolo halves, the authorship disclosure and the live sources URL all survived the round-3 re-cuts. What remains is small: (1) L1410b's callback 'China trailing by years?' no longer matches the revised candle 'a year or two behind'; (2) the narrator's pronunciation of real names (Amodei, LeCun, Uszkoreit, Hochreiter, Schmidhuber, Rumelhart, Lenat) still awaits human sign-off; (3) L0114's take runs at 221 wpm, against the user's recorded direction 'at normal pace'; (4) two ledger partials (ch15-s08 stamp foley, ch13-s01 Hinton hair) need closing; ch15-s05's partial is resolved by the ruling below.",
+  "ledgerCheck": {
+    "round3-shots": "PRESENT (written 2026-10-13T17:17:20Z, 29 ids: 26 fixed, 3 partial). I checked the accuracy-bearing ids on sheets rendered after their recordedAt: ch05-s07 FIXED (Dreyfus name card with the book and year by 20.58, quote card from 26.46 to 30.38); ch09-s05 FIXED (Marcus card at 22.00, 22.63 and 23.21; LEARNED FEATURES card inked at 17.46); ch14-s04b FIXED (one row, equal size, at 12.42 and 14.33; candle reads 'CHINA IS A YEAR OR TWO BEHIND'; named card 'lit Oct 2022 · out Jan 2025 · ≈ 2 years' at 8.58); ch14-s02 FIXED (behind-candle card 'CHINA IS A YEAR OR TWO BEHIND' at 18.50; the fence question card appears at 20.92 and 21.71); ch14-s07 FIXED (three gap tags 4.87-6.87, Liang quote 8.83, fence card stamped STATUS: OPEN from 14.75); ch15-s06 FIXED (AMI Labs label 8.08-13.50); ch12-s03 FIXED (the FTX caveat survives the re-cut at 16.29; GPT-4 and CLAUDE turned up and struck together at 25.88); ch15-s10 FIXED (22.0 s; disclosure 9.0-13.0; sources URL 15.0-21.17); ch13-s04 FIXED (no near-plane newel over names or medallions; three camps legible). ch15-s05 is marked PARTIAL only because the critic's trim to '$1.5B SETTLEMENT · PIRATED BOOKS' was refused. Historian ruling: keep 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS'. Attribution on the label is the fairness requirement, so close this as fixed with no change. ch15-s08 PARTIAL (stamp foley, not a shot file) and ch13-s01 PARTIAL (the cast's Hinton hair) are re-routed below."
+  },
+  "issues": [
+    {
+      "owner": "line",
+      "id": "L0114",
+      "severity": "major",
+      "problem": "The current take of the user's own line ('Our story starts all the way back in World War Two.') runs at 221 wpm. QA narration.pacing FAILS; it is the only line over 200 wpm. The brief records the user's direction (2026-10-13) that the line be 'said plainly at normal pace', so this take contradicts a standing user instruction, not just a QA threshold.",
+      "fix": "Re-narrate L0114 alone (tts {solo: true, speed about 0.85}) with the user's wording unchanged, and aim for 140-165 wpm. Leave L0101's pinned take untouched. Rebuild the clock. ch01-s06 already anchors every beat with T.word, so re-sheet it and confirm the cut lands on 'starts', the stamp on 'Two' and the lamp on 'Chicago'."
+    },
+    {
+      "owner": "line",
+      "id": "L1410b",
+      "severity": "minor",
+      "problem": "The callback no longer matches its candle. L1405 and every candle label now say 'China is a year or two behind' [e13-gap], but L1410b still asks 'China trailing by years? That belief burned about two.' 'By years' reads as the old 'one to three years' belief, and 'burned about two' is ambiguous (two what?) right after 'years'.",
+      "fix": "Change L1410b to: 'China a year or two behind? That belief burned about two years.' [e13-gap, e13-crash]. Re-narrate it and rebuild the clock. In ch14-s04b, re-anchor the named card from T.word('L1410b','trailing') to T.word('L1410b','behind'), then re-sheet at the card's rise and at 'two'."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Real names are spoken without verified pronunciation. QA narration.listening still marks Amodei, LeCun, Uszkoreit, Hochreiter, Schmidhuber, Rumelhart and Lenat as 'pending', and Amodei (L1206) has gone unverified for a third round. Mispronouncing the people the film depicts is a respect and accuracy issue under the brief's 'depicted respectfully' rule.",
+      "fix": "Have a human listen to L1206, L0609, L1006, L0614, L0507 and L0515, then run `film:voice signoff --slug neural-net-history --term <term> --by <name>` for each name. Re-take any that fail through the voice.json lexicon (e.g. Amodei 'ah-mo-DAY')."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Ledger partial for ch15-s08: the STATUS: OPEN stamp lands on 'stays open' (L1516b) with no fx-stamp foley event in score/foley.json. ch14-s07 and ch15-s09 both have one, so the film's 'case open' device is silent only at its thesis line.",
+      "fix": "Add an fx-stamp event to score/foley.json anchored at T.word('L1516b','stays') + 0.2 s, using the same sample and level as ch14-s07's stamp. Re-mix it and record it in round4-global."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Ledger partial for ch13-s01: Hinton's silhouette uses the cast's generic 'waves' hair in s01, s03 and s04. That is a likeness issue in depicting a real person, flagged to the cast owner and not yet applied.",
+      "fix": "In cast.ts, give Hinton a swept-back, receding crown that reads in profile, consistent with period photographs. Re-sheet ch13-s01, ch13-s03 and ch13-s04, and close the round3 partial."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s05",
+      "severity": "minor",
+      "problem": "Resolve the ledger partial: keep the label 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS'; attribution is required for fairness. Separately, the new GOOGLE DEEPMIND and META plinth tags render at about 10 px cap at 1080p (film frame 33:13.6), below legibility. 'The labs, under the same light' therefore still reads as two labs plus two blanks.",
+      "fix": "Leave the settlement label as it is and mark the round3 partial resolved. Raise the GOOGLE DEEPMIND and META plates to about 16-18 px cap (texture role, about 70 % alpha), lit softly through L1522 (0.4-3.0 s). Run legibility after the edit and verify at +0.4 and +2.9."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s04",
+      "severity": "minor",
+      "problem": "Optional balance note, carried from round 3 and never applied. Present-day capability evidence comes only from Anthropic models: the METR rungs '1 HOUR · MAR 2025' and '16 HOURS · MAY 2026' measured Claude 3.7 Sonnet and an early Claude Mythos Preview [e14-metr-horizon], and they are unnamed. Google's 2025-26 work appears nowhere in Act 3 except Hassabis's forecasts.",
+      "fix": "Either add a small dated tick 'GEMINI 3 · Google · Nov 2025' [e14-google] beside the ladder from b3 (8.02) to b4, or keep the rungs unnamed and add the 9 px source line 'METR estimates · frontier models'. Do not name only one lab's models."
+    }
+  ],
+  "verifiedFixedFromRound3": [
+    "ch09-s05: Marcus card 'GARY MARCUS · 2018 · Deep Learning: A Critical Appraisal' pinned at 22.00-23.21 (20:41.96-20:43.17) [e9-marcus]. Closed after three rounds.",
+    "ch05-s07: 'HUBERT DREYFUS / What Computers Can't Do, 1972' name card; quote card '…early, dramatic success followed by sudden unexpected difficulties. — HUBERT DREYFUS, 1972' at 26.46-30.38, verbatim to q-dreyfus-pattern (1972 book).",
+    "ch15-s06: 'left Meta, Nov 2025, to build world models · AMI Labs' under LeCun's 2024 off-ramp quote, 8.08-13.50 [e14-lecun].",
+    "ch14-s04b: HELPS HUAWEI · HUANG (NVIDIA) / SELF-DEFEATING · CHINA'S FOREIGN MINISTRY / DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) in one row at equal size; no verdict by height.",
+    "L1405 plus the candle labels in ch14-s02, ch14-s04b and the ch15-s04 shelf now read 'a year or two behind', which matches e13-gap (Liang, July 2024). No 'one to three' remains in the sources. The VTT carries the new wording.",
+    "ch15-s05: the 'ANTHROPIC ·' prefix is restored (22.79-26.75); GOOGLE DEEPMIND and META plinth tags added; Lin and Katsas quotes paired at equal size (30.88-32.88); the OpenAI warning shot is verbatim to q14-openai-warningshot.",
+    "Quote integrity: 0 mismatches across every narrated quotation and on-screen quote card. Claims: every cited id exists. Script equals timeline for all 233 lines."
+  ],
+  "best_moments": [
+    "ch14-s04b: three positions on export controls, from Nvidia, Beijing and Anthropic/ex-NSC, hang in one row at the same size while a single candle goes out. The film shows the dispute without ruling on it.",
+    "ch14-s07: three gap estimates from three camps (Hassabis, Huang, Lin), then Liang's 'originality and imitation', then the fence card stamped STATUS: OPEN. A contested race is left contested.",
+    "ch15-s05: two courthouses and two judges give verbatim and opposite reasons at equal size. Then Anthropic's own record settlement is spoken and labelled with its name, before OpenAI's warning shot. The narrator's maker gets no pass.",
+    "ch12-s03: the FTX line carries its caveat in full, and GPT-4 and Claude are struck together on the same March day, as equals among Bard and LLaMA.",
+    "ch05-s07: MYCIN's blinded test is charted honestly (65 % vs 42.5-62.5 %). The era's philosopher-dissenter then gets his own words, book and year on screen.",
+    "ch09-s05: the deep-learning era's doubters are named in their own era: adversarial pandas, Buolamwini and Gebru's numbers, and now Gary Marcus's 2018 appraisal.",
+    "ch15-s10: the authorship disclosure ('made by Anthropic, a lab in this story'), followed by a live, real sources URL."
+  ]
+}

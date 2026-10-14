@@ -1,0 +1,156 @@
+{
+  "id": "perceptrons-book-first-winter",
+  "checked": 48,
+  "confirmed": 32,
+  "corrected": 9,
+  "unverifiable": 3,
+  "contested": 4,
+  "corrections": [
+    {
+      "original": "Perceptrons was dedicated to Frank Rosenblatt (implying the 1969 book; Hook 1 'dedicated to the man it was read as burying').",
+      "verdict": "corrected",
+      "fix": "The documented dedication is the handwritten 'In memory of Frank Rosenblatt' that appears with the authors' handwritten alterations for the second printing (1972), after his July 1971 death. A 1969 first-printing dedication is unconfirmed (only Hecht-Nielsen's secondhand anecdote). Timeline and Hook 1 rewritten.",
+      "sources": [
+        "https://leon.bottou.org/publications/pdf/perceptrons-2017.pdf",
+        "https://www.scribd.com/document/770825076/Perceptrons-Marvin-Minsky-Seymour-Papert",
+        "https://yuxi.ml/essays/posts/perceptron-controversy/",
+        "https://en.wikipedia.org/wiki/Perceptrons_(book)"
+      ]
+    },
+    {
+      "original": "Key claim 1: connectedness cannot be computed without detectors that see 'a growing fraction of the' retina.",
+      "verdict": "corrected",
+      "fix": "Connectedness needs order growing at least as |R|^(1/2): an unbounded number of points per detector, not a growing fraction of the retina. Parity needs order |R| (some detector sees every point). Dossier body 5.3 was already correct.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Perceptrons_(book)",
+        "https://leon.bottou.org/publications/pdf/perceptrons-2017.pdf"
+      ]
+    },
+    {
+      "original": "Key claim 3 / 5.4: in 1969 nobody had a practical way to learn hidden-unit weights.",
+      "verdict": "corrected",
+      "fix": "Overstated. Amari 1967 (Saito's five-layer net with two modifiable layers) and Ivakhnenko's GMDH trained multi-layer systems, but they were little known in the US mainstream and were not a general method. Caveat added.",
+      "sources": [
+        "https://people.idsia.ch/~juergen/who-invented-backpropagation.html",
+        "https://arxiv.org/pdf/1404.7828"
+      ]
+    },
+    {
+      "original": "Richard Gregory, 'then at Edinburgh's Bionics Research Lab (later Bristol)' at the 1973 debate.",
+      "verdict": "corrected",
+      "fix": "Gregory left Edinburgh in 1970 to become Professor of Neuropsychology and director of the Brain and Perception Laboratory at Bristol, so he debated from Bristol.",
+      "sources": [
+        "https://royalsocietypublishing.org/rsbm/article/64/1/163/63937/Richard-Langton-Gregory-24-July-1923-17-May",
+        "https://www.richardgregory.org/cv.htm"
+      ]
+    },
+    {
+      "original": "McCarthy 'At the debate he argued that Lighthill's categories had \"no place for what is or should be our main scientific activity\"'.",
+      "verdict": "corrected",
+      "fix": "The quote is from McCarthy's written review of the Lighthill report, not from the televised debate. Re-attributed.",
+      "sources": [
+        "http://www-formal.stanford.edu/jmc/reviews/lighthill/lighthill.html"
+      ]
+    },
+    {
+      "original": "Michie: 'founder of Edinburgh's Department of Machine Intelligence and Perception'.",
+      "verdict": "corrected",
+      "fix": "Co-founder (1967) with Richard Gregory and Christopher Longuet-Higgins.",
+      "sources": [
+        "https://www.richardgregory.org/cv.htm",
+        "https://royalsocietypublishing.org/rsbm/article/64/1/163/63937/Richard-Langton-Gregory-24-July-1923-17-May"
+      ]
+    },
+    {
+      "original": "Olazaran shows the official history was built and institutionalised by symbolic-AI researchers 'who believed resources were being diverted from them'.",
+      "verdict": "corrected",
+      "fix": "Reworded to his abstract: the official history stemmed from the rise, institutionalisation and '(importantly) legitimation of the symbolic AI approach', including its funding allocation and authority structure.",
+      "sources": [
+        "https://colab.ws/articles/10.1177%2F030631296026003005",
+        "https://doi.org/10.1177/030631296026003005"
+      ]
+    },
+    {
+      "original": "Key claim 5: Papert admitted hostility 'partly over funding'.",
+      "verdict": "corrected",
+      "fix": "Verbatim confirmed. Added context from his next sentence: 'But most of the motivation for Perceptrons came from more fundamental concerns...'",
+      "sources": [
+        "https://gwern.net/doc/ai/1988-papert.pdf",
+        "https://www.jstor.org/stable/20025136"
+      ]
+    },
+    {
+      "original": "Timeline lists June 1967 (Amari) before November 1966 (ALPAC).",
+      "verdict": "corrected",
+      "fix": "Rows reordered chronologically.",
+      "sources": [
+        "https://people.idsia.ch/~juergen/amari1967.pdf",
+        "https://nap.nationalacademies.org/resource/alpac_lm/ARC000005.pdf"
+      ]
+    },
+    {
+      "original": "Key claim 9: ALPAC found no prospect of useful MT after some $20 million of spending over ten years.",
+      "verdict": "contested",
+      "fix": "The ALPAC wording is verbatim, including 'This is more than the government cost of translation for 1 year'. Hutchins (1996) argues US MT research funding 'may well have been nearer $12-13 million', and says ALPAC ended substantial US MT funding 'for some twenty years'. Say 'ALPAC put the figure at about $20 million'.",
+      "sources": [
+        "https://nap.nationalacademies.org/resource/alpac_lm/ARC000005.pdf",
+        "https://aclanthology.org/www.mt-archive.info/90/MTNI-1996-Hutchins.pdf"
+      ]
+    },
+    {
+      "original": "Key claim 15 / winter list: Werbos (1974) proposed backpropagation for multilayer nets.",
+      "verdict": "contested",
+      "fix": "Schmidhuber calls the 1974 thesis only 'preliminary, NN-specific discussion' and dates the first NN-specific application of efficient BP to Werbos 1982. Werbos and Wikipedia credit 1974. Marked CONTESTED; keep 'invented several times'.",
+      "sources": [
+        "https://people.idsia.ch/~juergen/who-invented-backpropagation.html",
+        "https://arxiv.org/pdf/1404.7828",
+        "https://en.wikipedia.org/wiki/Paul_Werbos"
+      ]
+    },
+    {
+      "original": "Mark I Perceptron built 1958 (Smithsonian date).",
+      "verdict": "contested",
+      "fix": "The Smithsonian says 'date made 1958'. Jensen and Dunning give assembly in June-December 1959, Nilsson a first public demo on 23 June 1960, and Wikipedia (Rosenblatt) hardware construction in 1960. Use 'around 1958-60'. The Smithsonian record (ID 1987.0819.01) also gives ONR and RADC funding, the 1967 transfer and 'Currently not on view'. The 400/512/8 counts are secondary.",
+      "sources": [
+        "https://api.si.edu/openaccess/api/v1.0/search?q=%22Mark+I+Perceptron%22",
+        "https://americanhistory.si.edu/collections/object/nmah_334414",
+        "https://en.wikipedia.org/wiki/Perceptron"
+      ]
+    },
+    {
+      "original": "Key claim 12: Lighthill debate date (9 May vs June vs 4 July filming / 30 Aug broadcast 1973).",
+      "verdict": "contested",
+      "fix": "Still unresolved. The Edinburgh AIAI archive says 'June 1973'. Wikipedia's 9 May cites only a 2024 GitHub repo, and a note citing an SRI report gives 4 July / 30 August. No BBC Genome listing was found. Use '1973'.",
+      "sources": [
+        "https://www.aiai.ed.ac.uk/events/lighthill1973/",
+        "https://en.wikipedia.org/wiki/Lighthill_report",
+        "https://github.com/tmzncty/problem-history/pull/14"
+      ]
+    },
+    {
+      "original": "Widrow: \"So we stopped, basically stopped on neural nets\" (via Olazaran 1991).",
+      "verdict": "unverifiable",
+      "fix": "Seen only via a secondary essay. Demoted to 'UNVERIFIED — do not use as a quote'; the paraphrase that he moved to adaptive antennas is kept.",
+      "sources": [
+        "https://yuxi.ml/essays/posts/perceptron-controversy/"
+      ]
+    },
+    {
+      "original": "LeCun 2016: the book 'had a hand in killing the first wave of neural nets, but it wasn't Papert's intention' (via QI).",
+      "verdict": "unverifiable",
+      "fix": "The Quote Investigator page does not contain it. It stays UNVERIFIED.",
+      "sources": [
+        "https://quoteinvestigator.com/2026/07/24/perceptron-sterile/"
+      ]
+    },
+    {
+      "original": "Q18: 'little of significance had changed since 1969' (1988 Prologue).",
+      "verdict": "unverifiable",
+      "fix": "Wording (had vs [has]) and location (Prologue p. vii per QI vs closing chapter per Wikipedia/Pollack) conflict. Marked UNVERIFIED as a verbatim quote until checked against the printed Expanded Edition.",
+      "sources": [
+        "https://quoteinvestigator.com/2026/07/24/perceptron-sterile/",
+        "https://en.wikipedia.org/wiki/Perceptrons_(book)"
+      ]
+    }
+  ]
+}

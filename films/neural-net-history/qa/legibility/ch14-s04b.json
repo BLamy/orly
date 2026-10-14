@@ -1,0 +1,119 @@
+{
+ "shot": "ch14-s04b",
+ "at": "2026-10-14T00:47:16.198Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 21,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "CHINA IS A YEAR",
+   "capWhileSubject": 28.2,
+   "why": "named: \"china year\""
+  },
+  {
+   "text": "OR TWO BEHIND",
+   "capWhileSubject": 28.2,
+   "why": "named: \"behind\""
+  },
+  {
+   "text": "HELPS HUAWEI",
+   "capWhileSubject": 29.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "SELF-DEFEATING",
+   "capWhileSubject": 29.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "CHINA’S FOREIGN",
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "MINISTRY",
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "DECISIVE",
+   "capWhileSubject": 29.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "AMODEI (ANTHROPIC),",
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "KHAN (EX-NSC)",
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 15.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
+   "maxCap": 15.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 15.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COMPUTE IS",
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE CHOKEPOINT",
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LIT 2022",
+   "maxCap": 24.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COMPUTE MATTERS LESS?",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OCT 2022 –",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "≈ 2",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit Oct 2022 · out Jan 2025",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 11
+}

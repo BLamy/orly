@@ -1,0 +1,981 @@
+{
+  "id": "ch14",
+  "number": 14,
+  "title": "Two Shores",
+  "blurb": "2017 to 2026. The US and China as dated beliefs on two equally lit shores: a plan, a fence of rules, a price tag, a struck match, and a dialogue with two names.",
+  "shots": [
+    {
+      "id": "ch14-s01",
+      "kind": "scene",
+      "setting": "Two skylines facing each other across dark water at dawn; a wooden jetty runs out from the middle with a Go board on it · July 2017",
+      "era": "2010s",
+      "mood": "dawnGold",
+      "lines": [
+        {
+          "id": "L1401",
+          "text": "In 2017, China aimed to be “the world's primary AI innovation center” by 2030.",
+          "spoken": "In twenty seventeen, China aimed to be “the world's primary A.I. innovation center” by twenty thirty.",
+          "direction": "measured, neutral, a teacher reading a document aloud"
+        },
+        {
+          "id": "L1402",
+          "text": "Its plan named no rival.",
+          "pauseAfter": 0.55,
+          "direction": "a small, precise aside"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "visual": "THIS SHOT: through the study window, two equal shores at dawn; the 2017 plan's parchment page rises over the right shore, its 2030 ring glowing, naming no rival; one stone is set on the jetty's Go board. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Two Shores', drops down from the frame's top edge at TOP-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. CAMERA: through the study WINDOW (the WINDOW RULE below); the shelf appears only as a reflection in the glass. The lead-in here is short, so the tab rides over the first line, as ch02-s01's does. WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Staging rule for the whole chapter: two skylines of equal height, equal mass and identical warmth face each other across a band of dark water, left and right, mirror-balanced in the frame. They are generic paper-cut cities (towers, bridges, a few hills), with no landmarks, flags, emblems, dragons, eagles or red tint, and their small lit windows flicker on the same rhythm. Whatever the mood, both shores always take exactly the same palette. Haze lies on the water. From the centre of the near bank a long wooden jetty runs out into the water, and on its end sits a Go board on a low stand, lit by a lantern hung on a post, with a stone bowl on each side. There is no candle shelf on the jetty: CANDLE PLACEMENT (canonical for this chapter; repeated in every candle shot): the China-race candles are NOT on the jetty. They stand at the right end of the study's own candle shelf, the same shelf ch15-s08 pulls back across, and are seen only as a reflection in the study window glass that ch13-s06 opened onto the strait: the reflected shelf, its flames and the narrator's steady hands float over the water. The reflection keeps the study's candleAmber (STUDY LOCK: the study's colour enters this chapter only as that reflection), while the strait and shores beyond keep the shot's own mood. Open on the study window frame itself: dark mullions against the dawn beyond, the unlit room behind the camera. Push through it, FLAME PUSH-style but with no lamp change and no mood crossfade (a short camera push to lens 1.6 through the gap between two mullions, which slide out to the frame edges and stay there as the faint L1 occluder), arriving wide and still on the two shores at dawn; then a slow push in toward the jetty. On the first line a single parchment page rises from the right shore and hangs in the air above it: the plan, stamped with the date, its three steps marked 2020 · 2025 · 2030 as three small rings, the last one glowing. On 'no rival' the camera eases back to show the whole page: there is no name on it but its own, and the left shore simply goes on glowing. A hand from the right side sets one stone on the Go board; nothing answers yet. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+      "beats": [
+        {
+          "id": "indexTab",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "manila index tab typed 'Two Shores' drops down from the frame's top edge at top-left, holds 2.5 s, slides back up (clear of the bottom-left date stamp)"
+        },
+        {
+          "id": "open",
+          "at": {
+            "shotTime": 0
+          },
+          "what": "open on the study window frame; push through the mullions to the wide of two equal shores; slow push toward the jetty"
+        },
+        {
+          "id": "page",
+          "at": {
+            "line": "L1401",
+            "word": "aimed"
+          },
+          "what": "the plan's parchment page rises above the right shore; date stamp"
+        },
+        {
+          "id": "rings",
+          "at": {
+            "line": "L1401",
+            "word": "thirty"
+          },
+          "what": "the 2030 ring on the page glows"
+        },
+        {
+          "id": "norival",
+          "at": {
+            "line": "L1402",
+            "word": "rival"
+          },
+          "what": "camera eases back: the page names no one; a single stone is set on the Go board"
+        }
+      ],
+      "props": [
+        "skylineLeft",
+        "skylineRight",
+        "jetty",
+        "goBoard",
+        "postLantern",
+        "parchmentPage"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Two Shores",
+          "beat": "indexTab"
+        },
+        {
+          "kind": "date",
+          "text": "20 JULY 2017 · STATE COUNCIL OF CHINA",
+          "beat": "page"
+        },
+        {
+          "kind": "quote",
+          "text": "“…the world's primary AI innovation center” — 2017 plan (DigiChina translation)",
+          "beat": "page"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "Two Shores theme: a single neutral plucked melody, harmonised two ways and split evenly left and right across the stereo field, with no national-instrument clichés. Calm, wide, unhurried; dawn rather than threat."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e13-plan2017"
+      ],
+      "creditsSources": [
+        "“making China the world's primary AI innovation center” — New Generation AI Development Plan, China State Council, 20 July 2017 (DigiChina translation) (q13-plan2017)"
+      ]
+    },
+    {
+      "id": "ch14-s02",
+      "kind": "scene",
+      "setting": "The water between the shores: a fence of rule pages rising from it; identical lecterns on each bank; the study's candle shelf reflected in the window glass over the water · 7-8 October 2022",
+      "era": "2020s",
+      "mood": "dawnGold",
+      "lines": [
+        {
+          "id": "L1403",
+          "text": "October 2022. Citing military uses, Washington fenced off high-end chips, and the tools to make them. Beijing replied that America “abuses export control measures.”",
+          "spoken": "October, twenty twenty-two. Citing military uses, Washington fenced off high-end chips, and the tools to make them. Beijing replied that America “abuses export control measures.”",
+          "pauseAfter": 0.6,
+          "direction": "even and exact; two sentences, two equal shores: the same weight and the same pace for each capital; Beijing's quoted words read plainly, not dramatised"
+        },
+        {
+          "id": "L1405",
+          "text": "Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?",
+          "pauseAfter": 0.5,
+          "direction": "the candle habit; even; 'a year or two behind' plainly (Liang Wenfeng's own 2024 estimate); a breath; then the question asked straight, open, not rhetorical, a small lift on 'hold' NARRATION: re-generate this line on its own (solo).",
+          "tts": {
+            "solo": true
+          }
+        }
+      ],
+      "holdAfter": 0.5,
+      "visual": "THIS SHOT: a paper fence of rule pages rises across the strait (October 2022 export controls), Beijing's reply flies back over it, and one match lights two candles in the window's reflection: COMPUTE IS THE CHOKEPOINT and CHINA IS A YEAR OR TWO BEHIND. CAMERA: through the study WINDOW; the SHELF (low macro) only as its reflection in the glass. WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Left bank: a generic delegate at a lectern lifts a page; on 'fenced off' tall parchment rule pages rise out of the water one after another, edge to edge, forming a paper fence across the strait. On the near side of the fence small black chip tiles and the silhouette of a chipmaking machine (generic, no marks) sit on the left bank. Washington's stated reason rises as a parchment quote card over the left bank. GO BOARD (moves and answers): no cutaway; the fence keeps the frame. On 'tools', once the fence stands, a hand from the LEFT shore sets one stone on the Go board at the jetty's end, within the same wide (the jetty sits at the centre of every ch14 wide), in answer to the right shore's stone from ch14-s01. Right bank, the next morning: an identical delegate at an identical lectern, drawn as the mirror image with the same warmth, answers; a single reply page flies back over the fence and settles on the left bank, and Beijing's reply rises as a quote card over the right bank. The two quote cards are short operative fragments (the full sentences go to the credits sources), mirror-placed, the same type, size and warmth, and both stay up together until the tilt, so each can be read. Then the camera tilts from the water up to the study window's reflection. CANDLE PLACEMENT (canonical for this chapter; repeated in every candle shot): the China-race candles are NOT on the jetty. They stand at the right end of the study's own candle shelf, the same shelf ch15-s08 pulls back across, and are seen only as a reflection in the study window glass that ch13-s06 opened onto the strait: the reflected shelf, its flames and the narrator's steady hands float over the water. The reflection keeps the study's candleAmber (STUDY LOCK: the study's colour enters this chapter only as that reflection), while the strait and shores beyond keep the shot's own mood. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the hands, in reflection, strike one match and light two new candles side by side, lettered in IBM Plex Mono small caps (paraphrases, no quotation marks): COMPUTE IS THE CHOKEPOINT on the first, CHINA IS A YEAR OR TWO BEHIND on the second. Both sleeves are still empty: the flames sit at the top ring. Their two pools of light overlap and fall on both banks at once. The camera holds on the two flames, their light reaching the right shore as well as the left. TEXT RULE: the two mirrored quote cards are the shot's only text items; the candles' own lettering and their LIT 2022 base tags carry the rest (no separate label). SCRIPT NOTE (review round 9): L1405 now plants Act 3's question, 'can a fence around chips hold?' (paid off in L1418); on 'fence' the camera settles back on the paper fence in the water.",
+      "beats": [
+        {
+          "id": "fence",
+          "at": {
+            "line": "L1403",
+            "word": "fenced"
+          },
+          "what": "rule pages rise from the water into a paper fence"
+        },
+        {
+          "id": "tools",
+          "at": {
+            "line": "L1403",
+            "word": "tools"
+          },
+          "what": "the chipmaking machine silhouette catches a rim light behind the standing fence; in the same wide (no cutaway), a hand from the left shore sets one stone at the jetty's end on the Go board"
+        },
+        {
+          "id": "reply",
+          "at": {
+            "line": "L1403",
+            "word": "replied"
+          },
+          "what": "the mirrored delegate answers; a reply page flies back over the fence"
+        },
+        {
+          "id": "candle",
+          "at": {
+            "line": "L1405",
+            "word": "candles"
+          },
+          "what": "tilt to the study shelf's reflection in the window glass, over the water: one match lights two candles; their light falls on both banks"
+        },
+        {
+          "id": "behind",
+          "at": {
+            "line": "L1405",
+            "word": "behind"
+          },
+          "what": "the second candle's lettering catches the flame"
+        },
+        {
+          "id": "question",
+          "at": {
+            "line": "L1405",
+            "word": "fence"
+          },
+          "what": "from the candles' reflection the camera settles back on the paper fence standing in the water (the question's object; no text)"
+        }
+      ],
+      "cast": [
+        "delegate",
+        "narrator-hands"
+      ],
+      "props": [
+        "ruleFence",
+        "lectern",
+        "chipTiles",
+        "chipmakingMachine",
+        "candleShelf",
+        "beliefCandleChokepoint",
+        "beliefCandleBehind",
+        "goBoard"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "“…certain high-end chips used in military applications” — BIS, 7 Oct 2022",
+          "beat": "fence",
+          "until": "candle"
+        },
+        {
+          "kind": "quote",
+          "text": "“…the U.S. abuses export control measures…” — Mao Ning, 8 Oct 2022 (AP translation)",
+          "beat": "reply"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "the Two Shores melody answers itself: phrase on the left channel, the same phrase mirrored on the right. On the candles, the motif's rising fourth (lit) in the plucked string, twice, a third apart, then the held suspension through the hold."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e13-oct2022",
+        "e13-china-2022-response",
+        "e13-oct2023",
+        "e13-dec2024",
+        "e13-gap"
+      ],
+      "creditsSources": [
+        "“restrict the People's Republic of China's (PRC's) ability to both purchase and manufacture certain high-end chips used in military applications” — US Bureau of Industry and Security, 7 October 2022 (q13-bis-2022)",
+        "“Out of the need to maintain its sci-tech hegemony, the U.S. abuses export control measures to maliciously block and suppress Chinese companies.” — Mao Ning, PRC Foreign Ministry, 8 October 2022 (AP translation) (q13-mao-2022)"
+      ],
+      "leadIn": 0.6
+    },
+    {
+      "id": "ch14-s03",
+      "kind": "scene",
+      "setting": "Before a vast dark data hall on the right bank; a small paper price tag on a string at its door · 26 December 2024",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L1406",
+          "text": "December 2024: a Chinese lab, DeepSeek, priced its model's final training run at about five and a half million dollars.",
+          "spoken": "December twenty twenty-four: a Chinese lab, DeepSeek, priced its model's final training run at about five and a half million dollars.",
+          "direction": "plain; introduce the lab simply, as a newcomer; 'priced' and 'final training run' clear, so the scope is carried by the sentence itself; a small lift of interest on the price"
+        },
+        {
+          "id": "L1407",
+          "text": "That counted rented hours for the last run only: not the research before it, nor the hardware it owned.",
+          "pauseAfter": 0.55,
+          "direction": "precise and patient, like a footnote; a small pause at the colon; 'not the research before it, nor the hardware it owned' even, a matter of scope, no insinuation"
+        }
+      ],
+      "holdAfter": 3.9,
+      "visual": "THIS SHOT: a $5.576M price tag (a rental-price estimate for one final run) turns at the door of a vast data hall; the pull-back reveals two larger buildings in the haze behind it, the research and the chips the price leaves out. CAMERA: through the study WINDOW (no shelf, no hands). WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. TRANSITION: Cut, with crossfadeMood dawnGold→winterBlue (0.8 s, no dip) under the close-up, so ch14-s02's dawn tint never pops. Close on a small manila price tag turning slowly on its string, lettered in IBM Plex Mono: $5.576M. On 'final' the tag flips over: on its back, in small type, FINAL RUN ONLY · AT RENTAL PRICES. On 'million' the camera pulls back, and back, until the tag is a fleck at the door of an enormous dark building whose rows of tiny lit windows are server racks; the building fills the frame and keeps going. On 'research' a faint second building appears behind the first in the haze, with its label; on 'hardware' a third, larger still, its windows uncountable, with its label. A cold winter-dawn haze (winterBlue) lies over the building and sky; the manila tag, lit by a small lamp at the door, is the one warm practical in the frame. No logos.",
+      "beats": [
+        {
+          "id": "tag",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "close on the turning price tag"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L1406",
+            "word": "final"
+          },
+          "what": "the tag flips: final run only, at rental prices"
+        },
+        {
+          "id": "pull",
+          "at": {
+            "line": "L1406",
+            "word": "million"
+          },
+          "what": "long pull back to the vast building"
+        },
+        {
+          "id": "research",
+          "at": {
+            "line": "L1407",
+            "word": "research"
+          },
+          "what": "a second building appears in the haze: research excluded"
+        },
+        {
+          "id": "chips",
+          "at": {
+            "line": "L1407",
+            "word": "hardware"
+          },
+          "what": "a third, larger building: the outside estimate"
+        }
+      ],
+      "props": [
+        "priceTag",
+        "dataHall"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "26 DECEMBER 2024 · DEEPSEEK V3 TECHNICAL REPORT",
+          "beat": "tag"
+        },
+        {
+          "kind": "label",
+          "text": "EXCLUDES PRIOR RESEARCH · THE REPORT'S CAVEAT",
+          "beat": "research"
+        },
+        {
+          "kind": "label",
+          "text": "~50,000 CHIPS (SEMIANALYSIS EST.)",
+          "beat": "chips"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "thin and quizzical: the plucked melody reduced to a few notes in the middle register, a little space between them, as if counting."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e13-deepseek-v3",
+        "e13-cost-debate"
+      ],
+      "leadIn": 0.6,
+      "creditsSources": [
+        "DeepSeek-V3 technical report (26 December 2024): $5.576M at an assumed $2 per H800 GPU-hour for the final run, \"excluding the costs associated with prior research and ablation experiments\" (e13-deepseek-v3)",
+        "SemiAnalysis estimated DeepSeek had access to about 50,000 Hopper GPUs and about $1.6 billion in server capex; defenders note DeepSeek never claimed the whole programme cost $6M (e13-cost-debate)"
+      ]
+    },
+    {
+      "id": "ch14-s04",
+      "kind": "scene",
+      "setting": "Left bank, a shuttered window; the right bank, a far lit room of officials and a lantern set on the water; then the left bank's market strip, all seen through the study window · September 2024 to 27 January 2025",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L1408",
+          "text": "Machines had just learned to think longer: trained by reward, they wrote long working notes before answering. OpenAI hid those notes by design.",
+          "spoken": "Machines had just learned to think longer: trained by reward, they wrote long working notes before answering. Open A.I. hid those notes by design.",
+          "pauseAfter": 0.5,
+          "direction": "plain and clear on the mechanism, a new idea said simply ('trained by reward' a quiet echo of AlphaGo's wins; 'working notes' clear); 'OpenAI hid those notes by design' level, a fact not a charge, the same weight the next line gives DeepSeek"
+        },
+        {
+          "id": "L1408b",
+          "text": "Then DeepSeek released such a model, its method and weights open to all.",
+          "direction": "even-handed, the same weight as the line before; 'open to all' with quiet weight: anyone could download it",
+          "tts": {
+            "solo": true,
+            "speed": 0.85
+          }
+        },
+        {
+          "id": "L1409",
+          "text": "A week later, markets fell.",
+          "direction": "level, a reporter's tone; no relish at the loss; the torn ticker and its label carry the record",
+          "pauseAfter": 0.45
+        }
+      ],
+      "holdAfter": 4.4,
+      "visual": "THIS SHOT: one idea on two shores: a shuttered window on the left bank hides a spooling scroll of working notes (only the answer slides out), then an open paper lantern from the right bank carries its notes and recipe in plain view; a week later the left bank's ticker-strip tears and falls. CAMERA: through the study WINDOW (no shelf, no hands). WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Left bank, September 2024: high in one tower, a tall shuttered window. Through the slats, in silhouette only, a long roll of scratch paper spools fast from one roller to another, lines of working rippling past like shadow-writing (thinking longer). Its label sets in beneath the window on 'longer' and is read under the rest of the line. On 'reward' a single crisp typed line (the answer) slides out under the sill into the light, and a small brass check-stamp drops onto it (trained by reward). On 'hid' the slats close tight: only the answer line shows, the scroll's shadow still moving behind them. No lab logo; the window is drawn exactly like the right bank's windows, the same warmth. On 'Then' the camera pans across the water to the right bank, 20 January 2025 (the o1 label leaves frame with the pan): far off, a single lit window in a formal hall: a long table of officials in silhouette, with one generic figure among them (Liang, never a likeness, small and distant). In the same frame, at the water's edge below, on 'method' a paper lantern lettered R1 · OPEN WEIGHTS is released onto the water: its paper is translucent, the same kind of scratch scroll visible inside it in plain view (the open rhyme of the shuttered window), and a small recipe card is tied to its handle. It floats out, and on 'all' it drifts past the jetty's end: in the same frame, with no cutaway, a hand from the RIGHT shore sets a second stone on the Go board as the lantern passes (the board now holds two right-shore stones and one left-shore answer). Both happen under the same date stamp. Cut across the water to the left bank, 27 January: on 'week' a tall paper ticker-strip hanging from a tower like a banner begins to tear, and on 'fell' it drops in one long fall while a chip silhouette on the bank dims. The strait and both shores keep this shot's cold winterBlue haze, exactly as in ch14-s03 (no red anywhere in the strait, the sky or on either shore). The market drop is carried by the falling ticker banner and its label, not by colour. Hold on the torn end of the strip swinging over the dark bank. No candles and no hands in this shot: the struck match belongs to ch14-s04b. TEXT RULE: besides stamps and name cards, at most two text items (the o1 label, gone before the pan ends, and the Nvidia label); R1's cost figures go to the credits sources.",
+      "beats": [
+        {
+          "id": "shutter",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "left bank: a shuttered window high in a tower; behind its slats, in silhouette only, a long scroll of scratch paper begins to spool"
+        },
+        {
+          "id": "longer",
+          "at": {
+            "line": "L1408",
+            "word": "longer"
+          },
+          "what": "the scroll spools faster behind the slats; the o1 label sets in under the shuttered window"
+        },
+        {
+          "id": "reward",
+          "at": {
+            "line": "L1408",
+            "word": "reward"
+          },
+          "what": "a single crisp answer line slides out under the sill; a small brass check-stamp drops onto it"
+        },
+        {
+          "id": "hidden",
+          "at": {
+            "line": "L1408",
+            "word": "hid"
+          },
+          "what": "the slats close tight; only the answer line shows; the scroll's shadow keeps moving behind them"
+        },
+        {
+          "id": "hall",
+          "at": {
+            "line": "L1408b",
+            "word": "Then"
+          },
+          "what": "pan across the water to the right bank: the far lit hall of officials, one small generic figure; date stamp; name card"
+        },
+        {
+          "id": "lantern",
+          "at": {
+            "line": "L1408b",
+            "word": "method"
+          },
+          "what": "at the water's edge below the hall, the R1 lantern is set on the water: its paper translucent, the working-notes scroll visible inside in plain view, a recipe card tied to its handle"
+        },
+        {
+          "id": "rightstone",
+          "at": {
+            "line": "L1408b",
+            "word": "all"
+          },
+          "what": "the lantern floats past the jetty's end; in the same frame (no cutaway) a hand from the right shore sets a second stone on the Go board as it passes"
+        },
+        {
+          "id": "tear",
+          "at": {
+            "line": "L1409",
+            "word": "week"
+          },
+          "what": "cut to the left bank: the ticker-strip begins to tear; date and label"
+        },
+        {
+          "id": "fall",
+          "at": {
+            "line": "L1409",
+            "word": "fell"
+          },
+          "what": "the ticker-strip drops in one long fall; a chip silhouette on the bank dims"
+        }
+      ],
+      "cast": [
+        "liang"
+      ],
+      "props": [
+        "shutteredWindow",
+        "scratchScroll",
+        "checkStamp",
+        "formalHall",
+        "paperLantern",
+        "recipeCard",
+        "tickerStrip",
+        "goBoard"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "SEP 2024 · OPENAI o1 · LONG CHAIN OF THOUGHT, HIDDEN BY DESIGN",
+          "beat": "longer",
+          "until": "hall"
+        },
+        {
+          "kind": "date",
+          "text": "20 JANUARY 2025 · PREMIER'S SYMPOSIUM",
+          "beat": "hall"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Liang Wenfeng · founder of DeepSeek",
+          "beat": "hall"
+        },
+        {
+          "kind": "date",
+          "text": "27 JANUARY 2025",
+          "beat": "tear"
+        },
+        {
+          "kind": "label",
+          "text": "NVIDIA −17% · −$589B · RECORD 1-DAY LOSS FOR A US FIRM",
+          "beat": "tear"
+        }
+      ],
+      "music": {
+        "cue": "ch14-match",
+        "note": "the Two Shores melody split by channel: under the shuttered window, a ticking celesta figure on the left, the scroll's spooling a quick rising run that never resolves; on 'Then' the same phrase, unchanged, moves to the right channel under the hall and the lantern; then a sudden low swell and a falling figure under the ticker-strip, cut off at the hold so the struck match in ch14-s04b arrives in near-silence."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e14-o1",
+        "e14-r1",
+        "e13-r1-release",
+        "e13-crash"
+      ],
+      "leadIn": 0.6,
+      "creditsSources": [
+        "OpenAI o1-preview (12 September 2024): trained with large-scale reinforcement learning to produce a long chain of thought, hidden 'by design' (e14-o1)",
+        "DeepSeek-R1 released 20 January 2025 under the MIT licence; the preprint (22 January 2025) showed reasoning 'can be incentivized through pure reinforcement learning (RL)'; in Nature (17 September 2025) DeepSeek disclosed a reasoning-training cost of about US$294,000, excluding about $6 million for the base model (e13-r1-release, e14-r1)",
+        "27 January 2025: Nvidia fell about 17% and lost $589 billion (Bloomberg) or $593 billion (Reuters/LSEG) in market value, the largest one-day loss in US market history (e13-crash)"
+      ]
+    },
+    {
+      "id": "ch14-s04b",
+      "kind": "scene",
+      "setting": "The study's candle shelf reflected in the window glass over the strait: a SHELF-camera macro in reflection · January 2025",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "leadIn": 0.4,
+      "lines": [
+        {
+          "id": "L1410",
+          "text": "For one day, investors bet that chips might matter less: a struck match.",
+          "pauseAfter": 1.6,
+          "direction": "wry, quiet; the joke is on the certainty, not on anyone; 'For one day' light and exact; 'might matter less' plain, a bet not a verdict; 'a struck match' set down softly; then a real pause"
+        },
+        {
+          "id": "L1410b",
+          "text": "China a year or two behind? That belief burned about two years.",
+          "pauseAfter": 0.66,
+          "direction": "a real question on 'behind?' (the belief as it was held: Liang Wenfeng's own 'one or two years'), then 'That belief burned about two years' plain and level. NARRATION (2026-10-13): re-narrate SOLO (new text; about +0.5 s).",
+          "tts": {
+            "solo": true
+          }
+        }
+      ],
+      "holdAfter": 4.5,
+      "visual": "THIS SHOT: a match lettered COMPUTE MATTERS LESS? flares for one day and is shaken out; the chokepoint candle steadies and burns on under three dissent tags; the year-or-two-behind candle blows out at two rings. CAMERA: SHELF (low macro), seen only as its reflection in the study window over the water. WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Plain cut from ch14-s04 in the same winterBlue: a SHELF-camera macro on the candle-clock in the study window's reflection over the water, the strait and both shores beyond soft in the cold haze (no red anywhere in the strait, the sky or on either shore), the reflected shelf candleAmber. This shot is the reflection only: no hall, no ticker, no jetty. CANDLE PLACEMENT (canonical for this chapter; repeated in every candle shot): the China-race candles are NOT on the jetty. They stand at the right end of the study's own candle shelf, the same shelf ch15-s08 pulls back across, and are seen only as a reflection in the study window glass that ch13-s06 opened onto the strait: the reflected shelf, its flames and the narrator's steady hands float over the water. The reflection keeps the study's candleAmber (STUDY LOCK: the study's colour enters this chapter only as that reflection), while the strait and shores beyond keep the shot's own mood. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'struck' the hands, in reflection, strike a match lettered COMPUTE MATTERS LESS? (a question, the market's one-day bet, never a verdict). It flares bright, its bloom the one warm alarm in the frame (a practical, never a tint on the water), burns down to the fingers, and in the pause after 'a struck match' is shaken out: one day's flare, a thin curl of smoke. In its draught both 2022 candles lean; then the COMPUTE IS THE CHOKEPOINT candle flickers low, then steadies. On 'behind' the draught blows the CHINA IS A YEAR OR TWO BEHIND candle out cleanly: a thread of smoke, a clean dark ghost sleeve two rings tall (about two years), no fray, its tag now reading OCT 2022 – JAN 2025 · ≈ 2. The COMPUTE IS THE CHOKEPOINT candle keeps burning, its own sleeve two rings tall and still growing. On the second 'two' ('about two years') the dark two-ring sleeve catches the living flame's light. Three small paper tags of equal size and weight swing on threads into the chokepoint candle's light, one at a time on their beats, at least a second apart (the two lab-and-chipmaker views in the pause after L1410, before the candle goes out; Beijing's on 'two'), so this candle, like every other, has its dissent at the rim: DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC); HELPS HUAWEI · HUANG (NVIDIA); SELF-DEFEATING · CHINA'S FOREIGN MINISTRY. Each speaker is named by affiliation in the same way. (The inference that the controls also spurred Chinese self-reliance goes to the credits sources, not a tag.) Hold on the blackened match lying on the shelf between the dark stub and the living flame, the three tags turning gently. SCRIPT NOTE (review round 1): L1410 is split: the match line, a 1.6 s pause (the match shaken out, the chokepoint candle steadies, the DECISIVE and HELPS HUAWEI tags swing in), then L1410b on the year-or-two-behind candle (rewritten 2026-10-13 to match the candle's own wording, e13-gap: 'China a year or two behind? That belief burned about two years.'). The 'chokepoint candle still burns, argued over' clause now opens L1418 in ch14-s07.",
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "candleShelf",
+        "match",
+        "beliefCandleChokepoint",
+        "beliefCandleBehind",
+        "paperTags"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC)",
+          "beat": "tag1"
+        },
+        {
+          "kind": "label",
+          "text": "HELPS HUAWEI · HUANG (NVIDIA)",
+          "beat": "tag2"
+        },
+        {
+          "kind": "label",
+          "text": "SELF-DEFEATING · CHINA'S FOREIGN MINISTRY",
+          "beat": "two"
+        }
+      ],
+      "music": {
+        "cue": "ch14-match",
+        "note": "the motif played whole and fast on the struck match (rising fourth, suspension, falling resolution within two seconds) and a scored silence as it is shaken out. On 'behind' the year-or-two-behind candle's motif resolves downward, softly: blown out, gone. The chokepoint candle's suspension is held, unresolved, under three small plucked notes, one per tag, into the cut."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e13-crash",
+        "e13-gap",
+        "e13-export-debate"
+      ],
+      "creditsSources": [
+        "Do export controls work? Dario Amodei (Anthropic) and former NSC official Saif Khan argue they are decisive; Jensen Huang (Nvidia, with a commercial interest in China sales) argues they hand the market to Huawei; China's foreign ministry says they will \"only hurt and isolate\" the US; Beijing's own purchase restrictions suggest the controls also hardened Chinese self-reliance policy (e13-export-debate)"
+      ],
+      "beats": [
+        {
+          "id": "match",
+          "at": {
+            "line": "L1410",
+            "word": "struck"
+          },
+          "what": "the match lettered COMPUTE MATTERS LESS? is struck and flares"
+        },
+        {
+          "id": "smoke",
+          "at": {
+            "line": "L1410",
+            "edge": "end",
+            "offset": 0.1
+          },
+          "what": "the match is shaken out; smoke; both 2022 candles lean in its draught"
+        },
+        {
+          "id": "steady",
+          "at": {
+            "line": "L1410",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "the chokepoint candle flickers low, then steadies and burns on"
+        },
+        {
+          "id": "tag1",
+          "at": {
+            "line": "L1410",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "first tag (DECISIVE) swings into the chokepoint candle's light"
+        },
+        {
+          "id": "tag2",
+          "at": {
+            "line": "L1410",
+            "edge": "end",
+            "offset": 1.2
+          },
+          "what": "second tag (HELPS HUAWEI) swings in opposite it"
+        },
+        {
+          "id": "out",
+          "at": {
+            "line": "L1410b",
+            "word": "behind"
+          },
+          "what": "the draught blows the CHINA IS A YEAR OR TWO BEHIND candle out cleanly: smoke, a clean dark two-ring sleeve, tag OCT 2022 – JAN 2025 · ≈ 2; the chokepoint candle burns on"
+        },
+        {
+          "id": "two",
+          "at": {
+            "line": "L1410b",
+            "word": 10
+          },
+          "what": "on the second 'two' (word 10, 'about two years') the dark two-ring sleeve catches the chokepoint flame's light; third tag (SELF-DEFEATING) swings in"
+        },
+        {
+          "id": "hold",
+          "at": {
+            "line": "L1410",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "hold on the blackened match between the dark stub and the living flame, the three tags turning gently"
+        }
+      ]
+    },
+    {
+      "id": "ch14-s05",
+      "kind": "scene",
+      "setting": "Over the strait, seen through the study window: a parchment plate of one conference's top authors, threads of light running to both shores; small open-weight lanterns drifting on the water · 2022–2025",
+      "era": "2020s",
+      "mood": "duskRose",
+      "lines": [
+        {
+          "id": "L1416",
+          "text": "Nearly half the top researchers first studied in China. But America employed the most of them.",
+          "pauseAfter": 0.6,
+          "direction": "warm, even, unhurried: the first sentence a plain fact over the plate; a small breath; 'But America employed the most of them' with the same weight, no surprise and no alarm. NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.9.",
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        }
+      ],
+      "leadIn": 0.9,
+      "holdAfter": 3.6,
+      "visual": "THIS SHOT: a parchment plate of a hundred paper scholars over the strait; threads of light run first to where they studied (most to the right shore), then re-route to where they work (the largest bundle to the left); open-weight lanterns drift across the water below. CAMERA: through the study WINDOW (no shelf, no hands). WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Crossfade from the shelf's reflection to the open strait at dusk (duskRose haze), both skylines lit with exactly equal warmth, the mullions faint at the frame edges. In the silent lead-in a wide parchment plate rises over the water between the shores: a hundred small identical paper figures of scholars, each with a book under one arm, standing in ten neat rows (a hundred-dot chart made of people, all the same warm paper, none caricatured, none marked or singled out; no flags). Still in the lead-in, threads of light run from the figures down to where they first studied: forty-seven threads run to the right shore, eighteen to the left, the rest to small far shores at the frame's edges (the plate's dots follow the bible's percentages). On 'America' the threads lift and re-route, softly, to where the figures work: the largest single bundle now runs to the left shore, with others still running to the right shore and beyond (the bible gives only that the US was the leading place they worked, the narration's 'employed the most', so show the left bundle as the largest without counting it). Then, in the music-only hold, the camera tilts down to the water below the plate: the R1 lantern from ch14-s04 is now one of many small paper lanterns drifting on the strait, set out from the right shore, some reaching the left (open weights crossing the water; generic, no logos). The plate's figures and both shores stay equally lit throughout. TEXT RULE: besides stamps and name cards, at most two text items in this shot. SCRIPT NOTE (review round 1): the talent statistic is now card-only: the plate rises and the threads run in the 3.SCRIPT NOTE (review round 9): the lead-in shortens to about 1.2 s and L1416 now speaks both halves: 'Nearly half the top researchers first studied in China. But America employed the most of them.' (the threads to where they studied run on 'studied'; the re-route on 'America').'",
+      "beats": [
+        {
+          "id": "plate",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the parchment plate of a hundred paper scholars rises over the water"
+        },
+        {
+          "id": "studied",
+          "at": {
+            "line": "L1416",
+            "word": "studied"
+          },
+          "what": "threads run to where they first studied: 47 to the right shore, 18 to the left, the rest to far shores; the CHINA 47% · US 18% line sets in under the spoken half"
+        },
+        {
+          "id": "work",
+          "at": {
+            "line": "L1416",
+            "word": "America"
+          },
+          "what": "the threads re-route to where they work: the largest bundle runs to the left shore"
+        },
+        {
+          "id": "lanterns",
+          "at": {
+            "line": "L1416",
+            "word": "employed"
+          },
+          "what": "tilt down: many small open-weight lanterns drifting across the strait"
+        }
+      ],
+      "props": [
+        "parchmentPlate",
+        "paperScholars",
+        "threadsOfLight",
+        "paperLantern"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "NEURIPS 2022 TOP AUTHORS · FIRST DEGREE: CHINA 47% · US 18%",
+          "beat": "studied"
+        },
+        {
+          "kind": "label",
+          "text": "OCT 2025 · OPEN QWEN PASSES LLAMA IN DOWNLOADS",
+          "beat": "lanterns"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "the Two Shores melody passed back and forth between the left and right channels, phrase by phrase, warm and even; a soft lift on 'America' that resolves nowhere in particular; small plucked notes, one per drifting lantern, in the hold."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e13-talent",
+        "e13-qwen",
+        "e13-open-releases"
+      ],
+      "creditsSources": [
+        "MacroPolo Global AI Talent Tracker 2.0: of NeurIPS 2022 authors, 47% did their undergraduate degree in China and 18% in the US; the US remained the leading place they worked (e13-talent)",
+        "By October 2025 Alibaba's open Qwen models had passed Meta's Llama in cumulative Hugging Face downloads (Alibaba/Xinhua citing Hugging Face data; ATOM report shows the same trend) (e13-qwen)"
+      ]
+    },
+    {
+      "id": "ch14-s06",
+      "kind": "scene",
+      "setting": "The jetty at night: pages pinned to the rail, the Go board with stones from both shores, one telephone handset with two name-plates; the paper fence far off; both shores lit · 2023–September 2026",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L1414",
+          "text": "Rivals, yes. But both had signed one safety declaration, at Bletchley, in 2023.",
+          "spoken": "Rivals, yes. But both had signed one safety declaration, at Bletchley, in twenty twenty-three.",
+          "pauseAfter": 0.5,
+          "direction": "a small, warm turn on 'Rivals, yes.'; then plain and even"
+        },
+        {
+          "id": "L1415",
+          "text": "In September 2026 they reached across the water: an AI dialogue, and a channel for incidents. Chip rules unchanged.",
+          "direction": "quietly hopeful on 'reached across the water', then plain; 'Chip rules unchanged' level, a fair footnote, not a sting",
+          "pauseAfter": 0.6,
+          "spoken": "In September, twenty twenty-six, they reached across the water: an A.I. dialogue, and a channel for incidents. Chip rules unchanged."
+        }
+      ],
+      "holdAfter": 2.3,
+      "visual": "THIS SHOT: night on the jetty: three pinned pages (Bletchley, Lima, Washington) lift in turn, a telephone handset with two name-plates is laid across the Go board and its cord glows to both shores, while the paper fence still stands far off. CAMERA: through the study WINDOW (no shelf, no hands). WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Night: a cool winterBlue haze over the water, with both skylines' windows still lit with exactly equal warmth. No candles and no hands in this shot. The camera starts on the jetty rail, where three parchment pages are pinned in a row and lift into the light as the camera tracks along them, lettered only with a place and a year: BLETCHLEY 2023, LIMA 2024, WASHINGTON 2026. On 'Bletchley' the first page lifts into the light, and the camera holds on it a moment before tracking on. On 'September' the third page lifts and the camera arrives at the Go board. The board is now a visible record of moves and answers: the right shore's two stones (ch14-s01, ch14-s04) and the left shore's one answering stone (ch14-s02) sit on it, and on 'dialogue' a single old telephone handset is laid across the board between them, its cord running both ways into the water toward each shore; two small brass name-plates on its cradle carry the dialogue's two names, one from each government. On 'incidents' the cord glows along its length toward both shores. On 'chip', far across the water and faint in the haze, the paper fence of rule pages from ch14-s02 is glimpsed still standing across the strait, unchanged. In the short hold the camera drifts to the jetty's end, where the study window's reflection begins to rise over the water (handing off to ch14-s07).",
+      "beats": [
+        {
+          "id": "pages",
+          "at": {
+            "line": "L1414",
+            "word": "Rivals"
+          },
+          "what": "track along the three pages pinned to the jetty rail"
+        },
+        {
+          "id": "bletchley",
+          "at": {
+            "line": "L1414",
+            "word": "Bletchley"
+          },
+          "what": "the first page, BLETCHLEY 2023, lifts into the light"
+        },
+        {
+          "id": "samepage",
+          "at": {
+            "line": "L1415",
+            "word": "September"
+          },
+          "what": "the third page, WASHINGTON 2026, lifts; arrive at the Go board with stones from both shores"
+        },
+        {
+          "id": "handset",
+          "at": {
+            "line": "L1415",
+            "word": "dialogue"
+          },
+          "what": "the handset is laid across the board; the two name-plates catch the light"
+        },
+        {
+          "id": "incidents",
+          "at": {
+            "line": "L1415",
+            "word": "incidents"
+          },
+          "what": "the cord glows along its length toward both shores"
+        },
+        {
+          "id": "chiprules",
+          "at": {
+            "line": "L1415",
+            "word": "chip"
+          },
+          "what": "far across the water, the paper fence of rule pages from ch14-s02 still stands, unchanged"
+        }
+      ],
+      "props": [
+        "jetty",
+        "goBoard",
+        "goStones",
+        "telephoneHandset",
+        "namePlates",
+        "parchmentPage",
+        "ruleFence"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "WASHINGTON · 23–25 SEPTEMBER 2026",
+          "beat": "samepage"
+        },
+        {
+          "kind": "label",
+          "text": "SUPER INTELLIGENCE DIALOGUE (US) · AI DIALOGUE (CHINA)",
+          "beat": "handset"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "both channels meet in one held chord for the first time, cooler in colour for the night; a soft lift on 'reached across the water'; level and unresolved on 'Chip rules unchanged', carried into the next shot."
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e12-bletchley",
+        "e13-lima",
+        "e13-summits-2026"
+      ]
+    },
+    {
+      "id": "ch14-s07",
+      "kind": "scene",
+      "setting": "The study's candle shelf reflected in the window glass over the strait, beyond the jetty's end; the far lit hall on the right bank; both shores lit · 2025–October 2026",
+      "era": "2020s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L1417",
+          "text": "A newer candle: the gap is months, not years.",
+          "pauseAfter": 3,
+          "direction": "the candle habit, varied; even",
+          "trimDb": 0
+        },
+        {
+          "id": "L1420",
+          "text": "DeepSeek's founder had put it another way: “the real gap is the difference between originality and imitation.”",
+          "pauseAfter": 0.56,
+          "direction": "unhurried; 'had put it another way' a gentle turn, no date spoken (the card carries it); the quoted words read plainly and with respect, not dramatised",
+          "spoken": "DeepSeek's founder had put it another way: “the real gap is the difference between originality and imitation.”"
+        },
+        {
+          "id": "L1418",
+          "text": "The fence still stands, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.",
+          "spoken": "The fence still stands, argued over. As of October twenty twenty-six, nobody agrees how wide the gap is, or whether it will close.",
+          "pauseAfter": 0.55,
+          "direction": "the turn, answering the question planted in L1405: 'The fence still stands, argued over' level and even, giving neither side the last word; a breath; then open, unhurried, leaving the question on the water"
+        }
+      ],
+      "holdAfter": 0.8,
+      "visual": "THIS SHOT: in the window's reflection the hands light a new candle, THE GAP IS MONTHS, NOT YEARS, three estimate tags swing in, Liang's originality-and-imitation card rises over the right shore, and the camera pulls back into the study to see both lit shores whole. CAMERA: through the study WINDOW; the SHELF only as its reflection; at the end a pull back into the study. WINDOW RULE (canonical for this chapter; repeated word for word in every ch14 shot): the strait is always seen THROUGH the study window. The window's frame and mullions sit at the edges of the frame as a faint L1 occluder (ink silhouettes with candleAmber rim hairlines only, never crossing the centre of the image), so every ch14 picture reads as looking out from the study. Wherever the candles, a match or the narrator's hands appear, they are a reflection on ONE plane only, L2, at about 35% alpha with a slight water ripple, so the hands read as a reflection in the glass, never as giants over the water. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): finish/reflection(layerFn, {alpha, flip:false, ripple}), an offscreen sub-render of the study shelf composited over the water. Night, continuing from ch14-s06 on a matched cut: the same cool winterBlue haze, both skylines' windows lit with exactly equal warmth. Beyond the jetty's end, the study window's reflection rises over the water. CANDLE PLACEMENT (canonical for this chapter; repeated in every candle shot): the China-race candles are NOT on the jetty. They stand at the right end of the study's own candle shelf, the same shelf ch15-s08 pulls back across, and are seen only as a reflection in the study window glass that ch13-s06 opened onto the strait: the reflected shelf, its flames and the narrator's steady hands float over the water. The reflection keeps the study's candleAmber (STUDY LOCK: the study's colour enters this chapter only as that reflection), while the strait and shores beyond keep the shot's own mood. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. The hands, in reflection, light a new candle, lettered THE GAP IS MONTHS, NOT YEARS (its base tag reading LIT 2025 · CONTESTED), beside the still-burning COMPUTE IS THE CHOKEPOINT candle (its sleeve now about four rings tall) and the dark stub of the one-to-three-years candle (two rings, out). At the end of L1417, in its pause, three small paper tags on threads swing into the new candle's light one at a time, a second apart, on their beats, all the same size, each lettered with one estimate and its speaker with affiliation, no name cards: ~6 MONTHS · HASSABIS (GOOGLE DEEPMIND); IN CHIPS: “NANOSECONDS” · HUANG (NVIDIA); OVERTAKE IN 3–5 YRS? UNDER 1 IN 5 · LIN (QWEN). Huang's words were about chips, not models, and Lin's figure is a chance of overtaking, not a gap size, so the tags say what each one measured (the full estimates go to the credits sources). As the third tag arrives the chokepoint candle's flame lifts a little, as if fed. On L1420 the far lit hall on the right bank from ch14-s04 is glimpsed small at the edge of the reflection, one generic figure at its window (Liang, never a likeness), and a short parchment quote card rises over the right shore, the same type, size and warmth as the Washington and Beijing cards in ch14-s02 (its attribution names him, with the July 2024 date and the translation; no separate name card); the gap candle's flame does not change. On 'nobody' the camera pulls slowly BACK into the study (never up over the jetty, which would leave the window): the mullions slide in from the frame edges, the reflection steadies in the glass, and through the window the strait, the jetty with its board, stones and handset, and both equally lit shores are seen whole, the water dark between them, with the two reflected flames and the dark stub floating over it. Neither flame's sleeve is closed off; both keep growing. This framing, window and reflection together, prepares ch15-s01's fade. SCRIPT NOTE (review round 9): L1418 now opens 'The fence still stands, argued over.' (the payoff of L1405's question): on 'fence' the paper fence in the water catches the light beside the still-lit chokepoint candle, before the pull back on 'nobody'.",
+      "beats": [
+        {
+          "id": "reflect",
+          "at": {
+            "shotTime": 0
+          },
+          "what": "matched cut from the jetty's end: the study window's reflection rises over the water"
+        },
+        {
+          "id": "gapcandle",
+          "at": {
+            "line": "L1417",
+            "word": "candle"
+          },
+          "what": "the hands light THE GAP IS MONTHS, NOT YEARS beside the burning chokepoint candle"
+        },
+        {
+          "id": "tags",
+          "at": {
+            "line": "L1417",
+            "edge": "end"
+          },
+          "what": "first estimate tag swings into the new candle's light"
+        },
+        {
+          "id": "tag2",
+          "at": {
+            "line": "L1417",
+            "edge": "end",
+            "offset": 1
+          },
+          "what": "second tag swings in"
+        },
+        {
+          "id": "tag3",
+          "at": {
+            "line": "L1417",
+            "edge": "end",
+            "offset": 2
+          },
+          "what": "third tag (Lin, citing compute) swings in; the chokepoint flame lifts"
+        },
+        {
+          "id": "liang",
+          "at": {
+            "line": "L1420",
+            "word": "founder"
+          },
+          "what": "the far lit hall on the right bank glimpsed; Liang's short quote card rises over the right shore"
+        },
+        {
+          "id": "rise",
+          "at": {
+            "line": "L1418",
+            "word": "nobody"
+          },
+          "what": "the camera pulls back into the study: mullions slide in from the frame edges; through the window both equally lit shores, the two reflected flames over the water"
+        },
+        {
+          "id": "chokepoint",
+          "at": {
+            "line": "L1418",
+            "word": "fence"
+          },
+          "what": "the paper fence of rule pages, still standing in the water beside the chokepoint candle's reflection, catches the light; the candle's dissent tags turn gently"
+        },
+        {
+          "id": "stamp",
+          "at": {
+            "line": "L1418",
+            "word": "stands"
+          },
+          "what": "STATUS: OPEN stamps on the fence question card ON stands (fx-stamp-fence foley anchors here; review round 4)"
+        }
+      ],
+      "props": [
+        "jetty",
+        "goBoard",
+        "goStones",
+        "telephoneHandset",
+        "candleShelf",
+        "beliefCandleChokepoint",
+        "beliefCandleBehind",
+        "beliefCandleGap",
+        "paperTags"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "~6 MONTHS · HASSABIS (GOOGLE DEEPMIND)",
+          "beat": "tags"
+        },
+        {
+          "kind": "label",
+          "text": "IN CHIPS: “NANOSECONDS” · HUANG (NVIDIA)",
+          "beat": "tag2"
+        },
+        {
+          "kind": "label",
+          "text": "OVERTAKE IN 3–5 YRS? UNDER 1 IN 5 · LIN (QWEN)",
+          "beat": "tag3"
+        },
+        {
+          "kind": "quote",
+          "text": "“…the real gap is the difference between originality and imitation.” — Liang Wenfeng, July 2024 (ChinaTalk translation)",
+          "beat": "liang"
+        }
+      ],
+      "music": {
+        "cue": "ch14-shores",
+        "note": "the held night chord from ch14-s06 continues; the gap candle's motif rises a fourth and stops on the suspension, unresolved, beside the chokepoint candle's held note; three small plucked notes, one per tag; the chord sustains under the high wide shot into the cut."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e13-gap",
+        "e13-export-debate"
+      ],
+      "cast": [
+        "narrator-hands",
+        "liang"
+      ],
+      "creditsSources": [
+        "“We often say that there is a gap of one or two years between Chinese AI and the United States, but the real gap is the difference between originality and imitation.” — Liang Wenfeng, July 2024 (ChinaTalk translation) (q13-liang-gap)",
+        "Gap estimates: Demis Hassabis, about six months (Bloomberg, Davos, 20 January 2026); Jensen Huang, Nvidia, China \"nanoseconds behind\" in chips (BG2, 26 September 2025); Lin Junyang, Qwen, under 20% chance a Chinese firm overtakes US giants in 3-5 years, citing compute (about 10 January 2026) (e13-gap)"
+      ],
+      "leadIn": 0.6
+    }
+  ]
+}

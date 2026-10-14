@@ -1,0 +1,1713 @@
+{
+ "id": "ch08",
+ "number": 8,
+ "title": "DEEP DIVE — The Night in Florence",
+ "blurb": "2011 to 2013. AlexNet, built part by part in Hinton's Toronto lab: a photo as a grid of lights, one stencil and its worked number (a convolution), stencils on stencils, stencils learned from noise, a weir that keeps strong signals strong, too few labels for sixty million knobs (crops, mirrors, and dropout, so no lantern can count on another), two halves that split the work their own way, and five days downhill. Then Florence, 12 October 2012, without its professor: 15.3% against 26.2%, a cliff, then the fair caveats. Two candles go out (speech had gone first; within a year every top team used such nets), one is lit and gets its name, deep learning, a desk lamp at the rim clicks on after thirty-six years, and a prophecy goes on the Wall.",
+ "shots": [
+  {
+   "id": "ch08-s01",
+   "kind": "scene",
+   "setting": "the study's candle shelf, then a craftsman's workshop, 2010–2011, evening: tin stencils cut by hand, a judge's lectern, a leaderboard of lanterns",
+   "era": "2010–2011",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0802",
+     "text": "Since about 1999, the belief: to see, a machine needs patterns designed by experts, by hand. Even allowed five guesses a picture, the best program missed more than one in four.",
+     "direction": "respectful of the craft; the belief stated as a reasonable belief, no irony yet; the date plainly",
+     "spoken": "Since about nineteen ninety-nine, the belief: to see, a machine needs patterns designed by experts, by hand. Even allowed five guesses a picture, the best program missed more than one in four."
+    }
+   ],
+   "leadIn": 1.8,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: the expert-features candle is set on the shelf; in a craftsman's workshop tin stencils are cut by hand, and even with five guesses a quarter of the ring of pictures goes dark. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'DEEP DIVE · The Night in Florence', drops down from the frame's top edge at frame top-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. CAMERA: SHELF (low macro; the expert-features candle set in its year's place), then the occluder wipe into the workshop. Opens in the study (candleAmber, the film's home base); the tab rides over the start of the first line. Under it, the two steady hands bring a tall candle into the lamp's pool; on 'belief' (as the narration states the belief and its date aloud) they set it on the candle shelf beneath the board, into its year's place (left of the 2006 warm-up candle; CANDLE PLACEMENT), lettered (paraphrase, small caps, Plex Mono) TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS; its base tag reads 'lit 1999'. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here eleven rings have already burned (1999 to 2010): a ghost sleeve of eleven scored rings (66 px) stands above the stub, the flame live where sleeve meets stub. On 'experts' a sheet of dark paper is drawn across frame by an unseen hand (an in-shot occluder wipe, same lamp, never a dim to black) and we are in a paper-cut workshop: a craftsman's silhouette (generic, no likeness) at a bench under a hanging lamp cuts patterns into small tin plates with snips: little gradient arrows, corner marks, edge combs (the hand-designed features of the age, stylised). Finished stencils hang on hooks along the back wall like tools. He carries a stencil to a tall judge's lectern at frame right; behind it a LEADERBOARD OF LANTERNS: paper lanterns hung on strings, each lantern's height = that year's winning error (lower is better), on a ruled scale. On 'five' a single thumbnail (a husky) is pinned on the lectern with five small paper guess-slips fanned beneath it; one slip is the right answer, so the guess counts (top-5 scoring, shown, not said). On 'best' two lanterns glow: 2010 at 28.2%, 2011 at 25.8%, barely a hand's width apart. On 'four' a little more than a quarter of a ring of thumbnails beside the board goes dark (both years missed more than one in four). Date stamp bottom left. TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'DEEP DIVE · The Night in Florence' drops down from the frame's top edge at top-left like a file-divider tab, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "promise",
+     "at": {
+      "shotTime": 1.8
+     },
+     "what": "the two hands bring a tall candle into the lamp's pool, under the index tab"
+    },
+    {
+     "id": "candle",
+     "at": {
+      "line": "L0802",
+      "word": "belief"
+     },
+     "what": "the hands set the expert-features candle on the study shelf (tag lit 1999, eleven-ring ghost sleeve); rising-fourth motif"
+    },
+    {
+     "id": "workshop",
+     "at": {
+      "line": "L0802",
+      "word": "experts"
+     },
+     "what": "in-shot occluder wipe into the workshop; the snips start cutting"
+    },
+    {
+     "id": "guesses",
+     "at": {
+      "line": "L0802",
+      "word": "five"
+     },
+     "what": "a thumbnail with five guess-slips fanned beneath it"
+    },
+    {
+     "id": "board",
+     "at": {
+      "line": "L0802",
+      "word": "best"
+     },
+     "what": "the 2010 and 2011 lanterns glow: 28.2% and 25.8%"
+    },
+    {
+     "id": "four",
+     "at": {
+      "line": "L0802",
+      "word": "four"
+     },
+     "what": "a little more than a quarter of the ring of thumbnails goes dark"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "candleShelf",
+    "beliefCandle",
+    "caseBoard",
+    "workbench",
+    "tinSnips",
+    "tinStencils",
+    "judgeLectern",
+    "lanternLeaderboard",
+    "guessSlips"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "DEEP DIVE · The Night in Florence",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "date",
+     "text": "IMAGENET CHALLENGE · 2010–2011",
+     "beat": "workshop"
+    },
+    {
+     "kind": "label",
+     "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS",
+     "beat": "candle"
+    },
+    {
+     "kind": "label",
+     "text": "top-5 error · 2010: 28.2% · 2011: ≈ 25.8%",
+     "beat": "guesses"
+    }
+   ],
+   "music": {
+    "cue": "ch08-belief",
+    "note": "the deep dive opens on a hush in the study; the candle motif's rising fourth for the expert-features candle, played plainly, with respect; then a patient workshop rhythm (muted piano, a soft tap on the snips); intensity 0.3"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "e8-vision-belief",
+    "e7-ilsvrc2010"
+   ]
+  },
+  {
+   "id": "ch08-s02",
+   "kind": "scene",
+   "setting": "Toronto, 2011–2012, night: a bedroom with a desktop tower holding two gaming cards",
+   "era": "2010s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0803",
+     "text": "In Hinton's Toronto lab, Ilya Sutskever, sure deep nets would keep improving with more data, talked Alex Krizhevsky into trying.",
+     "direction": "storyteller's pace; 'Hinton's' plain (the ear hears whose lab it is); names clear and unhurried"
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 4,
+   "visual": "THIS SHOT: a Toronto bedroom at night: Sutskever talks Krizhevsky into trying, two gaming cards spin up in a desktop tower, and the lamp clicks off onto a green LED. Plain cut (same candleAmber lamp). Paper-cut bedroom at night (keep décor minimal and generic, after the CHM's photograph of the home computer; invent nothing): a desk, a desk lamp, a window onto a dark street, and a desktop tower (`desktopTower`, gpus: 2, window panel) on the floor. Krizhevsky is seen only from behind at the desk, typing; no words, no views. Sutskever (slight, close-cropped receding hair, plain dark shirt, intense stillness) stands at his shoulder, then leans in; name cards for both on first appearance. Hinton is NOT placed in any invented geography (the narration's 'the tall man's lab' is his research group; the CHM/NVIDIA label carries the contested room): on 'tall' (as the narration names him by the film's epithet) a pre-roll glow gathers at the upper frame edge, and on 'Krizhevsky' a small, separate inset pool of light opens at the upper frame edge, a round lantern-slide picture-in-picture with its own thin brass rim, in which a tall standing silhouette (hinton, standing at a lectern-height desk, never seated in this era's inset) is seen alone; name card 'Geoffrey Hinton, supervisor' (Toronto is on the date stamp). The inset closes before 'cards'; he never enters the room. After the line, the camera tilts down to the tower's side window: two consumer cards, fans spinning up, a whine in the sound design. Then the desk lamp clicks off and the cut MATCHES the lamp's circle to a single green status LED on the card, glowing in the dark. As the tilt begins (just before the GPU label and well before the LED match) the contested note rises as one short label, BEDROOM (CHM) · LAB (NVIDIA), both sources with equal type weight, and stays up through the match and the hold; the full two-source sentence is in creditsSources. TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "beats": [
+    {
+     "id": "ilya",
+     "at": {
+      "line": "L0803",
+      "word": "Sutskever"
+     },
+     "what": "Sutskever name card; he leans toward the screen"
+    },
+    {
+     "id": "alex",
+     "at": {
+      "line": "L0803",
+      "word": "Krizhevsky"
+     },
+     "what": "Krizhevsky name card; seen from behind; the separate Hinton inset opens at the frame edge"
+    },
+    {
+     "id": "cards",
+     "at": {
+      "line": "L0803",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "tilt to the tower; two fans spin up"
+    },
+    {
+     "id": "match",
+     "at": {
+      "line": "L0803",
+      "edge": "end",
+      "offset": 1.84
+     },
+     "what": "desk lamp clicks off; match cut to the green LED"
+    },
+    {
+     "id": "lab",
+     "at": {
+      "line": "L0803",
+      "edge": "end",
+      "offset": 0
+     },
+     "what": "two-source label rises as the tilt begins, before the GPU label: BEDROOM (CHM) · LAB (NVIDIA)"
+    }
+   ],
+   "cast": [
+    "sutskever",
+    "krizhevsky",
+    "hinton"
+   ],
+   "props": [
+    "desktopTower",
+    "gpuCard",
+    "deskLamp",
+    "bedroomWindow",
+    "lanternSlideInset"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "TORONTO · 2011",
+     "beat": "ilya"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Ilya Sutskever, graduate student",
+     "beat": "ilya"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Alex Krizhevsky, graduate student",
+     "beat": "alex"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton, supervisor",
+     "beat": "alex"
+    },
+    {
+     "kind": "label",
+     "text": "2 × GTX 580 · 3 GB",
+     "beat": "cards"
+    },
+    {
+     "kind": "label",
+     "text": "BEDROOM (CHM) · LAB (NVIDIA)",
+     "beat": "lab"
+    }
+   ],
+   "music": {
+    "cue": "ch08-belief",
+    "note": "the workshop rhythm drops out; a low synth drone rises with the fan whine and becomes the first pulse of the machine ostinato on the LED match cut; intensity 0.35"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-origin",
+    "e8-bedroom",
+    "e8-gpus",
+    "e4-hinton-cv"
+   ],
+   "creditsSources": [
+    "Where AlexNet trained: Computer History Museum, a bedroom at Krizhevsky's parents' house; NVIDIA (2023), a University of Toronto lab (e8-bedroom)"
+   ]
+  },
+  {
+   "id": "ch08-s03",
+   "kind": "plate",
+   "setting": "match cut: the Mark I's 20 × 20 photocell eye (Buffalo, 1958) becomes a 224 × 224 × 3 grid (2012)",
+   "era": "1958 → 2012",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0805",
+     "text": "A photograph is a grid of lights, each light a number. In colour, three numbers: red, green, blue. One small photo: a hundred and fifty thousand numbers.",
+     "direction": "simple and clear; the first step of the build; 'red, green, blue' set down one at a time; 'a hundred and fifty thousand' plain, letting the size land"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2.2,
+   "visual": "THIS SHOT: match cut: the Mark I's 20 × 20 photocell eye subdivides into a modern photograph, a grid of lights, each light a number, in three colour planes. Mood stays candleAmber from the bedroom (the desk lamp has just clicked off; the LED-to-cell dissolve carries the light, and the pixel grid's own glow is the shot's practical, so no tint jump). Teaching machine `perceptronRetina` in close-up: the Mark I's 20 × 20 photocell eye from ch03, its four hundred cells glowing on a horizontal bar, stamped BUFFALO · 1958–60 (the Mark I's contested build date, as in ch03-s04 and ch06-s01). The green LED from the last shot dissolves into one of its cells. Camera pulls back as the grid subdivides and multiplies: 400 cells become a 224 × 224 field that resolves into a small backlit photograph (a husky, one of ImageNet's thousand tiles), then, on 'colour', the photo separates like three sheets of coloured tissue into red, green and blue planes stacked in depth, each pixel a tiny lit square. On 'number' one pixel is picked out by a lens and a typed value appears beside it (e.g. 0.73). Just after the line the three planes slide back together and the equation 224 × 224 × 3 = 150,528 is set in Plex Mono, held in the music. Date stamp changes from BUFFALO · 1958–60 to TORONTO · 2012. The count (about a hundred and fifty thousand numbers) is carried on screen only. SCRIPT NOTE (review round 1): L0805 now names the colour planes and the count: the planes separate on 'colour', and 224 × 224 × 3 = 150,528 sets on 'hundred'.",
+   "beats": [
+    {
+     "id": "grid",
+     "at": {
+      "line": "L0805",
+      "word": "grid"
+     },
+     "what": "the 20 × 20 eye subdivides into the 224 × 224 field"
+    },
+    {
+     "id": "number",
+     "at": {
+      "line": "L0805",
+      "word": "number"
+     },
+     "what": "one pixel under the lens with its typed value"
+    },
+    {
+     "id": "planes",
+     "at": {
+      "line": "L0805",
+      "word": "colour"
+     },
+     "what": "the photo separates into red, green and blue planes"
+    },
+    {
+     "id": "count",
+     "at": {
+      "line": "L0805",
+      "word": "hundred"
+     },
+     "what": "planes slide together; 224 × 224 × 3 = 150,528 numbers set in Plex Mono"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "perceptronRetina",
+    "pixelGrid",
+    "magnifyingGlass"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "BUFFALO · 1958–60 → TORONTO · 2012",
+     "beat": "grid"
+    },
+    {
+     "kind": "label",
+     "text": "20 × 20 = 400",
+     "beat": "grid"
+    },
+    {
+     "kind": "equation",
+     "text": "224 × 224 × 3 = 150,528",
+     "beat": "count"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the mechanical ostinato begins properly: a dry pluck on every grid subdivision, celesta glints on the pixel; intensity 0.4"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-architecture",
+    "e2-mark1-specs"
+   ]
+  },
+  {
+   "id": "ch08-s04",
+   "kind": "plate",
+   "setting": "a stitched tapestry of the digit 4, a pierced 3 × 3 tin lantern, and a wall that fills with spots of light",
+   "era": "2012",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0806",
+     "text": "Hold a pierced tin stencil over the picture, a light behind it.",
+     "direction": "slow, demonstrative, like holding up a real object"
+    },
+    {
+     "id": "L0807",
+     "text": "Each of its nine holes weighs the light beneath it. Add them up. Below zero counts as zero.",
+     "direction": "three distinct steps, a beat between each"
+    },
+    {
+     "id": "L0808",
+     "text": "Over an edge, the sum is nearly four: a bright spot. Now the lovely part: slide the same stencil everywhere. A convolution.",
+     "direction": "the payoff; 'the sum is nearly four' plainly, the number landing on the bright spot; real delight on 'Now the lovely part'; let the slide fall in rhythm with the stencil's steps; then name the idea plainly, as a gift",
+     "pauseAfter": 0.4
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 2.2,
+   "visual": "THIS SHOT: a pierced 3 × 3 tin stencil over a stitched digit: nine holes weigh the light, the sum is inked, below zero goes dark, and the same stencil slides everywhere to fill a wall of bright spots. WORD RULE: the narration calls this object a tin stencil; 'lantern' is reserved film-wide for units (the lantern network), so no label or caption here calls the stencil a lantern (the kit name `stencilLantern` stays internal). Teaching machine `stencilLantern` (kernel 'vertical', the real Sobel-style weights −1 0 1 / −2 0 2 / −1 0 1), staged as a paper theatre: the stitched 14 × 14 tapestry of a handwritten '4' at left, the pierced tin stencil hanging over it, the plaster wall at right where its beam falls, ruled into the 12 × 12 feature map. Pierced holes are positive weights (sized by the weight), dark shutters with a cool rim are negative. On 'pierced' showKernel rises: the nine weights are inked beside the nine holes on the stencil itself (part of the machine, not a caption). On 'weighs' the camera pushes into the stencil; the nine weights glow one by one over the nine threads beneath. On 'Add' a parchment plate inks in the nine products, one per hole, middle column included (its weights are zero, so those three terms are visibly 0). On 'zero' a shuttered position over the stroke's right edge shows its sum, −4, rectified to 0: the wall cell stays dark. On 'edge' the stencil glides to the stroke's LEFT edge (row 10, column 7, step 127); the parchment plate shows the worked cell with all nine real values in row order (window rows 0.12 0.24 1 / 0 0.12 1 / 0 0.12 1, verified against DIGIT4 and convolve() in stencilLantern.ts): max(0, (−1)(0.12) + (0)(0.24) + (1)(1) + (−2)(0) + (0)(0.12) + (2)(1) + (−1)(0) + (0)(0.12) + (1)(1)) = 3.88; the beam flares and the brightest spot on the wall lights. On 'Slide' the stencil returns to step 0 and steps in raster order, on twos, accelerating, each wall cell lighting with its real rectified dot product until the full feature map glows: a bright vertical bar wherever a stroke's left edge is. On 'convolution' the camera eases back: the one stencil's shadow is seen repeated, faintly, at every position across the wall (the same nine weights everywhere). Hold on the finished wall in the music. An ILLUSTRATIVE tag sits small at frame bottom from 'pierced' on: this hand-set 3 × 3 stencil on a 14 × 14 digit is a teaching toy; AlexNet's real first-layer stencils are 96 learned 11 × 11 colour stencils (ch08-s05/s06). The general formula spot = max(0, Σ wᵢ · xᵢ) moves to the end-credits sources card; the narration says it in words. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The kernel's numbers live on the stencil; the −4 → 0 shows only as the wall cell's own value.",
+   "beats": [
+    {
+     "id": "kernel",
+     "at": {
+      "line": "L0806",
+      "word": "pierced"
+     },
+     "what": "the nine weights ink in beside the nine holes on the stencil"
+    },
+    {
+     "id": "hold",
+     "at": {
+      "line": "L0806",
+      "word": "picture"
+     },
+     "what": "the stencil lowers over the tapestry with its lamp behind it; beam reaches the wall"
+    },
+    {
+     "id": "weigh",
+     "at": {
+      "line": "L0807",
+      "word": "weighs"
+     },
+     "what": "push into the stencil; nine weights glow over nine threads"
+    },
+    {
+     "id": "add",
+     "at": {
+      "line": "L0807",
+      "word": "Add"
+     },
+     "what": "parchment plate inks the sum"
+    },
+    {
+     "id": "relu",
+     "at": {
+      "line": "L0807",
+      "word": "zero",
+      "edge": "end"
+     },
+     "what": "right-edge position: −4 rectified to 0; wall cell dark"
+    },
+    {
+     "id": "worked",
+     "at": {
+      "line": "L0808",
+      "word": "edge"
+     },
+     "what": "stencil glides to step 127; worked sum = 3.88; brightest spot lights"
+    },
+    {
+     "id": "slide",
+     "at": {
+      "line": "L0808",
+      "word": "Slide"
+     },
+     "what": "stencil returns to step 0 and steps in raster order on twos"
+    },
+    {
+     "id": "conv",
+     "at": {
+      "line": "L0808",
+      "word": "convolution"
+     },
+     "what": "camera eases back; the stencil's shadow repeated at every position: the same weights everywhere"
+    },
+    {
+     "id": "full",
+     "at": {
+      "line": "L0808",
+      "word": "convolution",
+      "edge": "end",
+      "offset": 1.35
+     },
+     "what": "feature map completes in the hold"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "stencilLantern",
+    "stitchedDigitTapestry",
+    "plasterWall",
+    "parchmentPlate",
+    "kernelCard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "ILLUSTRATIVE · a toy stencil, set by hand · AlexNet's first-layer stencils: 11 × 11 × 3, in colour, learned",
+     "beat": "kernel"
+    },
+    {
+     "kind": "equation",
+     "text": "max(0, (−1)(0.12) + (0)(0.24) + (1)(1) + (−2)(0) + (0)(0.12) + (2)(1) + (−1)(0) + (0)(0.12) + (1)(1)) = 3.88",
+     "beat": "worked"
+    },
+    {
+     "kind": "term",
+     "text": "ReLU",
+     "gloss": "below zero counts as zero",
+     "beat": "relu"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the ostinato locks to the stencil: one dry wooden tick per lantern step, on twos; a single held tone under the worked sum, resolving upward on 3.88; the steps accelerate into a shimmering run as the wall fills; intensity 0.5"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-architecture"
+   ]
+  },
+  {
+   "id": "ch08-s05",
+   "kind": "scene",
+   "setting": "a cathedral of stencils rising block by block from a rose window that is the photograph",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0809",
+     "text": "Ninety-six stencils at the bottom; four more layers above, each stencilling the one below: edges, then textures, parts, things.",
+     "direction": "building, stacking; 'each one stencilling the bright spots of the layer below' is the key idea, said clearly; then a gentle crescendo through the four nouns",
+     "pauseAfter": 0.4,
+     "insertGaps": {
+      "edges": 0.5,
+      "textures": 0.4,
+      "parts": 0.4
+     }
+    },
+    {
+     "id": "L0810",
+     "text": "Then two great halls, where every lantern sees everything, and a last hall of a thousand lanterns, one per answer.",
+     "direction": "the cathedral's top, unhurried; 'one per answer' lands softly",
+     "pauseAfter": 0.5
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 2.5,
+   "visual": "THIS SHOT: a cathedral of stencils rises from the photograph's rose window, five courses of detectors built from detectors, then two great halls and a last hall of a thousand lanterns. Teaching machine `alexnetCathedral` (labels on). The husky photograph from s03 becomes the ROSE WINDOW at the base of a two-tower cathedral façade against a dawnGold sky. On 'ninety-six' the first course of stone rises: the conv1 blocks with face width 55 (true shape), and on the rose window's tracery 96 tiny 11 × 11 tiles flicker in (the first-layer stencils). On 'four' the second course rises at face width 27, then three courses at 13, 13, 13 (reveal driven block by block). Between courses, as each course face narrows (55 to 27, 27 to 13), a tiny wordless 3 × 3 window passes over the lower course's bright spots and keeps only the brightest cell of each window (overlapping max-pooling, 3 × 3, stride 2: a diagram mark, no caption), so the eye sees why the picture shrinks, each block's windows lighting as the flow climbs; on 'stencilling' the bright spots of one course are seen feeding up as the picture the next course's stencils slide over (detectors built from detectors). The layer vignettes appear ONE AT A TIME, in the rose-window position itself (never as simultaneous insets): as each course lights, the rose window briefly shows what such a layer responds to, then returns to the photograph: on 'edges' oriented strokes; on 'textures' woven textures; on 'parts' a fur patch and an eye; on 'things' a whole dog's head. On 'halls' TWO great halls rise above the five courses (fc6 and fc7, 4,096 lanterns each; in each, threads fan from every lantern to every lantern below, 'every lantern sees everything'), and on 'last' a third, last hall rises above them that IS a band of a thousand small lanterns, one per category, each with a tiny category tag (fc8, the output; nothing stacks above it; WORD RULE: 'door' is reserved for the chat box in ch12, so this band is never drawn as doors), as the camera pulls back to see the whole cathedral. (Five stencil courses plus three fully connected stages, two great halls and the hall of a thousand lanterns: the paper's five convolutional and three fully connected layers. 'The great halls' in ch08-s08b means exactly the two big halls, fc6 and fc7.) Breaths are opened in the narration after 'edges', 'textures' and 'parts' so each vignette reads (about a second each), not a flicker. Then hold in the music (about 2.5 s) while flow light climbs from window to crown, course by course: as the light reaches each course the rose window replays that course's vignette, one per course (strokes, textures, fur and eye, the dog's head), and settles back to the photograph as the crown lights. No new stair geometry anywhere. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The paper's 'depth really is important' line moves to the end-credits sources card. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): `alexnetCathedral` needs the rose-window layer vignettes (oriented strokes, woven textures, fur patch and eye, dog's head) as a built-in layer, shared with ch08-s06 and ch08-s09.",
+   "beats": [
+    {
+     "id": "l1",
+     "at": {
+      "line": "L0809",
+      "word": "Ninety-six"
+     },
+     "what": "conv1 course rises; 96 tiny tiles flicker in on the rose window"
+    },
+    {
+     "id": "l2",
+     "at": {
+      "line": "L0809",
+      "word": "four"
+     },
+     "what": "the second course (27) then three courses at 13 rise, block by block"
+    },
+    {
+     "id": "stack",
+     "at": {
+      "line": "L0809",
+      "word": "stencilling"
+     },
+     "what": "one course's bright spots feed up as the picture the next course's stencils slide over"
+    },
+    {
+     "id": "edges",
+     "at": {
+      "line": "L0809",
+      "word": "edges"
+     },
+     "what": "rose-window vignette: oriented strokes"
+    },
+    {
+     "id": "textures",
+     "at": {
+      "line": "L0809",
+      "word": "textures"
+     },
+     "what": "vignette: woven textures"
+    },
+    {
+     "id": "parts",
+     "at": {
+      "line": "L0809",
+      "word": "parts"
+     },
+     "what": "vignette: fur patch and an eye"
+    },
+    {
+     "id": "things",
+     "at": {
+      "line": "L0809",
+      "word": "things"
+     },
+     "what": "vignette: a whole dog's head"
+    },
+    {
+     "id": "halls",
+     "at": {
+      "line": "L0810",
+      "word": "halls"
+     },
+     "what": "two great halls (fc6, fc7) rise above the five courses; every lantern in a hall threads to every lantern below"
+    },
+    {
+     "id": "lastHall",
+     "at": {
+      "line": "L0810",
+      "word": "last"
+     },
+     "what": "the third, last hall: a band of a thousand small lanterns, one per category (fc8, the output); pull back to the whole cathedral"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "alexnetCathedral",
+    "roseWindow",
+    "filterTiles"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "55 · 27 · 13 · 13 · 13 → 4096 · 4096 · 1000",
+     "beat": "halls"
+    },
+    {
+     "kind": "label",
+     "text": "≈ 60 million numbers · 650,000 neurons",
+     "beat": "lastHall"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the ostinato climbs: each course of stone adds an octave voice; the four nouns land on four rising chords; a broad organ-like synth swell on the crown; intensity 0.65"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-architecture"
+   ]
+  },
+  {
+   "id": "ch08-s06",
+   "kind": "scene",
+   "setting": "the cathedral's bridges and columns; noise tiles resolving into a mosaic of 96 learned stencils",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0811",
+     "text": "Nobody cut these stencils. They began as noise, like television snow.",
+     "direction": "the teacher's own delight; slow, warm, a small smile on 'snow'"
+    },
+    {
+     "id": "L0812",
+     "text": "The messenger from 1986 cut them, nudge by nudge.",
+     "direction": "a smile of recognition; an old friend returns",
+     "pauseAfter": 0.6,
+     "spoken": "The messenger from nineteen eighty-six cut them, nudge by nudge."
+    }
+   ],
+   "leadIn": 0.4,
+   "holdAfter": 2.6,
+   "visual": "THIS SHOT: 96 tiles of television snow are nudged, pass after pass, into the learned mosaic by the 1986 bead. CAMERA: the cathedral's rose window (teaching machine) only; no board insert. Close on the rose window's 96 tiles: they are pure static, grey random speckle. On 'messenger' the dark bead in a ring of light from ch05 (the `lanternNetwork` backward pulse, same design) appears at the cathedral's crown and runs DOWN the cathedral's existing paths only (the column shafts and the bridges between the towers already in `alexnetCathedral`; no new stair geometry), past every course, to the rose window; as it passes each block it tugs its stencils a hair. On 'nudge' the cycle repeats faster and faster (picture after picture: tiny thumbnails flick through the rose window); with each pass the static tiles sharpen until they resolve into the real first-layer mosaic: striped grey edges at every angle and soft colour blobs. On 'mosaic' the last pass lands and the bead fades at the window: the finished mosaic of 96 learned tiles holds, still and uncluttered, through the music-only hold (about 3 s), the chapter's thesis image. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The Florence slide's 'initialized at white Gaussian noise' line moves to the end-credits sources card; the narration already says it. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): `alexnetCathedral` needs a 96-tile filter mosaic with a noise-to-learned morph (t from 0 to 1). If the real AlexNet conv1 weights are not used for the learned state, the mosaic carries a small ILLUSTRATIVE stamp at its lower edge (a stamp, not one of the two text items).",
+   "beats": [
+    {
+     "id": "noise",
+     "at": {
+      "line": "L0811",
+      "word": "noise"
+     },
+     "what": "tiles shown as pure static"
+    },
+    {
+     "id": "bead",
+     "at": {
+      "line": "L0812",
+      "word": "messenger"
+     },
+     "what": "the backward bead appears at the crown and runs down the cathedral's columns and bridges"
+    },
+    {
+     "id": "learn",
+     "at": {
+      "line": "L0812",
+      "word": "nudge"
+     },
+     "what": "passes speed up; static resolves into the 96 learned stencils"
+    },
+    {
+     "id": "mosaic",
+     "at": {
+      "line": "L0812",
+      "edge": "end",
+      "offset": 0.6
+     },
+     "what": "the last pass lands; the 96 learned tiles hold, still"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "alexnetCathedral",
+    "filterTiles",
+    "messengerBead"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "back-propagation, 1986",
+     "beat": "bead"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the ostinato drops to near silence on \"noise\" (a soft hiss texture); the messenger brings back the ch05 backward-running figure, now quicker and quicker until the mosaic resolves on a warm major chord; intensity 0.55"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-ingredients",
+    "e4-rhw"
+   ]
+  },
+  {
+   "id": "ch08-s07",
+   "kind": "plate",
+   "setting": "a parchment plate: a weir across a stream, and two paper boats racing",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0813",
+     "text": "Older nets squashed strong signals flat. The below-zero rule is a weir: strong signals pass undimmed, so the messenger's tug stays strong. The net learned six times faster, in the team's test.",
+     "direction": "crisp, a demonstrator's pleasure; 'squashed ... flat' sets up the contrast; the weir points back to the stencil shot's 'below zero counts as zero'; 'the messenger's tug' a nod to the fading whisper; 'in the team's test' plainly, it is a caveat"
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: a weir across a stream: the S-curve squashes a tall wave flat, the weir lets it pass at full height, and the rectifier's paper boat wins the race. Parchment plate under its own dawnGold plate lamp (not in the study), drawn in ink and cut paper. LEFT: a stream crossing a small weir; it is the same below-zero rule from the lantern shot, now named as a picture. Water levels arriving from the left are signed numbers; everything below the lip (negative) stops dead, everything above flows over unchanged: the rectifier, f(x) = max(0, x), plotted faintly beneath as its kinked line. On 'squashed' a faint ghost curve of the older S-shaped switch (tanh) inks in beside it and flattens a tall wave against its ceiling; on 'undimmed' the same tall wave passes the weir at full height (ReLU does not saturate for large positive inputs); on 'tug' the backward bead from ch05 runs back across the weir and its ring of light stays bright, where across the S-curve it would have faded. On 'six' a small race: two paper boats, the rectifier's crossing a finish mark well before the old switch's (in their four-layer test on small pictures, not AlexNet itself). Its one label (the rectifier and its measured speed-up) sets in with the weir and is read under the rest of the line. (Max-pooling is not narrated; it is shown wordlessly between the cathedral's courses in ch08-s05.) TEXT RULE: besides stamps and name cards, at most two text items in this shot. The Florence slide's 'Very good (quick to train)' moves to the end-credits sources card. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): symbolic prop weir.",
+   "beats": [
+    {
+     "id": "squash",
+     "at": {
+      "line": "L0813",
+      "word": "squashed"
+     },
+     "what": "ghost S-curve (tanh) flattens a tall wave against its ceiling"
+    },
+    {
+     "id": "weir",
+     "at": {
+      "line": "L0813",
+      "word": "weir"
+     },
+     "what": "the weir appears; negative water stops, positive flows; the max(0, x) kink inks in beneath"
+    },
+    {
+     "id": "undimmed",
+     "at": {
+      "line": "L0813",
+      "word": "undimmed"
+     },
+     "what": "the same tall wave goes over the weir at full height"
+    },
+    {
+     "id": "tug",
+     "at": {
+      "line": "L0813",
+      "word": "tug"
+     },
+     "what": "backward bead runs back across the weir, its ring staying bright"
+    },
+    {
+     "id": "six",
+     "at": {
+      "line": "L0813",
+      "word": "six"
+     },
+     "what": "two paper boats race; the rectifier's boat crosses first"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchmentPlate",
+    "weir",
+    "paperBoats"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "f(x) = max(0, x) · ≈ 6× faster (their 4-layer test, CIFAR-10)",
+     "beat": "weir"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "ostinato lightens to pizzicato; a little running figure for the boat race; intensity 0.45"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "e8-ingredients",
+    "e8-architecture"
+   ]
+  },
+  {
+   "id": "ch08-s08",
+   "kind": "plate",
+   "setting": "a balance scale; a hall of shifted mirrors",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0815",
+     "text": "Sixty million weights, yet each label, one name in a thousand, is worth about ten yes-or-no answers. Twelve million answers in all. It could memorise the photos, not learn to see.",
+     "direction": "the problem, stated plainly; 'one name in a thousand, is worth about ten yes-or-no answers' is the small step the ear needs, said simply; let 'Twelve million answers in all' sit against 'sixty million'; 'memorise' lands as the danger"
+    },
+    {
+     "id": "L0816",
+     "text": "So they cropped and mirrored the pictures.",
+     "direction": "the first remedy, brisk",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    }
+   ],
+   "leadIn": 0.4,
+   "holdAfter": 1.5,
+   "visual": "THIS SHOT: a balance scale: twelve million yes-or-no answers on one pan, sixty million knobs slamming down the other; then a hall of shifted, mirrored crops lifts the answers' side. A paper balance scale. On the left pan, a few small lit tokens, each stamped '≈ 10 bits' (one of 1,000 labels, log₂ 1000 ≈ 10, drawn as ten tiny yes/no toggles); on the right pan, a mountain of tiny knobs (sixty million numbers). On 'twelve' the left pan's tokens are counted into a stack, 1.2 million labels × ≈ 10 = ≈ 12 million answers. On 'Sixty' (the line's first word) the knob mountain lands on the right pan and the scale slams down on the knobs' side; on 'label' the label tokens gather on the left pan, and one token's ten toggles light in turn as the narration says 'about ten yes-or-no answers'. On 'memorise' a single training photograph is pressed flat into the knob mountain like a leaf in a book: the danger of learning the pictures by heart; on 'see' a faint ghost of a learned edge-stencil tile beside it stays unlit (what it should have learned instead). On 'cropped' the camera passes into a hall of mirrors: one photograph (the husky) reflected into many slightly shifted 224-pixel crops of the 256-pixel image, and on 'mirrored' each one flipped left-right in a second mirror; counter: × 2048. Their light pours onto the left pan, which rises (but not all the way). Dropout is its own shot next. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The paper's '10 bits of constraint' sentence moves to the end-credits sources card; the narration ('about ten yes-or-no answers', 'twelve million in all') and the label carry it. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): symbolic prop balanceScale.",
+   "beats": [
+    {
+     "id": "bits",
+     "at": {
+      "line": "L0815",
+      "word": "label"
+     },
+     "what": "label tokens (ten toggles each: one name in a thousand) gather on the left pan"
+    },
+    {
+     "id": "twelve",
+     "at": {
+      "line": "L0815",
+      "word": "twelve"
+     },
+     "what": "1.2 million × ≈ 10 bits stacks to ≈ 12 million answers on the left pan"
+    },
+    {
+     "id": "scale",
+     "at": {
+      "line": "L0815",
+      "word": "Sixty"
+     },
+     "what": "the knob mountain lands on the right pan; the scale slams down on the knobs' side"
+    },
+    {
+     "id": "memorise",
+     "at": {
+      "line": "L0815",
+      "word": "memorise"
+     },
+     "what": "a photograph pressed flat into the knobs: memorising"
+    },
+    {
+     "id": "mirror",
+     "at": {
+      "line": "L0816",
+      "word": "cropped"
+     },
+     "what": "hall of shifted crops"
+    },
+    {
+     "id": "flip",
+     "at": {
+      "line": "L0816",
+      "word": "mirrored"
+     },
+     "what": "mirror flips; ×2048 counter; left pan rises a little"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "balanceScale",
+    "labelTokens",
+    "knobMountain",
+    "mirrorHall"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "1.2 million labels × ≈ 10 bits ≈ 12 million · vs ≈ 60,000,000 weights",
+     "beat": "scale"
+    },
+    {
+     "kind": "label",
+     "text": "crops and mirrors: × 2048",
+     "beat": "mirror"
+    },
+    {
+     "kind": "term",
+     "text": "overfitting",
+     "gloss": "memorising the photos, not learning to see",
+     "beat": "memorise"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "a low thud on the scale; a dry, stuck note on \"memorise\"; glassy arpeggios multiply in the mirror hall; intensity 0.5"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-ingredients",
+    "e8-architecture"
+   ]
+  },
+  {
+   "id": "ch08-s08b",
+   "kind": "plate",
+   "setting": "the cathedral's two great halls in miniature: a loom of lanterns, a different random half snuffed on every example",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0830",
+     "text": "In the great halls, they snuffed a random half each time, so no lantern could count on another. Like a team where anyone might be missing, each had to know the work.",
+     "direction": "slow and clear; let 'each time' be heard; 'count on another' is the reason, said simply; then the team picture warmly and plainly, as if it were obvious once seen; the music then takes over"
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 2.2,
+   "visual": "THIS SHOT: the two great halls in miniature: on every example a different random half of the lanterns is snuffed, so no lantern can lean on another. Plain cut. Teaching machine `lanternNetwork`, drawn as the cathedral's great halls in miniature: below, a short stub of the stencil courses, fully lit and never snuffed; above, the two big fully connected halls as a wide loom of lanterns (fc6 and fc7), then the last hall of a thousand lanterns (fc8, never snuffed). KIT DEPENDENCY (blocking for film-shots; listed in staging.kitWork, and built with a gallery entry before this shot is authored): extend `lanternNetwork` with {mask, maskSeed, topology: custom layer sizes + fixed weights} (p = 0.5, a fresh seed per example) so the snuffing is bound to real data, per the bible's §6 recipe. On 'halls' the camera rises to the two halls. On 'snuffed' a thumbnail slides into the base, and exactly the lanterns the mask zeroes in fc6 and fc7 go dark, each with a wisp of smoke; light flows up only through the survivors. On 'time' the next thumbnail arrives and a DIFFERENT half goes dark (new seed), then another, and another, about one example a second through the music-led hold: many different thinner nets, every one built from the same lanterns. On 'another' a surviving lantern's threads reach for a neighbour that has just gone dark and find nothing, so it must carry its own light. In the hold, the pressed leaf from ch08-s08 (the memorised photograph) is glimpsed loosening and falling out of the knob mountain at frame edge: the point of the snuffing, which the paper says greatly reduces overfitting. (The paper's 'shared weights' fragment moves to the end-credits sources card.) TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "beats": [
+    {
+     "id": "halls",
+     "at": {
+      "line": "L0830",
+      "word": "halls"
+     },
+     "what": "camera rises to fc6 and fc7"
+    },
+    {
+     "id": "drop",
+     "at": {
+      "line": "L0830",
+      "word": "snuffed"
+     },
+     "what": "the seeded mask snuffs half of fc6 and fc7; smoke wisps"
+    },
+    {
+     "id": "again",
+     "at": {
+      "line": "L0830",
+      "word": "time"
+     },
+     "what": "next example, a different half; the cycle continues about once a second"
+    },
+    {
+     "id": "leaf",
+     "at": {
+      "line": "L0830",
+      "edge": "end",
+      "offset": 1.4
+     },
+     "what": "music-led: lanterns keep going dark at random, about one example a second; the pressed leaf loosens and falls from the knob mountain"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "lanternNetwork",
+    "thumbnailStrip"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "dropout · p = 0.5 · the two big halls only (fc6, fc7)",
+     "beat": "drop"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "music-led: on \"snuffed\" alternate notes of the ostinato drop out at random (half of them, re-chosen every bar), a musical dropout that carries the hold; intensity 0.5"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-ingredients",
+    "e7-dropout"
+   ]
+  },
+  {
+   "id": "ch08-s09",
+   "kind": "scene",
+   "setting": "the cathedral's two towers joined by a few bridges of light",
+   "era": "2012",
+   "mood": "serverCyan",
+   "lines": [
+    {
+     "id": "L0817",
+     "text": "The network ran on two graphics chips, GPUs, half the stencils on each.",
+     "direction": "plain; 'GPUs' said once, lightly, as the name people use",
+     "spoken": "The network ran on two graphics chips, G P Us, half the stencils on each."
+    },
+    {
+     "id": "L0818",
+     "text": "Nobody told the two halves how to divide the work. One cut edges, mostly colour-blind; the other, colour. Every time.",
+     "direction": "the strangest fact so far: slow, a slight lean on 'how'; let \"Every time\" stand alone",
+     "pauseAfter": 0.6
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 4.3,
+   "visual": "THIS SHOT: the cathedral splits into two towers, one per graphics chip; unasked, one tower's stencils turn grey and edge-like, the other's to colour blobs, run after run. Back to `alexnetCathedral`, now at night in serverCyan with the twin green LEDs from the bedroom glowing at the base of each tower: one tower per graphics card. On 'chips' the façade splits visibly down the middle into two halves, one tower per card (the split itself was designed; only HOW the work divides is left to learning). Flow light rises inside each tower separately; it crosses between towers ONLY on the few bridges the paper specifies (into conv3, and into and between the fully connected halls). The camera tracks a pulse that tries to cross elsewhere and cannot. On 'Nobody' the 96-tile mosaic at the rose window begins to sort itself without a hand: on 'edges' the 48 tiles in the left tower turn to grey, colourless striped edges and blobs (colour-agnostic); on 'colour-blind' (wordlessly) the hand-set tin toy stencil from ch08-s04 slides in beside one of those learned 11 × 11 grey edge tiles for a beat (the net cut an edge stencil like ours, unasked), then slides away; on 'colour' the 48 in the right tower turn to soft colour blobs (colour-specific). On 'Every time' the sorting replays in three faint ghost runs layered over each other, each ending the same way. TEXT RULE: besides stamps and name cards, at most two text items in this shot. Two short tags from the paper, one beside each tower. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): `alexnetCathedral` needs the 48/48 tile sort (the 96 tiles split into a colour-agnostic grey half and a colour-specific half, one per tower); if real conv1 weights are not used, tag the tiles ILLUSTRATIVE as in ch08-s06.",
+   "beats": [
+    {
+     "id": "split",
+     "at": {
+      "line": "L0817",
+      "word": "chips"
+     },
+     "what": "the façade splits; one tower per card; LEDs at the bases"
+    },
+    {
+     "id": "bridges",
+     "at": {
+      "line": "L0818",
+      "word": "divide"
+     },
+     "what": "light crosses only on the specified bridges"
+    },
+    {
+     "id": "sort",
+     "at": {
+      "line": "L0818",
+      "word": "edges"
+     },
+     "what": "left tower's tiles turn grey: colour-agnostic"
+    },
+    {
+     "id": "toy",
+     "at": {
+      "line": "L0818",
+      "word": "colour-blind"
+     },
+     "what": "the hand-set tin toy stencil from ch08-s04 slides in beside one learned 11 × 11 grey edge tile for a beat, then slides away"
+    },
+    {
+     "id": "colour",
+     "at": {
+      "line": "L0818",
+      "word": "colour"
+     },
+     "what": "right tower's tiles turn to colour blobs"
+    },
+    {
+     "id": "every",
+     "at": {
+      "line": "L0818",
+      "word": "Every"
+     },
+     "what": "three ghost runs end the same way"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "alexnetCathedral",
+    "gpuLed",
+    "filterTiles"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "largely color-agnostic — Krizhevsky et al., 2012",
+     "beat": "sort"
+    },
+    {
+     "kind": "quote",
+     "text": "largely color-specific — Krizhevsky et al., 2012",
+     "beat": "colour"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the ostinato splits into two voices panned left and right, meeting only on the bridge beats; on \"Every time\" both voices stop and a single high suspended note holds (a plant: nobody told them); intensity 0.5"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-gpu-split",
+    "e8-gpus"
+   ]
+  },
+  {
+   "id": "ch08-s10",
+   "kind": "scene",
+   "setting": "the misty hills at night; the bedroom window cycling from night to dawn",
+   "era": "2012",
+   "mood": "winterBlue",
+   "lines": [
+    {
+     "id": "L0819",
+     "text": "Then five or six days downhill in fog, the stride shortened three times, by hand.",
+     "direction": "patient, a long walk in the voice; slowing on 'three times, by hand' as he settles"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 2.6,
+   "visual": "THIS SHOT: the misty hills again: five or six days of long strides downhill in fog, with three hand-cut shortenings marked by cairns, until short steps settle on the valley floor. Teaching machine `mistyHills` at night: the lantern-bearing traveller from ch05 on the real loss curve, fog over the hills, the lantern clearing only a small pool around his feet. Each step is one real gradient step (the same 'step' as the traveller's in ch05). Picture-in-picture at upper left: the bedroom window from s02, cycling slowly from night to dawn to night, five or six times paced evenly across the whole shot from first frame to last (one unhurried cycle every couple of seconds, never a strobe), while the tower's fans whine. From 'downhill' the traveller takes long strides over the low ridges in the fog (big early steps carry him over the low ridges and past small hollows: the bold stride, lr = MISTY_LR.bold, first seen here, the ch05 trap avoided). On 'stride', 'three' and 'hand' (beats cut1, cut2, cut3) the traveller's stride visibly shortens, three separate times (learning rate divided by ten each time, `lr` dropping), each shortening marked by a small cairn and a hand-written note 'lr ÷ 10'. A pass counter in Plex Mono ticks toward ≈ 90 epochs over 1.2 million pictures. Just after the line and through the music-only hold the traveller settles onto the valley floor as the window shows a last dawn. KIT DEPENDENCY (blocking for film-shots; staging.kitWork): `mistyHills` {lossF, lossDf, minima, lrSchedule} so the ridges, the valley floor and the three ÷10 cuts are a real path.",
+   "beats": [
+    {
+     "id": "walk",
+     "at": {
+      "line": "L0819",
+      "word": "downhill"
+     },
+     "what": "traveller takes long strides over the low ridges; window begins cycling night to dawn"
+    },
+    {
+     "id": "fog",
+     "at": {
+      "line": "L0819",
+      "word": "fog"
+     },
+     "what": "fog thickens; lantern pool small"
+    },
+    {
+     "id": "cut1",
+     "at": {
+      "line": "L0819",
+      "word": "stride"
+     },
+     "what": "first stride shortening: cairn, lr ÷ 10"
+    },
+    {
+     "id": "cut2",
+     "at": {
+      "line": "L0819",
+      "word": "three"
+     },
+     "what": "second stride shortening: cairn, lr ÷ 10"
+    },
+    {
+     "id": "cut3",
+     "at": {
+      "line": "L0819",
+      "word": "hand"
+     },
+     "what": "third stride shortening: cairn, lr ÷ 10; pass counter nears 90"
+    },
+    {
+     "id": "settle",
+     "at": {
+      "line": "L0819",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "short steps settle onto the valley floor"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "mistyHills",
+    "lanternTraveller",
+    "cairns",
+    "bedroomWindow",
+    "desktopTower"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "5–6 days · ≈ 90 passes · 1.2 million pictures",
+     "beat": "walk"
+    },
+    {
+     "kind": "label",
+     "text": "step size ÷ 10, three times",
+     "beat": "cut1"
+    }
+   ],
+   "music": {
+    "cue": "ch08-machine",
+    "note": "the ostinato slows to a walking pace in winter colours: solo cello line over the pulse, one soft step per step; each step cut is a small downward key shift; settles into quiet before Florence; intensity 0.35"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-gpus",
+    "e8-ingredients",
+    "e8-architecture"
+   ]
+  },
+  {
+   "id": "ch08-s11",
+   "kind": "scene",
+   "setting": "Florence, Friday 12 October 2012, 17:05: a crowded conference hall (kept generic)",
+   "era": "2010s",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0820",
+     "text": "Florence. October 2012.",
+     "direction": "a hush; each phrase its own beat",
+     "spoken": "Florence. October, twenty twelve.",
+     "pauseAfter": 0.4
+    },
+    {
+     "id": "L0821",
+     "text": "A bad back kept Hinton from flying. Yann LeCun stood at the rear of a packed room.",
+     "direction": "quiet, factual, unhurried, kindly on 'a bad back' and a small pause after it; a little rueful on 'flying'; LeCun's name clear; no comment NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.84-0.86, target 150-165 wpm (6.0-6.5 s); the text is unchanged.",
+     "pauseAfter": 0.5,
+     "spoken": "A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    }
+   ],
+   "leadIn": 1.2,
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: Florence, 2012: an overfull hall, a young presenter at the lectern, the absent tall man in a small far inset, and LeCun standing at the rear wall. Establishing exterior: the Florentine skyline at late-afternoon gold, a dome and a bell tower in silhouette against luminous haze (no named building for the hall itself, which stays generic). Place-and-time stamp. Just after the line, cut inside to a generic, overfull hall: rows of heads in silhouette, people standing in the aisles. A young presenter (Krizhevsky, from the side and at a distance, no words, no expression of views) at a lectern before a projected screen whose content is only a bright rectangle. Li sits near the front, in profile (no name card; no words). Hinton is never placed in the hall: on 'tall' the small brass-rimmed lantern-slide inset from ch08-s02 opens at the upper frame edge, the tall silhouette (hinton) STANDING alone at a lectern-height desk far away, never seated; name card 'Geoffrey Hinton'; the inset closes on 'flying'. Just after 'flying' (L0821) a slow pan carries along the packed aisles, people standing shoulder to shoulder, to the REAR WALL of the hall: on 'Yann' Yann LeCun (silhouette per cast sheet, standing, in profile, arms folded, no words, no expression of views) stands against it among other standing figures, picked out by a rim of the screen's light; name card 'Yann LeCun', with the small source tag 'the full room, by Fei-Fei Li's account'. Hold on the room in the light of the screen. TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "beats": [
+    {
+     "id": "florence",
+     "at": {
+      "line": "L0820",
+      "word": "Florence"
+     },
+     "what": "the skyline at late-afternoon gold; place-and-time stamp"
+    },
+    {
+     "id": "hall",
+     "at": {
+      "line": "L0820",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "inside the overfull hall; the young presenter at the lectern"
+    },
+    {
+     "id": "professor",
+     "at": {
+      "line": "L0821",
+      "word": "Hinton"
+     },
+     "what": "the s02 lantern-slide inset: the tall man standing alone, far away; closes on 'fly'"
+    },
+    {
+     "id": "aisles",
+     "at": {
+      "line": "L0821",
+      "word": "flying",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "slow pan along the packed, standing aisles"
+    },
+    {
+     "id": "lecun",
+     "at": {
+      "line": "L0821",
+      "word": "Yann"
+     },
+     "what": "the pan continues to the rear wall: LeCun standing against it in profile; name card"
+    }
+   ],
+   "cast": [
+    "krizhevsky",
+    "li",
+    "lecun",
+    "hinton"
+   ],
+   "props": [
+    "florenceSkyline",
+    "conferenceHall",
+    "lectern",
+    "projectionScreen",
+    "lanternSlideInset"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "FLORENCE · FRIDAY 12 OCTOBER 2012 · 17:05",
+     "beat": "florence"
+    },
+    {
+     "kind": "label",
+     "text": "ImageNet challenge workshop, ECCV",
+     "beat": "hall"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton",
+     "beat": "professor"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Yann LeCun",
+     "beat": "lecun"
+    },
+    {
+     "kind": "label",
+     "text": "the full room, by Fei-Fei Li's account",
+     "beat": "lecun"
+    }
+   ],
+   "music": {
+    "cue": "ch08-florence",
+    "note": "near silence: room tone, a few coughs, a single sustained string note under the narration; the candle motif's held suspension, waiting; intensity 0.2"
+   },
+   "transitionIn": "fadeBlack",
+   "claims": [
+    "e8-florence",
+    "e8-hinton-absent",
+    "e8-deadline"
+   ]
+  },
+  {
+   "id": "ch08-s12",
+   "kind": "plate",
+   "setting": "the result plate: a row of lanterns at nearly one height, one dropping far lower",
+   "era": "2012",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0822",
+     "text": "Second place missed twenty-six point two percent. Alex's network, AlexNet, fifteen point three.",
+     "spoken": "Second place missed twenty-six point two percent. Alex's network, Alex Net, fifteen point three.",
+     "direction": "the two numbers spoken slowly and evenly; introduce the name warmly; let the second number land"
+    },
+    {
+     "id": "L0823",
+     "text": "A cliff.",
+     "direction": "'A cliff' alone, and then a long silence: let the drop sit"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 3.9,
+   "visual": "THIS SHOT: the result plate: a row of lanterns at nearly one height, and one that drops far lower, a cliff measured by a bracket. Teaching machine `alexnetResultPlate`, staged as the leaderboard of lanterns from s01 now hanging in the Florence hall's dark: the other entries' lanterns at nearly the same height (about 26 to 34% error), swaying gently. On 'twenty-six' the runner-up's lantern glows at 26.2%. On 'AlexNet' (spoken 'Alex Net') a small paper tag reading SuperVision · Toronto turns on the lantern that is about to fall. On 'fifteen' that lantern's string pays out and it DROPS far below the others to 15.3%, the gap measured by a ruled bracket (10.9 points). The hall's silhouettes lean forward. On 'cliff' the camera tilts down the drop as if down a cliff face.  Then the silence holds on the fallen lantern (the caveat follows in the next shot, so the cliff lands first). TEXT RULE: besides stamps and name cards, at most two text items in this shot. The paper's abstract sentence moves to the end-credits sources card; both numbers are spoken.",
+   "beats": [
+    {
+     "id": "runnerup",
+     "at": {
+      "line": "L0822",
+      "word": "twenty-six"
+     },
+     "what": "runner-up lantern glows at 26.2%"
+    },
+    {
+     "id": "name",
+     "at": {
+      "line": "L0822",
+      "word": "Net"
+     },
+     "what": "SuperVision · Toronto tag turns on the lantern about to fall"
+    },
+    {
+     "id": "drop",
+     "at": {
+      "line": "L0822",
+      "word": "fifteen"
+     },
+     "what": "one lantern drops to 15.3%; bracket measures the gap"
+    },
+    {
+     "id": "cliff",
+     "at": {
+      "line": "L0823",
+      "word": "cliff"
+     },
+     "what": "camera tilts down the drop"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "alexnetResultPlate",
+    "lanternLeaderboard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "ILSVRC-2012 · top-5 error · 15.3% vs 26.2% (second place)",
+     "beat": "drop"
+    }
+   ],
+   "music": {
+    "cue": "ch08-florence",
+    "note": "silence on the drop itself, a full two beats; then the candle motif re-enters softly as a slow, swelling ostinato in dawnGold; intensity rising 0.3 → 0.5"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-result",
+    "e7-ilsvrc2010"
+   ]
+  },
+  {
+   "id": "ch08-s13",
+   "kind": "scene",
+   "setting": "the fallen lantern up close; then the craftsman's workshop, its stencils hanging unused, and the 2013 leaderboard of lanterns",
+   "era": "2012–2013",
+   "mood": "dawnGold",
+   "lines": [
+    {
+     "id": "L0834",
+     "text": "Fair credit: that was seven networks voting; one alone, nearer eighteen.",
+     "direction": "the honest caveat, unhurried and generous, after the silence; no deflation in the voice"
+    },
+    {
+     "id": "L0825",
+     "text": "And a Swiss lab's nets had already won contests on graphics chips.",
+     "direction": "generous and exact; no edge",
+     "pauseAfter": 0.4
+    }
+   ],
+   "leadIn": 0.5,
+   "holdAfter": 1.6,
+   "visual": "THIS SHOT: fair credit: the fallen lantern resolves into seven networks voting, one alone sits nearer eighteen, and a Swiss lab's earlier wins thread into Florence. Plain cut (same dawnGold). Close on the fallen lantern from s12, still hanging low in the Florence dark: on 'seven' it is revealed to be seven small lanterns bound in one cluster; on 'voting' two of the seven carry a small extra tag of stacked picture-tiles (pre-trained on the bigger Fall 2011 ImageNet release), and a faint second mark on the ruler shows 16.4% (best entry without extra data); on 'eighteen' one lantern alone hangs at 18.2% (validation). On 'Swiss' a small inset at the rim: a road-sign silhouette (a generic triangular warning sign) and a lantern labelled IDSIA, 2011, ahead of a human-figure lantern; a thread of light runs from it into the Florence lantern (lineage, not rivalry). Just after the line the inset folds back and a paper wipe (same dawnGold lamp) carries us into the craftsman's workshop from s01, empty now: the hand-cut tin stencils still hang on their hooks, dust motes in a slanting light; the snips lie on the bench. Hold on the empty bench, the snips still, as the light shifts toward evening. TEXT RULE: besides stamps and name cards, at most two text items in this shot (the ensemble label and the IDSIA label; the 2013 fact is spoken and shown in ch08-s13b).",
+   "beats": [
+    {
+     "id": "seven",
+     "at": {
+      "line": "L0834",
+      "word": "seven"
+     },
+     "what": "the fallen lantern resolves into a cluster of seven"
+    },
+    {
+     "id": "extra",
+     "at": {
+      "line": "L0834",
+      "word": "voting"
+     },
+     "what": "two of the seven tagged with extra picture-tiles; 16.4% mark on the ruler"
+    },
+    {
+     "id": "single",
+     "at": {
+      "line": "L0834",
+      "word": "eighteen"
+     },
+     "what": "one lantern alone at 18.2% (validation)"
+    },
+    {
+     "id": "swiss",
+     "at": {
+      "line": "L0825",
+      "word": "Swiss"
+     },
+     "what": "IDSIA inset: road sign; thread into the Florence lantern"
+    },
+    {
+     "id": "ignore",
+     "at": {
+      "line": "L0825",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "inset folds back; paper wipe into the empty workshop; the thread to Florence stays lit"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "workbench",
+    "tinStencils",
+    "tinSnips",
+    "lanternLeaderboard",
+    "roadSign",
+    "alexnetResultPlate"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "7 networks voting (2 pre-trained on extra data) · one network alone 18.2% (validation)",
+     "beat": "seven"
+    },
+    {
+     "kind": "label",
+     "text": "IDSIA, 2011: road signs 99.46% · best human 99.22%",
+     "beat": "swiss"
+    }
+   ],
+   "music": {
+    "cue": "ch08-lasted",
+    "note": "the candle motif's ostinato carries on gently under the caveat (no deflation); a warm, generous string line under 'Fair credit' and the Swiss lab; then the workshop rhythm returns once, slower, and stops on the empty bench; intensity 0.45"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e8-ensemble",
+    "e8-ilsvrc2013",
+    "e7-gtsrb",
+    "e8-first-debate",
+    "e7-dannet"
+   ]
+  },
+  {
+   "id": "ch08-s13b",
+   "kind": "scene",
+   "setting": "the study's candle shelf beneath the case board; the oxblood question-card thread",
+   "era": "2012",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0826",
+     "text": "The hand-cut stencil candle burned thirteen years. It went out in one: at the next contest, all top five teams used such nets.",
+     "direction": "a gentle close begins; 'thirteen years' plainly; a beat; 'It went out in one' with quiet wonder, not triumph; the contest fact plainly"
+    },
+    {
+     "id": "L0831",
+     "text": "Beside it, the fiddly-nets candle went out too, after ten to fifteen years, field by field.",
+     "direction": "kindly, without triumph; a second, smaller falling note; 'ten to fifteen years' plainly, 'field by field' honest and unhurried",
+     "pauseAfter": 1.5
+    },
+    {
+     "id": "L0832",
+     "text": "Why choose the fog? The rivals' clean bowl sat on stencils cut by hand. In the fog, given data and fire, the net cut its own, many layers deep: deep learning.",
+     "direction": "the answer to the ch06 question, unforced; 'the rivals' clean bowl' a fond callback; 'cut its own' warm and plain; a breath, then 'deep learning' named like a gift, the name the world gave all this; then let the music take the rest",
+     "pauseAfter": 2.2
+    },
+    {
+     "id": "L0832b",
+     "text": "And Hinton? Thirty-six years near the edge of the light. Now, it found him.",
+     "direction": "quiet, warm, no triumph; 'And the tall man?' a soft turn back to him (the ear has not heard of him since Florence); the promise from Sussex kept; a small breath before 'Now, it found him', the light arriving at last",
+     "pauseAfter": 0.6
+    }
+   ],
+   "leadIn": 0.7,
+   "holdAfter": 1,
+   "visual": "THIS SHOT: two candles go out (hand-cut stencils at thirteen rings, fiddly nets after ten to fifteen), the fog question is answered and unpinned, and LEARNED FEATURES is lit as the light finally finds the tall man. CAMERA: SHELF (low macro along the three candles), a tilt up to BOARD (the Q3 unpin as an insert), down to SHELF again, then the flame push onto the stage. Reverse FLAME PUSH, never through black (about 1.2 s, crossfadeMood dawnGold to candleAmber, STUDY LOCK): the workshop's last slanting light narrows to a single small flame, and we pull back out of it to find it is the expert-features candle's flame on the shelf. The long paper-cut candle shelf beneath the case board. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Three candles matter here. The expert-features candle (TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS, tag 'lit 1999'): on 'thirteen' it gutters and goes out with thirteen rings burned (1999 to 2012), a dark ghost sleeve of thirteen scored rings (78 px) above its stub, a thread of smoke rising; its tag is re-inked '1999 – 2012 · 13'. On 'next' a brief ghost of the 2013 leaderboard of lanterns forms in that smoke, its top five lanterns all small cathedrals (no caption), and thins away: the flip took one year. Further left, the great 1990s candle from ch06 (NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY), still burning, its ghost sleeve fifteen rings long (90 px), the top five rings FRAYED and thinning (the bible's 'roughly 10–15 years depending on subfield': when the belief took hold, and when each field let go, is a matter of degree, speech before vision): on 'fiddly-nets' its flame bends and goes out; its tag is inked '– 2012 · 10–15 years, by field'. Just before, as 'Beside it' begins, a small paper tag, hung by a thread from the fiddly-nets candle's holder, turns into the light (world-space, so it is seen again whenever the shelf is in frame): 'speech first: Android voice search, July 2012' (bible Era 7: deep learning's first mass-market win came in speech, about three months before AlexNet). The two dark sleeves now stand side by side as two bars. On 'choose' the camera tilts up to the case board. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The hands unpin the oxblood-thread card 'Why would anyone choose the fog?' from its fixed slot on the oxblood thread (the 1990s position) and it drops into the lamp's pool. On 'bowl' the camera follows it down: it lands at the foot of the dark expert-features sleeve, beside a small hand-cut tin stencil (the clean bowl stood on hand-cut stencils). On 'data' a NEW candle beside the two dark sleeves is lit, its lettering painted on the wax as part of the prop (no separate caption): LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, tag '2012', no sleeve yet, its flame on the top ring (still burning, as of October 2026); on 'own' a faint learned-filter tile (a grey striped edge) glints in its wax. On 'data', with the new candle, the Computer History Museum card (its 'before' sentence only, verbatim; the newly lit candle beside it is the 'after') rises beside the new candle and stays up to the end of the shot. Just after the line, on the 'push' beat, once the CHM card has set in: a FLAME PUSH, never through black (about 1.2 s, crossfadeMood candleAmber → dawnGold): the camera pushes INTO the new candle's flame and out onto its own CANDLE STAGE (the paper stage of ch04-s08, now warm), the CHM card held at screen level through the push. On the 'desk' beat the camera WIDENS on that stage, keeping the new candle and the CHM card in frame, to reveal the far rim of its pool, where the plain wooden desk from ch04-s08 stands, empty, its reading lamp dark since 1976. L0832b is spoken over the dark desk ('Thirty-six years at the edge of the light'), and on 'Now' (the 'desklamp' beat; the line ends 'Now, it found him') the new candle's warm pool widens just enough to reach it and the desk's little reading lamp clicks on (no figure shown; the tall man is never seated in this era): the thirty-six-year promise of L0416, paid off in words and picture. Hold on the lit desk, the new candle and the card in the music. TEXT RULE: besides stamps and name cards, at most two text items in this shot. The two old candles' lettering and tags are painted on the props (already seen); Hinton's Nobel quip moves to the end-credits sources card.",
+   "beats": [
+    {
+     "id": "out",
+     "at": {
+      "line": "L0826",
+      "word": "thirteen"
+     },
+     "what": "expert-features candle goes out at 13 rings; dark 13-ring sleeve; falling resolution"
+    },
+    {
+     "id": "flip",
+     "at": {
+      "line": "L0826",
+      "word": "next"
+     },
+     "what": "in the snuffed candle's smoke, a brief ghost of the 2013 leaderboard: all top five lanterns are small cathedrals; it thins away (no caption)"
+    },
+    {
+     "id": "fiddly",
+     "at": {
+      "line": "L0831",
+      "word": "fiddly-nets"
+     },
+     "what": "the 1990s fiddly-nets candle goes out; frayed top to its 15-ring sleeve"
+    },
+    {
+     "id": "speech",
+     "at": {
+      "line": "L0831",
+      "edge": "start"
+     },
+     "what": "as 'Beside it' begins, a small paper tag on the fiddly-nets candle turns into the light: speech first: Android voice search, July 2012"
+    },
+    {
+     "id": "fogcard",
+     "at": {
+      "line": "L0832",
+      "word": "choose"
+     },
+     "what": "tilt to the board; the fog card is unpinned from the oxblood thread and drops into the lamp's pool"
+    },
+    {
+     "id": "bowl",
+     "at": {
+      "line": "L0832",
+      "word": "bowl"
+     },
+     "what": "the fog card lands at the foot of the dark expert-features sleeve, beside a hand-cut tin stencil"
+    },
+    {
+     "id": "newcandle",
+     "at": {
+      "line": "L0832",
+      "word": "data"
+     },
+     "what": "new candle lit: LEARNED FEATURES, GIVEN DATA AND ARITHMETIC; rising fourth"
+    },
+    {
+     "id": "chm",
+     "at": {
+      "line": "L0832",
+      "word": "data"
+     },
+     "what": "CHM before card rises beside the new candle as it is lit (the after); held through the music"
+    },
+    {
+     "id": "push",
+     "at": {
+      "line": "L0832",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "FLAME PUSH into the new candle's flame onto its candle stage (crossfadeMood candleAmber → dawnGold); the CHM card rides at screen level through the push"
+    },
+    {
+     "id": "desk",
+     "at": {
+      "line": "L0832",
+      "edge": "end",
+      "offset": 1.5
+     },
+     "what": "on the candle stage the camera widens past the new candle to the empty ch04-s08 desk at the far rim of its pool, its reading lamp dark"
+    },
+    {
+     "id": "desklamp",
+     "at": {
+      "line": "L0832b",
+      "word": "Now"
+     },
+     "what": "the new candle's pool reaches the desk; its reading lamp clicks on"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "candleShelf",
+    "beliefCandle",
+    "caseBoard",
+    "redThread",
+    "questionCard",
+    "quoteCard",
+    "writingDesk",
+    "tinStencils"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "speech first: Android voice search, July 2012",
+     "beat": "speech",
+     "until": "fogcard"
+    },
+    {
+     "kind": "quote",
+     "text": "Before AlexNet, almost none of the leading computer vision papers used neural nets. — Computer History Museum, 2025",
+     "beat": "chm"
+    }
+   ],
+   "music": {
+    "cue": "ch08-lasted",
+    "note": "the expert-features candle's falling resolution, played kindly on solo piano; a second, lower falling figure for the fiddly-nets candle; a quiet held note under the fog question, then the rising fourth on 'data' for the new candle, full strings, a small lift on 'deep learning', then thinning to a single warm line through the flame push and the widen to the desk, under the last line, and settling on the held suspension (still burning) as its lamp clicks on, under the CHM card; intensity 0.55"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-vision-belief",
+    "e8-ilsvrc2013",
+    "e6-nn-winter",
+    "e8-result",
+    "e8-chm-before-after",
+    "e4-hinton-cv",
+    "e7-jellybean"
+   ]
+  },
+  {
+   "id": "ch08-s14",
+   "kind": "scene",
+   "setting": "the study: the Wall of Forecasts beside the case board; a GPU LED multiplying into a distant aisle",
+   "era": "2012",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0827",
+     "text": "Our results, the paper said, can be improved simply by waiting for faster GPUs and bigger datasets to become available.",
+     "spoken": "Our results, the paper said, can be improved simply by waiting for faster G P Us and bigger datasets to become available.",
+     "direction": "read the paper's words slowly and exactly, as a quotation"
+    },
+    {
+     "id": "L0828",
+     "text": "Put that in the file.",
+     "direction": "the refrain (fifth and last time): quiet, deliberate, slightly slower; it ends the chapter NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.82-0.85, target 1.9-2.2 s, matching L0109; the text is unchanged.",
+     "pauseAfter": 0.66,
+     "spoken": "Put that... in the file.",
+     "tts": {
+      "solo": true,
+      "speed": 0.84
+     }
+    }
+   ],
+   "leadIn": 1,
+   "holdAfter": 2.3,
+   "visual": "THIS SHOT: the paper's waiting sentence is pinned on the Wall in W4 and filed, while a single green LED multiplies into a distant aisle of racks. CAMERA: the reverse flame push out to SHELF, a tilt up to WALL (the W4 pin), a FILE insert (top-down: the copy into the file), then BOARD (the C3-c pin as an insert). Reverse FLAME PUSH, never through black (crossfadeMood dawnGold → candleAmber, STUDY LOCK): from the candle stage we pull back out of the new candle's flame onto the study's candle shelf and tilt up to the board (the study is locked to candleAmber, and the era's colour enters only through practicals). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The hands pin a new paper slip in slot W4: the paper's sentence in Plex Mono with its date, 2012, and a due date left blank. Further along, at W6, the corner of the older slip is just visible, half-lit in shadow, unread; W7 is bare. On 'waiting' the single green status LED from the bedroom card appears in a small dark inset beside the slip and multiplies: two, then dozens, then a distant aisle of racks receding to a vanishing point, all blinking (the future the slip predicts; no dates claimed); the inset's serverCyan glow is the shot's one accent practical. On 'file' the hands lift a copy of the slip and drop it into the manila file on the desk; the file closes. (The X-ray stencil test, 'not in the chat box', moves to the opening of ch10 with L1002; it is not staged here.) Silently, in the hold after 'file', the hands pin the chapter's clue card in slot C3-c, directly beneath the two-furnaces card in C3-b: one tile from the 96 learned filters (a grey striped edge); threads of light run from it to the pierced-stencil card (1989), the two-furnaces card (2012) and the backward-bead card (1986) in their slots. TEXT RULE: besides stamps and name cards, at most two text items in this shot. OUT (match into ch09-s01): inside the closing hold, the green LED inset is pushed to full frame while the lamp crossfades (crossfadeMood candleAmber → serverCyan, 0.8 s, no dip), so the shot's last frame is a single green LED in serverCyan dark; ch09-s01 then cuts on the LED's blink.",
+   "beats": [
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0827",
+      "word": "results"
+     },
+     "what": "the waiting slip is pinned in slot W4 on the Wall of Forecasts"
+    },
+    {
+     "id": "leds",
+     "at": {
+      "line": "L0827",
+      "word": "waiting"
+     },
+     "what": "the green LED multiplies into a distant aisle of racks"
+    },
+    {
+     "id": "file",
+     "at": {
+      "line": "L0828",
+      "word": "file"
+     },
+     "what": "the slip copy drops into the manila file; it closes"
+    },
+    {
+     "id": "clue",
+     "at": {
+      "line": "L0828",
+      "edge": "end",
+      "offset": 1
+     },
+     "what": "clue card (one learned filter tile) pinned in column C3 beneath the furnaces; threads light"
+    },
+    {
+     "id": "handoff",
+     "at": {
+      "line": "L0828",
+      "edge": "end",
+      "offset": 2.2
+     },
+     "what": "LED inset pushed to full frame; crossfadeMood candleAmber → serverCyan over 0.8 s; last frame a single green LED"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "wallOfForecasts",
+    "forecastSlip",
+    "gpuLed",
+    "serverRack",
+    "manilaFile",
+    "clueCard",
+    "threadOfLight",
+    "caseBoard"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "our results can be improved simply by waiting for faster GPUs and bigger datasets to become available — Krizhevsky, Sutskever & Hinton, 2012",
+     "beat": "slip"
+    }
+   ],
+   "music": {
+    "cue": "ch08-lasted",
+    "note": "a quiet pulse returns for the multiplying LEDs (a first hint of the scaling era); the refrain lands on a single low bell; the clue pin in the hold is a soft shimmer that does not resolve; hand off to ch09 on the held suspension; intensity 0.4"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e8-waiting",
+    "e8-gpus"
+   ]
+  }
+ ]
+}

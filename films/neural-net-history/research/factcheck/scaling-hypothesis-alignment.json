@@ -1,0 +1,148 @@
+{
+ "id": "scaling-hypothesis-alignment",
+ "checked": 152,
+ "confirmed": 138,
+ "corrected": 7,
+ "unverifiable": 4,
+ "contested": 3,
+ "upgraded": [
+  "OpenAI 'Organizational Update' 29 Dec 2020 (Dario Amodei, VP of Research, leaving) via https://web.archive.org/web/20220101125521/https://openai.com/blog/organizational-update/",
+  "DALL-E blog 5 Jan 2021 + 'an armchair in the shape of an avocado' prompt via https://web.archive.org/web/20210106233019/https://openai.com/blog/dall-e/",
+  "Sutskever 'slightly conscious' tweet wording VERIFIED-SECONDARY via https://futurism.com/the-byte/openai-already-sentient",
+  "Arthur Mensch co-founded Mistral AI via https://en.wikipedia.org/wiki/Arthur_Mensch"
+ ],
+ "key_claims": {
+  "1": "confirmed",
+  "2": "confirmed",
+  "3": "confirmed",
+  "4": "confirmed (accuracy excludes neutral answers)",
+  "5": "confirmed",
+  "6": "confirmed",
+  "7": "confirmed",
+  "8": "confirmed",
+  "9": "confirmed (fired vs resigned contested; attribute)",
+  "10": "confirmed",
+  "11": "confirmed",
+  "12": "confirmed (VP titles via Wikipedia + OpenAI 29 Dec 2020 post)",
+  "13": "confirmed",
+  "14": "confirmed",
+  "15": "confirmed (contested status correctly stated)",
+  "16": "confirmed with training-time source discrepancy",
+  "17": "confirmed (cause of firing contested)",
+  "18": "confirmed",
+  "19": "confirmed (DALL-E blog 5 Jan 2021; DALL-E 2 announced 6 Apr 2022, paper 13 Apr)"
+ },
+ "corrections": [
+  {
+   "original": "Hook 2: 'The best-disguised article fooled 88% of readers'",
+   "verdict": "corrected",
+   "fix": "GPT-3 paper's accuracy = correct / non-neutral assignments; the hardest article had 12% accuracy, which does not equal 88% of readers fooled. Say 'human accuracy was just 12%'.",
+   "sources": [
+    "https://arxiv.org/pdf/2005.14165"
+   ]
+  },
+  {
+   "original": "The paper became famous partly because Google pushed out Gebru (2 December 2020)",
+   "verdict": "contested",
+   "fix": "Gebru says she was fired; Google (Jeff Dean) says it accepted her resignation. Attribute both; do not state 'pushed out' as fact.",
+   "sources": [
+    "https://www.technologyreview.com/2020/12/04/1013294/google-ai-ethics-research-paper-forced-out-timnit-gebru/",
+    "https://en.wikipedia.org/wiki/Timnit_Gebru"
+   ]
+  },
+  {
+   "original": "Gwern Branwen named the strong form of the idea the 'scaling hypothesis'",
+   "verdict": "corrected",
+   "fix": "Gwern's essay 'The Scaling Hypothesis' (2020-05-28 to 2022-01-02) states the strong form; no source shows he coined the term. Don't say he named or coined it.",
+   "sources": [
+    "https://gwern.net/scaling-hypothesis"
+   ]
+  },
+  {
+   "original": "'Big models may be more important than big data' became a slogan",
+   "verdict": "corrected",
+   "fix": "The quote is verbatim (Kaplan et al., discussion), but the claim that it 'became a slogan' had no source and was removed.",
+   "sources": [
+    "https://arxiv.org/pdf/2001.08361"
+   ]
+  },
+  {
+   "original": "Christiano 2017: feedback on 'less than one percent' of interactions",
+   "verdict": "corrected",
+   "fix": "Verbatim: 'less than 1% of our agent's interactions with the environment'.",
+   "sources": [
+    "https://arxiv.org/abs/1706.03741"
+   ]
+  },
+  {
+   "original": "Kaplan: corresponding author on Constitutional AI (jared@anthropic.com)",
+   "verdict": "corrected",
+   "fix": "Co-corresponding with Yuntao Bai: '{yuntao,jared}@anthropic.com'.",
+   "sources": [
+    "https://arxiv.org/abs/2212.08073"
+   ]
+  },
+  {
+   "original": "Muennighoff et al. (NeurIPS 2023) began to study what happens when the internet's text runs out",
+   "verdict": "corrected",
+   "fix": "'Scaling Data-Constrained Language Models' was a NeurIPS 2023 Outstanding Main Track Runner-Up. The 'began to study' priority claim was removed.",
+   "sources": [
+    "https://blog.neurips.cc/2023/12/11/announcing-the-neurips-2023-paper-awards/"
+   ]
+  },
+  {
+   "original": "AlphaFold 2 trained on 128 TPU v3 cores for about a week plus about 4 days of fine-tuning",
+   "verdict": "contested",
+   "fix": "Nature 2021 says ~1 week + ~4 days on 128 TPU v3 cores. DeepMind's 30 Nov 2020 blog said ~16 TPUv3s (128 cores) 'run over a few weeks'. Attribute whichever is used.",
+   "sources": [
+    "https://www.nature.com/articles/s41586-021-03819-2",
+    "https://deepmind.google/discover/blog/alphafold-a-solution-to-a-50-year-old-grand-challenge-in-biology/"
+   ]
+  },
+  {
+   "original": "Lemoine's firing was for violating confidentiality and data-security policies, not for holding the belief",
+   "verdict": "contested",
+   "fix": "That is Google's stated reason ('persistently violate clear employment and data security policies'). Wikipedia summarises Lemoine as linking his dismissal to hiring an attorney for LaMDA. Present it as Google's statement.",
+   "sources": [
+    "https://www.bbc.com/news/technology-62275326",
+    "https://en.wikipedia.org/wiki/LaMDA"
+   ]
+  },
+  {
+   "original": "GPT-3 human detection: people picked out machine-written articles ~52% of the time",
+   "verdict": "corrected",
+   "fix": "Confirmed, but the qualifier was added: accuracy counts only non-neutral answers, with ~80 US participants per model. The ~500-word replication gave control 88% and GPT-3 52%.",
+   "sources": [
+    "https://arxiv.org/pdf/2005.14165"
+   ]
+  },
+  {
+   "original": "Sam Altman tweet July 2020 'The GPT-3 hype is way too much'",
+   "verdict": "unverifiable",
+   "fix": "Still not retrieved; do not quote.",
+   "sources": []
+  },
+  {
+   "original": "Gebru's own announcement tweets (verbatim wording)",
+   "verdict": "unverifiable",
+   "fix": "Use MIT Technology Review's paraphrase instead; do not quote as verbatim.",
+   "sources": [
+    "https://www.technologyreview.com/2020/12/04/1013294/google-ai-ethics-research-paper-forced-out-timnit-gebru/"
+   ]
+  },
+  {
+   "original": "'10,000 GPUs' Microsoft supercomputer figure for GPT-3",
+   "verdict": "unverifiable",
+   "fix": "The GPT-3 paper says only 'V100 GPU's on part of a high-bandwidth cluster provided by Microsoft'. Do not use 10,000.",
+   "sources": [
+    "https://arxiv.org/pdf/2005.14165"
+   ]
+  },
+  {
+   "original": "Silhouette appearance notes for all people",
+   "verdict": "unverifiable",
+   "fix": "Not checked against licensed photos; the art department must verify.",
+   "sources": []
+  }
+ ]
+}

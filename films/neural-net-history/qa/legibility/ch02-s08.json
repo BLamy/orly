@@ -1,0 +1,129 @@
+{
+ "shot": "ch02-s08",
+ "at": "2026-10-13T20:31:00.623Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 23,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Lettvin, Maturana, McCulloch & Pitts · 1959",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "1943–1959 · 16",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Lettvin, Maturana,",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "McCulloch & Pitts · 1959",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Pitts",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "1943",
+   "maxCap": 25.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 21.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 21.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "5",
+   "maxCap": 21.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 27.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 24.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 24.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 23.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 20.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 24.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "How could a net rewire",
+   "maxCap": 27.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "itself?",
+   "maxCap": 27.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 17
+}

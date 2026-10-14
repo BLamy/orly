@@ -1,0 +1,240 @@
+// m01 — "The Machine That Learned to See" (perceptron-short), 0–67.75 s, one through-composed cue.
+// Revision 11 (2026-10-07): RE-FIT to the re-locked clock after ch01-s03 was re-narrated again (window, cps and
+// body unchanged; inside s03 every word from "Show it a shape" through "right" is +0.37 s later and L0108 is
+// +0.17 s later). Revision 10's drone (D2 alone behind lpf 170 under speech) is kept. 71.4 BPM in 4/4, one bar
+// per cycle, cps .2975: bar 3.3613 s, beat 0.8403 s, 16th 0.2101 s. Body = 67.75 × .2975 = 20.156 cycles (+6 s tail).
+//
+// Two clocks in one score. Shots s01/s02 did not move, so bars -1 to 6 keep the revision-8 bar frame
+// (T(bar, 16th), phase P0 = .4872 cycles), and the cello's builder figure still lands its D3 on the s03 iris
+// at 23.00. From bar 7 on each onset is written against its word in absolute seconds (A(sec)), and the pulses
+// (the sum, the nudge, the reborn heartbeat) are counted in beats from their anchor word (71.4 BPM).
+//
+// Events are [position, length, notes, velocity, {per-event params}] in 16ths and compile into one
+// mini-notation sequence per lane (line() below), so every onset sits exactly where the clock needs it.
+// The withheld third: open fifths and sus chords until the celesta F6 just after the first "wrong"; F# and
+// D major only on "right"; Bb and F return for the winter and are not resolved until "Its descendants".
+//
+//   0.00  M2 drone from black (fade in)                  1.20–3.19 "Once, a machine learned to see."
+//   3.32  M1 asked: celesta D5 3.32, A5 4.16, E6 5.00 (rings across the cut to the lab at 5.21); a short
+//         Dsus2 string breath 3.32–4.58, gone before "Its eye" 5.61
+//   6.47  music-box glint E6 A6 after "eye"; M3 pizz pulse enters 6.68; quarters under "four hundred light cells"
+//  11.72  C/D on "wires"; pizz ratchet under "motors turned" (14.24–14.87); G/D; G add9 under the name
+//  22.23  M4 builder right after "Rosenblatt" (ends 22.17): cello A2 22.23, B2 22.65, D3 23.07 on the iris
+//  25.17  celesta A5 in the widened gap after "rule" (24.88–25.99); E6 26.95 as "shape" ends (26.93)
+//  29.89  the sum: pizz D2 on "tugs", A2 D3 E3 one per beat, A3 on "total" (33.07)
+//  33.47  C/D on "decides"; Bb under "guesses" (34.97); celesta E6 on "wrong" (35.39), F6 35.79 as it ends:
+//         the first third of the film, doubled pp by a string F4
+//  36.63  the nudge: three pizz A2 from "nudge" (36.63, 37.47, 38.31), forward (lpf 1200)
+//  40.62  M1 tries in the pre-gap of L0107: D5 40.62, A5 40.94, E6 41.25; F6 41.89 after "Wrong";
+//         E6/F6 42.99/43.20 after "again"; D5 43.87 / A5 44.08 in the "then" / "quite" gap; A7sus4 -> A7
+//         (44.08); E6 45.32 and cello B2 A2 in the held breath after "suddenly"
+//  46.21  "right": bare celesta F#6 + the low D (contrabass, cello). D major blooms 46.64 as the word ends,
+//         holds to 47.20 and recedes before "It could learn" (48.64; the clear air is now 2.0 s). Try 5's
+//         verdict gets the echo: dry celesta + music box D6 47.70 -> F#6 47.91
+//  49.58  Bm on "only simple patterns" (the limit); G5 on "1969" (52.24, no third)
+//  55.18  Bb/F on "showed just how simple"; under the XOR plate's flicker the 'wrong' cell is quoted once,
+//         E6 -> F6 over Bb (56.97 / 57.18); on "years" (57.61, the light dims) the drone's F lets go, one step
+//         thinner; left unresolved through "for years, interest faded"
+//  59.49  cello A2 answers after "faded" (59.45); on "Its descendants" (59.95) Bb opens to D by two semitones
+//         (F -> F#, Bb -> A), M2 back, cello B2 D3; M3 reborn (pizz heartbeat 59.95 -> "still" 63.21);
+//         G/D under "today's neural networks" (61.14)
+//  62.83  M1 completed: D5 62.83, A5 63.21 ("still"), E6 63.63; A7sus4 -> A7 (63.92)
+//  64.94  the last D chord + celesta F#6, 0.15 s after "mistakes" ends (64.79); strings and contrabass
+//         release over about 2 s; one music-box D6 answers at 65.72; it is near silence before the
+//         0.8 s mix fade at 66.95 (lastStrike 64.94 in cues.json)
+setcps(.2975)
+
+const CPS = .2975
+const P0 = .4872         // bars -1..6: the revision-8 bar frame (s01/s02 did not move)
+const N = 21             // cycles covered by each compiled sequence (the body is 20.156)
+const T = (bar, s = 0) => (bar + P0) * 16 + s   // bar-frame position in 16ths (bars -1..6 only)
+const A = (sec) => sec * CPS * 16                // an absolute time in seconds, as a position in 16ths
+const L = (a, b) => A(b) - A(a)                  // the length in 16ths between two absolute times
+
+// Compile [pos16, len16, notes, velocity, params?] events into mini-notation lanes (overlaps go to new lanes).
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = Object.keys(defs)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N * 16 - pos > 1e-6) out.push('~@' + (N * 16 - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k])))
+    return p.slow(N)
+  }))
+}
+
+// M2 — the night-lab drone (contrabass). D pedal; Bb for the first wrong guess, A1 as the nudge settles, then
+// nothing under L0107 so the low D re-opens the floor on "right". Closing walk: B (the limit) -> G5 (Minsky and
+// Papert) -> Bb5 (the winter, held unresolved to "Its") -> D (descendants) -> A -> D.
+// Revision 10: under speech the drone keeps its floor and drops its body: D2 alone (no A2) behind lpf 170, so
+// its 147/220 Hz harmonics and the open fifth's 110 Hz stay off the narrator's chest register. The fifth (A2, lpf 420) comes back
+// only where he is silent: the breath after "see", the bloom after "right" and the last chord.
+$: line([
+  [0, T(2), 'd2', .28, { attack: 2.5 }],
+  [A(3.19), L(3.19, 4.70), 'a2', .24, { attack: .5, release: .8, lpf: 420 }],  // the fifth in the breath after "see"
+  [T(2), 32, 'd2', .27],
+  [T(4), 32, 'd2', .27],
+  [T(6), A(28.99) - T(6), 'd2', .27],
+  [A(28.99), L(28.99, 34.97), 'd2', .26],
+  [A(34.97), L(34.97, 37.47), 'bb1', .26],                              // "guesses wrong"
+  [A(37.47), 6, 'a1', .17, { release: 2.2 }],
+  [A(46.21), L(46.21, 46.77), 'd2', .36, { attack: .3, release: 1.2, lpf: 420 }],  // the low D on "right"
+  [A(46.64), L(46.64, 47.65), 'a2', .22, { attack: .4, release: .9, lpf: 420 }],   // the fifth under the bloom (gap is 2.0 s now)
+  [A(46.77), L(46.77, 49.58), 'd2', .26, { attack: .5, release: 1.2, lpf: 420 }],  // re-struck softer: swell in the clear air
+  [A(49.58), L(49.58, 52.24), 'b1', .23, { attack: 1.2 }],               // "only simple patterns"
+  [A(52.24), L(52.24, 55.18), '[g1,d2]', .23, { attack: 1.5 }],          // "1969"
+  [A(55.18), L(55.18, 59.95), 'bb1', .24, { attack: 1.2, release: 1.4 }],      // "showed" -> "faded", held unresolved to "Its"
+  [A(55.18), L(55.18, 57.61), 'f2', .24, { attack: 1.2, release: 1.4 }],       // the fifth lets go on "years" (the light dims): one step thinner
+  [A(59.95), L(59.95, 63.21), 'd2', .26, { attack: .8, release: 2 }],    // "Its descendants"
+  [A(63.21), L(63.21, 64.94), 'a1', .17, { attack: .6, release: .6 }],   // "still learn" (thinned)
+  [A(64.94), 2, '[d2,a2]', .22, { attack: .2, release: 1.2, lpf: 420 }],  // the last chord, held 2 16ths
+], { attack: 1, release: 3, lpf: 170 })
+  .s('gm_contrabass').room(.35).rsize(3).orbit(1)
+
+// M4 — the builder (cello): A2 B2 D3 right after "Rosenblatt", D3 on the iris; B2 A2 -> D2 under "right";
+// the builder's line again after "faded", across the turn to D; then B2 A2 home to D2.
+$: line([
+  [T(6, 2), 2, 'a2', .26, { release: 1.5 }],
+  [T(6, 4), 2, 'b2', .26, { release: 1.5 }],
+  [T(6, 6), 8, 'd3', .26],
+  [A(45.32), 2, 'b2', .2, { attack: .5, release: 1 }],
+  [A(45.77), L(45.77, 46.21), 'a2', .2, { attack: .5, release: 1 }],
+  [A(46.21), 6, 'd2', .28, { attack: .3, release: 1.2 }],
+  [A(59.49), L(59.49, 59.95), 'a2', .22, { attack: .4, release: 1.6 }],   // in the gap after "faded"
+  [A(59.95), 2, 'b2', .22, { attack: .4, release: 1.6 }],                 // "Its"
+  [A(60.37), L(60.37, 62.37), 'd3', .17, { attack: .5, release: 2 }],
+  [A(62.37), L(62.37, 63.21), 'b2', .2, { release: 1.6 }],
+  [A(63.21), L(63.21, 64.94), 'a2', .16, { release: .6 }],          // thinned under "mistakes"
+  [A(64.94), 1, 'd2', .2, { attack: .15, release: 1.2 }],
+], { attack: .35, release: 2.5 })
+  .s('gm_cello').lpf(600).room(.5).rsize(3).orbit(2)
+
+// strings: voice-led modal harmony, low and filtered under speech; they swell only where the narrator is silent
+// (3.3–4.6, the bloom after "right", the last chord after "mistakes")
+$: line([
+  [T(0, 8), 6, '[a3,d4,e4]', .2, { attack: 1, release: .8, lpf: 1600 }],      // Dsus2 breath after "see"
+  [T(3), 16, '[g3,c4,e4]', .13, { attack: 1.5 }],                                // C/D on "wires"
+  [T(4), 16, '[g3,b3,d4]', .14],                                                 // G/D
+  [T(5), 18, '[g3,b3,d4,a4]', .14],                                              // G add9 under the name
+  [T(6, 2), A(25.17) - T(6, 2), '[g3,a3,d4]', .13],                              // with the builder, no third
+  [A(25.17), L(25.17, 28.99), '[a3,d4,e4]', .11, { attack: 2 }],                // Dsus2: "Show it a shape"
+  [A(28.99), L(28.99, 33.47), '[a3,d4,e4]', .12],                               // the sum
+  [A(33.47), L(33.47, 34.97), '[g3,c4,e4]', .12],                               // C/D on "decides"
+  [A(34.97), L(34.97, 36.63), '[bb3,d4]', .13],                                 // Bb under "guesses wrong"
+  [A(35.79), 3, 'f4', .13, { release: 1.2 }],                                   // the first F, pp doubling
+  [A(36.63), L(36.63, 38.31), '[g3,bb3,d4]', .13],                              // "nudge"
+  [A(38.31), L(38.31, 39.00), '[g3,a3,d4]', .12],
+  [A(39.00), L(39.00, 40.67), '[f3,bb3,d4]', .11],                              // Bb: "toward the right answer"
+  [A(40.67), L(40.67, 42.37), '[g3,bb3,d4]', .1],                               // "Wrong"
+  [A(42.37), L(42.37, 44.08), '[g3,a3,d4,e4]', .1],                             // A7sus4: "again, and then"
+  [A(44.08), L(44.08, 46.21), '[g3,c#4,e4,a4]', .1, { release: .6 }],           // A7: "quite suddenly"
+  [A(46.64), L(46.64, 47.20), '[f#3,d4,f#4,a4,d5]', .6, { attack: .4, release: .75, lpf: 3000 }], // the bloom: recedes sooner (the gap is 2.0 s now)
+  [A(47.06), L(47.06, 49.58), '[f#3,a3,d4]', .11, { attack: .6, release: 1.5 }], // D carried under the echo
+  [A(49.58), L(49.58, 52.24), '[f#3,b3,d4]', .12, { attack: 1.2 }],             // Bm: "only simple patterns"
+  [A(52.24), L(52.24, 55.18), '[g3,d4]', .095, { attack: 1.5, lpf: 1100 }],     // G5, no third: 1969
+  [A(55.18), 6, '[f3,bb3,d4]', .095, { attack: 1.2, release: 2.5, lpf: 1100 }], // Bb, then thin to the drone
+  [A(59.95), L(59.95, 61.14), '[f#3,a3,d4]', .12, { attack: 1.2, release: 2 }], // D: "Its descendants"
+  [A(61.14), L(61.14, 63.21), '[g3,b3,d4]', .11, { attack: 1.2, release: 2 }],  // G/D: "today's neural networks"
+  [A(63.21), L(63.21, 63.92), '[g3,a3,d4,e4]', .09, { attack: 1, release: 1.2 }], // A7sus4: "still learn"
+  [A(63.92), L(63.92, 64.94), '[g3,c#4,e4]', .085, { attack: .6, release: .5 }],    // A7: "mistakes"
+], { attack: 1.2, release: 3, lpf: 1300 })
+  .s('gm_string_ensemble_1').room(.6).rsize(4).orbit(3)
+
+// the last D chord, struck in the small room (orbit 8): held 3 16ths so it blooms (the homecoming, clearly
+// above the A7 bed), then released over about 1.5 s so it is near silence before the mix fade (66.95, 2.01 s after the strike)
+$: line([[A(64.94), 3, '[d3,a3,d4,f#4,a4]', .28, { attack: .3, release: 1.5 }]])
+  .s('gm_string_ensemble_1').lpf(2200).room(.45).rsize(2.2).orbit(8)
+
+// M3 — the relay pulse (low pizz): quarters under the eye, a ratchet on "motors turned", halves under the name;
+// the rising sum (D2 on "tugs", one per beat, A3 on "total")
+$: line([
+  [T(1, 8), 4, 'd2', .28], [T(1, 12), 4, 'a2', .2],                                        // a2 under "cells"
+  [T(2), 4, 'd2', .29], [T(2, 4), 4, 'a2', .25], [T(2, 8), 4, 'd3', .27], [T(2, 12), 4, 'd2', .2], // D2 (not A2) on "it"
+  [T(3), 4, 'd2', .29], [T(3, 4), 4, 'g2', .25], [T(3, 8), 4, 'c3', .27],
+  [T(3, 12), 1, 'd2', .24], [T(3, 13), 1, 'g2', .26], [T(3, 14), 1, 'a2', .27], [T(3, 15), 1, 'd3', .29],
+  [T(4), 8, 'g2', .29], [T(4, 8), 8, 'd2', .24],
+  [T(5), 8, 'g2', .24], [T(5, 8), 8, 'd2', .21],
+  [A(29.89), 4, 'd2', .3], [A(29.89) + 4, 4, 'a2', .3], [A(29.89) + 8, 4, 'd3', .32],
+  [A(29.89) + 12, L(32.41, 33.07), 'e3', .34], [A(33.07), 5, 'a3', .42],
+])
+  .s('gm_pizzicato_strings').lpf(1400).room(.45).rsize(3).orbit(4)
+
+// the nudge: three A2 plucks from "nudge", one per beat, forward enough to be heard as the dials moving
+$: line([
+  [A(36.63), 4, 'a2', .72], [A(36.63) + 4, 4, 'a2', .67], [A(36.63) + 8, 4, 'a2', .71],
+])
+  .s('gm_pizzicato_strings').hpf(150).lpf(1200).room(.45).rsize(3).orbit(4)
+
+// M3 reborn: the machine's heartbeat under "Its descendants, today's neural networks", low pizz D2/A2 in
+// quarters quickening to 8ths, below the cello's D3; it stops on "still" so M1 and the last chord have the floor
+$: line([
+  [A(59.95), 4, 'd2', .23], [A(60.79), L(60.79, 61.53), 'a2', .21],
+  [A(61.53), 2, 'd2', .22], [A(61.95), 2, 'a2', .19], [A(62.37), 2, 'd2', .22], [A(62.79), 2, 'a2', .21],
+  [A(63.21), 4, 'd2', .18],
+])
+  .s('gm_pizzicato_strings').lpf(1200).room(.45).rsize(3).orbit(4)
+
+// M1 — the question (celesta, in the film's wet room): asked after "see", asked again from inside the machine
+$: line([
+  [T(0, 8), 4, 'd5', .4, { release: 1.2 }], [T(0, 12), 4, 'a5', .4, { release: 1.2 }], [T(1), 3, 'e6', .28, { release: 1.1 }],
+  [T(6, 6), 4, 'd5', .25, { release: 1.4 }], [A(25.17), 3, 'a5', .23, { release: 1.2 }], [A(26.95), 4, 'e6', .24, { release: 1.4 }],
+], { release: 2 })
+  .s('gm_celesta').lpf(1900).room(.7).rsize(5).orbit(5)
+
+// M1 / M5 — dry celesta (its own small room) for the trial and error and the answers: E6 -> F6 is wrong,
+// E6 -> F#6 is right. The F6s sit in the word gaps; "right" is the bare F#6; the try-5 echo D6 -> F#6 lands on
+// its verdict (47.91); the 'wrong' cell quoted once under the XOR plate; M1 completed, F#6 on the last chord.
+$: line([
+  [A(35.39), 2, 'e6', .3], [A(35.79), 3, 'f6', .42],
+  [A(40.62), 1.5, 'd5', .27], [A(40.94), 1.5, 'a5', .27], [A(41.25), 1, 'e6', .25], [A(41.89), 3, 'f6', .4],
+  [A(42.99), 1, 'e6', .27], [A(43.20), 3, 'f6', .4],
+  [A(43.87), 1, 'd5', .27], [A(44.08), 2, 'a5', .27], [A(45.32), 4, 'e6', .27, { release: .9 }],
+  [A(46.21), 2, 'f#6', .35, { release: .9 }],
+  [A(47.70), 1, 'd6', .25, { release: .8 }], [A(47.91), 3, 'f#6', .25],
+  [A(56.97), 1, 'e6', .16, { release: .8 }], [A(57.18), 2, 'f6', .19, { release: 1.1 }],
+  [A(62.83), 2, 'd5', .24], [A(63.21), 2, 'a5', .22], [A(63.63), 3, 'e6', .19, { release: .8 }],
+  [A(64.94), 1.5, 'f#6', .24, { release: 1 }],
+], { release: 1 })
+  .s('gm_celesta').room(.45).rsize(2.2).orbit(8)
+
+// music box (kept at or below A6: its soundfont has no zone at E7): the eye's glint, its answer in the gap after
+// "twenty by twenty", a whisper on the iris
+$: line([
+  [T(1, 7), 1, 'e6', .26], [T(1, 8), 2, 'a6', .26],
+  [T(2, 8), 1, 'a6', .2], [T(2, 9), 4, 'd6', .2],
+  [T(6, 6), 4, 'd6', .08],
+], { release: 2 })
+  .s('gm_music_box').room(.7).rsize(5).orbit(5)
+
+// dry music box: the bloom's spread, the try-5 echo, and the single answer to the last chord (0.9 s after it)
+$: line([
+  [A(46.64), 2, 'f#6', .2, { release: .6 }], [A(47.06), 2, 'a5', .1, { release: .5 }],
+  [A(47.70), 1, 'd6', .24, { release: .6 }], [A(47.91), 3, 'f#6', .24, { release: .9 }],
+  [A(65.72), 2, 'd6', .17, { release: 1.1 }],
+])
+  .s('gm_music_box').room(.45).rsize(2.2).orbit(8)
+
+// a soft low piano octave: the floor of the arrival (struck as "right" ends) and of the last chord
+$: line([
+  [A(46.64), 4, '[d1,d2]', .26, { release: .8 }],
+  [A(64.94), 3, '[d1,d2]', .17, { release: 1.4 }],
+])
+  .s('piano').lpf(1000).room(.5).rsize(3).orbit(2)

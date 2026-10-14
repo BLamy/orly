@@ -33,6 +33,13 @@ Use `npx --yes @anthropic-ai/claude-code@latest` for every Fable run. The
 [shared workflow](docs/authoring-models.md) covers handoffs, source grounding,
 model provenance and deterministic hybrid playback. Covers still use built-in ImageGen.
 
+### Films: VHS tapes on the shelf
+
+Beyond books, orly-2 makes **films**: 20–40 minute silhouette / paper-cut animated
+documentaries, researched, scripted, narrated, scored and rendered frame-exactly in
+JavaScript, all authored by Opus 5.5. Start with
+[docs/film/ARCHITECTURE.md](docs/film/ARCHITECTURE.md), or run `/new-film`.
+
 ## What's a "book"?
 
 Each book is a narrated, animated **data-flow explainer** of one subsystem of some codebase:

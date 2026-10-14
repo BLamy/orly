@@ -1,0 +1,637 @@
+{
+ "id": "ch11",
+ "number": 11,
+ "title": "Read Everything",
+ "blurb": "2018–2022. Pre-training comes back in a different coat, and the attention threads light up inside the chat box. The 1985 card from the file meets a one-sentence training goal, and the typesetter's case answers the prologue's riddle of the missing rulebook. A smooth law on log paper becomes a city of a hundred and seventy-five billion weights that can learn a task from a few examples, and a new candle is lit: scale is the main lever, and the rim of its light grows crowded.",
+ "shots": [
+  {
+   "id": "ch11-s01",
+   "kind": "scene",
+   "setting": "The detective's study, night, 2018: a brass coat-hook beside the case board; beyond the study window, a paper-cut library of raw text running to the horizon (its serverCyan glow seen through the glass)",
+   "era": "2018",
+   "mood": "candleAmber",
+   "leadIn": 4.6,
+   "holdAfter": 9.4,
+   "transitionIn": "paperWipe",
+   "visual": "THIS SHOT: wordless: X-ray band 5 (threads) lights, the old PRE-TRAINING coat is lifted off its hook and re-cut into a modern overcoat, and the camera pushes through the window into a library of raw text. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Read Everything', drops down from the frame's top edge at TOP-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. Paper wipe (a chapter break) from ch10-s14's last frame (the writing half's ghost slot, its blank sort hanging unset) into the study, in candleAmber; the index tab rides over the lead-in. STUDY LOCK: every beat in the study, at the board, on the shelf or at the Wall is candleAmber; era colour enters only through practicals, so the library's serverCyan glow is seen only through the study window until the camera passes through it. CAMERA: X-RAY, then BOARD, then COAT, then LIBRARY. The whole shot is wordless (music only): the coat's tag and the library carry the idea; the first words of the chapter come in ch11-s02. X-RAY (wordless lead-in, moved here from ch10-s14; band 5 of the X-ray ritual): the glowing chat box from chapter 1 stands in the study, a little more translucent, its glow a serverCyan practical inside the amber room, and inside it threads of attention light up for the first time beside the threshold units, weights, hidden layers and racks already lit (only parts truly present in a modern chat model light). The camera holds on it for a full 2.4 s (as long as band 1 had), then at 2.8 s eases left to the board. BOARD (still in the lead-in): BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). This chapter works in column C4, the last column before the output (the chat box): ch10's thread-of-light card sits at the foot of column C3, and C4's head slot C4-a waits for this chapter's type sort. The hands pin chapter 10's clue card, a thread of light between two word-slips, into slot C3-d at the foot of column C3 (beneath the furnaces in C3-b and the filter tile in C3-c), and run a faint thread of light from it to the pierced-stencil card. COAT: in the shadow beside the case board hangs the coat from chapter 7: a dusty paper-cut frock coat on a brass hook, its luggage tag lettered PRE-TRAINING in the 2000s typeface (then it meant warming a deep net up layer by layer). At 4.2 s the two steady hands lift it down and shake it out; as it swings, at 4.7 s, its silhouette re-cuts on twos into a longer, modern overcoat, and a fresh tag is stamped in IBM Plex Mono: PRE-TRAINING · READ EVERYTHING FIRST. The tag stays readable in frame until the push (4.55 s). LIBRARY: at 9.25 s the camera follows the coat past the lamp and pushes slowly through the study window, the tint crossfading (crossfadeMood, 1.2 s, no dip) from candleAmber to serverCyan as it crosses the glass, into serverCyan haze, and as it crosses, the date stamp 2018 types itself bottom-left (the index tab is long gone from the top-left): a canyon of paper-cut bookshelves to the horizon, the spines unlabelled (raw, unannotated text: first a wall of some seven thousand unpublished books, then the long pages of an encyclopedia). As the push settles (10.1 s), in music only, two small lantern-machines walk the stacks, unhurried. One reads in both directions and fills in blanked-out type slugs (BERT, Google, October 2018). The other reads strictly left to right and writes as it goes (GPT, OpenAI, June 2018). Their names appear on one shared caption only (GPT · OpenAI · BERT · Google; the 2018 stamp already stands); no other text. The camera drifts along the canyon with them and holds to the end of the shot, so the library breathes. (The 'Generating Wikipedia' blueprint thread is in ch11-s02, on the board.)",
+   "lines": [],
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'Read Everything' drops down from the frame's top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "xray5",
+     "at": {
+      "shotTime": 0.4
+     },
+     "what": "wordless X-ray (band 5): the translucent chat box in the study; threads of attention light up inside it for the first time"
+    },
+    {
+     "id": "pinC3d",
+     "at": {
+      "shotTime": 2.8
+     },
+     "what": "wordless: ease to the board; the hands pin chapter 10's thread-of-light clue card into slot C3-d and run a faint thread to the pierced-stencil card"
+    },
+    {
+     "id": "liftCoat",
+     "at": {
+      "shotTime": 4.2
+     },
+     "what": "music only: the hands lift the old PRE-TRAINING coat off its hook"
+    },
+    {
+     "id": "recut",
+     "at": {
+      "shotTime": 4.7
+     },
+     "what": "music only: the coat's silhouette re-cuts into a modern overcoat; the new tag PRE-TRAINING · READ EVERYTHING FIRST is stamped"
+    },
+    {
+     "id": "library",
+     "at": {
+      "shotTime": 9.25
+     },
+     "what": "music only: push through the window into the library of raw text (tint crossfade to serverCyan); the 2018 stamp types itself bottom-left"
+    },
+    {
+     "id": "machines",
+     "at": {
+      "shotTime": 10.1
+     },
+     "what": "music only: as the push settles, the two lantern-machines (BERT reading both ways, GPT writing left to right) walk the stacks; one shared name caption; hold to the end"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "caseBoard",
+    "coatHook",
+    "overcoat",
+    "luggageTag",
+    "bankersLamp",
+    "studyWindow",
+    "bookshelves"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Read Everything",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "date",
+     "text": "2018",
+     "beat": "library"
+    },
+    {
+     "kind": "label",
+     "text": "PRE-TRAINING · READ EVERYTHING FIRST",
+     "beat": "recut",
+     "until": "library"
+    },
+    {
+     "kind": "label",
+     "text": "GPT · OpenAI · BERT · Google",
+     "beat": "machines"
+    }
+   ],
+   "music": {
+    "cue": "ch11-read-everything",
+    "note": "Under the index tab and the wordless X-ray, the celesta's unresolved upward step from chapter 10 hangs on and warms into the study. Then the pulsing graphics-card-era synth returns, lighter and quicker. A two-note pickup on the recut rhymes with chapter 7's 'pre-training' figure, now in a brighter register. Intensity 0.4; no narration in this shot, so it carries the coat, then swells a little and carries the walk through the library to the end of the shot."
+   },
+   "claims": [
+    "e10-gpt1",
+    "e10-bert",
+    "e10-architecture"
+   ],
+   "minDuration": 14
+  },
+  {
+   "id": "ch11-s02",
+   "kind": "card",
+   "setting": "The case board under the green-shaded lamp, night, 2019: the manila file open on the desk",
+   "era": "2019",
+   "mood": "candleAmber",
+   "leadIn": 0.8,
+   "holdAfter": 4.0,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the 2019 card is pinned (read everything, predict the next word, no labels on any shelf), and beside it the 1985 Cyc card that said practically nothing could come from raw text. CAMERA: BOARD (the thread and the two cards; pins as inserts), with one FILE insert (the 1985 card drawn from the file) and one SHELF insert (the Cyc taper). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). This chapter works in column C4, the last column before the output (the chat box): ch10's thread-of-light card sits at the foot of column C3, and C4's head slot C4-a waits for this chapter's type sort. In the short lead-in and under the opening words of L1103 (the thread run brisk, landing on the GPT card as 'writing half' is said): the hands run an oxblood thread from ch10's thread-of-light card at the foot of column C3 to a small card lettered only GENERATING WIKIPEDIA · 2018 (a Google paper with a decoder-only design, co-written by two of the Transformer's authors), and on to a small GPT card at the top of column C4: the blueprint passes hands visibly. Then close on the board in candleAmber. The hands pin a crisp new card printed in IBM Plex Mono beside the GPT card: the 2019 sentence, with the words 'predict the next word' catching the lamp, its source typed small at the foot (OpenAI, 2019; the full sentence and attribution move to creditsSources). On 'labels', a glance to the library in the window: not one tag on any shelf; on the card, each word in turn underlines the word after it (every next word its own right answer). Then the hands open the manila file and draw out a yellowed card filed back in chapter 5 (the fourth 'Put that in the file'): the 1985 sentence, typed in VT323 phosphor-green on old stock, the words 'practically nothing … from the raw text' underlined in faded ink, its source typed small at the foot (Lenat et al., the Cyc team, 1985; full authors in creditsSources). They pin it beside the new one, the two cards level and the same size. A slow lateral dolly between them; a rack focus from 2019 to 1985 in the breath just before 'From', as the narrator opens the file. A thin thread of light ties the old card to the library of raw text glimpsed in the window from shot 1. Below the board, on the candle shelf, the thin Cyc taper (lit in chapter 5, still burning in 2019) flickers once on 'sensible' and steadies. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. No irony in the frame: the old card is lit as warmly as the new.",
+   "lines": [
+    {
+     "id": "L1103",
+     "text": "In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word”, or rather, the next word-piece. No labels needed: every next word is its own right answer.",
+     "direction": "'a Transformer’s writing half' lightly, a callback in passing to the half kept in chapter 10; 'eight million' plain; read the quoted words plainly, almost flat, and let their simplicity do the work (the sentence is on the card); 'or rather, the next word-piece' as a light, precise aside, a touch lower, not a correction of the quote; then a breath, and 'No labels needed' as the quiet key to the whole era: 'its own right answer' warm and unhurried NARRATION: re-generate this line on its own (solo); ch11-s02 absorbs about 1.3 s through its T.word anchors.",
+     "pauseAfter": 0.6,
+     "spoken": "In twenty nineteen, Open A.I.’s G P T two, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word”, or rather, the next word piece. No labels needed: every next word is its own right answer.",
+     "tts": {
+      "solo": true
+     }
+    },
+    {
+     "id": "L1104",
+     "text": "From the file, Lenat's team: “practically nothing” from “the raw text.” It sounded sensible, at the time.",
+     "direction": "gentle and fond; 'Lenat's team' reminds the ear whose words come next (chapter 5's common-sense team); the quoted words read plainly; a small pause before 'It sounded sensible, at the time', said without mockery",
+     "pauseAfter": 0.66,
+     "spoken": "From the file, Lenat's team: “practically nothing” from “the raw text.” It sounded sensible, at the time."
+    }
+   ],
+   "beats": [
+    {
+     "id": "blueprint",
+     "at": {
+      "line": "L1103",
+      "word": "writing"
+     },
+     "what": "the oxblood thread, run from ch10's thread-of-light card through the small GENERATING WIKIPEDIA · 2018 card, lands on the GPT card at the top of column C4"
+    },
+    {
+     "id": "newCard",
+     "at": {
+      "line": "L1103",
+      "word": "goal"
+     },
+     "what": "the 2019 card is pinned"
+    },
+    {
+     "id": "predict",
+     "at": {
+      "line": "L1103",
+      "word": "predict"
+     },
+     "what": "'predict the next word' catches the lamp"
+    },
+    {
+     "id": "noLabels",
+     "at": {
+      "line": "L1103",
+      "word": "labels"
+     },
+     "what": "in the window, the library of raw text: not one tag on any shelf; on the 2019 card each word in turn underlines the word after it, its own answer"
+    },
+    {
+     "id": "oldCard",
+     "at": {
+      "line": "L1103",
+      "edge": "end",
+      "offset": 0.15
+     },
+     "what": "in the breath before 'From': rack focus; the 1985 card is drawn from the file and pinned beside it"
+    },
+    {
+     "id": "thread",
+     "at": {
+      "line": "L1104",
+      "word": "raw"
+     },
+     "what": "a thread of light ties the 1985 card to the library of raw text"
+    },
+    {
+     "id": "taper",
+     "at": {
+      "line": "L1104",
+      "word": "sensible"
+     },
+     "what": "the Cyc taper flickers once and steadies"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "bankersLamp",
+    "candleShelf",
+    "caseBoard",
+    "clueCards",
+    "cycTaper",
+    "indexCards",
+    "manilaFile",
+    "pins",
+    "redThread"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "GPT-2 is trained with a simple objective: predict the next word… — OpenAI, 2019",
+     "beat": "newCard"
+    },
+    {
+     "kind": "quote",
+     "text": "…practically nothing that current AI technology could draw from the raw text. — Lenat et al. (Cyc), 1985",
+     "beat": "oldCard"
+    },
+    {
+     "kind": "term",
+     "text": "tokens",
+     "gloss": "models read word-pieces, not whole words",
+     "beat": "predict"
+    }
+   ],
+   "music": {
+    "cue": "ch11-read-everything",
+    "note": "Thins to solo piano in candleAmber: one sustained note under the 2019 quotation, then a soft two-chord turn on 'sensible' that is kind, not ironic. Intensity 0.25."
+   },
+   "claims": [
+    "e10-liu-decoder",
+    "e10-gpt1",
+    "e10-gpt2",
+    "e5-cyc"
+   ],
+   "creditsSources": [
+    "“GPT-2 is trained with a simple objective: predict the next word, given all of the previous words within some text.” — OpenAI, 'Better Language Models and Their Implications', 14 February 2019",
+    "“…there is practically nothing that current AI technology could draw from the raw text.” — Lenat, Prakash & Shepherd (Cyc), 1985"
+   ]
+  },
+  {
+   "id": "ch11-s03",
+   "kind": "plate",
+   "setting": "A paper stage, 2019, night: a composing stick above a typesetter's case with six drawers; the X-ray chat box behind it",
+   "era": "2019",
+   "mood": "serverCyan",
+   "leadIn": 1.2,
+   "holdAfter": 3.5,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: a typesetter's case of next words: the jug of light pours into every drawer by its odds, one sort is picked and set, the stick advances, and X-ray band 6 lights. CAMERA: plate (the typesetter's case), then a pull back to X-RAY (square-on, band 6). Teaching machine: nextToken, the typesetter's case, opened up and explained for the first time; the blank sort from ch10-s14 drops into this ghost slot. In a composing stick, cast type slugs (typeSlugs) hold the words so far: 'The animal didn't cross the street because it was too', a new sentence (the kit's NEXT_TOKEN_DEMO), cut short, with a faintly lit ghost slot at the end. Below, the case (cornice, broken pediment, a small lit candle on top) has six carded drawers in its lit front row, tired · wide · busy · scared · slow · dark, and behind them the case recedes into haze: thousands of tiny uncarded drawers, row behind row, toward the vanishing point (the vocabulary, tens of thousands of words). At 1.4 s, just as the narrator begins 'The jug of light now pours over every possible next word' (the line starts at 1.2 s, so the ear is told what the eye sees), chapter 10's jug of light tips and pours into the drawers, and each drawer slides out by its REAL softmax share of illustrative scores (NEXT_TOKEN_DEMO, temperature 1): tired 0.56 · wide 0.17 · busy 0.12 · scared 0.08 · slow 0.04 · dark 0.03. At 2.6 s the jug's light visibly reaches the whole receding case: every far drawer slides out a hair (the long tail), then the camera settles on the front six, whose lit lips are the bars; the six plus the hairline tail visibly sum to one. No new text: the prop lettering stays on the six. On 'Pick one', the 'tired' sort rises out of its drawer and is set in the ghost slot; the stick advances and a new ghost slot opens: ask again. Before the pick, under the end of that first sentence (3.4 to 5.6 s), a small dial labelled T is turned: at 2.5 the drawers even out (0.31 · 0.19 · 0.17 · 0.14 · 0.11 · 0.09), at 0.5 'tired' takes nearly all of it (0.85), then back to 1, so the pick on 'Pick one' follows. Then, just after the line, the camera pulls back to reveal the chat box from chapter 1 standing behind the case, and the X-ray (band 6) holds through the music-only hold to the end of the shot. X-ray beat: the box is a little more translucent, and inside it rows of next-word type sorts glow for the first time, beside the threshold units, weights, hidden layers, racks and attention threads already lit. Each drawer's lit lip carries its word and its share in small type on the prop itself (no separate caption). One caption throughout: 'for example: illustrative scores, not from a real model'; the only other text is the formula p = softmax(z / T).",
+   "lines": [
+    {
+     "id": "L1107",
+     "text": "The jug of light now pours over every possible next word. Pick one. Ask again. No rulebook. Only odds.",
+     "direction": "the first sentence plain and teacherly, over the pour (the jug of light from chapter 10, now spreading odds over every next word); then four short steps, a beat between each; 'No rulebook' answers the prologue, quietly",
+     "pauseAfter": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "id": "context",
+     "at": {
+      "shotTime": 0.6
+     },
+     "what": "the context slugs drop into the composing stick; the ghost slot glows"
+    },
+    {
+     "id": "pour",
+     "at": {
+      "shotTime": 1.4
+     },
+     "what": "the jug tips; the drawers begin to slide out by their softmax shares"
+    },
+    {
+     "id": "allWords",
+     "at": {
+      "shotTime": 2.6
+     },
+     "what": "the jug's light reaches every drawer of the receding case (the far ones slide out a hair); the camera settles on the front six; the probabilities sum to 1"
+    },
+    {
+     "id": "temperature",
+     "at": {
+      "shotTime": 3.4
+     },
+     "what": "wordless, before the pick: the T dial turns 1 → 2.5 → 0.5 → 1 and the drawers re-slide (3.4 → 5.6 s)"
+    },
+    {
+     "id": "set",
+     "at": {
+      "line": "L1107",
+      "word": "Pick"
+     },
+     "what": "the 'tired' sort rises and is set at the end of the line"
+    },
+    {
+     "id": "again",
+     "at": {
+      "line": "L1107",
+      "word": "again"
+     },
+     "what": "the stick advances; a new ghost slot opens"
+    },
+    {
+     "id": "xray",
+     "at": {
+      "line": "L1107",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "music only: pull back to the chat box; X-ray band 6: next-word type sorts glow inside it; held to the end of the shot"
+    },
+    {
+     "id": "xrayHold",
+     "at": {
+      "line": "L1107",
+      "edge": "end",
+      "offset": 1.8
+     },
+     "what": "the X-ray holds: next-word type sorts glow inside the box beside the parts already lit"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "composingStick",
+    "typeSlugs",
+    "typesettersCase",
+    "jugOfLight",
+    "temperatureDial",
+    "chatBoxXray"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "for example: illustrative scores, not from a real model",
+     "beat": "context"
+    },
+    {
+     "kind": "equation",
+     "text": "p = softmax(z / T)",
+     "beat": "pour"
+    }
+   ],
+   "music": {
+    "cue": "ch11-read-everything",
+    "note": "The mechanical ostinato from chapter 10 returns, locked to the machine: one soft wooden tick per drawer as it slides, a small bright chime when the sort is set, a lift on 'No rulebook'. In the wordless temperature pause before the pick the ostinato loosens and tightens with the dial. Intensity 0.45."
+   },
+   "claims": [
+    "e10-gpt2",
+    "e10-architecture"
+   ]
+  },
+  {
+   "id": "ch11-s05",
+   "kind": "scene",
+   "setting": "The case board, 2019–2020, night: a sheet of log-log paper that becomes a night city; then the candle shelf and the Wall of Forecasts",
+   "era": "2020",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 5.1,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: AlexNet's waiting slip glints as a straight line is ruled on log-log paper and becomes a night city's skyline; a match cut lights the new candle SCALE IS THE MAIN LEVER. CAMERA: BOARD (the log-log sheet pinned in the lamp's pool), the skyline, then SHELF (low macro; the scale candle lit), then WALL (a slow truck to W4). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). This chapter works in column C4, the last column before the output (the chat box): ch10's thread-of-light card sits at the foot of column C3, and C4's head slot C4-a waits for this chapter's type sort. STUDY LOCK: the shot opens at the board in candleAmber (the mood field names the opening location). During the lead-in, a sheet of log-log paper is pinned to the board in a sliver of lamp light; on 'law' the fountain pen rules a single straight descending line across it: error falling as a power law as size rises, the axis ticks spanning more than seven powers of ten; both axes carry the small printed lettering 'log scale' (the line is straight only on log-log paper). ONE CITY BEAT, kept short: on 'bigger' the paper tilts back and the ruled line becomes the rising roofline of a single night skyline, the tint crossfading (crossfadeMood, 1.2 s, no dip) from candleAmber to serverCyan as the paper leaves the board, each window a bank of parameters, its tallest tower ninety-six storeys, one per layer of 2020's giant (no districts, no aisles, no location, no chip count). On 'giant' (GPT-3, named aloud) every window lights at once, and a small brass plate at the tower's foot, prop lettering, reads 175 BILLION WEIGHTS (the size is on the prop; the narration no longer says it). On 'examples', in one lit window near the roofline, three worked example strips of cut paper hang (a word and its answer, twice over, then a third pair), and a fourth strip fills itself in on its own; nothing in the tower is re-cut, no pen touches it (few-shot: new tasks from examples in the prompt, without retraining). On 'candle' a straight match-cut from the tallest tower's lit roofline to a candle flame on the shelf, where the tint crossfades back to candleAmber (crossfadeMood, 1 s, no dip; STUDY LOCK), so the shelf and the Wall are lamp-lit: the hero candle SCALE IS THE MAIN LEVER is lit (rising fourth), its base tag reading 2020, no sleeve yet, the flame on the top ring; it is still burning, and still contested, as of October 2026. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'waiting', while the camera is still on the log-log paper, the pin of the W4 slip at the board's right edge glints once in the lamp's pool (the narrator is retrieving it aloud). After the line, in music only, the camera begins its pan right to the Wall of Forecasts, and as it arrives the slip in W4, pinned in chapter 8 ('…simply by waiting for faster GPUs and bigger datasets…'), catches the light fully and its pin glints again; W6's corner stays half-lit in shadow; W7 holds Hinton's 2017 slip at the far end.",
+   "lines": [
+    {
+     "id": "L1110",
+     "text": "In 2020, AlexNet's waiting note came back as a smooth, predictable law: bigger models, lower error. GPT-3, shown a few examples, did new tasks, untaught.",
+     "direction": "a quiet marvel; 'AlexNet's waiting note' a fond retrieval (the 2012 paper's 'simply by waiting' line), as of a file card; 'predictable' plain; then the surprise, slower, a breath before 'untaught'",
+     "pauseAfter": 0.55,
+     "spoken": "In twenty twenty, Alex Net's waiting note came back as a smooth, predictable law: bigger models, lower error. G P T three, shown a few examples, did new tasks, untaught."
+    },
+    {
+     "id": "L1112",
+     "text": "A new candle: scale is the main lever.",
+     "direction": "name the candle plainly, as a belief, not a verdict",
+     "pauseAfter": 0.55
+    }
+   ],
+   "beats": [
+    {
+     "id": "florence",
+     "at": {
+      "line": "L1110",
+      "word": "waiting"
+     },
+     "what": "the W4 'faster GPUs' slip's pin glints once at the board's right edge"
+    },
+    {
+     "id": "ruled",
+     "at": {
+      "line": "L1110",
+      "word": "law"
+     },
+     "what": "the pen rules the straight line on log-log paper"
+    },
+    {
+     "id": "skyline",
+     "at": {
+      "line": "L1110",
+      "word": "G"
+     },
+     "what": "the ruled line, tilting back from 'bigger', has become the skyline's roofline; on 'GPT-3' (the line no longer says 'giant'; the tower and its brass plate carry the size) every window lights at once and the tower's brass plate (175 BILLION WEIGHTS) catches the lamp"
+    },
+    {
+     "id": "fewShot",
+     "at": {
+      "line": "L1110",
+      "word": "examples"
+     },
+     "what": "in one lit window three worked example strips hang, and a fourth strip fills itself in; nothing in the tower is re-cut (no retraining)"
+    },
+    {
+     "id": "candleLit",
+     "at": {
+      "line": "L1112",
+      "word": "candle"
+     },
+     "what": "match-cut from the tower's roofline to the flame on the shelf: the hero candle SCALE IS THE MAIN LEVER is lit"
+    },
+    {
+     "id": "wallW4",
+     "at": {
+      "line": "L1112",
+      "edge": "end",
+      "offset": 3.6
+     },
+     "what": "music only: the pan right to the Wall of Forecasts begins"
+    },
+    {
+     "id": "w4glint",
+     "at": {
+      "line": "L1112",
+      "edge": "end",
+      "offset": 4.5
+     },
+     "what": "the W4 'faster GPUs' slip catches the light and its pin glints (the 2012 forecast, borne out)"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "caseBoard",
+    "logLogPaper",
+    "fountainPen",
+    "nightCity",
+    "candleShelf",
+    "beliefCandle",
+    "paperTag",
+    "wallOfForecasts",
+    "forecastSlip"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "2020"
+    },
+    {
+     "kind": "label",
+     "text": "log scale",
+     "beat": "ruled"
+    },
+    {
+     "kind": "label",
+     "text": "lit 2020 · still burning, contested, as of October 2026",
+     "beat": "candleLit",
+     "until": "wallW4"
+    }
+   ],
+   "music": {
+    "cue": "ch11-scale",
+    "note": "Cue boundary on the candle lighting. The pulsing synth gathers into a steady build as the city rises (the ostinato doubles in density with each power of ten); the candle motif's rising fourth sounds on the lighting and stops on its held suspension, because this belief is still burning. A small celesta glint on the pin's glint, after the line, recalls chapter 8's 'waiting' slip. Intensity 0.5 → 0.7."
+   },
+   "claims": [
+    "e11-kaplan",
+    "e11-gpt3",
+    "e8-waiting"
+   ]
+  },
+  {
+   "id": "ch11-s08",
+   "kind": "scene",
+   "setting": "The Edge of the Light, 2020–2022, night: the scaling candle's pool on a paper stage, two islands and an undersea cable painted at its rim; then the case board",
+   "era": "2020–2022",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 5.55,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: the crowded rim of the scaling candle: an octopus taps a cable between two islands, a parrot repeats shuffled type, and two equal cards give both accounts of Gebru's departure. CAMERA: stage (the rim of the scale candle's light), then BOARD (the C4-a pin as an insert). Crossfade with crossfadeMood (1 s, no dip to black) from ch11-s05's candleAmber Wall, down past the shelf's SCALE IS THE MAIN LEVER candle, to duskRose, the shelf candle growing into the stage candle (the line waits until the duskRose is fully up). The SCALE IS THE MAIN LEVER candle stands huge on the stage, its pool of light full of server racks and anonymous builders facing the flame. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. At the rim, half in shadow and facing outward, long shadows across the floor, the doubters stand. The hero image: two small islands with an undersea telegraph cable drawn across the floor between them; an octopus cut-out coils around the cable, tapping it and copying the patterns of dots and dashes perfectly, while on one island a bear appears on the beach and the octopus has nothing useful to send. Bender and Koller's name card sits beside it; then the camera eases along the rim to the parrot, carrying the octopus and its name card out of frame left. Then, smaller: a single parrot on a perch, repeating fragments of type slugs in shuffled order; on 'parrots' the paper's own phrase fades in small beside it, a verbatim quotation attributed to the paper's four authors (no title card); Gebru stands near it at the very edge (name card). On 'Gebru', two small plain cards rise beside her at exactly equal size and height, one for each account; nothing else is written in this part of the frame. In the music-only tail after L1118 (no further narration; the two account cards, risen on 'Gebru', are read first), Marcus at the far rim with one short fragment of his words about scaling laws ('might not hold forever'), legible; its attribution names him, so there is no separate name card. Nobody is mocked and nobody is crowned. Once Marcus's words have been read, still in music only, cut to the case board, which is candleAmber at the cut (STUDY LOCK: the mood field names the opening location, the duskRose rim; the board is always lamp-lit): the hands pin this chapter's clue card, a single type sort, into slot C4-a at the head of column C4, the column nearest the output, and a thread of light runs back from it to ch10's thread-of-light card in column C3. The shot holds briefly on the pinned sort and ends there. (The glowing chat box with its dark shears-shaped slot is not shown here: ch12-s01's lead-in opens on it in the study, then ink-bleeds from the slot.)",
+   "lines": [
+    {
+     "id": "L1117",
+     "text": "At the rim, two researchers imagined an octopus learning the shape of words, never their meaning.",
+     "direction": "a change of air, slower; fair and interested, give the image its due; 'imagined' marks it as a parable",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L1118",
+     "text": "Another paper called such models stochastic parrots, “haphazardly stitching together” words “without any reference to meaning.” One co-author, Timnit Gebru, left Google; the accounts differ.",
+     "direction": "level and fair; the quoted words read plainly, as the paper's own; 'the accounts differ' plainly (both accounts are on screen, at equal size)",
+     "pauseAfter": 2,
+     "spoken": "Another paper called such models stochastic parrots, “haphazardly stitching together” words “without any reference to meaning.” One co-author, Timnit Gebru, left Google; the accounts differ."
+    }
+   ],
+   "beats": [
+    {
+     "id": "rim",
+     "at": {
+      "line": "L1117",
+      "word": "rim"
+     },
+     "what": "reveal the crowded rim of the scaling candle's light"
+    },
+    {
+     "id": "octopus",
+     "at": {
+      "line": "L1117",
+      "word": "octopus"
+     },
+     "what": "the octopus taps the cable between the islands; Bender & Koller name card"
+    },
+    {
+     "id": "bear",
+     "at": {
+      "line": "L1117",
+      "word": "meaning"
+     },
+     "what": "a bear on the beach; the octopus has nothing useful to send"
+    },
+    {
+     "id": "parrot",
+     "at": {
+      "line": "L1118",
+      "word": "parrots"
+     },
+     "what": "the parrot repeats shuffled type slugs; the paper's own phrase fades in beside it"
+    },
+    {
+     "id": "twoAccounts",
+     "at": {
+      "line": "L1118",
+      "word": "Gebru"
+     },
+     "what": "two equal cards rise beside Gebru, one for each account"
+    },
+    {
+     "id": "marcus",
+     "at": {
+      "line": "L1118",
+      "edge": "end",
+      "offset": -0.4
+     },
+     "what": "music only: Marcus at the far rim with one short fragment of his words (its attribution names him)"
+    },
+    {
+     "id": "clueCard",
+     "at": {
+      "line": "L1118",
+      "edge": "end",
+      "offset": 4.65
+     },
+     "what": "music only: cut to the board: the hands pin the clue card, a single type sort, into slot C4-a"
+    }
+   ],
+   "cast": [
+    "bender",
+    "gebru",
+    "marcus",
+    "narrator-hands"
+   ],
+   "props": [
+    "beliefCandle",
+    "serverRack",
+    "islands",
+    "telegraphCable",
+    "octopusCutout",
+    "bearCutout",
+    "parrotCutout",
+    "typeSlugs",
+    "caseBoard",
+    "clueCards"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Emily M. Bender & Alexander Koller · 2020",
+     "beat": "octopus",
+     "until": "parrot"
+    },
+    {
+     "kind": "quote",
+     "text": "…without any reference to meaning: a stochastic parrot. — Bender, Gebru, McMillan‑Major & Mitchell (as Shmitchell), 2021",
+     "beat": "parrot"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Timnit Gebru · co-lead, Google's Ethical AI team",
+     "beat": "twoAccounts"
+    },
+    {
+     "kind": "label",
+     "text": "She says she was fired · Google says it accepted her resignation.",
+     "beat": "twoAccounts",
+     "until": "clueCard"
+    },
+    {
+     "kind": "quote",
+     "text": "might not hold forever — Gary Marcus, 2022",
+     "beat": "marcus",
+     "until": "clueCard"
+    }
+   ],
+   "music": {
+    "cue": "ch11-scale",
+    "note": "Crossfade into duskRose: the synth recedes and a solo cello takes the candle motif's held suspension, the colour of every rim in the film. Sparse, low intensity 0.3; the cello carries the music-only hold for Marcus, then half a beat of silence before the cut to the board, and a single low note under the pinned type sort that does not resolve, handing over to chapter 12's ink bleed."
+   },
+   "claims": [
+    "e11-octopus",
+    "e11-parrots",
+    "e11-gebru",
+    "e11-marcus-wall"
+   ],
+   "creditsSources": [
+    "“…an LM is a system for haphazardly stitching together sequences of linguistic forms it has observed in its vast training data, according to probabilistic information about how they combine, but without any reference to meaning: a stochastic parrot.” — Bender, Gebru, McMillan-Major & Mitchell (as Shmitchell), 'On the Dangers of Stochastic Parrots', FAccT '21, 2021",
+    "“mere observations that might not hold forever” — Gary Marcus, 10 March 2022"
+   ]
+  }
+ ]
+}

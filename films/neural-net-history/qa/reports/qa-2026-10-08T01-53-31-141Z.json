@@ -1,0 +1,1455 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-08T01:53:31.141Z",
+ "summary": {
+  "pass": 7,
+  "warn": 3,
+  "fail": 1,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 6.5, linear+limit normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-2.2 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "fail",
+   "detail": "2000.7083s vs film 2064.4583s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 2.25 dB (target 3, ceiling; warn beyond ±1.5) under 1368.4s of narration; calibrated to threshold -20.04 dBFS, ratio 3"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -12.2 LUFS momentary; loudest music-only windows: -12.7 LUFS @ 880.7s, -12.9 LUFS @ 988.6s, -13.7 LUFS @ 882s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "master limiter takes 0.94 dB off the peaks before the final gain",
+   "reductionDb": 0.94
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "warn",
+   "detail": "narration stem limiter 1.89 dB; speech compressor 3.41 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "pass",
+   "detail": "every line within 0.5 dB of its requested offset; L0312 2 (want 2), L1011 2 (want 2), L1307b 3 (want 3), L1417 3 (want 3), L1501 3 (want 3); spread of the rest -0.36..0 dB",
+   "lines": {
+    "L0101": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0102": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0103": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0104": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0106": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0107": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0108": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0109": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0110": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0114": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0201": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0202": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0203": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0204": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0206": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0207": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0209": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0210": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0211": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0212": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0215": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0215b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0216": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0217": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0218": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0219": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0220": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0301": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0302": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0303": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0304": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0305": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0306": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0307": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0308": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0309": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0310": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0311": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0312": {
+     "M": -12.8,
+     "offsetDb": 2,
+     "requestedDb": 2,
+     "errorDb": 0
+    },
+    "L0318": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0319": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0320": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0401": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0402": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0403": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0404": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0405": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0406": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0408": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0409": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0410": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0411": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0412": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0415": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0416": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0501": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0524": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0524b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0505": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0505b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0507": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0508": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0509": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0521": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0510": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0511": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0512": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0513": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0514": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0515": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0522a": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0522": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0523": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0519": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0601": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0603": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0604": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0605": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0606": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0607": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0608": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0609": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0610": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0612": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0613": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0614": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0615": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0616": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0701": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0702": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0703": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0704": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0705": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0712": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0706": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0707": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0710": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0802": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0803": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0805": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0806": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0807": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0808": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0809": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0810": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0811": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0812": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0813": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0815": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0816": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0830": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0817": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0818": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0819": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0820": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0821": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0822": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0823": {
+     "M": -15.16,
+     "offsetDb": -0.36,
+     "requestedDb": 0,
+     "errorDb": -0.36
+    },
+    "L0834": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0825": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0826": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0831": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0832": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0832b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0827": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0828": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0901": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0902": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0905": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0905b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0906": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0907": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0909": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0909b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0910": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1002": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1005": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1006": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1007": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1009": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1024": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1010": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1011": {
+     "M": -12.8,
+     "offsetDb": 2,
+     "requestedDb": 2,
+     "errorDb": 0
+    },
+    "L1012": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1013": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1014": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1015": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1016": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1017": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1019": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1020": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1020b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1021": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1025": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1027": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1030": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1032": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1033": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1103": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1104": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1107": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1110": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1112": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1117": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1118": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1201": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1204": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1205": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1212": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1215": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1216": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1217": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1219": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1206": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1207": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1208": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1219b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1302": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1303": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1303b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1304": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1307": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1307b": {
+     "M": -11.8,
+     "offsetDb": 3,
+     "requestedDb": 3,
+     "errorDb": 0
+    },
+    "L1308": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1309": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1310": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1311": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1312": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1316": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1401": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1402": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1403": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1405": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1406": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1407": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1408": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1408b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1409": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1410": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1410b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1416": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1414": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1415": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1417": {
+     "M": -11.8,
+     "offsetDb": 3,
+     "requestedDb": 3,
+     "errorDb": 0
+    },
+    "L1420": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1418": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1501": {
+     "M": -11.8,
+     "offsetDb": 3,
+     "requestedDb": 3,
+     "errorDb": 0
+    },
+    "L1502": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1528": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1529": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1504": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1505": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1530": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1531": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1522": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1522b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1522c": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1525": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1509": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1511": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1527": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1514": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1515": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1516": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1516b": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1517": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1518": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L1520": {
+     "M": -14.8,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "warn",
+   "detail": "m01: no lastStrike marker in cues.json (unverified); m02: no lastStrike marker in cues.json (unverified); m03: no lastStrike marker in cues.json (unverified); m04: no lastStrike marker in cues.json (unverified); m05: no lastStrike marker in cues.json (unverified); m06: no lastStrike marker in cues.json (unverified); m07: no lastStrike marker in cues.json (unverified); m08: no lastStrike marker in cues.json (unverified); m09: no lastStrike marker in cues.json (unverified); m10: no lastStrike marker in cues.json (unverified); m11: no lastStrike marker in cues.json (unverified); m12: no lastStrike marker in cues.json (unverified); m13: no lastStrike marker in cues.json (unverified); m14: no lastStrike marker in cues.json (unverified); m15: no lastStrike marker in cues.json (unverified); m16: no lastStrike marker in cues.json (unverified); m17: no lastStrike marker in cues.json (unverified); m18: no lastStrike marker in cues.json (unverified); m19: no lastStrike marker in cues.json (unverified); m20: no lastStrike marker in cues.json (unverified)"
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "15 slices"
+  },
+  {
+   "stage": "mix",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "master is older than narration.wav, cues.json or a cue render — re-run film:mix"
+  }
+ ]
+}

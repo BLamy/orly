@@ -1,0 +1,18 @@
+{
+ "id": "m15",
+ "start": 1513.5417,
+ "end": 1587.9917,
+ "file": "films/neural-net-history/score/renders/m15.wav",
+ "duration": 80.45,
+ "I": -23.7,
+ "LRA": 8.9,
+ "TP": -9.4,
+ "expected": 80.45,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m15.png",
+ "cueSeconds": 74.45,
+ "cps": 0.35,
+ "lastStrikeLocal": 68.48,
+ "lastStrike": 1582.022
+}

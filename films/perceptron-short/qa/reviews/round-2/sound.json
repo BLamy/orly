@@ -1,0 +1,76 @@
+{
+  "lens": "sound",
+  "round": 2,
+  "scores": { "accuracy": 8, "depth": 6, "clarity": 7, "story": 7, "visual": 8, "sync": 8, "sound": 8, "curiosity": 7 },
+  "round1_followup": {
+    "end-tail": "FIXED. The film is now 60.375 s. The voice ends at 57.76, M1 is completed in clear air (D5 57.77 to F#6 59.03), and the master falls -29.9 dB RMS at 59.6, -39 at 60.0 and -63 at 60.3: a natural decay with a gentle fade under the picture's fade.",
+    "L0107-right-level": "FIXED. 'right' measures -23.4 dB RMS in the stem against -22.6 for 'Wrong' (it was -28.8 vs -18.3). A +5 dB word ride is recorded in stem.json.",
+    "L0104-rosenblatt": "PARTLY FIXED. The hyphenated respelling is gone, and 'Rosenblatt's' now runs 0.81 s at the same level as 'psychologist', so the stilted signature is gone. The STT check is still skipped, and the lexicon still says 'to be confirmed by ear'.",
+    "L0101-head": "FIXED. Every clip has a 0.12 s pre-roll, the stem is -inf just before each chunk start, and QA clipEdges passes.",
+    "chunk-level-step": "FIXED, but too far: every line is now within 1.4 dB RMS of every other (see line-dynamics-flattened).",
+    "limiting-stack": "FIXED. Normalisation is linear, the stem and master limiters do 0 dB, and the speech compressor does 3.6 dB of gain reduction.",
+    "m01-duck-vs-gap-writing": "MOSTLY FIXED. The cue is at -3 dB with a light duck, and the gap figures come back to full level: master equals the raw cue minus 0.3 dB in the gaps at 35.88, 42.90, 45.36 and 46.44. The duck still reaches 5.5 dB against a 3 dB target (see duck-overshoot).",
+    "m01-ending-for-new-tail": "FIXED. The coda was recomposed into the clear air.",
+    "m01-render-error": "FIXED. The render log errors are [], and the music box is kept at or below A6.",
+    "L0107-preroll": "FIXED. There is a 1.0 s gap before 'Wrong', and 'right' falls on the bar-14 downbeat (47.059).",
+    "no-diegetic-sound": "NOT ADDRESSED. It was optional; it is carried forward below."
+  },
+  "issues": [
+    {
+      "id": "L0104",
+      "owner": "line",
+      "severity": "major",
+      "problem": "The protagonist is introduced with a sentence that sounds like a misreading when heard: 'It was the Mark I Perceptron, built by psychologist Frank Rosenblatt's project.' The ear parses 'built by psychologist Frank Rosenblatt', then hits the possessive and '...'s project' (24.17-24.80) as an afterthought. That fragment also lands where the M4 cello was meant to answer the name: the cue notes say the cello A2 at 24.79 now 'answers project' rather than the name. The line copies claim mk1-builder word for word, which reads fine on paper but not aloud.",
+      "fix": "Re-word so the name ends the sentence and the claim is unchanged, e.g. 'It was the Mark I Perceptron, from the project of a psychologist, Frank Rosenblatt.' or 'It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.' Re-narrate L0104 only, re-lock the clock (the s02 'name' beat), and slide m01's bar-7 cello pickup (A2-B2-D3) so it enters right after the name, keeping D3 on the iris."
+    },
+    {
+      "id": "rosenblatt-unverified",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "The name is still not verified for the new voice (Peter, speed 0.8). QA stt is 'skip', and voice/lexicon.json says ROH-zen-blat is 'still to be confirmed by ear'. The timing (0.81 s) and level (-23.9 dB, the same as 'psychologist') look healthy, but this is the only proper name in the film and nothing has checked it.",
+      "fix": "When L0104 is re-narrated, run one ElevenLabs STT round-trip on the L0104 clip (a few credits) and assert that 'Rosenblatt' comes back. Or record a human listening sign-off in voice.json, then mark the lexicon note confirmed."
+    },
+    {
+      "id": "line-dynamics-flattened",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The per-line normaliser removed the intended delivery dynamics. Every line sits between -18.4 and -19.7 dB RMS in the master. L0101 ('quiet, a storyteller beginning') is the single loudest momentary point of the film (-11.3 LUFS M at 2.1 s), louder than the D-major bloom (-13.2 at 48.0). It enters from near-silence (music -36 LUFS M at 1.1 s), so the first word lands hard on a black screen. L0108 ('quieter, reflective') is no quieter than the explanatory lines. Round 1's fix asked for explicit per-line offsets for intended dynamics, and none were added.",
+      "fix": "Let the narration stem take a per-line offset from the script direction (e.g. script.json 'levelDb'): L0101 -3 dB and L0108 -1.5 dB, applied after the line rides and before the compressor. Then check that L0101 peaks at or below about -14 LUFS M in the master and that the bloom stays the loudest non-speech moment."
+    },
+    {
+      "id": "duck-overshoot",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "m01 asks for depthDb 3, but the mixer measures 5.52 dB of ducking under 46.1 s of speech, and QA passes it anyway. The cue was pre-levelled for a 3 dB duck. The low under-speech machine figures (the pizz 'sum' D2-A2-D3-E3 under 'tugs the needle', the three A2 'nudge' plucks at 36.93) end up about 15 dB under the voice (music -26.5 raw, about -32 in the master vs about -17.5 speech on 'nudge'). These are the score's sonic stand-in for the motors, and at that level they are probably lost.",
+      "fix": "Have the mix stage treat depthDb as a ceiling: lower the ratio or raise the threshold until the measured depth is within 1 dB of the cue's target. Make QA warn when the measured duck exceeds the target by more than 1.5 dB. Re-check that the 'nudge' plucks sit about 9-11 dB under speech."
+    },
+    {
+      "id": "L0106",
+      "owner": "line",
+      "severity": "minor",
+      "problem": "A hesitation inside an idiom: 'the dials that had a [0.28 s] say [0.45 s] a little toward the right answer' (pauses at 38.76 and 39.71). The first pause splits 'had a | say', so the clause sounds unsure. The sentence is already the longest in the film (6.6 s) and hard to parse by ear ('a say a little').",
+      "fix": "Re-narrate L0106 with a comma that keeps the idiom together: 'When it guesses wrong, the motors nudge the dials that had a say, a little, toward the right answer.' Or reword to 'nudge the dials that had a say just a little toward the right answer.' Check that the word timings show no gap over 0.15 s inside 'had a say'. Keep 'nudge' on the bar-11 downbeat, or shift bar 11's pizz with it."
+    },
+    {
+      "id": "no-diegetic-sound",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The soundtrack is still voice plus score only. The picture shows motors turning dials, needles swinging and a lantern flaring on 'right', yet there is no relay click, motor whirr or tube hum anywhere. With the duck overshoot, the pizz stand-ins are also buried under speech.",
+      "fix": "Optional: add a sparse foley stem at -30 LUFS or below: a faint fluorescent hum in ch01-s02 (from 6.0 s, ducked under speech), and 3-5 soft servo ticks on the weight updates in ch01-s03 timed to the shot's dial-turn frames, placed in word gaps where possible. Keep the lantern flare at 47.48 musical (the bloom), not diegetic."
+    },
+    {
+      "id": "within-chunk-gaps",
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Inside each narration chunk the lines are still joined by the same mechanical 0.45 s gap (L0102 > L0103 > L0104, L0105 > L0105b > L0106). The turn from describing the machine to naming it (17.57 to 18.02) gets no more air than a mid-description breath, so 'It was the Mark I Perceptron' runs straight on from 'motors could turn'.",
+      "fix": "Allow a per-line preGap in script.json (default 0.45 s). Set L0104 to about 0.8 s and L0105b to about 0.6 s, re-lock the clock, and re-fit m01 bars 5-7 (the pizz ratchet and cello pickup) to the new times."
+    }
+  ],
+  "best_moments": [
+    "The withheld-third design pays off. Open fifths and sus chords run until the F natural after 'wrong' (35.92), then F# and the film's first D major land exactly on 'right' (bar-14 downbeat, 47.059). The bloom at 47.48 is the loudest musical moment (-13.2 LUFS M) and sits in the voice gap, with the contrabass held back through L0107 so the low D re-opens the floor.",
+    "Gap writing works in the master. In the word gaps after 'wrong' (35.88), 'Wrong' (42.90), 'then' (45.36) and the held breath before 'right' (46.44-47.04), the master equals the raw cue level (within 0.3-1.2 dB). The duck releases fully, so the E6-F6 'wrong' cell is heard each time.",
+    "The 'right' fix is clean. It now sits within 1 dB of 'Wrong' (-23.4 vs -22.6 dB RMS), after a 0.63 s held breath, and the speech-band music margin under it is about 10 dB.",
+    "The coda completes M1 (D5 A5 E6 F#6) in the clear air right after 'mistakes' ends (57.76), in the film's own reverb. The master decays from -23 dB RMS at 58.6 to silence by 60.3, under the picture's fade: the question asked in bar 1 is finally answered.",
+    "The mix is technically clean. Integrated -15.8 LUFS, -2.5 dBTP, linear normalisation, no limiting, sub-40 Hz at -50 dB, speech band 250 Hz-3.5 kHz at least about 9-10 dB clear of the music wherever the voice is present, and a 3.2 s voiceless title breath (-25 dB RMS) between L0101 and L0102."
+  ]
+}

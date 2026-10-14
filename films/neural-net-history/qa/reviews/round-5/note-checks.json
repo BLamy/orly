@@ -1,0 +1,72 @@
+{
+  "$doc": "Mechanical checks of the round-5 routed shot notes (written by the round-5 showrunner). generator/film/shot-ledger.mjs finalize/check looks each string up in the shot source with comments stripped (plus sets/<id>-*.ts and any listed files, relative to the film's app dir): every 'present' string must appear, every 'absent' string must not. A 'fixed' outcome that misses is downgraded to 'partial'. Quoted words like 'habit' are T.word anchors. Purely visual notes (ch14-s07, ch04-s07, ch13-s03) carry no strings.",
+  "ch15-s10": {
+    "present": [
+      "a lab in this story"
+    ],
+    "files": [
+      "credits.json"
+    ]
+  },
+  "ch14-s04b": {
+    "present": [
+      "DECISIVE",
+      "HELPS HUAWEI",
+      "SELF-DEFEATING",
+      "'behind'"
+    ],
+    "absent": [
+      "'years') + 0.4"
+    ]
+  },
+  "ch15-s03": {
+    "present": [
+      "'Snuff'",
+      "'habit'",
+      "'plan'"
+    ]
+  },
+  "ch15-s01": {
+    "present": [
+      "HOPFIELD NET · 1982",
+      "BOLTZMANN MACHINE · 1983–85",
+      "'Hopfield'",
+      "'Versailles'",
+      "'rings'",
+      "'cools'"
+    ]
+  },
+  "ch15-s09": {
+    "present": [
+      "STATUS: OPEN",
+      "LEARNING + ACCOMPLICES",
+      "NEVER ONE PERSON",
+      "'suspicious'",
+      "'new'",
+      "'candles'"
+    ]
+  },
+  "ch15-s05": {
+    "present": [
+      "GOOGLE DEEPMIND",
+      "ANTHROPIC",
+      "OPENAI",
+      "META",
+      "as of October 2026",
+      "$1.5B SETTLEMENT"
+    ]
+  },
+  "ch15-s08": {
+    "present": [
+      "HOW FAR? HOW FAST?",
+      "STATUS: OPEN",
+      "CASE FILE"
+    ]
+  },
+  "ch09-s05": {
+    "present": [
+      "GARY MARCUS",
+      "Deep Learning: A Critical Appraisal"
+    ]
+  }
+}

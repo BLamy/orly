@@ -1,0 +1,212 @@
+{
+ "shot": "ch03-s09",
+ "at": "2026-10-13T19:52:32.909Z",
+ "step": 0.0833,
+ "sampled": 189,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@44,86",
+   "probed": false,
+   "from": 6.8,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@710,848",
+   "probed": false,
+   "from": 6.8,
+   "to": 6.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@44,722",
+   "probed": false,
+   "from": 6.8,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@825,428",
+   "probed": false,
+   "from": 6.8,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@776,-57",
+   "probed": false,
+   "from": 7.467,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@830,881",
+   "probed": false,
+   "from": 7.55,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1594,328",
+   "probed": false,
+   "from": 7.8,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@941,-83",
+   "probed": false,
+   "from": 7.883,
+   "to": 8.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@68,181",
+   "probed": false,
+   "from": 8.467,
+   "to": 9.133,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-110,62",
+   "probed": false,
+   "from": 10.3,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-104,-20",
+   "probed": false,
+   "from": 14.383,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-16,73",
+   "probed": false,
+   "from": 14.55,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-15,248",
+   "probed": false,
+   "from": 14.55,
+   "to": 14.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-16,602",
+   "probed": false,
+   "from": 14.55,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-16,412",
+   "probed": false,
+   "from": 14.55,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-56,388",
+   "probed": false,
+   "from": 14.883,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@-56,612",
+   "probed": false,
+   "from": 14.883,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@473,436",
+   "probed": false,
+   "from": 15.8,
+   "to": 16.217,
+   "minInkWhilePaper": 1
+  }
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "TURING · DUE 2000",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "3 in 10 fooled",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "ROSENBLATT · 1961",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "Linguistic capability,",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "related to perceptual",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "experience, is of the",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "essence…",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "1958",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:16.707Z"
+}

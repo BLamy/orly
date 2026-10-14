@@ -1,0 +1,246 @@
+// m06 "The Messenger" (neural-net-history), 448.227-555.4 s (107.173 s). F major (dawnGold), 63 BPM where metric.
+// RE-BASED 2026-10-13 to the current clock (narration/timeline.json, 2159.9583 s): the window moved bodily -0.25 s with
+// its first shot (no line inside it changed length), so every absolute time in this file, code and comments, was moved
+// -0.25 s and checked against its word; S = the current window start. Older clock notes below are history.
+// ROUND-2 VOICE-BAND PASS (2026-10-13): two celesta layers (CLEAR in the breaths, a dry GHOST under the lines), low harp
+// doublings for the shapes under the long lines; the roll and the XOR check re-synced to the picture; the solved third
+// lands in the clear at 515.90 (see the block above the celesta).
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): the re-narrated L0505 ("At the sterile candle's rim...") is 0.583 s
+// longer, so every event from the desks' second key ("travel") on moves +0.75 s and everything before it +0.167 s
+// (the cue's bodily shift); the window grows to 107.173 s so the fade (554.6-555.4) starts after L0512 (554.408).
+// Masking pass (score round 2): the training scrub, XOR check and music box (L0509), the sterile candle's
+// clarinet and cello (L0521), the Boltzmann flicker, desk walk and ticks (L0505b) trimmed; the training's
+// string bed loses its D3/E3 (now below the voice).
+// Review round 1 re-fit: every hit is placed on the NEW clock (narration/timeline.json, film 2121.42 s).
+// setcps(1): one cycle = one second; events at ABSOLUTE film seconds (line() subtracts S).
+// M3 is born: up (light flows forward), a held question (the error glows), back down (the messenger tugs
+// each knob), and the trained forward pass lands on the THIRD (A over F: solved).
+// gm_celesta sounds an octave up (written f4 = heard F5); gm_pad_bowed sounds two octaves up (written f3 = F5).
+//
+//  448.227-452.017 IN (join gap 444.997-451.977): over m05's fading D-A-E, F major arrives in the strings (F/A, low;
+//               A is common to both) and a slow celesta figure in a large gilded room sounds in the clear
+//               (450.317, 451.117), before "Versailles" (451.977).
+//  452.017-470.217  VERSAILLES: the thaw. A ring of eight on "network" (455.887); half of it on "half" (457.207); a slow
+//               roll downhill on "rolls downhill" (458.617, then the ball's four steps); on "whole" (461.017) the texture thins to ONE
+//               sustained high E (the leading note: nothing resolves) through "I have never met anyone...".
+//  470.217-483.6  THE DESKS: a pizzicato walk with a soft 1980s tick, a key per desk: F, G on "travel" (474.94),
+//               Ab on the Boltzmann net (475.94), F again on "Toronto" (480.92); at "hot" (477.91) a shimmer of
+//               random high celesta notes that settles into an Ab chord on "settle" (478.83); a low cello D
+//               pedal beneath (the sterile candle's season).
+//  484.9-526.7  THE MESSENGER: forward arpeggio F A C F word-locked to "Light flows up through layers"
+//               (492.06); one note for "checked" (496.86); the error glows (498.79): G held over an F-Gb glass
+//               rub; the messenger runs back down G F C A F on "runs back down, lantern by lantern" (501.27-
+//               504.67) with pizz tugs on "tugging each knob" and "blame" (507.61); the training scrub
+//               (508.71-512.49) accelerates and brightens; four answering notes for the XOR check, one per slip
+//               tick (513.06 513.86 514.66 515.46: low high high low); after "By itself" the trained pass lands on
+//               A over F (515.90) with a warm string swell in the clear air; a wondering figure for the family trees (517.23); the sterile candle's own colour returns
+//               (low clarinet D4 over a cello D-A) and falls D -> C# over A exactly on "seventeen" (523.51); a
+//               breath of near silence under the quote card.
+//  526.9-536.2  THE MISTY HILLS: a low uncertain fog (G minor), muted footstep plucks downhill, stalling on an
+//               unresolved A in the hollow (530.4); the bold leap (532.84): strings C -> F, landing warmly on F.
+//  536.2-555.4  WHO INVENTED IT: the question card burns out (536.14-537.54): M1's clean fall, C -> F -> E over
+//               C, very soft; the study: low clarinet, the lamp's hum; a plucked note per thread (543.31 ...),
+//               the warmest on "Helsinki" (544.5); Hinton's quote (549.88-554.41) in near silence over a last
+//               soft F (550.5, the last onset). Faded 554.6-555.4; m07 opens with the false-clue walk.
+setcps(1)
+
+const S = 448.227
+const N = 108
+const G = 2.9
+const B = 60 / 63
+
+function line(evs, defs) {
+  defs = defs || {}
+  evs = evs.map((e) => [e[0] - S, e[1], e[2], e[3], e[4]])
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const DEF = { attack: .01, release: .3, decay: 0, sustain: 1, lpf: 18000, pan: .5 }
+  const keys = [...new Set([...Object.keys(defs), ...evs.flatMap((e) => Object.keys(e[4] || {}))])]
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DEF[k])))
+    return p.slow(N)
+  }))
+}
+
+// the training scrub: forward/back passes that accelerate (start, end, first step, last step)
+function scrub(t0, t1, d0, d1) {
+  const up = ['f4', 'a4', 'c5', 'f5'], down = ['g5', 'f5', 'c5', 'a4']
+  const ev = []
+  let t = t0, k = 0
+  while (t < t1) {
+    const x = (t - t0) / (t1 - t0)
+    const d = d0 + (d1 - d0) * x
+    const n = (Math.floor(k / 4) % 2 ? down : up)[k % 4]
+    ev.push([t, d * .95, n, .09 + .05 * x])
+    t += d
+    k++
+  }
+  return ev
+}
+
+// ------------------------------------------------------------------ celesta (heard an octave up)
+const HOT = 477.91
+const hot = [0, .16, .27, .41, .5, .61, .68].map((d) => HOT + d)
+const hotNotes = ['e6', 'b5', 'f6', 'c6', 'g5', 'd6', 'a5']
+// Two celesta layers (round-2 voice-band pass, 2026-10-13). CLEAR: statements in the breaths, the gilded room.
+// UNDER: the same word-locked gestures as ghosts (about -9 dB, a drier, shorter room so no tail smears across the
+// next word); the shapes under the long lines are carried by low harp / pizz doublings (fundamentals below 200 Hz).
+// The roll downhill now follows the picture's four steps (roll+0.2 + 0.52·(i+0.6): 459.12 459.65 460.17 460.69);
+// the XOR check follows the picture's four cases (0.8 s each from 'xor' 512.64; each slip ticks at +0.42:
+// 513.06 513.86 514.66 515.46), and the trained forward pass lands on the THIRD once the check is complete
+// (515.90), in the clear after "By itself" (L0509 ends 514.43).
+const STEPS = [458.617, 459.12, 459.65, 460.17, 460.69]
+const TICKS = [513.06, 513.86, 514.66, 515.46]
+const UNDER = .36
+$: line([
+  // Versailles: a slow figure in the clear (before "Versailles" 451.98)
+  [450.317, 1.0, 'a4', .12], [450.95, .8, 'c5', .1],                // its tail is short of "Versailles"
+  // the Boltzmann net settles: the Ab chord blooms in the breath after "cools" (L0505b ends 480.22)
+  [480.26, 1.6, '[ab4,c5,eb5]', .1],
+  // the error, heard in the breath after "glows" (499.69-500.14): one soft G alone, the rub beneath it
+  [499.72, .9, 'g5', .085],
+  // the XOR check's last two cases in the clear: high, low
+  [TICKS[2], .5, 'f5', .13], [TICKS[3], .5, 'c5', .12],
+  // SOLVED: the trained forward pass lands on the THIRD (A over F)
+  [515.66, .12, 'f4', .17], [515.74, .12, 'a4', .17], [515.82, .12, 'c5', .18], [515.90, 2.2, '[f5,a5]', .17],
+  // the family trees: a lighter, wondering figure (wordless, 517.23-518.83)
+  [517.23, .3, 'c5', .13], [517.49, .3, 'd5', .13], [517.74, .7, 'g5', .14],
+  // the question card burns out: M1's clean fall, F -> E over C, very soft (before "Who" 540.37)
+  [536.24, .5, 'c5', .1], [536.74, .76, 'f5', .11], [537.5, 2.0, 'e5', .1],
+])
+  .s('gm_celesta').gain(G * .88).room(.75).rsize(7).orbit(2)          // the clear layer, +1.4 dB (round-2 pass)
+
+$: line([
+  ...['f4', 'a4', 'c5', 'e5', 'f5', 'e5', 'c5', 'a4'].map((n, k) => [455.887 + k * .16, .4, n, .11 * UNDER * .65]),  // the ring of eight ('network')
+  ...['f4', 'a4', 'c5', 'e5'].map((n, k) => [457.207 + k * .22, .5, n, .12 * UNDER * .6]),                         // half a memory ('half')
+  ...['g5', 'f5', 'e5', 'd5', 'c5'].map((n, k) => [STEPS[k], .5, n, (.12 - k * .008) * UNDER * .6]),               // rolls downhill, step by step
+  ...hot.map((t, k) => [t, .25, hotNotes[k], .075 * .4]),                                                   // the Boltzmann net, hot
+  [478.83, .9, '[ab4,c5,eb5]', .1 * UNDER],                                                                  // ... 'settles'
+  // THE MESSENGER: forward, word-locked ("Light flows up through layers")
+  [492.06, .5, 'f4', .15 * UNDER], [492.4, .5, 'a4', .15 * UNDER], [492.8, .5, 'c5', .16 * UNDER], [493.25, .9, 'f5', .17 * UNDER],
+  [496.86, .8, 'g5', .16 * UNDER],                                                                           // checked against the right one
+  [498.79, .8, 'g4', .2 * UNDER],                                                                            // the error glows
+  // the messenger runs back down, lantern by lantern
+  [501.27, .7, 'g5', .15 * UNDER], [502.63, .5, 'f5', .15 * UNDER], [503.24, .6, 'c5', .15 * UNDER], [504, .5, 'a4', .15 * UNDER], [504.67, .8, 'f4', .15 * UNDER],
+  // training: accelerating and brightening
+  ...scrub(508.71, 512.49, .42, .14).map((e) => [e[0], e[1], e[2], e[3] * .42]),
+  // the XOR check's first two cases (under "solved. By itself"): low, high
+  [TICKS[0], .35, 'c5', .13 * UNDER], [TICKS[1], .35, 'f5', .15 * UNDER],
+  // the Helsinki thread (under L0511): a ghost; the warmth is in the pizz and harp
+  [544.5, 1.4, '[a4,f5]', .11 * .5],
+])
+  .s('gm_celesta').gain(G * .75).room(.35).rsize(3).orbit(9)
+
+// music box: brightens the training at the top; the solved third
+$: line([
+  ...scrub(510.14, 512.49, .25, .14).filter((e, k) => k % 2 === 0).map((e) => [e[0], e[1], e[2], e[3] * .55]),
+  [515.90, 1.6, 'a5', .1],
+])
+  .s('gm_music_box').gain(G * .75).room(.6).rsize(5).orbit(2)
+
+// ------------------------------------------------------------------ strings (low under the voice, warm in the gaps)
+$: line([
+  // Versailles: F arrives under the winter's D-A-E (F/A, then F)
+  [448.317, 7.4, '[a2,f3,c4]', .055, { attack: 2.5, release: 1.5 }],
+  [455.517, 5.6, '[f2,c3,a3]', .05, { attack: 1.5, release: 1 }],
+  [461.6, 5.8, 'e5', .05, { attack: 1.2, release: 2.2 }],                          // ONE sustained high E: grows from 'whole' into the breath (462.30-463.00), thin under L0524b
+  // THE MESSENGER: a soft F bed through the long lines
+  [484.94, 7.0, '[f2,c3]', .07, { attack: 2, release: 1 }],
+  [491.94, 6.6, '[f2,c3,a3]', .07, { attack: 1, release: 1 }],
+  [500.24, 7.5, '[d2,a2,f3]', .06, { attack: 1.2, release: 1 }],                // down the stairs: Dm
+  [508.71, 3.9, '[bb1,f2]', .07, { attack: 1, release: .5 }],                // training: Bb -> C
+  [512.44, 1.5, '[c2,g2]', .07, { attack: .4, release: .4 }],
+  [512.44 + 1.5, 1.9, '[c2,g2]', .06, { attack: .5, release: .4 }],              // (C held under the check)
+  [515.90, 2.1, '[f2,c3,a3,f4,a4]', .11, { attack: .35, release: .8 }],          // SOLVED: the warm swell in the clear (515.90-518.83)
+  // the misty hills: the bold leap C -> F, landing warmly in the valley
+  [532.84, .8, 'c4', .2, { attack: .25, release: .3 }],
+  [533.64, 2.4, 'f4', .23, { attack: .3, release: 2.2 }],
+  [533.64, 2.4, '[f2,c3,a3]', .18, { attack: .5, release: 2.2 }],
+  // the study: the fall F -> E sits on C; a last soft F under Hinton's quote
+  [536.74, 3.6, '[c3,g3]', .06, { attack: 1, release: 2 }],
+  [550.5, 2.8, '[f2,c3]', .05, { attack: 1.2, release: 1.6 }],
+], { attack: 1, release: 1.5 })
+  .s('gm_string_ensemble_1').gain(G).lpf(1300).room(.7).rsize(7).orbit(3)
+
+// bowed glass (written two octaves low): the error's rub; the fog
+$: line([
+  [498.79, 2.3, '[f3,gb3]', .07, { attack: .3, release: 1.4 }],                 // heard F5-Gb5
+  [526.94, 6.4, '[g1,d2]', .07, { attack: 2, release: 1.6 }],                   // the fog (heard G3 D4)
+  [526.94, 6.0, 'bb2', .04, { attack: 2.5, release: 1.6 }],                     // its minor colour, high and thin
+], { attack: 1, release: 1.5 })
+  .s('gm_pad_bowed').gain(G).lpf(4000).room(.7).rsize(6).orbit(4)
+
+// ------------------------------------------------------------------ cello: the winter's D pedal; the sterile candle's colour
+$: line([
+  [470.117, 13.183, 'd2', .1, { attack: 2.5, release: 1.5 }],                       // the desks: the sterile candle's season
+  [518.84, 4.67, '[d2,a2]', .11, { attack: 1.2, release: .2 }],                 // "The sterile extension"
+  [523.51, 2.2, '[a1,e2]', .12, { attack: .1, release: 1.8 }],                  // gone: over A
+  [526.94, 6.2, 'g1', .1, { attack: 2, release: 1.4 }],                         // the fog's root
+], { attack: 1, release: 1.5 })
+  .s('gm_cello').gain(G).lpf(700).room(.5).rsize(4).orbit(1)
+
+// low clarinet: the sterile candle (D held, then C# on "seventeen"); the study
+$: line([
+  [519.64, 3.87, 'd4', .04, { attack: .5, release: .1 }],                       // thin under L0521 (round-2 pass: was 7/8 dB)
+  [523.51, 2.0, 'c#4', .075, { attack: .06, release: 1.4 }],                   // gone, on 'seventeen' (the cello's A-E carries it)
+  [537.54, 5.0, 'f3', .075, { attack: 1.2, release: 1.2 }],                      // the study, low
+  [546.74, 2.8, 'e3', .068, { attack: 1, release: 1.4 }],
+], { attack: .3, release: 1 })
+  .s('gm_clarinet').gain(G).lpf(1300).room(.45).rsize(4).orbit(5)
+
+// ------------------------------------------------------------------ pizzicato: the desks' walk, the tugs, the footsteps
+const deskWalk = []
+{
+  const keys = [['f2', 'a2', 'c3', 'a2'], ['g2', 'b2', 'd3', 'b2'], ['ab2', 'c3', 'eb3', 'c3'], ['f2', 'a2', 'c3', 'a2']]
+  const at = [470.317, 474.94, 475.94, 480.92, 483.5]
+  for (let d = 0; d < 4; d++) for (let t = at[d], k = 0; t < at[d + 1] - .05; t += B, k++) deskWalk.push([t, B * .8, keys[d][k % 4], .2])
+}
+$: line([
+  ...deskWalk,
+  // the messenger's tugs on each knob, and the blame
+  [505.44, .5, 'c3', .22], [505.98, .5, 'a2', .2], [506.28, .5, 'f2', .22], [507.01, .5, 'c2', .2], [507.61, 1.0, 'f2', .26],
+  // the misty hills: footsteps downhill, stalling in the hollow on an unresolved A
+  ...['d3', 'c3', 'bb2', 'a2', 'g2', 'a2'].map((n, k) => [527.67 + k * .55, .5, n, .21 - k * .012]),
+  // the threads: one pluck per lighting
+  [543.31, .6, 'c3', .18], [543.74, .6, 'f3', .18], [544.14, .6, 'a3', .18], [544.5, 1.6, 'c4', .17],
+], { release: .4 })
+  .s('gm_pizzicato_strings').gain(G * .85).lpf(1400).room(.35).rsize(3).orbit(6)
+
+// harp: the forward arpeggio's low doubling, the solved chord, the Helsinki thread
+$: line([
+  // the shapes under the long lines, low (fundamentals below 200 Hz): the forward pass, the roll downhill, the run back down
+  [492.06, .8, 'f2', .12], [492.4, .8, 'a2', .12], [492.8, .8, 'c3', .12], [493.25, 1.6, 'f3', .12],
+  ...['g2', 'f2', 'e2', 'd2', 'c2'].map((n, k) => [STEPS[k], .9, n, .09]),
+  [501.27, .9, 'g2', .1], [502.63, .6, 'f2', .1], [503.24, .7, 'c2', .1], [504, .6, 'a1', .1], [504.67, .8, 'f1', .11],
+  [515.90, 1.6, '[f2,c3,a3]', .085],
+  [544.5, 2.4, '[f3,a3,c4]', .055],
+])
+  .s('gm_orchestral_harp').gain(G).release(2).lpf(2400).room(.55).rsize(5).orbit(6)
+
+// the soft 1980s tick on the desks' offbeats (a short, high-passed noise)
+$: line(deskWalk.map((e) => [e[0] + B / 2, .05, 'c3', .16]), { attack: .002, release: .03 })
+  .s('white').decay(.03).sustain(0).hpf(7000).lpf(12000).orbit(7)
+
+// the lamp's hum in the study (a very low sine)
+$: line([
+  [537.14, 15.6, 'c2', .5, { attack: 3, release: 2.5 }],
+])
+  .s('sine').gain(G * .03).lpf(200).orbit(8)

@@ -1,0 +1,207 @@
+{
+ "id": "perceptron-first-boom",
+ "checked": 45,
+ "confirmed": 23,
+ "corrected": 14,
+ "unverifiable": 4,
+ "contested": 4,
+ "corrections": [
+  {
+   "original": "Tulsa headline rendered as 'Frankenstein Monster Designed by Navy Robot That Thinks'",
+   "verdict": "corrected",
+   "fix": "DTIC scan p. vii shows punctuation between 'Navy' and 'Robot': render as 'Frankenstein Monster Designed by Navy—Robot That Thinks'; never as the noun phrase 'Navy Robot'.",
+   "sources": [
+    "https://archive.org/download/DTIC_AD0256582/DTIC_AD0256582.pdf",
+    "https://en.wikiquote.org/wiki/Frank_Rosenblatt"
+   ]
+  },
+  {
+   "original": "Block, Joseph, Kesten and Novikoff (1962) supplied rigorous proofs",
+   "verdict": "corrected",
+   "fix": "Rosenblatt credits 'Block, Joseph, Kesten, and others' (Novikoff not named) and his March 1961 book already contains a corrected proof with a correction bound; Block (1962) and Novikoff (1962) are the published proofs, Novikoff giving the (R/gamma)^2 bound.",
+   "sources": [
+    "https://archive.org/download/DTIC_AD0256582/DTIC_AD0256582_djvu.txt",
+    "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.34.123",
+    "https://www.bibsonomy.org/bibtex/24c06627268557e99a9f1ea2999099558/sb3000"
+   ]
+  },
+  {
+   "original": "MADALINE trained by Madaline Rule I (Ridgway 1962)",
+   "verdict": "corrected",
+   "fix": "Widrow & Lehr credit MRI to 'Widrow and his students' (Widrow 1962, Self-Organizing Systems 1962); Ridgway's April 1962 thesis (TR 1556-1) supplied mathematical analysis, as did Hoff's (July 1962) and Glanz's.",
+   "sources": [
+    "https://isl.stanford.edu/~widrow/papers/j199030years.pdf"
+   ]
+  },
+  {
+   "original": "SNARC: 40 neurons, each of six vacuum tubes and a motor, partly ONR-funded",
+   "verdict": "corrected",
+   "fix": "Minsky recalled designing for 'about forty neurons', each realizable 'in principle, at least' with 'six vacuum tubes and a motor'; the built machine 'had three hundred tubes and a lot of motors'. ONR money was 'a couple of thousand dollars' obtained by George Miller.",
+   "sources": [
+    "https://cyberneticzoo.com/mazesolvers/1951-maze-solver-minsky-edmonds-american/"
+   ]
+  },
+  {
+   "original": "ARPA ... about $2M to MIT's Project MAC, which housed Minsky's AI group; Nilsson 'stymied us all' quote via Olazaran",
+   "verdict": "corrected",
+   "fix": "Project MAC started 1 July 1963; $2,220,000 awarded by ONR on behalf of ARPA ($2M was Licklider's proposal); about a third of MAC resources went to the AI group, most to time-sharing. Nilsson quote is from Nilsson, The Quest for AI (2009) ch. 29.4.",
+   "sources": [
+    "https://multicians.org/project-mac.html",
+    "https://yuxi.ml/essays/posts/perceptron-controversy/"
+   ]
+  },
+  {
+   "original": "New Yorker (6 Dec 1958): 'Indeed, it strikes us as the first serious rival to the human brain ever devised.' [SECONDARY via Cornell]",
+   "verdict": "corrected",
+   "fix": "Verified in the New Yorker archive text: '...the 704; indeed, it strikes us as the first serious rival to the human brain ever devised, and our own brain is thoroughly dazzled...' (lowercase 'indeed', mid-sentence). Print issue 6 Dec 1958, Talk of the Town, credited to Harding Mason, D. Stewart, Brendan Gill. Upgraded to PRIMARY; added 'has yet to be built ... simulated on a 704' and Rosenblatt's reported quotes.",
+   "sources": [
+    "https://www.newyorker.com/magazine/1958/12/06/rival-2"
+   ]
+  },
+  {
+   "original": "UPI text facts ('$2,000,000 704', 'newsmen', '400 photo cells', 'about 1,000' association cells) cited to USNA notes [S32]",
+   "verdict": "corrected",
+   "fix": "USNA notes contain none of these. The Weather Bureau/$2,000,000 '704'/fifty attempts/newsmen sentence is re-cited to secondary transcriptions; '400 photo cells' and 'about 1,000' are demoted to UNVERIFIED.",
+   "sources": [
+    "https://www.usna.edu/Users/cs/jatho/si470/notes/perceptron.html",
+    "https://www.brightworkresearch.com/the-complicity-of-the-media-in-pushing-the-ai-bubble/"
+   ]
+  },
+  {
+   "original": "'The Design of an Intelligent Automaton', Research Trends (CAL), Summer 1958 only",
+   "verdict": "corrected",
+   "fix": "Neurodynamics ref. 81 also lists it in ONR Research Reviews, Washington, October 1958, pp. 5-13.",
+   "sources": [
+    "https://archive.org/download/DTIC_AD0256582/DTIC_AD0256582_djvu.txt",
+    "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon"
+   ]
+  },
+  {
+   "original": "Teddington Nov 1958: 'one of the first expositions of the perceptron'",
+   "verdict": "corrected",
+   "fix": "Rosenblatt's own paper 'Two Theorems of Statistical Separability in the Perceptron' is in the proceedings (vol. I, HMSO 1959); symposium dates 24-27 Nov 1958 confirmed.",
+   "sources": [
+    "https://openlibrary.org/books/OL24514899M/Mechanisation_of_thought_processes",
+    "https://archive.org/download/DTIC_AD0256582/DTIC_AD0256582_djvu.txt"
+   ]
+  },
+  {
+   "original": "O'Connor (2022), IJIC 36(4)",
+   "verdict": "corrected",
+   "fix": "Full citation: Int. J. Intelligence and CounterIntelligence 36(4): 1337-1351, published online 21 June 2022.",
+   "sources": [
+    "https://www.tandfonline.com/doi/abs/10.1080/08850607.2022.2073542"
+   ]
+  },
+  {
+   "original": "'Later Perceptrons will be able to recognize people and call out their names and instantly translate speech in one language to speech or writing in another language, it was predicted.'",
+   "verdict": "unverifiable",
+   "fix": "Transcriptions disagree ('speech or writing' / 'speech and writing' / 'speech or language'; 'names' vs 'name'). Demoted to UNVERIFIED — do not use as a quote until the TimesMachine scan is read.",
+   "sources": [
+    "https://www.usna.edu/Users/cs/jatho/si470/notes/perceptron.html",
+    "https://www.brightworkresearch.com/the-complicity-of-the-media-in-pushing-the-ai-bubble/"
+   ]
+  },
+  {
+   "original": "Rosenblatt called it 'the first machine which is capable of having an original idea'",
+   "verdict": "unverifiable",
+   "fix": "Only in the Cornell Chronicle (2019) with no primary source. The nearest primary wording is the New Yorker's own voice: 'capable of what amounts to original thought'. Keep UNVERIFIED.",
+   "sources": [
+    "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon",
+    "https://www.newyorker.com/magazine/1958/12/06/rival-2"
+   ]
+  },
+  {
+   "original": "'Perceptrons might be fired to the planets as mechanical space explorers' / 'build brains that could reproduce themselves on an assembly line ... conscious of their existence'",
+   "verdict": "unverifiable",
+   "fix": "No primary scan found; secondary transcriptions attribute these to Rosenblatt inside the same UPI story. Keep UNVERIFIED as quotes.",
+   "sources": [
+    "https://www.popsci.com/technology/ai-history-eighties/",
+    "https://www.brightworkresearch.com/the-complicity-of-the-media-in-pushing-the-ai-bubble/"
+   ]
+  },
+  {
+   "original": "1958 UPI story promised 'an eye-like scanning device with 400 photo cells' and 'about 1,000' association cells",
+   "verdict": "unverifiable",
+   "fix": "Not found in the cited source or any transcription. Removed as claims; marked UNVERIFIED.",
+   "sources": [
+    "https://www.usna.edu/Users/cs/jatho/si470/notes/perceptron.html"
+   ]
+  },
+  {
+   "original": "The Mark I was assembled in Buffalo in 1959",
+   "verdict": "contested",
+   "fix": "The Smithsonian record says 'date made 1958' and 'By the following year [after 1957]'. Wikipedia, citing Jensen & Dunning (IEEE Annals 2026), says June to 14 Dec 1959. The New Yorker (Dec 1958) says the first perceptron 'has yet to be built'. Safe line: 'built 1958-59; first shown publicly 23 June 1960'. The 23 June 1960 date and the 1967 transfer are confirmed.",
+   "sources": [
+    "https://api.si.edu/openaccess/api/v1.0/content/edanmdm:nmah_334414",
+    "https://en.wikipedia.org/wiki/Perceptron",
+    "https://search.worldcat.org/title/mark-i-perceptron-press-conference-records-1960/oclc/63287884"
+   ]
+  },
+  {
+   "original": "From 1963 to 1966 the Mark I was part of a formerly secret NPIC/CIA effort",
+   "verdict": "contested",
+   "fix": "O'Connor's archival abstract gives 1963 through 1966 (preferred); some Wikipedia-derived summaries give a CIA Photo Division study 1960-1964. Keep 1963-66, attributed to O'Connor.",
+   "sources": [
+    "https://www.tandfonline.com/doi/abs/10.1080/08850607.2022.2073542",
+    "https://en.wikipedia.org/wiki/Perceptron"
+   ]
+  },
+  {
+   "original": "The prediction is attributed to the Navy, not to Rosenblatt",
+   "verdict": "contested",
+   "fix": "True of the lede (verified). But later paragraphs of the same story, per secondary transcriptions, attribute 'fired to the planets' and 'assembly line ... conscious of their existence' claims to Rosenblatt, and in the New Yorker he spoke of sending one 'out into space'. The film must not imply Rosenblatt made no such claims.",
+   "sources": [
+    "https://www.nytimes.com/1958/07/08/archives/new-navy-device-learns-by-doing-psychologist-shows-embryo-of.html",
+    "https://www.newyorker.com/magazine/1958/12/06/rival-2",
+    "https://www.popsci.com/technology/ai-history-eighties/"
+   ]
+  },
+  {
+   "original": "New Yorker block quote: 'Of what practical use would it be?' / 'What wasn't the perceptron capable of? \"Love,\" he said...'",
+   "verdict": "corrected",
+   "fix": "The reporter's questions were paraphrased inside the quote block. Verbatim: 'Of what practical use, we asked, would the perceptron be?' and 'What, we asked, wasn't the perceptron capable of? Dr. Rosenblatt threw up his hands. \"Love,\" he said. \"Hope. Despair. Human nature, in short. If we don't understand the human sex drive, why should we expect a machine to?\"' Also added the PRIMARY quote 'My colleague disapproves of all the loose talk one hears nowadays about mechanical brains' (the colleague is Yovits).",
+   "sources": [
+    "https://www.newyorker.com/magazine/1958/12/06/rival-2"
+   ]
+  },
+  {
+   "original": "Rosen: 'Our group never solved the problem of training more than one layer of weights' (no citation); 'SRI and Widrow's group left neural nets'",
+   "verdict": "corrected",
+   "fix": "Cited to the Olazaran 1991 thesis interview (pp. 131-33) via Liu [SECONDARY]. The full wording ends 'in an automatic fashion'. Added Rosen's 'About 1965 or 1966 we decided...' and Widrow's 'about 1965 or 1966 ... basically stopped on neural nets, and began on adaptive antennas' (Olazaran 1991, pp. 129-30) as sources for the exits.",
+   "sources": [
+    "https://yuxi.ml/essays/posts/perceptron-controversy/",
+    "https://doi.org/10.1177/030631296026003005"
+   ]
+  },
+  {
+   "original": "Section 7.6: 'The Mark I was built in 1959'",
+   "verdict": "corrected",
+   "fix": "Changed to 'built in 1958-59' to match the CONTESTED status. Noted a third variant: Wikipedia's Rosenblatt article says 'hardware construction in 1960', a likely conflation with the 23 June 1960 unveiling.",
+   "sources": [
+    "https://api.si.edu/openaccess/api/v1.0/content/edanmdm:nmah_334414",
+    "https://en.wikipedia.org/wiki/Frank_Rosenblatt",
+    "https://en.wikipedia.org/wiki/Perceptron"
+   ]
+  },
+  {
+   "original": "Mark I: 400 photocells in a 20x20 grid; potentiometers as A->R weights",
+   "verdict": "corrected",
+   "fix": "Clarified the evidence. Neurodynamics gives the 20-by-20, 400-point retina as its standard (PRIMARY), while the Mark I-specific count of 400 photocells is SECONDARY (Wikipedia/Bishop). The Smithsonian label calls the potentiometer array 'the A unit', but functionally the potentiometers are the learned A->R weights ('integrators'). Narration should not say the A-units were potentiometers.",
+   "sources": [
+    "https://archive.org/download/DTIC_AD0256582/DTIC_AD0256582_djvu.txt",
+    "https://api.si.edu/openaccess/api/v1.0/content/edanmdm:nmah_334414"
+   ]
+  },
+  {
+   "original": "Minsky was a grade behind Rosenblatt at Bronx Science",
+   "verdict": "contested",
+   "fix": "Re-confirmed the conflict. The Cornell Chronicle says 'a grade behind', Wikipedia gives Rosenblatt 'graduating ... in 1946', and Bronx Science lists 'Marvin Minsky '45'. Keep the safe line: both attended Bronx Science in the 1940s.",
+   "sources": [
+    "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon",
+    "https://en.wikipedia.org/wiki/Frank_Rosenblatt",
+    "https://bxscience.edu/apps/pages/index.jsp?uREC_ID=350440&type=d&pREC_ID=695703"
+   ]
+  }
+ ]
+}

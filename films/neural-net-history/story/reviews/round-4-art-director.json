@@ -1,0 +1,113 @@
+{
+ "reviewer": "art-director",
+ "round": 4,
+ "lens": "visual direction: specific, ambitious, drawable silhouette ideas that teach; moods, staging, transitions, teaching machines; kit feasibility",
+ "scores": {
+  "accuracy": 8,
+  "depth": 8.5,
+  "clarity": 7,
+  "story": 8,
+  "curiosity": 8.5,
+  "visual": 7.5,
+  "voice": 7.5
+ },
+ "critical": [
+  "THE FILM'S SPINE IS NOT IN THE KIT, AND staging.kitWork LEAVES IT OUT. 50 of the 122 shots are set in the study and 47 use the narrator's hands, yet docs/film/kit-catalog.md has none of the recurring case devices, and kitWork lists only lanternNetwork, transformerLoom, mistyHills, nightLimb, the reflection compositor and seven small props. Missing pieces, each a blocking dependency: (1) the BELIEF CANDLE per the CANDLE-CLOCK RULE: 45 scored rings at 6 px, a ghost sleeve, live / out-with-smoke / frayed states and a base tag. The kit's candle() and candlestick({burn}) are brass candlesticks with no rings or sleeve, and this candle is used in about 25 shots plus the finale's wax bar chart. (2) candleShelf, the CASE BOARD (slot grid K, S1–S3, C1–C4, F1–F2, Q1–Q4, with cards, brass pins, threads of light and the oxblood thread), the WALL OF FORECASTS (W1–W8) and the X-RAY COLUMN (seven bands plus the seam). (3) A narrator-hands FOREARM RIG with its six actions. puppet/hands.ts offers only the props pipe, chalk, pen, book, clipboard, papers, mug, laptop, phone and cards: no match, brass pin, rubber stamp, manila file or fountain-pen writing. (4) threadsOfLight and attentionMath are hard-wired to 'The animal didn't cross the street…', but ch10-s04, ch10-s06, ch10-s07 and ch10-s08 need {tokens, weights[h][i][j], cups:n, etched shares} overrides. (5) alexnetCathedral has no 96-tile filter mosaic (noise→learned, ch08-s06), no 48/48 colour-agnostic/colour-specific sort (ch08-s09) and no rose-window layer vignettes (ch08-s05). (6) sets/hallOfMirrors with reflected, head-turning audiences (ch05-s01, ch15-s01). (7) A paper globe of lit windows (ch07-s03, ch07-s04, ch15-s07); the kit globe() is a desk globe. (8) Symbolic animal cut-outs: frog (ch02-s08), octopus, bear and parrot (ch11-s08), gopher and chinchilla (ch11-s07); also stopwatches (ch15-s04) and courthouses and gavels (ch15-s05). FIX: add all of these to staging.kitWork as blocking items with their shot lists. For (1)–(3), specify ONE derived state table, boardStateAt(shotId) / shelfStateAt(shotId) / wallStateAt(shotId) / xrayBandsAt(shotId), generated from staging.caseBoard.slots, candleClock.candles and wallOfForecasts. That way every study shot renders the same board, shelf and Wall for its moment in time, instead of 50 authors re-deriving which cards, rings and slips exist. For (5), if real conv1 weights are not used, tag the mosaic ILLUSTRATIVE.",
+  "RUNTIME IS FURTHER OVER THAN IN ROUND 3. 3,638 spoken words (target about 3,040). Summing leadIn, words, pauses and holdAfter (with minDuration floors) gives 36.5 min at 2.5 words/s, 38.5 at 2.3 and 42.4 at 2.0. The target is 32 min and the brief's maximum is 35. Several fixes below, which make on-screen payloads fit, add hold time. FIX (visual lens, where the picture already teaches): (a) cut about 450 words, starting with lines the image already carries: ch14-s07 L1421 (the three tags are the voices); ch15-s05 L1525 down to about 12 words (the terrarium, valve and building carry the method); ch05-s04 L0520 (the family-tree tints carry it; keep one clause); ch09-s03 L0906's 'which it reckoned a human would choose once in ten thousand' (the '1 in 10,000' stamp carries it); ch08-s13 L0825 (the IDSIA inset carries it); ch12-s08 is already lean. (b) Of the 15 lampChanges (each about 3 s, through black), keep only true act breaks (ch01-s04, ch05-s01, ch13-s01, ch15-s08). Turn every other return to the study (ch02-s08, ch05-s06, ch06-s07, ch08-s13b, ch10-s13b, ch13-s06) into a reverse FLAME PUSH, pulling out of the stage candle's flame onto the shelf with crossfadeMood. That saves about 1.5 s each and keeps the film out of black. ch02-s06, ch04-s03, ch10-s04, ch11-s08 and ch12-s06 can become crossfades with crossfadeMood. (c) Trim payloads, not holds, wherever this card offers the choice.",
+  "TIMING FIELDS CONTRADICT THE PAYLOADS THEIR OWN VISUALS PROMISE. The clock is built from the fields, so these beats will be cut short or will collide. ch01-s06: the fifth rewind image lands at 7.4 s but leadIn is 6, and the visual says 'Narration begins only after the fifth image'; set leadIn 9. ch05-s04: the visual says 'HOLD (holdAfter, 5 s…)', but holdAfter is 4.2, and the 150-character abstract quote needs about 14 s by the text rule; cut it to '…hidden units… come to represent important features of the task domain' (about 80 characters) and set holdAfter 7. ch05-s05: the visual says 5 s, the field is 4.2 for rewind plus leap plus settle; set 5.5. ch07-s06: holdAfter 4.2 has to carry the 2 s coat tie, the 4.5 s X-ray and two clue pins with a thread; set 9, or move the C3 pins into ch07-s04's hold. ch08-s13b: 'about 8.5 seconds' against holdAfter 7, which includes the desk-lamp click; set 9. ch10-s03: Kelcey's card is 'about 6 seconds' against holdAfter 3.9 (about 100 characters needs about 9.8 s); cut to '…the biggest incorrect prediction of my life' and set 5.5. ch10-s10: 'about 7 seconds' against holdAfter 3.6; set 6.5 or cut the caption to 'untrained toy weights: real bindings' (about 36 characters, 4.5 s). ch10-s14: holdAfter 2.5 has to carry the crossfade, a 4.5 s X-ray, the C3-d pin and a thread; set 7.5. ch11-s01: 'at least 15 seconds' against minDuration 12; set 15 or cut the walking machines to one pass. ch11-s03: the temperature dial is placed 'in the long hold' but the X-ray is anchored on 'No rulebook' mid-line, before the hold, and the hold is only 3.3 s; move the dial into a raised pauseAfter on L1105 (about 3.5 s) and keep the X-ray reveal in a 5 s hold. ch11-s08: 'about 8 seconds' for Marcus against a pause of 4.22; set the pause to 5.5 (46 characters). ch13-s06: leadIn 2.4 has to include the lampChange (at least 1.6) plus the Cyc candle going out and its 22-character tag; set leadIn 5 (or 3.5 once it is a reverse flame push, per the runtime fix). ch15-s08: leadIn 7 has to fit the lampChange and five 1.2 s flashes; set 8.5. Its 95-character microscope quote also gets a 5.5 s hold; cut it to '…satisfying insight for about a quarter of the prompts…' or set 8.5."
+ ],
+ "issues": [
+  {
+   "where": "ch03-s01, ch04-s01, ch07-s01, ch09-s01, ch11-s01, ch12-s01, ch13-s01, ch14-s01, ch15-s01 (chapter titles)",
+   "problem": "Round 3's fix was applied only to ch02-s01, which defines the CHAPTER INDEX TAB. Nine chapters still show no title, including 'Clue Two: A Knob That Turns', so the clue count that is the film's spine is still invisible from Clue Two onward.",
+   "fix": "Copy ch02-s01's index-tab sentence word for word into the first shot of each of these chapters, with that chapter's title. Add a 'title' OST item to each. No new shots are needed."
+  },
+  {
+   "where": "ch11-s08 → ch12-s01 → ch12-s07 (the shears slot)",
+   "problem": "This is still unresolved, and it now contradicts itself. ch11-s08 says 'ch12-s01's lead-in opens on it in the study, then ink-bleeds from the slot'. ch12-s01's visual still begins 'Ink bleeds from chapter 11's dark shears-shaped slot' and never shows the box, the study or band 7. ch12-s07 still says 'the dark slot seen at the end of chapter 11'.",
+   "fix": "ch12-s01: raise leadIn to 2.2 and open on the X-ray chat box in the study (candleAmber, the box a serverCyan practical), with band 7 drawn as a dark, empty, shears-shaped slot. Ink-bleed from that slot into the duskRose Hopper stage (inkBleed origin = the slot). ch12-s07: change the wording to 'the dark slot seen at the start of chapter 12'."
+  },
+  {
+   "where": "ch14-s02 (quote cards)",
+   "problem": "The round-3 fix was not applied. The BIS card (about 150 characters) and the Mao Ning card (about 150 characters) are up together during a 42-word shot. The text rule needs about 14 s each, and both compete with narration that already paraphrases them.",
+   "fix": "Cut each card to its operative fragment, mirror-placed with the same type, size and warmth: '“…certain high-end chips used in military applications” — BIS, 7 Oct 2022' and '“…the U.S. abuses export control measures…” — Mao Ning, 8 Oct 2022 (AP translation)'. Move the full sentences to creditsSources."
+  },
+  {
+   "where": "ch14-s01 → ch14-s07 (the Go board)",
+   "problem": "In ch14-s01 a hand from the right shore sets one stone and 'nothing answers yet'. The left shore never plays a stone in the rest of the chapter, and in ch14-s07 a handset is simply laid across the board. In a chapter whose rule is perfect mirror parity, the rivalry board shows only one side acting, and the prop is left dangling.",
+   "fix": "In ch14-s02, on 'fenced off', a hand from the left shore sets one stone in answer (a 1 s cutaway to the jetty). In ch14-s04 the right side plays again on 'open to all'. ch14-s07 then lays the handset across a board with stones from both sides, so the board becomes a visible record of moves and answers."
+  },
+  {
+   "where": "ch09-s03 (density)",
+   "problem": "70 words, 11 beats and three locations (the Wall, then Seoul, then the Wall again) with two in-shot wipes, a 1 s shelf cutaway, a Hassabis practical, the policy/value/search demonstration, move 37, move 78 and the candle going out, plus six text items. It is the most crowded non-deep-dive shot, and the clearest teaching image in it, the policy/value/search board, gets about 4 s.",
+   "fix": "Split it into ch09-s03a (the Wall, the Coulom slip, the Go candle lit; L0905; ends on the paper wipe) and ch09-s03b (Seoul; L0905b–L0907; the board teaching beat gets a pause of about 1.5 s after L0905b; ends with the wipe home, the Coulom glint and the candle out). Same content, two clean compositions, and nothing is added to the runtime beyond one leadIn."
+  },
+  {
+   "where": "ch14-s07 (density)",
+   "problem": "95 words, 12 beats, 6 lines and 7 OST items (date, label, four name cards, and a 165-character Liang quote, which is over the 160-character cap). The rail pages, handset, fence glimpse, gap candle, three voice tags, hall glimpse, quote and crane-up all have to fit one continuous move.",
+   "fix": "With the runtime cut of L1421, split it into ch14-s07a (jetty rail, handset, fence: L1414–L1415) and ch14-s07b (reflection, gap candle, Liang, crane-up: L1417, L1420, L1418). Cut the Liang card to '“…the real gap is the difference between originality and imitation.”' (about 70 characters) and drop the three voice name cards along with L1421."
+  },
+  {
+   "where": "ch12-s03 vs ch09-s04 (founding parity, residue)",
+   "problem": "The objects now match, but there are two leftover asymmetries. (a) ch09-s04's stamp is the announcement date ('11 DECEMBER 2015'), while ch12-s03's stamp is 'JANUARY 2021' over an announcement pinned as dated 28 May 2021. (b) ch12-s03 adds a quote card that also states a fundraise ('…has raised $124 million in a Series A'), so Anthropic's money appears on two surfaces, the quote card and the ledger, while OpenAI's appears on one. The props also differ in name ('handLanterns' and 'indexCards' against 'twoHandLanterns (warm, cold) on one pin').",
+   "fix": "Stamp ch12-s03 '28 MAY 2021' (the announcement's date, like ch09-s04). Cut the quote card to '“an AI safety and research company” — Anthropic, 28 May 2021' (it is spoken, so it could also be dropped), and keep every dollar figure on the ledger. Copy ch09-s04's props list exactly."
+  },
+  {
+   "where": "ch13-s03 → ch13-s04 (emberRed stage for the worry candle)",
+   "problem": "The FLAME PUSH crossfades the whole worry-candle stage to emberRed, and ch13-s04 opens in emberRed before easing to duskRose. In the shot whose whole point is 'three lamps, not two teams', one camp is introduced in the film's alarm colour. That is an editorial tint, and it also spends the accent budget, which reserves full red for the STATUS: OPEN stamp.",
+   "fix": "Push into the worry candle's stage in duskRose (the same mood as the other two lamps in ch13-s04), and keep emberRed only as the match's bloom, a practical, when the candle is lit. ch13-s04's transition then becomes a plain pull-back with no tint change."
+  },
+  {
+   "where": "ch15-s03 (microscope staging)",
+   "problem": "The microscope is staged on an unnamed stage in candleAmber, the study's home colour, while every other lab's 2024–26 research image (ch15-s02's two windows) is serverCyan. The study tint quietly frames one lab's research as the detective's own. The kitWork microscope is listed for ch15-s08, but ch15-s08 shows no microscope.",
+   "fix": "Set the microscope explicitly on the study desk under the green lamp, as the detective's own instrument examining a specimen. That keeps the amber justified by STUDY LOCK, and the same microscope can be glimpsed again in ch15-s08 under the 'quarter of the prompts' card, which fixes the kitWork reference. Alternatively, keep a neutral stage in serverCyan to match ch15-s02."
+  },
+  {
+   "where": "ch15-s10 (sources roll)",
+   "problem": "creditsSources holds 16 quotations, about 2,500 characters, rolled in 'about 7 seconds', which cannot be read even approximately. The Turing card (about 95 characters) gets 6 s against about 9.4 s by the text rule.",
+   "fix": "Turing card 9 s. Split the sources into two or three static pages of about 6 quotations each, about 8 s per page, in IBM Plex Mono at reading size, and raise minDuration to about 40. (If runtime forbids this, keep two pages and label them 'pause to read'.)"
+  },
+  {
+   "where": "ch03-s04, ch03-s06, ch04-s06, ch12-s07, ch14-s05 (text rule)",
+   "problem": "ch03-s04 still has three labels besides the date ('20 × 20 = 400 photocells' was flagged in round 3; ch08-s03 states it). ch03-s06: the LOVE·HOPE·DESPAIR card (about 110 characters, needing about 10.7 s), the pan and a 4 s hold on the chess slip all have to fit holdAfter 6.5. ch04-s06: Papert's 'Snow White' card (about 105 characters, needing about 10.3 s) gets about 4.5 s. ch12-s07: Rosenblatt's full sentence (about 150 characters) is 'read in the pause' of 1.76 s. ch14-s05: both labels exceed the 70-character cap set in round 3 (about 110 and about 85 characters).",
+   "fix": "ch03-s04: drop the photocell label. ch03-s06: show only the three words LOVE · HOPE · DESPAIR plus the attribution (about 60 characters) and set holdAfter 9. ch04-s06: cut to '“…we saw it as a way to understand her.” — Papert, 1988' and set holdAfter 5.5. ch12-s07: use ch03-s08's fragment '“Linguistic capability… is of the essence.”'. ch14-s05: 'TOP NEURIPS AUTHORS · FIRST DEGREE: CHINA 47% · US 18%' and 'OCT 2025 · OPEN QWEN PASSES LLAMA IN DOWNLOADS'."
+  },
+  {
+   "where": "ch05-s06 (lead-in and props)",
+   "problem": "The 3 s lead-in has to hold the lampChange (at least 1.6 s), the Q1 card unpinned and burning, and the plant card tucked. The props still list 'magnifying glass' (flagged in round 3), while the visual says 'no magnifier'.",
+   "fix": "Raise leadIn to 4.5 (or, with the reverse flame push from the runtime fix, keep 3.5). Delete 'magnifying glass' from props."
+  },
+  {
+   "where": "ch10-s11 → ch10-s12, ch12-s07 → ch12-s08 (tint pops on plain cuts)",
+   "problem": "ch10-s12 cuts from duskRose to serverCyan with no practical to motivate it, and the next chapter break is shots away. ch12-s07 (amber study) cuts straight to ch12-s08's serverCyan façade. Round 3 flagged the second case.",
+   "fix": "ch10-s12: transitionIn 'paperWipe' (the micro-kitchen's deadline sheet slides off and becomes the parchment plate) with crossfadeMood duskRose→serverCyan under it. ch12-s08: transitionIn 'crossfade', or open on the X-ray box's own cyan glow filling the frame, then pull back to the façade."
+  },
+  {
+   "where": "the study's repetition (50 of 122 shots, 47 with the hands)",
+   "problem": "The case-file device is the film's spine, but staged as written most study visits are the same medium frontal shot of the board under the green lamp with the hands entering from lower right. Over 32+ minutes that becomes visual wallpaper and blunts the payoffs (ch12-s07, ch15-s08).",
+   "fix": "Give the study a fixed camera grammar so each kind of visit reads differently: BOARD always frontal and medium, pinning in 1–2 s inserts. SHELF always low macro along the rings, with shallow depth of field and haze between candles. WALL always a slow lateral truck from the lamp outward. FILE always top-down on the desk. Reserve the full wide of board plus shelf plus Wall for exactly three moments: ch01-s05, ch12-s07 and ch15-s08. Add this as staging.studyCameras and cite it in each study shot."
+  },
+  {
+   "where": "ch05-s04, ch04-s06, ch10-s11 (red practicals)",
+   "problem": "'The error glows as a warm red rim' (ch05-s04), a 'red tally lamp' (ch04-s06) and a 'red standby light' (ch10-s11) all read as full red, against accentBudget ('Full saturated red is used once only: the STATUS: OPEN stamp').",
+   "fix": "Specify these as low-chroma ember (emberRed mixed about 60% into the shot's mood, the same recipe as the oxblood thread). Keep full red only for the ch15-s09 stamp."
+  },
+  {
+   "where": "small continuity (various)",
+   "problem": "(a) ch01-s03 still says the night limb is 'repeated exactly in ch12-s06', but ch12-s06 uses only the city. (b) ch08-s03 says 'a husky, the end of ch07's tree', but the tree was cut from ch07-s03. (c) ch05-s10 says 'the X-ray box and the board are candleAmber', but STUDY LOCK makes the box a serverCyan practical. (d) ch12-s07 says 'The band of stencils stays dark', but the X-ray column has no stencil band, only the seam between bands 3 and 4. (e) ch02-s05b pins Turing's slip 'on fifty' (the start of L0212) yet pans to the Wall 'just after the line', and also orders 'child' before 'educating'. (f) ch05-s09b cues 'On machines', a word not in L0522. (g) ch08-s08b's props still list 'quoteCard'. (h) ch06-s05 has two Jackel name cards and says the question card goes 'to the right of the earlier question cards', but Q1 burned in ch05-s06, so it is slot Q2. (i) ch01-s04 calls the hands 'ink-stained', where the rig says 'steady, cuffed tweed forearms'.",
+   "fix": "(a) Delete 'repeated exactly in ch12-s06' (or reuse the limb in ch12-s06's pull-back for the rhyme, and add ch12-s06 to kitWork). (b) 'a husky, one of ImageNet's thousand tiles'. (c) 'the board is candleAmber; the box glows serverCyan as a practical'. (d) 'the seam between bands 3 and 4 stays dark'. (e) Pin the slip in the hold, after the pan; anchor the bell on 'educating' and the slate on 'child'. (f) Anchor the cabinet glow on 'panel'. (g) Remove quoteCard. (h) Use one combined name card, and 'slot Q2'. (i) 'steady, cuffed hands'."
+  },
+  {
+   "where": "ch05-s04 (the 1986 deep beat)",
+   "problem": "This is the film's third great teaching machine, but it carries 14 beats (forward, check, error, backward with per-string gradients, training scrub, XOR check, family trees, the candle going out on another stage, the quote) and three text-like items. The date stamp is also used as a loophole: 'NATURE · 9 OCTOBER 1986 · Rumelhart, Hinton & Williams' is 52 characters against round 3's 32-character date cap, and the readout caption 'the 1986 method, on exclusive-or · a demonstration' is a third text item.",
+   "fix": "Date stamp 'NATURE · 9 OCT 1986'. Fold the authors into Rumelhart's name card ('David Rumelhart · with Hinton & Williams'). Make the readout caption prop lettering on the loom beam (part of the machine, as with ch08-s04's kernel numbers). If L0520 is cut for runtime, keep the family-tree tinting as a 3 s wordless image in the pause after L0509."
+  }
+ ],
+ "strengths": [
+  "The teaching machines are still the film's glory, and every one is bound to real numbers a shot author can render. The perceptron knobs turn only on mistakes (ch03-s04). The scissors cannot cut XOR, then two cuts and a fold can (ch04-s01). The messenger bead tugs each string by its gradient (ch05-s04). The 3.88 stencil cell has all nine terms shown (ch08-s04). The jug pours a real softmax (0.20 · 0.07 · 0.53 · 0.20, ch10-s06), and √d is taught by the jug slamming into one cup and frosting over (8 · 0 · −8 → 1.00 · 0.00 · 0.00 against 0.67 · 0.24 · 0.09, which I checked, ch10-s07). The typesetter's case uses the kit's real NEXT_TOKEN_DEMO shares with a temperature dial (ch11-s03).",
+  "Most round-3 criticals landed cleanly. The founding grammar is now one object set for both labs (bare pins, a warm/cold lantern pair, one ledger). Chapter 14 has a WINDOW RULE with mullions as the L1 occluder, a single-plane 35% reflection and a push through the glass to open, and no red on the strait. kitWork exists. The X-ray payoff has a 10 s lead-in at 1.1 s per band with a chime each. The stampede montage has 2–4-word captions at 2.2 s spacing. The shelf in the finale runs strictly by year lit, with the still-lit flames scattered across it.",
+  "The recurring grammar does real story work in pictures. Believers stand in the light and doubters at the rim. Hinton's walk runs seated at the rim (1976), then standing at the centre (2012), then back at the rim (2023), with a ghost of his younger self (ch13-s02). Three overlapping lamps replace 'two teams' (ch13-s04). The Hall of Mirrors turns away in 1981 and turns back for the Nobel (ch05-s01 / ch15-s01). The rewind plays forward into the chat box. A hand from the viewer's side lights an unlettered candle (ch15-s09).",
+  "Fairness is drawn, not just stated. The two shores are mirror-balanced with the same palette and window rhythm and no emblems. Two identical shuttered and open windows for o1 and R1 (ch15-s02). Identical lab lamps with equal time per stop (ch15-s05). Two equal 'accounts' cards for Gebru's exit (ch11-s08). The Go makers get their own cool practical rather than the doubters' rim (ch09-s03).",
+  "Restraint is used where it matters. The deaths of Pitts and McCulloch are told by two lamps on sills (ch04-s04). Rosenblatt's death is a single candle and the dedication (ch04-s05). The Nobel night shows an empty hotel room (ch15-s01). Widrow's Dartmouth lantern is still lit on the sill (ch15-s07), and the MTurk globe goes dark window by window. These are the moments a viewer will remember."
+ ]
+}

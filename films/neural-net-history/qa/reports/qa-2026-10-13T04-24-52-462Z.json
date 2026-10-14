@@ -1,0 +1,62 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T04:24:52.462Z",
+ "summary": {
+  "pass": 2,
+  "warn": 0,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m01: rendered body 74.35s but cue window is 74.100s — re-render; m07: rendered body 71.57s but cue window is 85.655s — re-render; m11: rendered body 87.408s but cue window is 89.898s — re-render; m12: rendered body 93.958s but cue window is 95.379s — re-render; m13: rendered body 215.76s but cue window is 217.888s — re-render; m16: rendered body 91.7s but cue window is 85.593s — re-render; m18: rendered body 146.2s but cue window is 150.994s — re-render; m19: rendered body 115.8s but cue window is 119.611s — re-render; m21: rendered body 100.1247s but cue window is 98.958s — re-render",
+   "problems": [
+    "m01: rendered body 74.35s but cue window is 74.100s — re-render",
+    "m07: rendered body 71.57s but cue window is 85.655s — re-render",
+    "m11: rendered body 87.408s but cue window is 89.898s — re-render",
+    "m12: rendered body 93.958s but cue window is 95.379s — re-render",
+    "m13: rendered body 215.76s but cue window is 217.888s — re-render",
+    "m16: rendered body 91.7s but cue window is 85.593s — re-render",
+    "m18: rendered body 146.2s but cue window is 150.994s — re-render",
+    "m19: rendered body 115.8s but cue window is 119.611s — re-render",
+    "m21: rendered body 100.1247s but cue window is 98.958s — re-render"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (m01: cueSeconds 74.35 vs window 74.100 s; m07: cueSeconds 71.57 vs window 85.655 s; m11: cueSeconds 87.408 vs window 89.898 s; m12: cueSeconds 93.958 vs window 95.379 s; m13: cueSeconds 215.76 vs window 217.888 s; m16: cueSeconds 91.7 vs window 85.593 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "m01: cueSeconds 74.35 vs window 74.100 s",
+    "m07: cueSeconds 71.57 vs window 85.655 s",
+    "m11: cueSeconds 87.408 vs window 89.898 s",
+    "m12: cueSeconds 93.958 vs window 95.379 s",
+    "m13: cueSeconds 215.76 vs window 217.888 s",
+    "m16: cueSeconds 91.7 vs window 85.593 s",
+    "m18: cueSeconds 146.2 vs window 150.994 s",
+    "m19: cueSeconds 115.8 vs window 119.611 s",
+    "m21: cueSeconds 100.1247 vs window 98.958 s",
+    "measured on a 2139.5417 s clock, timeline is 2159.9583 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "20 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.5 min of music over 36.0 min (101%)"
+  }
+ ]
+}

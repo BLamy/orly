@@ -1,0 +1,214 @@
+{
+ "shot": "ch05-s06",
+ "at": "2026-10-13T04:13:25.694Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 40,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "HELSINKI ·",
+   "capWhileSubject": 22.9,
+   "why": "named: \"helsinki\""
+  },
+  {
+   "text": "KELLEY",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "BRYSON",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "DREYFUS",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LINNAINMAA",
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "WERBOS",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "1974/82",
+   "capWhileSubject": 27.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "RUMELHART",
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "PARKER",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LE CUN",
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "credit still disputed",
+   "capWhileSubject": 28.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "geoffrey hinton",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "writing in 2020",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THEN HOW DO YOU TRAIN",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE HIDDEN LAYER?",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1960",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1961",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1962",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1982",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1985",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NATURE · 1986",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "same name,",
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a different",
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "procedure",
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 27
+}

@@ -1,0 +1,114 @@
+{
+ "shot": "ch10-s09",
+ "at": "2026-10-13T04:14:05.508Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 20,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "position = sines and cosines, fast to slow",
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "fast",
+   "capWhileSubject": 28.7,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0.58",
+   "maxCap": 31.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "· hand-set weights",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "arrived",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "at",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "after",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "crossing",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8 heads × 64 numbers each  (4 shown)",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "what am I?",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "what came just before?",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "what was done?",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "who did it?",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "slower",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "slowest",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 18
+}

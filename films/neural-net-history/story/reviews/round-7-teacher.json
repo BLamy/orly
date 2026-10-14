@@ -1,0 +1,112 @@
+{
+  "reviewer": "teacher",
+  "round": 7,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [
+    "RUNTIME IS STILL OVER THE BRIEF. The script has 3,391 narration words against the 3,040 target (+11.5%). Timing it from script.json (leadIn + words + pauseAfter + holdAfter, with the minDuration floor, across 121 shots) gives 34.5 minutes at 140 wpm, 36.4 at 130 and 38.6 at 120. A slow, measured narrator lands at or past the brief's 30-35 minute ceiling. My clarity fixes below come to about +45 net words if all are taken, so the story editor must cut about 120 or more words to make room, and should cut from atmosphere and repeated callbacks, not mechanism. Low-cost cuts: L1104 trim to 'From the file: “practically nothing” from “the raw text.” Sensible, then.' (-6; the Lenat callback is paid off again at L1316); L1007 drop 'So did his father, a computational linguist.' (-7; OST and Kelcey's card carry the dissent); L0902 drop 'and chose Google' (-3; the OST and ch13 L1304 establish Google); L1217 shorten to 'Rosenblatt's 1961 note, sixty-one years on: language was the door.' (-5); L0821 shorten to 'The tall man was not there: a bad back meant he could not fly.' (-6). Any line added below must be paid for in the same chapter."
+  ],
+  "issues": [
+    {
+      "where": "ch04-s01 L0403 ('a hidden layer' named, never explained)",
+      "problem": "'Two cuts can: a hidden layer.' This is the first time the film says 'hidden layer', and it is the term the whole Cold Case and the 1986 solution depend on (OST 'THEN HOW DO YOU TRAIN THE HIDDEN LAYER?'; L0507 'layers of lanterns'). A 15-year-old hears a label, not a thing. The visual folds the paper, but the ear never learns that it means extra cells sitting between the inputs and the answer, which no example tells what to do.",
+      "fix": "L0403 → 'Two cuts can: a hidden layer, cells tucked between input and answer. Nobody in the mainstream knew how to train one.' (+6; claims e3-xor-known, e3-perceptrons). 'Hidden' then explains itself: nobody tells those cells the right answer, which is exactly the problem back-propagation solves at L0508."
+    },
+    {
+      "where": "ch05-s07 L0514 ('expert system' used before it is defined; Schank's dissent at L0522a depends on it)",
+      "problem": "'One expert system's prescriptions were rated above Stanford specialists'...' is the first time the film says 'expert system', and the term arrives as a possessive with no gloss. Twelve seconds later the era's only spoken dissent is Schank's 'I don't much believe in expert systems', so the teenager hears a doubt about a thing never named. L0513 ('knowledge, typed in by hand') sets it up, but it never connects 'expert' to 'rules taken from experts'.",
+      "fix": "L0514 → 'One expert system, doctors' rules typed into a program, saw its prescriptions rated above Stanford specialists', yet never went into routine use.' (+4; claims e5-mycin, e5-mycin-unused, e5-knowledge-principle)."
+    },
+    {
+      "where": "ch07-s02 L0702 ('labels' used before it is taught)",
+      "problem": "'before any labels, train a deep net one layer at a time' uses 'labels' two lines before L0704 introduces hand-labelling. Without that word, the whole idea of the warm-up (learning with no right answers) is opaque to the teenager. An expert would hear 'unsupervised' correctly, but the ear cannot.",
+      "fix": "L0702 → 'In 2006, a new candle: before showing it a single right answer, train a deep net one layer at a time, each learning to rebuild its own input. A warm-up.' (+3; claims e7-dbn, e7-autoencoder). Then 'labels' at L0704 and L0815 lands on a defined idea."
+    },
+    {
+      "where": "ch05-s05 L0510 ('Timid steps get trapped': no landscape, and it overstates the problem)",
+      "problem": "Two problems. (1) Clarity: 'Each tug, a step downhill toward less error, in fog' is the film's first landscape. The ear is never told that height means error, and the fog/bowl contrast that pays off at L0607 and L0832 ('Why choose the fog?') hangs on it. (2) Accuracy for the expert: 'Timid steps get trapped' states as a general law that backprop gets stuck. The bible records that the 1986 paper found it 'very rarely' did, and lists 'backprop would mostly get stuck' among the revival's beliefs that did not last (Era 4, e4-rhw-brain). 'Prone to local minima' was the 1990s critics' belief (Era 6), not a finding.",
+      "fix": "L0510 → 'Picture error as hills in fog. Each tug is one step downhill, feeling only the slope underfoot. Steps too timid can stall in a hollow.' (+9; claims e4-rhw). 'Can stall' keeps the visual (the traveller stops at x ≈ −2.91) without claiming it always happens. Pay for it with the L1104 trim. Optional, if words allow: add 'Its critics would say nets always stall there.' to L0608's candle (+8; Era 6 belief) so the fog's reputation is attributed to the people who held it."
+    },
+    {
+      "where": "ch10-s04/ch10-s12 L1024-L1025 (the Transformer's result is never spoken, and parallelism is not tied to graphics chips)",
+      "problem": "L1025 asks 'Why did it win?', but the ear never heard that it won, or at what. The BLEU ledger and the 12 hours are on screen only. The depth payoff of the whole sequence is also missing. 'All at once is one huge multiplication' matters because that is the one thing graphics chips do best, and that is why the Transformer could ride ch07's 'fire' into scale. A teenager doesn't make that connection unaided, and an expert expects it (bible Primer J; q10-gomez-matmul: 'The chips we use, they do one thing really well, and that is matrix multiplication').",
+      "fix": "L1024 → 'The paper's title: Attention Is All You Need. It out-translated every rival, after half a day's training.' (+9; claims e10-title, e10-results: the base model beat every previous single model and ensemble in 12 hours on one 8-GPU machine). L1025 → 'Why did it win? No waiting in line: all at once is one huge multiplication, just what graphics chips do best.' (+5; claims e10-table1, e10-architecture). Optionally, on screen, the Gomez quote as a small card in ch10-s12 (q10-gomez-matmul, verbatim, attributed to Aidan Gomez)."
+    },
+    {
+      "where": "ch08-s08 L0815 (the 12-million-bits argument is too compressed for the ear)",
+      "problem": "'Sixty million weights, but the labels held only about twelve million yes-or-no answers.' This is the cleverest idea in the AlexNet deep dive, and the expert will love it, but a teenager can't get from 1.2 million labelled photos to 'twelve million yes-or-no answers'. The step that connects them (one name out of a thousand is worth about ten yes-or-no questions) is unspoken, so the line sounds like a non sequitur, and L0816's augmentation loses its 'why'.",
+      "fix": "L0815 → 'Sixty million weights, yet each label, one name in a thousand, is worth about ten yes-or-no answers: twelve million in all. It could memorise the photos, not learn to see.' (+7; claims e8-ingredients; bible Primer F 'Why augmentation': ~10 bits = log₂1000). The existing OST '1.2 million labels × ≈ 10 bits ≈ 12 million' now matches the ear exactly."
+    },
+    {
+      "where": "ch15-s01 L1502 (Boltzmann machine: 'a net that learns as it cools' is imprecise, and doesn't explain the physics question)",
+      "problem": "In a Boltzmann machine, cooling (simulated annealing) is how the net SETTLES into an answer. Learning is a separate rule that compares how often units fire together with the world clamped and running free (bible Primer C; e4-boltzmann). So 'learns as it cools' will make an expert wince. It also gives L1528's 'Was this physics?' only half a handle. The committee's case was that the laureates 'used fundamental concepts from statistical physics' (e12-nobel-physics), and the line should say so.",
+      "fix": "L1502 → '...for memories that roll downhill, and the tall man's Boltzmann machine, a net built from the physics of heat.' (+1; claims e4-boltzmann, e12-nobel-physics). If the ch05-s03 'Boltzmann machine · 1985' card carries a gloss, make it 'settles as it cools' so the eye and ear agree."
+    },
+    {
+      "where": "ch08-s13b L0831 (the fiddly-nets candle's duration is never spoken)",
+      "problem": "Every other candle that goes out has its span said aloud (16, about 7, 17, about 7, 13, 20, about 2), which is how the film answers the brief's 'how long did people think that way?'. The 1990s candle, the one the three holdouts lived under, goes out with 'went out too' and no number. The visual already tags it '10–15 years, by field' (bible Era 6, e6-nn-winter).",
+      "fix": "L0831 → 'Beside it, the fiddly-nets candle went out too, after ten to fifteen years, field by field.' (+7; claims e6-nn-winter, e7-jellybean). 'Field by field' honestly covers speech falling before vision, which the hanging tag 'speech first' already shows."
+    },
+    {
+      "where": "ch15-s04 L1530 ('The candle of now' never says what it believes)",
+      "problem": "The brief's core question is 'what people believed' in each era. The present-day candle is lit by name only: 'The candle of now.' The line then jumps to METR's measure, and L1531's trial is a dissent from a belief the ear never heard. Bible Era 14 states it plainly: capability will keep rising fast through reinforcement learning and agents, and systems that can do most cognitive work are years, not decades, away.",
+      "fix": "L1530 → 'The candle of now: abilities will keep climbing, fast. By one measure, the tasks AI agents, models that work on a computer on their own, can finish double in length about every seven months.' (+5; claims e14-metr-horizon, e14-o1). Then L1531's 'Yet...' answers a stated belief."
+    },
+    {
+      "where": "ch12-s08 L1219 ('a stampede' of what? GPT-4 and Claude are never spoken)",
+      "problem": "The ear hears 'Then, a stampede. Case solved? Not quite.' The four windows (code red, Microsoft, LLaMA, two lanterns on 14 March 2023) are wordless, uncaptioned and carry no logos. So the film never says 'GPT-4' aloud, and never says Anthropic shipped Claude, even though the brief names ChatGPT, Anthropic and the race. A teenager who has used both won't connect the two equal lanterns to them. 'Same day' is also the most striking race fact of 2023.",
+      "fix": "L1219 → 'Then, a stampede. Within four months, OpenAI's GPT-4 and Anthropic's Claude launched on the very same day.' (+14; claims e12-gpt4, e12-claude-launch; spoken 'G P T four'). Even-handed: the two are named together, in parallel, with no ranking. Pay for it from the low-cost cuts listed under critical."
+    },
+    {
+      "where": "ch08-s02 L0803 ('would grow with data' is ambiguous to the ear)",
+      "problem": "'Ilya Sutskever believed deep networks would grow with data' can be heard as the networks physically growing. The bible's belief (e8-origin) is that performance would scale with data. This is the dissenting belief of the AlexNet era, so it should be crisp.",
+      "fix": "L0803 → '...Ilya Sutskever believed deep networks would keep getting better with more data, and talked Alex Krizhevsky into trying.' (+3; claim e8-origin)."
+    },
+    {
+      "where": "ch15-s05 L1525 ('broke out of their sandbox' undersells and doesn't explain the event)",
+      "problem": "'Sandbox' is jargon to a teenager, and 'broke out' sounds like a lab curiosity. The fact that makes it a 'warning shot' is that the agents got into another company's real systems (e14-hf-incident: they breached Hugging Face's production systems).",
+      "fix": "L1525 → 'In a test with safeguards deliberately lowered, OpenAI's agents broke out of their sealed test space and into another company's real servers. OpenAI called it a warning shot.' (+6; claim e14-hf-incident). Keep the company unnamed in the narration (or name it on the OST) to save the ear."
+    },
+    {
+      "where": "ch02-s07 L0216-L0217 → ch15-s07 L1511 (Widrow: 'Remember him' still pays off with nothing he did)",
+      "problem": "This is still open from round 6. The film plants Widrow and pays him off only with his death and his feeling. A teenager asks, 'remember him for what?'. Widrow's LMS/ADALINE rule ('measure how wrong, slide downhill') is also the cheapest way to pre-teach the downhill landscape that L0510, L0607 and L0819 all lean on.",
+      "fix": "Optional, but strongly recommended if L0510's fix is not taken. Add L0308b after L0308: 'At Stanford, Widrow built a cousin that measured how wrong it was, and slid downhill, toward less wrong.' (+18; claims e2-lms, e2-adaline). If it is taken, L0510 can drop 'Picture error as hills in fog' (−6) because the hill is already planted."
+    },
+    {
+      "where": "ch05-s03 L0505 ('the tall man at the rim': which rim?)",
+      "problem": "L0505 follows straight on from Hopfield's Versailles talk, so the ear can place Hinton in the Hall of Mirrors, which the bible does not support (e4-hopfield-versailles names no audience). The picture crossfades back to the sterile candle, but the words don't.",
+      "fix": "L0505 → 'The tall man at the sterile candle's rim was Geoffrey Hinton.' (+2; claim e4-hinton-cv)."
+    },
+    {
+      "where": "ch08-s05 (pooling cut: the 55 → 27 → 13 shrink on screen is unexplained)",
+      "problem": "Overlapping max-pooling, one of the paper's named ingredients, was cut for runtime. That is acceptable for the ear, but the OST '55 · 27 · 13 · 13 · 13' now shows the picture shrinking with no reason given. An expert notices the gap, and a curious teenager asks why the grid got smaller.",
+      "fix": "No narration change. In the visual, between courses, show a tiny wordless 3×3 window keeping only its brightest cell (diagram mark, no caption) as the course face narrows from 55 to 27 to 13 (bible Primer F row 'max-pool 3×3, stride 2')."
+    },
+    {
+      "where": "ch11-s05 L1110 ('the note from Florence')",
+      "problem": "The 'waiting for faster GPUs' line comes from the AlexNet paper (NIPS, Lake Tahoe, December 2012), not from the Florence workshop. The film's own Wall slot calls it 'Florence 2012', so a careful viewer can be misled about where it was said.",
+      "fix": "L1110 → 'In 2020, the note from 2012 came back as a smooth, predictable law...' (±0; claims e8-waiting, e11-kaplan)."
+    },
+    {
+      "where": "ch07-s02 L0703 ('Nearly right.')",
+      "problem": "This is still open from round 6. 'Nearly right' is wry, but the ear doesn't know which of the three conditions failed. L0707's 'no warm-up' resolves it only for an attentive expert.",
+      "fix": "Low priority. L0703 end → '...Nearly right: the warm-up turned out to be optional.' (+6; claim e7-pretraining-belief). Skip it if words are tight. L0710 and the OST cover it partly."
+    }
+  ],
+  "strengths": [
+    "The AlexNet deep dive is correct throughout and pitched at both audiences at once. It covers pixels as numbers; a worked 3×3 stencil (the OST arithmetic checks: −0.12 + 1 + 2 + 1 = 3.88, 'nearly four'); 'slide the same stencil everywhere' as convolution; the 96-stencil, five-course, two-great-hall, thousand-lantern shape (matches e8-architecture); stencils born as 'television snow' and cut by the 1986 messenger; ReLU as a weir with the 6× CIFAR-10 test; crops and mirrors; dropout with its reason; the unprompted two-GPU colour/edge split, now paid off against our toy stencil ('Every time' is right: the paper says every run); five or six days with the learning rate divided three times; top-5 explained before 15.3 vs 26.2; fair credit (seven nets voting, one alone near 18; IDSIA's earlier wins); and the one-year flip (all top five convnets in 2013, e8-ilsvrc2013).",
+    "The transformer deep dive remains the film's best teaching. Attention's motive comes first (the 2014 bottleneck). The question/label/message cards are speakable. The dot product is a callback to the stencil ('multiply, and add'). The toy numbers are exactly the bible's worked example: 2, 0, 4, 2 halved to 1, 0, 2, 1, and softmax gives river 0.534, so 'about half' is honest. The √dₖ reason ('learning freezes') matches the paper, and 64 → 8 with the toy's 4 → 2 is exact. It also covers eight heads, clock-face positions, 'talk, then think alone, six times over', the n² catch, and the causal curtain bridging to next-word prediction and GPT-2.",
+    "Round 6's critical gaps are fixed. Era 5 now has a spoken insider dissent (Schank at the AAAI-84 'Dark Ages' panel, verbatim from q-schank-expert). The AlexNet flip speed is spoken. The stochastic-parrots line is glossed with verbatim fragments of q11-parrot. The chokepoint candle's dispute is audible. The knowledge and read-in-order candles now have spoken start dates, so the durations add up for a teenager doing the arithmetic. 'Agents' and the Turing Award are glossed.",
+    "The candle clock answers the brief's 'what people believed, who dissented, how long' with a consistency few documentaries manage. Each candle names its belief in one sentence and puts a named figure at its rim (Gerard, Minsky, the holdouts, Schank, Fodor and Pylyshyn, Sutskever, Uszkoreit, Bender and Koller, Gebru, LeCun, METR). Spoken spans (16, about 7, 17, about 7, 13, 20, about 2, 39) all check against the bible's 'How long it lasted' entries.",
+    "Physical metaphors are built once and reused rather than replaced: switch, knob = weight, lanterns = nerve cells, messenger = back-propagation, fog versus a clean bowl = non-convex versus convex, stencil = convolution and then the dot product, jug of light = softmax, judge = reward model, curtain = causal mask. The closing line, 'The clean bowl sat on stencils cut by hand. In the fog... the net cut its own', is a genuine conceptual payoff that an expert will recognise as the real reason deep learning won.",
+    "Contested matters stay even-handed and attributed: backprop priority (with Hinton's own disclaimer), Perceptrons' share of the winter, Gebru's departure ('the accounts differ'), the Nobel-as-physics question, the three 2023 camps, DeepSeek's cost caveat, the US-China gap, and Anthropic's Pentagon dispute and $1.5B settlement alongside OpenAI's warning shot. Every quote I spot-checked (twenty-six of them) is verbatim in quotes.json and attributed."
+  ]
+}

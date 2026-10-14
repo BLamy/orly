@@ -1,0 +1,28 @@
+{
+ "shot": "ch14-s05",
+ "at": "2026-10-13T09:35:10.073Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "NEURIPS 2022 TOP AUTHORS",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "FIRST DEGREE: CHINA 47% · US 18%",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "WHERE THEY WORK: US FIRST · ~60% OF TOP AI INSTITUTIONS (MacroPolo)",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

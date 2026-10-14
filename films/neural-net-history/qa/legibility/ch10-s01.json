@@ -1,0 +1,79 @@
+{
+ "shot": "ch10-s01",
+ "at": "2026-10-13T04:13:59.325Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "DEEP DIVE · Everything Looks at Everything",
+   "capWhileSubject": 23.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LANGUAGE MUST BE",
+   "capWhileSubject": 22.5,
+   "why": "named: \"language\""
+  },
+  {
+   "text": "READ IN ORDER",
+   "capWhileSubject": 22.5,
+   "why": "named: \"read order\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "we",
+   "maxCap": 52.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "crossed",
+   "maxCap": 40.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 33.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1997",
+   "maxCap": 16.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "× 1.0",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LANGUAGE MUST BE READ",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IN ORDER",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 1997 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
+}

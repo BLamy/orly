@@ -1,0 +1,119 @@
+{
+ "$doc": "Mechanical checks of the round-4 routed shot notes (written by the round-4 showrunner). generator/film/shot-ledger.mjs finalize/check looks each string up in the shot source with comments stripped (plus sets/<id>-*.ts and any listed files): every 'present' string must appear, every 'absent' string must not. A 'fixed' outcome that misses is downgraded to 'partial'. Quoted words like 'behind' are T.word anchors. Purely visual notes (ch08-s06) carry no strings.",
+ "ch15-s06": {
+  "present": [
+   "left Meta, Nov 2025",
+   "AMI Labs"
+  ],
+  "absent": [
+   "Hassabis, 2025 · AGI in 5 to 10 years"
+  ]
+ },
+ "ch10-s12": {
+  "present": [
+   "12 hours",
+   "8 GPUs"
+  ],
+  "absent": [
+   "BLEU",
+   "1/7",
+   "seventh",
+   "GNMT",
+   "derived"
+  ]
+ },
+ "ch15-s05": {
+  "present": [
+   "ANTHROPIC ·",
+   "$1.5B SETTLEMENT",
+   "PIRATED BOOKS",
+   "GOOGLE DEEPMIND",
+   "OPENAI",
+   "META"
+  ]
+ },
+ "ch15-s08": {
+  "present": [
+   "HOW FAR? HOW FAST?",
+   "STATUS: OPEN",
+   "CASE FILE",
+   "'stays'",
+   "'open'"
+  ]
+ },
+ "ch15-s09": {
+  "present": [
+   "LEARNING + ACCOMPLICES",
+   "NEVER ONE PERSON",
+   "STATUS: OPEN",
+   "'suspicious'",
+   "'new'",
+   "'candles'"
+  ]
+ },
+ "ch09-s05": {
+  "present": [
+   "GARY MARCUS",
+   "Deep Learning: A Critical Appraisal"
+  ]
+ },
+ "ch10-s10": {
+  "absent": [
+   "untrained toy weights",
+   "real bindings"
+  ]
+ },
+ "ch14-s04b": {
+  "present": [
+   "'behind'",
+   "CHINA IS A YEAR",
+   "OR TWO BEHIND",
+   "HELPS HUAWEI",
+   "SELF-DEFEATING",
+   "DECISIVE"
+  ],
+  "absent": [
+   "'trailing'",
+   "ONE TO THREE"
+  ]
+ },
+ "ch01-s06": {
+  "present": [
+   "'starts'",
+   "'Two'",
+   "'Chicago'"
+  ]
+ },
+ "ch02-s08": {
+  "present": [
+   "'paper'"
+  ]
+ },
+ "ch15-s01": {
+  "present": [
+   "'Hopfield'",
+   "'Versailles'",
+   "'memories'"
+  ]
+ },
+ "ch15-s04": {
+  "present": [
+   "METR estimates · frontier models"
+  ]
+ },
+ "ch12-s03": {
+  "present": [
+   "an AI safety and research company"
+  ]
+ },
+ "ch14-s02": {
+  "present": [
+   "CHINA IS A YEAR",
+   "OR TWO BEHIND",
+   "CAN A FENCE AROUND CHIPS HOLD?"
+  ],
+  "files": [
+   "sets/ch14-s02-shelf.ts"
+  ]
+ }
+}

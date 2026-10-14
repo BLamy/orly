@@ -1,0 +1,148 @@
+{
+  "id": "deep-learning-renaissance",
+  "checked": 62,
+  "confirmed": 46,
+  "corrected": 12,
+  "unverifiable": 3,
+  "corrections": [
+    {
+      "original": "Hinton, Osindero & Teh's DBN was trained 'one layer at a time, without labels' (key claim 1).",
+      "verdict": "corrected",
+      "fix": "The lower layers are unsupervised RBMs, but when the top-level associative memory is trained \"the labels were provided as part of the input\". All numbers are confirmed: 1.25% vs 1.5% backprop and 1.4% SVM; \"a few hours per layer in Matlab on a 3GHz Xeon processor\"; \"total learning time about a week\".",
+      "sources": [
+        "https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf"
+      ]
+    },
+    {
+      "original": "Science 2006 autoencoders: '784-1000-500-250-30 for faces and digits [check]'.",
+      "verdict": "corrected",
+      "fix": "784-1000-500-250-30 is the MNIST digits autoencoder. The faces net is 625-2000-1000-500-30, and the documents net is 2000-500-250-125-10, with a -2 variant for the 2-D map. The quote 'All three conditions are now satisfied' is confirmed verbatim.",
+      "sources": [
+        "https://www.cs.toronto.edu/~hinton/absps/science.pdf"
+      ]
+    },
+    {
+      "original": "TIMIT net (Mohamed, Dahl & Hinton 2009): 'four hidden layers of 2,000 units'.",
+      "verdict": "corrected",
+      "fix": "The 23.0% model had four hidden layers of 2,048 units plus a final 128-unit bottleneck layer. Hinton's 2019 slide simplifies this to 4 × '2000 hidden units'. The 23.0% PER, the Tesla S1070 and the previous best of 24.40% are confirmed in the paper itself.",
+      "sources": [
+        "https://www.cs.toronto.edu/~asamir/papers/NIPS09.pdf",
+        "https://rse.org.uk/wp-content/uploads/2021/08/Hintons-Presentation_20190718.pdf"
+      ]
+    },
+    {
+      "original": "Microsoft DNN speech 'in production in June 2012' implied for Bing voice search; art note 'a Windows Phone with Bing voice search'.",
+      "verdict": "corrected",
+      "fix": "The 14 June 2012 MSR blog says the first DNN product debut was the Microsoft Audio Video Indexing Service (MAVIS), with a '10- to 20-percent relative error reduction'. Bing voice search was the research dataset (24 h; 16.0% relative sentence-error reduction). The Windows Phone/Bing staging was removed.",
+      "sources": [
+        "https://www.microsoft.com/en-us/research/blog/deep-neural-network-speech-recognition-debuts/",
+        "https://www.cs.toronto.edu/~gdahl/papers/DBN4LVCSR-TransASLP.pdf"
+      ]
+    },
+    {
+      "original": "Timeline: '30 Sep 2012 | ILSVRC 2012 results'; misconception text 'AlexNet's September 2012 result'; hook 'two months before AlexNet'.",
+      "verdict": "corrected",
+      "fix": "30 Sep 2012 was the submission deadline. Preliminary results went to participants on 8 Oct, the ECCV Florence workshop was 12 Oct, and full results were released 13 Oct. Jelly Bean (RTM 9 July 2012) came about three months before AlexNet's result.",
+      "sources": [
+        "https://image-net.org/challenges/LSVRC/2012/",
+        "https://research.google/blog/speech-recognition-and-deep-learning/"
+      ]
+    },
+    {
+      "original": "NYT 'said \"simulating the human brain\" [check exact NYT phrasing]'.",
+      "verdict": "corrected",
+      "fix": "The exact NYT wording is 'a small group of researchers began working several years ago on a simulation of the human brain.' The print headline 'How Many Computers to Identify a Cat? 16,000' ran 26 June 2012, p. B1 (online 25 June). Dean's quotes are confirmed in two full-text copies.",
+      "sources": [
+        "https://davidbader.net/post/20120625-nytimes-cat/",
+        "https://bendbulletin.com/2012/06/26/how-many-computers-to-identify-a-cat-16000/"
+      ]
+    },
+    {
+      "original": "Curiosity hook 1: 'Crowdsourcing made it about two and a half years'.",
+      "verdict": "corrected",
+      "fix": "Li's 2010 slide shows 'July 2008: 0 images' to 'April 2010: 11 million images, 15,000+ synsets', which is under two years. The 19-year estimate is confirmed.",
+      "sources": [
+        "https://www.image-net.org/static_files/papers/ImageNet_2010.pdf"
+      ]
+    },
+    {
+      "original": "Key claim 8: ~50,000 workers in 167 countries cleaned nearly a billion images, reaching 11M images by April 2010.",
+      "verdict": "corrected",
+      "fix": "The 50,000-worker, 167-country and billion-image figures are whole-project totals from TED 2015 (and Daedalus 2022), not stated as of April 2010. They are now decoupled from the April 2010 milestone. The TED wording is confirmed verbatim.",
+      "sources": [
+        "https://www.ted.com/talks/fei_fei_li_how_we_re_teaching_computers_to_understand_pictures/transcript",
+        "https://www.amacad.org/publication/daedalus/searching-computer-vision-north-stars"
+      ]
+    },
+    {
+      "original": "Google cat paper's 15.8% ImageNet-22K accuracy presented as an outcome of unlabelled learning (key claim 16).",
+      "verdict": "corrected",
+      "fix": "The paper reaches 15.8% after supervised training on labelled ImageNet on top of the unsupervised features ('Starting with these learned features, we trained our network...'); 13.6% without unsupervised pretraining. Every other number is confirmed: 1,000 machines, 16,000 cores, three days, 1B connections, 10M 200x200 frames, nine layers.",
+      "sources": [
+        "https://arxiv.org/abs/1112.6209"
+      ]
+    },
+    {
+      "original": "Curiosity hook 10: Hinton 'let it run for six more weeks just to check it wouldn't improve'.",
+      "verdict": "corrected",
+      "fix": "This paraphrased the motive. The footnote says the net was left running with a very small learning rate and 'After six weeks the test error was fluctuating between 1.12% and 1.31%'. The hook is reworded to the source.",
+      "sources": [
+        "https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf"
+      ]
+    },
+    {
+      "original": "Princeton article cited as 'Schwarz, J. (2025)' with the 3 Oct 2025 news URL.",
+      "verdict": "corrected",
+      "fix": "The author is Julia Schwarz. Princeton CS published it on 22 Sept 2025 and Princeton news reposted it on 3 Oct 2025. The Fellbaum, Russakovsky and Deng quotes and the January 2007, second-floor neighbour and 145,000-word details are confirmed.",
+      "sources": [
+        "https://www.cs.princeton.edu/node/6767"
+      ]
+    },
+    {
+      "original": "ILSVRC 2010 test set 'per the challenge page'; NEC-UIUC 'SIFT and LBP' attributed to the 2010 results slides.",
+      "verdict": "corrected",
+      "fix": "The results slides give 150,000 new test images and 50,000 validation images, and describe NEC only as 'Descriptor Coding + SVM'. The SIFT/LBP + stochastic SVM description comes from the IJCV retrospective. The 35 submissions from 11 teams, 0.28 and 11 Sept 2010 in Crete are confirmed.",
+      "sources": [
+        "https://image-net.org/static_files/files/pascal_ilsvrc.pdf",
+        "https://image-net.org/challenges/LSVRC/2010/",
+        "https://arxiv.org/abs/1409.0575"
+      ]
+    },
+    {
+      "original": "Key claim 18: the pretraining belief held 2006-2010 and was abandoned by about 2012 (dossier also said 2006-2011 elsewhere).",
+      "verdict": "contested",
+      "fix": "The Nature 2015 quote is confirmed verbatim. The date range is interpretive, and the dossier was internally inconsistent. Speech practice kept pretraining through 2012: the SPM review describes the two-stage recipe yet says pretraining 'leads to the best results but it is not critical' (<1% absolute WER). The text now presents the decline as gradual (2010-2012).",
+      "sources": [
+        "https://www.cs.toronto.edu/~hinton/absps/NatureDeepReview.pdf",
+        "https://www.cs.toronto.edu/~hinton/absps/DNN-2012-proof.pdf"
+      ]
+    },
+    {
+      "original": "'CIFAR NCAP (2004): Hinton leads it' / 'He directed CIFAR NCAP [S41]'.",
+      "verdict": "unverifiable",
+      "fix": "CIFAR sources confirm that NCAP was launched in 2004 ('Founded 2004'). They do not state Hinton's directorship, so it is tagged [UNVERIFIED in this pass] pending a CIFAR or Hinton source.",
+      "sources": [
+        "https://cifar.ca/wp-content/uploads/2020/04/ai_annualreport2019_web.pdf",
+        "https://cifar.ca/research-programs/learning-in-machines-brains/"
+      ]
+    },
+    {
+      "original": "Key claim 12: 'context-dependent DNNs improved Bing voice search' (as a deployed product).",
+      "verdict": "unverifiable",
+      "fix": "Only research results on Bing voice-search data are documented (Dahl et al. 2011/2012). No source read documents when production Bing voice search adopted DNNs. The film may say 'tested on Bing voice-search data', not that the product shipped with them.",
+      "sources": [
+        "https://www.cs.toronto.edu/~gdahl/papers/DBN4LVCSR-TransASLP.pdf",
+        "https://www.microsoft.com/en-us/research/blog/speech-recognition-leaps-forward/"
+      ]
+    },
+    {
+      "original": "Key claim 19: Andrew Ng urged Hinton to check out CUDA (implicitly before the NIPS 2009 talk).",
+      "verdict": "unverifiable",
+      "fix": "The quote is confirmed as Ng's GTC 2015 recollection quoted by NVIDIA (4 Dec 2023), but it carries no date, so no ordering relative to Hinton's 2009 NIPS talk can be asserted. Hinton's VentureBeat quote is confirmed verbatim (Goldman, 23 Feb 2023; told 'last fall').",
+      "sources": [
+        "https://blogs.nvidia.com/blog/why-gpus-are-great-for-ai/",
+        "https://venturebeat.com/ai/how-nvidia-dominated-ai-and-plans-to-keep-it-that-way-as-generative-ai-explodes"
+      ]
+    }
+  ]
+}

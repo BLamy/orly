@@ -1,0 +1,99 @@
+{
+ "shot": "ch10-s14",
+ "at": "2026-10-13T20:47:45.158Z",
+ "minCapPx": 22,
+ "sampled": 28,
+ "texts": 17,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "decoder only",
+   "capWhileSubject": 35.2,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "× 6",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "cat",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sat",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "on",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "mat",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "die",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Katze",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "saß",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "auf",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "der",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Liu et al., Go",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Liu et al., Google · Jan 2018",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OpenAI GPT · June",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OpenAI GPT · June 2018",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GPT",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 16
+}

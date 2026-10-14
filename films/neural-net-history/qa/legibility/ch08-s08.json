@@ -1,0 +1,38 @@
+{
+ "shot": "ch08-s08",
+ "at": "2026-10-13T04:13:48.441Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "vs ≈ 60,000,000 weights",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "1.2 million labels × ≈ 10 bits ≈ 12 million",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "OVERFITTING",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "memorising the photos, not learning to see",
+   "capWhileSubject": 22,
+   "why": "named: \"photos see\""
+  },
+  {
+   "text": "crops and mirrors: × 2048",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

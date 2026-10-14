@@ -1,0 +1,1281 @@
+{
+  "id": "ch10",
+  "number": 10,
+  "title": "DEEP DIVE — Everything Looks at Everything",
+  "blurb": "2014–2018. The Transformer, built one part at a time. For twenty years language had to be read in order; then attention, and a lunch-table idea that colleagues doubted. Fire the slow reader, keep the attention: three cards per word, one jug of light, a division by eight, eight heads, a clock face for position, talk then think six times. The title, why it won and what it costs, a twenty-year candle put out, and the writing half of the machine, with its curtain over the words to come.",
+  "shots": [
+    {
+      "id": "ch10-s01",
+      "kind": "scene",
+      "setting": "a long, high hall of hanging paper word-slips at dusk, out of time (the inside of a recurrent network); the candle shelf at its foot",
+      "era": "2010s",
+      "mood": "duskRose",
+      "leadIn": 2.1,
+      "holdAfter": 1.4,
+      "transitionIn": "fadeBlack",
+      "visual": "THIS SHOT: a long hall of hanging word-slips where a scribe carries one lamp from slip to slip in order, and the light he carries fades to a glow-worm at the far end. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'DEEP DIVE · Everything Looks at Everything', drops down from the frame's top edge at top-left, like a file-divider tab on a manila folder, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. CAMERA: the long hall (era location), with one SHELF ledge slid into its foreground (low macro on the read-in-order candle). From black, a single lamp, under the tab. Silently, in the lead-in (no line names it), a ghost of chapter 8's pierced stencil hangs in the haze above the hall and thins away into it (convolution is not in the Transformer; only its lesson, learn the features, carries on), before the scribe sets off. We are at one end of a very long hall: a line of paper word-slips hangs from a beam, receding into haze, dozens of them. A small cut-paper scribe (no real person) walks the line with one lamp, stopping at every slip in turn: he reads it, then passes the lamp's flame forward to a wick on the next slip, step by step, on twos. The camera tracks with him slowly, then pulls back to show how long the line is. This is chapter 6's whisper made visible: the light he carries dims a little at each hand-off, so by the far end it is a glow-worm (the vanishing signal; at about slip 50 it is nearly gone). On 'candle' a short ledge of the candle shelf slides into the hall's foreground and its candle is picked out, standing in its year's place on the shelf (CANDLE PLACEMENT: by the year on the base tag, so left of the 1999 and 2006 candles) (STUDY LOCK: the candle's own flame throws a small candleAmber pool, a practical inside the duskRose hall; the study shelf proper is seen in candleAmber in ch10-s13b): LANGUAGE MUST BE READ IN ORDER (lettered on the candle itself in small caps; base tag 1997). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the candle is still lit: a ghost sleeve about seventeen rings tall (102 px) stands above the stub, the flame where sleeve meets stub; it will go out at twenty rings in ch10-s13b. At its foot, small, the chapter 6 'protected pipe' (the long-memory unit) glows on 'pipe', the callback the line makes: the date the candle was lit, and the reason the belief held so long. In the short music-only hold after L1002 the glow-worm light crawls on down the long dim line (Polosukhin's 'a thousand cycles' quote moves to the end-credits sources card).",
+      "lines": [
+        {
+          "id": "L1002",
+          "text": "Another candle, lit in 1997 with that protected pipe: language must be read in order.",
+          "direction": "a breath after chapter 9; a small nod back on 'that protected pipe'; then slow and rhythmic, each comma a step of the scribe",
+          "pauseAfter": 0.6,
+          "spoken": "Another candle, lit in nineteen ninety-seven with that protected pipe: language must be read in order."
+        }
+      ],
+      "beats": [
+        {
+          "id": "indexTab",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "manila index tab typed 'DEEP DIVE · Everything Looks at Everything' drops down from the frame top edge at top-left, holds 2.5 s, slides back up"
+        },
+        {
+          "id": "stencilGhost",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "silently, in the lead-in, a ghost of the chapter 8 pierced stencil hangs in the haze and thins away (its lesson carries on, the stencil does not)"
+        },
+        {
+          "id": "scribeWalks",
+          "at": {
+            "line": "L1002",
+            "word": "read"
+          },
+          "what": "the scribe begins passing the lamp from slip to slip"
+        },
+        {
+          "id": "candleLit",
+          "at": {
+            "line": "L1002",
+            "word": "candle"
+          },
+          "what": "the candle LANGUAGE MUST BE READ IN ORDER is picked out on the shelf in the foreground, its ghost sleeve about seventeen rings tall"
+        },
+        {
+          "id": "pullBack",
+          "at": {
+            "line": "L1002",
+            "word": "order"
+          },
+          "what": "the camera pulls back to show the full length of the line"
+        },
+        {
+          "id": "fade",
+          "at": {
+            "line": "L1002",
+            "edge": "end",
+            "offset": 1.14
+          },
+          "what": "the carried light is a faint glow-worm at the far end"
+        }
+      ],
+      "props": [
+        "manila index tab (chapter title)",
+        "hanging word-slips on a beam",
+        "paper scribe with a lamp",
+        "candle: LANGUAGE MUST BE READ IN ORDER (lit 1997, ghost sleeve ~17 rings)",
+        "the protected pipe from chapter 6"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "DEEP DIVE · Everything Looks at Everything",
+          "beat": "indexTab"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Opens the deep dive in duskRose: solo cello with a slow, metronomic plucked step locked to the scribe's hand-offs (on twos), intensity 0.3. The candle motif's rising fourth on the lit candle. Each step a touch quieter, so the music itself fades down the line."
+      },
+      "claims": [
+        "e10-rnn-belief",
+        "e6-lstm",
+        "e5-vanishing"
+      ],
+      "quotes": [
+        "q10-polosukhin-cycles"
+      ]
+    },
+    {
+      "id": "ch10-s02",
+      "kind": "plate",
+      "setting": "a parchment plate in a translator's study, 2014: English word-slips across the top, French down the side",
+      "era": "2014",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 2.1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: a whole sentence folded into one envelope jams in a funnel; then the plate opens into a grid where each French word looks back at every English word. Cut (same mood, same sequence) to a parchment plate. First, the old way, as the narration names it. A whole English sentence is folded, slip by slip, into one small sealed envelope (the single list of numbers), and the envelope is squeezed through a narrow paper funnel before a French sentence is written out on the far side. As the sentence is squeezed into the funnel the Bahdanau quote card sets in beside it and stays up through the line, read under the narration (the narration names the bottleneck as the envelope jams; the card shows whose word it was). Then the plate opens into a grid: English slips along the top ('the agreement on the European Economic Area'), French slips down the side ('l'accord sur la zone économique européenne'), the words lettered on the slips themselves (no overlay). As each French word is written, a highlighter of light sweeps across the English row and squares light by how much the translator looks back at each word. The lit squares march along the diagonal and then BEND where French reverses the order (European Economic Area → zone économique européenne), forming the classic alignment heat-map. Every visual square is bound to an attention weight; the map is redrawn from the paper's figure, not copied.",
+      "lines": [
+        {
+          "id": "L1005",
+          "text": "In 2014, translating machines squeezed a whole sentence into one list of numbers: a bottleneck. So they learned to look back at every word: attention.",
+          "spoken": "In twenty fourteen, translating machines squeezed a whole sentence into one list of numbers: a bottleneck. So they learned to look back at every word: attention.",
+          "direction": "a turn, lighter; 'attention' set down gently like a key on a table",
+          "pauseAfter": 0.55
+        }
+      ],
+      "beats": [
+        {
+          "id": "squeeze",
+          "at": {
+            "line": "L1005",
+            "word": "squeezed"
+          },
+          "what": "the sentence is folded into one envelope and forced through the funnel; the Bahdanau quote card sets in beside the funnel and stays up"
+        },
+        {
+          "id": "bottleneck",
+          "at": {
+            "line": "L1005",
+            "word": "bottleneck"
+          },
+          "what": "the envelope jams in the funnel's neck"
+        },
+        {
+          "id": "gridOpens",
+          "at": {
+            "line": "L1005",
+            "word": "look"
+          },
+          "what": "the plate opens into the English × French grid; the highlighter sweeps"
+        },
+        {
+          "id": "bend",
+          "at": {
+            "line": "L1005",
+            "word": "attention"
+          },
+          "what": "the lit diagonal bends where French reverses 'European Economic Area'"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "sealed envelope",
+        "paper funnel",
+        "English and French word-slips",
+        "alignment heat-map"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "2014",
+          "beat": "squeeze"
+        },
+        {
+          "kind": "quote",
+          "text": "a fixed-length vector is a bottleneck — Bahdanau, Cho & Bengio, 2014",
+          "beat": "squeeze"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "The cello holds; a soft piano figure enters, two notes per French word, the second always landing where the light lands; a tiny harmonic lift on the bend."
+      },
+      "claims": [
+        "e9-seq2seq",
+        "e9-attention"
+      ],
+      "quotes": [
+        "q-bahdanau"
+      ]
+    },
+    {
+      "id": "ch10-s03",
+      "kind": "scene",
+      "setting": "Google, 2016: a Google cafe table at lunch; a warmer dinner-table pool at the rim",
+      "era": "2016",
+      "mood": "duskRose",
+      "leadIn": 0.6,
+      "holdAfter": 2.4,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: lunch at Google, 2016: the ghost scribe is lifted away from the table as Uszkoreit suggests keeping only the attention, and a colleague at the rim shrugs. Cut to a sunny-dusk cafe: a long table, trays, two figures in silhouette across from each other. A tall man (Uszkoreit) sketches with a fork in the air; across the table, Polosukhin. On 'only' a ghost of the scribe from shot 1 appears above the table and is lifted away by a paper hand: keep the attention, drop the slow reader. Then the Edge of the Light: a small new lamp stands on the table and its pool spreads. In the breath before L1007 a colleague (Kelcey) steps into the rim, in shadow and facing out; on 'doubted' he gives a brief shrug. As he steps in, Kelcey's quote card rises beside him and stays up through the line and the music-only hold after L1007, so it can be read; in the hold nothing else moves but the haze and the lamp. Two images that teach one thing: a new light, and doubt at its rim.",
+      "lines": [
+        {
+          "id": "L1006",
+          "text": "Over lunch at Google in 2016, Jakob Uszkoreit suggested keeping only the attention.",
+          "spoken": "Over lunch at Google in twenty sixteen, Jakob Oosh-ko-rite suggested keeping only the attention.",
+          "direction": "lively, a story told at a table; the name 'Jakob Uszkoreit' (OOSH-ko-rite) said clearly and unhurried; STT and human listen target",
+          "pauseAfter": 0.55,
+          "qa": {
+            "stt": "required",
+            "expect": [
+              "Uszkoreit"
+            ]
+          }
+        },
+        {
+          "id": "L1007",
+          "text": "Colleagues doubted it. One later called his doubt “the biggest incorrect prediction of my life.”",
+          "direction": "wry and fond; 'Colleagues doubted it.' short, a shrug; then the quoted words read plainly as his, with a small smile, never mocking",
+          "pauseAfter": 0.55,
+          "spoken": "Colleagues doubted it. One later called his doubt “the biggest incorrect prediction of my life.”"
+        }
+      ],
+      "beats": [
+        {
+          "id": "lunch",
+          "at": {
+            "line": "L1006",
+            "word": "lunch"
+          },
+          "what": "the cafe table; Uszkoreit and Polosukhin across from each other"
+        },
+        {
+          "id": "scribeLifted",
+          "at": {
+            "line": "L1006",
+            "word": "only"
+          },
+          "what": "the ghost scribe above the table is lifted away"
+        },
+        {
+          "id": "rimDoubt",
+          "at": {
+            "line": "L1007",
+            "word": "doubted"
+          },
+          "what": "a colleague at the rim of the new lamp's light shrugs"
+        },
+        {
+          "id": "kelceyCard",
+          "at": {
+            "line": "L1006",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "in the breath after L1006 a colleague steps into the rim of the new lamp's light, and Kelcey's quote card rises beside him and stays up through the hold"
+        }
+      ],
+      "cast": [
+        "uszkoreit",
+        "polosukhin",
+        "kelcey"
+      ],
+      "props": [
+        "cafe table and trays",
+        "small lamp"
+      ],
+      "onScreenText": [
+        {
+          "kind": "place",
+          "text": "GOOGLE · 2016",
+          "beat": "lunch"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Jakob Uszkoreit",
+          "beat": "lunch"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Illia Polosukhin",
+          "beat": "lunch"
+        },
+        {
+          "kind": "quote",
+          "text": "…the biggest incorrect prediction of my life — Mat Kelcey, 2024",
+          "beat": "kelceyCard"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "A brighter, conversational texture (intensity 0.4): pizzicato strings and light percussion like cutlery; the held suspension of the candle motif under 'doubted' (doubt, not dismissal), sustained through the reading hold."
+      },
+      "claims": [
+        "e10-design-doc",
+        "e10-kelcey"
+      ],
+      "quotes": [
+        "q10-kelcey"
+      ]
+    },
+    {
+      "id": "ch10-s04",
+      "kind": "scene",
+      "setting": "the hall of word-slips from shot 1, 2017: the scribe is gone",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 1.4,
+      "holdAfter": 1.6,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the scribe sets down his lamp and leaves; every slip lights at once with threads between every pair, and the banner inks The Transformer. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): threadsOfLight must accept a {tokens, weights[h][i][j]} override (it is hard-wired to the kit's sample sentence). Crossfade back to the long hall with a tint crossfade (crossfadeMood duskRose to serverCyan, no dip to black; the line waits until the cyan is fully up). On 'Drop' the scribe sets his lamp down and simply walks out of frame. On 'attention' the slips hang dark for a held beat, the abandoned lamp's small pool the only light. Then, on 'once', every slip lights at the same instant and threads of light shoot between every pair of slips at once (threadsOfLight, all queries, low opacity), so the hall fills with a fine web of light in a single step instead of a slow procession. The camera, which tracked slowly in shot 1, now holds still: nothing needs to travel. On 'Transformer' its name, THE TRANSFORMER, inks itself onto a parchment banner (prop lettering) hung from the beam (the abstract's phrase moves to the end-credits sources card); on 'title' (L1024) the paper's title inks itself beneath it on the same banner, ATTENTION IS ALL YOU NEED, prop lettering in the banner's own hand; and with it, a third, smaller line in the same hand lists all eight authors in the paper's own order (its footnote says the order is random, and all contributed equally): Vaswani · Shazeer · Parmar · Uszkoreit · Jones · Gomez · Kaiser · Polosukhin (the 2017 date stamp sits beside it), so no one leaves thinking it was a two-person lunch idea (the deadline night, the title's coining and the random author order are in the published sources list), and the web glows through a short hold.",
+      "lines": [
+        {
+          "id": "L1009",
+          "text": "Drop the word-by-word reader, keep the attention: every word looks at every other, all at once. The Transformer.",
+          "direction": "the teacher's pleasure: brisk through the first two clauses, opening out on 'all at once'; a quiet, satisfied close on the name",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L1024",
+          "text": "Its title: Attention Is All You Need. From English to German, it out-translated every rival after half a day's training.",
+          "direction": "light, a small smile at the boldness of the title; then plain and even on the result",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "scribeLeaves",
+          "at": {
+            "line": "L1009",
+            "word": "Drop"
+          },
+          "what": "the scribe sets down his lamp and walks out of frame"
+        },
+        {
+          "id": "darkBeat",
+          "at": {
+            "line": "L1009",
+            "word": "attention"
+          },
+          "what": "the slips hang dark for a held beat"
+        },
+        {
+          "id": "allLight",
+          "at": {
+            "line": "L1009",
+            "word": "once"
+          },
+          "what": "every slip lights at the same instant; threads between every pair fill the hall"
+        },
+        {
+          "id": "named",
+          "at": {
+            "line": "L1009",
+            "word": "Transformer"
+          },
+          "what": "the name inks onto the parchment banner"
+        },
+        {
+          "id": "titleBanner",
+          "at": {
+            "line": "L1024",
+            "word": "title"
+          },
+          "what": "the banner's second line inks itself beneath the name: ATTENTION IS ALL YOU NEED (prop lettering); the eight authors' names ink in a smaller line beneath it"
+        }
+      ],
+      "props": [
+        "hall of word-slips",
+        "the scribe's abandoned lamp",
+        "parchment banner",
+        "banner author line (eight names)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "2017",
+          "beat": "scribeLeaves"
+        },
+        {
+          "kind": "label",
+          "text": "Vaswani · Shazeer · Parmar · Uszkoreit · Jones · Gomez · Kaiser · Polosukhin",
+          "beat": "titleBanner"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Silence on 'Drop the word-by-word reader' for half a second; then, on 'at once', every voice of a full chord enters together (pulsing synth plus strings), intensity rising to 0.6; the mechanical ostinato for the dive begins and locks to the downbeats, carrying the reading hold."
+      },
+      "claims": [
+        "e10-architecture",
+        "e10-table1",
+        "e10-title",
+        "e10-results",
+        "e10-author-order"
+      ],
+      "quotes": [
+        "q10-aiayn-abstract"
+      ]
+    },
+    {
+      "id": "ch10-s05",
+      "kind": "plate",
+      "setting": "close on three word-slips in the hall, 2017",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 2.6,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: one word-slip turns into numbers and grows three cards, a lantern (question), a mirror (label) and a sealed note (message), each on a knob the messenger tunes. Close on one hanging word-slip. On 'numbers' the slip's lettering briefly dissolves into a short column of small inked numerals (a word is a list of numbers to the machine), then settles back. As each card is named, the slip grows it: on 'question' a small paper lantern with a beam (the query: it shines outward, looking for something); on 'label' a small hand mirror with a tag (the key: what this word offers to be found by); on 'message' a sealed paper note (the value: what it hands over if chosen). On 'tuned' three small brass knobs (the film's 1958 knob, the adjustable weight) appear between the slip and its three objects, one knob per card, each turned to its own setting; just after the line, wordless, the dark messenger bead from chapter 5, in its ring of light, runs once along the three knobs and each turns a hair: the cards are made from the word by learned weights, tuned by back-propagation. Then pull back: every slip in the row now carries all three, lantern, mirror and note, the same three objects in every word, and one caption builds up beneath them as each card is named. The objects are drawn the same everywhere from here on, so a viewer can follow them through the next three shots.",
+      "lines": [
+        {
+          "id": "L1010",
+          "text": "Each word arrives as a learned list of numbers and grows three cards: a question, what am I looking for? A label, what have I got? A message, what I pass on. All tuned by our messenger.",
+          "direction": "the teacher's favourite bit; the first sentence plain and grounding, then three clear steps, warm on 'what I pass on'; the last sentence lighter: these cards are learned, not written",
+          "pauseAfter": 0.96
+        }
+      ],
+      "beats": [
+        {
+          "id": "numbers",
+          "at": {
+            "line": "L1010",
+            "word": "numbers"
+          },
+          "what": "the slip's lettering dissolves into a short column of numerals, then settles"
+        },
+        {
+          "id": "q",
+          "at": {
+            "line": "L1010",
+            "word": "question"
+          },
+          "what": "the slip grows a small lantern with a beam (query)"
+        },
+        {
+          "id": "k",
+          "at": {
+            "line": "L1010",
+            "word": "label"
+          },
+          "what": "the slip grows a hand mirror with a tag (key)"
+        },
+        {
+          "id": "v",
+          "at": {
+            "line": "L1010",
+            "word": "message"
+          },
+          "what": "the slip grows a sealed note (value)"
+        },
+        {
+          "id": "knobs",
+          "at": {
+            "line": "L1010",
+            "word": "tuned"
+          },
+          "what": "three small brass knobs, one per card, each at its own setting"
+        },
+        {
+          "id": "messengerTunes",
+          "at": {
+            "line": "L1010",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "chapter 5's messenger bead runs along the knobs; each turns a hair"
+        },
+        {
+          "id": "allCards",
+          "at": {
+            "line": "L1010",
+            "edge": "end",
+            "offset": 1.4
+          },
+          "what": "pull back: every slip carries all three"
+        }
+      ],
+      "props": [
+        "word-slip",
+        "short column of inked numerals",
+        "small paper lantern (query)",
+        "hand mirror with tag (key)",
+        "sealed note (value)",
+        "three small brass knobs (learned weights)",
+        "messenger bead from chapter 5"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "question · Q    label · K    message · V",
+          "beat": "q"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "The ostinato thins to three bell-like notes, one per card, each held; intensity 0.4."
+      },
+      "claims": [
+        "e10-architecture",
+        "e4-rhw"
+      ]
+    },
+    {
+      "id": "ch10-s06",
+      "kind": "plate",
+      "setting": "a parchment plate hung from the beam in the hall: four word-slips and four lantern-glass cups",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "minDuration": 26,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the worked example: bank shines its question on four mirrors, scores 2, 0, 4, 2 are halved, one jug of light pours into four cups, and bank tints to the water's edge. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): threadsOfLight and attentionMath need {tokens: crossed · the · river · bank, weights, cups: 4, etched shares} overrides; the kit's toy heads are wired to a different sentence. Cut (same mood, same sequence) to a parchment plate hung from the beam in the hall, a small ILLUSTRATIVE tag in its corner. Four word-slips in a row: crossed · the · river · bank. 'bank' raises its small lantern (its question) and the beam touches each slip's mirror (label) in turn. On 'multiply' the gesture of the chapter 8 stencil returns: bank's four question numbers line up against the label's four, each pair multiplies (small ink products), and on 'add' they sum into one score (the dot product, the same multiply-and-add as the stencil). As each match is scored, the score inks beside its slip: 2, 0, 4, 2. On 'halve' a pen strikes through each score and writes the halves beneath: 1, 0, 2, 1. Then a jug of light tips over the row and pours into four lantern-glass cups beneath the slips; the levels are the real softmax of those halved scores, so the cups fill to 20, 7, 53 and 20 in a hundred, each share etched on its own cup's glass (0.20 · 0.07 · 0.53 · 0.20), the river cup clearly fullest. On 'messages' each word's sealed note (its message) is poured out of its cup into 'bank' in those same proportions, river's note by far the largest stream; on 'water's' bank's slip tints from gold to water-blue, and a small meter drawn on the plate settles at water 0.53 · action 0.20 · money 0.20. The numbers are computed (scaled dot product over toy four-number cards), not hand-drawn; the bible's worked example.",
+      "lines": [
+        {
+          "id": "L1011",
+          "text": "Four words: crossed the river bank. Bank holds its question up to every label, and scores each the stencil's way: multiply, and add.",
+          "direction": "slow, demonstrative, like setting out objects on a desk",
+          "pauseAfter": 0.55,
+          "trimDb": -0.3,
+          "$trimNote": "review round 4: fixed trim so its momentary peak keeps >= 0.2 dB under median + 2 dB after the compressor eased to <= 2 dB GR"
+        },
+        {
+          "id": "L1012",
+          "text": "The scores: two, nothing, four, two. Then we halve them.",
+          "direction": "the numbers spaced; a small promise in \"halve\" (paid off in the next shot)",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L1013",
+          "text": "Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade.",
+          "direction": "watch the pour; let 'far bigger' carry the exponential; 'softmax, to the trade' light, a term handed over in passing, as the label lands",
+          "pauseAfter": 0.55
+        },
+        {
+          "id": "L1014",
+          "text": "Bank takes in the messages in those shares, and now means the water's edge.",
+          "direction": "satisfied, quiet; a small pause after 'shares'",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "slipsSet",
+          "at": {
+            "line": "L1011",
+            "word": "four"
+          },
+          "what": "the four word-slips crossed · the · river · bank set out on the plate"
+        },
+        {
+          "id": "query",
+          "at": {
+            "line": "L1011",
+            "word": "question"
+          },
+          "what": "bank's lantern beam touches each mirror in turn"
+        },
+        {
+          "id": "dot",
+          "at": {
+            "line": "L1011",
+            "word": "multiply"
+          },
+          "what": "stencil gesture: the question's numbers meet each label's pairwise, multiply, and add into one score"
+        },
+        {
+          "id": "scores",
+          "at": {
+            "line": "L1012",
+            "word": "scores"
+          },
+          "what": "scores ink beside each slip: 2, 0, 4, 2"
+        },
+        {
+          "id": "halve",
+          "at": {
+            "line": "L1012",
+            "word": "halve"
+          },
+          "what": "a pen strikes through and writes 1, 0, 2, 1"
+        },
+        {
+          "id": "pour",
+          "at": {
+            "line": "L1013",
+            "word": "pour"
+          },
+          "what": "the jug of light tips and fills the four cups"
+        },
+        {
+          "id": "shares",
+          "at": {
+            "line": "L1013",
+            "word": "river"
+          },
+          "what": "cups settle at 0.20 · 0.07 · 0.53 · 0.20, etched on the glass; the river cup fullest"
+        },
+        {
+          "id": "messages",
+          "at": {
+            "line": "L1014",
+            "word": "messages"
+          },
+          "what": "the sealed notes pour into bank in those shares, river's the largest stream"
+        },
+        {
+          "id": "tint",
+          "at": {
+            "line": "L1014",
+            "word": "water's"
+          },
+          "what": "bank's slip tints from gold to water-blue; meter water 0.53"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "four word-slips",
+        "jug of light",
+        "four lantern-glass cups, shares etched on the glass",
+        "sealed notes",
+        "fountain pen"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "ILLUSTRATIVE",
+          "beat": "slipsSet"
+        },
+        {
+          "kind": "equation",
+          "text": "2 · 0 · 4 · 2  ÷ √4  →  1 · 0 · 2 · 1",
+          "beat": "halve"
+        },
+        {
+          "kind": "term",
+          "text": "softmax",
+          "gloss": "the jug of light: shares that sum to one",
+          "beat": "pour"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Intimate inside the cyan hall: celesta over a soft bass pulse (intensity 0.35). Four plucked notes for the four scores; a gentle pouring arpeggio for the jug that lands on the downbeat as the river cup fills; a second, smaller pour for the messages; a warm cadence on 'water's edge'."
+      },
+      "claims": [
+        "e10-architecture",
+        "e10-blog"
+      ]
+    },
+    {
+      "id": "ch10-s07",
+      "kind": "plate",
+      "setting": "the same parchment plate and jug, shown twice side by side",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 0.5,
+      "minDuration": 20,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: two plates side by side: unscaled scores slam all the light into one cup and learning freezes; divided by eight, the jug pours softly. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): attentionMath needs {cups: 3, scores, etched shares} overrides for the two jug panels. The plate widens into two panels with the same jug and three cups. LEFT, unscaled, cards of sixty-four numbers: the scores ink large on the panel, 8 · 0 · −8. Then the jug tips and ALL its light slams into the first cup, the cups' glass etched 1.00 · 0.00 · 0.00. Faint learning arrows (thin oxblood-thread gradient arrows) that hung under the cups wither and vanish: nothing can be learned from a choice that never wavers. The cups freeze with a little frost at their rims. RIGHT, the same scores divided by eight, inked 1 · 0 · −1; the jug pours softly into all three cups (etched 0.67 · 0.24 · 0.09) and the gradient arrows return, alive and moving. Then the full formula inks across the bottom of the plate, with √dₖ circled. Finally, a small callback: the toy plate from the previous shot slides in at the corner with its '÷ √4' circled too.",
+      "lines": [
+        {
+          "id": "L1015",
+          "text": "Why halve? Real cards hold sixty-four numbers, and the scores swing wildly.",
+          "direction": "a teacher returning to a promise",
+          "pauseAfter": 0.55
+        },
+        {
+          "id": "L1016",
+          "text": "The jug tips everything into one cup, and learning freezes.",
+          "direction": "a little stark on 'freezes'",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L1017",
+          "text": "Divide by eight, the square root of sixty-four, and it pours softly. Our toy had four numbers: so we halved.",
+          "direction": "relief; then the last sentence as a pleased little reveal, 'and that, you see' with a teacher's delight",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "slam",
+          "at": {
+            "line": "L1016",
+            "word": "tips"
+          },
+          "what": "all the light slams into one cup: 1.00 · 0.00 · 0.00"
+        },
+        {
+          "id": "freeze",
+          "at": {
+            "line": "L1016",
+            "word": "freezes"
+          },
+          "what": "the gradient arrows vanish; frost on the cups"
+        },
+        {
+          "id": "soft",
+          "at": {
+            "line": "L1017",
+            "word": "eight"
+          },
+          "what": "right panel: 1 · 0 · −1 pours softly 0.67 · 0.24 · 0.09; arrows return; the formula inks"
+        },
+        {
+          "id": "callback",
+          "at": {
+            "line": "L1017",
+            "word": "toy"
+          },
+          "what": "the toy plate slides in with '÷ √4' circled"
+        }
+      ],
+      "props": [
+        "parchment plate in two panels",
+        "jug of light",
+        "three lantern-glass cups",
+        "oxblood-thread gradient arrows",
+        "frost"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "Attention(Q, K, V) = softmax(QKᵀ / √dₖ) V",
+          "beat": "soft"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Left panel: the arpeggio jams on one note, cold and stuck, with the bass dropping out (the music freezes too). Right panel: the arpeggio flows again across three notes, warmer; a small bright tag on 'why we halved'"
+      },
+      "claims": [
+        "e10-sqrt",
+        "e10-architecture"
+      ],
+      "quotes": [
+        "q10-softmax-gradients"
+      ]
+    },
+    {
+      "id": "ch10-s08",
+      "kind": "scene",
+      "setting": "the hall of word-slips, 2017: the announcement's example sentence hung across the beam",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 1.6,
+      "holdAfter": 3,
+      "minDuration": 10.6,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the full-size echo of the toy on the hall's banner sentence: bank's threads reach every slip, then the light splits into coloured heads, each with its own pattern. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): threadsOfLight needs {tokens: the nine-word sentence, weights[h][i][j] hand-set, cups: 9} overrides. Cut back to the wide hall (same mood). The banner of slips now reads the example sentence from Google's 2017 announcement of the Transformer, lettered on the slips: I · arrived · at · the · bank · after · crossing · the · river. A small ILLUSTRATIVE tag hangs at the banner's end. At the shot's first beat the banner settles (the line no longer speaks the look; the picture carries it); on 'real' the slip 'bank' lifts its lantern and threads of light draw out from 'bank' to every other slip (threadsOfLight, query = 'bank', with HAND-SET weights for this sentence; the kit's attentionMath toy heads are built for a different sentence and are NOT used here), and the jug pours into cups beneath the slips; on 'Transformer' the cup under 'river' fills highest, far above the rest. HAND-SET WEIGHTS for 'bank' (one row, sums to 1): I 0.03 · arrived 0.06 · at 0.04 · the 0.04 · bank 0.08 · after 0.03 · crossing 0.10 · the 0.04 · river 0.58. These show what the announcement says a trained model can learn (it 'can learn to immediately attend to the word river'); they are not a trained model's output, and the tag says so. Then, on 'Eight', the camera pulls back and the single colour of light splits: threads in four distinct low-chroma hues fan out from 'bank' at once, each a different head with a different question, drawn from a small HAND-BUILT HEAD TABLE (also ILLUSTRATIVE, four of the eight shown; each row sums to 1 over the nine slips, the named slips taking the share given and the rest spread evenly): head 1 'what am I?' → river 0.58 (the row above); head 2 'what came just before?' → the (4th slip) 0.70; head 3 'what was done?' → arrived 0.45, crossing 0.35; head 4 'who did it?' → I 0.65. One caption: the real model had eight heads of sixty-four numbers each. Hold on the many-coloured web; then, on 'question', every other word lifts its lantern too and the hall glows: every word doing this, all at once. This shot echoes, at full size, the toy plate of ch10-s06 (same three cards, same jug, same cups).",
+      "lines": [
+        {
+          "id": "L1019",
+          "text": "The real Transformer keeps eight sets of cards, eight heads, each asking its own question.",
+          "direction": "pleasure in the discovery; 'eight heads' warmer, a new thought",
+          "pauseAfter": 0.6,
+          "trimDb": 0.6,
+          "$trimNote": "review round 4: fixed trim (computed +0.99) keeps its momentary peak under median + 2 dB after the compressor eased to <= 2 dB GR"
+        }
+      ],
+      "beats": [
+        {
+          "id": "sentence",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the banner of slips reads the blog's example sentence; ILLUSTRATIVE tag"
+        },
+        {
+          "id": "bankQuery",
+          "at": {
+            "shotTime": 0.6
+          },
+          "what": "'bank' lifts its lantern; threads of light reach every slip (hand-set weights)"
+        },
+        {
+          "id": "toRiver",
+          "at": {
+            "line": "L1019",
+            "word": "Transformer"
+          },
+          "what": "the cup under 'river' fills highest (0.58)"
+        },
+        {
+          "id": "heads",
+          "at": {
+            "line": "L1019",
+            "word": "heads"
+          },
+          "what": "the light splits into four coloured heads from the hand-built head table, each with its own threads"
+        },
+        {
+          "id": "allWords",
+          "at": {
+            "line": "L1019",
+            "word": "question"
+          },
+          "what": "every word lifts its lantern; the hall glows"
+        }
+      ],
+      "props": [
+        "banner of word-slips",
+        "lantern on 'bank'",
+        "jug and cups",
+        "coloured threads (one hue per head; hand-built head table, four of eight shown)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "ILLUSTRATIVE · hand-set weights",
+          "beat": "sentence"
+        },
+        {
+          "kind": "label",
+          "text": "8 heads × 64 numbers each (4 shown)",
+          "beat": "heads"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "The jug of light is the film's fifth unforgettable image: the ostinato returns, and on 'eight' it divides into overlapping voices (one per head) in close harmony, intensity building to 0.65; a full, bright chord as the whole hall glows."
+      },
+      "claims": [
+        "e10-blog",
+        "e10-architecture",
+        "e10-figures"
+      ]
+    },
+    {
+      "id": "ch10-s09",
+      "kind": "plate",
+      "setting": "close on the word-slips, each wearing a small paper-cut clock face",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 1.7,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the slips are shuffled and the threads look the same; rehung, each wears a small clock face set by its place in line. The banner's slips are suddenly shuffled into a heap, and the threads look exactly the same: attention alone cannot tell order (a bag of words). The slips rehang in order, and on 'clock' each one is given a small paper-cut clock face pinned at its top corner: a fast hand, a slower hand and a very slow hand. On 'place' the camera tracks along the row: from slip to slip the fast hand jumps a long way, the slower hand a little, the slowest barely moves, so every position's clock face reads differently. Faintly, behind each clock, its hands' angles are traced as a thin strip of waves (sines and cosines, fast to slow): the same thing, said the way the paper says it. The one label sets in with the clocks on 'clock' so it can be read through the track. One image throughout: the clock face. SCRIPT NOTE (review round 1): L1020 is now two lines: the shuffle on 'Shuffle' (the scores come out the same), then L1020b hangs the clocks; on 'fast' the hands turn at different speeds.",
+      "lines": [
+        {
+          "id": "L1020",
+          "text": "Shuffle the words, and attention can't tell: the scores come out the same.",
+          "direction": "gentle, explanatory; 'can't tell' plain; 'the scores come out the same' a small puzzle set down",
+          "pauseAfter": 0.6
+        },
+        {
+          "id": "L1020b",
+          "text": "So each word wears a clock face set by its place in line, some hands fast, some slow.",
+          "pauseAfter": 0.6,
+          "direction": "the answer, warm and clear; slow down on 'its place in line'; 'some hands fast, some slow' lightly, like watching them turn"
+        }
+      ],
+      "beats": [
+        {
+          "id": "shuffle",
+          "at": {
+            "line": "L1020",
+            "word": "Shuffle"
+          },
+          "what": "the slips are shuffled into a heap; the threads look the same"
+        },
+        {
+          "id": "clock",
+          "at": {
+            "line": "L1020b",
+            "word": "clock"
+          },
+          "what": "the slips rehang in order; each gets a small clock face"
+        },
+        {
+          "id": "place",
+          "at": {
+            "line": "L1020b",
+            "word": "place"
+          },
+          "what": "tracking along the row: each clock reads differently; faint wave strips behind"
+        },
+        {
+          "id": "hands",
+          "at": {
+            "line": "L1020b",
+            "word": "fast"
+          },
+          "what": "the clock hands turn: fast at one end of the row, slow at the other"
+        }
+      ],
+      "props": [
+        "word-slips with small paper-cut clock faces",
+        "faint wave strips"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "position = sines and cosines, fast to slow",
+          "beat": "clock"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "A light ticking figure in three layers (fast, medium, slow), like the clock hands, over the held chord; intensity 0.45."
+      },
+      "claims": [
+        "e10-positional"
+      ]
+    },
+    {
+      "id": "ch10-s10",
+      "kind": "scene",
+      "setting": "a long loom of light inside the hall, six blocks set left to right",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 2.8,
+      "minDuration": 9.1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: a long loom of six blocks: in each, threads pass between the words, then each word brightens alone, and the light front travels through all six. KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): transformerLoom needs {causal:false} and horizontal layout. Cut (same mood, same sequence): each word-slip now spools out a ribbon of light (its residual stream) running left to right through a great loom laid out horizontally, transformerLoom with causal: false (this is the 2017 reading half, the encoder, so its threads reach both ways, forward and back). The loom has six blocks in a row. In each block an attention loom passes threads BETWEEN the ribbons (the words talking; thread alpha = the kit's recorded forward pass), then each ribbon passes through its own small paper lantern (the feed-forward step, thinking alone; glow = its activation), and both write back into the ribbon. The camera trucks slowly left to right along the loom as the light front travels (flow), the focus stepping through blocks 0 to 5, six in all, while the original ribbon runs straight through every block like a highway lane (visual only: no line names it). In the music-only hold after L1021 the lane is picked out in light. The weights are illustrative: the film's standard small ILLUSTRATIVE tag sits lower-right (as in ch10-s06 and ch08-s09); no other caption (review round 4 removed the centred honesty caption).",
+      "lines": [
+        {
+          "id": "L1021",
+          "text": "Words talk to each other, then each thinks alone. Six times over.",
+          "direction": "rhythmic: talk, think; then a beat before 'six times over'",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "talk",
+          "at": {
+            "line": "L1021",
+            "word": "talk"
+          },
+          "what": "an attention loom passes threads between the ribbons, both ways"
+        },
+        {
+          "id": "think",
+          "at": {
+            "line": "L1021",
+            "word": "thinks"
+          },
+          "what": "each ribbon brightens through its own lantern"
+        },
+        {
+          "id": "sixBlocks",
+          "at": {
+            "line": "L1021",
+            "word": "Six"
+          },
+          "what": "the camera trucks right through the six blocks as the light front travels"
+        },
+        {
+          "id": "lane",
+          "at": {
+            "line": "L1021",
+            "word": "Six"
+          },
+          "what": "in the hold, the straight highway lane through every block is picked out in light (no caption; the ILLUSTRATIVE tag lower-right)"
+        }
+      ],
+      "props": [
+        "transformerLoom (horizontal, causal: false): ribbons, attention looms, feed-forward lanterns",
+        "highway lane"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "attention → feed-forward, × 6",
+          "beat": "sixBlocks"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Six repetitions of a two-bar figure (talk / think), each a step higher, under a steady ostinato; intensity rising 0.5 → 0.7 as the camera trucks through the blocks; a sustained pedal for the highway lane in the hold."
+      },
+      "claims": [
+        "e10-architecture"
+      ]
+    },
+    {
+      "id": "ch10-s12",
+      "kind": "plate",
+      "setting": "a rack of eight chips on a parchment plate; a sundial; the hall of slips again",
+      "era": "2017",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 2.4,
+      "minDuration": 16.3,
+      "transitionIn": "paperWipe",
+      "visual": "THIS SHOT: why it won: the web collapses into one grid lit on eight graphics chips at once; the catch: doubling the sentence thickens the threads into a wall. Paper wipe: the loom's last frame (ch10-s10) slides off and becomes the parchment plate (same mood, no tint change). The plate: one machine drawn as a single rack with eight slabs. On 'multiplication' the whole web of threads from the hall collapses into a single great grid (a matrix) and all eight slabs light at once, in parallel: no queue, no scribe. On 'chips' the slabs read as what they are, eight graphics chips in one rack, each glowing with its share of the grid (the one sum such chips do best; Aidan Gomez's line on this is in the end-credits sources). Then, wordless in the pause after L1025 (L1024 has already said it won in half a day; the picture shows how), ONE card: a paper sundial's shadow sweeps half a day while the card inks '12 hours' and, about 0.4 s later, 'one machine, 8 GPUs', held alone until 'wall'. The card carries that one fact and nothing else: no compute comparison, ratio or score of any kind (review rounds 3 and 4). Then THE CATCH: back in the hall, the sentence grows, slip by slip, from ten words to twenty; the web of threads between every pair thickens disproportionately until it becomes a near-solid wall of light, and a counter drawn on the beam shows the pairs going 100 → 400 as the length doubles.",
+      "lines": [
+        {
+          "id": "L1025",
+          "text": "Why did it win? No waiting in line: all at once is one huge multiplication, just what graphics chips do best.",
+          "direction": "brisk, practical; a quick question, then one rolling answer landing on 'graphics chips'; leave the sundial, the compute piles and the ledger to the picture in the pause",
+          "pauseAfter": 3.4
+        },
+        {
+          "id": "L1027",
+          "text": "The catch: twice the words, four times the looking.",
+          "direction": "wry, the honest small print; a beat after 'catch'",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "matrix",
+          "at": {
+            "line": "L1025",
+            "word": "multiplication"
+          },
+          "what": "the web collapses into one grid; all eight slabs light at once"
+        },
+        {
+          "id": "chips",
+          "at": {
+            "line": "L1025",
+            "word": "chips"
+          },
+          "what": "the eight slabs are seen for what they are, eight graphics chips in one rack, each glowing as it takes its share of the grid"
+        },
+        {
+          "id": "sundial",
+          "at": {
+            "line": "L1025",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "the sundial shadow sweeps half a day; the one card inks '12 hours'"
+        },
+        {
+          "id": "gpus",
+          "at": {
+            "line": "L1025",
+            "edge": "end",
+            "offset": 1.4
+          },
+          "what": "the card's second phrase, 'one machine, 8 GPUs', is read (nothing anchors here; the shot inks it at sundial + 0.4)"
+        },
+        {
+          "id": "records",
+          "at": {
+            "line": "L1025",
+            "edge": "end",
+            "offset": 2.6
+          },
+          "what": "the one card holds alone (no ledger, no score)"
+        },
+        {
+          "id": "wall",
+          "at": {
+            "line": "L1027",
+            "word": "twice"
+          },
+          "what": "the sentence doubles; the threads thicken into a wall; counter 100 → 400"
+        },
+        {
+          "id": "costEq",
+          "at": {
+            "line": "L1027",
+            "word": "looking",
+            "edge": "end",
+            "offset": 0
+          },
+          "what": "as the pairs counter climbs, cost ∝ n² inks on the beam beside it"
+        }
+      ],
+      "props": [
+        "rack of eight slabs",
+        "matrix grid",
+        "paper sundial",
+        "growing banner of slips"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "12 hours · one machine, 8 GPUs",
+          "beat": "sundial"
+        },
+        {
+          "kind": "equation",
+          "text": "cost ∝ n²",
+          "beat": "costEq"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "All eight voices of the ostinato in unison on 'multiplication', the strongest moment of the dive (intensity 0.75); a confident cadence as the ledger inks its record; then the bass thickens and crowds under 'the catch', a little claustrophobic."
+      },
+      "claims": [
+        "e10-results",
+        "e10-table1",
+        "e10-architecture"
+      ],
+      "creditsSources": [
+        "Base Transformer: 12 hours on one machine with 8 NVIDIA P100 GPUs (e10-results). The derived training-cost ratio against GNMT+RL stays in research/claims.json (e10-flops) and is not shown on screen (review rounds 3-5)",
+        "“The chips we use, they do one thing really well, and that is matrix multiplication.” — Aidan Gomez, New Yorker, 23 August 2024 (q10-gomez-matmul)"
+      ],
+      "quotes": [
+        "q10-gomez-matmul"
+      ]
+    },
+    {
+      "id": "ch10-s13b",
+      "kind": "scene",
+      "setting": "the candle shelf below the case board, in the study (candleAmber); a dawn sky in the study window",
+      "era": "2017",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 5.3,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the read-in-order candle gutters at twenty rings while a translation lamp and a search box light; an honest card writes and crosses out three overclaims. CAMERA: the reverse flame push out to SHELF (low macro; the read-in-order candle goes out). Reverse flame push to the study shelf: the brightest knot of the wall of light from ch10-s12 becomes the flame of the read-in-order candle, and the camera pulls back out of that flame onto the shelf (never through black) while the light tint-crossfades (crossfadeMood serverCyan to candleAmber, no dip); the line waits until the amber is up. STUDY LOCK: the study is always candleAmber; the era enters only through practicals, here a dawnGold sky in the study window behind the shelf, the new day after the old belief. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here LANGUAGE MUST BE READ IN ORDER (base tag 1997) has burned exactly twenty rings: a ghost sleeve twenty rings tall (120 px) stands above its stub. On 'decades' its flame gutters and goes out; the sleeve stays, dark, with a thread of smoke rising through the haze; the tag at its base now reads 1997–2017. On 'replaced' a soft cross-dissolve inside the smoke shows the new way spreading: a small lamp lit in a translation room and a search box lit in a window, each carrying a small in-world paper tag with its year, 2018 and 2019 (prop lettering, no caption) (the cross-dissolve's glow is warm dawn light through the window, never a re-tint of the study). Then, over the smoke, a parchment card writes the honest sentence one phrase at a time, wordless, starting just after L1030 ends, each phrase on its own beat: not the first attention; not only attention; built to translate. The card holds through the hold so all three can be read.",
+      "lines": [
+        {
+          "id": "L1030",
+          "text": "Two decades of recurrent nets read in order. The Transformer replaced them within two years.",
+          "direction": "the candle habit; even",
+          "pauseAfter": 2.2
+        }
+      ],
+      "beats": [
+        {
+          "id": "candleOut",
+          "at": {
+            "line": "L1030",
+            "word": "decades"
+          },
+          "what": "the candle gutters at twenty rings; smoke; the sleeve stays; tag 1997–2017"
+        },
+        {
+          "id": "spread",
+          "at": {
+            "line": "L1030",
+            "word": "replaced"
+          },
+          "what": "a translation lamp and a lit search box dissolve in, each with a small in-world year tag (2018, 2019)"
+        },
+        {
+          "id": "honest1",
+          "at": {
+            "line": "L1030",
+            "word": "Transformer"
+          },
+          "what": "the parchment card writes and crosses out: not the first attention"
+        },
+        {
+          "id": "honest2",
+          "at": {
+            "line": "L1030",
+            "edge": "end",
+            "offset": 0.4
+          },
+          "what": "…not only attention"
+        },
+        {
+          "id": "honest3",
+          "at": {
+            "line": "L1030",
+            "edge": "end",
+            "offset": 1.28
+          },
+          "what": "…built to translate"
+        }
+      ],
+      "props": [
+        "candle LANGUAGE MUST BE READ IN ORDER: stub with a twenty-ring ghost sleeve",
+        "smoke thread",
+        "parchment card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "not the first attention · not only attention · built to translate",
+          "beat": "honest1"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "Strings carry the candle motif in full on 'twenty' (rising fourth, suspension, falling resolution) as the old belief goes out. The honest card, written wordless after the caption, gets near-silence: one sustained note. (Mood is the study's candleAmber; the dawn window is the only warm-gold practical.)"
+      },
+      "claims": [
+        "e10-rnn-belief",
+        "e10-bert-search",
+        "e10-recombination"
+      ]
+    },
+    {
+      "id": "ch10-s14",
+      "kind": "scene",
+      "setting": "the loom of light, 2018",
+      "era": "2018",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 2,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: a paper blade cuts the original loom in two; the writing half is kept, a triangular curtain drops, and every forward-reaching thread snaps to zero. CAMERA: the loom (teaching machine; no study visit: the X-ray and the C3-d pin open ch11-s01). KIT DEPENDENCY (blocking for film-shots, see staging.kitWork): transformerLoom needs {causal} and halves:'both' (two-loom layout). Crossfade (candleAmber to serverCyan) to the loom, laid out horizontally as in ch10-s10, now shown as the whole original translator: two looms side by side, the reading half (causal: false, threads reaching both ways, an English line on its slips) and the writing half (German on its slips, its threads reaching back only). On 'halves' each half is outlined in turn. On 'kept' a paper blade slices between them; the reading half drifts away into haze, and only the writing half stays. On 'curtain' the camera pushes onto the writing half and its triangular curtain of black card drops fully into view diagonally across its attention looms: the loom is drawn with causal: true, and on 'ahead' every thread that would reach forward visibly snaps and its cup falls to exactly zero, so every word can see only the words before it. THE LOOM PART ENDS ON THE CURTAIN. Then on 'next', a short teaser only: one blank sort rises into a ghost slot at the end of the writing half's line and hangs there, unset, through the music-only hold (no typesetter's case, no probabilities; the full next-word demonstration belongs to ch11-s03). The shot ENDS on the hanging ghost slot, still in serverCyan. HANDED ON: the X-ray beat (band 5 in the glowing chat box), the tint change to the study's candleAmber, and the hands pinning this chapter's clue card (a thread of light between two word-slips) into slot C3-d now open ch11-s01, in its lead-in. The open question hangs in the air: what comes next?",
+      "lines": [
+        {
+          "id": "L1032",
+          "text": "The original had two halves: one read, one wrote. In 2018, a Google team kept only the writing half; months later OpenAI did the same, and called it GPT.",
+          "spoken": "The original had two halves: one read, one wrote. In twenty eighteen, a Google team kept only the writing half; months later Open A.I. did the same, and called it G P T.",
+          "direction": "a storyteller's turn; clear on 'two halves', slight mischief on 'only the writing half'; 'and called it GPT' plain, introducing the name",
+          "pauseAfter": 0.55
+        },
+        {
+          "id": "L1033",
+          "text": "It wears a curtain: each word may look back, never ahead. Its one job: guess what comes next.",
+          "direction": "slow and clear on 'look back, never ahead'; the last words, 'what comes next', left hanging open",
+          "pauseAfter": 0.6,
+          "trimDb": 0.2,
+          "$trimNote": "review round 4: fixed trim so its momentary peak keeps >= 0.2 dB under median + 2 dB after the compressor eased to <= 2 dB GR"
+        }
+      ],
+      "beats": [
+        {
+          "id": "halves",
+          "at": {
+            "line": "L1032",
+            "word": "halves"
+          },
+          "what": "the two halves of the original loom are outlined in turn"
+        },
+        {
+          "id": "cut",
+          "at": {
+            "line": "L1032",
+            "word": "kept"
+          },
+          "what": "a paper blade slices between them; the reading half drifts away"
+        },
+        {
+          "id": "curtainKept",
+          "at": {
+            "line": "L1033",
+            "word": "curtain"
+          },
+          "what": "the camera pushes onto the writing half; its triangular curtain drops fully into view"
+        },
+        {
+          "id": "masked",
+          "at": {
+            "line": "L1033",
+            "word": "ahead"
+          },
+          "what": "forward-reaching threads snap; their cups fall to exactly zero"
+        },
+        {
+          "id": "ghostSlot",
+          "at": {
+            "line": "L1033",
+            "word": "next"
+          },
+          "what": "short teaser: one blank sort rises into a ghost slot and hangs, unset, through the hold; the shot ends here (X-ray and clue card open ch11-s01)"
+        }
+      ],
+      "props": [
+        "transformerLoom (two halves; reading half causal: false, writing half causal: true)",
+        "paper blade",
+        "triangular black curtain",
+        "one blank type sort and a ghost slot"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "2018",
+          "beat": "cut"
+        },
+        {
+          "kind": "label",
+          "text": "decoder only",
+          "beat": "cut"
+        }
+      ],
+      "music": {
+        "cue": "transformerDive",
+        "note": "The ostinato simplifies to a single repeating note, like a typesetter's tap (intensity 0.45); on 'what comes next?' it stops on an unresolved upward step, held by celesta over the hanging ghost slot, and hands off to chapter 11's X-ray beat and clue card."
+      },
+      "claims": [
+        "e10-liu-decoder",
+        "e10-architecture",
+        "e10-results",
+        "e10-gpt1"
+      ]
+    }
+  ]
+}

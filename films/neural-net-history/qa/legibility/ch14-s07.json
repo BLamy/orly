@@ -1,0 +1,184 @@
+{
+ "shot": "ch14-s07",
+ "at": "2026-10-14T00:47:18.104Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 34,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "THE GAP IS MONTHS,",
+   "capWhileSubject": 26,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "NOT YEARS",
+   "capWhileSubject": 26,
+   "why": "named: \"years\""
+  },
+  {
+   "text": "~6 MONTHS",
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HASSABIS (GOOGLE DEEPMIND)",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "IN CHIPS: “NANOSECONDS”",
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "OVERTAKE IN 3–5 YRS?",
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "UNDER 1 IN 5 · LIN (QWEN)",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "…the real gap is the difference",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "between originality and imitation.”",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "liang wenfeng",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "July 2024 · ChinaTalk translation",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "CAN A FENCE",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AROUND CHIPS",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOLD?",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "STATUS: OPEN",
+   "capWhileSubject": 23.8,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WASHINGTON",
+   "maxCap": 18.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2026",
+   "maxCap": 31.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "COMPUTE IS THE CHOKEPOINT",
+   "maxCap": 17,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2022",
+   "maxCap": 18,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "OCT 2022 –",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "≈ 2",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LIT 2025 · CONTESTED",
+   "maxCap": 18,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "lit 2025 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HELPS HUAWEI",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SELF-DEFEATING",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHINA’S FOREIGN MINISTRY",
+   "maxCap": 3.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DECISIVE",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "AMODEI (ANTHROPIC), KHAN (EX-NSC)",
+   "maxCap": 3.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LIMA",
+   "maxCap": 16.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2024",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "BLETCHLEY",
+   "maxCap": 15.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2023",
+   "maxCap": 24.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 19
+}

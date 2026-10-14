@@ -1,0 +1,18 @@
+{
+ "id": "m03",
+ "start": 197.3217,
+ "end": 324.2217,
+ "file": "films/neural-net-history/score/renders/m03.wav",
+ "duration": 132.9,
+ "I": -24.5,
+ "LRA": 9.7,
+ "TP": -7.1,
+ "expected": 132.9,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m03.png",
+ "cueSeconds": 126.9,
+ "cps": 1,
+ "lastStrikeLocal": 121.16,
+ "lastStrike": 318.482
+}

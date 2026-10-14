@@ -1,0 +1,207 @@
+{
+  "reviewer": "art-director",
+  "round": 1,
+  "lens": "visual direction",
+  "method": "Read all 128 shots in script.md/script.json against the kit catalogue, the style bible (§2.2 moods, §3.3 camera grammar, §6 metaphors, §7 type, §9 transitions, §10 don'ts), contracts.ts and the kit sources. Estimated shot durations from words at about 2.4 words/s plus leadIn, pauses and holdAfter (total about 32 min, on target). Compared on-screen text length with shot duration, and transition half-durations (TRANSITION_DUR in transitions.ts) with each boundary's leadIn/holdAfter. Spot-checked the plate maths against the kit data: softmax 0.20/0.07/0.53/0.20, 0.67/0.24/0.09, the NEXT_TOKEN_DEMO shares and the 3.88 stencil sum all match.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 6,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 7,
+    "voice": 8
+  },
+  "critical": [
+    "ON-SCREEN TEXT OVERLOAD makes many shots unreadable and buries the images. The script carries 545 on-screen text items (132 quotes) across about 32 minutes. Twenty shots ask for more than 30 characters of reading per second while the narrator is also talking; a comfortable reading rate is about 12 characters per second, and only when the voice is silent. Worst: ch15-s05 (8 cards, 984 characters in about 10 s; the visual itself says each card shows 'for about one second'), ch15-s06 (10 items, 869 ch in about 17 s), ch02-s05 (9 items, 665 ch in about 14 s, including the 220-character Hebb postulate), ch14-s02 (676 ch / about 15 s), ch15-s01 (591 / 13 s), ch05-s06 (568 / 13 s), ch14-s07 (874 / 21 s), ch14-s06 (628 / 15.5 s), ch15-s02 (291 / 6.4 s), ch11-s01 (321 / 8.3 s), ch11-s05 (586 / 16 s), ch06-s04 (598 / 17 s). FIX, as a film-wide rule: (a) besides the stamp and name card, each shot gets at most 2 text items; (b) any quote that is shown but not spoken gets a music-only window of at least (characters / 12 + 1.5) s, so set holdAfter or minDuration to match; (c) cut quotes over about 160 characters to the fragment the shot needs (Hebb, the Bell Labs bets, the BIS and Mao Ning cards); (d) quotes that matter more than the picture become narration, and the rest move to the end-credits sources card.",
+    "THE CANDLE-CLOCK'S VISUAL ENCODING IS CONTRADICTORY AND CANNOT FIT THE FRAME. It is the film's central recurring device and the payoff of ch15-s08 ('a bar chart in wax'). A candle burns one 14 px ring per year at L3, so a belief that lasted longer leaves a SHORTER stub, yet ch15-s08 asks for 'tall stubs from the early decades, shorter ones later'. If the stubs are the bars, the chart reads backwards. Scale breaks too: Cyc's taper (39 rings) needs 546 px and the 20-year candle 280 px of burned wax, on a shelf that shares a 720 px frame with the case board. FIX: make the burned length the visible bar. Each candle's burned-away part stays as a ghost paper sleeve, ring-scored and translucent in the haze, above the stub, so sleeve plus stub is a constant 'lit height' and the sleeve length is the years. Or let the wax that runs down pile into a scored column on the dish. Set the ring pitch to 6 px at L3 (39 rings = 234 px). Define this once, in ch02-s04 where the rules are established, and repeat it word for word in every candle shot.",
+    "TRANSITIONS BLACK OUT THE NARRATION AND ARE OVERUSED. 97 of the 128 boundaries are non-cut transitions, about one every 20 s; the bible's §9 asks for one device per 60–120 s, with signature transitions only at chapter or era breaks. There are 34 lampChanges, each 3 s (1.5 s down to fg black, then 1.5 s up), 12 of them between shots in the SAME mood (ch02-s03, ch02-s05, ch03-s03, ch05-s07, ch06-s04, ch07-s03, ch07-s04, ch08-s01, ch08-s02, ch08-s13, ch09-s01, ch11-s01). At 40 boundaries half the transition is longer than the incoming leadIn or the outgoing holdAfter, so words are spoken over a frame that is dimming or dark. Examples: ch07-s04 leadIn 0.4 under a 3 s lampChange; ch07-s03 0.5; ch02-s03/ch02-s05/ch05-s06/ch06-s07/ch08-s02/ch10-s04/ch10-s08/ch11-s08 0.6; ch15-s03 iris with leadIn 0.5. Full list: every lampChange shot with leadIn < 1.5, every iris with leadIn < 1.1, every inkBleed with leadIn < 1.0. FIX: keep lampChange only for real mood changes and for the 'push into the flame onto the stage' cue, and make same-mood changes plain cuts or occluder wipes. Wherever a lampChange stays, set the incoming leadIn and the outgoing holdAfter to at least 1.6 s (iris 1.2, inkBleed 1.1). Aim for at most 1 signature transition per 60 s.",
+    "THE FINALE NEEDS A FIXED MAP OF THE BOARD AND THE WALL, AND NONE IS SPECIFIED. ch15-s08 turns the case board into a lanternNetwork (input layer 1943 at the left, the chat box as the output), and ch13-s01, ch09-s05 and ch12-s08 depend on where slips sit on the Wall of Forecasts. Yet about 50 shots 'pin a card to the board' with no position, and the Wall's geography contradicts itself: ch09-s05 pins Hinton's 2017 slip at the 'far, empty end'; ch12-s08 drifts toward 'the dark end … one slip just beyond the lamp's reach'; ch13-s01 says the 30-to-50-years slip 'has hung there since the board was first built', but it is never planted in an earlier visual. FIX: add a staging appendix to script.json (or the study set spec): a fixed grid of board slots, laid out as network columns by era (1943 wick and 1958 knob in column 1; scissors, bead and stencil in column 2; furnaces, filter tile and thread in column 3; type sort and shears in column 4; output = chat box), the red question-card thread along the top, and the Wall of Forecasts' slot order (Turing, chess, Rosenblatt 1961, Florence 2012, Coulom, the 30–50 slip in shadow, Hinton 2017 at the far end). Plant the 30–50 slip's corner, half-lit, in ch01-s05, ch06-s07 and ch09-s05, and pin every clue card into its slot."
+  ],
+  "issues": [
+    {
+      "where": "ch10-s10 (and ch10-s14)",
+      "problem": "The kit's transformerLoom is laid out horizontally (blocks at attX(l) left to right) and is CAUSAL (one causal head). The script asks for a loom 'six storeys high' with the camera 'craning up storey by storey', which the painter cannot draw. Worse, the causal threads already hide future words in 2017, before ch10-s14 introduces the 2018 'curtain' as the new idea, so the deep dive teaches the mask twice and gets the 2017 encoder wrong.",
+      "fix": "Stage it as a slow truck left to right along the loom (focus stepping through blocks 0 to 5). Add a `causal: false` option to transformerLoom for ch10-s10 (the encoder: threads reach both ways), and let ch10-s14 switch it to `causal: true` as the curtain falls, so the threads that reach forward visibly snap and their cups drop to zero."
+    },
+    {
+      "where": "ch03-s02",
+      "problem": "'The camera whip-follows him and the paper fills the frame' breaks the camera grammar (§3.3: eased moves, at most about 6% of the frame width per second). A whip in a hand-cut world reads as a cheap digital effect.",
+      "fix": "Hold the camera. The newsboy runs across in profile, stops at centre and thrusts the paper toward the lens on a hold. The paper itself (an L6 occluder) wipes into the parchment quote card."
+    },
+    {
+      "where": "ch07-s04",
+      "problem": "'A slow orbit of 10° around the held card' is impossible: multiplane cut-outs are flat and cannot be orbited.",
+      "fix": "Replace with a lateral truck (x ±80) plus a 3% push-in. Sell the depth with the embers rising on L5 and the haze on L3."
+    },
+    {
+      "where": "ch01-s03",
+      "problem": "The continuous pull-back from the room, through the window, over the city, out to the earth's limb spans orders of magnitude that one multiplane camera cannot cross. The kit also has no planet or limb painter (only the desk `globe`), so it would need several hidden cuts and a new asset.",
+      "fix": "Chain it as three moves joined by occluders: window mullions (L1 occluder) → skyline('megacity') rising out of the fog → a dissolve through cloudBank into a custom 'night limb' painter (one arc of ridgeline in serverCyan haze with stars(), windows dusted by a seeded scatter). Specify it as a reusable set, because ch12-s06 repeats the move exactly."
+    },
+    {
+      "where": "ch05-s06",
+      "problem": "Seven distinct actions in about 13 s: the 8-name cluster, threads, the Helsinki thread, the title strip, the false-clue card turned over, a quote card, and two lantern-slide vignettes (NETtalk, ALVINN), with 568 characters of text.",
+      "fix": "Keep the name cluster, the threads converging and Hinton's quote. Move the false-clue reversal to the hold with holdAfter 4. Cut NETtalk and ALVINN, or give them their own 8 s music-only montage shot after ch05-s06 with a 1-line label each."
+    },
+    {
+      "where": "ch05-s04",
+      "problem": "holdAfter 3.2 s has to carry the full training scrub ending, the question card burning out, the trained XOR check on all four cases, a 150-character quote card and the family-tree card. The film's most important teaching machine gets the least breathing room.",
+      "fix": "Set holdAfter to 8. Order the hold: XOR check (4 × 0.8 s) → question card drops → quote. Move the family-tree card to ch05-s06 or cut it."
+    },
+    {
+      "where": "ch05-s05",
+      "problem": "The bold-stride second walk (about 15 real gradient steps over the ridge) is set 'during the hold', which is only 2.6 s long.",
+      "fix": "Set holdAfter to 7 (or minDuration to 20) so the leap and the settle each get a beat; 'bold stride: over the ridge' needs reading time."
+    },
+    {
+      "where": "ch05-s01",
+      "problem": "The shot opens in the study (hands lift the question card) and then lamp-changes again inside the shot into Versailles, on top of an incoming lampChange from winterBlue. Two dark dips in about 4 s. It ends with 'the hands of the narrator (study overlay, very faint, top right)' composited over the Hall of Mirrors, a muddled double exposure.",
+      "fix": "Open directly in the Hall of Mirrors; the transition from ch04 carries the mood change. Cut the corner overlay; the 'plant' card can be tucked in at ch05-s06 in the study."
+    },
+    {
+      "where": "ch05-s09",
+      "problem": "Three locations in about 14 s: the Austin panel with snow inside the hall, the room of screens going dark, and the candle shelf with two tagged candles. 454 characters of text.",
+      "fix": "Split it: (a) panel plus screens going dark (cut the McDermott card or hold it 6 s); (b) a short shelf shot for the knowledge candle going out and the Cyc taper, ending on the 'seven years' line."
+    },
+    {
+      "where": "ch08-s08",
+      "problem": "Three metaphors in one 16 s shot: the balance scale, the hall of mirrors, and dropout as snuffed lanterns, with two long quote cards. Dropout is a core AlexNet idea in a deep dive and gets about 4 s.",
+      "fix": "Make dropout its own shot, about 10 s, music-led after L0816. Extend lanternNetwork with a seeded `mask` param (p = 0.5 per example) so the snuffing is bound to real data, as the bible's §6 recipe asks. Keep the scale and the mirrors in ch08-s08 and drop the second quote card."
+    },
+    {
+      "where": "ch08-s13",
+      "problem": "48 words, 8 beats, 6 cards, 3 locations: the empty workshop, the 2013 leaderboard of cathedral lanterns, the IDSIA road-sign inset, the shelf with one candle out and one lit, the fog card dropping, and two quote cards. The emotional close of the AlexNet dive is too crowded to land.",
+      "fix": "Split it: (a) workshop plus 2013 leaderboard plus IDSIA (L0824–L0825); (b) the shelf: the expert candle gutters, the new candle catches, the fog card falls (L0826), with the CHM and Hinton cards in a minDuration-held music window of about 10 s."
+    },
+    {
+      "where": "ch10-s03",
+      "problem": "Eight cast members, nine text items and five staging moves in about 25 s: the lunch, a ghost scribe, the Kelcey rim, the father's dinner-table pool, a case-board thread with Gomez walking along its shadow, the corridor, Shazeer stepping in to a whiteboard. It turns into a parade of name cards with no image that teaches.",
+      "fix": "Make it two shots. (a) The lunch: Uszkoreit's lamp; the doubters at its rim (Kelcey, and his father in a separate pool), with only Kelcey's quote. (b) The team assembling: one corridor, walk-ins in profile on twos (Gomez, then Shazeer), name cards only. Drop the case-board detour."
+    },
+    {
+      "where": "ch10-s13",
+      "problem": "53 words and 7 beats: the poster crowd, lights going out row by row, the security torch, Hochreiter stepping into the light, the pipe glowing, the shelf with the 20-ring candle out, the spread to 2018 and 2019, and three crossed-out labels.",
+      "fix": "Split it after L1029. The poster-hall shot ends on Hochreiter in the light. A shelf shot carries L1030–L1031, with the crossed-out labels set one at a time over the smoke, each on its own beat."
+    },
+    {
+      "where": "ch11-s01",
+      "problem": "About 8 s (13 words) for the coat re-cutting, the push through the window, a canyon of shelves, two walking lantern-machines with long labels, and a red thread on the board linking three cards. 321 characters.",
+      "fix": "Set minDuration to 20 and let the library and the two machines play in music. Move the 'Generating Wikipedia' blueprint thread to ch11-s02's lead-in on the board."
+    },
+    {
+      "where": "ch11-s05",
+      "problem": "Two different candles are lit in one shot (GROW THE MODEL FASTER THAN THE DATA on 'straight line', then SCALE IS THE MAIN LEVER at the climax), along with the Sutton card, the log paper, the city and the Florence slip's glint. Viewers will not keep straight which flame is which when ch11-s07 snuffs one and trims the other.",
+      "fix": "Light SCALE IS THE MAIN LEVER at the climax as the hero candle. Hang the small 'grow the model faster than the data' recipe on it as a paper tag in ch11-s05. In ch11-s07 the tag burns off and is replaced by PARAMETERS AND DATA GROW TOGETHER while the big wick is trimmed. That is one candle with an encoding that is easy to read."
+    },
+    {
+      "where": "ch11-s08",
+      "problem": "The longest shot in the film to read: three doubter vignettes (octopus, parrot, Marcus) plus two equal account cards, a board pin, and an X-ray beat. 9 items, 758 characters, 8 beats.",
+      "fix": "Keep the octopus as the hero image with L1117. The parrot and Gebru get the two equal cards and nothing else. Put the Marcus card in the music-only hold (6 s), or cut it. Move the dark shears slot to the opening of ch12-s01, which already ink-bleeds from it."
+    },
+    {
+      "where": "ch15-s05",
+      "problem": "Besides the text overload (critical #1), six identical lamps with cards flipping is the film's least visual, least teaching shot: boxes in a row, one second each, under a 6-word line.",
+      "fix": "Either narrate it (3–4 short lines, one per lamp, minDuration about 40) or cut it to the three most consequential items, each with its tiny paper vignette from the visual (vault door, the two courthouses with their gavels, the split essay page). Hold each about 6 s in music, with one 1-line label."
+    },
+    {
+      "where": "ch15-s06",
+      "problem": "Ten text items in a held tableau of five figures in about 17 s. The tableau itself (two inside the worry candle's light, LeCun and Sutskever at the rim, Hassabis by the Wall) is a strong closing image, but it gets buried.",
+      "fix": "Keep at most one 1-line card per figure, appearing in sequence, and set minDuration to 30. Move Hassabis's slip and the 'even odds' tag to the lead-in with their own 5 s."
+    },
+    {
+      "where": "ch02-s05",
+      "problem": "Two scenes in about 14 s: the Hebb plate (the thread thickening three times) and then Turing (a pan to the file, a Manchester window, a name card, a slip pinned to the Wall), with 9 text items.",
+      "fix": "Split it into ch02-s05a (the Hebb plate, with the quote trimmed to 'some growth process … such that A's efficiency … is increased' plus the paraphrase note) and ch02-s05b (a Manchester window, then the Wall of Forecasts pin, 8–10 s with the 'DUE 2000' slip held)."
+    },
+    {
+      "where": "ch13-s03",
+      "problem": "The visual promises 'about seven seconds of strip on screen' to read the statement, but holdAfter is 3.2 s and L1308 is short.",
+      "fix": "Set holdAfter to 8, or minDuration to 18."
+    },
+    {
+      "where": "ch15-s02",
+      "problem": "Two theatres, a scroll unrolling behind a curtain, a price tag, and 291 characters of labels in about 6.4 s.",
+      "fix": "Set minDuration to 14 and put each label under its theatre as the camera reaches it."
+    },
+    {
+      "where": "ch12-s05",
+      "problem": "'A small dog … head cocked, before the horn of a gramophone' is the composition of a famous trademark (His Master's Voice). The style bible forbids brand marks (§10.14).",
+      "fix": "Change the composition: the dog seen from behind, lying and listening beside the gramophone with its ears raised, and the horn angled away from camera. Or keep only the glowing horn in the doorway and let Brynjolfsson's quote describe the dog."
+    },
+    {
+      "where": "ch12-s03 vs ch09-s04",
+      "problem": "The visual claims Anthropic's founding gets 'deliberately the same treatment as every other lab's founding', but OpenAI's founding (ch09-s04) is a typed announcement plus two lanterns on one nail, while Anthropic's is an office of silhouettes plus a money ledger. The parity is asserted, not drawn.",
+      "fix": "Use one founding grammar for both: the typed announcement pinned on the board, a hope/fear (or safety/scale) lantern pair on the same nail, and a ledger line in the same style (OpenAI's ledger arrives in ch12-s08). The office of silhouettes can stay for both or be cut for both."
+    },
+    {
+      "where": "Study mood (ch08-s14, ch11-s01, ch12-s07 serverCyan; ch13-s01 duskRose)",
+      "problem": "The detective's study is the film's home base (about 53 shots touch the study, board, shelf or Wall), but its palette drifts: candleAmber mostly, serverCyan or duskRose sometimes. The room stops feeling like one place.",
+      "fix": "Lock the study to candleAmber. Let era colour enter only through practicals: the X-ray box glows serverCyan, the window shows the era's sky. Use the accent budget (§2.2) for that one glow."
+    },
+    {
+      "where": "ch14-s06, ch14-s07",
+      "problem": "These are dusk and night scenes, but both stay in dawnGold. That breaks the palette's meaning, and seven shots in a row of the same mirrored two-shores wide (pages rising from the water in s01, s02, s06 and s07) go visually flat.",
+      "fix": "Tint-crossfade to duskRose across s06 and into a night version for s07 (or winterBlue haze with warm windows). Vary the scale: s06 at water level among the drifting lanterns (low camera, L5 lanterns large), s07 high and wide. Cut the 'page rises from the water' device in at least one shot (for example, s06's action plans as two lit windows instead)."
+    },
+    {
+      "where": "X-ray chat box beats (ch02-s08, ch03-s09, ch05-s10, ch07-s06, ch08-s14, ch10-s14, ch11-s03, ch12-s07)",
+      "problem": "A great accumulating device, but each 4–6 s beat must show small parts ('threshold units, knobs, hidden layers, racks, a sea of text, threads, sorts') inside a translucent rectangle. Without a fixed internal layout they will read as glittering clutter, and the ch12-s07 tilt (base to top) assumes a layout no earlier shot sets up.",
+      "fix": "Define the box once as strata, like a geological column of 7 labelled empty bands drawn faintly from the first X-ray in ch02-s08. Each later beat lights exactly one new band, bottom to top: wick → knobs → hidden layers + backward arrow → furnaces + text → threads → sorts → shears. Keep the stencils as a band that stays dark (ch08-s14). Then ch12-s07's tilt is a reading of the column."
+    },
+    {
+      "where": "Detective's hands (about 50 shots)",
+      "problem": "The 'two weathered hands from below frame' do most of the film's acting (pin, strike a match, fold, stamp, hold a magnifier, lift a coat, trim a wick). The kit has hand sprites (handArt) but no rig of forearm, cuff and hands, and the script uses about 15 different hand actions.",
+      "fix": "Specify a 'narratorHands' rig in cast (cuffed tweed forearms entering from L5, handArt swaps, a fixed lamp-side entry point) and limit the script to about 6 reusable actions: pin, unpin/drop, strike match/light, fold into the file, stamp, hold up. Rewrite the rarer actions (magnifier, coat-hook, wick trim, tweezers) in those terms or cut them."
+    },
+    {
+      "where": "Bespoke teaching machines (ch02-s02, ch02-s05, ch03-s05, ch05-s02, ch06-s03, ch06-s06, ch07-s02, ch08-s07, ch08-s08, ch09-s02, ch09-s04, ch10-s02, ch10-s05, ch10-s06/07, ch10-s09, ch10-s12, ch11-s05, ch11-s07, ch12-s01, ch12-s02, ch12-s04, ch15-s03, ch15-s04)",
+      "problem": "About 23 machines are not in the kit, on top of the 10 that are. That is a heavy load for the shots stage, and the risk is that some end up decorative rather than bound to real numbers (bible §6).",
+      "fix": "Reuse the kit wherever the maths allows. lanternNetwork with fixed weights covers McCulloch–Pitts AND/OR, Hebb's two lanterns, the vanishing chain and the pretraining stack. mistyHills with a convex lossF covers the SVM bowl and the Chinchilla valleys. threadsOfLight drawn as a grid covers the Bahdanau alignment. For each remaining bespoke plate, name in the visual the quantity every moving part is bound to (the ch03-s05 line jumps should come from a real perceptron run on the plotted dots; the ch03-s01 LEFT/RIGHT lamps from a real 1-D run)."
+    },
+    {
+      "where": "ch03-s07",
+      "problem": "'An arrow taken from the error BEFORE the threshold' on a corner chip is too abstract to draw or understand in a 2 s inset.",
+      "fix": "Draw two tiny units side by side. The perceptron is a lantern whose teacher hears only lit or unlit (a bell: right or wrong). ADALINE is the shoebox, whose teacher reads the needle (how far off). The knob turn is sized by the needle's distance. Label: 'learns from how wrong, not just whether'."
+    },
+    {
+      "where": "ch04-s07",
+      "problem": "'The printout's top sheet legible as a few lines of FORTRAN-style code' seen through a distant window during a wide crane cannot be read (the minimum text size is 26 px at 1080p). The pan also says 'east to west' while visiting Japan → Tokyo → Harvard → Helsinki.",
+      "fix": "When the camera settles on Helsinki, push in through the window to a 3 s insert of the printout (big enough to read). Order the window visits to match the camera's direction, or call it a slow drift that returns to Helsinki."
+    },
+    {
+      "where": "ch08-s02",
+      "problem": "Hinton 'in a lit window across the street at a university window' invents a spatial relationship: a university building facing a family bedroom. It reads as fact in a film that grounds everything.",
+      "fix": "Show the supervisor as a small figure in a separate inset pool of light (a picture-in-picture lantern-slide at frame edge) captioned 'supervisor, University of Toronto', or as a glowing email on the desk."
+    },
+    {
+      "where": "ch03-s04",
+      "problem": "'In the hold: cut to the case board for two seconds' interrupts the film's best machine image to drop a card, and the very next shot (ch03-s05) already tilts up to the board.",
+      "fix": "Move the unpinning of 'How would a machine change its own wiring?' into ch03-s05's board beat, so the knob answer and the new IF card arrive together."
+    },
+    {
+      "where": "Red thread / STATUS: OPEN stamp / wax seals",
+      "problem": "A saturated red string runs across the top of the board in about 20 shots, but the accent budget (§2.2) allows one saturated accent per shot, motivated by a practical light, and the X-ray box's cyan and the flames already use it.",
+      "fix": "Specify the thread as low-chroma oxblood (emberRed rim mixed into the candleAmber set at about 60%) that only glints where the lamp pool falls. Keep full red for one moment only: the STATUS: OPEN stamp in ch15-s09."
+    },
+    {
+      "where": "ch15-s04",
+      "problem": "'A thought-bubble cut-out shows a speedometer needle' is comic-strip grammar that sits outside the silhouette register.",
+      "fix": "Give the WITH TOOLS stopwatch a faint ghost hand, the one they believed, running 20% short of the real hand. The gap between the two hands is the joke, bound to the 19% and 20% figures."
+    },
+    {
+      "where": "ch08-s05 / ch08-s06",
+      "problem": "'Stairs that wind through the towers' and small inset vignettes on each course (edges, textures, fur and an eye, a dog's head) are not in alexnetCathedral, and the insets compete with the block-by-block reveal.",
+      "fix": "Run the messenger down the cathedral's existing bridge and column paths, with no new stair geometry. Show the four layer vignettes one at a time in the rose-window position as each course lights, rather than four simultaneous insets."
+    }
+  ],
+  "strengths": [
+    "Real teaching machines bound to real computation sit exactly where the brief demands depth: the Mark I perceptronRetina, where only the lit knobs turn and only on mistakes; xorPlate with one cut, two cuts and the fold; the lanternNetwork messenger running back down the strings; stencilLantern with a worked 3.88 cell; alexnetCathedral with true layer shapes and bridges only where the GPUs talk; the softmax jug with the √d_k freeze/thaw panels (the numbers check out); threadsOfLight with multi-head hues; nextToken with a temperature dial. The AlexNet and transformer dives are built visually part by part, not with boxes and arrows.",
+    "Recurring staging grammars that teach the thesis without words: believers inside a candle's pool and dissenters at the rim facing out; Hinton seated at the rim from 1976, standing at the centre in 2012 and walking back to the rim in 2023, with the ghost of his younger seated self (ch13-s02). This is the film's most memorable image idea.",
+    "Devices that pay off: the candle-clock (once its encoding is fixed), the Wall of Forecasts whose slips yellow, curl, glint or come down; the X-ray chat box lighting one new component per era, with the stencils pointedly NOT lighting (ch08-s14: 'Not every clue is part of the suspect'); and the case board revealed as a lantern network with one lantern dark.",
+    "Strong match cuts straight from the style bible: the book's shadow stretching into the winter night (ch04-s03); the Mark I retina subdividing into a 224×224×3 husky (ch08-s03); the GPU LED multiplying into a data-centre aisle (ch08-s14); the Nobel medallion's rim becoming a Versailles mirror where the reflections finally turn toward Hopfield (ch15-s01).",
+    "Restraint in the grief moments: Pitts's and McCulloch's lamps on the sills (ch04-s04), the dedication inked by candlelight (ch04-s05), ADALINE's needle still lit on a snowy sill for Widrow (ch15-s07), and the ImageNet globe going dark window by window.",
+    "Fairness is drawn, not just said: mirror-balanced shores of equal warmth, no flags or emblems, equal-size allegation and response cards, equal-size account cards for Gebru's exit, the 'three lamps, not two teams' re-staging of the 2023 debate (ch13-s04), and 'Every lab, under the same light'.",
+    "Era-adaptive type (Special Elite → VT323 → Plex Mono) and era moods (labGreen labs, winterBlue winters, serverCyan scaling) give a clear sense of moving through time. The closing hand from the viewer's side lighting an unlettered candle is an earned ending."
+  ]
+}

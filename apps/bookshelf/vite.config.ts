@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath } from 'node:url';
+import { editorServer } from './editor-server';
 
 // Served from the domain root everywhere (Cloudflare Workers prod + PR previews,
 // and locally), so all asset paths resolve relative to BASE_URL = '/'.
@@ -23,6 +24,8 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    // Film Editor API (/__editor/*: films, project save, media streaming, import, render jobs); dev server only
+    editorServer(),
     VitePWA({
       // 'autoUpdate' (not the default 'prompt') is the fix for a real incident:
       // a PWA installed on a phone kept running a stale build after a deploy,

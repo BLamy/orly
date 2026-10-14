@@ -1,0 +1,106 @@
+{
+  "voiceId": "MlHIkPdx2ZF9MhznglHQ",
+  "name": "Dave Edge — middle-aged, educated RP British narrator (library voice; chosen 2026-10-06; distinct from perceptron-short's Peter Owen)",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+  },
+  "seed": 1943,
+  "format": "mp3_44100_192",
+  "wpm": 143.5,
+  "lockedAt": "2026-10-06T10:47:55.071Z",
+  "notes": "Library voice chosen by audition; not a clone or imitation of any real person.",
+  "listening": [
+    {
+      "term": "Uszkoreit",
+      "line": "L1006",
+      "expect": "OOSH-ko-rite (spoken respelled Oosh-ko-rite)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "Amodei",
+      "line": "L1206",
+      "expect": "ah-mo-DAY (spoken respelled Ah-mo-day)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "Hochreiter",
+      "line": "L0614",
+      "expect": "HOKE-ry-ter",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "Schmidhuber",
+      "line": "L0614",
+      "expect": "SHMID-hoo-ber",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "Rumelhart",
+      "line": "L0507",
+      "expect": "ROO-mel-hart",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "LeCun",
+      "line": "L0821",
+      "expect": "luh-KUN",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 3: STT heard a spelling variant (voice.json sttHeard); confirm by ear"
+    },
+    {
+      "term": "Lenat",
+      "line": "L1104",
+      "expect": "LEN-at",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 3: STT heard a spelling variant (voice.json sttHeard); confirm by ear"
+    }
+  ],
+  "sttHeard": {
+    "LeCun": [
+      "Le Kun"
+    ],
+    "Lenat": [
+      "Lennart"
+    ],
+    "Uszkoreit": [
+      "Ushko Wright"
+    ]
+  },
+  "sttHeardNotes": {
+    "$rule": "review round 3: STT terms must appear literally. A form listed here is a transcriber SPELLING of the right sounds, never a different pronunciation (no vowel or stress shift: Ahmoudai for Amodei is NOT acceptable). Each entry stays provisional until its listening[] sign-off is ok.",
+    "LeCun": "L0821/L1311 transcribe \"Jan Le Kun\": luh-KUN, the same sounds as LeCun. Added 2026-10-13 by the round-3 global fixer (model judgement); listening sign-off pending.",
+    "Lenat": "L1104 transcribes \"Lennart\": LEN-at in a non-rhotic RP read, the same sounds. Added 2026-10-13 by the round-3 global fixer (model judgement); listening sign-off pending.",
+    "Uszkoreit": "L1006 transcribes \"Ushko Wright\": OOSH-ko-rite heard with a short first vowel. Provisional; the existing Uszkoreit listening sign-off decides."
+  }
+}

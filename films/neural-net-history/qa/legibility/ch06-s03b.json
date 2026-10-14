@@ -1,0 +1,54 @@
+{
+ "shot": "ch06-s03b",
+ "at": "2026-10-13T14:37:55.764Z",
+ "minCapPx": 22,
+ "sampled": 29,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "features, chosen by hand",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1992 · Boser, Guyon & Vapnik",
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "kernel trick",
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "2",
+   "maxCap": 29.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 29.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 29.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 5
+}

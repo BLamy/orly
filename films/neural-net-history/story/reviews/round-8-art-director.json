@@ -1,0 +1,104 @@
+{
+  "reviewer": "art-director",
+  "round": 8,
+  "lens": "visual direction",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug neural-net-history --check: 0 errors, 1 warning, est. 33.3 min (1998.5 s at the locked 143.5 wpm) against a 32.0 min target. Inside the brief's 30-35 min range, so runtime is not critical. The fixes on this card add about +21 s net, for about 33.7 min.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8.5,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8.5,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "THE ALEXNET DEEP DIVE CUTS AWAY FROM ITS OWN PAYOFF IMAGES (ch08-s05, ch08-s06). (a) ch08-s06 is the chapter's thesis image: 'Nobody cut these stencils', with 96 static tiles resolving into the learned mosaic. The resolve starts on 'nudge' at about 8.4 s, the line ends at 9.6 s, and holdAfter is 0.5, so the shot ends at 10.1 s. The finished mosaic is on screen for well under a second before the paperWipe into the weir. FIX: holdAfter 0.5 -> 2.6. Add beat 'mosaic' {line L0812, edge end, offset 0.6}: 'the last pass lands; the 96 learned tiles hold, striped edges and colour blobs, still'. Cut the corner-inset thread to the 1986 clue card; the bead itself is the callback, and a second inset in a 10 s shot competes with the morph. +2.1 s. (b) ch08-s05: the four rose-window vignettes that show 'detectors built from detectors' (edges 6.35, textures 7.19, parts 7.61, things 8.03) last about 0.4 s each, which is a flicker and not a lesson. FIX: L0809 insertGaps {\"edges\": 0.5, \"textures\": 0.4, \"parts\": 0.4}, so each vignette gets at least 0.8 s. Raise holdAfter 1.3 -> 2.5 so the flow light can climb from the window to the crown while the rose window replays the four vignettes in order, one per course as the light passes it, before the pull-back settles. Rename beat id 'doors' to 'lastHall' (WORD RULE: 'door' is reserved for ch12). +2.5 s.",
+    "THE ACT-TURN RHYMES END INSIDE THE CUT (ch12-s06, ch13-s06). (a) ch12-s06, the ChatGPT return to the cold open: beats pullBack and cityLit are anchored {line L1216, word 'wrong', edge 'end', offset 0.8 / 2.0}. The real timeline (lib/timing.mjs resolveBeat) resolves edge 'end' on a word to that word's END, which puts cityLit at about 20.5 s in a 20.27 s shot. The fully lit city, the image this rhyme exists for, never renders, and the pull-back through the window gets about 1 s. ch01-s03 needed a 2.2 s lead-in to make the same climb unhurried. FIX: re-anchor pullBack to {line L1216, edge end, offset 0.4} and cityLit to {line L1216, edge end, offset 2.2}. holdAfter 1.8 -> 4.0, so the lit city with its one open warm door holds for about 1.8 s. +2.2 s. (b) ch13-s06, the hinge from the study to the strait. After L1316, five moves (repin 0.2, thread 0.6, water 1.0, reflect 1.7, shelf 2.5) are packed into 3.5 s, though the visual promises 'the reflection gets its own unhurried moment'. The reflected shelf over the water, the device that all of ch14 depends on, holds for about 1 s. FIX: holdAfter 3.5 -> 5.8; repin end+0.3, thread end+1.1, water end+2.0, reflect end+2.9, shelf end+3.9 (it then holds about 1.9 s before ch14-s01 pushes through the mullions). +2.3 s.",
+    "TWO SIGNATURE TRANSITIONS STILL BREAK staging.transitions AFTER TWO ROUNDS (ch03-s01, ch05-s04). ch03-s01 inkBleeds in on leadIn 0.6; the rule needs at least 1.1, and TRANSITION_DUR.inkBleed is 1.4 s, so the bleed is still running as the stamp and the name card land. ch05-s04 irises in on leadIn 0.6 (rule at least 1.2; TRANSITION_DUR.iris 1.2). Its 'stamp' beat at 0.3 s and the spoken 'October 1986' both arrive while the iris is barely open, at the opening of the film's backprop deep dive. FIX: ch03-s01 leadIn 0.6 -> 1.2. ch05-s04 leadIn 0.6 -> 1.3 with the 'stamp' beat at shotTime 0.9 (iris open, then the strip). +1.3 s."
+  ],
+  "issues": [
+    {
+      "where": "ch10-s05 (beats messengerTunes, allCards; holdAfter)",
+      "problem": "Two wordless moves are packed into a 0.5 s hold, and they fire in the wrong order. allCards (pull back: every slip carries all three) is at line end (16.07 s), and messengerTunes (the bead tunes the three knobs) is 0.2 s later. The visual says the bead runs first and then the pull-back happens. The caption 'question · Q label · K message · V' is meant to be read during the pull-back. This shot sets up the three objects the viewer has to track through the next three shots.",
+      "fix": "messengerTunes at {line L1010, edge end, offset 0.3}; allCards at {line L1010, edge end, offset 1.4}; holdAfter 0.5 -> 2.6 (+2.1 s)."
+    },
+    {
+      "where": "ch10-s12 (beats wall, costEq; holdAfter)",
+      "problem": "THE CATCH, the quadratic cost, lands last and in a rush. costEq ('as the pairs counter climbs, cost ∝ n² inks') fires on 'four' (14.9 s), before 'wall' (16.1 s), where the counter climbs and the hall comes back. The return from the plate to the hall, the sentence growing from 10 to 20 slips, the web thickening into a wall and the counter going 100 -> 400 all happen in the 1.8 s before the cut. Ch10-s13b's reverse flame push starts from 'the brightest knot of the wall of light', so the wall has to be established first.",
+      "fix": "wall -> {line L1027, word 'twice'} (the hall returns and the sentence starts doubling); costEq -> {line L1027, word 'looking', edge 'end', offset 0.2}; holdAfter 1.4 -> 2.4 (+1.0 s)."
+    },
+    {
+      "where": "ch10-s08 (beats bankQuery, toRiver; leadIn)",
+      "problem": "In 0.42 s (1.02 -> 1.44), threads draw out from 'bank' to eight slips, the jug pours, and the river cup fills highest. The full-size echo of the ch10-s06 toy loses its build.",
+      "fix": "leadIn 0.6 -> 1.6; bankQuery at shotTime 0.6 (wordless: the lantern lifts and threads draw out); keep toRiver on 'Transformer' (now about 2.4 s), so the pour reads (+1.0 s)."
+    },
+    {
+      "where": "ch10-s06 (holdAfter)",
+      "problem": "The meaning change, where bank tints to water-blue and the meter 'water 0.53 · action 0.20 · money 0.20' is drawn in, comes on 'water's' at 27.8 s, and the shot ends at 29.1 s. The meter is about 40 characters of drawn text and it is the worked example's punchline.",
+      "fix": "holdAfter 0.5 -> 1.8 (+1.3 s)."
+    },
+    {
+      "where": "ch08-s08b (beat leaf; holdAfter)",
+      "problem": "The leaf beat (the memorised photograph loosening and falling out of the knob mountain, which is the visual reason for dropout) is at 8.93 s in a 9.33 s shot. It gets 0.4 s. The visual also promises 'about one example a second through the music-led hold', but the hold is 1.3 s.",
+      "fix": "holdAfter 1.3 -> 2.8; leaf at {line L0830, edge end, offset 1.4} (+1.5 s)."
+    },
+    {
+      "where": "ch08-s10 (beats; holdAfter)",
+      "problem": "Five or six days of training are told in 8.3 s. There is no cut2 beat. cut1 is at 4.36 s and cut3 at 6.45 s, so the three hand-cut step shortenings, each with a cairn, happen about 1 s apart. The picture-in-picture bedroom window cycles night and dawn five or six times in about 5 s, which reads as a strobe. 'settle' is at 6.97 s and the shot ends at 8.3 s.",
+      "fix": "Add cut2 at {line L0819, word 'three'}. holdAfter 1.4 -> 2.6, and slow the PiP cycle to fill the shot (about 1.8 s per day). The settle onto the valley floor then holds for about 2 s (+1.2 s)."
+    },
+    {
+      "where": "ch05-s03 (beats travel, cambridge, boltz)",
+      "problem": "The round-7 fix kept the San Diego and Cambridge stops but timed them as flashes: travel at end+0.1, cambridge at end+0.35, Pittsburgh at end+0.55. That is two backdrop swaps of about 0.25 s each, which reads as a glitch rather than 'a glance each', and the visual calls the camera move slow.",
+      "fix": "L0505 pauseAfter 0.6 -> 1.6; travel end+0.1, cambridge end+0.6, boltz end+1.1, so each passing stop holds about 0.5 s (+1.0 s). Alternatively, cut both stops and dissolve straight to Pittsburgh (0 s)."
+    },
+    {
+      "where": "ch14-s04b (beats tag2, out; L1410)",
+      "problem": "The shot's key event, the one-to-three-years candle blowing out on 'trailing' (8.76 s), lands 0.03 s after the second dissent tag swings in (8.73 s). The eye is split between a 30-character tag and the death of a belief.",
+      "fix": "L1410 insertGaps {\"over\": 0.8}; tag2 -> {line L1410, word 'over', edge 'end', offset 0.1}. 'out' stays on 'trailing', now about 0.8 s after tag2 (+0.8 s)."
+    },
+    {
+      "where": "ch14-s01 (holdAfter)",
+      "problem": "The norival beat (the camera eases back to the whole page, and the first stone is set on the jetty's Go board, the seed of the chapter's move-and-answer device) is at 9.41 s in a 10.43 s shot.",
+      "fix": "holdAfter 0.6 -> 1.8 (+1.2 s)."
+    },
+    {
+      "where": "ch14-s03 (transition)",
+      "problem": "Round 7's tint fix is half applied. The shot now opens close on the price tag, but ch14-s02 ends on the candleAmber reflection over dawnGold water and ch14-s03 is winterBlue on a plain cut, with no crossfadeMood. The sky around the tag jumps from dawn to winter dusk.",
+      "fix": "Add to the visual: 'Cut, with crossfadeMood dawnGold→winterBlue (0.8 s, no dip) under the close-up, so the sky has changed by the pull-back on million.' (0 s)."
+    },
+    {
+      "where": "ch14-s02 (visual vs onScreenText)",
+      "problem": "The visual says 'the date stamp turns 7 to 8 October', but onScreenText has no date item, and the TEXT RULE line says the two quote cards are the shot's only text. A shot author will either add an undeclared stamp or ignore the sentence.",
+      "fix": "Delete '(the date stamp turns 7 to 8 October)'. Both quote cards already carry their dates."
+    },
+    {
+      "where": "ch15-s05 (Anthropic stop, b2b → b3)",
+      "problem": "For about 7 s (9.4 -> 16.5 s) the only picture under 'refused to drop two limits: no mass domestic surveillance, no fully autonomous weapons … named it a supply-chain risk' is a plain government building's silhouette. Two concrete limits are spoken and none is drawn. The OpenAI stop has a precise mechanism (terrarium, pipe, valve, lit windows).",
+      "fix": "Keeping the fairness rule (same vignette scale): on 'surveillance' and 'weapons', two small paper seals appear on the lamp's base, an eye over a crowd and an unmanned aircraft silhouette, each with a bar across it. On 'Pentagon' a thread from the building tugs at them and they hold. On 'risk' the building's thread is cut and drawn back. No new text items (0 s)."
+    },
+    {
+      "where": "generator/film/script.mjs validate() beatAt",
+      "problem": "TOOLING: the validator ignores edge:'end' whenever a word is given (it returns the word's start), but lib/timing.mjs resolveBeat returns the word's END. The validator also never flags a beat that resolves past the shot's end. The ch12-s06 cityLit bug passed both gates. At the wpm estimate, 13 beats move by about 0.4 s between the validator and the real clock (ch06-s03, ch06-s05, ch06-s06, ch07-s01, ch08-s04, ch08-s11, ch12-s06, ch12-s07, ch12-s08, ch13-s03).",
+      "fix": "In beatAt, use (i + (b.at.edge === 'end' ? 1 : 0)) / n for wpm estimates and rw.end for recorded words. Add E(`${where}/beat ${b.id}: resolves at ${t}s, after the shot ends (${shotSec}s)`) for any beat at or after shotSec - 0.05."
+    },
+    {
+      "where": "staging.kitWork (production feasibility)",
+      "problem": "The film's spine is all blocking kit work that the catalogue does not yet contain: beliefCandle (40 shots), the caseBoard/candleShelf/wallOfForecasts/xrayColumn state table (64 shots), narratorHands (54 shots), plus hallOfMirrors, finish/reflection (all of ch14), paperGlobe and 3 alexnetCathedral extensions. None of these appears in docs/film/kit-catalog.md. If the spine slips, about half the film cannot be authored.",
+      "fix": "Order kitWork by shot count and build the spine first, with one contact sheet of the study state table at five points in the film (ch01-s05, ch05-s10, ch08-s14, ch12-s07, ch15-s08) before any shot authoring. Give hallOfMirrors (2 shots) a fallback: kit architecture arches plus mirrored figure copies."
+    },
+    {
+      "where": "all shots (visual text structure)",
+      "problem": "Non-blocking. Only the 8 ch14 shots open with a 'THIS SHOT:' line. In the other 112, the shot's own idea is still buried under canonical blocks: BOARD MAP and CANDLE-CLOCK RULE run about 2,000 characters before ch08-s13b's idea.",
+      "fix": "Add a one-sentence 'THIS SHOT:' lead to every visual, naming its teaching image and its move, as ch14 does. Example, ch08-s06: 'THIS SHOT: 96 tiles of television snow are nudged, pass after pass, into the learned mosaic by the 1986 bead.'"
+    }
+  ],
+  "strengths": [
+    "Every round-7 critical is fixed. The chapter index tab now drops in from the top left. The finale's fast-forward runs five wordless flashes at exactly the pitch of the prologue's rewind (0.75 s, ff1 at 1.0 to ff5 at 4.0). ch01-s03 makes its three-move climb in an unhurried 2.2 s lead-in. ch01-s05 ends on a true full wide. Crowded stamps are gone (ch05-s03 keeps one stamp at a time; ch12-s08's windows are 1 s apart).",
+    "The deep dives teach with real, bound mechanisms rather than boxes. ch08-s04's tin stencil works a real Sobel sum to 3.88 and then slides it into a feature map. ch08-s05 builds AlexNet as a cathedral with true layer widths, wordless max-pool windows and rose-window vignettes. ch10-s06 pours a jug of light into cups at the real softmax shares (0.20 · 0.07 · 0.53 · 0.20). ch10-s07 freezes the cups when the scores are unscaled. ch10-s14 drops a curtain and the forward threads snap.",
+    "The recurring devices form a coherent visual grammar: candle-clock sleeves as a bar chart in wax, the case board that becomes a lantern network in ch15-s08, the X-ray column lighting one band per era, the Wall of Forecasts, and the oxblood question thread. With the STUDY LOCK and STUDY CAMERAS rules, the film always knows where it is.",
+    "The geopolitics chapter is a strong, fair staging idea. The strait is seen through the study window, both shores are mirror-balanced at equal warmth, the candles appear only as a reflection, and a Go board on the jetty carries move and answer. Even-handedness is built into the composition, not left to the narration.",
+    "Callbacks are made in pictures: the LED match-cut from bedroom GPU to pixel grid, the tin toy stencil sliding beside a learned edge tile in ch08-s09, the desk lamp clicking on at the edge of the new candle's pool in ch08-s13b, and the ch12-s06 return to the cold-open room with the chat box swinging open like a door."
+  ]
+}

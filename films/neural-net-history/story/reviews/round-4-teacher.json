@@ -1,0 +1,112 @@
+{
+  "reviewer": "teacher",
+  "round": 4,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "wordCount": 3557,
+  "runtimeEstimate": "3,557 narration words against a target of 3,040 for 32 min. At the target's implied ~95 words a minute (holds and music included), that is about 37.4 min. Holds alone are 337 s holdAfter + 152 s leadIn + 160 s pauseAfter, about 10.8 min.",
+  "scores": { "accuracy": 8, "depth": 7.5, "clarity": 7.5, "story": 8, "curiosity": 8, "visual": 8, "voice": 7.5 },
+  "critical": [
+    "RUNTIME (whole script): the narration has grown from 3,179 words (round 3) to 3,557, which is 517 over the 3,040 target and puts the film at about 37 min against the brief's 30–35 min ceiling. Each round of fixes adds words and nobody pays for them. FIX: (a) every addition in this card is costed; take them only paired with cuts. (b) Narration trims that lose no mechanism: L0902 → 'December 2012. By one reporter's account, the tall man auctioned his three-person company from a laptop, stopped at forty-four million dollars, and chose Google.' (−13; the wastebasket stays in the picture). L1529 → 'The next day, DeepMind shared the chemistry prize, for predicting protein shapes.' (−8; names are on the card). L0615 → 'The chess crown, promised for 1968, came in 1997, twenty-nine years late, with no neural network.' (−5). (c) The real lever is the holds: cut holdAfter and leadIn by about 25% outside the climaxes (Florence, the transformer reveal, the finale). That saves about 2 min. (d) If a gap remains, the showrunner should log a deliberate deviation of about 36 min rather than let the count drift further.",
+    "ch09 (2012–2017) is still the one era with no spoken belief, no spoken dissent and no duration. The brief requires all three for every era. Round 3 flagged this, and only the AlphaGo mechanism (L0905b) was added. ch09-s05 pins Hinton's 'graduate student' slip in silence. The bible's Era 9 has a clear belief (the AlexNet recipe works everywhere: e9-openai, e9-alphago-method) and named dissent from inside and outside (e9-adversarial; e9-gender-shades; e9-marcus). FIX: open ch09-s01 with a new L0901: 'A new candle: this recipe works on everything.' (+8). Give ch09-s05 a spoken line before the slip goes up, L0910: 'At the rim, doubters: changes to a few pixels, invisible to us, could fool these nets, and commercial face readers failed darker-skinned women far more often than lighter-skinned men.' (+28; claims e9-adversarial, e9-gender-shades; Gender Shades is February 2018, which the bible files under Era 9 dissent). Then the Hinton slip lands as dissent from the movement's own leader, which is the point of the shot. The candle needs no out-date: the bible says it was 'not refuted but ratified'. Its sleeve keeps burning into ch10."
+  ],
+  "issues": [
+    {
+      "where": "ch11-s05 L1110 → ch11-s07 L1116",
+      "problem": "The ear is told 'The old recipe lasted two years' about a recipe it never heard. The recipe ('grow the model faster than the data') appears only on the candle tag. A 15-year-old can't tell what Chinchilla overturned, and an expert notices that the film's best scaling beat (Kaplan's allocation, then Chinchilla's equal doubling) is missing. GPT-3, the 2020 experiment the visual builds a city for, is also never named aloud.",
+      "fix": "L1110: 'In 2020, a straight line: bigger models, lower error. The recipe: grow the model faster than its reading. GPT-3 had a hundred and seventy-five billion weights.' (+17; e11-kaplan C^0.73 vs C^0.27, e11-gpt3). L1115 then pays it off: '…a smaller model, read far more on the same budget, and won.'"
+    },
+    {
+      "where": "ch15-s02 L1503 → L1521",
+      "problem": "'OpenAI kept the notes hidden.' Which notes? L1503 says only that machines 'learned to think longer before answering'. Nothing says they write working notes, and nothing says how they learned to: the mechanism, reinforcement learning on checkable answers, is the current era's central idea (bible Era 14 belief). The teenager hears a riddle and the expert hears hand-waving.",
+      "fix": "L1503: 'That year, machines learned to think longer before answering: rewarded for right answers, they wrote long working notes first.' (+10; e14-o1, e14-r1). L1521 then has its antecedent."
+    },
+    {
+      "where": "ch15 (whole chapter): the current understanding",
+      "problem": "The brief asks for 'the current understanding at that time', and the as-of date is 5 October 2026. Every era gets a spoken candle except the present one. ch15 lists events (reasoning, the rabbit, METR's RCT, two labs) but never says what people now believe, so the strongest current datum is left on screen only: METR's task length doubling about every seven months. Spoken, the METR beat is only the negative trial. That under-informs and slightly unbalances.",
+      "fix": "In ch15-s04, before L1507: 'The candle of now: these machines will keep getting more capable, fast. One measure: the length of task an AI agent can finish has doubled about every seven months.' (+30; bible Era 14 belief, e14-metr-horizon). L1507 then stands as the dissent, and L1509 as the three camps. Pay for it by tightening L1525: 'In a test with safeguards deliberately lowered, OpenAI's agents broke out of their sandbox to hunt their test's answers; OpenAI called it a warning shot.' (−2)."
+    },
+    {
+      "where": "ch12-s02 L1204–L1205",
+      "problem": "'the judge pruned the model like a hedge … People preferred the small pruned model'. In machine learning, 'pruning' is a term of art: deleting weights to shrink a network. An expert hears that InstructGPT was a pruned network, which is false. It was fine-tuned by reinforcement learning against a reward model (e11-instructgpt). A teenager also can't tell why a trimmed model would be preferred.",
+      "fix": "L1204: '…trained a judge, and the judge shaped the model, like a gardener shaping a hedge.' L1205: 'People preferred the small, shaped model to one a hundred times larger.' (+3). The topiary-and-shears visual can stay. Only the word 'pruned' leaves the narration."
+    },
+    {
+      "where": "ch08-s13b L0831–L0832",
+      "problem": "This is the payoff of 'So why would anyone choose the fog?' (L0617), the film's best classical-ML-versus-deep-learning question. 'Given data and fire, it led somewhere better' is vague. The real, teachable answer is in the bible (e8-vision-belief): the clean bowl (SVM) sat on top of stencils cut by hand, and the fog let the network cut its own. That links ch06, L0802 and L0811 in one stroke. L0831 also puts out the fiddly-nets candle without saying how long it burned, while the visual inks '10–15 years, by field'.",
+      "fix": "L0832: 'Why choose the fog? The clean bowl sat on stencils cut by hand. In the fog, given data and fire, the net cut its own.' (+11). L0831: 'Beside it, the fiddly-nets candle went out too, after ten to fifteen years, depending on the field.' (+9; e6-nn-winter, bible Era 6 'how long')."
+    },
+    {
+      "where": "ch05-s09b L0522",
+      "problem": "Repeated from round 3 and still open: the second AI winter, a must-cover topic, has no cause by ear. 'By 1987 it had come, and the money fled' says what happened, not why.",
+      "fix": "L0522: 'In 1984, a panel warned of an AI winter. By 1987 it had come: the special machines built to run these programs stopped selling, and the money fled. The knowledge candle had burned about seven years.' (+10; e5-lisp-crash, e5-aaai84)."
+    },
+    {
+      "where": "ch07-s02 L0702",
+      "problem": "'Warm a deep net up first, layer by layer' names the 2006 idea without its mechanism. A teenager can't picture warming a net. An expert hears 'warm-up', which in ML today means learning-rate warm-up, a different thing. The era's real belief (bible Era 7: unsupervised, layer-wise pre-training before any labels) is what the 'different coat' payoff in L0711 and L1101 depends on.",
+      "fix": "L0702: 'In 2006, a new candle: before any labels, train a deep net one layer at a time, each learning to rebuild its own input. A warm-up.' (+10; e7-dbn 'labels entering only at the top', e7-autoencoder). L0711's 'pre-training' then names something the ear understood."
+    },
+    {
+      "where": "ch14-s02 L1405 (and L1410)",
+      "problem": "Repeated from round 3: 'compute' as a noun is industry jargon, never glossed, and it is the key word of the whole geopolitics chapter ('compute is the chokepoint', 'compute didn't matter').",
+      "fix": "L1405: 'Two new candles: computing power is the chokepoint, and China is one to three years behind.' (+1). L1410: 'Markets bet that computing power didn't matter…' (+1)."
+    },
+    {
+      "where": "ch10-s12 L1025",
+      "problem": "'One huge multiplication, what these chips do best' is the transformer's central engineering reason, but the ear can't link 'one huge multiplication' back to 'all at once' (L1009). 'These chips' also has no nearby antecedent; graphics chips were last mentioned two chapters ago. The bible's Primer J states the link plainly: no waiting in line, so it is one large matrix multiplication, which GPUs do well.",
+      "fix": "L1025: 'Why did it win? No waiting in line: every word at once is one huge multiplication, what graphics chips do best. Twelve hours on one machine, and an English-to-German record.' (+6; e10-table1, e10-results)."
+    },
+    {
+      "where": "ch10-s05 L1010",
+      "problem": "'All made by weights' leaves open who sets those weights. One line ties the transformer to the 1986 messenger, so the expert hears that Q, K and V are learned projections, and the teenager hears that the film's two deep dives run on the same engine.",
+      "fix": "L1010: '…A message, what I pass on. All made by weights, tuned by our messenger.' (+4; e4-rhw is already on the shot)."
+    },
+    {
+      "where": "ch10-s08 L1019",
+      "problem": "'A trained model learns to look from bank straight to river' overstates the source. Google's blog (e10-blog) says the model 'can learn to immediately attend to the word river'. The shot is also labelled 'ILLUSTRATIVE · hand-set weights', so the spoken claim should carry the same hedge.",
+      "fix": "L1019: 'A trained model can learn to look from bank straight to river.' (+1)."
+    },
+    {
+      "where": "ch08-s08 L0815",
+      "problem": "'It could simply memorise.' The pronoun has no antecedent (the last subject was 'each label'). 'Memorise' is also never contrasted with learning to see, and that contrast is what makes cropping (L0816) and dropout (L0830, 'to stop the memorising') read as cures.",
+      "fix": "L0815: '…twelve million in all, for sixty million weights. The network could simply memorise the photos, instead of learning to see.' (+7; bible Primer F 'Why augmentation')."
+    },
+    {
+      "where": "ch04-s01 L0401",
+      "problem": "'The book's sharpest puzzle: exclusive-or' is wrong for experts. Perceptrons' actual theorems are about parity and connectedness (e3-perceptrons). Exclusive-or is the smallest case of parity and the popular face of the book, not its sharpest result.",
+      "fix": "L0401: 'The book's simplest puzzle: exclusive-or. …' (0 words). Optionally add a small caption on the ch04-s01 plate: 'its real theorems: parity and connectedness'."
+    },
+    {
+      "where": "ch02-s08 L0218",
+      "problem": "The ear never hears why the frog's eye put out the logic-machine candle. 'Picking out features before the brain saw a thing' sounds clever but not fatal. The bible's link (e1-frog) is that the retina already does rich, messy feature detection, which disappointed Pitts about logic as the brain's language.",
+      "fix": "L0218: 'In 1959, a study found the frog's eye already picking out features before the brain saw a thing: not tidy logic, but something richer.' (+7). L0220's irony then lands."
+    },
+    {
+      "where": "ch04-s03 L0406",
+      "problem": "The brief names the 'Cold Winter', but the first AI winter is never named aloud. The ear gets 'and the snow began', and the term 'AI winter' first arrives in 1984 (L0522), so a teenager may not realise that 1969–1980 was the first winter.",
+      "fix": "L0406: '…and the snow began: the first AI winter.' (+4; the bible's Era 3 is titled 'first winter'; e3-symbolic-continued keeps it honest that it was uneven, which L0411 already says)."
+    },
+    {
+      "where": "ch02-s02 L0204",
+      "problem": "Repeated from round 3: the phrase 'neural network', the film's subject, is never spoken as a defined term. 'Network' comes in L0204, 'neural nets' first in L0608, and the lantern gloss ('our nerve cells') in L0507.",
+      "fix": "L0204: '…wire a few such cells into a network, a neural network, and you had logic.' (+3)."
+    },
+    {
+      "where": "ch08-s10 L0819",
+      "problem": "The round-3 fix was half-applied. 'Big strides first, then, three times, shorter steps by hand' still never says why. L0510 taught that timid steps get trapped, so a careful listener hears the team choosing to be timid. The reason (settle onto the valley floor once past the ridges) is the whole lesson.",
+      "fix": "L0819: '…big strides first, then, three times, shorter steps by hand, to settle on the valley floor.' (+6)."
+    },
+    {
+      "where": "ch08-s07 L0813",
+      "problem": "'The below-zero rule is a weir: they pass undimmed' has a dangling 'they' (strong signals). 'Six times faster, in their test' is missing the word 'learning', so a teenager may hear that the network runs faster rather than learns faster.",
+      "fix": "L0813: 'Older nets squashed strong signals flat. The below-zero rule is a weir: strong signals pass undimmed, and the messenger's tug stays strong. It learned six times faster, in their test.' (+3)."
+    }
+  ],
+  "strengths": [
+    "The round-3 critical is properly fixed in word and picture: 'two great halls … and a last hall of a thousand doors' now matches the paper's fc6, fc7 and fc8. The ch08-s05 visual builds exactly two 4,096-unit halls plus a band of doors, and 'the great halls' in L0830 now means exactly the two layers that used dropout.",
+    "The AlexNet deep dive is now genuinely deep and correct from end to end. A photo is a grid of numbers. A worked nine-term stencil sum (3.88, labelled illustrative) introduces 'below zero counts as zero' before the weir. One stencil slides everywhere, and 'convolution' is named only after the idea. Detectors are built from detectors. Stencils grow from noise. The ReLU comparison now has a baseline ('older nets squashed strong signals flat'). Max-pooling, the 12-million-versus-60-million overfitting argument, crops and mirrors, dropout in the right layers, the self-organised colour split ('Every time', true to the paper), the step-size schedule, and an honest result (seven nets voting, single net near eighteen, IDSIA's prior GPU wins).",
+    "The transformer deep dive is the best teaching in the film, and round 3's fixes deepened it. The bottleneck now motivates attention. 'Multiply, and add, the stencil's way' explicitly bridges the two deep dives through the dot product. The bank and river example is arithmetically correct: softmax of 1, 0, 2, 1 gives about 0.53 to river. The √d_k reason is correct ('Divide by eight … that, you see, is why we halved'), followed by heads, the clock-face positions, talk-then-think times six, the n² catch, and the decoder curtain into next-word prediction, with the jug of light reused for the output distribution in L1105.",
+    "Most terms now arrive before they are used: weights (L0307), exclusive-or (L0401), hidden layer (L0403), the lantern as a nerve cell (L0507), back-propagation, downhill on error (L0510), the vanishing whisper tied to both depth and long sentences (L0613), GPUs given an antecedent (L0817), pre-training (L1102), open weights (L1408). Hopfield's half-memory rolling downhill (L0524) now gives the 2024 Nobel payoff real content.",
+    "Belief, dissent and duration are audible in eleven of thirteen eras. The candle device (lit, sleeve as years, doubters at the rim) works as both an ear device and a chart, and the finale's 'Some candles burned twenty years. Some, two. One match, a single day.' is earned.",
+    "Quote discipline holds. I checked all 22 spoken quotations against quotes.json and found every one verbatim and correctly attributed. Contested matters are spoken even-handedly: Gebru's departure, DeepSeek's cost ('the final run only'), both governments' stated reasons on export controls, the three-camp split, Anthropic's Pentagon dispute and its pirated-books settlement alongside OpenAI's sandbox incident, and METR's own out-of-date caveat."
+  ]
+}

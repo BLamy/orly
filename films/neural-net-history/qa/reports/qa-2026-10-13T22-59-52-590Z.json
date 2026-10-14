@@ -1,0 +1,51 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T22:59:52.590Z",
+ "summary": {
+  "pass": 3,
+  "warn": 0,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m19: rendered body 122.467s but cue window is 126.884s — re-render",
+   "problems": [
+    "m19: rendered body 122.467s but cue window is 126.884s — re-render"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (m19: cueSeconds 122.467 vs window 126.884 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "m19: cueSeconds 122.467 vs window 126.884 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "20 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.6 min of music over 36.1 min (101%)"
+  }
+ ]
+}

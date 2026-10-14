@@ -1,0 +1,234 @@
+{
+ "shot": "ch10-s07",
+ "at": "2026-10-13T04:14:04.376Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 44,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "64 numbers",
+   "capWhileSubject": 28.5,
+   "why": "named: \"numbers\""
+  },
+  {
+   "text": "on every card",
+   "capWhileSubject": 26.7,
+   "why": "named: \"card\""
+  },
+  {
+   "text": "learning freezes",
+   "capWhileSubject": 33.5,
+   "why": "named: \"learning freezes\""
+  },
+  {
+   "text": "Attention(",
+   "capWhileSubject": 34.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": ")  =  softmax(",
+   "capWhileSubject": 34.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "our toy · 4 numbers",
+   "capWhileSubject": 24.4,
+   "why": "named: \"toy numbers\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "crossed",
+   "maxCap": 30.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "action",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 30.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.07",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 30.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.53",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "water",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 30.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "money",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank now means",
+   "maxCap": 26.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "water  0.53",
+   "maxCap": 25.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "action  0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "money  0.20",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2 · 0 · 4 · 2",
+   "maxCap": 43.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "÷ √4",
+   "maxCap": 43.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "→   1 · 0 · 2 · 1",
+   "maxCap": 43.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "UNSCALED",
+   "maxCap": 30.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 46.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 46.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−8",
+   "maxCap": 46.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1.00",
+   "maxCap": 25.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.00",
+   "maxCap": 25.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "÷ 8   ( 8 = √64 )",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 44.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−1",
+   "maxCap": 44.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Q",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "K",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "V",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "QK",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "d",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "k",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "learning flows",
+   "maxCap": 28.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.67",
+   "maxCap": 24.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.24",
+   "maxCap": 24.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.09",
+   "maxCap": 24.4,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 38
+}

@@ -1666,3 +1666,17 @@
 /* Phone landscape on Browse: no tab bar, so the feed takes the whole screen
    (the inset below the bar is what this overrides). */
 .feed-root.is-mobile.is-full { bottom: 0; }
+
+/* ---- Films: VHS tapes in the video library case (library/vhs.ts) ----
+   A tape is a .lib-book with VHS proportions: shorter than a book, a slimmer
+   spine, the clamshell front as its "cover". Same hover-turn and push rules. */
+.lib-book.lib-tape { width: 40px; height: 236px; }
+.lib-book.lib-tape::after { width: 40px; }
+.lib-book.lib-tape.is-open::after,
+.lib-book.lib-tape:focus-visible::after { width: calc(var(--lib-push) + 40px); }
+.lib-tape .lib-turn { left: 38px; width: 137px; height: 236px; }
+.lib-tape .lib-face-spine { left: -35px; background: #111; }
+.lib-tape .lib-face-cover { background: #111; box-shadow: 0 10px 22px rgba(20, 12, 4, 0.4); }
+.lib-vhs-case { gap: 2px; background: linear-gradient(180deg, #2a2a30, #17171b); border-color: #0d0d10; }
+.lib-vhs-case .lib-sleeve-plaque { color: #ffe14a; letter-spacing: 0.2em; }
+.lib-vhs-case::after { background: linear-gradient(180deg, #2a2a30, #17171b); border-color: #0d0d10; }

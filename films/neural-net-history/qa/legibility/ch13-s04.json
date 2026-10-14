@@ -1,0 +1,119 @@
+{
+ "shot": "ch13-s04",
+ "at": "2026-10-13T21:20:07.577Z",
+ "minCapPx": 22,
+ "sampled": 29,
+ "texts": 21,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "timnit gebru · emily m. bender",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "The harms from so-called AI",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "are real and present…”",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "gebru, bender & mcmillan-major",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "yann lecun",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…just preposterously",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ridiculous.”",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2018 a.m. turing award",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bengio · hinton · lecun",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "“Mitigating the risk of extinction from AI",
+   "maxCap": 36.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "should be a global priority…”",
+   "maxCap": 36.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "— STATEMENT ON AI RISK",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Geoffrey Hinton",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Yoshua Bengio",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Demis Hassabis",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Sam Altman",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Dario Amodei",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2023",
+   "maxCap": 19.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE",
+   "maxCap": 11.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "YEARS AWAY, AND DANGEROUS",
+   "maxCap": 11.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2018",
+   "maxCap": 22.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 12
+}

@@ -1,0 +1,5 @@
+[
+  { "id": "rosenblatt", "name": "Frank Rosenblatt", "role": "psychologist, Cornell Aeronautical Laboratory", "firstAppearance": "ch01-s02",
+    "height": 322, "build": "slight", "era": "1950s", "wardrobe": "labCoat", "hair": "sidePart", "facialHair": "none", "glasses": "none", "hat": "none",
+    "profile": { "nose": 0.5, "brow": 0.45, "chin": 0.5, "jaw": 0.45 }, "prop": "none", "details": ["lapel", "pocket"] }
+]

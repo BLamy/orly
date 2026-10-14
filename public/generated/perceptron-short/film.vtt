@@ -1,0 +1,58 @@
+WEBVTT
+
+1
+00:00:01.200 --> 00:00:03.335
+Once, a machine learned to see.
+
+2
+00:00:05.608 --> 00:00:10.058
+Its eye: four hundred light
+cells, twenty by twenty.
+
+3
+00:00:10.358 --> 00:00:15.408
+Behind it, wires, and racks
+of dials that motors turned.
+
+4
+00:00:16.058 --> 00:00:22.316
+It was the Mark I Perceptron, the
+project of psychologist Frank Rosenblatt.
+
+5
+00:00:23.450 --> 00:00:28.213
+Nobody gave it the rule.
+Show it a shape; it guesses.
+
+6
+00:00:28.513 --> 00:00:34.325
+Each lit cell tugs the needle through
+the dials it feeds; the total decides.
+
+7
+00:00:34.625 --> 00:00:38.839
+When it guesses wrong, motors
+nudge the dials that had a say,
+
+8
+00:00:38.839 --> 00:00:40.684
+a little, toward the right answer.
+
+9
+00:00:41.484 --> 00:00:46.789
+Wrong, and wrong again, and
+then, quite suddenly... right.
+
+10
+00:00:48.639 --> 00:00:52.035
+It could learn only simple patterns.
+
+11
+00:00:52.035 --> 00:00:59.947
+In 1969, Minsky and Papert showed just
+how simple; for years, interest faded.
+
+12
+00:00:59.947 --> 00:01:04.939
+Its descendants, today's neural
+networks, still learn from mistakes.

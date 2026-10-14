@@ -1,0 +1,59 @@
+{
+  "reviewer": "art",
+  "lens": "visuals & motion",
+  "round": 4,
+  "method": "Read all three qa/sheets (s03 now has 28 samples) and the reference frame. Pulled 61 more frames from render/film.mp4 (render 2026-10-06 18:35, 67.75 s) at word times in narration/timeline.json, with full-res reads at 13.5, 21.3, 38.0, 41.5, 47.5, 56.4 and 64.0 s. Measured mean luma across the 'years' dim and the tail.",
+  "scores": {"accuracy": 8.5, "depth": 8, "clarity": 8, "story": 8, "visual": 8, "sync": 8.5, "sound": 8, "curiosity": 8},
+  "roundThreeFollowUp": {
+    "fixed": [
+      "ch01-s03 nudge-push collision (major): at 38.0 s 'correct answer: horizontal' sits cleanly above the counter, the whole retina is inside frame, and the gauge's HORIZONTAL label is about 50 px in from the right edge.",
+      "ch01-s02 Rosenblatt blocking (major): he is in the lab from the start at the patch board, and the truck reveals him (11-14 s), so there is no walk-in from the frame edge. His head is level and he turns to the dial rack on 'Frank'. A tie line is now visible.",
+      "ch01-s02 name card: 'FRANK ROSENBLATT' leads at 20.6 s and 'psychologist' joins by 20.9 s, so the title comes first.",
+      "ch01-s03 bookend tangent: at 64.0 s a clear sliver of window light (about 25 px) separates his profile from the camera housing, his eyeline is on the lit bar, and his hand is open.",
+      "ch01-s03 tail: the last word ends about 64.4 s, the composition holds at full luma through 65.5 s (luma 43.6), dims by 66.4 s (32.3) and is black at 67.6 s (0.6). The ending finally breathes.",
+      "ch01-s03 1969 stamp: '1969' types on at 52.07 s as it is spoken and 'Minsky' follows on the word. 'Perceptrons' is italic as a book title. The book is now a legible closed volume on a small shelf with a spine and a halo, no longer a lamp.",
+      "ch01-s03 NOW/THEN: relabelled honestly ('try 5 · a new horizontal bar · said horizontal · RIGHT' over 'THEN try 1 · a horizontal bar · said vertical · WRONG'), with a dashed ghost needle at VERTICAL against the live needle at HORIZONTAL.",
+      "ch01-s03 limit shown: the XOR mini machine plate (two cells, two dials, a mini gauge) ticks ✓ ✗ ✓ ✗ ✓ ✗ ✗ ✗ under 'never settles' from about 55 s, beside the two learned plates.",
+      "ch01-s03 staging: the retina fades to idle on 'It' (49.0 s) and the plates and stamp carry the light. 'an illustration, simplified' appears only after L0105.",
+      "QA sheets sample densely (s03 has 28 frames) and the shelf copy is current."
+    ],
+    "partlyFixed": [
+      "'years' dim: mean luma drops 18.6 → 15.6 (−16%) over 57.44-57.8 s and then runs straight into the iris. It is there but slight, on a stage that is already very dark.",
+      "Lab set and figure values: there are fewer full outlines, but the racks still have light strokes on their top and side edges (the left edge of the PERCEPTRON rack at 21.3 s). Rosenblatt is filled mid-dark grey, close to the racks' value, rather than being the darkest shape in frame as the reference's figures are.",
+      "Rosenblatt puppet craft: blocking is fixed, but in the 12-15 s close-up (figure about 900 px tall) the construction shows."
+    ],
+    "notFixed": []
+  },
+  "issues": [
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The new XOR plate collides with the gauge. From about 55.0 to 58.8 s the plate's caption 'XOR · one lit, not both' sits on the gauge's label baseline, and the plate box covers the start of VERTICAL, so the hero frame of the limit beat reads 'TICAL  HORIZONTAL' (full-res 56.4 s). The plate also overlaps the gauge pedestal and lantern arm, which crowds the right third.",
+     "fix": "Move the XOR plate down and left into the free floor band right of the HORIZONTAL plate, keeping its caption at least 24 px below the gauge-label bottom. If it does not fit, scale it to about 0.85. Or fade the main gauge's VERTICAL/HORIZONTAL labels to 0 over 0.3 s as the plate enters (they carry no meaning in the limit tableau). Re-sheet at 56.4 s."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "In the try-5 NOW/THEN beat (47.3-48.6 s) the 'NOW' tag is hidden under the counter's fifth (✓) box, and only the top of the letters peeks out above it (full-res 47.5 s). The try-5 caption bar also butts directly against that box, so the bottom band is one crowded strip: five counter boxes, then a two-line caption.",
+     "fix": "Put the NOW label inside the caption bar, left-aligned and set like THEN beneath it, or move the counter group up 40 px / left 60 px for this beat. Keep at least 16 px between the last counter box and the caption plate."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The try-4/try-5 push (about 44.0-49.4 s) crops the retina at the left frame edge. Its left border is off-frame at 44.5 and 47.5 s (lit cells start at x≈0), and more is cut at 49.0 s as the camera recovers. Round 3 clamped the nudge push but not this one, so the shape the viewer is judging loses its frame on the payoff ('right').",
+     "fix": "Apply the same camera clamp to the 44-49.4 s push: keep the full retina frame at least 24 px inside the left edge (or trade some push for a slight rightward truck)."},
+    {"owner": "shot", "id": "ch01-s02", "severity": "minor",
+     "problem": "Rosenblatt puppet in close-up. At 12-15 s the camera is close enough (figure about 900 px tall) to show the puppet's construction: a stiff tube arm hinged at the shoulder with no forearm taper or cuff, thin light interior strokes on the head (hairline and ear) that read as seams, a single hanging line for the tie, and a flat slab torso. At 11.0 s he is revealed as a dark figure on a dark rack, with almost no separation. Next to the reference's costumed, contour-rich figures he still reads as a mannequin, though no longer a walking one.",
+     "fix": "Silhouettes carry no interior lines: move all detail to the outer contour (hair mass, ear notch, collar, tie knot, cuff break, a slight forearm taper and a 10-15° wrist bend). Either hold the camera wider here (figure no more than about 600 px) or add those contour details first. At 11 s, catch a window shaft on his back or time the truck so he is first seen against the lit patch board."},
+    {"owner": "global", "severity": "minor",
+     "problem": "Value hierarchy in the lab (sets/lab.ts and the puppet kit). Figures render mid-dark grey, close to the value of the racks, and racks still carry light strokes on their top and side edges (for example the PERCEPTRON rack's left edge at 21.3 s). The reference separates its planes by value: the figures are the blackest shapes, set against a hazed, lit back wall. Here the figure and the machine merge (11.0 s, 21.3 s at the dial rack).",
+     "fix": "Fill puppets near-black (about #0b0d0b) with a 1-2 px rim only on the window side. Keep the racks one step lighter, with 1-2 px rims only on window-facing tops. Drop the stroke on side and bottom edges. Back-wall racks go another 8% into haze."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The limit tableau is murky, and the 'years' dim barely registers. From 55 to 57.4 s the whole frame averages luma about 19/255, so the learned plates and the XOR plate read dim. The step on 'years' is only −16% (18.6 → 15.6) and flows straight into the iris, so it reads as the start of the iris rather than as a beat for 'for years, interest faded'.",
+     "fix": "Hold the tableau a little brighter (mean luma about 28-32), with the plates, stamp and book lit and the main machine dimmed. On 'years' (57.44 s), step the key light down a clear 25-30% over 0.3 s and hold it about 0.6 s before the iris starts, while the XOR row keeps ticking."},
+    {"owner": "shot", "id": "ch01-s01", "severity": "minor",
+     "problem": "The eye's grid glows (soft lit field across the whole retina) from about 4.3 s, roughly 1.3-1.6 s before 'eye' (5.97 s). This pre-empts s02's reveal, which is otherwise a clean continuous push.",
+     "fix": "Keep the grid dark after the glint on 'see' (2.79 s) and begin its glow on 'Its' (5.61 s), so it is lit on 'eye'."}
+  ],
+  "best_moments": [
+    "ch01-s03 at 52.1-57.5 s: '1969' types on as it is spoken, the closed book sits on its little shelf in a halo, and the XOR mini machine ticks ✓ ✗ ✓ ✗ ✓ ✗ under 'never settles' beside the two learned plates. The limit is shown, not told.",
+    "ch01-s03 at 47.5 s: the live needle sits at HORIZONTAL against a dashed ghost at VERTICAL, the lantern blooms, and an honest NOW/THEN caption says it is a new bar. The before and after are readable in one frame.",
+    "ch01-s03 at 36.3-39.2 s: arc arrows turn only the dials fed by lit cells while the rest dim, under a clean push with the answer tag and counter properly stacked.",
+    "ch01-s03 at 41.0 s: the try-2 verdict caption lands on 'Wrong' (41.11 s), with 'correct answer: vertical' above it and the counter ticking ✗. Try 3 follows on 'wrong again'.",
+    "ch01-s03 at 64.0-66.4 s: the bookend dolly back, with the title, a clean light gap between Rosenblatt's profile and the eye, and a full hold before the fade. The ending now has air.",
+    "ch01-s02 at 11.5-14.1 s: the truck along the machine with Rosenblatt already at the patch board, out-of-focus foreground cable garlands and dial racks catching the window light: real multiplane depth.",
+    "ch01-s02 at 20.6-21.3 s: the name card builds name-first on 'Frank' as he turns to the dial rack."
+  ]
+}

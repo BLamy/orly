@@ -1,0 +1,18 @@
+{
+ "shot": "ch08-s07",
+ "at": "2026-10-13T04:13:47.442Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 1,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "f(x) = max(0, x)   ·   ≈ 6× faster (their 4-layer test, CIFAR-10)",
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

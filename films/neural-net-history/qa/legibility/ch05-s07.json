@@ -1,0 +1,279 @@
+{
+ "shot": "ch05-s07",
+ "at": "2026-10-13T14:45:24.899Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 53,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "KNOWLEDGE",
+   "capWhileSubject": 31.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE,",
+   "capWhileSubject": 30.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "TYPED IN BY HAND",
+   "capWhileSubject": 30.2,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "MYCIN · BLINDED TEST, 1979",
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "5 Stanford specialists",
+   "capWhileSubject": 22.4,
+   "why": "named: \"stanford specialists\""
+  },
+  {
+   "text": "42.5–62.5%",
+   "capWhileSubject": 22.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "hubert dreyfus",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "What Computers Can't Do, 1972",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "…early, dramatic success",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "followed by sudden",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "unexpected difficulties.”",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "hubert dreyfus, 1972",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 63.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 63.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 31.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 36.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 17.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL · 1958",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL ·",
+   "maxCap": 17.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHESS CHAMPION BY",
+   "maxCap": 17.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1968",
+   "maxCap": 17.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 1968",
+   "maxCap": 14,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 14.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 15.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 15.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 15.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 15.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WHY?",
+   "maxCap": 40.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IF … THEN",
+   "maxCap": 27.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "prescriptions rated acceptable",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "100%",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "program",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "65%",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 41
+}

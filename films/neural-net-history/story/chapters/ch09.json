@@ -1,0 +1,705 @@
+{
+ "id": "ch09",
+ "number": 9,
+ "title": "The Gold Rush",
+ "blurb": "2012–2017. The 2012 candle becomes a creed: deep learning works on everything. By one reporter's account, a man who will not sit auctions a company of three to Google; DeepMind's Go machine, which learned from people, then from itself, arrives about eight years early, and Lee Sedol answers it once; months before Seoul, OpenAI is founded on hope and fear. At the rim, doubters, and the candle burns on; then a slip goes up on the Wall, and nobody says a word.",
+ "shots": [
+  {
+   "id": "ch09-s01",
+   "kind": "scene",
+   "setting": "Lake Tahoe, Nevada, December 2012, late night: a hotel room (Room 731), a laptop propped on an upturned wastebasket",
+   "era": "2010s",
+   "mood": "serverCyan",
+   "leadIn": 3.2,
+   "holdAfter": 1.6,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: a hotel room at Lake Tahoe: a new candle's pool spreads across the floor as sealed bids slide along a thread and the tall man stops the auction. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Gold Rush', drops down from the frame's TOP edge at top-left, like a file-divider tab (the manila tab's own corner, clear of the bottom-left date and place stamps), holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. CAMERA: the hotel room (era location; no study visit), the creed candle on its stage in the out-of-focus foreground. Hard match cut (same serverCyan mood as chapter 8's last shot, so no lamp change): on the blink of chapter 8's green status LED, its glow becomes the cool screen of a laptop in a dark hotel room. Wide, static at first. Mid-plane: a tall man in silhouette (Hinton, 2000s–2020s puppet, blazer, swept-back hair) STANDS, straight-backed, at a laptop balanced on an upturned wastebasket, the only way he can type standing. Behind him a window of black pines and a band of snow-light; a hotel bed he never sits on, cut as one flat dark shape. On 'account' a small label, 'as reported by Cade Metz', sets in at lower left and stays for the whole shot: everything in this room is one reporter's account. Foreground, out of focus: the new candle from chapter 8, LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, now huge on a paper stage (lit in 2012, its ghost sleeve not yet one ring tall), and its pool of light falls exactly where he stands. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. THE CREED (L0901): the shot opens racked to the foreground candle; on 'candle' its flame steadies and brightens; on 'everything' its pool of light spreads outward across the whole floor of the room, to the walls and under the bed, as if no corner were out of its reach (deep learning, believed to work everywhere; L0901 'A new candle, then a creed' names it aloud for the first time; no text, the candle keeps burning). Then the focus racks to the standing man for L0902. This is the payoff of the Edge of the Light: the man we met at the rim, seated at desks, now stands in the centre of the light. Slow push-in (about 6% over the shot). On 'tall' the pool brightens around his feet. On 'three-person' a small tilt down shows the laptop on the upturned wastebasket (the narration names neither; the picture carries both). On 'auctioned', four sealed paper envelopes slide in along a thread from the dark at frame right, each a bid; their wax seals glow and swell with each round. Just after 'company' one envelope (the earliest bidder) drops off the thread; a second drops soon after; the bids climb on a typewritten tally that ticks up in the screen's glow. On 'forty-four' his hand lifts off the keys, palm down, and the tally freezes at 44,000,000. On 'Google', the line's last word (beat choseGoogle), his hand draws one of the two remaining envelopes off the thread and lays it face UP beside the laptop, its typed address a single large word, GOOGLE, caught in the screen's glow (prop lettering on the envelope, not a label); the last envelope drifts back into the dark (the $44M lives on the frozen tally, a prop; TEXT RULE: 'as reported by Cade Metz' is the shot's only label besides the place stamp and the chapter index tab; the deal's announcement, March 2013, is in the published sources list). Ear and eye now both know his new employer, which chapter 13's 'He left Google' depends on. Hold on the still figure in the candle's pool. No logos anywhere; the bidders are blank envelopes, and Google appears only as the typed word on the chosen envelope.",
+   "lines": [
+    {
+     "id": "L0901",
+     "text": "A new candle, then a creed: deep learning works on everything.",
+     "direction": "quiet, with a little wonder and a little warning held back; 'everything' let open, not triumphant",
+     "pauseAfter": 0.5
+    },
+    {
+     "id": "L0902",
+     "text": "December 2012. By one reporter’s account, Hinton auctioned his three-person company, halted the bidding at forty-four million dollars, and chose Google.",
+     "spoken": "December, twenty twelve. By one reporter’s account, Hinton auctioned his three-person company, halted the bidding at forty-four million dollars, and chose Google.",
+     "direction": "'by one reporter's account' light and fair, not a disclaimer; 'three-person company' warm; the number dry, almost amused; 'and chose Google' set down plainly as the line's last words, no weight on the name",
+     "pauseAfter": 0.45
+    }
+   ],
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'The Gold Rush' drops down from the frame's top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "creedCandle",
+     "at": {
+      "line": "L0901",
+      "word": "candle"
+     },
+     "what": "the foreground candle, in focus, steadies and brightens"
+    },
+    {
+     "id": "creedSpread",
+     "at": {
+      "line": "L0901",
+      "word": "everything"
+     },
+     "what": "its pool of light spreads across the whole floor of the room; focus racks to the standing man"
+    },
+    {
+     "id": "roomStamp",
+     "at": {
+      "line": "L0902",
+      "word": "December"
+     },
+     "what": "the place stamp sets in over the dark hotel room"
+    },
+    {
+     "id": "byAccount",
+     "at": {
+      "line": "L0902",
+      "word": "account"
+     },
+     "what": "the 'as reported by Cade Metz' label sets in at lower left and stays"
+    },
+    {
+     "id": "standReveal",
+     "at": {
+      "line": "L0902",
+      "word": "Hinton"
+     },
+     "what": "the candle's pool brightens around his feet; we read that he is standing, at the centre of the light"
+    },
+    {
+     "id": "envelopesIn",
+     "at": {
+      "line": "L0902",
+      "word": "auctioned"
+     },
+     "what": "four sealed bid envelopes slide in along a thread; the tally starts climbing"
+    },
+    {
+     "id": "wastebasket",
+     "at": {
+      "line": "L0902",
+      "word": "three-person"
+     },
+     "what": "a small tilt down reveals the upturned wastebasket under the laptop (shown, not spoken)"
+    },
+    {
+     "id": "dropOuts",
+     "at": {
+      "line": "L0902",
+      "word": "company",
+      "offset": 0.2
+     },
+     "what": "first one envelope, then a second, falls from the thread into the dark"
+    },
+    {
+     "id": "stop",
+     "at": {
+      "line": "L0902",
+      "word": "forty-four"
+     },
+     "what": "his hand lifts from the keys; the tally freezes at 44,000,000; the seals stop pulsing"
+    },
+    {
+     "id": "choseGoogle",
+     "at": {
+      "line": "L0902",
+      "word": "Google",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "he draws one of the two remaining envelopes off the thread and lays it face up: its typed address reads GOOGLE (prop lettering); the last envelope drifts back into the dark"
+    }
+   ],
+   "cast": [
+    "hinton"
+   ],
+   "props": [
+    "laptop",
+    "upturned wastebasket",
+    "hotel window with pines and snow-light",
+    "candle: LEARNED FEATURES, GIVEN DATA AND ARITHMETIC (still burning)",
+    "four sealed bid envelopes on a thread",
+    "typewritten bid tally"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "The Gold Rush",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "place",
+     "text": "LAKE TAHOE · DECEMBER 2012 · ROOM 731",
+     "beat": "roomStamp"
+    },
+    {
+     "kind": "label",
+     "text": "as reported by Cade Metz",
+     "beat": "byAccount"
+    }
+   ],
+   "music": {
+    "cue": "goldRush",
+    "note": "Under L0901 the candle motif's rising fourth sounds once, softly, as the pool spreads (the creed). Then the GPU-era pulse arrives: a soft synth ostinato at low intensity (0.35), quickened from chapter 8's resolution; the rising fourth sounds again, bright, on 'tall' (the new candle held, a man at its centre). Each dropped envelope is a muted pluck; the pulse stops dead on 'halted' and leaves one held tone under the freeze; a single soft low note as the chosen envelope is laid face up, unresolved."
+   },
+   "claims": [
+    "e9-openai",
+    "e9-alphago-method",
+    "e8-auction",
+    "e8-auction-details",
+    "e8-hinton-back"
+   ]
+  },
+  {
+   "id": "ch09-s03a",
+   "kind": "scene",
+   "setting": "the detective's study: the Wall of Forecasts and the candle shelf beneath it, May 2014",
+   "era": "2010s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: on the Wall, the Go programmer's 'maybe ten years' slip comes into focus and a small Go candle is lit on the shelf. CAMERA: WALL (a slow lateral truck from the lamp out to slot 5, then the push into the slip's grain), with one brief SHELF insert (low macro at candle height) on 'years'. Palette crossfade (serverCyan to candleAmber; a mood change, not a signature transition) onto the Wall of Forecasts in the study. STUDY LOCK: the study, the Wall, the board and the shelf are always candleAmber; era colour enters only through practicals. WALL OF FORECASTS SLOT ORDER (BOARD MAP, canonical, word for word): its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). (W2 has been an empty pin since chapter 6.) Slot 5 holds a paper slip from May 2014, Coulom's 'maybe ten years', its due date 2024 typed on its tail; W7 is still empty (it takes Hinton's 2017 slip in ch09-s05) and W8, the far end, stays an empty pin until ch15. On 'gave' the slip comes into focus and the quote card sets in. On 'years', a brief cutaway to the shelf below the Wall: the hands light the small candle lettered A GO MACHINE IS A DECADE AWAY, its base tag reading 2014, so the viewer sees this belief begin; then back to the slip. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'two' a small smile of light: the slip's typed due date, 2024, catches the lamp. At the end of the line the camera pushes into the slip's paper grain; the shot ends inside that push, and the next shot (ch09-s03) paper-wipes out of the grain to Seoul. One clean composition: the Wall, the slip, the candle lit. Nothing else.",
+   "lines": [
+    {
+     "id": "L0905",
+     "text": "In 2014, a Go programmer gave machines “maybe ten years” to beat a professional. It took under two.",
+     "spoken": "In twenty fourteen, a Go programmer gave machines “maybe ten years” to beat a professional. It took under two.",
+     "direction": "the guess quoted gently; the second sentence lighter, with a small smile",
+     "pauseAfter": 0.4
+    }
+   ],
+   "beats": [
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0905",
+      "word": "gave",
+      "offset": -0.46
+     },
+     "what": "the Coulom slip in slot 5 of the Wall comes into focus; the due date 2024 visible; the quote card sets in"
+    },
+    {
+     "id": "goCandleLit",
+     "at": {
+      "line": "L0905",
+      "word": "years"
+     },
+     "what": "brief cutaway: the hands light the small Go candle on the shelf, tag 2014; then back to the slip"
+    },
+    {
+     "id": "dueGlint",
+     "at": {
+      "line": "L0905",
+      "word": "two"
+     },
+     "what": "the slip's typed due date, 2024, catches the lamp"
+    },
+    {
+     "id": "pushIn",
+     "at": {
+      "line": "L0905",
+      "edge": "end"
+     },
+     "what": "push into the slip's paper grain; the shot ends inside the push"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "Wall of Forecasts (fixed slot order) with the May 2014 slip in slot 5",
+    "candle lettered A GO MACHINE IS A DECADE AWAY: lit on 'years' (tag 2014)",
+    "green-shaded desk lamp"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "I think maybe ten years — Rémi Coulom, to Wired, May 2014",
+     "beat": "slip"
+    }
+   ],
+   "music": {
+    "cue": "goldRush",
+    "note": "The pulse thins to a hush (intensity 0.25) as the palette warms: a single low drone and one plucked note on 'guessed'; the candle motif's rising fourth, small, as the Go candle is lit on 'years'. The drone carries straight through the push and the paper wipe into Seoul."
+   },
+   "claims": [
+    "e9-go-decade"
+   ],
+   "quotes": [
+    "q-coulom"
+   ]
+  },
+  {
+   "id": "ch09-s03",
+   "kind": "scene",
+   "setting": "Seoul, March 2016, a hotel match hall: a Go board under a hanging lamp; then the paper wipe home to the Wall and the candle shelf in the study",
+   "era": "2010s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 4,
+   "transitionIn": "paperWipe",
+   "visual": "THIS SHOT: Seoul, 2016: ghost human games, then self-play under a reward pulse; move 37 lands with a ring of light, and Lee Sedol's equally rare wedge answers it. CAMERA (study close only; the Seoul hall is a scene): WALL, a short truck to the slot-5 glint, settling to SHELF (low macro at candle height) for the Go candle going out. Paper wipe out of the Coulom slip's paper grain (continuing ch09-s03a's push-in), with crossfadeMood candleAmber to duskRose under the wipe, to Seoul. STUDY LOCK: the study, the Wall, the board and the shelf are always candleAmber; era colour enters only through practicals, so this shot tint-crossfades (crossfadeMood duskRose to candleAmber) back inside the paper wipe home to the study at the end. A low hanging lamp over a Go board (the Seoul place stamp and Lee Sedol's name card set in as the wipe clears, in the lead-in, before any narration; the stamp and all name cards in this shot are overlays that stay at the frame's lower edge through the close framing, so the tighter camera never crops them); the grid's lines are cut-outs, the stones discs of black card and of backlit white paper. Lee Sedol (chin in hand, leaning forward) sits on one side, treated with dignity throughout; on the other side the machine's stones simply arrive, set by an anonymous hand that never becomes a character. The rim of the lamp's pool is kept empty: in this film the rim is reserved for doubters. The machine's makers are not doubters, so they get their own small light: beyond the pool, behind the machine's side of the board, a separate cool practical, the faint serverCyan glow of a screen, picks out a small, slight man in a dark jacket and open collar (Hassabis), facing the board, small in frame and never centred. HOW IT LEARNED (L0905b, the shot's teaching image, no text, lit only with practical light on the board; framed close and square-on to the board so the grid fills the frame): on 'human' a riffle of faint ghost boards, many human games layered like thin paper sheets, flickers over the grid and settles; on 'itself' the sheets clear and the anonymous hand sets stones for both colours from the machine's side, a quick game against itself; on 'wins' a single small warm pulse runs back from the finished position through the board, the reward, and the grid goes plain. This plants learning from reward, which chapters 12 and 15 rely on. On 'DeepMind's' (L0905b's first word, before the teaching image) that screen glow brightens just enough to read his silhouette and his name card sets in beside it; on 'AlphaGo' a second name card, 'AlphaGo · DeepMind (Google)', sets in low on the machine's side of the board. No logos. On 'thirty-seven' a black stone lands on the fifth line, far from the fighting: a ring of light spreads from it across the grid; on 'one-in-ten-thousand' the caption '1 in 10,000' stamps beside it in Plex Mono (the machine's own estimate of how often a human would play it). Lee's chair is empty for a beat (he left the room), then he is back. On 'found' cut closer: his hand places a white stone in a narrow gap (move 78, the wedge), an identical ring spreads from it and the same '1 in 10,000' caption re-stamps beside it. The machine's side goes still. In the pause after Lee's line, wordless, the lids are set on both bowls; then paper wipe back to the study (crossfadeMood duskRose to candleAmber under the wipe) for the last held image, in music only, in three unhurried steps, each given its own breath (beats candleWipe, pinGlint, goSnuff): the wipe lands home; then the Coulom pin in slot 5 GLINTS (it came true about eight years early); then, on the shelf below, the small candle lettered A GO MACHINE IS A DECADE AWAY (the one lit in ch09-s03a) goes OUT cleanly: the flame is snuffed, not frayed (this belief ended cleanly, in one match), a single thread of smoke rises, its dark ghost sleeve is exactly two rings tall above the stub, and the tag at its base now reads 2014–2016. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim.",
+   "lines": [
+    {
+     "id": "L0905b",
+     "text": "DeepMind's AlphaGo learned from human games, then from itself, rewarded for wins.",
+     "direction": "a teacher's aside, clear and unhurried; the lab and machine named plainly, then the two ways it learned, and a small weight on 'rewarded for wins' (chapter 15 calls it back); no awe",
+     "pauseAfter": 0.64
+    },
+    {
+     "id": "L0906",
+     "text": "Seoul, 2016. AlphaGo played move thirty-seven, a one-in-ten-thousand move.",
+     "spoken": "Seoul, twenty sixteen. AlphaGo played move... thirty-seven, a one-in-ten-thousand move.",
+     "direction": "slow; a fact on a card; 'move' clearly a word on its own, a small pause before 'thirty-seven'; let 'one-in-ten-thousand' hang NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88; the text is unchanged.",
+     "pauseAfter": 0.64,
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     },
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "move thirty-seven"
+      ]
+     }
+    },
+    {
+     "id": "L0907",
+     "text": "Then Lee Sedol found a move just as rare, and won the match’s only human game.",
+     "direction": "warm, admiring; 'only human game' with respect, not pity",
+     "pauseAfter": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "id": "seoulIn",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "the paper wipe clears onto the Go board under the hanging lamp; the Seoul place stamp and Lee Sedol's name card set in (overlays: they stay at the frame's lower edge through the close framing)"
+    },
+    {
+     "id": "humanGames",
+     "at": {
+      "line": "L0905b",
+      "word": "human"
+     },
+     "what": "a riffle of faint ghost boards, many human games layered like thin paper sheets, flickers over the grid and settles into the machine's pinpricks"
+    },
+    {
+     "id": "selfPlay",
+     "at": {
+      "line": "L0905b",
+      "word": "itself"
+     },
+     "what": "the ghost sheets clear; the anonymous hand sets stones for BOTH colours from the machine's side, a quick game against itself"
+    },
+    {
+     "id": "reward",
+     "at": {
+      "line": "L0905b",
+      "word": "wins"
+     },
+     "what": "one small warm pulse of light runs back from the finished position through the board: the reward for a win; then the grid is plain again"
+    },
+    {
+     "id": "makers",
+     "at": {
+      "line": "L0905b",
+      "word": "DeepMind's"
+     },
+     "what": "beyond the lamp's pool, a small screen-glow practical brightens on Hassabis, behind the machine's side; his name card sets in"
+    },
+    {
+     "id": "machineCard",
+     "at": {
+      "line": "L0905b",
+      "word": "AlphaGo"
+     },
+     "what": "the name card 'AlphaGo · DeepMind (Google)' sets in low on the machine's side of the board"
+    },
+    {
+     "id": "move37",
+     "at": {
+      "line": "L0906",
+      "word": "thirty-seven"
+     },
+     "what": "the black stone lands on the fifth line; a ring of light spreads across the grid"
+    },
+    {
+     "id": "rare37",
+     "at": {
+      "line": "L0906",
+      "word": "one-in-ten-thousand"
+     },
+     "what": "'1 in 10,000' stamps beside move 37"
+    },
+    {
+     "id": "move78",
+     "at": {
+      "line": "L0907",
+      "word": "found"
+     },
+     "what": "Lee Sedol's white wedge stone lands; an identical ring; the same caption re-stamps"
+    },
+    {
+     "id": "lids",
+     "at": {
+      "line": "L0907",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "wordless: the lids are set on both bowls; the machine's side stays still"
+    },
+    {
+     "id": "candleWipe",
+     "at": {
+      "line": "L0907",
+      "edge": "end",
+      "offset": 0.9
+     },
+     "what": "paper wipe home to the study (crossfadeMood duskRose to candleAmber under the wipe): the Wall and the candle shelf beneath it"
+    },
+    {
+     "id": "pinGlint",
+     "at": {
+      "line": "L0907",
+      "edge": "end",
+      "offset": 1.8
+     },
+     "what": "the Coulom pin in slot 5 glints: the forecast came true about eight years early"
+    },
+    {
+     "id": "goSnuff",
+     "at": {
+      "line": "L0907",
+      "edge": "end",
+      "offset": 2.5
+     },
+     "what": "the Go candle goes out cleanly (snuffed, no fray); a smoke thread rises; its dark ghost sleeve is two rings tall; the tag reads 2014–2016; hold on it"
+    }
+   ],
+   "cast": [
+    "lee-sedol",
+    "hassabis",
+    "narrator-hands"
+   ],
+   "props": [
+    "Go board and bowls of stones, with lids",
+    "hanging lamp",
+    "Wall of Forecasts (fixed slot order), the slot-5 Coulom pin glinting in the closing hold",
+    "candle lettered A GO MACHINE IS A DECADE AWAY: at the end snuffed cleanly, dark ghost sleeve 2 rings, base tag 2014–2016",
+    "smoke thread"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "SEOUL · MARCH 2016",
+     "beat": "seoulIn",
+     "until": "candleWipe"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Lee Sedol, professional Go player (9-dan)",
+     "beat": "seoulIn",
+     "until": "candleWipe"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Demis Hassabis, DeepMind co-founder",
+     "beat": "makers",
+     "until": "candleWipe"
+    },
+    {
+     "kind": "nameCard",
+     "text": "AlphaGo · DeepMind (Google)",
+     "beat": "machineCard",
+     "until": "candleWipe"
+    },
+    {
+     "kind": "label",
+     "text": "1 in 10,000",
+     "beat": "rare37"
+    }
+   ],
+   "music": {
+    "cue": "goldRush",
+    "note": "Hush for the board (intensity 0.25), continuing ch09-s03a's drone through the wipe: a slow, sparse plucked line; under L0905b a riffle of soft tones for the human games, then a light two-voice exchange of the same plucked tone (the machine against itself) and one warm low note on 'wins'. Each move is one struck note with a long ring that matches the ring of light. Move 78 gets the same note a fifth higher, a small human answer. After Lee's move the line thins to the drone alone as the lids go on the bowls. The candle motif plays in full in the music-only hold, as the Go candle goes out: rising fourth, held suspension, falling resolution, for a belief that lasted two years."
+   },
+   "claims": [
+    "e9-alphago-method",
+    "e9-deepmind-founding",
+    "e9-deepmind-price",
+    "e9-lee-sedol",
+    "e9-move37",
+    "e9-move78",
+    "e9-go-decade"
+   ]
+  },
+  {
+   "id": "ch09-s04",
+   "kind": "scene",
+   "setting": "The case board in the study, December 2015, under the green-shaded lamp; a ledger on the side table",
+   "era": "2014–2015",
+   "mood": "candleAmber",
+   "leadIn": 0.5,
+   "holdAfter": 3.7,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the founding grammar: OpenAI's December 2015 announcement pinned bare in the founding row, a warm and a cold hand-lantern on one nail, and a plain ledger page for the money. CAMERA: BOARD (frontal and medium on the Case Board; the pin is a brief insert, never a held wide), with one short insert on the side-table ledger. Plain cut along the study to the case board under the green-shaded desk lamp (STUDY LOCK: the study, the board, the shelf and the Wall are always candleAmber; era colour enters only through practicals). ONE FOUNDING GRAMMAR FOR EVERY LAB (this shot defines it; Anthropic's founding in ch12-s03 is staged identically, object for object, and the lantern MEANINGS are fixed for every lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names; OpenAI: warm on 'benefit', cold on 'damage'; Anthropic: cold on 'safety', the risk its name answers, warm on 'research'; the order of swings may differ, the meanings may not): flat even light, no office, no spotlight, no faces, no hero framing; the typed announcement pinned on the board with one phrase lit and the rest faint; NO name cards under the pin (both pins bare; the founders are named only in the narration); a warm and a cold hand-lantern hanging from the same pin, unlabelled, carrying no verdict; and the plain ledger on the side table, its entries set in IBM Plex Mono, the same ledger style used for every lab's money. On 'founded' (L0909 opens 'Months before Seoul', a step back in time after the Seoul climax, so the date stamp '11 DECEMBER 2015' sets in with the pin and carries the year) the hands pin a typewritten announcement dated 11 December 2015 into slot F1 of the founding row, beneath column C3 (the same height and size as Anthropic's 2021 announcement in F2); its text stays faint except the two phrases the narrator speaks. On 'Musk' the pin stays bare and the announcement settles in its slot. On 'benefit' the warm lantern swings into light; on 'damage' the cold one swings beside it, so hope and fear share a single nail: the warm lantern is the promise, the cold one the danger. On 'backers' (L0909b, 'Its backers committed a billion dollars', the same plain ledger narration as Anthropic's money in ch12-s03), the ledger on the side table turns a page and one entry is set: 'committed $1B · expected to spend a tiny fraction at first' (the funders' own words; it holds to the cut, long enough to read). Nothing comments on the entry. No logos.",
+   "lines": [
+    {
+     "id": "L0909",
+     "text": "Months before Seoul, OpenAI was founded, co-chaired by Sam Altman and Elon Musk. Human-level AI, it said, “could benefit society”, or “damage society if built or used incorrectly.”",
+     "spoken": "Months before Seoul, Open A.I. was founded, co-chaired by Sam Altman and Elon Musk. Human-level A.I., it said, “could benefit society”, or “damage society if built or used incorrectly.”",
+     "direction": "even, neither praising nor warning, the same plain documentary tone as Anthropic's founding in chapter 12; 'Months before Seoul' a light step back in time; the founders' names set down plainly and the sentence closed; 'it said' makes plain the words are the announcement's, not either man's; the two halves of the quotation given equal weight",
+     "pauseAfter": 0.6
+    },
+    {
+     "id": "L0909b",
+     "text": "Its backers committed a billion dollars.",
+     "direction": "flat and fair, the same ledger tone as every lab's money (Anthropic's in chapter 12)",
+     "pauseAfter": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "id": "labPinned",
+     "at": {
+      "line": "L0909",
+      "word": "founded"
+     },
+     "what": "the hands pin the December 2015 announcement into its slot on the board; the date stamp '11 DECEMBER 2015' sets in, so the eye has the year the ear stepped back to"
+    },
+    {
+     "id": "names",
+     "at": {
+      "line": "L0909",
+      "word": "Musk"
+     },
+     "what": "the pin stays bare (no name cards, matching Anthropic's pin in ch12-s03); the announcement settles in its slot"
+    },
+    {
+     "id": "warmLantern",
+     "at": {
+      "line": "L0909",
+      "word": "benefit"
+     },
+     "what": "a warm hand-lantern swings into light from the pin"
+    },
+    {
+     "id": "coldLantern",
+     "at": {
+      "line": "L0909",
+      "word": "damage"
+     },
+     "what": "a cold hand-lantern swings beside it from the same pin"
+    },
+    {
+     "id": "ledger",
+     "at": {
+      "line": "L0909b",
+      "word": "backers",
+      "offset": -0.56
+     },
+     "what": "the ledger page turns; the entry 'committed $1B · expected to spend a tiny fraction at first' is set, in the same plain style as every lab's money, and holds to the cut"
+    }
+   ],
+   "props": [
+    "caseBoard",
+    "typewrittenAnnouncement",
+    "twoHandLanterns (warm, cold) on one pin",
+    "bankersLamp",
+    "ledger"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "11 DECEMBER 2015",
+     "beat": "labPinned"
+    },
+    {
+     "kind": "label",
+     "text": "committed $1B · expected to spend a tiny fraction at first",
+     "beat": "ledger"
+    }
+   ],
+   "music": {
+    "cue": "goldRush",
+    "note": "The pulse returns, low. The same plain plucked figure used for every lab's founding (Anthropic's in ch12-s03 matches it): no swell, no heroic lift, intensity 0.3. Under the quotation the harmony splits into two voices, one warm (on 'benefit') and one cold (on 'damage'), moving together; nothing resolves. A single dry pluck as the ledger entry is set; then let the two voices thin out under the hold so the cut along the study to the Wall arrives on near-silence."
+   },
+   "claims": [
+    "e9-openai"
+   ],
+   "quotes": [
+    "q-openai-damage"
+   ],
+   "cast": [
+    "narrator-hands"
+   ]
+  },
+  {
+   "id": "ch09-s05",
+   "kind": "scene",
+   "setting": "the detective's study, night: the far end of the Wall of Forecasts, September 2017",
+   "era": "2017",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 4,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: at the Wall's far rim two exhibits lift into the light: a panda card flipped to gibbon by invisible changes, and two rows of faces ticked unequally by commercial software. CAMERA: WALL (a slow lateral truck with the hands, W1 to W7, then it stops), the nets' candle on the shelf at the bottom edge of frame at the lamp end. Plain cut (same candleAmber, same room; STUDY LOCK, so no lamp change) from the case board along the study to the Wall of Forecasts under the green-shaded desk lamp. WALL OF FORECASTS SLOT ORDER (BOARD MAP, canonical, word for word): its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). (W2 has been an empty pin since chapter 6.) THE DOUBTERS (L0910): the lamp's pool lies wide over the Wall, and at its RIM (in this film the rim is reserved for doubters) two paper exhibits stand half in shadow on the side table, objects only, no figures. On 'doubters' the lamp's edge brightens a little to find them. On 'Changes' the first exhibit lifts into the light: a small stencil-card picture of a panda, its typed caption a prop on the card ('panda 57.7%'); a fine dust of specks drifts over it, so faint the eye barely finds it, and on 'fool' the caption flips to 'gibbon 99.3%' while the picture itself does not visibly change (small typed credit on the card: Goodfellow, Shlens & Szegedy, 2014). On 'commercial' the second exhibit lifts: a parchment plate with two rows of cut-paper face silhouettes, one row darker paper, one lighter; on 'darker-skinned' a stamp of oxblood ticks falls across the darker row, and only a single tick across the lighter row on 'lighter-skinned'; the Gender Shades label sets in beneath the plate (it states what was measured: gender misread, not faces in general) and stays pinned at frame edge until the slip is pinned in W7 (beat slipPinned). Neutral, factual staging: the exhibits are evidence, not villains. THE CANDLE BURNED ON (the creed lit aloud in ch09-s01 gets its fate stated): on 'candle', at the bottom of the frame on the shelf beneath the Wall, at the lamp end where the truck will start, the lamp catches the nets' own candle, LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, tag 2012: a live flame, its ghost sleeve five rings tall and still growing (the belief was ratified, not refuted; its sleeve keeps growing into chapter 10). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Then the slip: at the end of the line the lamp's pool begins to narrow away from the rim, and the hands lift a new paper slip into the light (no caption; its typed lettering stays a prop) and carry it along the Wall, left to right, the camera trucking with them from W1 to W7 (the WALL camera's slow lateral truck), past every other forecast: Turing's curling slip (slot 1), the chess slip's empty pin (slot 2), Rosenblatt's slip (slot 3), the 2012 GPU slip (slot 4), Coulom's glinting pin (slot 5), and then slot 6, the 30-to-50-years slip, which stays in deep shadow: only its lower corner catches the lamp, half-lit, its words unreadable (a plant; it is read in chapter 13). The hands pin the new slip in W7, just beyond it (W8, the far end, stays an empty pin until ch15): dissent from the movement's own leader. The truck stops at W7 and holds still. The hands withdraw; the lamp's pool narrows and rests on this slip alone, and the two exhibits at the rim fall back into shadow. The slip is recognisable at a glance and must stay so for its return in chapter 15: it is the only slip on the Wall whose due-date box is blank, a small empty typed box on its tail, with a plain brass pin. Its large first clause catches the lamp only once it is pinned, in a hold that is mostly music only (the slip's tail carries a small typed prop credit, 'as quoted by G. Marcus, 2018', not a label; only its first clause is typed large, the rest of the sentence small and illegible, saved for ch15-s09). Nobody speaks after the doubters' line: the narrator deliberately says nothing about the slip. A single draught moves the slip's corner once, late in the hold. This is the plant for the film's last spoken quotation (chapter 15). TEXT RULE: besides stamps and name cards, at most one text item in this shot (the Gender Shades label); the panda captions are typed on the prop. ROUND 5 (runtime): the carried slip is NOT captioned here; its typed lettering stays small and only half-caught by the lamp, a plant like the W6 slip in shadow. It is read aloud and shown in full, with its attribution, in ch15-s09.",
+   "lines": [
+    {
+     "id": "L0910",
+     "text": "At the rim, doubters. Changes too small to see could fool these nets. Joy Buolamwini and Timnit Gebru found commercial face software misread the gender of darker-skinned women far more often than of lighter-skinned men. The candle burned on, and still does, argued over.",
+     "direction": "fair and steady, the voice of a careful witness; no alarm, no scolding; 'too small to see' with quiet wonder; the two names unhurried and clear; the face finding given its full, plain weight; 'The candle burned on, and still does, argued over.' level and quiet, neither triumph nor warning; then silence for the slip",
+     "pauseAfter": 0.5,
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "Buolamwini",
+       "Gebru"
+      ]
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "rimLit",
+     "at": {
+      "line": "L0910",
+      "word": "doubters"
+     },
+     "what": "the lamp's edge brightens a little to find the two exhibits at the rim"
+    },
+    {
+     "id": "panda",
+     "at": {
+      "line": "L0910",
+      "word": "Changes"
+     },
+     "what": "the panda stencil card lifts into the light, caption 'panda 57.7%'; a faint dust of specks drifts over it"
+    },
+    {
+     "id": "fooled",
+     "at": {
+      "line": "L0910",
+      "word": "fool"
+     },
+     "what": "the card's caption flips to 'gibbon 99.3%'; the picture does not visibly change"
+    },
+    {
+     "id": "faces",
+     "at": {
+      "line": "L0910",
+      "word": "Commercial"
+     },
+     "what": "the parchment plate of two rows of face silhouettes lifts; the Gender Shades label sets in"
+    },
+    {
+     "id": "darkerTicks",
+     "at": {
+      "line": "L0910",
+      "word": "darker-skinned"
+     },
+     "what": "a stamp of oxblood ticks falls across the darker row"
+    },
+    {
+     "id": "lighterTick",
+     "at": {
+      "line": "L0910",
+      "word": "lighter-skinned"
+     },
+     "what": "a single tick across the lighter row"
+    },
+    {
+     "id": "burnedOn",
+     "at": {
+      "line": "L0910",
+      "word": "candle"
+     },
+     "what": "at the bottom of the frame, on the shelf beneath the Wall at the lamp end, the nets' candle (LEARNED FEATURES, GIVEN DATA AND ARITHMETIC, tag 2012) is caught by the lamp: live flame, ghost sleeve five rings tall and still growing"
+    },
+    {
+     "id": "slipCarried",
+     "at": {
+      "line": "L0910",
+      "edge": "end"
+     },
+     "what": "the pool narrows from the rim; the hands lift the new slip into the light (no caption) and carry it along the Wall, the camera trucking with them past slots 1 to 5"
+    },
+    {
+     "id": "shadowSlip",
+     "at": {
+      "line": "L0910",
+      "edge": "end",
+      "offset": 1.8
+     },
+     "what": "passing slot 6: the 30-to-50-years slip in shadow, only its corner half-lit"
+    },
+    {
+     "id": "slipPinned",
+     "at": {
+      "line": "L0910",
+      "edge": "end",
+      "offset": 2.4
+     },
+     "what": "the slip is pinned in slot 7 at the far end; the truck stops; the hands withdraw; the pool narrows onto it; the exhibits fall into shadow; its blank due-date box catches the lamp"
+    },
+    {
+     "id": "draught",
+     "at": {
+      "line": "L0910",
+      "edge": "end",
+      "offset": 3.6
+     },
+     "what": "a draught lifts the slip's corner once, then it settles"
+    }
+   ],
+   "props": [
+    "green-shaded desk lamp",
+    "Wall of Forecasts (fixed slot order)",
+    "stencil-card panda picture with typed prop caption (panda 57.7% → gibbon 99.3%) and small credit",
+    "parchment plate: two rows of cut-paper face silhouettes, oxblood tick stamp",
+    "the 30-to-50-years slip in slot 6, in shadow, corner half-lit",
+    "paper slip with a blank due-date box",
+    "brass pin"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "gender misread: darker-skinned women up to 34.7% · lighter-skinned men up to 0.8% · Buolamwini & Gebru, 2018",
+     "beat": "faces",
+     "until": "slipPinned"
+    }
+   ],
+   "music": {
+    "cue": "goldRush",
+    "note": "The pulse drops away entirely. Under L0910 a thin low drone only, with one dry muted tick on 'fool' and soft ticks under the falling stamp; on 'candle burned on' the candle motif's rising fourth, very soft, unresolved (the creed still lit); nothing ominous, nothing resolving. Then solo celesta states the slip motif, which must be clear enough to be recognised when it returns in chapter 15: the candle motif's first two notes only (rising fourth, then the held suspension), exposed, as the slip is pinned; it stops there, unresolved. After a breath it states the same two notes once more, softer, on the draught. Otherwise near-silence, a faint room tone, until the cut. Chapter 15 resolves it."
+   },
+   "claims": [
+    "e9-adversarial",
+    "e9-gender-shades",
+    "e9-hinton-funeral",
+    "e9-turing"
+   ],
+   "quotes": [
+    "q-hinton-suspicious"
+   ],
+   "cast": [
+    "narrator-hands"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,95 @@
+{
+  "reviewer": "teacher",
+  "round": 5,
+  "lens": "clarity and depth for a curious 15-year-old and an expert at once",
+  "wordCount": 3412,
+  "runtimeEstimate": "3,412 narration words, 145 fewer than round 4 but still 372 over the 3,040 target. Speech at about 150 wpm plus 137 s of leadIn, 320 s of holdAfter and 180 s of pauses comes to about 34.5 min, at the top of the brief's 30–35 min range. Every addition below is costed; the showrunner should take them in priority order (critical first, then issues 1–6) and pay with the cuts listed in the last issue.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 7.5,
+    "clarity": 8,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 8
+  },
+  "critical": [
+    "CLASSICAL ML (ch06-s03, L0605–L0607): the brief names 'Classical ML' as a must-cover topic, but the ear hears exactly one classical method, the SVM. The bible's Era 6 belief is much broader: boosting (e6-adaboost), random forests (e6-randomforest), graphical models (e6-pearl), and above all statistics learned from data beating hand-written rules in speech and translation (e6-ibm-smt). That last point is the film's own thesis: in the 1990s the suspect LEARNING was winning, only not with neural nets. As written, a 15-year-old believes the 1990s were nets against one rival, and an expert notices that half the field is missing. FIX: replace L0605 'The rivals were good.' with: 'The rivals were good: classical machine learning. In speech and translation, statistics learned from data beat hand-written rules. Forests of small decision trees voted; so did teams of weak guessers.' (+27; claims e6-ibm-smt, e6-randomforest, e6-adaboost). Then L0606 continues: 'The favourite, Vladimir Vapnik's support vector machine, finds the widest street between two crowds.' (+2). Optional and even-handed (+16; e6-two-cultures): 'Even the forests' inventor conceded that a hand-built net beat his forest on ZIP codes.' It fits after L0609 or on the ch06-s03 plate. For the visual, ch06-s03 gets a short paper strip before Vapnik's board: a little forest of cut-paper trees, then a crowd of small voters, then a parchment of bilingual columns (claims e6-randomforest, e6-adaboost, e6-ibm-smt).",
+    "THE WORDS 'DEEP LEARNING', 'MACHINE LEARNING' AND 'LANGUAGE MODEL' ARE NEVER SPOKEN (whole script; a grep of every line confirms it). The film names its subject, a neural network (L0204), but never the name the world gave its revival, nor what a chatbot is. A 15-year-old will hear 'deep learning' and 'LLM' everywhere else in life and never connect them to this story. 'LLM' appears only inside LeCun's on-screen quote in ch15-s06. 'Model' is first used, undefined, at L1019. FIX (+13 words in all): L0832 → 'Why choose the fog? The clean bowl sat on stencils cut by hand. In the fog, given data and fire, the net cut its own. Many layers, cutting their own stencils: deep learning.' (+7; e8-vision-belief; bible Era 7 is titled 'The Deep Learning Renaissance'). L1103 → 'In 2019, OpenAI's GPT-2, a language model, had one training goal: “predict the next word.”' (+3; e10-gpt2). 'Machine learning' arrives through the L0605 fix above. (Alternative for L0609, verbatim from q-lecun-conspiracy: 'LeCun later called the three of them “the so-called Deep Learning conspiracy.”' This is wry and true, but costs +10.)"
+  ],
+  "issues": [
+    {
+      "where": "ch08-s07 L0813 (AlexNet: max-pooling)",
+      "problem": "Max-pooling is AlexNet's way of shrinking the picture as it climbs (55 → 27 → 13 on the ch08-s05 plate). It is on screen ('max-pooling: 3 × 3 windows, steps of 2 (overlapping)') but never spoken. The teenager sees a jargon label with no gloss, and the expert notes that one of the paper's credited ingredients (e8-ingredients) is missing from a deep dive meant to be complete.",
+      "fix": "Append to L0813: 'Between floors, each little patch keeps only its brightest spot, so the picture shrinks as it climbs.' (+17; e8-ingredients, e8-architecture). Alternatively, fold it into L0809: '…each stencilling the one below, the picture shrinking as it climbs: edges, then textures, parts, things.' (+5)."
+    },
+    {
+      "where": "ch08-s08b L0830 (AlexNet: why dropout works)",
+      "problem": "'They snuffed half the lanterns at random, each time, to stop the memorising' says what dropout does, not why it works. A curious teenager asks why breaking the network makes it better. The paper's reason is that no unit can rely on particular partners, so each must learn something useful on its own.",
+      "fix": "L0830 → 'In the great halls, they snuffed half the lanterns at random, each time, so no lantern could lean on its neighbours.' (+3 net; 'to stop the memorising' leaves because L0815 already set up the memorising; e8-ingredients)."
+    },
+    {
+      "where": "ch05-s05 L0510 → ch08-s10 L0819 (step size)",
+      "problem": "L0819's 'big strides first, then … shorter steps' depends on an idea the ear never heard. Round 4's card assumed L0510 taught that timid steps get trapped. The current L0510 doesn't: only the ch05-s05 visual (timid walk trapped, bold leap) and its unspoken label 'timid stride: trapped | bold stride: over the ridge' carry it. Without the visual, the AlexNet training schedule sounds arbitrary.",
+      "fix": "L0510 → 'Each tug steps downhill on a landscape of error, and in fog, a hollow can pass for the bottom. Timid steps get trapped.' (+4; e4-rhw). L0819 then pays it off by ear."
+    },
+    {
+      "where": "ch09-s03 L0905b (AlphaGo: how it learned)",
+      "problem": "The mechanism is now spoken (two networks plus a search), but not how the networks learned: first from 30 million human positions, then by playing themselves for reward (e9-alphago-method). That is the film's only chance to introduce learning from reward before it carries ch12 ('the judge') and ch15 L1503 ('rewarded for right answers'). As it stands, reward-learning arrives cold in 2024.",
+      "fix": "L0905b → 'Google's DeepMind built AlphaGo: one network suggested moves, a second judged the board, and a search weighed them. They learned from human games, then by playing themselves, rewarded for wins.' (+15; e9-alphago-method)."
+    },
+    {
+      "where": "ch11-s05 L1110 (scaling: why people believed it)",
+      "problem": "The ear hears 'bigger models, lower error' and a parameter count. It never hears what made GPT-3 startling and lit the scale candle for a whole field: shown a few examples in the prompt, it did new tasks with no retraining (e11-gpt3, 'without any gradient updates or fine-tuning'; bible Era 11 'perhaps even new abilities'). The expert misses the one result that turned 'lower loss' into a belief, and the teenager doesn't see why anyone cared about a straight line. 'A straight line' also needs its qualifier for the expert: it is straight only on log-log paper.",
+      "fix": "L1110 → 'In 2020, a smooth, predictable law: bigger models, lower error. GPT-3 had a hundred and seventy-five billion weights. Show it a few examples, and it did new tasks, untaught.' (+11; e11-kaplan, e11-gpt3). The ch11-s05 visual can keep its straight line if the plate is labelled 'log scale'."
+    },
+    {
+      "where": "ch15-s01 L1502 + L1528 (the Nobel: for what, and the dissent)",
+      "problem": "Nothing in the narration says what Hinton's half of the Nobel was for. The Boltzmann machine is only an on-screen card in ch05-s03 ('learns as it cools'). So the teenager assumes the prize was for back-propagation or ChatGPT, which the bible explicitly rules out (e12-nobel-physics-debate: 'not for transformers or LLMs'). 'Not everyone cheered' is a dissent with no content, and Hall's words appear on screen only.",
+      "fix": "L1502 → 'A Nobel Prize in physics, shared with the man from Versailles: for memories that roll downhill, and nets that learn as they cool.' (+10; e12-nobel-physics, e4-boltzmann). L1528 → 'Not everyone cheered. Was this physics?' (+3; e12-nobel-physics-debate). If the words can't be spared, at least add 'and nets that learn as they cool' so the ch05-s03 card pays off by ear."
+    },
+    {
+      "where": "ch15-s04 L1530 (the present era's dissent and its experiment)",
+      "problem": "The candle of now is spoken, but its experimental dissent, METR's randomised trial, is on screen only ('19% slower, felt 20% faster · METR: now out of date'). The brief asks for the experiments and for who dissented in every era. The current era's spoken dissent is only LeCun's in L1509, about the road's destination rather than its speed. The trial is also the most vivid, checkable experiment of the present day for a 15-year-old.",
+      "fix": "Add L1531 after L1530: 'Yet in one trial, seasoned programmers using AI felt faster, and were slower. Its authors now call that result out of date.' (+21; e14-metr-rct). The second sentence keeps it fair to both the trial and the trend."
+    },
+    {
+      "where": "ch03-s01 L0302 → ch03-s04 L0307 (which machine learned in 1958)",
+      "problem": "'Frank Rosenblatt's perceptron learns, in fifty tries, to tell left from right', followed by 'In Buffalo, Rosenblatt built it: an eye … motor-driven knobs'. The ear fuses the two into one machine. The 1958 demo was a program simulated on the Weather Bureau's IBM 704, and the Mark I came later (first shown publicly in June 1960; e2-1958-demo, e2-mark1-build). 'Tell left from right' also sounds as if it learned the concept of direction. It learned to sort punch cards marked on the left from cards marked on the right.",
+      "fix": "L0302 → 'Frank Rosenblatt's perceptron, a program on a borrowed computer, learns in fifty tries to sort cards marked left from cards marked right.' (+8). L0307 → 'In Buffalo, Rosenblatt then built it as a machine: …' (+3)."
+    },
+    {
+      "where": "ch06-s06 L0613 (the reading-in-order net is never introduced)",
+      "problem": "'Through many layers, or a long sentence read word by word, the messenger fades like a whisper.' The idea of a net that reads word by word and carries a memory along (a recurrent net) is never introduced. Yet it is the antecedent for L0614's 'protected pipe … over a thousand steps', L1002's read-in-order candle and L1005's 'squeezed a whole sentence into one list of numbers'. The teenager can't picture why the messenger would travel through a sentence.",
+      "fix": "L0613 → 'Through many layers, or through a net that reads a sentence word by word, carrying a memory along, the messenger fades like a whisper.' (+6; e5-vanishing, e6-lstm)."
+    },
+    {
+      "where": "ch14-s04 L1408 vs ch15-s02 L1503 (reasoning models used before explained)",
+      "problem": "ch14 says DeepSeek 'released a model that reasons step by step' (January 2025). The explanation (rewarded for right answers, it writes working notes first) arrives a chapter later at L1503, which also steps back to 2024 with 'That year'. A teenager meets the term before the idea, and the chronology doubles back.",
+      "fix": "L1408 → 'Then DeepSeek released a model that writes out its reasoning before answering, its weights open to all.' (+3; e13-r1-release). L1503 → 'In 2024, machines learned to think longer: …' (0 words; replaces 'That year')."
+    },
+    {
+      "where": "ch08-s13b L0826 (how fast the hand-cut belief died)",
+      "problem": "The candle's age is spoken ('burned thirteen years'), but not the most striking duration fact of the AlexNet era: how fast it went out. The bible (e8-ilsvrc2013, Era 8 'the flip was fast') says one network entry in 2012, then all top five teams used convnets by 2013. That is exactly the 'how long did people think that way' answer the brief asks for, and it makes the cliff in L0823 mean something.",
+      "fix": "L0826 → 'The hand-cut stencil candle burned thirteen years. A year later, the top five entries were all networks.' (+10; e8-ilsvrc2013). Optional: skip it if words are tight. It is the lowest-priority addition in this card."
+    },
+    {
+      "where": "ch10-s05 L1010 (where a word's numbers come from)",
+      "problem": "'Each word arrives as numbers' leaves an expert asking whether the numbers are fixed codes or learned embeddings, and leaves a teenager asking where the numbers come from. 'All tuned by our messenger' covers the cards but not the starting list.",
+      "fix": "L1010: 'Each word arrives as a learned list of numbers and grows three cards: …' (+3; e10-architecture)."
+    },
+    {
+      "where": "Runtime: costed cuts to pay for the above",
+      "problem": "The additions in this card total about +85 to +170 words, depending on which optional items are taken. Without cuts, the film drifts past 35 min.",
+      "fix": "Narration cuts that lose no mechanism: (a) L1509 → 'The three holdouts, now: two warn the road is dangerous; the third, that it doesn't go far enough.' (−10; L1312 already set up the two-to-one split). (b) L0821 → 'Their professor, the tall man, could not sit, so could not fly. Yann LeCun stood at the back of a packed room.' (−3). (c) L0410: drop 'general-purpose' (−1). (d) L0830's 'to stop the memorising' leaves via the dropout fix. The real lever is still the 320 s of holdAfter: trimming 20% outside the climaxes (Florence, the transformer reveal, the finale) saves about a minute and pays for every addition here. Priority if words must be rationed: critical 1 and 2, then max-pooling, AlphaGo reward, GPT-3 few-shot, the Nobel content, METR, strides, the 1958 demo, then the rest."
+    }
+  ],
+  "strengths": [
+    "Round 4's fixes were applied cleanly, and the count still fell, from 3,557 to 3,412 words. The second winter now has its cause (the special machines stopped selling). The first AI winter is named. 'Neural network' is spoken in L0204. 'Compute' became 'computing power'. The warm-up has its mechanism ('before any labels … each learning to rebuild its own input'). 'Pruned' became 'shaped'. The memorise line has its antecedent and its contrast. The weir line has a baseline. Each of these improved clarity without bloat.",
+    "The AlexNet deep dive is right in every particular I checked against the bible. A photo is a grid of numbers. A worked nine-term stencil sum (3.88, labelled illustrative) is followed by 'slide the same stencil everywhere. A convolution', naming the idea after showing it. Ninety-six first-layer stencils plus four more layers, two 4,096-unit halls and a thousand-door hall match conv1–5, fc6–7 and fc8. Stencils grow from noise under the 1986 messenger. ReLU against saturation, with the six-times figure scoped 'in their test'. The overfitting argument, about 12 million label bits against 60 million weights, is a gem for both audiences. Dropout in the right layers. The GPU colour split 'every time' is true to the paper. The schedule, then the result, then fair credit (seven voters, single net nearer eighteen, IDSIA's prior GPU wins).",
+    "The transformer deep dive is the best teaching in the film. The bottleneck motivates attention. Q, K and V become question, label and message cards, tuned by the same messenger. 'Multiply, and add, the stencil's way' bridges the two deep dives through the dot product. The bank and river arithmetic is correct: softmax of 1, 0, 2, 1 gives 0.53 to river. The √d_k explanation is right for the right reason (the jug tips everything into one cup and learning freezes), and the toy's halving is explained by the same rule. Then heads, clock-face positions, 'talk, then think alone, six times', the n² catch, and decoder-only next-word prediction behind a curtain, reused as the output jug in ch11.",
+    "Payoff architecture is excellent for a young viewer. The fog from L0510 returns as the SVM's 'one clean bowl. No fog' and the question 'why would anyone choose the fog?', answered in L0832 with the hand-cut stencils. The warm-up returns 'in a different coat' as pre-training. Cyc's 'practically nothing from the raw text' meets GPT-2. Florence's 'simply by waiting' is graded against scaling ('Mostly, it held'). The hidden slip on the Wall of Forecasts turns out to be Hinton's own. Each callback re-teaches its concept at the moment it matters.",
+    "Belief, dissent and duration are now audible in every era through the candle device, including ch09 (L0901 and L0910) and the present day (L1530). Durations are specific and sourced: sixteen, seven, seventeen, about seven, thirteen, ten to fifteen by field, twenty, about two, one day. Contested matters are spoken even-handedly: the backprop priority ('several people, separately'), the Lighthill blows ('Historians still argue'), Gebru's departure ('the accounts differ'), DeepSeek's cost ('Not the research. Not the chips.'), both governments' stated reasons, Anthropic's Pentagon dispute next to its book settlement and OpenAI's sandbox incident.",
+    "The writing is genuinely for the ear: short sentences, numbers spoken naturally ('fifteen point three'), symbols and acronyms kept on screen (QKᵀ/√dₖ, fc6/fc7, top-5), and recurring metaphors (lanterns, knobs, messenger, jug of light) defined once, then reused with discipline. The spoken quotations I checked are verbatim against quotes.json and correctly attributed."
+  ]
+}

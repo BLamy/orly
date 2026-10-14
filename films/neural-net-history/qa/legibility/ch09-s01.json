@@ -1,0 +1,69 @@
+{
+ "shot": "ch09-s01",
+ "at": "2026-10-13T04:13:55.259Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "The Gold Rush",
+   "capWhileSubject": 31.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LAKE TAHOE · DECEMBER 2012 · ROOM 731",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "as reported by Cade Metz",
+   "capWhileSubject": 22.7,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "GOOGLE",
+   "capWhileSubject": 43.8,
+   "why": "named: \"google\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 14.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 15.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNED FEATURES,",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GIVEN DATA AND",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ARITHMETIC",
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 2012 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$44,000,000",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 7
+}

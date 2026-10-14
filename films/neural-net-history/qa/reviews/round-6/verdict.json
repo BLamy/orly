@@ -1,0 +1,190 @@
+{
+  "round": 6,
+  "pass": true,
+  "scores": {
+    "accuracy": 8.67,
+    "depth": 8.75,
+    "clarity": 8.67,
+    "story": 8.67,
+    "visual": 8.42,
+    "sync": 8.5,
+    "sound": 8.25,
+    "curiosity": 8.67
+  },
+  "mean": 8.57,
+  "bar": 8.5,
+  "weighting": "mean across 5 reviewers; owning lens counted double (historian:accuracy; teacher:depth,clarity; story:story,curiosity; art:visual,sync; sound:sound); /6",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 9,
+      "depth": 8.5,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8.5,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8.5
+    },
+    "teacher": {
+      "accuracy": 8.5,
+      "depth": 9,
+      "clarity": 9,
+      "story": 8.5,
+      "visual": 8.5,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 8.5
+    },
+    "story": {
+      "accuracy": 8.5,
+      "depth": 9,
+      "clarity": 8.5,
+      "story": 9,
+      "visual": 8.5,
+      "sync": 8.5,
+      "sound": 8,
+      "curiosity": 9
+    },
+    "art": {
+      "accuracy": 8.5,
+      "depth": 8.5,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8.5,
+      "sync": 8.5,
+      "sound": 8.5,
+      "curiosity": 8.5
+    },
+    "sound": {
+      "accuracy": 8.5,
+      "depth": 8.5,
+      "clarity": 8.5,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8.5,
+      "sound": 8.5,
+      "curiosity": 8.5
+    }
+  },
+  "criticalIssues": 0,
+  "majorIssues": 0,
+  "belowBar": [],
+  "gate": {
+    "everyDimensionAtLeast8": true,
+    "meanAtLeast8.5": true,
+    "noCritical": true
+  },
+  "ledgerAudit": {
+    "round5-shots": "PRESENT and finalized (01:36:46Z): 20 ids, 18 fixed and 2 partial. Sheets were re-rendered 01:41-01:57Z and film.mp4 at 01:41Z, after every recordedAt. All five reviewers checked their ids at the recorded word times.",
+    "confirmedFixed": [
+      "ch14-s04b (three equal tags by +7.0, verified in film.mp4)",
+      "ch15-s10 (maker disclosure on the CREDITS card +8.58 to +20.08)",
+      "ch15-s01 (sleeper +6.79, handset +10.37, mechanism tags on 'downhill' and 'cools', ribbon gone by +20.21)",
+      "ch15-s09 (STATUS: OPEN centred on the CASE FILE, articulated hand, ignition on 'new')",
+      "ch15-s08 (stamp on 'open' +37.92, clean last hold)",
+      "ch15-s05 (four equal plates, one 'as of October 2026')",
+      "ch14-s07 (single opaque plane through 'liang'; stamp on 'stands')",
+      "ch15-s06",
+      "ch15-s04",
+      "ch10-s10",
+      "ch10-s12",
+      "ch10-s13b",
+      "ch09-s05",
+      "ch04-s07",
+      "ch07-s01",
+      "ch01-s06",
+      "ch12-s08 (hand-off)",
+      "ch15-s07"
+    ],
+    "markedFixedButNot": {},
+    "partialActuallyFixed": {
+      "ch15-s03": "The partial is a false one from the note checker: round-5 check.removedKeys = ['L1504b','Snuff','habit'], which are the anchors the same note requires (showrunner read film.json). The sheet shows the snuffer at 11.83-13.62, HABIT at 14.29, the echo at 15.46, and the slugs done by 17.87. Closed as fixed; the checker fix is routed globally.",
+      "ch13-s03": "Partial only because the sha changed (34dadbf21a5c to eef96cc11fd6) after the record, and the note had no mechanical check. The 01:54Z sheet shows the letter printed at +7.83 and its label at +8.87. Closed as fixed."
+    },
+    "closedNoChange": {
+      "L0114": "The 0.84 retry was rejected under the user's delivery direction, and the 194 wpm take was kept, as round 5 allowed."
+    }
+  },
+  "showrunnerChecks": [
+    "Computed weighted scores from the five round-6 scorecards (owning lens double, divided by 6). The mean of the unrounded dimensions is 8.573.",
+    "Read film.json round5-shots: ch15-s03 check.absent and removedKeys = ['L1504b','Snuff','habit'], identical to its required anchors. This confirms the checker mis-extraction.",
+    "Read the ch15-s04 sheet: at +13.83 the METR card is fading and 'METR estimates · frontier models' is barely legible under MINUTES. In the source it is textRole 'texture' at about 10 px (ch15-s04.tsx about line 203).",
+    "Read the ch14-s07 sheet: +14.29 to +18.83 show the white fence slips mid-frame across the candle columns, with faint tag smudges above.",
+    "Read the ch15-s01 sheet: arch-row busts are larger than the front row in the wide (+14.58), and the push close-ups (+16.58 to +22.42) show cap-like near-row heads. The source header says the mirrored figures turn on 'Versailles' (turn0 = T.word('L1502','Versailles')), but no turn can be read on the sheet.",
+    "Checked L1527's rewrite against the bible: e1-turing-1950 records Turing's suggestion to build and educate a 'child machine' (status confirmed).",
+    "Clock: 2168.4167 of 2172 s. The routed line changes (L0830 about +1.4, L0105 about +0.4, L1527 about +1.0) fit in the 3.58 s headroom, in one rebuild."
+  ],
+  "fixes": {
+    "shots": {
+      "ch15-s04": "MINOR (historian; confirmed on the sheet at +13.83/+14.08). The big 'METR, Mar 2025 · doubles ≈ every 7 months' card fades out just as '16 HOURS · MAY 2026' and 'UNRELIABLE ABOVE HERE' land. After that, the only attribution for the film's biggest present-day number is 'METR estimates · frontier models', a 10 px texture-role line (source line ~203) that a shelf candle partly covers. Fix: draw that line as a caption-role text at the film's 22 px minimum, and move it right or up so no candle or plate crosses it from b3 (+8.0) to the cut to the stopwatches (b4, ~+14.1). OR keep the METR card at full ink until b4. Do not name a model or lab. Keep every rung time. Verify stills at +10.1, +13.9 and +14.05, and check that the legibility audit shows 0 subject or caption text under 22 px.",
+      "ch15-s01": "MINOR (art and teacher, merged; confirmed on the sheet). (a) Versailles payoff: L1502 says 'nobody he met remembered his Versailles talk' ('nobody' ~14.99, 'Versailles' ~16.76), and the header says the mirrored figures turn on 'Versailles' (turn0). On the sheet at +14.58/+16.50/+18.46, though, the turn cannot be read. Make it read: from 'nobody' to 'memories', put the reflected heads in the tall arch panels in clean profile (as in ch05-s01, all facing away). On 'Versailles' turn them toward the lectern in a short staggered head swap (no glow, no text), so a viewer sees the room that once looked away now look. Hold the JOHN HOPFIELD card to at least 'Versailles' + 0.3. (b) Depth: the arch-row busts are drawn larger than the front row. Scale them to about 0.75x of the front row and drop them about 15% in value toward the wall. (c) Medallion push (+16.4 to +26): the near-row busts read as men in baseball caps (the 'parted' dip plus the nose make a brim, and the bun reads as a cap button). Lower the near row about 60 px so the medallion owns the frame, or redraw 'parted' with the dip at the top-back of the crown and no forward overhang. Keep every T.word anchor (phone, Hopfield, Versailles, memories, downhill, Boltzmann, cools) and both mechanism tags. Verify stills at +14.6, +16.9, +17.6, +20.3 and +25.5.",
+      "ch15-s09": "MINOR (art; the largest silhouette in the closing minute). The match-strike hands (+19.8 to +22.9; full frame +21.4) still read as carved mannequin blocks: square finger segments, a flat palm slab, and a cuff rectangle floating under the grip hand with a gap. Cut the fingers as tapered paper pieces (rounded tips, a knuckle notch, a thumb with a visible web). Join the sleeve to the cuff with one continuous edge so nothing floats. Keep the 2 px warm rim on the lit side. Scale both hands to about 0.85 so the candle and the lit window keep the frame. Change no timing: hand in on 'suspicious' - 0.6, ignition on 'new', flare on 'candles', STATUS: OPEN unchanged. If the kit hand part (global G-figures) is upgraded first, use it here. Verify stills at +20.5, +21.4 and +22.8.",
+      "ch14-s07": "MINOR (art; confirmed on the sheet at +14.29/+14.75/+16.71). From 'fence' to the pull-back, the far fence is nine blank white slips strung mid-frame across the candles' depth. They read as placeholder cards. Above them, the three s04b dissent tags hang at about 25% ink as unreadable smudges. Push the fence to the far-shore plane: blur 1.5, scale 0.75, tie line on the horizon behind the candles (occluded by them, not overlapping), and two faint ruled lines per sheet at 30% ink. Drop the dim dissent tags from this shot (s04b has already shown them at full ink, as equals). Keep STATUS: OPEN on 'stands', the Liang quote and its attribution, and the 'liang' hand-off. Verify stills at +14.0, +14.5 and +16.7.",
+      "ch12-s08": "MINOR (art). On 'investment' (+10.06) the right-hand ledger window lights as a blank pale panel for about 0.3 s before MICROSOFT · MULTIBILLION starts typing (+10.38). Ink the ruled lines and the '23 JAN 2023' date strip together with the panel's light-up, and start the type-on at w2 - 0.1. Or light the panel 0.15 s later, so its first lit frame already carries ink. Add cardProbe on the panel. Verify stills at +10.0, +10.1 and +10.2, with 0 blank probed cards."
+    },
+    "cues": {},
+    "lines": {
+      "L0830": "MINOR (sound). The film's only explanation of dropout runs 9.64 s at 199 wpm, the fastest line in the film, against the direction 'slow and clear'. Re-narrate SOLO with the text unchanged, at tts speed about 0.86, with spoken commas after 'halls' and 'time'. Keep only a take of 10.8-11.4 s with STT WER 0 and no inserted ellipsis. If it sounds slowed or sing-song, keep the current take and close. Hand-offs: re-fit ch08-s08b by T.word ('snuffed', 'another', 'missing', 'work') and shift m10's later hits by the measured delta. Do all line changes in ONE clock rebuild (headroom 3.58 s; L0830 about +1.4, L0105 about +0.4, L1527 about +1.0, total about 2.8 s).",
+      "L0105": "MINOR (sound). The prologue riddle 'Yet nobody ever wrote one a rulebook.' runs 2.20 s at 191 wpm with no gap, against the direction 'quiet and slightly amazed; long pause after'. Re-narrate SOLO with the text unchanged, at tts speed about 0.85. Keep only a take of 2.5-2.7 s with STT WER 0, no inserted ellipsis, and the same pauseAfter. Do not touch L0101 (pinned by the user). Hand-offs: re-fit ch01-s03 by T.word ('nobody', 'rulebook'). Shift m01's later hits by the delta, keeping its dead cut at least 0.2 s before 'Our'. Same single clock rebuild as L0830.",
+      "L1527": "MINOR (story; the one plant the ear never hears paid off). Turing's 'educate a child machine' (L0212, 1950) first asks the case question, but the verdict never names him. Rewrite to: 'Who taught it? Not rules alone. Not knowledge, typed in by hand. Learning, as Turing guessed, with its accomplices: data, fire, a messenger, and people choosing.' That is 3 words added, about +1.0 s. It is grounded in e1-turing-1950 (Turing suggested building and educating a 'child machine'). Keep the direction and level of the current take, re-narrate SOLO, and require STT WER 0. Hand-offs: re-fit ch15-s08 by T.word (beats on 'rules', 'knowledge', 'Learning', 'data', 'fire', 'messenger' and 'choosing' all still exist). Optionally glint the 1950 Turing slip on the board on 'Turing'. Shift m21 and its foley bodily by +Δ from L1527 on. Same single clock rebuild as L0830 and L0105. If the rebuild would exceed the 2172 s ceiling, drop this line first."
+    },
+    "global": [
+      "LEDGER (all five reviewers agree; confirmed by the showrunner in film.json round5-shots). Close round5-shots ch15-s03 and ch13-s03 as FIXED (closedBy round6-global) with the verified sheet times. ch15-s03: RABBIT 10.00, snuffer 11.83 to 13.62, HABIT 14.29, echo 15.46, slugs done 17.87. ch13-s03: printed letter 7.67/7.83, label 8.87; re-record against sha eef96cc11fd6. Then fix generator/film/lib/shotledger.mjs. Take removedKeys only from text governed by a removal verb (remove, delete, drop, no longer, gone). Never take a token that the same note names inside T.word(...)/T.beat(...)/T.wordEnd(...), in an 'anchor ... on' phrase, or in the check's own present list. Reject any note whose removed and present keys intersect at write time. When a shot's sha changes after a record, and the note has no check, and a sheet newer than the new sha exists, record 'fixed (re-verified)' instead of partial. Add a test with the round-5 ch15-s03 note text.",
+      "HAND-OFF, not a gate blocker (sixth round open; historian and sound). Before publish, a person listens to the seven name clips with `npm run film:voice -- listen --slug neural-net-history` and records each with `film:voice signoff --slug neural-net-history --term <term> --by <name> --verdict ok|reject`. The clips: Uszkoreit L1006, Amodei L1206, Hochreiter and Schmidhuber L0614, Rumelhart L0507, LeCun L0821 (with L0601, L0609, L1311), Lenat L1104 (with L0515, L1316). A rejection becomes a SOLO retake with a lexicon respelling and a T.word re-fit of that line's shot.",
+      "SPEC HYGIENE (historian). In apps/bookshelf/src/viz/films/neural-net-history/sets/studyState.ts (about line 353), the W8 slip still carries pinned: 'ch15-s06', a pin that round 4 removed from the shot. Drop the pin, or set it to the earliest shot whose Wall shows the slip, and add the comment 'rest alpha only; never pinned, captioned, pushed or lit (round-4 historian)'. Keep the slip text exactly. Re-sheet only if the Wall's first appearance changes.",
+      "KIT (art, G-figures; optional unless ch15-s09 needs it). Make one pass on the shared hand part: tapered fingers with rounded tips, knuckle notches, a thumb web, and the sleeve as one continuous edge into the cuff. Optionally make a light costume pass on the named-cast puppets (a lapel notch, a cuff band, 3-4 rim-dot buttons, a hem flare) on their existing idles. Re-sheet every shot that uses the part: ch15-s09, ch14-s07, ch14-s04b, ch05-s06, ch07-s01, ch15-s06, ch13-s04. Do not change timing.",
+      "DEFERRED, not routed this round (story pacing; teacher L0320; sound L0806). The 36.1-minute runtime and the dense present-day run (ch14-s01 to ch15-s05) are held for the next film's outline: cap any present-day news act at about 3 min and give it one human scene. If a later round needs time back, the only sanctioned trim is L1531's second sentence, about -2 s. Leave L0320 and L0806 as they are unless clock headroom remains after the L0830/L0105/L1527 rebuild. If at least 0.8 s remains, L0806 may get the same SOLO speed-0.86 retake (4.2-4.5 s, WER 0) in that rebuild."
+    ]
+  },
+  "fixChecks": {
+    "ch15-s04": {
+      "present": [
+        "METR estimates · frontier models"
+      ],
+      "absent": [
+        "textRole(c, 'texture', () => c.fillText('METR estimates"
+      ]
+    },
+    "ch15-s01": {
+      "present": [
+        "'Versailles'",
+        "'nobody'",
+        "'memories'",
+        "HOPFIELD NET · 1982",
+        "BOLTZMANN MACHINE · 1983–85"
+      ]
+    },
+    "ch15-s09": {
+      "present": [
+        "'suspicious'",
+        "'new'",
+        "'candles'",
+        "STATUS: OPEN"
+      ]
+    },
+    "ch14-s07": {
+      "present": [
+        "STATUS: OPEN",
+        "LIANG"
+      ]
+    },
+    "ch12-s08": {
+      "present": [
+        "23 JAN 2023",
+        "MULTIBILLION"
+      ]
+    }
+  },
+  "summary": "Round 6 PASSES the gate. Mean 8.57 (bar 8.5), every dimension at least 8.25, and no critical or major issue. Both round-5 fairness regressions are closed and were verified in film.mp4: ch14-s04b's three equal tags and ch15-s10's maker disclosure. The final chapter now earns its ending, because L1504b speaks the rabbit-to-habit intervention and L1502 is three clear sentences. The two ledger partials (ch15-s03, ch13-s03) are fixed on their sheets and were held open only by bookkeeping. They are closed here, and the checker bug is routed globally. What remains is polish. Visual (8.42) is held back by mannequin hands, a placeholder-looking fence in ch14-s07, a blank panel flash in ch12-s08, and cap-like Nobel busts in ch15-s01. Sound (8.25) is held back by fast teaching lines (L0830, L0105) and the sixth-round human sign-off on names, which is a hand-off before publish. Routed: 5 minor shot notes, 3 optional SOLO line retakes in one clock rebuild (L1527 adds Turing to the verdict), and 4 global items.",
+  "dimensionNotes": {
+    "accuracy": "Every quote is verbatim, every claim traces to a source, and contested history (who invented backprop, how far behind China is) is shown as contested. The last fairness problems about the narrator's own maker are fixed: Anthropic's chip position now arrives as one of three equals, and the end card says Anthropic is a lab in this story. What stops it at 8.7 is small: a METR source line too tiny to read under the film's biggest 2026 number, and a narrator whose pronunciation of seven real names no person has yet confirmed.",
+    "depth": "AlexNet and the transformer are worked step by step with numbers a viewer can check by pencil: an edge stencil that scores -4 and then 0, a softmax over 'river bank' (0.20 / 0.07 / 0.53 / 0.20), and an attention hall that grows from 100 to 400 pairs. Each era gets its belief, a named dissenter, and a candle showing how long the belief lasted.",
+    "clarity": "Ideas arrive as pictures before symbols, and the final chapter now says its evidence aloud: 'Snuff that plan out, and it rhymes with habit instead.' The Nobel line is now three sentences. The Versailles callback is still heard rather than seen, and a few teaching lines in the AlexNet chapter are spoken faster than their direction asks.",
+    "story": "One case question ('who taught it?'), three suspects, and a candle clock carry 80 years. About a dozen plants pay off, from the dinner bet to Widrow's lantern to Hopfield's forgotten Versailles talk, and the ending answers what it can and leaves the file open. The 4.5-minute run of present-day news is the flattest stretch, and the film runs about a minute past its 35-minute target.",
+    "visual": "The paper-cut silhouette style is consistent and often striking: the stencil cathedral, the all-pairs attention hall, the case board that rewires itself into a network. It sits at 8.4 because hands and costumes still look like carved mannequin blocks next to the reference's fine-cut cuffs. In a few frames, too, small things look like placeholders: a far fence of blank white slips, a ledger panel lit blank for 0.3 s, and Nobel-hall busts that read as baseball caps.",
+    "sync": "The picture lands on the spoken word almost everywhere. The snuffer drops on 'Snuff', HABIT lights on 'habit', the three STATUS: OPEN stamps strike on 'stands' and 'open', and the match catches on 'new'. The few misses are fractions of a second, like a panel that lights just before its text types.",
+    "sound": "The mix is clean: -16 LUFS, every line at least 10.9 dB over the music, the stamps tucked under their words, and real silence around 'Nobody told it to plan' and after Widrow's death. It sits at 8.25 because a cluster of teaching lines still runs at 190-199 words a minute against 'slow and clear' directions, and no person has yet confirmed how the narrator says seven real names.",
+    "curiosity": "The film opens on a riddle ('nobody ever wrote one a rulebook') and keeps opening new questions: who paid for dinner, can a fence around chips hold, how far and how fast. They pull a viewer through 36 minutes, and it ends on a dark lantern and an open file rather than a tidy answer."
+  },
+  "at": "2026-10-14T02:12:39Z"
+}
