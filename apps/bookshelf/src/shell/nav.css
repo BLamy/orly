@@ -1,0 +1,49 @@
+/* The shelf's NavigationStack (@brett_lamy/ui), shell/nav.tsx.
+   The library reads shadcn-style tokens: map them onto the shelf theme's wood palette (index.css :root, per
+   data-theme), so the bar, back button and screen backgrounds follow the theme picker. */
+.orly-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  --background: var(--bp-bg);
+  --foreground: var(--bp-text);
+  --muted: var(--bp-bg);
+  --muted-foreground: var(--bp-muted);
+  --primary: var(--wood-accent);
+  --primary-foreground: var(--bp-bg);
+  --border: var(--bp-line);
+  --bar: var(--glass-bg-solid);
+  color: var(--bp-text);
+}
+
+/* Real safe-area insets (the library's numeric safeTop can't express env()). */
+.orly-nav [data-slot='screen'] {
+  --screen-safe-top: env(safe-area-inset-top, 0px) !important;
+  --screen-bar-h: calc(env(safe-area-inset-top, 0px) + 52px) !important;
+}
+
+/* The root screen IS the shelf: its own header and layout, edge to edge. No nav bar, no spacer under one.
+   (The bar is the screen's second child in @brett_lamy/ui 5.x's ScreenWrap: scroller, bar, overlay, dimmer.) */
+.orly-nav [data-slot='screen'][data-screen-key='root'] {
+  --screen-bar-h: 0px !important;
+  --screen-safe-top: 0px !important;
+}
+.orly-nav [data-slot='screen'][data-screen-key='root'] > :nth-child(2) {
+  display: none;
+}
+
+/* The bar's back button and title in the shelf's type. */
+.orly-nav [data-slot='screen'] button.bl-btn {
+  font-family: inherit;
+}
+
+/* A pushed player fills its screen under the bar. */
+.orly-nav [data-slot='screen'] .fp,
+.orly-nav [data-slot='screen'] .bp {
+  min-height: calc(100dvh - var(--screen-bar-h));
+}
+
+/* A pushed book: the stack's bar is the back button, so the player's own '← Home' chip steps aside. */
+.orly-nav [data-slot='screen'] .bp-home {
+  display: none;
+}

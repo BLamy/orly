@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import { composeVhs, drawVhsSpine, VHS_ASPECT, VHS_SPINE_RATIO } from './vhs';
 import {
@@ -8,6 +8,7 @@ import {
   isChronologicalSeries,
   openBook,
   registerAnimalPool,
+  setFilmOpener,
   resolveAnimal,
   searchBooks,
   useLazyVisible,
@@ -33,7 +34,11 @@ import { SnakePlant } from '../shelf-decor/SnakePlant';
 import { StringOfHearts } from '../shelf-decor/StringOfHearts';
 import { SpiderPlant } from '../shelf-decor/SpiderPlant';
 import { Monstera } from '../shelf-decor/Monstera';
+import { ShelfStack, routeKey, useNavRoutes } from '../shell/nav';
 import './library.css';
+
+// a film is a tape in the VCR: the player loads when one is pushed
+const FilmPlayer = lazy(() => import('../player/FilmPlayer'));
 
 const TAB_KEY = 'orly-tab';
 function tabParam(): ShelfTab {
@@ -680,7 +685,12 @@ export function DesktopShelf({
   );
 }
 
-export function Library({ initialBundle }: { initialBundle?: string } = {}) {
+/**
+ * The shelf: tabs, the desktop bookcase or the mobile lists. It is the root of the shelf's outer navigation stack
+ * (shell/nav.tsx), onto which a film is pushed from any tab, with a back button to the shelf; each mobile tab has
+ * its own inner stack for series and books (MobileShelf).
+ */
+export function Library() {
   const [books, setBooks] = useState<BookMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
@@ -759,7 +769,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const { hidden: chromeHidden } = useScrollChrome();
   const landscape = useLandscape();
 
-  return (
+  // the shelf itself: the root screen of the film stack
+  const shelf = (
     <>
       <OfflineBanner />
       {/* desktop: a normal-flow top nav row, so it must come BEFORE the
@@ -787,6 +798,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
             <MobileShelf
               books={shelfBooks}
               error={books ? null : error}
+              active={visibleTab === 'shelf'}
               emptyMessage="Nothing downloaded yet — browse the Library."
               onScreenOpenChange={setShelfScreenOpen}
             />
@@ -795,7 +807,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
             <MobileShelf
               books={libraryBooks}
               error={error}
-              initialBundle={initialBundle}
+              active={visibleTab === 'library'}
               onScreenOpenChange={setLibraryScreenOpen}
             />
           </div>
@@ -824,5 +836,31 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
         />
       )}
     </>
+  );
+
+  // films push onto the outer stack from anywhere on the shelf (openBook → setFilmOpener)
+  const films = useNavRoutes({ kinds: ['film'] });
+  const pushFilm = films.push;
+  useEffect(() => {
+    setFilmOpener((slug) => pushFilm({ kind: 'film', slug }));
+    return () => setFilmOpener(null);
+  }, [pushFilm]);
+  const filmTitle = (slug: string) => books?.find((b) => b.slug === slug)?.title ?? 'Film';
+
+  return (
+    <ShelfStack
+      rootTitle={visibleTab === 'shelf' ? 'Saved' : visibleTab === 'grades' ? 'Grades' : visibleTab === 'browse' ? 'Browse' : 'Library'}
+      root={shelf}
+      screens={films.routes.map((r) => ({
+        key: routeKey(r),
+        title: r.kind === 'film' ? filmTitle(r.slug) : '',
+        content: r.kind === 'film' && (
+          <Suspense fallback={<div className="bp-loading">Loading the tape…</div>}>
+            <FilmPlayer key={r.slug} slug={r.slug} onEject={films.pop} />
+          </Suspense>
+        ),
+      }))}
+      onPop={films.pop}
+    />
   );
 }

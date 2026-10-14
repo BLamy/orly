@@ -286,7 +286,7 @@ export function ChapterPlayer({
   return (
     <div className="bp-player">
       <header className="bp-topbar">
-        <button className="bp-chip" onClick={onExit}>
+        <button className="bp-chip bp-home" onClick={onExit}>
           ← Home
         </button>
         <div className="bp-topbar-title">

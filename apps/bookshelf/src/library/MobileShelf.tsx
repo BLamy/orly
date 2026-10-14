@@ -1,8 +1,10 @@
 // The touch-first browse UI for phones: one vertical alphabetized list (series
 // as a single boxed-set row, standalone books as cover rows), an iOS-style
-// alphabet index rail on the right edge, and an iOS-style pushed second page
-// for a series' books (back chevron, edge-swipe back, browser back all pop it).
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+// alphabet index rail on the right edge, and pushed screens for a series' books
+// and for a book itself, on @brett_lamy/ui's NavigationStack (shell/nav.tsx:
+// back button, edge-swipe back and browser back all pop). Films push onto the
+// shelf's outer stack (Library) through openBook.
+import { Suspense, lazy, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
   AlphabetizedList,
   CollapsingHeader,
@@ -27,6 +29,7 @@ import { SubscribeButton } from './SubscribeButton';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { CoverFlow } from './CoverFlow';
 import { useLandscape } from '../shell/useLandscape';
+import { ShelfStack, routeKey, screenScroller, useNavRoutes, type Route } from '../shell/nav';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -34,25 +37,6 @@ const BookPlayer = lazy(() =>
 
 const COVER_W = 600;
 const COVER_H = 800;
-// iOS push feel: ease-out-ish curve, entrance ~350ms, exit slightly faster.
-const PUSH_MS = 350;
-const POP_MS = 320;
-
-const reducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function seriesParam(): string | null {
-  return new URLSearchParams(window.location.search).get('series');
-}
-function bundleParam(): string | null {
-  return new URLSearchParams(window.location.search).get('bundle');
-}
-
-// The single pushed screen on top of the shelf — a series' book list, or (on
-// mobile) a book itself, so opening a video feels like a native part of the
-// same navigation-controller stack instead of a hard page reload.
-type Screen = { kind: 'series'; name: string } | { kind: 'book'; slug: string };
 
 // Alphabetize ignoring leading articles ("The Explainers" files under E).
 function sortKey(name: string): string {
@@ -189,97 +173,85 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
 // the main shelf) instead of the small-series grid of cover cards.
 const SERIES_GRID_MAX = 6;
 
-// The pushed second page: one series' books — a grid of cover cards when
-// small enough to face you all at once, else its own indexed list.
+/** a pushed series screen's subheader under its large title: count, subscribe, download */
+function SeriesMeta({ name, books }: { name: string; books: BookMeta[] }) {
+  const asGrid = books.length <= SERIES_GRID_MAX;
+  const chronological = isChronologicalSeries(name);
+  return (
+    <div className="libm-detail-meta-row">
+      <span className="libm-detail-meta">
+        {books.length} books {chronological ? '· newest first' : asGrid ? '· read in order' : ''}
+      </span>
+      <SubscribeButton series={name} />
+      <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
+    </div>
+  );
+}
+
+// The pushed series screen's content: one series' books — a grid of cover
+// cards when small enough to face you all at once, else its own indexed list.
 function SeriesPage({
   name,
   books,
-  phase,
-  detailRef,
+  active,
   onOpenBook,
 }: {
   name: string;
   books: BookMeta[];
-  phase: 'push' | 'pop' | 'idle';
-  detailRef: React.MutableRefObject<HTMLDivElement | null>;
-  onOpenBook: (slug: string) => void;
+  active: boolean;
+  onOpenBook: (book: BookMeta) => void;
 }) {
   const asGrid = books.length <= SERIES_GRID_MAX;
   const chronological = isChronologicalSeries(name);
-  const headerRef = useRef<HTMLElement | null>(null);
-  const listRef = useRef<HTMLDivElement | null>(null);
-
+  const anchorRef = useRef<HTMLDivElement | null>(null);
+  // the A-Z rail jumps within this screen's own scroller
+  const scrollerRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
-    if (asGrid) return;
-    const el = headerRef.current;
-    const list = listRef.current;
-    if (!el || !list) return;
-    const setH = () => list.style.setProperty('--libm-top-h', `${el.getBoundingClientRect().height}px`);
-    setH();
-    const ro = new ResizeObserver(setH);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [asGrid]);
+    scrollerRef.current = screenScroller(anchorRef.current);
+  });
 
   const byLetter = useMemo(() => {
     if (asGrid || chronological) return null;
     return alphabetize(books, (book) => book.title);
   }, [asGrid, books, chronological]);
 
+  // sticky letter heads park under the stack's bar
+  const barStyle = { '--libm-top-h': 'var(--screen-bar-h)' } as CSSProperties;
+
   return (
-    <div
-      ref={detailRef}
-      className={`libm-detail${phase === 'push' ? ' is-push' : phase === 'pop' ? ' is-pop' : ''}`}
-    >
-      <div ref={listRef} className={asGrid ? undefined : 'libm-list'}>
-        <header ref={headerRef} className="libm-detail-top">
-          <button className="libm-back" onClick={() => window.history.back()} aria-label="Back to the library">
-            <svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true">
-              <path d="M10.5 1.5 2 10l8.5 8.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span>Library</span>
-          </button>
-          <h1 className="libm-detail-name">{name}</h1>
-          <div className="libm-detail-meta-row">
-            <span className="libm-detail-meta">
-              {books.length} books {chronological ? '· newest first' : asGrid ? '· read in order' : ''}
-            </span>
-            <SubscribeButton series={name} />
-            <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
-          </div>
-        </header>
-        {asGrid ? (
-          <div className="libm-detail-grid">
-            {books.map((b, i) => (
-              <DetailCard
-                key={b.slug}
-                book={b}
-                index={chronological ? undefined : b.seriesOrder ?? i + 1}
-                onOpen={() => onOpenBook(b.slug)}
-              />
-            ))}
-          </div>
-        ) : chronological ? (
-          <div className="libm-rows">
-            {books.map((b) => (
-              <BookRow key={b.slug} book={b} onOpen={() => onOpenBook(b.slug)} />
-            ))}
-          </div>
-        ) : (
-          <AlphabetizedList
-            groups={byLetter!}
-            renderItem={(book) => (
-              <BookRow key={book.slug} book={book} onOpen={() => onOpenBook(book.slug)} />
-            )}
-            rowsClassName="libm-rows"
-            sectionClassName="libm-letter-section"
-            headingClassName="libm-letter-head"
-            scrollContainerRef={detailRef}
-            topOffset={() => headerRef.current?.getBoundingClientRect().height ?? 0}
-            indexPortal={document.body}
-          />
-        )}
-      </div>
+    <div ref={anchorRef} className="libm-series" style={barStyle}>
+      {asGrid ? (
+        <div className="libm-detail-grid">
+          {books.map((b, i) => (
+            <DetailCard
+              key={b.slug}
+              book={b}
+              index={chronological ? undefined : b.seriesOrder ?? i + 1}
+              onOpen={() => onOpenBook(b)}
+            />
+          ))}
+        </div>
+      ) : chronological ? (
+        <div className="libm-rows">
+          {books.map((b) => (
+            <BookRow key={b.slug} book={b} onOpen={() => onOpenBook(b)} />
+          ))}
+        </div>
+      ) : (
+        <AlphabetizedList
+          groups={byLetter!}
+          renderItem={(book) => (
+            <BookRow key={book.slug} book={book} onOpen={() => onOpenBook(book)} />
+          )}
+          rowsClassName="libm-rows"
+          sectionClassName="libm-letter-section"
+          headingClassName="libm-letter-head"
+          scrollContainerRef={scrollerRef}
+          topOffset={() => scrollerRef.current?.parentElement?.children[1]?.getBoundingClientRect().height ?? 0}
+          showIndex={active}
+          indexPortal={document.body}
+        />
+      )}
     </div>
   );
 }
@@ -326,54 +298,18 @@ function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; o
   );
 }
 
-// A book, pushed as its own screen — same sliding "page" as SeriesPage, but
-// its content is the real BookPlayer instead of a list. `onHome` is wired to
-// `history.back()` so the player's own "← Home" chip pops like any other
-// pushed screen instead of hard-navigating away from the SPA.
-function BookScreen({
-  slug,
-  phase,
-  detailRef,
-}: {
-  slug: string;
-  phase: 'push' | 'pop' | 'idle';
-  detailRef: React.MutableRefObject<HTMLDivElement | null>;
-}) {
-  return (
-    <div
-      ref={detailRef}
-      className={`libm-detail libm-detail-book${phase === 'push' ? ' is-push' : phase === 'pop' ? ' is-pop' : ''}`}
-    >
-      <Suspense fallback={<div className="bp-loading">Loading the book…</div>}>
-        <BookPlayer
-          key={slug}
-          slug={slug}
-          onHome={() => {
-            // A native nav-controller pop stops playback immediately, not
-            // after the slide-out finishes — otherwise narration keeps
-            // going (audibly) while the screen is already sliding away.
-            for (const a of document.querySelectorAll('audio')) a.pause();
-            window.history.back();
-          }}
-        />
-      </Suspense>
-    </div>
-  );
-}
-
 export function MobileShelf({
   books,
   error,
-  initialBundle,
+  active = true,
   emptyMessage,
   onScreenOpenChange,
 }: {
   books: BookMeta[] | null;
   error: string | null;
-  /** `?bundle=<slug>` resolved by App.tsx — pushed as a book screen instead
-   *  of App.tsx rendering BookPlayer full-page, so it slides in like any
-   *  other pushed screen rather than a hard navigation. */
-  initialBundle?: string;
+  /** the visible tab: only it follows the URL (?series=, ?bundle=) and the browser's Back; a hidden tab's stack
+   *  keeps its own place, like a UITabBarController hosting one navigation controller per tab */
+  active?: boolean;
   /** Shown instead of the generic "No books yet" when `books` is an empty
    *  array (e.g. My Shelf with nothing downloaded) rather than genuinely
    *  no books existing anywhere. */
@@ -387,26 +323,20 @@ export function MobileShelf({
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const [screen, setScreen] = useState<Screen | null>(() => {
-    const s = seriesParam();
-    if (s) return { kind: 'series', name: s };
-    if (initialBundle) return { kind: 'book', slug: initialBundle };
-    return null;
-  });
-  const series = screen?.kind === 'series' ? screen.name : null;
-  const [phase, setPhase] = useState<'push' | 'pop' | 'idle'>('idle');
+  const { routes, push, pop } = useNavRoutes({ kinds: ['series', 'book'], active });
   const listRef = useRef<HTMLDivElement | null>(null);
-  const detailRef = useRef<HTMLDivElement | null>(null);
-  const dimRef = useRef<HTMLDivElement | null>(null);
-  const phaseTimer = useRef<number | undefined>(undefined);
-  const swipedRef = useRef(false);
-  const screenRef = useRef(screen);
-  screenRef.current = screen;
+  // the root screen (the list) scrolls in its own stack screen: chrome and the A-Z rail follow that scroller
+  const rootScreenRef = useRef<HTMLElement | null>(null);
+  const rootScrollerRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    rootScreenRef.current = (listRef.current?.closest('[data-slot="screen"]') as HTMLElement | null) ?? null;
+    rootScrollerRef.current = screenScroller(listRef.current);
+  });
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
   const landscape = useLandscape();
 
-  const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
+  const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome(rootScreenRef);
 
   // The featured series is pinned above the alphabetized list (its own
   // showcase section) rather than filed under its letter — keeping the A-Z
@@ -456,161 +386,30 @@ export function MobileShelf({
     );
   }, [books, q]);
 
-  const seriesBooks = useMemo(() => {
-    if (!series || !entries) return null;
-    const e = entries.find((x) => x.kind === 'series' && x.name === series);
+  const seriesBooks = (name: string) => {
+    const e = entries?.find((x) => x.kind === 'series' && x.name === name);
     return e && e.kind === 'series' ? e.books : null;
-  }, [series, entries]);
-
-  const settlePhase = (ms: number, after?: () => void) => {
-    window.clearTimeout(phaseTimer.current);
-    phaseTimer.current = window.setTimeout(() => {
-      setPhase('idle');
-      after?.();
-    }, reducedMotion() ? 0 : ms);
   };
-  useEffect(() => () => window.clearTimeout(phaseTimer.current), []);
 
-  const pushScreen = (next: Screen) => {
-    const url = new URL(window.location.href);
-    if (next.kind === 'series') {
-      url.searchParams.set('series', next.name);
-      url.searchParams.delete('bundle');
-    } else {
-      url.searchParams.set('bundle', next.slug);
-      url.searchParams.delete('series');
-    }
-    window.history.pushState(null, '', url);
-    setScreen(next);
-    setPhase(reducedMotion() ? 'idle' : 'push');
-    if (!reducedMotion()) settlePhase(PUSH_MS);
+  // a book pushes onto this tab's stack; a film goes in the VCR on the shelf's outer stack (openBook)
+  const open = (b: BookMeta) => (b.kind === 'film' ? openBook(b) : push({ kind: 'book', slug: b.slug }));
+  const pushSeries = (name: string) => push({ kind: 'series', name });
+  const pushSlug = (slug: string) => {
+    const b = books?.find((x) => x.slug === slug);
+    if (b) open(b);
+    else push({ kind: 'book', slug });
   };
-  const pushSeries = (name: string) => pushScreen({ kind: 'series', name });
-  const pushBook = (slug: string) => pushScreen({ kind: 'book', slug });
-
-  // Browser/hardware back-forward keeps the pushed page coherent.
-  useEffect(() => {
-    const onPopState = () => {
-      const s = seriesParam();
-      const b = bundleParam();
-      const next: Screen | null = s ? { kind: 'series', name: s } : b ? { kind: 'book', slug: b } : null;
-      const cur = screenRef.current;
-      const same =
-        (next === null && cur === null) ||
-        (next?.kind === 'series' && cur?.kind === 'series' && next.name === cur.name) ||
-        (next?.kind === 'book' && cur?.kind === 'book' && next.slug === cur.slug);
-      if (same) return;
-      if (next) {
-        // forward into a screen (series or book)
-        setScreen(next);
-        setPhase(reducedMotion() ? 'idle' : 'push');
-        if (!reducedMotion()) settlePhase(PUSH_MS);
-        return;
-      }
-      // popping back to the list
-      if (swipedRef.current || reducedMotion()) {
-        swipedRef.current = false;
-        setPhase('idle');
-        setScreen(null);
-        return;
-      }
-      setPhase('pop');
-      settlePhase(POP_MS, () => setScreen(null));
-    };
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
-  }, []);
-
-  // iOS edge-swipe back: drag from the left edge tracks the finger, committing
-  // past a threshold animates out and pops history. Style writes go straight to
-  // the DOM (refs) so no re-render happens per frame.
-  useEffect(() => {
-    const el = detailRef.current;
-    if (!el || !screen || phase !== 'idle') return;
-    let startX = 0;
-    let startY = 0;
-    let dragging = false;
-    let dx = 0;
-    const listEl = listRef.current;
-    const dimEl = dimRef.current;
-
-    const onStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (t.clientX > 28) return;
-      startX = t.clientX;
-      startY = t.clientY;
-      dragging = true;
-      dx = 0;
-      el.style.transition = 'none';
-      if (listEl) listEl.style.transition = 'none';
-      if (dimEl) dimEl.style.transition = 'none';
-    };
-    const onMove = (e: TouchEvent) => {
-      if (!dragging) return;
-      const t = e.touches[0];
-      dx = Math.max(0, t.clientX - startX);
-      if (dx > 8 && Math.abs(t.clientY - startY) < dx * 1.5) e.preventDefault();
-      const f = dx / window.innerWidth;
-      el.style.transform = `translate3d(${dx}px, 0, 0)`;
-      if (listEl) listEl.style.transform = `translate3d(${-30 + f * 30}%, 0, 0)`;
-      if (dimEl) dimEl.style.opacity = String(Math.max(0, 1 - f));
-    };
-    const finish = (commit: boolean) => {
-      dragging = false;
-      const ease = 'cubic-bezier(0.32, 0.72, 0, 1)';
-      el.style.transition = `transform ${POP_MS}ms ${ease}`;
-      if (listEl) listEl.style.transition = `transform ${POP_MS}ms ${ease}`;
-      if (dimEl) dimEl.style.transition = `opacity ${POP_MS}ms ${ease}`;
-      if (commit) {
-        el.style.transform = 'translate3d(100%, 0, 0)';
-        if (listEl) listEl.style.transform = 'translate3d(0, 0, 0)';
-        if (dimEl) dimEl.style.opacity = '0';
-        swipedRef.current = true;
-        window.setTimeout(() => window.history.back(), POP_MS);
-      } else {
-        el.style.transform = 'translate3d(0, 0, 0)';
-        if (listEl) listEl.style.transform = 'translate3d(-30%, 0, 0)';
-        if (dimEl) dimEl.style.opacity = '1';
-      }
-    };
-    const onEnd = () => {
-      if (!dragging) return;
-      finish(dx > window.innerWidth * 0.28 || dx > 110);
-    };
-    el.addEventListener('touchstart', onStart, { passive: true });
-    el.addEventListener('touchmove', onMove, { passive: false });
-    el.addEventListener('touchend', onEnd);
-    el.addEventListener('touchcancel', onEnd);
-    return () => {
-      el.removeEventListener('touchstart', onStart);
-      el.removeEventListener('touchmove', onMove);
-      el.removeEventListener('touchend', onEnd);
-      el.removeEventListener('touchcancel', onEnd);
-      // clear inline overrides so class-driven transforms win again
-      el.style.transition = '';
-      el.style.transform = '';
-      if (listEl) {
-        listEl.style.transition = '';
-        listEl.style.transform = '';
-      }
-      if (dimEl) {
-        dimEl.style.transition = '';
-        dimEl.style.opacity = '';
-      }
-    };
-  }, [screen, phase]);
 
   const renderEntry = (e: Entry) =>
     e.kind === 'book' ? (
-      <BookRow key={`b:${e.book.slug}`} book={e.book} onOpen={() => pushBook(e.book.slug)} />
+      <BookRow key={`b:${e.book.slug}`} book={e.book} onOpen={() => open(e.book)} />
     ) : (
       <SeriesRow key={`s:${e.name}`} name={e.name} books={e.books} onOpen={() => pushSeries(e.name)} />
     );
 
-  const bookOpen = screen?.kind === 'book' ? screen.slug : null;
-  const seriesOpen = series !== null && seriesBooks !== null;
-  const screenOpen = seriesOpen || bookOpen !== null;
-  const listUnder = screenOpen && phase !== 'pop';
+  // a series named in the URL that this tab's books don't have (or not loaded yet) shows nothing pushed
+  const shown = routes.filter((r) => r.kind !== 'series' || seriesBooks(r.name) !== null);
+  const screenOpen = shown.length > 0;
 
   useEffect(() => {
     onScreenOpenChange?.(screenOpen);
@@ -621,13 +420,34 @@ export function MobileShelf({
   // flow. Only the root: a pushed series/book screen keeps its own layout.
   const coverFlow = landscape && !screenOpen && !q && !!books && books.length > 0;
 
-  return (
+  const screenFor = (r: Route, top: boolean) => {
+    if (r.kind === 'series') {
+      const sb = seriesBooks(r.name)!;
+      return {
+        key: routeKey(r),
+        title: r.name,
+        largeTitle: true,
+        subheader: <SeriesMeta name={r.name} books={sb} />,
+        content: <SeriesPage name={r.name} books={sb} active={active && top} onOpenBook={open} />,
+        bottomInset: 4,
+      };
+    }
+    const book = books?.find((b) => b.slug === (r as { slug: string }).slug);
+    return {
+      key: routeKey(r),
+      title: book?.title ?? 'Book',
+      content: (
+        <Suspense fallback={<div className="bp-loading">Loading the book…</div>}>
+          <BookPlayer key={(r as { slug: string }).slug} slug={(r as { slug: string }).slug} onHome={pop} />
+        </Suspense>
+      ),
+    };
+  };
+
+  const root = (
     <div className="libm">
-      {coverFlow && <CoverFlow books={books} onOpen={pushBook} />}
-      <div
-        ref={listRef}
-        className={`libm-list${listUnder ? ' is-under' : ''}${coverFlow ? ' is-coverflow' : ''}`}
-      >
+      {coverFlow && <CoverFlow books={books} onOpen={pushSlug} />}
+      <div ref={listRef} className={`libm-list${coverFlow ? ' is-coverflow' : ''}`}>
         <CollapsingHeader
           hidden={chromeHidden}
           scrolled={chromeScrolled}
@@ -640,7 +460,7 @@ export function MobileShelf({
             // smooth-scrolls the list back to the top, like Twitter's app.
             const target = e.target as HTMLElement;
             if (!target.closest('.theme-picker') && (target === e.currentTarget || target.closest('.libm-brand'))) {
-              scrollToTop();
+              scrollToTop(rootScrollerRef.current);
             }
           }}
         >
@@ -719,20 +539,21 @@ export function MobileShelf({
             rowsClassName="libm-rows"
             sectionClassName="libm-letter-section"
             headingClassName="libm-letter-head"
+            scrollContainerRef={rootScrollerRef}
             topOffset={() =>
               chromeHidden
                 ? 8
                 : (listRef.current?.querySelector('.libm-top')?.getBoundingClientRect().height ?? 0)
             }
             onIndexInteraction={() => blockChromeReveal()}
-            showIndex={!q && !screenOpen && !coverFlow && !!entries?.length}
+            showIndex={active && !q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
             beforeSections={featuredFilms.length ? (
               <section className="libm-letter-section libm-featured libm-featured-films">
                 <h2 className="libm-letter-head">Featured · Video Library</h2>
                 <div className="libm-rows">
                   {featuredFilms.map((b) => (
-                    <BookRow key={b.slug} book={b} />
+                    <BookRow key={b.slug} book={b} onOpen={() => open(b)} />
                   ))}
                 </div>
               </section>
@@ -751,21 +572,15 @@ export function MobileShelf({
 
         <footer className="libm-foot">by Brett Lamy · an “O’RLY?” parody</footer>
       </div>
-
-      <div ref={dimRef} className={`libm-dim${listUnder ? ' is-on' : ''}`} aria-hidden="true" />
-
-      {seriesOpen && (
-        <SeriesPage
-          name={series}
-          books={seriesBooks}
-          phase={phase}
-          detailRef={detailRef}
-          onOpenBook={pushBook}
-        />
-      )}
-      {bookOpen && (
-        <BookScreen slug={bookOpen} phase={phase} detailRef={detailRef} />
-      )}
     </div>
+  );
+
+  return (
+    <ShelfStack
+      className="libm-nav"
+      root={root}
+      screens={shown.map((r, i) => screenFor(r, i === shown.length - 1))}
+      onPop={pop}
+    />
   );
 }

@@ -13,8 +13,8 @@ const BlogOnly = lazy(() =>
 // films: frame-exact render harness (?film-render=<slug>) and review studio (?film-studio=<slug>)
 const FilmHarness = lazy(() => import('./viz/film/core/harness'));
 const FilmStudio = lazy(() => import('./viz/film/core/studio'));
-// films on the shelf are VHS tapes; ?film=<slug> is the tape playing in the VCR
-const FilmPlayer = lazy(() => import('./player/FilmPlayer'));
+// films on the shelf are VHS tapes; ?film=<slug> is the tape playing in the VCR, pushed onto the shelf's
+// navigation stack (Library, shell/nav.tsx) so it has a back button to the shelf even from a shared link
 // the film editor (?film-edit=<slug>, docs/film/EDITOR.md) and its frame-exact export harness (?film-edit-render=<slug>)
 const FilmEditor = lazy(() => import('./editor/ui/Editor'));
 const EditRenderHarness = lazy(() => import('./editor/render/EditRenderHarness'));
@@ -32,10 +32,10 @@ function param(name: string): string | null {
 export function App() {
   const bundleSlug = param('bundle');
   const blogSlug = param('blog');
-  // On mobile a book is a PUSHED screen inside MobileShelf's own nav-
-  // controller stack (slide transition, back-swipe), not a hard navigation —
-  // so MobileShelf needs to mount even when `?bundle=` is present. Desktop
-  // keeps the plain full-page player.
+  // On mobile a book is a PUSHED screen on its tab's navigation stack
+  // (MobileShelf, shell/nav.tsx: slide transition, back-swipe), not a hard
+  // navigation — so the shelf mounts even when `?bundle=` is present and
+  // reads it from the URL. Desktop keeps the plain full-page player.
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ);
@@ -46,20 +46,12 @@ export function App() {
 
   const filmRender = param('film-render');
   const filmStudio = param('film-studio');
-  const filmPlay = param('film');
   const filmEdit = param('film-edit');
   const filmEditRender = param('film-edit-render');
   if (filmEdit || filmEditRender) {
     return (
       <Suspense fallback={null}>
         {filmEditRender ? <EditRenderHarness slug={filmEditRender} /> : <FilmEditor key={filmEdit} slug={filmEdit!} />}
-      </Suspense>
-    );
-  }
-  if (filmPlay) {
-    return (
-      <Suspense fallback={null}>
-        <FilmPlayer key={filmPlay} slug={filmPlay} />
       </Suspense>
     );
   }
@@ -91,11 +83,11 @@ export function App() {
     );
   }
 
-  // default: the bookshelf (mobile passes bundleSlug through so MobileShelf
-  // can push it as a screen instead of navigating away from)
+  // default: the bookshelf (a film, or on mobile a series or book, named in
+  // the URL is pushed onto its navigation stack)
   return (
     <>
-      <Library initialBundle={mobile ? (bundleSlug ?? undefined) : undefined} />
+      <Library />
       <InstallBanner />
     </>
   );

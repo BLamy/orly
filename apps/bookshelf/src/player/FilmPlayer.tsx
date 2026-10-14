@@ -21,6 +21,7 @@ import { FilmStack, useFilm } from '../viz/film/core/harness';
 import { loadTimeline } from '../viz/film/core/shot';
 import type { ReelOverlay } from '../viz/film/core/reel';
 import { ASSET_BASE } from '../library/shared';
+import { screenScroller } from '../shell/screenScroller';
 import { importFilmReport, type FilmImportData } from '../editor/model/importFilm';
 import { createAudioEngine, type EditorAudioEngine } from '../editor/engine/audio';
 import { SourcesPanel, type SourcesDoc } from './SourcesPanel';
@@ -98,7 +99,8 @@ const clock = (s: number) => {
   return `${Math.floor(x / 3600)}:${String(Math.floor((x % 3600) / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`;
 };
 
-export function FilmPlayer({ slug }: { slug: string }) {
+/** onEject: leave the VCR (the shelf's navigation stack pops this screen); without it, EJECT loads the shelf */
+export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => void }) {
   const { reel, error } = useFilm(slug, W, H);
   const sceneRef = useRef<HTMLCanvasElement | null>(null);
   const finishRef = useRef<HTMLCanvasElement | null>(null);
@@ -452,8 +454,11 @@ export function FilmPlayer({ slug }: { slug: string }) {
   const eject = () => {
     engineRef.current?.stop();
     audioRef.current?.pause();
-    window.location.href = ASSET_BASE || '/';
+    if (onEject) onEject();
+    else window.location.href = ASSET_BASE || '/';
   };
+  // back to the picture: the page, or the navigation-stack screen this player scrolls in
+  const toTop = () => (screenScroller(shellRef.current) ?? window).scrollTo({ top: 0, behavior: 'smooth' });
 
   // keyboard: space, arrows, [ ], Escape
   useEffect(() => {
@@ -591,7 +596,7 @@ export function FilmPlayer({ slug }: { slug: string }) {
           now={t}
           onSeek={(x) => {
             seek(x, 'SOURCE ▶');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toTop();
           }}
           pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
         />
@@ -601,7 +606,7 @@ export function FilmPlayer({ slug }: { slug: string }) {
           doc={creditsDoc}
           onSeek={(x) => {
             seek(x, 'MUSIC ▶');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toTop();
           }}
         />
       )}

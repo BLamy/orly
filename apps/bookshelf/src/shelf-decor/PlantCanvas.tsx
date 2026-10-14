@@ -78,9 +78,21 @@ function ensureBuffer(w: number, h: number): THREE.WebGLRenderer {
   return renderer;
 }
 
-function onScroll(): void {
-  const dy = window.scrollY - lastScrollY;
-  lastScrollY = window.scrollY;
+// the shelf scrolls inside a navigation-stack screen (its own scroller), so listen in the capture phase and read
+// whichever element scrolled; a different scroller starts its delta from where it is
+let lastScroller: EventTarget | null = null;
+function scrollTopOf(target: EventTarget | null): number {
+  if (!target || target === document || target === document.documentElement) return window.scrollY;
+  return (target as HTMLElement).scrollTop ?? 0;
+}
+function onScroll(e: Event): void {
+  const y = scrollTopOf(e.target);
+  if (e.target !== lastScroller) {
+    lastScroller = e.target;
+    lastScrollY = y;
+  }
+  const dy = y - lastScrollY;
+  lastScrollY = y;
   windForce = Math.max(-1, Math.min(1, windForce + dy * 0.02));
 }
 
@@ -127,14 +139,14 @@ function register(inst: Instance): () => void {
   if (instances.size === 1) {
     lastScrollY = window.scrollY;
     started = performance.now();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
     raf = requestAnimationFrame(tick);
   }
   return () => {
     instances.delete(inst);
     if (instances.size === 0) {
       cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('scroll', onScroll, { capture: true });
     }
   };
 }

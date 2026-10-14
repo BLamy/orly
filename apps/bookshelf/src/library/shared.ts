@@ -48,7 +48,18 @@ export function sortSeriesBooks<T extends SeriesSortable>(series: string, books:
   });
 }
 
+// The shelf's navigation stack registers how to push a film (shell/nav.tsx, Library): a tape slides in as a screen
+// with a back button instead of a page load. Without one (a page with no stack) it falls back to the URL.
+let filmOpener: ((slug: string) => void) | null = null;
+export function setFilmOpener(fn: ((slug: string) => void) | null) {
+  filmOpener = fn;
+}
+
 export function openBook(b: BookMeta) {
+  if (b.kind === 'film' && filmOpener) {
+    filmOpener(b.slug);
+    return;
+  }
   // films play in the film player (a tape goes in the VCR), whatever href an older entry carries
   const href = b.kind === 'film' ? `?film=${encodeURIComponent(b.slug)}` : String(b.href);
   window.location.href = ASSET_BASE + href.replace(/^\//, '');
