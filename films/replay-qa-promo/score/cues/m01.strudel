@@ -1,0 +1,385 @@
+// m01 "Point it" (replay-qa-promo, look promo): the whole film, one arranged track, 0-82.708 s.
+// Bright, warm product-promo electronica in D major (lydian lift on E/D), B minor for the time-travel chapter.
+// Clock: narration/timeline.json (82.708 s, locked 2026-10-14 after ch05-s05 was cut). The tempo map BARS was
+// REGENERATED from that clock (not nudged): every cut is a bar line except the ch05-s02 push (24.2.4); local tempo
+// 118-126 BPM. Time base setcps(.5); every event is written in film seconds via T(bar,beat,16th) (16th is 0-based:
+// grid "24.2.4" = T(24,2,3)) or at a word's own onset (the W table) where the hit is on a spoken word.
+// Arrangement: haze (1-3) · lift (4-5) · build (6-8, kick on 'caret') · loop (9-12, three ✓ clacks, fill) ·
+// drive (13-21, the triplet of proofs) · tape-stop (22) · rewind (23-27, half time, reversed swells) · SILENCE (28,
+// four beats on 'Four') · rewind (29-38: 'click', shatter, half-time hush, match cut, stuck pluck) · verdict at the
+// hinge (39: Asus2 → the ramp) · lift (40-43, D on the downbeat; its top kept out of 2-5 kHz under L0601, then
+// the bloom from the end of 'confirm' to 'Replay') · end card (44-45, M1's answer B4 A4) · D6/9 on 'managed' (46,
+// M1's call rolled into it) · the pad and sub release, then one button struck into air on the first 16th after
+// 'time' (47.2.2, the last strike) · ring-out into the fade.
+// Machines clack or tick (909 rim/hats, filtered), never chime: no bell-like patches, plucks are filtered saws.
+
+const BARS = [[0,2,0.5083],[1.0167,4,0.5083],[3.05,4,0.5083],[5.0833,4,0.4778],[6.9944,2,0.4778],[7.95,4,0.4972],[9.9389,4,0.4972],[11.9278,4,0.4972],[13.9167,4,0.4851],[15.8572,4,0.4851],[17.7976,4,0.4851],[19.7381,2,0.4851],[20.7083,4,0.4833],[22.6417,4,0.4833],[24.575,2,0.4833],[25.5417,4,0.4881],[27.494,3,0.4881],[28.9583,4,0.4919],[30.9257,4,0.4919],[32.8932,4,0.4919],[34.8606,2,0.4919],[35.8443,1,0.5307],[36.375,4,0.4872],[38.324,4,0.4837],[40.2588,4,0.4837],[42.1935,4,0.4837],[44.1283,2,0.4837],[45.0957,4,0.4912],[47.0607,4,0.4913],[49.026,3,0.4913],[50.5,4,0.4896],[52.4583,4,0.4896],[54.4167,4,0.4896],[56.375,4,0.4896],[58.3333,4,0.4861],[60.2777,4,0.4861],[62.2222,4,0.4861],[64.1666,4,0.4861],[66.1111,2,0.4861],[67.0833,4,0.4881],[69.0357,4,0.4881],[70.9881,4,0.4881],[72.9405,2,0.4881],[73.9167,4,0.4923],[75.886,2,0.4923],[76.8707,4,0.4923],[78.84,4,0.4923],[80.8094,4,0.4923]]
+
+const CPS = .5
+setcps(CPS)
+const N = 46
+const T = (bar, beat = 1, s16 = 0) => BARS[bar - 1][0] + (beat - 1 + s16 / 4) * BARS[bar - 1][2]
+const Q = (bar) => BARS[bar - 1][2] / 4
+const B = (bar) => BARS[bar - 1][2]
+function lane(evs, defs = {}, ctl = note) {
+  const sorted = [...evs].sort((a, b) => a[0] - b[0]); const lanes = []
+  for (const e of sorted) { let l = lanes.find((x) => x.end <= e[0] + 1e-6); if (!l) { l = { end: 0, evs: [] }; lanes.push(l) } l.evs.push(e); l.end = e[0] + e[1] }
+  const seq = (l, val) => { let pos = 0; const out = []; for (const e of l.evs) { const a = e[0] * CPS, d = e[1] * CPS; if (a - pos > 1e-6) out.push('~@' + (a - pos).toFixed(5)); out.push(val(e) + '@' + d.toFixed(5)); pos = a + d } if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(5)); return mini('[' + out.join(' ') + ']') }
+  const keys = Object.keys(defs)
+  return stack(...lanes.map((l) => { let p = ctl(seq(l, (e) => e[2])).velocity(seq(l, (e) => e[3] ?? .8)); for (const k of keys) p = p[k](seq(l, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k]))); return p.slow(N) }))
+}
+const each = (b0, b1, fn) => { const out = []; for (let b = b0; b <= b1; b++) for (let k = 1; k <= BARS[b - 1][1]; k++) { const r = fn(b, k); if (r) out.push(...(Array.isArray(r[0]) ? r : [r])) } return out }
+
+// word and beat onsets read from narration/timeline.json (film seconds) where a hit sits on the word, not the grid
+const W = {
+  against: 25.842,      // 'Against' (ch04-s02 b-brace)
+  shatter: 50.600,      // ch05-s03 beat 'shatter'
+  matchcut: 56.039,     // ch05-s03 beat 'matchcut' ("A time-travel")
+  can: T(34, 3, 1),     // the last 'can' (57.474; 3 ms)
+  over: 66.260,         // the end of 'over' (L0508 ends)
+  w1: 67.383, w2: 68.254, w3: 69.224, w4: 69.792, w5: 70.739,   // the woven words of L0601
+  confirm: 71.796,      // 'confirm'
+  confirmEnd: 72.283,   // the end of 'confirm' (L0601 ends): the bloom starts here
+  app: 8.720,           // 'app' (L0201)
+  chip: 72.583,         // ch06-s01 beat 'chip'
+  tag1: 75.582,         // 'End-to-end'
+  grow: 76.569,         // 'fully'
+  managed: T(46),       // 'managed' (76.871) = the D6/9 strike
+  button: T(47, 2, 1),  // the first 16th after 'time' ends (79.391) = 79.455, the last strike
+}
+// where the narrator speaks in ch06: all of L0601 (its 0.3 s breaths are too short to bloom into, so brightness is
+// not gated phrase by phrase) and L0602 up to 'managed'
+const SPEAK = [[67.38, W.confirmEnd], [74.32, 77.26]]
+// the bloom: the one clear swell of the lift, in the breath from the end of 'confirm' to 'Replay'
+const bloom = (t) => t >= W.confirmEnd && t < 74.32 - .06
+const speaking = (t) => SPEAK.some(([a, b]) => t > a - .06 && t < b)
+
+// chord spellings; det() turns a chord into MIDI numbers nudged by c semitones (the pad's detuned twin)
+const PC = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }
+const midi = (n) => { const m = n.match(/^([a-g])(#|b)?(-?\d)$/); return 12 * (+m[3] + 1) + PC[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) }
+const det = (ch, c) => '[' + ch.slice(1, -1).split(',').map((n) => (midi(n) + c).toFixed(2)).join(',') + ']'
+// every pad voicing sits from D3 up (E/D keeps its D3 slash); the roots live in the sine SUB lane, so the saws'
+// harmonic stacks start above the narrator's fundamental
+const DM9 = '[d3,a3,c#4,e4]', ED = '[d3,b3,e4,g#4]', BM9 = '[d3,f#3,a3,b3,c#4]', GM9 = '[g3,b3,d4,f#4,a4]'
+const EM9 = '[e3,g3,b3,d4,f#4]', FS7S = '[f#3,b3,c#4,e4]', A13S = '[e3,g3,b3,d4,f#4]'
+const D69 = '[d3,a3,e4,f#4,b4]', DWIDE = '[d3,a3,c#4,e4,a4]', A5S2 = '[a3,e4,b4]'
+const G = .76  // master trim
+const span = (a, b, n, v, o) => [a, b - a, n, v, o]
+
+// ---------------------------------------------------------------- M3 HAZE: the warm pad (two detuned saws)
+// [start, len, chord, vel, {lpf, attack, release, lpenv, lpattack}]
+const PAD = [
+  // haze: Dmaj9 at full haze level by 0.3 s (no fade-in), the filter opening with the colour sweep and cresting on
+  // the blur cut, then E/D on 'Introducing'
+  span(0, T(4), DM9, .5, { attack: .25, release: .25, lpf: 560, lpenv: 1.5, lpattack: 4.4 }),
+  span(T(4), T(6), ED, .5, { attack: .06, release: .35, lpf: 800, lpenv: .6, lpattack: 2.4 }),
+  // build: D, D, G
+  span(T(6), T(8), DM9, .36, { attack: .2, lpf: 900 }), span(T(8), T(9), GM9, .36, { lpf: 900 }),
+  // loop: D G D E/D
+  span(T(9), T(10), DM9, .44, { lpf: 1000 }), span(T(10), T(11), GM9, .44, { lpf: 1000 }),
+  span(T(11), T(12), DM9, .44, { lpf: 1000 }), span(T(12), T(13), ED, .48, { lpf: 1100, lpenv: 1, lpattack: .9 }),
+  // drive: the sentence struck on the bar lines: D (proof one), E/D, Bm9 (proof two), G, D (proof three), E/D, Bm9, G
+  span(T(13), T(14), DM9, .46, { lpf: 1100 }), span(T(14), T(16), ED, .46, { lpf: 1100 }),
+  span(T(16), T(17), BM9, .46, { lpf: 1100 }), span(T(17), T(18), GM9, .46, { lpf: 1100 }),
+  span(T(18), T(19), DM9, .46, { lpf: 1100 }), span(T(19), T(20), ED, .46, { lpf: 1100 }),
+  span(T(20), T(21), BM9, .46, { lpf: 1100 }), span(T(21), T(22), GM9, .46, { lpf: 1100, release: .02 }),
+  // rewind after 'click'; the hush (Em9 behind lpf 680) to the match cut; Bm, G, then D on the last 'can'
+  span(T(29), T(30), BM9, .36, { lpf: 750 }), span(T(30), T(31), GM9, .36, { lpf: 750 }),
+  span(T(31), T(32), BM9, .34, { attack: .4, lpf: 700 }), span(T(32), W.matchcut, EM9, .34, { attack: .5, lpf: 680 }),
+  span(W.matchcut, T(34), BM9, .4, { lpf: 850 }), span(T(34), W.can, GM9, .42, { lpf: 950 }),
+  span(W.can, T(35), DM9, .46, { lpf: 1100 }),
+  // the stuck checkpoint: Bm9 G Em9 F#7sus4
+  span(T(35), T(36), BM9, .38, { lpf: 800 }), span(T(36), T(37), GM9, .36, { lpf: 800 }),
+  span(T(37), T(38), EM9, .36, { lpf: 800 }), span(T(38), T(39), FS7S, .34, { lpf: 760 }),
+  // the verdict at the hinge: thinned to open fifths A-E-B (no third) as 'over' ends, the filter opening into the lift
+  span(T(39), T(40), A5S2, .6, { attack: .1, release: .05, lpf: 650, lpenv: 2.4, lpattack: B(39) * 2 }),
+  // lift: the brightest voicing, the lydian E/D, G, E/D into the end card; held under L0601 behind lpf 1100
+  span(T(40), T(41), DWIDE, .46, { attack: .05, lpf: 1100 }), span(T(41), T(42), ED, .5, { lpf: 1100 }),
+  span(T(42), T(43), GM9, .5, { lpf: 1150 }), span(T(43), T(44), ED, .5, { lpf: 1400, lpenv: 1, lpattack: .9 }),
+  // end card: Dmaj9 (cut), E/D on 'End-to-end', A13sus on 'fully'
+  span(T(44), W.tag1, DM9, .44, { lpf: 1150 }), span(W.tag1, W.grow, ED, .44, { lpf: 1150 }),
+  span(W.grow, W.managed, A13S, .44, { lpf: 1150, release: .05 }),
+]
+const padDefs = { attack: .12, release: .3, lpf: 1000, lpenv: 0, lpattack: .01 }
+$: lane(PAD.map((e) => [e[0], e[1], det(e[2], .07), e[3], e[4]]), padDefs)
+  .s('sawtooth').lpq(1.5).hpf(180).pan(.38).gain(.3 * G).room(.4).rsize(2.5).orbit(1)
+$: lane(PAD.map((e) => [e[0], e[1], det(e[2], -.07), e[3], e[4]]), padDefs)
+  .s('sawtooth').lpq(1.5).hpf(180).pan(.62).gain(.3 * G).room(.4).rsize(2.5).orbit(1)
+// D6/9 on 'managed': struck bright, the filter settling dark under "Catch bugs that only exist in time"; it holds to
+// the button and rings out (release 3.2 s) into the fade
+const d69 = (c) => lane([span(W.managed, 79.2, det(D69, c), .5)])
+  .s('sawtooth').attack(.02).decay(1.2).sustain(.62).release(.18).lpf(780).lpenv(1.4).lpdecay(.9).lpq(1.2).hpf(170)
+  .pan(c > 0 ? .3 : .7).gain(.3 * G).room(.5).rsize(3).orbit(1)
+$: d69(.07)
+$: d69(-.07)
+
+// ---------------------------------------------------------------- M4 the rewind pads (dark, reversed swells)
+// each swell's attack = its length, so it crests and cuts off on the next downbeat like a reversed sample.
+// The last swell is DRY and is sucked into the hole on 'Four' (bar 28): nothing rings into the silence.
+const SWELL = [
+  span(T(23), T(24), '[d3,f#3,a3,b3,c#4]', .62, { room: .35 }),   // crests on 'time'
+  span(T(24), T(25), '[g3,b3,d4,f#4]', .4, { room: .35 }),
+  span(T(25), T(26), '[e3,g3,b3,d4,f#4]', .42, { room: .25 }),
+  span(T(26), T(28), '[f#3,b3,c#4,e4]', .55, { room: 0 }),        // into the hole, dry
+]
+$: lane(SWELL.map((e) => [e[0], e[1] - .05, e[2], e[3], { ...e[4], attack: e[1] - .08 }]), { attack: 1, room: 0 })
+  .s('sawtooth').release(.03).lpf(1000).lpq(2).hpf(160).gain(.34 * G).rsize(1.2).orbit(3)
+
+// ---------------------------------------------------------------- tape-stop: the last G, bass and kick pitch-fall into the cut
+// 'b-tapestop' is the bar-22 downbeat; the fall lasts the whole bar (one beat, 0.53 s) and lands on the ch05 cut
+$: lane([[T(22), T(23) - T(22) - .01, '[g2,b3,d4,f#4]', .55], [T(22), T(23) - T(22) - .01, 'g1', .7]])
+  .s('sawtooth').penv(-24).pattack(T(23) - T(22)).panchor(0).release(.01).lpf(1600).gain(.55 * G).orbit(5)
+
+// ---------------------------------------------------------------- SUB (sine, below 110 Hz)
+const SUB = [
+  [1.017, T(4) - 1.017, 'd2', .2, { attack: 2.5 }],
+  [6.370, 1.3, 'd2', .85, { penv: -12, pattack: .45 }],                  // the drop under "QA"
+  ...[[13, 14, 'd1'], [14, 16, 'd1'], [16, 17, 'b1'], [17, 18, 'g1'], [18, 19, 'd1'], [19, 20, 'd1'], [20, 21, 'b1'], [21, 22, 'g1']]
+    .map(([a, b, n]) => span(T(a), T(b) - .02, n, .75)),
+  ...[[23, 24, 'b1'], [24, 25, 'g1'], [25, 26, 'e1']].map(([a, b, n]) => span(T(a), T(b) - .02, n, .55)),
+  span(T(26), T(28) - .06, 'f#1', .55, { release: .02 }),
+  span(T(29), T(30) - .02, 'b1', .55), span(T(30), T(31) - .02, 'g1', .55),
+  span(W.matchcut, T(34) - .02, 'b1', .7), span(T(34), W.can - .02, 'g1', .7), span(W.can, T(35) - .02, 'd1', .75),
+  ...[[35, 'b1'], [36, 'g1'], [37, 'e1'], [38, 'f#1']].map(([b, n]) => span(T(b), T(b + 1) - .02, n, .36)),
+  span(T(39), T(40) - .02, 'a1', .42, { attack: .25 }),
+  // the lift's weight lives down here (+2 dB on the drive), so easing the hats and claps under L0601 keeps its level
+  ...[[40, 'd1'], [41, 'd1'], [42, 'g1'], [43, 'd1']].map(([b, n]) => span(T(b), T(b + 1) - .02, n, .9)),
+  span(T(44), W.grow - .02, 'd1', .9), span(W.grow, W.managed - .01, 'a1', .9),
+  span(W.managed, 79.2, 'd1', .9, { release: .12 }),                     // released with the pad, a 16th before the button
+  [W.button, 1.2, 'd1', .85, { attack: .01, release: 2.8 }],             // the button's sub, struck into air and ringing out              // the button's sub, ringing out
+]
+$: lane(SUB, { attack: .01, release: .08, penv: 0, pattack: .01 }).s('sine').panchor(0).lpf(120).gain(.25 * G).orbit(6)
+
+// ---------------------------------------------------------------- BASS: round, off-beat 8ths (a sine under lpf 200)
+const ROOT = { 13: 'd2', 14: 'd2', 15: 'd2', 16: 'b1', 17: 'g1', 18: 'd2', 19: 'd2', 20: 'b1', 21: 'g1', 40: 'd2', 41: 'd2', 42: 'g1', 43: 'd2', 44: 'd2', 45: 'd2' }
+const BASS = [
+  ...each(13, 21, (b, k) => [T(b, k, 2), Q(b) * 1.6, ROOT[b], k % 2 ? .7 : .6]),
+  [W.matchcut, .9, 'b1', .7], span(T(34), W.can - .03, 'g1', .65), [W.can, .7, 'd2', .7],
+  ...each(40, 45, (b, k) => { const t = T(b, k, 2); return [t, Q(b) * 1.6, t > W.grow ? 'a1' : ROOT[b], .8] }),
+  [W.managed, 1.2, 'd2', .8, { release: .9 }],
+]
+$: lane(BASS, { release: .06 }).s('sine').lpf(200).gain(.5 * G).orbit(6)
+
+// ---------------------------------------------------------------- M2 KICK (909, soft, round)
+const KICK = [
+  [T(4), .3, 'bd', .55, { lpf: 280 }],                                     // the muted thump on 'Introducing'
+  // the energy ladder: build (6-8) a soft round kick, loop (9-12) opening up, drive (13-21) full
+  ...each(6, 21, (b, k) => b <= 8 ? [T(b, k), .25, 'bd', k === 1 ? .6 : .55, { lpf: 1000 }]
+    : b <= 12 ? [T(b, k), .25, 'bd', k === 1 ? .86 : .8, { lpf: 1800 }]
+    : [T(b, k), .25, 'bd', k === 1 ? .9 : .82]),
+  [T(22), .24, 'bd', .7, { speed: .55, lpf: 900 }],                         // the tape-stop thud
+  ...[23, 24, 25].map((b) => [T(b), .3, 'bd', .8, { lpf: 520 }]),           // half time, muffled
+  [T(24, 2, 3), .25, 'bd', .55, { lpf: 400 }],                              // the push into ch05-s02
+  [T(29), .3, 'bd', .85, { lpf: 520 }], [T(30), .3, 'bd', .8, { lpf: 520 }], // back on 'click'
+  // the hush under L0505/L0506: the pull-back keeps a half-time pulse, a muffled kick on 1, low velocity
+  ...[31, 32, 33].map((b) => [T(b), .3, 'bd', .5, { lpf: 360 }]),
+  [W.matchcut, .3, 'bd', .8, { lpf: 700 }], [T(34), .3, 'bd', .78, { lpf: 900 }], [W.can, .3, 'bd', .85, { lpf: 1600 }],
+  ...each(35, 38, (b, k) => k === 1 ? [T(b), .3, 'bd', .8, { lpf: 600 }] : k === 3 ? [T(b, 2, 2), .2, 'bd', .45, { lpf: 500 }] : null),
+  ...each(40, 45, (b, k) => [T(b, k), .25, 'bd', k === 1 ? .9 : .8]),
+  [W.managed, .4, 'bd', 1, { lpf: 2400 }],                                  // the D6/9 strike; the drums stop
+]
+// loop, drive, lift: a hybrid kick (a sine kick with a fast pitch drop under a 909 7 dB lower) keeps 110-250 Hz clear
+// of the narrator's F0; the build and the rewind keep the soft/muffled 909 alone
+const HYB = (e) => (e[0] >= T(9) && e[0] < T(22) - .01) || e[0] >= T(40) - .01
+$: lane(KICK.map((e) => HYB(e) ? [e[0], e[1], e[2], e[3] * .44, e[4]] : e), { lpf: 3000, speed: .78 }, s).bank('RolandTR909').gain(.48 * G).orbit(5)
+$: lane(KICK.filter(HYB).map((e) => [e[0], .34, 'e1', e[0] >= T(40) - .01 ? Math.min(1, e[3] * 1.12) : e[3]]))
+  .s('sine').penv(30).pattack(.001).pdecay(.05).psustain(0).panchor(0).attack(.001).decay(.32).sustain(0).release(.02)
+  .gain(.8 * G).orbit(5)
+$: lane(KICK.filter((e) => e[0] >= T(9) && !(e[4] && e[4].lpf < 1000)), {}, s).bank('RolandTR909').hpf(1800).lpf(7000).gain(.3 * G).orbit(5)
+// the two kicks before the hole are cut short so nothing rings into 'Four'
+$: lane([[T(26), .32, 'bd', .8], [T(27), .32, 'bd', .8]], {}, s).bank('RolandTR909').speed(.78).lpf(520).release(.1).gain(.48 * G).orbit(5)
+
+// ---------------------------------------------------------------- M2 HATS (16ths, accent on the off-beat 8th, hpf 6000)
+const hat = (b, k, m = 1) => [[T(b, k, 0), .04, 'hh', .14 * m], [T(b, k, 1), .04, 'hh', .2 * m], [T(b, k, 2), .06, 'hh', Math.min(1, .48 * m)], [T(b, k, 3), .04, 'hh', .22 * m]]
+const HATS = [
+  // the ladder in the top: hats enter quiet on the ch02-s02 cut, open up through the loop, ride bright in the drive
+  ...each(7, 21, (b, k) => (b === 7 && k < 2) ? null : hat(b, k, b <= 8 ? .5 : b <= 12 ? 1.1 : 1.7)),
+  // the counter: a 16th pulse from 'fetched' that stops dead on 'fifty-eight'
+  ...[1, 2, 3, 4, 5, 6, 7].map((i) => [T(36, 1, i), .04, 'hh', i % 2 ? .3 : .42]),
+]
+$: lane(HATS, {}, s).bank('RolandTR909').hpf(6000).gain(.8 * G).orbit(5)
+// the lift and end card: the brightest hats of the film (their own, louder lane), stopping on 'managed'. While he
+// speaks they are eased 3 dB and high-passed at 8.5 kHz (their sparkle kept, nothing in his consonant band); full
+// (hpf 6000) in the bloom and the gap before 'Replay'
+$: lane(each(40, 45, (b, k) => hat(b, k, 1.7).map((e) => speaking(e[0]) ? [e[0], e[1], e[2], e[3] * 1.2 / 1.7, { hpf: 8500 }] : e)),
+  { hpf: 6000 }, s).bank('RolandTR909').gain(1 * G).orbit(5)
+// open hat: a light one on the off-beat of 2 and 4 in the drive. In the lift, under the voice, the same thin one on 2
+// and 4 only (hpf 9000, short); every off-beat in the gaps; every 8th in the bloom (the end of 'confirm' to the cut)
+$: lane([
+  ...each(13, 20, (b, k) => k % 2 === 0 ? [T(b, k, 2), .08, 'oh', .3] : null),
+  ...each(40, 45, (b, k) => {
+    const t = T(b, k, 2)
+    if (speaking(t)) return k % 2 === 0 ? [t, .06, 'oh', .22, { hpf: 9000, release: .05 }] : null
+    const on = T(b, k) >= W.confirmEnd && T(b, k) < T(44) - .01 ? [[T(b, k), .1, 'oh', .45]] : []
+    return [...on, [t, .1, 'oh', .55]]
+  }),
+], { hpf: 7000, release: .08 }, s).bank('RolandTR909').gain(.7 * G).orbit(5)
+
+// ---------------------------------------------------------------- CLAP on 2 and 4 (and on 3 in half time)
+const CLAP = [
+  ...each(9, 21, (b, k) => k % 2 === 0 ? [T(b, k), .2, 'cp', .5] : null),
+  ...[23, 24, 25].map((b) => [T(b, 3), .2, 'cp', .45, { room: .25 }]), [T(26, 3), .2, 'cp', .4, { room: 0 }],
+  [T(29, 3), .2, 'cp', .45, { room: .25 }],
+  ...[35, 36, 37, 38].map((b) => [T(b, 3), .2, 'cp', .42, { room: .25 }]),
+  // the lift: a darker, softer clap under the voice, the full one in the gaps
+  ...each(40, 45, (b, k) => k % 2 === 0 ? (speaking(T(b, k)) ? [T(b, k), .2, 'cp', .4, { room: .15, lpf: 2500 }] : [T(b, k), .2, 'cp', .55, { room: .15 }]) : null),
+]
+$: lane(CLAP, { room: .1, lpf: 18000 }, s).bank('RolandTR909').hpf(400).gain(.45 * G).rsize(.8).orbit(7)
+
+// ---------------------------------------------------------------- the FILL into ch04 (snare 16ths, toms) and soft crashes
+$: lane([
+  ...[0, 1, 2, 3].map((i) => [T(12, 1, i), .1, 'sd', .22 + i * .06]),
+  [T(12, 2, 0), .15, 'ht', .5], [T(12, 2, 1), .15, 'ht', .45], [T(12, 2, 2), .15, 'mt', .55], [T(12, 2, 3), .15, 'lt', .62],
+], {}, s).bank('RolandTR909').lpf(5000).gain(.5 * G).orbit(5)
+$: lane([[T(13), 1.5, 'cr', .3], [T(40), 1.5, 'cr', .42]], {}, s).bank('RolandTR909').hpf(5000).gain(.4 * G).orbit(5)
+
+// ---------------------------------------------------------------- CLACKS: the machine sound (dry 909 rim, filtered)
+const RIM = [
+  // a tight clack per frame stamp
+  [4.983, .05, 'rim', .5], ...[1, 2, 3, 4].map((i) => [T(4, 1, i), .05, 'rim', .42 - i * .06]),
+  // the three green checks: 'explores', 'journeys', 'runs' (the loop's only accents)
+  [T(9, 2), .08, 'rim', .62], [T(11, 2, 1), .08, 'rim', .62], [T(11, 4, 2), .08, 'rim', .66],
+  // proof one: brace snap on 'schedule', a soft tick per date on the strip from 'b-strip'
+  [T(14, 2, 2), .05, 'rim', .6], ...[1, 2, 3, 4, 5].map((i) => [T(14, 3, i), .04, 'rim', .28]),
+  // proof two: brace snap on 'Against'; proof three: brace snap on 'pull', an off-beat clack per chip, a tick on the ✓
+  [W.against, .05, 'rim', .6], [T(18, 3, 1), .05, 'rim', .6],
+  [T(19, 2, 2), .05, 'rim', .5], [T(19, 3, 2), .05, 'rim', .45], [T(19, 4, 2), .05, 'rim', .4],
+  // the frame clacks under the ribbon (dry; the last lands a 16th before the hole)
+  ...[[26, 3], [26, 4], [27, 1], [27, 2]].map(([b, k]) => [T(b, k, 3), .04, 'rim', .5]),
+  // the shatter: a dry, unpitched clatter scattered over one beat
+  ...[0, .045, .1, .135, .19, .26, .33, .41].map((d, i) => [W.shatter + d, .04, i % 3 === 1 ? 'hh' : 'rim', .7 - i * .07]),
+  // the hush's half-time pulse: a filtered rim on 3, low velocity
+  ...[31, 32, 33].map((b) => [T(b, 3), .05, 'rim', .34, { lpf: 1300 }]),
+  // the verdict: a soft rim tick as 'over' ends and on the ramp's beat
+  [T(39, 1, 1), .04, 'rim', .4], [T(39, 2), .04, 'rim', .32],
+  // the chip in the lift
+  [W.chip, .05, 'rim', .55],
+  // THE BUTTON: one dry 909 rim clack on the first 16th after 'time' (the last strike)
+  [W.button, .06, 'rim', .45, { lpf: 2000 }],
+]
+$: lane(RIM, { lpf: 2500 }, s).bank('RolandTR909').hpf(300).gain(.5 * G).orbit(8)
+// the playhead running back (ch05-s01): a dry frame tick per beat from 'rewind' for two bars, each one a little
+// softer and duller than the last; dry on orbit 8, so nothing reaches the bar-28 hole
+$: lane([[23, 1], [23, 2], [23, 3], [23, 4], [24, 1], [24, 2], [24, 3], [24, 4]].map(([b, k], i) =>
+  [T(b, k, 1), .04, 'rim', .6 - i * .045, { lpf: 2800 - i * 220 }]), { lpf: 2500 }, s)
+  .bank('RolandTR909').hpf(300).gain(.5 * G).orbit(8)
+// the hush (bars 31-33): the machine pulse kept alive above the voice band, a very quiet high tick per beat
+$: lane(each(31, 33, (b, k) => (b === 31 && k < 3) || (b === 33 && k === 4) ? null : [T(b, k), .03, 'hh', k === 1 ? .3 : .22]), {}, s)
+  .bank('RolandTR909').hpf(7500).gain(.4 * G).orbit(8)
+// typed keys: tiny muted clicks under "Point it at your app"
+$: lane([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].filter((i) => i !== 3 && i !== 7).map((i) => [T(6, 1, i) + (i % 3) * .008, .03, 'hh', .3 + (i % 2) * .12]), {}, s)
+  .bank('RolandTR909').hpf(2500).lpf(6000).speed(1.4).gain(.38 * G).orbit(8)
+
+// ---------------------------------------------------------------- STABS: short filtered saw chords on the cuts and hits
+const STAB = [
+  [12.444, .3, GM9, .5],                                    // 'url' (the brace snap on 'Just')
+  [T(13), .35, DM9, .8],                                    // proof one (cut)
+  [T(16), .35, BM9, .8],                                    // proof two (cut, now on the bar line)
+  [T(18), .35, DM9, .8],                                    // proof three (cut)
+  [T(24, 2, 3), .35, '[b2,f#3,b3]', .65, { lpf: 600 }],     // the muted stab on the ch05-s02 push
+  [T(40), .45, DWIDE, .85, { lpf: 2400 }],                  // the drop into the lift
+  // the woven words: low thumps under the voice (no filter envelope, lpf 1200: nothing in the consonant band)
+  ...[[W.w1, DWIDE], [W.w2, DWIDE], [W.w3, ED], [W.w4, ED], [W.w5, ED]].map(([t, c]) => [t, .2, c, .4, { lpf: 1200, lpenv: 0 }]),
+  [T(44), .4, DM9, .8, { lpf: 2400 }],                      // the end card cut
+]
+$: lane(STAB, { lpf: 1800, lpenv: 1.2 }).s('sawtooth').attack(.003).decay(.16).sustain(0).release(.05).lpdecay(.12)
+  .hpf(180).gain(.3 * G).room(.25).orbit(9)
+
+// ---------------------------------------------------------------- M1 "Point it": the plucked hook (filter-env saw, dotted-8th delay)
+const thirds = (bar, beat, s0, v = .78) => [['d5', 'b4'], ['e5', 'c#5'], ['f#5', 'd5'], ['a5', 'f#5']].flatMap(([a, b], i) => {
+  const t = T(bar, beat, s0 + i), d = Q(bar) * (i === 3 ? 3 : 1); return [[t, d, a, v], [t, d, b, v * .7]]
+})
+const P = [
+  // the haze: one filtered note at a time as the arpeggio's top voice, the G# is the lydian lift
+  [T(2), .5, 'd5', .45], [T(3), .5, 'e5', .48], [T(3, 4), .5, 'f#5', .55], [T(4), .7, 'g#5', .5],
+  // the build: under "Point it at your app" only the typed-key ticks and one soft A5 on 'app'...
+  [W.app, Q(6) * 3, 'a5', .42],
+  // ...then the hook's first clear statement, full voice, in the breath after 'typed'
+  [T(7, 1, 0), Q(7), 'd5', .8], [T(7, 1, 1), Q(7), 'e5', .8], [T(7, 1, 2), Q(7), 'f#5', .82], [T(7, 1, 3), Q(7) * 3, 'a5', .82],
+  [T(7, 2, 2), Q(7), 'b5', .72], [T(7, 2, 3), Q(7) * 2, 'a5', .66],
+  // drive: a muted pluck on 'browsers'; M1 in thirds in the breath before 'Against'; three rising accents
+  [T(13, 4, 1), .15, 'f#5', .45],
+  ...thirds(15, 1, 1),
+  [T(16, 3, 0), .15, 'f#5', .55], [T(16, 4, 1), .15, 'a5', .6], [T(17, 1, 2), .15, 'b5', .65],
+  // the pickup into proof three, in thirds (the last beat of the 3/4 bar)
+  ...thirds(17, 3, 0, .72),
+  // the E/D bar: G# replaces A (soft, under 'b-chips')
+  ...['d5', 'e5', 'f#5'].map((n, i) => [T(19, 1, i), Q(19), n, .38]), [T(19, 1, 3), Q(19) * 3, 'g#5', .4],
+  // the lift: M1 in octaves in the bloom after 'confirm', landing its A a 16th ahead of the end-card cut
+  ...[['d4', 'd5'], ['e4', 'e5'], ['f#4', 'f#5']].flatMap(([a, b], i) => [[T(43, 2, i), Q(43), a, .6], [T(43, 2, i), Q(43), b, .75]]),
+  [T(43, 2, 3), Q(43) * 4, 'a4', .62], [T(43, 2, 3), Q(43) * 4, 'a5', .78],
+]
+$: lane(P).s('sawtooth').attack(.002).decay(.2).sustain(0).release(.06).lpf(500).lpenv(3.4).lpdecay(.12).hpf(200)
+  .delay(.22).delaytime(B(13) * .75).delayfeedback(.28).gain(.36 * G).room(.15).orbit(2)
+// the lift's top layer: a high-octave 16th pluck arpeggio over bars 40-45, following the chords. Through all of
+// L0601 and L0602 it is high-passed at 6 kHz and soft (only its ticks above the voice); in the bloom (the end of
+// 'confirm' to 'Replay') it opens full (hpf 2500, +2 dB). It stops a 16th before 'managed'.
+const HI_CH = (t) => t >= W.grow ? ['g5', 'b5', 'd6', 'e6'] : t >= W.tag1 ? ['g#5', 'b5', 'd6', 'e6'] : t >= T(44) ? ['a5', 'd6', 'e6', 'f#6']
+  : t >= T(43) ? ['g#5', 'b5', 'd6', 'e6'] : t >= T(42) ? ['g5', 'b5', 'd6', 'f#6'] : t >= T(41) ? ['g#5', 'b5', 'd6', 'e6'] : ['a5', 'd6', 'e6', 'f#6']
+const HIARP = each(40, 45, (b, k) => [0, 1, 2, 3].map((i) => {
+  const t = T(b, k, i); if (t > W.managed - Q(45) * .9) return null
+  const v = i === 0 ? .42 : i === 2 ? .36 : .28, quiet = speaking(t)
+  return [t, Q(b) * .8, HI_CH(t)[[0, 2, 1, 3][i]], quiet ? v * .7 : bloom(t) ? v * 1.26 : v, quiet ? { hpf: 6000 } : undefined]
+}).filter(Boolean)).filter((e) => e.length)
+$: lane(HIARP, { hpf: 2500 }).s('sawtooth').attack(.002).decay(.07).sustain(0).release(.03).lpf(3000).lpenv(1.6).lpdecay(.05)
+  .pan(sine.range(.25, .75).slow(2)).delay(.18).delaytime(B(40) * .75).delayfeedback(.25).gain(.4 * G).orbit(2)
+// the end card's last statement of M1: its answer under the tagline (B4 on 'End-to-end', A4 on 'fully', soft and
+// dark), then its call on 'managed', rolled upward in 32nds (D5 E5 F#5 A5, about 60 ms apart, each held into the
+// D6/9): the hook arriving home. THE BUTTON: D5/F#5 muted on the first 16th after 'time', with the sub D1 and one rim
+// clack, struck into air (the pad and sub release just before it); it rings out through the room and delay.
+const ROLL = ['d5', 'e5', 'f#5', 'a5'].map((n, i) => [W.managed + i * .06, 1.4 - i * .06, n, .7 + i * .1 / 3])
+$: lane([
+  [W.tag1, .5, 'b4', .38, { lpf: 480, lpenv: 1.2 }], [W.grow, .5, 'a4', .38, { lpf: 480, lpenv: 1.2 }],
+  ...ROLL,
+  [W.button, 2.8, '[d5,f#5]', .6, { lpf: 600, lpenv: 1.4 }],
+], { lpf: 900, lpenv: 2 })
+  .s('sawtooth').attack(.003).decay(1.2).sustain(0).release(1.4).lpdecay(.5)
+  .delay(.2).delaytime(.369).delayfeedback(.3).gain(.32 * G).room(.45).rsize(3).orbit(10)
+
+// the haze arpeggio (16ths, filtered, low), stepping up a register on the blur cut and accelerating with the map
+const ARP = [
+  ...each(1, 3, (b, k) => (b === 3 && k === 4) ? null : [0, 1, 2, 3].map((i) => [T(b, k, i), Q(b) * .9, ['d4', 'a4', 'e4', 'f#4'][i], .3 + (i === 0 ? .08 : 0)])),
+  ...[0, 1, 2, 3].map((i) => [T(3, 4, i), Q(3) * .9, ['a4', 'd5', 'e5', 'f#5'][i], .34]),
+  ...each(4, 5, (b, k) => (b === 5 && k === 2) ? null : [0, 1, 2, 3].map((i) => [T(b, k, i), Q(b) * .9, ['e4', 'b4', 'd5', 'g#4'][i], .34 + (i === 0 ? .08 : 0)])),
+]
+$: lane(ARP).s('sawtooth').attack(.002).decay(.12).sustain(0).release(.04).lpf(380).lpenv(2).lpdecay(.09)
+  .pan(sine.range(.3, .7).slow(4)).gain(.3 * G).delay(.15).delaytime(.38).delayfeedback(.2).orbit(2)
+
+// ---------------------------------------------------------------- M4: the stuck checkpoint (one note, one length), the snap-backs, the restart
+const STUCK = [
+  ...[[36, 1], [36, 2], [36, 3], [36, 4], [37, 1], [37, 2]].map(([b, k]) => [T(b, k, 2), Q(b) * 1.5, 'f#4', .5]),
+  [T(37, 3, 2), Q(37), 'f#4', .45], [T(37, 4, 1), Q(37), 'f#4', .42], [T(37, 4, 3), Q(37) * 2, 'f#4', .5],   // snap-backs, settle on 'place'
+  [T(38, 3, 3), Q(38) * 1.5, 'f#4', .5], [T(38, 4, 1), Q(38) * 1.5, 'f#4', .36], [T(38, 4, 3), Q(38) * 1.5, 'f#4', .24], // 'starting over'
+]
+$: lane(STUCK).s('square').attack(.002).decay(.09).sustain(0).release(.03).lpf(1400).gain(.3 * G).orbit(4)
+
+// ---------------------------------------------------------------- M5 the verdict: felt piano, Asus2 as L0508 ends, D on the lift
+// at full voice: the Asus2 short and open (no third) in the breath after 'over'; the warmer, fuller D (D-A-E fifths
+// with the F#) lands on the ch06-s01 downbeat with the band, doubling the lift's pad
+$: lane([[T(39, 1, 1), .7, '[a3,e4,b4]', .58, { release: .5, lpf: 1400 }], [T(40), 1.6, '[d3,a3,e4,f#4]', .48, { release: 1.2, lpf: 1500 }]],
+  { release: 1, lpf: 1500 }).s('piano').gain(1.55 * G).room(.38).orbit(4)
+// the ramp's snare roll: 32nds over the last beat into the lift, rising in level and opening in the filter
+$: lane([0, 1, 2, 3, 4, 5, 6, 7].map((i) => [T(39, 2) + i * Q(39) / 2, .06, 'sd', .14 + i * .07, { lpf: 1600 + i * 650 }]), { lpf: 2000 }, s)
+  .bank('RolandTR909').hpf(400).gain(.85 * G).orbit(5)
+
+// ---------------------------------------------------------------- AIR: noise risers and the reversed whoosh
+const RISE = [
+  [2.2, T(3, 4) - 2.2, .35, 1300],          // the haze swell crests on the blur cut
+  [7.5, T(6) - 7.5 - .01, .45, 3500],        // the whip: a reversed whoosh that cuts off on the kick
+  [T(11, 4, 3), T(13) - T(11, 4, 3) - .01, .35, 3000], // the fill riser lands on the ch04 cut
+  [T(42, 4), T(44) - T(42, 4) - .01, .3, 3000],         // through the hold into the end card
+]
+$: lane(RISE.map(([a, d, v, f]) => [a, d, 'c4', v, { attack: d, lpf: f / 6, lpattack: d }]), { attack: 1, lpf: 400, lpattack: 1 })
+  .lpenv(2.6).s('pink').release(.04).hpf(250).gain(.22 * G).orbit(11)
+// dawn air over the haze: a faint high hiss that is there from the first frame and thins out under the build
+$: lane([[0, T(4) + 1.2, 'c4', .5, { attack: .3 }]], { attack: 1 })
+  .s('white').release(.8).hpf(7500).lpf(14000).gain(.05 * G).pan(sine.range(.35, .65).slow(3)).orbit(11)
+// the lift's air: a white-noise sheen above 7 kHz, soft under L0601, full in the bloom (the end of 'confirm' to 'Replay'),
+// eased again under "Replay QA. End-to-end testing, fully managed", gone before 'managed'
+$: lane([span(T(40), W.confirmEnd, 'c4', .36, { attack: 1.2 }), span(W.confirmEnd, 74.32, 'c4', .85, { attack: .3 }),
+  span(74.32, W.managed - .06, 'c4', .4, { attack: .05 })], { attack: 1 })
+  .s('white').release(.4).hpf(7000).lpf(15000).gain(.5 * G).pan(sine.range(.3, .7).slow(2)).orbit(11)
+// the verdict's ramp into the lift: pink noise, its filter opening through the hinge bar, cut off on the bar-40
+// downbeat (the drop lands as a lift, not a cliff)
+$: lane([[T(39), T(40) - T(39) - .01, 'c4', 1]], { attack: T(40) - T(39) - .01 })
+  .s('pink').release(.03).lpf(1600).lpenv(2.6).lpattack(T(40) - T(39)).hpf(250).gain(.65 * G).orbit(11)

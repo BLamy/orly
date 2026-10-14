@@ -1,0 +1,814 @@
+{
+  "slug": "replay-qa-promo",
+  "stages": {
+    "voice": {
+      "status": "done",
+      "auditions": 5,
+      "report": "films/replay-qa-promo/voice/auditions/report.json",
+      "updatedAt": "2026-10-14T19:15:28.254Z",
+      "voiceId": "cjVigY5qzO86Huf0OWal",
+      "model": "eleven_multilingual_v2",
+      "at": "2026-10-14T21:22:59Z",
+      "outputs": [
+        "films/replay-qa-promo/voice/voice.json",
+        "films/replay-qa-promo/voice/lexicon.json"
+      ],
+      "summary": "Kept the locked voice (no audition requested): Eric cjVigY5qzO86Huf0OWal, premade library voice, eleven_multilingual_v2, speed 1.0, seed 1016863915, ~147.5 wpm; unique across films (neural-net-history MlHIkPdx2ZF9MhznglHQ, perceptron-short EapdDtSsMC291mjfSNe7). Lexicon refreshed against the 17:21 script revision (all 20 lines, explicit spoken forms included): entries that fire are unchanged (QA -> Q A on L0102/L0602, localhost -> local host on L0402; L0502 keeps its explicit Q.A.), so no take goes stale from the lexicon; notes updated. 0 credits spent. Narration dry run: L0402, L0505, L0601 await re-takes from the round-1 script directions (~81 credits, narration stage). Human listening check still recommended (voice.json listening[] has 4 pending entries).",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      }
+    },
+    "narration": {
+      "status": "done",
+      "startedAt": "2026-10-14T21:23:25.216Z",
+      "tool": "generator/film/narrate.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "replay-qa-promo",
+        "--shots",
+        "ch04-s02,ch05-s03,ch06-s01",
+        "--budget",
+        "8000"
+      ],
+      "voice": {
+        "voiceId": "cjVigY5qzO86Huf0OWal",
+        "model": "eleven_multilingual_v2",
+        "seed": 1016863915
+      },
+      "updatedAt": "2026-10-14T21:23:32.725Z",
+      "finishedAt": "2026-10-14T21:23:32.724Z",
+      "shots": [
+        "ch04-s02",
+        "ch05-s03",
+        "ch06-s01"
+      ],
+      "credits": {
+        "run": 81,
+        "total": 2002,
+        "budget": 8000
+      },
+      "problems": [],
+      "stt": {
+        "file": "films/replay-qa-promo/narration/stt.json",
+        "targets": [
+          "L0402",
+          "L0505",
+          "L0601"
+        ],
+        "transcribed": [
+          "L0402",
+          "L0505",
+          "L0601"
+        ],
+        "current": [],
+        "failing": []
+      },
+      "outputs": [
+        "films/replay-qa-promo/narration/lines.json",
+        "films/replay-qa-promo/narration/stt.json"
+      ],
+      "at": "2026-10-14T21:25:08Z",
+      "summary": "Line-fix re-takes for ch04-s02, ch05-s03, ch06-s01 (round-1 review): L0402 solo @0.98 (\"Against, staging, ...\" spoken form), L0505 solo @0.96 (insertGap 0.07 after changed), L0601 solo @0.94 (insertGaps 0.25 after recording/cause); L0506 kept its take. Dry run 184 chars ~81 credits; spent 85 (81 TTS + 4 STT); ledger 2006 of 8000. STT on the new takes: L0402 PASS \"Against staging, a preview, even local host\" (Against + localhost literal, so the old \"Again, staging\" mishearing is gone), L0505 PASS \"changed\", L0601 PASS WER 0; QA narration.stt 20/20 current. All lines aligned exactly from character alignment (no approximate cues). Clock rebuilt: 85.21 s (target 90 s: -4.79 s; ceiling 100 s), timeline.json written to narration/ and apps/bookshelf/src/viz/films/replay-qa-promo/ (identical). preGaps L0504 0.70 / L0506 0.30 / L0508 0.25 land exactly. Stem -19.0 LUFS, TP -2.7 dBTP, LRA 3.1 LU; 8 cut edges under -50 dBFS. Line levels 18/20 within 0.5 dB; L0202 -1.08 and L0504 -0.71 (unchanged quiet takes held by the +/-3 dB leveling cap; QA mix.lineLevels ok). Pacing 175 wpm overall (L0601 now no longer fast). Note: L0505 take ends on ~0.3 s of post-word air at -31..-44 dBFS (raw take end, not a cut; STT hears \"screen.\" whole). Mix is now stale (mix.length/mix.fresh): re-run film:mix. Pending human listening: QA/L0102, localhost/L0402, Against/L0402, QA/L0502.",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      }
+    },
+    "timeline": {
+      "status": "done",
+      "startedAt": "2026-10-14T21:44:29.112Z",
+      "tool": "generator/film/timeline.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "replay-qa-promo"
+      ],
+      "updatedAt": "2026-10-14T21:44:32.831Z",
+      "finishedAt": "2026-10-14T21:44:32.831Z",
+      "draft": false,
+      "duration": 82.7083,
+      "fps": 24,
+      "shots": 14,
+      "lines": 20,
+      "warnings": [],
+      "stem": {
+        "file": "films/replay-qa-promo/narration/narration.wav",
+        "duration": 82.7083,
+        "lineLufs": -20,
+        "maxLevelingDb": 3,
+        "rides": {
+          "L0101": {
+            "lufs": -24.8,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0102": {
+            "lufs": -24.7,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0201": {
+            "lufs": -23.6,
+            "rideDb": 3,
+            "clipGainDb": -0.4,
+            "trimDb": -0.4,
+            "levelingDb": 2.6
+          },
+          "L0202": {
+            "lufs": -25,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0301": {
+            "lufs": -23.3,
+            "rideDb": 3,
+            "clipGainDb": -0.73,
+            "trimDb": -0.73,
+            "levelingDb": 2.27
+          },
+          "L0302": {
+            "lufs": -23,
+            "rideDb": 3,
+            "clipGainDb": -0.85,
+            "trimDb": -0.85,
+            "levelingDb": 2.15
+          },
+          "L0401": {
+            "lufs": -23.9,
+            "rideDb": 3,
+            "clipGainDb": -0.09,
+            "trimDb": -0.09,
+            "levelingDb": 2.91
+          },
+          "L0402": {
+            "lufs": -23.8,
+            "rideDb": 3,
+            "clipGainDb": -0.06,
+            "trimDb": -0.06,
+            "levelingDb": 2.94
+          },
+          "L0403": {
+            "lufs": -23.6,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0404": {
+            "lufs": -24.1,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0501": {
+            "lufs": -23.8,
+            "rideDb": 3,
+            "clipGainDb": -0.05,
+            "trimDb": -0.05,
+            "levelingDb": 2.95
+          },
+          "L0502": {
+            "lufs": -22.9,
+            "rideDb": 2.9,
+            "clipGainDb": -0.38,
+            "trimDb": -0.38,
+            "levelingDb": 2.52
+          },
+          "L0503": {
+            "lufs": -24.6,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0504": {
+            "lufs": -24.8,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0505": {
+            "lufs": -23.5,
+            "rideDb": 3,
+            "clipGainDb": -0.56,
+            "trimDb": -0.56,
+            "levelingDb": 2.44
+          },
+          "L0506": {
+            "lufs": -23.9,
+            "rideDb": 3,
+            "clipGainDb": -0.06,
+            "trimDb": -0.06,
+            "levelingDb": 2.94
+          },
+          "L0507": {
+            "lufs": -24.3,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0508": {
+            "lufs": -24.3,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          },
+          "L0601": {
+            "lufs": -23.1,
+            "rideDb": 3,
+            "clipGainDb": -0.21,
+            "trimDb": -0.21,
+            "levelingDb": 2.79
+          },
+          "L0602": {
+            "lufs": -24.2,
+            "rideDb": 3,
+            "clipGainDb": 0,
+            "trimDb": 0,
+            "levelingDb": 3
+          }
+        },
+        "integratedBefore": -21.1,
+        "compressor": {
+          "ratio": 2.5,
+          "attack": 10,
+          "release": 120,
+          "knee": 2.8,
+          "highpassHz": 70,
+          "thresholdDb": -16,
+          "grDb": 1.66,
+          "integratedAfter": -22.8
+        },
+        "peakStage": {
+          "ratio": 2,
+          "attack": 0.3,
+          "release": 40,
+          "thresholdDb": -8,
+          "peakCutDb": 0.59,
+          "crestBefore": 16.96,
+          "crestAfter": 16.38,
+          "crestTarget": 16.5,
+          "maxCutDb": 3,
+          "speechGrDb": 0.01
+        },
+        "chain": "highpass=f=70,acompressor=threshold=-16dB:ratio=2.5:attack=10:release=120:knee=2.8:makeup=1:detection=rms:link=maximum,acompressor=threshold=-8dB:ratio=2:attack=0.3:release=40:knee=2:makeup=1:detection=peak:link=maximum,[per-line clip gain]",
+        "gainDb": 3.9,
+        "peakBeforeDb": -6.42,
+        "limitedDb": 0,
+        "integrated": -19,
+        "truePeak": -2.5,
+        "lra": 3.2,
+        "target": -19,
+        "levels": {
+          "measure": "gated loudness per line window (LUFS)",
+          "tolerance": 0.5,
+          "warnDb": 1.5,
+          "beforeClipGain": {
+            "L0101": {
+              "M": -23.04,
+              "offsetDb": -0.47,
+              "requestedDb": 0,
+              "errorDb": -0.47,
+              "driftDb": -0.47
+            },
+            "L0102": {
+              "M": -23.01,
+              "offsetDb": -0.44,
+              "requestedDb": 0,
+              "errorDb": -0.44,
+              "driftDb": -0.44
+            },
+            "L0201": {
+              "M": -22.22,
+              "offsetDb": 0.45,
+              "requestedDb": 0,
+              "errorDb": 0.45,
+              "driftDb": 0.45
+            },
+            "L0202": {
+              "M": -23.7,
+              "offsetDb": -1.13,
+              "requestedDb": 0,
+              "errorDb": -1.13,
+              "driftDb": -1.13
+            },
+            "L0301": {
+              "M": -21.89,
+              "offsetDb": 0.78,
+              "requestedDb": 0,
+              "errorDb": 0.78,
+              "driftDb": 0.78
+            },
+            "L0302": {
+              "M": -21.77,
+              "offsetDb": 0.9,
+              "requestedDb": 0,
+              "errorDb": 0.9,
+              "driftDb": 0.9
+            },
+            "L0401": {
+              "M": -22.53,
+              "offsetDb": 0.14,
+              "requestedDb": 0,
+              "errorDb": 0.14,
+              "driftDb": 0.14
+            },
+            "L0402": {
+              "M": -22.56,
+              "offsetDb": 0.11,
+              "requestedDb": 0,
+              "errorDb": 0.11,
+              "driftDb": 0.11
+            },
+            "L0403": {
+              "M": -22.9,
+              "offsetDb": -0.33,
+              "requestedDb": 0,
+              "errorDb": -0.33,
+              "driftDb": -0.33
+            },
+            "L0404": {
+              "M": -22.67,
+              "offsetDb": -0.1,
+              "requestedDb": 0,
+              "errorDb": -0.1,
+              "driftDb": -0.1
+            },
+            "L0501": {
+              "M": -22.57,
+              "offsetDb": 0.1,
+              "requestedDb": 0,
+              "errorDb": 0.1,
+              "driftDb": 0.1
+            },
+            "L0502": {
+              "M": -22.24,
+              "offsetDb": 0.43,
+              "requestedDb": 0,
+              "errorDb": 0.43,
+              "driftDb": 0.43
+            },
+            "L0503": {
+              "M": -23.24,
+              "offsetDb": -0.67,
+              "requestedDb": 0,
+              "errorDb": -0.67,
+              "driftDb": -0.67
+            },
+            "L0504": {
+              "M": -23.33,
+              "offsetDb": -0.76,
+              "requestedDb": 0,
+              "errorDb": -0.76,
+              "driftDb": -0.76
+            },
+            "L0505": {
+              "M": -22.06,
+              "offsetDb": 0.61,
+              "requestedDb": 0,
+              "errorDb": 0.61,
+              "driftDb": 0.61
+            },
+            "L0506": {
+              "M": -22.56,
+              "offsetDb": 0.11,
+              "requestedDb": 0,
+              "errorDb": 0.11,
+              "driftDb": 0.11
+            },
+            "L0507": {
+              "M": -22.82,
+              "offsetDb": -0.25,
+              "requestedDb": 0,
+              "errorDb": -0.25,
+              "driftDb": -0.25
+            },
+            "L0508": {
+              "M": -22.73,
+              "offsetDb": -0.16,
+              "requestedDb": 0,
+              "errorDb": -0.16,
+              "driftDb": -0.16
+            },
+            "L0601": {
+              "M": -22.41,
+              "offsetDb": 0.26,
+              "requestedDb": 0,
+              "errorDb": 0.26,
+              "driftDb": 0.26
+            },
+            "L0602": {
+              "M": -22.75,
+              "offsetDb": -0.18,
+              "requestedDb": 0,
+              "errorDb": -0.18,
+              "driftDb": -0.18
+            }
+          },
+          "lines": {
+            "L0101": {
+              "M": -19.14,
+              "offsetDb": -0.42,
+              "requestedDb": 0,
+              "errorDb": -0.42,
+              "driftDb": -0.42
+            },
+            "L0102": {
+              "M": -19.11,
+              "offsetDb": -0.39,
+              "requestedDb": 0,
+              "errorDb": -0.39,
+              "driftDb": -0.39
+            },
+            "L0201": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0202": {
+              "M": -19.8,
+              "offsetDb": -1.08,
+              "requestedDb": 0,
+              "errorDb": -1.08,
+              "driftDb": -1.08
+            },
+            "L0301": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0302": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0401": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0402": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0403": {
+              "M": -19,
+              "offsetDb": -0.28,
+              "requestedDb": 0,
+              "errorDb": -0.28,
+              "driftDb": -0.28
+            },
+            "L0404": {
+              "M": -18.77,
+              "offsetDb": -0.05,
+              "requestedDb": 0,
+              "errorDb": -0.05,
+              "driftDb": -0.05
+            },
+            "L0501": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0502": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0503": {
+              "M": -19.34,
+              "offsetDb": -0.62,
+              "requestedDb": 0,
+              "errorDb": -0.62,
+              "driftDb": -0.62
+            },
+            "L0504": {
+              "M": -19.43,
+              "offsetDb": -0.71,
+              "requestedDb": 0,
+              "errorDb": -0.71,
+              "driftDb": -0.71
+            },
+            "L0505": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0506": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0507": {
+              "M": -18.92,
+              "offsetDb": -0.2,
+              "requestedDb": 0,
+              "errorDb": -0.2,
+              "driftDb": -0.2
+            },
+            "L0508": {
+              "M": -18.83,
+              "offsetDb": -0.11,
+              "requestedDb": 0,
+              "errorDb": -0.11,
+              "driftDb": -0.11
+            },
+            "L0601": {
+              "M": -18.72,
+              "offsetDb": 0.05,
+              "requestedDb": 0,
+              "errorDb": 0.05,
+              "driftDb": 0.05
+            },
+            "L0602": {
+              "M": -18.85,
+              "offsetDb": -0.13,
+              "requestedDb": 0,
+              "errorDb": -0.13,
+              "driftDb": -0.13
+            }
+          }
+        }
+      },
+      "outputs": [
+        "films/replay-qa-promo/narration/timeline.json",
+        "apps/bookshelf/src/viz/films/replay-qa-promo/timeline.json",
+        "films/replay-qa-promo/render/film.vtt",
+        "films/replay-qa-promo/render/chapters.txt",
+        "films/replay-qa-promo/narration/narration.wav"
+      ]
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-14T22:15:05.813Z",
+      "summary": {
+        "pass": 5,
+        "warn": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "report": "films/replay-qa-promo/qa/reports/latest-partial.json",
+      "updatedAt": "2026-10-14T22:15:05.814Z",
+      "partial": [
+        "score"
+      ]
+    },
+    "shots": {
+      "ch03-s01": {
+        "status": "revised",
+        "at": "2026-10-14T20:03:03.328Z"
+      },
+      "ch01-s01": {
+        "status": "revised",
+        "at": "2026-10-14T20:09:37.780Z"
+      },
+      "ch01-s03": {
+        "status": "revised",
+        "at": "2026-10-14T20:09:37.780Z"
+      },
+      "ch02-s01": {
+        "status": "approved",
+        "at": "2026-10-14T20:08:04.766Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 9
+        }
+      },
+      "ch02-s02": {
+        "status": "approved",
+        "at": "2026-10-14T20:08:04.766Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 9,
+          "continuity": 8
+        }
+      },
+      "ch04-s01": {
+        "status": "revised",
+        "at": "2026-10-14T20:20:26.958Z"
+      },
+      "ch04-s02": {
+        "status": "revised",
+        "at": "2026-10-14T20:20:26.958Z"
+      },
+      "ch04-s03": {
+        "status": "revised",
+        "at": "2026-10-14T20:20:26.958Z"
+      },
+      "ch06-s01": {
+        "status": "revised",
+        "at": "2026-10-14T20:43:20.148Z"
+      },
+      "ch06-s02": {
+        "status": "approved",
+        "at": "2026-10-14T20:34:31.445Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 9,
+          "continuity": 8
+        }
+      },
+      "ch05-s01": {
+        "status": "approved",
+        "at": "2026-10-14T20:54:06.398Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 8
+        }
+      },
+      "ch05-s02": {
+        "status": "revised",
+        "at": "2026-10-14T21:08:13.594Z"
+      },
+      "ch05-s03": {
+        "status": "approved",
+        "at": "2026-10-14T20:54:06.398Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 8
+        }
+      },
+      "ch05-s04": {
+        "status": "revised",
+        "at": "2026-10-14T21:08:13.594Z"
+      }
+    },
+    "score-render": {
+      "at": "2026-10-14T22:14:41.963Z",
+      "cues": [
+        {
+          "id": "m01",
+          "ok": true,
+          "I": -20.8,
+          "TP": -3.4,
+          "duration": 88.7083
+        }
+      ],
+      "updatedAt": "2026-10-14T22:14:41.963Z"
+    },
+    "score": {
+      "status": "done",
+      "at": "2026-10-14T22:15:11Z",
+      "summary": "1 cue (m01), 82.7 s of music (88.7 s render with tail); I -20.8 LUFS, LRA 7.7 LU, TP -3.4 dBTP",
+      "provenance": {
+        "model": "claude-opus-5-5",
+        "effort": "high"
+      }
+    },
+    "mix": {
+      "status": "done",
+      "startedAt": "2026-10-14T21:08:57.271Z",
+      "tool": "generator/film/mix.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "replay-qa-promo"
+      ],
+      "updatedAt": "2026-10-14T21:09:05.542Z",
+      "finishedAt": "2026-10-14T21:09:05.541Z",
+      "ok": true,
+      "checks": {
+        "loudness": true,
+        "truePeak": true,
+        "length": true,
+        "duck": true,
+        "floor": true,
+        "chapters": true,
+        "fadeAfterStrike": true,
+        "foley": true
+      },
+      "master": {
+        "file": "films/replay-qa-promo/mix/master.wav",
+        "duration": 84.25,
+        "I": -16,
+        "LRA": 3.4,
+        "TP": -1.9
+      },
+      "duckDb": 4.37,
+      "outputs": [
+        "films/replay-qa-promo/mix/master.wav",
+        "films/replay-qa-promo/mix/loudness.json",
+        "films/replay-qa-promo/mix/chapters/1.m4a",
+        "films/replay-qa-promo/mix/chapters/2.m4a",
+        "films/replay-qa-promo/mix/chapters/3.m4a",
+        "films/replay-qa-promo/mix/chapters/4.m4a",
+        "films/replay-qa-promo/mix/chapters/5.m4a",
+        "films/replay-qa-promo/mix/chapters/6.m4a"
+      ]
+    },
+    "render": {
+      "status": "done",
+      "startedAt": "2026-10-14T21:09:13.494Z",
+      "tool": "generator/film/render.mjs",
+      "error": null,
+      "resume": null,
+      "args": [
+        "--slug",
+        "replay-qa-promo"
+      ],
+      "updatedAt": "2026-10-14T21:10:07.782Z",
+      "finishedAt": "2026-10-14T21:10:07.781Z",
+      "ok": true,
+      "out": "films/replay-qa-promo/render/film.mp4",
+      "preview": false,
+      "frames": 2022,
+      "fps": 24,
+      "checks": {
+        "frames": true,
+        "fullLength": true,
+        "size": true,
+        "fps": true,
+        "av": true,
+        "chapters": true
+      },
+      "outputs": [
+        "films/replay-qa-promo/render/film.mp4"
+      ]
+    },
+    "publish": {
+      "status": "done",
+      "finishedAt": "2026-10-14T21:11:16.124Z",
+      "createdAt": "2026-10-14T21:11:13.945Z",
+      "manifest": "public/generated/replay-qa-promo/manifest.json",
+      "sources": {
+        "page": "public/generated/replay-qa-promo/sources/index.html",
+        "url": "https://orly.brett-lamy.workers.dev/generated/replay-qa-promo/sources/",
+        "claims": 51,
+        "quotes": 0,
+        "sources": 47
+      },
+      "chapters": 6,
+      "stems": {
+        "lines": 20,
+        "cues": 1,
+        "mb": 2.5
+      },
+      "chapterSlices": 0,
+      "deployed": false,
+      "updatedAt": "2026-10-14T21:11:16.125Z"
+    },
+    "assemble": {
+      "status": "done",
+      "at": "2026-10-14T21:11:25Z",
+      "summary": "Clock fresh (84.25 s, 97 beats). Mix: master -16 LUFS, -1.9 dBTP, LRA 3.4, no master limiting; 1 cue (m01) ducked 4.37 dB (target 4); fade 83.05-84.25 s, 2.14 s after lastStrike 80.912; floor -58 LUFS; 6 chapter slices. Render: film.mp4 2022 frames = round(84.25x24), 1920x1080@24, video 84.250 s / audio 84.250 s, 6 chapters + mov_text captions, film.vtt; 54 s wall, 6 workers. Sheets: all 15 shots re-sheeted (--all). Cards: 0 blank probed cards, 0 ghost text, 5/5 transitions audited. Published locally (manifest, 20 line stems + 1 cue stem, captions, library entry). QA 42 pass / 3 warn / 0 fail; warns: narration.pacing (178 wpm overall, 7 lines 190-199 wpm), narration.listening (4 stress sign-offs pending: QA, localhost, Against, QA), mix.lineMasking (score problem: L0601 8 dB, L0403 9.6, L0602 9.8, L0402 9.9 speech-to-music)."
+    },
+    "review": {
+      "round": 1,
+      "pass": false,
+      "mean": 6.82,
+      "scores": {
+        "accuracy": 6.83,
+        "depth": 6.83,
+        "clarity": 6.33,
+        "story": 7.08,
+        "visual": 6.25,
+        "sync": 7.17,
+        "sound": 7,
+        "curiosity": 7.08
+      },
+      "at": "2026-10-14T21:18:35Z"
+    }
+  }
+}
