@@ -514,7 +514,7 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
             if (group.kind === 'tapes') {
               return (
                 <div className="lib-sleeve lib-vhs-case" key={`v${i}-${j}`}>
-                  <span className="lib-sleeve-plaque">Video Library</span>
+                  <span className="lib-sleeve-plaque">Featured · Video Library</span>
                   {group.books.map((b) => (
                     <VhsTape key={b.slug} book={b} />
                   ))}

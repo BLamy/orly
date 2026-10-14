@@ -115,14 +115,16 @@ function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
   }, [visible, book]);
 
   const chapters = book.chapters?.length ?? 0;
+  const film = book.kind === 'film';
   return (
-    <button ref={rootRef} className="libm-row" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
+    <button ref={rootRef} className={`libm-row${film ? ' libm-row-film' : ''}`} onClick={onOpen ?? (() => openBook(book))} aria-label={`${film ? 'Play' : 'Open'} ${book.title}`}>
       <span className="libm-row-thumb">
         <canvas ref={canvasRef} className="libm-row-canvas" />
       </span>
       <span className="libm-row-text">
         <span className="libm-row-title">{book.title}</span>
         <span className="libm-row-sub">
+          {film && book.runtime ? `${Math.round(book.runtime / 60)} min · ` : ''}
           {chapters ? `${chapters} chapter${chapters === 1 ? '' : 's'}` : book.subtitle}
         </span>
       </span>
@@ -409,9 +411,15 @@ export function MobileShelf({
   // The featured series is pinned above the alphabetized list (its own
   // showcase section) rather than filed under its letter — keeping the A-Z
   // rail's jump targets clean. Search still finds it like any other entry.
+  // Films (VHS tapes) are the featured section when there are any; the newest Daily Papers month is featured
+  // otherwise. Featured films leave the A-Z list so they are not shown twice.
+  const featuredFilms = useMemo(
+    () => (books ?? []).filter((b) => b.kind === 'film').sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? '')),
+    [books],
+  );
   const featured = useMemo(
     () => {
-      if (!entries) return null;
+      if (!entries || featuredFilms.length) return null;
       const monthly = entries.filter(
         (e): e is Extract<Entry, { kind: 'series' }> => e.kind === 'series' && isDailyPapersSeries(e.name),
       );
@@ -419,17 +427,21 @@ export function MobileShelf({
         (b.books[0]?.createdAt ?? '').localeCompare(a.books[0]?.createdAt ?? ''),
       )[0] ?? null;
     },
-    [entries],
+    [entries, featuredFilms],
   );
 
   // Alphabetized sections are built by the reusable mobile package.
   const sections = useMemo(() => {
     if (!entries) return null;
     return alphabetize(
-      entries.filter((entry) => entry.kind !== 'series' || !featured || entry.name !== featured.name),
+      entries.filter(
+        (entry) =>
+          (entry.kind !== 'series' || !featured || entry.name !== featured.name) &&
+          (entry.kind !== 'book' || entry.book.kind !== 'film' || !featuredFilms.length),
+      ),
       (entry) => entry.name,
     );
-  }, [entries, featured]);
+  }, [entries, featured, featuredFilms]);
 
   const q = query.trim();
   // Search EXPLODES series: instead of collapsing a matching series into one
@@ -715,7 +727,16 @@ export function MobileShelf({
             onIndexInteraction={() => blockChromeReveal()}
             showIndex={!q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
-            beforeSections={featured && (
+            beforeSections={featuredFilms.length ? (
+              <section className="libm-letter-section libm-featured libm-featured-films">
+                <h2 className="libm-letter-head">Featured · Video Library</h2>
+                <div className="libm-rows">
+                  {featuredFilms.map((b) => (
+                    <BookRow key={b.slug} book={b} />
+                  ))}
+                </div>
+              </section>
+            ) : featured && (
               <section className="libm-letter-section libm-featured">
                 <h2 className="libm-letter-head">Featured</h2>
                 <SeriesRow
