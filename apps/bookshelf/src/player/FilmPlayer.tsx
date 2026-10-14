@@ -26,6 +26,7 @@ import { importFilmReport, type FilmImportData } from '../editor/model/importFil
 import { createAudioEngine, type EditorAudioEngine } from '../editor/engine/audio';
 import { SourcesPanel, type SourcesDoc } from './SourcesPanel';
 import { CreditsPanel, type CreditsDoc } from './CreditsPanel';
+import { ScoreCard, type Score } from './ScoreCard';
 import './film-player.css';
 
 interface FilmChapter {
@@ -56,40 +57,6 @@ interface FilmReview {
   notes: Record<string, string>;
   summary: string;
 }
-const DIM_LABEL: Record<string, string> = {
-  accuracy: 'Accuracy', depth: 'Depth', clarity: 'Clarity', story: 'Story', visual: 'Visual', sync: 'Sync', sound: 'Sound', curiosity: 'Curiosity',
-};
-
-/** scores from the last critic round, lowest first, with why */
-function ReviewPanel({ review }: { review: FilmReview }) {
-  const dims = Object.entries(review.scores).sort((a, b) => a[1] - b[1]);
-  const date = review.at ? new Date(review.at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : null;
-  return (
-    <section className="fp-review" aria-label="Critic review">
-      <header>
-        <strong>Critic review · round {review.round}</strong>
-        <span className={review.pass ? 'fp-pass' : 'fp-fail'}>
-          mean {review.mean?.toFixed(2) ?? '—'} / bar {review.bar} · {review.pass ? 'passed' : 'not yet passing'}
-        </span>
-        {date && <span className="fp-review-date">{date}</span>}
-      </header>
-      <ul>
-        {dims.map(([k, v]) => (
-          <li key={k} className={v < review.floor ? 'is-below' : ''}>
-            <span className="fp-dim">{DIM_LABEL[k] ?? k}</span>
-            <span className="fp-bar" aria-hidden>
-              <i style={{ width: `${Math.max(0, Math.min(10, v)) * 10}%` }} />
-              <b style={{ left: `${review.floor * 10}%` }} />
-            </span>
-            <span className="fp-score">{v.toFixed(2)}</span>
-            {review.notes[k] && <p>{review.notes[k]}</p>}
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 const W = 1280;
 const H = Math.round((W * FILM_H) / FILM_W);
 const OSD_MS = 2400;
@@ -100,7 +67,10 @@ const clock = (s: number) => {
 };
 
 /** onEject: leave the VCR (the shelf's navigation stack pops this screen); without it, EJECT loads the shelf */
+type CardTab = 'score' | 'sources' | 'music';
+
 export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => void }) {
+  const [cardTab, setCardTab] = useState<CardTab>('score');
   const { reel, error } = useFilm(slug, W, H);
   const sceneRef = useRef<HTMLCanvasElement | null>(null);
   const finishRef = useRef<HTMLCanvasElement | null>(null);
@@ -497,6 +467,17 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
 
   if (error) return <div className="fp fp-error">This tape won't play.<pre>{error.slice(0, 600)}</pre></div>;
 
+  // the card under the VCR: the film's score (its critic panel), its sources and its music, as tabs
+  const filmScore: Score | null =
+    review && review.mean != null
+      ? { mean: review.mean, bar: review.bar, floor: review.floor, pass: review.pass, scores: review.scores, notes: review.notes, by: `the film critic panel, round ${review.round}`, at: review.at ?? undefined }
+      : null;
+  const cardTabs = ([['score', 'Score', !!filmScore], ['sources', 'Sources', !!sourcesDoc], ['music', 'Music', !!creditsDoc]] as const)
+    .filter((x) => x[2])
+    .map(([id, label]) => [id, label] as [CardTab, string]);
+  const tab: CardTab = cardTabs.some(([id]) => id === cardTab) ? cardTab : (cardTabs[0]?.[0] ?? 'score');
+  const setTab = setCardTab;
+
   return (
     <div className="fp">
       <div ref={shellRef} className={`fp-shell${full ? ' is-full' : ''}${pseudo ? ' is-pseudo' : ''}${full && !chrome && playing ? ' is-idle' : ''}`} onMouseMove={full && !touch ? poke : undefined}>
@@ -589,26 +570,39 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
           </a>
         )}
       </div>
-      {review && <ReviewPanel review={review} />}
-      {sourcesDoc && (
-        <SourcesPanel
-          doc={sourcesDoc}
-          now={t}
-          onSeek={(x) => {
-            seek(x, 'SOURCE ▶');
-            toTop();
-          }}
-          pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
-        />
-      )}
-      {creditsDoc && (
-        <CreditsPanel
-          doc={creditsDoc}
-          onSeek={(x) => {
-            seek(x, 'MUSIC ▶');
-            toTop();
-          }}
-        />
+      {cardTabs.length > 0 && (
+        <section className="fp-card" aria-label="About this film">
+          {cardTabs.length > 1 && (
+            <div className="fp-tabs" role="tablist">
+              {cardTabs.map(([id, label]) => (
+                <button key={id} className={`fp-tab${tab === id ? ' is-on' : ''}`} role="tab" aria-selected={tab === id} onClick={() => setTab(id)}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+          {tab === 'score' && filmScore && <ScoreCard score={filmScore} />}
+          {tab === 'sources' && sourcesDoc && (
+            <SourcesPanel
+              doc={sourcesDoc}
+              now={t}
+              onSeek={(x) => {
+                seek(x, 'SOURCE ▶');
+                toTop();
+              }}
+              pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
+            />
+          )}
+          {tab === 'music' && creditsDoc && (
+            <CreditsPanel
+              doc={creditsDoc}
+              onSeek={(x) => {
+                seek(x, 'MUSIC ▶');
+                toTop();
+              }}
+            />
+          )}
+        </section>
       )}
       <audio ref={audioRef} preload="auto" onEnded={onEnded} />
     </div>

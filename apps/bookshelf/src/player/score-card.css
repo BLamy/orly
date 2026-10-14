@@ -1,0 +1,71 @@
+/* ScoreCard: a title's own score inside its player (ScoreCard.tsx). Sits on the players' dark panels. */
+.sc {
+  min-width: 0;
+  color: #e6e0e9;
+  font-size: 14px;
+}
+.sc-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.sc-mean {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.sc-mean.is-pass { color: #9fe0a8; }
+.sc-mean.is-close { color: #f0cf7a; }
+.sc-mean.is-low { color: #e8b48a; }
+.sc-gate { display: flex; flex-direction: column; gap: 2px; }
+.sc-gate b { font-size: 14px; }
+.sc-gate span { color: #9d95a3; font-size: 12px; }
+
+.sc-dims { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.sc-dims li {
+  display: grid;
+  grid-template-columns: 6.2em 1fr 2.6em;
+  align-items: center;
+  gap: 4px 10px;
+}
+.sc-dims li p { grid-column: 1 / 4; margin: 0 0 4px; color: #bdb5c2; font-size: 13px; line-height: 1.45; }
+.sc-dim { color: #d9d2de; font-size: 13px; }
+.sc-num { text-align: right; font-variant-numeric: tabular-nums; }
+.sc-bar { position: relative; height: 7px; border-radius: 4px; background: rgba(148, 163, 184, 0.16); }
+.sc-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: #7fbf8a; }
+.sc-bar b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #f1ead9; opacity: 0.55; }
+.sc-dims li.is-below .sc-bar i { background: #d79a6a; }
+.sc-dims li.is-below .sc-num { color: #e8b48a; }
+
+.sc-h { margin: 16px 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #9d95a3; }
+.sc-issues { margin: 0; padding-left: 20px; display: grid; gap: 8px; color: #d4ccd8; font-size: 13px; line-height: 1.45; }
+.sc-issues em { color: #a79fad; }
+.sc-sev {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.sc-sev.is-critical { background: rgba(240, 69, 90, 0.2); color: #ff9aa6; }
+.sc-sev.is-major { background: rgba(240, 160, 70, 0.18); color: #f5c58a; }
+.sc-sev.is-minor { background: rgba(148, 163, 184, 0.16); color: #c3cad6; }
+.sc-ch { margin-right: 6px; color: #9d95a3; font-size: 12px; }
+.sc-best { margin: 14px 0 0; color: #d4ccd8; font-size: 13px; line-height: 1.45; }
+.sc-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  color: #8d8692;
+  font-size: 12px;
+}
+.sc-foot a { margin-left: auto; color: inherit; }

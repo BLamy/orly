@@ -142,34 +142,7 @@ body.fp-body { margin: 0; background: #0b0a0c; }
 .fp-fsbar .fp-time { min-width: 9em; text-align: right; }
 
 /* ---- the last critic round, under the deck ---- */
-.fp-review {
-  width: min(100%, calc((100vh - 150px) * 16 / 9));
-  box-sizing: border-box;
-  margin-top: 8px;
-  padding: 14px 18px 16px;
-  border: 1px solid #2a262d;
-  border-radius: 8px;
-  background: #141216;
-  font-size: 14px;
-  line-height: 1.45;
-}
-.fp-review header { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; margin-bottom: 10px; }
-.fp-review header strong { font-size: 15px; letter-spacing: 0.02em; }
-.fp-review .fp-pass { color: #9fe0a8; }
-.fp-review .fp-fail { color: #e8b48a; }
-.fp-review-date { color: #8d8692; margin-left: auto; }
-.fp-review ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.fp-review li { display: grid; grid-template-columns: 6.5em 1fr 3.4em; align-items: center; gap: 4px 12px; }
-.fp-review li p { grid-column: 2 / 4; margin: 0 0 4px; color: #bdb5c2; font-size: 13px; }
-.fp-dim { color: #d9d2de; }
-.fp-score { text-align: right; font-variant-numeric: tabular-nums; }
-.fp-bar { position: relative; height: 8px; border-radius: 4px; background: #26222a; overflow: visible; }
-.fp-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: #7fbf8a; }
-.fp-review li.is-below .fp-bar i { background: #d79a6a; }
-.fp-review li.is-below .fp-score { color: #e8b48a; }
-.fp-bar b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #f1ead9; opacity: 0.55; }
 @media (max-width: 600px) {
-  .fp-review li { grid-template-columns: 5.5em 1fr 3em; }
   .fp-fsbar .fp-time { display: none; }
 }
 
@@ -261,13 +234,13 @@ body.fp-locked { overflow: hidden; }
 }
 @media (max-width: 700px) {
   .fp { padding: 8px 8px 20px; gap: 8px; }
-  .fp-shell, .fp-screen, .fp-deck, .fp-review, .fp-sources-panel, .fp-credits { width: 100%; }
+  .fp-shell, .fp-screen, .fp-deck, .fp-card, .fp-sources-panel, .fp-credits { width: 100%; }
   .fp-screen { border-radius: 6px; box-shadow: 0 0 0 1px #000, 0 10px 30px rgba(0, 0, 0, 0.6); }
   .fp-deck { flex-wrap: wrap; gap: 6px; padding: 8px; }
   .fp-deck .fp-scrub { order: 10; flex-basis: 100%; }
   .fp-deck .fp-time { margin-left: auto; font-size: 11px; }
   .fp-label { gap: 6px 12px; padding: 0 4px; }
-  .fp-review, .fp-sources-panel, .fp-credits { padding: 12px; }
+  .fp-card { padding: 12px; }
   .fp-fsbar { gap: 8px; padding: 14px 12px calc(16px + env(safe-area-inset-bottom)); }
 }
 
@@ -304,4 +277,47 @@ body.fp-locked { overflow: hidden; }
   .fp-cues li { grid-template-columns: 4.6em 1fr; }
   .fp-cue-id { display: none; }
   .fp-cues a { grid-column: 2; }
+}
+
+/* the card under the VCR: Score · Sources · Music as tabs (FilmPlayer.tsx) */
+.fp-card {
+  width: min(100%, calc((100vh - 150px) * 16 / 9));
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 12px 18px 16px;
+  border: 1px solid #2a262d;
+  border-radius: 8px;
+  background: #141216;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.fp-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 -6px 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a262d;
+}
+.fp-tab {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: #8d8692;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.fp-tab:hover { background: rgba(148, 163, 184, 0.08); color: #dbd4df; }
+.fp-tab.is-on { background: rgba(148, 163, 184, 0.14); color: #f2eef4; }
+/* the panels inside the card drop their own card chrome */
+.fp-card > .fp-sources-panel,
+.fp-card > .fp-credits {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
 }

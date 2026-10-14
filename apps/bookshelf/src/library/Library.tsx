@@ -702,7 +702,8 @@ export function Library() {
     if (isTab(fromUrl)) return fromUrl;
     try {
       const saved = localStorage.getItem(TAB_KEY);
-      if (isTab(saved)) return saved;
+      // the Grades page is reached by link (?tab=grades), not restored as the last tab: it has no tab in the bar
+      if (isTab(saved) && saved !== 'grades') return saved;
     } catch { /* private mode */ }
     return 'library';
   });

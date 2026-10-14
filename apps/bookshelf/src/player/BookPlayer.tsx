@@ -3,6 +3,7 @@ import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
 import { BookSources } from './BookSources';
+import { ScoreCard, useBookScore } from './ScoreCard';
 import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
@@ -147,18 +148,23 @@ export function BookPlayer({
   const videoAccent = useVideoAccent();
   const drawerable = useMediaQuery(PORTRAIT_COMPACT_MQ);
   const [hasBlog, setHasBlog] = useState(false);
-  const [tab, setTab] = useState<'chapters' | 'blog'>('chapters');
+  const [tab, setTab] = useState<Tab>('chapters');
+  // desktop: the sidebar card (chapters + the series' other videos) and the book's score share it as tabs
+  const [sideTab, setSideTab] = useState<Tab>('chapters');
+  const score = useBookScore(slug);
+  const hasScore = score !== null;
 
-  // Measure the actual rendered video block (topbar + aspect-ratio stage +
-  // controls) so the drawer's resting position lands exactly at its bottom
-  // edge — never covering the video, never leaving a gap under it.
+  // Measure where the rendered video block (topbar + aspect-ratio stage +
+  // controls) ends on screen so the drawer's resting position lands exactly at
+  // its bottom edge — never covering the video, never leaving a gap under it.
   const mainRef = useRef<HTMLDivElement | null>(null);
   const [videoH, setVideoH] = useState(0);
   useEffect(() => {
     if (!drawerable) return;
     const el = mainRef.current;
     if (!el) return;
-    const ro = new ResizeObserver((entries) => setVideoH(entries[0].contentRect.height));
+    // the video block's BOTTOM edge, not just its height: inside the shelf's navigation stack a bar sits above it
+    const ro = new ResizeObserver(() => setVideoH(Math.round(el.getBoundingClientRect().bottom)));
     ro.observe(el);
     return () => ro.disconnect();
     // `.bp-main` doesn't exist until `manifest` has loaded (there's an early
@@ -382,14 +388,19 @@ export function BookPlayer({
           )}
         </div>
         {!compact && (
-          <aside className="bp-side" aria-label="Chapters">
-            <ChapterList
-              listRef={sideListRef}
-              flatGroups={flatGroups}
-              slug={slug}
-              current={current}
-              goToChapter={goToChapter}
-            />
+          <aside className="bp-side" aria-label="Chapters and score">
+            {hasScore && <TabBar tab={sideTab} setTab={setSideTab} hasBlog={false} hasScore />}
+            {sideTab === 'score' && score ? (
+              <ScoreCard score={score} />
+            ) : (
+              <ChapterList
+                listRef={sideListRef}
+                flatGroups={flatGroups}
+                slug={slug}
+                current={current}
+                goToChapter={goToChapter}
+              />
+            )}
           </aside>
         )}
       </div>
@@ -412,9 +423,13 @@ export function BookPlayer({
           <Drawer.Portal>
             <Drawer.Content className="bp-drawer" aria-label="Chapters and blog post">
               <Drawer.Handle className="bp-drawer-handle" />
-              <TabBar tab={tab} setTab={setTab} hasBlog={hasBlog} />
+              <TabBar tab={tab} setTab={setTab} hasBlog={hasBlog} hasScore={hasScore} />
               <div className="bp-drawer-scroll">
-                {tab === 'chapters' ? (
+                {tab === 'score' && score ? (
+                  <div className="bp-side-score">
+                    <ScoreCard score={score} />
+                  </div>
+                ) : tab === 'chapters' || (tab === 'blog' && !hasBlog) ? (
                   <ChapterList
                     listRef={drawerListRef}
                     flatGroups={flatGroups}
@@ -437,36 +452,36 @@ export function BookPlayer({
   );
 }
 
-/** Chapters/Blog toggle — mobile drawer only; desktop shows both at once
- * (chapters in the sidebar, blog below the video), so it needs no tabs. */
+type Tab = 'chapters' | 'blog' | 'score';
+
+/** The card's tabs: Chapters (with the series' other videos), Blog and Score. The mobile drawer shows all three;
+ * desktop shows the blog below the video, so its sidebar card has Chapters and Score. */
 function TabBar({
   tab,
   setTab,
   hasBlog,
+  hasScore,
 }: {
-  tab: 'chapters' | 'blog';
-  setTab: (t: 'chapters' | 'blog') => void;
+  tab: Tab;
+  setTab: (t: Tab) => void;
   hasBlog: boolean;
+  hasScore: boolean;
 }) {
-  if (!hasBlog) return null;
+  if (!hasBlog && !hasScore) return null;
+  const tabs: [Tab, string][] = [['chapters', 'Chapters'], ...(hasBlog ? ([['blog', 'Blog']] as [Tab, string][]) : []), ...(hasScore ? ([['score', 'Score']] as [Tab, string][]) : [])];
   return (
     <div className="bp-tabbar" role="tablist">
-      <button
-        className={`bp-tab${tab === 'chapters' ? ' active' : ''}`}
-        role="tab"
-        aria-selected={tab === 'chapters'}
-        onClick={() => setTab('chapters')}
-      >
-        Chapters
-      </button>
-      <button
-        className={`bp-tab${tab === 'blog' ? ' active' : ''}`}
-        role="tab"
-        aria-selected={tab === 'blog'}
-        onClick={() => setTab('blog')}
-      >
-        Blog
-      </button>
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          className={`bp-tab${tab === id ? ' active' : ''}`}
+          role="tab"
+          aria-selected={tab === id}
+          onClick={() => setTab(id)}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 }

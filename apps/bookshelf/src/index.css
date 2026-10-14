@@ -1282,3 +1282,8 @@ body {
     display: none;
   }
 }
+
+/* a book's Score tab in the mobile drawer (player/ScoreCard.tsx) */
+.bp-side-score {
+  padding: 0 4px 24px;
+}
