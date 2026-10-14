@@ -24,6 +24,11 @@ then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑imag
 adds Noun Project icons, and you commit + push to redeploy.
 
 
+**Book quality doctrine:** every book is proactive (researches past the digest, verifies before
+narrating, self-grades on the eight-dimension rubric, runs its own checks), cites its sources in
+`public/generated/<slug>/sources.json` (`npm run book:sources`), and can carry a Strudel music bed
+(`npm run book:score`). See [docs/book-quality.md](docs/book-quality.md).
+
 ## Films
 **Model routing for films:** every film's code and story (research, script, shots, Strudel music, pipeline code) is written by **Claude Opus 5.5 (`claude-opus-5-5`) at high effort only**, per the film brief: no fallback model. Books follow the routing above.
 

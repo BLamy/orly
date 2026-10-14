@@ -74,6 +74,21 @@ Each tl.caption is one spoken line, fed verbatim to TTS:
   the final chapter with a recap beat that re-traces the journey.
 
 ================================================================
+BE PROACTIVE · CITE SOURCES · (OPTIONAL) MUSIC — docs/book-quality.md
+================================================================
+Plan like an author who will be checked. Research past the digest (real files,
+docs, tests, the paper if one is implemented) and, for every claim a caption
+will make, record where it comes from: code as owner/repo@<full commit sha>:path
+(+ line range), or an https docs/paper link, with a short verbatim quote when
+wording matters. The plan carries a `claim -> source` list per chapter; it becomes
+public/generated/<slug>/sources.json and must pass `npm run book:sources`. A beat
+with no source is cut or worded as an inference ("which means ..."), never as fact.
+Write captions that say checkable, specific things; the quality gate (eight
+dimensions, pass = all >= 8 and mean >= 8.5) is applied to the finished book.
+If the request asks for music, note per chapter the mood, the one recurring motif,
+and where the tension releases, so the Strudel bed can follow the beat sheet.
+
+================================================================
 NARRATION EPISTEMICS — where the skepticism points
 ================================================================
 When the subject involves testing, verification, or agents' claims, aim the

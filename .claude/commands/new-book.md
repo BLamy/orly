@@ -16,6 +16,12 @@ the scenes are the whole video, so their quality is the product.
 **Arguments:** `$ARGUMENTS` — ideally `<repo-url-or-path> | <subsystem prompt> [| <short title>] [| <animal>]`.
 If they're missing or unclear, ask the user for the repo and which subsystem to explain.
 
+**Quality doctrine — read [docs/book-quality.md](../../docs/book-quality.md) first.**
+Be proactive (research past the digest, verify before narrating, self-grade on the
+eight-dimension rubric and fix, run every check yourself), cite sources the way the
+films do (`public/generated/<SLUG>/sources.json`, validated by `npm run book:sources`),
+and — when the request asks for music — compose it with Strudel (`npm run book:score`).
+
 Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`).
 Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
 
@@ -47,6 +53,10 @@ Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
      scene file — and note in the PR if it deserves promotion to primitives.
    - Ground EVERYTHING in the digest: real file/function/type names in captions
      and visuals. No invented components or flows.
+   - **Research past the digest** (docs/book-quality.md §1): open the real files,
+     docs, tests and any paper the subsystem implements, and keep a running list of
+     `claim → source (file@sha:lines or URL)` as you plan. That list becomes
+     `sources.json` in step 8b; a beat you cannot source is cut or marked `inferred`.
 
 4. **OPUS 5.5: AUTHOR THE D3 SCENES** — the video itself. Use the `viz-scene` skill
    (`.claude/skills/viz-scene/SKILL.md`, "Using scenes in BOOKS — v3"). One
@@ -152,6 +162,29 @@ Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
    The post is also available as `?blog=<SLUG>`, which omits the chapter video
    and sidebar and links back to `?bundle=<SLUG>` at the bottom.
 
+8b. **Cite the sources** — write `public/generated/<SLUG>/sources.json` (schema and
+   rules: docs/book-quality.md §2): every claim the narration makes, tied to its
+   caption index, with pinned-SHA code permalinks, docs, or papers, and verbatim
+   quotes where wording matters. Then:
+   ```bash
+   npm run book:sources -- --slug "<SLUG>"   # must pass; binds manifest.sources
+   ```
+   Re-run it after any narration edit. The player shows the page under the video.
+
+8c. **Music (only when the request asks for it)** — compose one Strudel pattern per
+   chapter at `public/generated/<SLUG>/music/chapter-<n>.strudel` following
+   docs/book-quality.md §3 (a quiet bed under the voice, one motif per book), then:
+   ```bash
+   npm run book:score -- --slug "<SLUG>"     # renders mp3s + binds chapters[].music
+   ```
+   Skip this step, and say so, for a silent book. Re-run after narration changes.
+
+8d. **Self-grade and fix** — score the finished book on the eight-dimension rubric
+   (docs/book-quality.md §4) from the narration text, the timing stats and the
+   `previews/` frames; use a fresh-eyes reviewer where you can. Fix every dimension
+   below 8 that you can, re-run the affected checks, and put the table (and what you
+   could not judge) in the PR description. Do not publish a failing grade silently.
+
 9. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash
    git add public/generated apps/bookshelf/src/viz/books && git commit -m "book: <TITLE>" && git push
@@ -165,5 +198,7 @@ Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
 - **Never** show the real publisher "O'Reilly" anywhere — only the parody "O'RLY?".
 - **Ground everything in real code** — no invented components, files, or flows;
   captions cite behavior the digest shows.
+- **Cite or cut.** A claim with no source in `sources.json` is cut, or marked
+  `inferred` and worded as an inference. `npm run book:sources` must pass.
 - **A book with weak scenes is a failed book.** If a chapter's visual idea is
   just "boxes and arrows appear", redesign it before authoring.

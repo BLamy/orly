@@ -53,3 +53,5 @@ films/*/qa/legibility/*.png
 /s03/
 /.raw
 /.txt
+/lm-m14/
+*.tsbuildinfo

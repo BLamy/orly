@@ -33,6 +33,8 @@
     "film:stt": "node generator/film/stt.mjs",
     "film:timeline": "node generator/film/timeline.mjs",
     "film:score": "node generator/film/score.mjs",
+    "book:score": "node generator/book-score.mjs",
+    "book:sources": "node generator/book-sources.mjs",
     "film:mix": "node generator/film/mix.mjs",
     "film:render": "node generator/film/render.mjs",
     "film:edit-render": "node generator/film/edit-render.mjs",

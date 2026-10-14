@@ -16,6 +16,7 @@ import {
 import { MobileShelf } from './MobileShelf';
 import { BrowseFeed } from './BrowseFeed';
 import { SettingsPanel } from './SettingsPanel';
+import { GradesPanel } from './GradesPanel';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
 import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
@@ -685,7 +686,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
   const online = useOnline();
   const isTab = (v: unknown): v is ShelfTab =>
-    v === 'browse' || v === 'library' || v === 'shelf' || v === 'settings';
+    v === 'browse' || v === 'library' || v === 'shelf' || v === 'grades' || v === 'settings';
   const [tab, setTabState] = useState<ShelfTab>(() => {
     const fromUrl = new URLSearchParams(window.location.search).get('tab');
     if (isTab(fromUrl)) return fromUrl;
@@ -767,6 +768,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
       {!mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
       {visibleTab === 'settings' ? (
         <SettingsPanel />
+      ) : visibleTab === 'grades' ? (
+        <GradesPanel />
       ) : visibleTab === 'browse' ? (
         <BrowseFeed
           books={online ? books : shelfBooks}

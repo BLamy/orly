@@ -24,6 +24,11 @@ then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
 built-in ImageGen when available; API fallback otherwise), adds Noun Project
 icons, and you commit + push to redeploy.
 
+**Book quality doctrine:** every book is proactive (researches past the digest, verifies before
+narrating, self-grades on the eight-dimension rubric, runs its own checks), cites its sources in
+`public/generated/<slug>/sources.json` (`npm run book:sources`), and can carry a Strudel music bed
+(`npm run book:score`). See [docs/book-quality.md](docs/book-quality.md).
+
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
   - `repo.mjs` digest · `storyboard.mjs` (retired automatic planner) · `validate.mjs`

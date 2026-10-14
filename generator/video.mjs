@@ -257,6 +257,13 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     accent,
     chapters,
   };
+  // keep what other stages bind into the manifest: music (generator/book-score.mjs) and the sources page
+  for (const ch of manifest.chapters) {
+    if (existsSync(join(outDir, 'music', `chapter-${ch.number}.mp3`)) && !ch.music) {
+      ch.music = { audio: `music/chapter-${ch.number}.mp3`, gain: 0.3, strudel: `music/chapter-${ch.number}.strudel` };
+    }
+  }
+  if (existsSync(join(outDir, 'sources.json'))) manifest.sources = 'sources.json';
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   log(`wrote public/generated/${slug}/manifest.json (format 3)`);
 

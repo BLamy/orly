@@ -47,6 +47,6 @@ series is too big a unit of work; runs that try will die partway).
 
 ### Working locally
 
-Follow `.claude/commands/new-book.md` end to end once per book, passing
+Follow `.claude/commands/new-book.md` end to end once per book (including its sources, optional music and self-grade steps; see `docs/book-quality.md`), passing
 `--series "<name>" --series-order <n>` to `generator/video.mjs`. Build and
 verify each book before starting the next.

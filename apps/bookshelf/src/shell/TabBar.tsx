@@ -1,6 +1,6 @@
 import { MobileTabBar } from '@orly/mobile-ui';
 
-export type ShelfTab = 'browse' | 'library' | 'shelf' | 'settings';
+export type ShelfTab = 'browse' | 'library' | 'shelf' | 'grades' | 'settings';
 
 interface TabDef {
   id: ShelfTab;
@@ -41,6 +41,19 @@ const TABS: TabDef[] = [
     ),
   },
   {
+    id: 'grades',
+    label: 'Grades',
+    // score bars
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <path d="M4 20h16" strokeLinecap="round" />
+        <rect x="5.5" y="11" width="3" height="6.5" rx="0.8" />
+        <rect x="10.5" y="6.5" width="3" height="11" rx="0.8" />
+        <rect x="15.5" y="9" width="3" height="8.5" rx="0.8" />
+      </svg>
+    ),
+  },
+  {
     id: 'settings',
     label: 'Settings',
     // gear
@@ -53,7 +66,7 @@ const TABS: TabDef[] = [
   },
 ];
 
-/** Browse / Library / Saved / Settings switcher — a fixed bottom bar on mobile
+/** Browse / Library / Saved / Grades / Settings switcher — a fixed bottom bar on mobile
  * (iOS UITabBarController-style), a plain top nav row on desktop. */
 export function TabBar({
   tab,

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
+import { BookSources } from './BookSources';
 import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
@@ -21,6 +22,8 @@ export interface ChapterV3 {
   cues?: number[];
   /** total length (s) */
   duration?: number;
+  /** optional Strudel music bed under the narration (generator/book-score.mjs), relative to the book dir */
+  music?: { audio: string; /** 0-1 playback gain, default 0.3 */ gain?: number; /** the Strudel source, for the credits */ strudel?: string };
 }
 
 export interface ManifestV3 {
@@ -30,6 +33,8 @@ export interface ManifestV3 {
   subtitle?: string;
   animal?: string;
   accent?: string;
+  /** the book's sources page data (claims + quotations with links), relative to the book dir: 'sources.json' */
+  sources?: string;
   chapters: ChapterV3[];
 }
 
@@ -369,9 +374,10 @@ export function BookPlayer({
             onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
             onExit={goHome}
           />
-          {!compact && hasBlog && (
+          {!compact && (hasBlog || manifest.sources) && (
             <div className="bp-below-video">
-              <BlogPanel base={base} onAvailable={setHasBlog} />
+              {hasBlog && <BlogPanel base={base} onAvailable={setHasBlog} />}
+              {manifest.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter.number} onChapter={(n) => setCurrent(n - 1)} />}
             </div>
           )}
         </div>
@@ -419,6 +425,7 @@ export function BookPlayer({
                 ) : (
                   <div className="bp-side-blog">
                     <BlogPanel base={base} onAvailable={setHasBlog} />
+                    {manifest?.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter?.number} onChapter={(n) => setCurrent(n - 1)} />}
                   </div>
                 )}
               </div>

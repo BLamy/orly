@@ -1,6 +1,6 @@
 # Plan a PR edit (Opus 5.5 planning session, CI)
 
-Read docs/authoring-models.md and .claude/commands/tweak-book.md. You are the
+Read docs/authoring-models.md, docs/book-quality.md and .claude/commands/tweak-book.md. You are the
 **planning** session (Claude Opus 5.5, effort high); a fresh Opus 5.5 session will
 implement what you write. Do not run git/gh or publish.
 

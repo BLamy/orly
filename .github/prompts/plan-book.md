@@ -1,6 +1,6 @@
 # Plan a book (Opus 5.5 planning session, CI)
 
-Read docs/authoring-models.md. You are the **planning** session (Claude Opus 5.5, effort
+Read docs/authoring-models.md and docs/book-quality.md (research past the digest, plan a claim→source list per chapter, self-grade). You are the **planning** session (Claude Opus 5.5, effort
 high). A separate, fresh Opus 5.5 session will author the scenes from what you write.
 Do not run git or gh, and do not publish; the workflow opens a preview PR.
 

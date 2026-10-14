@@ -8,6 +8,7 @@ import { retimeTimelineToNarration } from './narration-timing';
 import { speechSupported, useSpokenCaption } from './speech';
 import { useVideoAnalytics } from '../analytics';
 import { useNarrationSource } from './narration-source';
+import { useMusicBed } from './music-bed';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
 // something to sample while the real scene chunk is still loading.
@@ -151,6 +152,12 @@ export function ChapterPlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const pb = usePlayback(built?.tl ?? FALLBACK_TL, { audioRef, useAudioClock });
+  // optional Strudel music bed (generator/book-score.mjs), mirrored off the narration clock
+  useMusicBed(audioRef, chapter.music ? `${base}${chapter.music.audio}` : null, {
+    gain: chapter.music?.gain,
+    muted,
+    enabled: useAudioClock,
+  });
   useVideoAnalytics({
     contentId: `${base.split('/').filter(Boolean).at(-1)}/${chapter.number}`,
     title: `${bookTitle} — ${chapter.title}`,

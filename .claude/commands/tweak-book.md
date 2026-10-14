@@ -7,6 +7,12 @@ description: Edit or fine-tune an existing book on the shelf (one targeted chang
 Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
 
 
+Read [docs/book-quality.md](../../docs/book-quality.md): the same habits apply to a tweak. Be proactive
+(verify the change really fixed what was asked, look at the new preview frames, run the checks), and keep
+the book's evidence in step with the edit: if a caption's meaning changes, update its claim in
+`public/generated/<slug>/sources.json` and re-run `npm run book:sources -- --slug <slug>`; if narration
+timing changes and the book has `music/`, re-run `npm run book:score -- --slug <slug>`.
+
 Make the change a follow-up issue asks for to a book that's already published,
 touching as little as possible. Use this when you don't like something and want
 it adjusted — not to add a whole new book.
