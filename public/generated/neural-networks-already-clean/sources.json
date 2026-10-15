@@ -1,0 +1,964 @@
+{
+  "version": 1,
+  "slug": "neural-networks-already-clean",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Refocus the Microscope",
+      "claims": [
+        {
+          "id": "c1-thesis",
+          "claim": "The essay argues that apparent polysemanticity in early model organisms came mostly from ordinary, fixable problems rather than superposition.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Essay landing page",
+              "url": "https://already-clean.goodfire.com/"
+            }
+          ]
+        },
+        {
+          "id": "c1-five-causes",
+          "claim": "The essay lists the candidate causes of an apparently mixed neuron: bad tools, bad explanations, bad learning (architecture, data, training), recursive generalization, and superposition.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition of the Gaps",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Bad tools: our lens or microscope isn’t good enough"
+            }
+          ]
+        },
+        {
+          "id": "c1-generalization-local",
+          "claim": "Generalization puts things together because of a shared pattern, so its prediction is local.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "generalization should be local, superposition should be non-local"
+            }
+          ]
+        },
+        {
+          "id": "c1-superposition-nonlocal",
+          "claim": "Superposition, as the essay uses the word, places unrelated things together because they rarely interfere, which predicts non-local groupings.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A Note on “Superposition”",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c1-last-hypothesis",
+          "claim": "The author says superposition should have been the last hypothesis rather than the null hypothesis, since it is the most radical and least testable.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition of the Gaps",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "it should have been the last hypothesis"
+            },
+            {
+              "label": "Elhage et al., \"Softmax Linear Units\" (Transformer Circuits, 2022)",
+              "url": "https://transformer-circuits.pub/2022/solu/index.html",
+              "quote": "superposition is often treated as the default hypothesis simply because it seems intuitively more compelling than other explanations, but there is little evidence"
+            }
+          ]
+        },
+        {
+          "id": "c1-ladder-old",
+          "claim": "With tools of the era, the author put InceptionV1’s last layer at around 5% interpretable and others at about 0%.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "I put it around 5% with tools of that era, others at ~0%"
+            }
+          ]
+        },
+        {
+          "id": "c1-fv-repair",
+          "claim": "Feature visualization improved once transformation robustness was added, and late-layer failures came from reward hacking and imperfect regularization that small tweaks fixed.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Same neurons, better microscope."
+            },
+            {
+              "label": "Olah, Mordvintsev, Schubert, \"Feature Visualization\" (Distill, 2017)",
+              "url": "https://distill.pub/2017/feature-visualization/"
+            }
+          ]
+        },
+        {
+          "id": "c1-ladder-50",
+          "claim": "With better tools, the same 2014 InceptionV1 network comes to about 50% interpretable in its last layer.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "it’s more like 50% on the same network"
+            }
+          ]
+        },
+        {
+          "id": "c1-ladder-70",
+          "claim": "Retraining the same architecture with more reasonable modern regularization gives about 70%.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "with more reasonable modern regularization it’s more like 70%"
+            }
+          ]
+        },
+        {
+          "id": "c1-ladder-99",
+          "claim": "A ConvNeXt with the same number of parameters and the same dataset, with residual connections and LayerNorm, has about 99% (99–100% in the essay’s summary) of last-layer neurons easily interpretable.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "In the ConvNeXt of the same size, it’s about 99%"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c1-interventions",
+          "claim": "Only the 50% step keeps the original trained network; the later steps retrain the architecture and then change it.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), A History of Microscope Errors",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "This is all with the 2014 model whose checkpoints and training details were lost to time."
+            }
+          ]
+        },
+        {
+          "id": "c1-85-confidence",
+          "claim": "The author says he is maybe 85% sure that nearly everything comes from generalization, which he distinguishes from 85% of mechanisms being clean.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), On the Title",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "We’re maybe 85% sure"
+            }
+          ]
+        },
+        {
+          "id": "c1-test-first",
+          "claim": "Each non-superposition cause can be tested, while superposition’s only symptom is that something doesn’t make sense.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition of the Gaps",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Read the Gate",
+      "claims": [
+        {
+          "id": "c2-4e55-famous",
+          "claim": "Neuron 4e:55 of InceptionV1 is the most famous polysemantic neuron, apparently a mixture of cat faces and car fronts, cited from Feature Visualization to Zoom In.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Olah, Cammarata et al., \"Zoom In: An Introduction to Circuits\" (Distill, 2020)",
+              "url": "https://distill.pub/2020/circuits/zoom-in/",
+              "quote": "4e:55 is a polysemantic neuron which responds to cat faces, fronts of cars, and cat legs."
+            }
+          ]
+        },
+        {
+          "id": "c2-v-shape",
+          "claim": "The author rereads 4e:55 as a V-shape neuron.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "it’s not a cat and car neuron, it’s a V-shape neuron"
+            }
+          ]
+        },
+        {
+          "id": "c2-v-inputs",
+          "claim": "The essay’s circuit figure lists inputs to 4e:55 including a fox snout (4d:493), a wolf face (4d:477) and a van front (4d:201).",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Cars and Animals, V-neuron circuit",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "4d:493 fox snout 4d:477 wolf face 4d:201 van front"
+            }
+          ]
+        },
+        {
+          "id": "c2-v-readers",
+          "claim": "Its readers include flames (5a:94), a coyote face (5a:352) and a martini glass (5a:317).",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Cars and Animals, V-neuron circuit",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "5a:94 flames 5a:352 coyote face 5a:317 martini glass"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-o-pole",
+          "claim": "Each neuron has two poles; pointed shapes push this one up and round shapes push it negative, so the contrast is a V against an O.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "I looked at its negative pole: an O, round where the V is pointed."
+            },
+            {
+              "label": "Essay figure details, Cars and Animals",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "Round pushes it negative"
+            }
+          ]
+        },
+        {
+          "id": "c2-votes",
+          "claim": "Incoming signals carry weighted votes for either side; the votes add up first, and only then does the activation rule clip a negative total to zero.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), How I Think About Neurons",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "the votes add up before the nonlinearity"
+            }
+          ]
+        },
+        {
+          "id": "c2-gate",
+          "claim": "A neuron acts more like control flow, a gate: it separates two patterns at its poles and pushes activations toward different downstream neurons.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), How I Think About Neurons",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-negative-side",
+          "claim": "Even in ReLU networks where the negative side is cut off, the negative side matters, gating out things grouped earlier.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), How I Think About Neurons",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "even in ReLU networks where the negative side is cut off"
+            }
+          ]
+        },
+        {
+          "id": "c2-whiskers",
+          "claim": "The whiskers in the old feature visualization came along because the optimizer, once it found the cat route, added everything that route brings.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals, footnote 2",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "The whiskers come along for the ride"
+            }
+          ]
+        },
+        {
+          "id": "c2-zoomin-circuit",
+          "claim": "Zoom In introduced superposition with a circuit where a car feature appeared to spread into unrelated dog neurons; the author found it in 2019 and now challenges that reading.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Olah, Cammarata et al., \"Zoom In: An Introduction to Circuits\" (Distill, 2020)",
+              "url": "https://distill.pub/2020/circuits/zoom-in/"
+            }
+          ]
+        },
+        {
+          "id": "c2-pose",
+          "claim": "Cars and dogs were brought together by shared pose.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Cars and dogs were being brought together because of shared pose."
+            }
+          ]
+        },
+        {
+          "id": "c2-100-pose",
+          "claim": "InceptionV1 has more than a hundred generalized pose neurons, and later layers keep building on them; generalized pose neurons also appear in the larger, later DINOv2.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "InceptionV1 has more than a hundred of these generalized pose neurons"
+            },
+            {
+              "label": "Oquab et al., \"DINOv2: Learning Robust Visual Features without Supervision\" (arXiv:2304.07193)",
+              "url": "https://arxiv.org/abs/2304.07193"
+            }
+          ]
+        },
+        {
+          "id": "c2-reward-hack",
+          "claim": "Feature visualization was reward hacked into dogs in deeper layers; biasing it toward the paths natural images take reveals mostly cars and shared poses.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Feature Visualization in Later Layers",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c2-two-plus-two",
+          "claim": "Visualized through natural paths, two of the readers are car neurons and two share a pose between cars and dogs; the network goes on to differentiate car specialists and finer poses.",
+          "caption": 13,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Feature Visualization in Later Layers",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "two turn out to be car neurons and two share a pose between cars and dogs"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Follow the Branch",
+      "claims": [
+        {
+          "id": "c3-definition",
+          "claim": "Recursive generalization is a neuron generalizing along more than one axis and sprouting outward in locally easy-to-follow ways.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Recursive Generalization",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c3-iy",
+          "claim": "A language-model neuron responds to \"iy\", including in Miyazaki, and then to \"diy\".",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Recursive Generalization",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c3-diy",
+          "claim": "It then reaches \"do it yourself\", which contains no \"iy\"; the essay labels its figure a conceptual illustration.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Recursive Generalization",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Conceptual illustration."
+            }
+          ]
+        },
+        {
+          "id": "c3-head-start",
+          "claim": "The essay proposes a head start: a neuron already on for \"diy\" is first in line to pick up \"do it yourself\".",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), More on Circuit Ecology",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "so it’s first in line to pick up “do it yourself,”"
+            }
+          ]
+        },
+        {
+          "id": "c3-rapeseed-inception",
+          "claim": "A last-layer neuron (338) in a retrained InceptionV1 starts on rapeseed fields.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Recursive Generalization, two neurons over training",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "InceptionV1 neuron 338 starts on rapeseed fields and valleys"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Recursive Generalization",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c3-rapeseed-convnext",
+          "claim": "A ConvNeXt neuron (399) trained on the same data starts on the same fields.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Recursive Generalization, two neurons over training",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "ConvNeXt neuron 399 starts on the same fields"
+            }
+          ]
+        },
+        {
+          "id": "c3-inception-spreads",
+          "claim": "By epoch 12 the InceptionV1 neuron is mostly tennis balls, terriers and broccoli, and the fields have thinned to a sliver.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Recursive Generalization, two neurons over training",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "by epoch 12 it is mostly tennis balls, terriers and broccoli, and the fields have thinned to a sliver"
+            }
+          ]
+        },
+        {
+          "id": "c3-convnext-stays",
+          "claim": "The ConvNeXt neuron briefly responds to balls and fruit, then drops them and stays on rapeseed fields.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, Recursive Generalization, two neurons over training",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "briefly responds to golf and tennis balls and fruit, then drops them"
+            }
+          ]
+        },
+        {
+          "id": "c3-offshoots-minor",
+          "claim": "The essay reports that sub-branches seem both rarer and much less causally important than a neuron’s main job.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Why We’re Not Worried About Recursive Generalization",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Exploring Language Models",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c3-conjoined",
+          "claim": "Following the neighboring steps of growth explains the grouping, which a finished list of object names hides.",
+          "caption": 10,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Is Recursive Generalization Hard to Vary?",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Relation to Conjoined Features",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Goh, Cammarata et al., \"Multimodal Neurons in Artificial Neural Networks\" (Distill, 2021)",
+              "url": "https://distill.pub/2021/multimodal-neurons/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Squeeze the Layer",
+      "claims": [
+        {
+          "id": "c4-3b",
+          "claim": "Layer 3b of InceptionV1 holds the curve and high-low frequency neurons, and the model has no residual stream to route around it.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "there’s no way to “flow around” the neurons"
+            }
+          ]
+        },
+        {
+          "id": "c4-480-10",
+          "claim": "The author reduces layer 3b from 480 neurons to 10 and retrains, a 48x squeeze.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "by reducing the amount from 480 to 10 and retraining"
+            },
+            {
+              "label": "Essay figure details, What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "trained from scratch with mixed3b reduced from 480 to 10 spatial channels, with no bypass"
+            }
+          ]
+        },
+        {
+          "id": "c4-prediction",
+          "claim": "If the layer switched to superposition, overlapping mixtures of unrelated patterns should appear.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-coarser",
+          "claim": "The neurons stay interpretable but coarser: one curves-and-loops neuron instead of ten curve detectors.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "one “curves & loops” neuron instead of ten curve detectors"
+            }
+          ]
+        },
+        {
+          "id": "c4-accuracy",
+          "claim": "On ImageNet, the squeezed model’s top guess is right 58.35% of the time, and the right answer is in its top five guesses 81.14% of the time.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "58.35% top‑1 and 81.14% top‑5 ImageNet accuracy"
+            }
+          ]
+        },
+        {
+          "id": "c4-coarse-not-mixed",
+          "claim": "Coarser neurons lose fine distinctions rather than hiding the original detectors inside a mixture.",
+          "caption": 6,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "its neurons just cover coarser-grained concepts"
+            }
+          ]
+        },
+        {
+          "id": "c4-sae-search",
+          "claim": "To test whether the curves were placed in a high-dimensional combination, the author trains a sparse autoencoder on the squeezed layer.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "So we can train an SAE on this crushed layer and compare them to the originals."
+            }
+          ]
+        },
+        {
+          "id": "c4-sae-config",
+          "claim": "The autoencoder is a TopK SAE with 640 features, 2 active at each position.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, What Neurons Do Under Pressure, squeezed-layer SAE",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "The autoencoder is a TopK SAE with 640 features, 2 active at each position"
+            }
+          ]
+        },
+        {
+          "id": "c4-sae-broad",
+          "claim": "The SAE features closest to each original curve detector are broad and bunched together, not ten curves.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Essay figure details, What Neurons Do Under Pressure, squeezed-layer SAE",
+              "url": "https://already-clean.goodfire.com/",
+              "quote": "broad and bunched together, not ten curves"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Neurons Do Under Pressure",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-88",
+          "claim": "On the ConvNeXt last layer, 88% of the autoencoder’s activity is on learned features that are each a near-copy of a single neuron.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Dictionaries Learn",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "On the last layer, 88% of its activity is near-copies of single neurons"
+            }
+          ]
+        },
+        {
+          "id": "c4-unmatched",
+          "claim": "Removing every dictionary direction that matches no neuron leaves accuracy unchanged.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Dictionaries Learn",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "removing every dictionary direction that matches no neuron leaves accuracy unchanged"
+            }
+          ]
+        },
+        {
+          "id": "c4-inspect-neurons",
+          "claim": "The author concludes he found no fundamentally new building block in the dictionaries; the neurons were the building blocks.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), What Dictionaries Learn",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Missing Curves",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c4-not-proof",
+          "claim": "The author presents the thesis as a leading hypothesis without proof, at roughly 85% confidence.",
+          "caption": 13,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), On the Title",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "We don’t know that this picture is true. It’s our leading hypothesis."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Scale the Investigation",
+      "claims": [
+        {
+          "id": "c5-2023",
+          "claim": "Two 2023 studies set the field’s discouraging baseline for language-model neurons.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-tm",
+          "claim": "Towards Monosemanticity gave the median neuron of its one-layer model a 0 on a 14-point rubric, meaning the annotator could not form a hypothesis.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Bricken et al., \"Towards Monosemanticity\" (Transformer Circuits, 2023)",
+              "url": "https://transformer-circuits.pub/2023/monosemantic-features/index.html",
+              "quote": "The median neuron scored 0 on our rubric, indicating that our annotator could not even form a hypothesis"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-openai",
+          "claim": "The author says the OpenAI automated interpretability project he started found about 1.7% of neurons interpretable by its most generous measure.",
+          "caption": 2,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "found about 1.7% of neurons interpretable by our most generous measure"
+            },
+            {
+              "label": "Context only: Bills, Cammarata et al., \"Language Models Can Explain Neurons in Language Models\" (OpenAI, 2023). The ~1.7% figure is the essay author's own statement, not read from this page",
+              "url": "https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html"
+            }
+          ]
+        },
+        {
+          "id": "c5-qwen-90",
+          "claim": "In preliminary audits of Qwen3-32B, roughly 90% of neuron poles have one main job, often with small related offshoots.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "roughly 90% of neuron poles have one main job"
+            }
+          ]
+        },
+        {
+          "id": "c5-qwen-7-2",
+          "claim": "Another ~7% have two related jobs and ~2-4% are not yet understood.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "another ~7% have two related jobs; and only ~2-4% are not yet understood"
+            }
+          ]
+        },
+        {
+          "id": "c5-thresholds",
+          "claim": "The percentages depend on thresholds such as how far into weak activations one looks and what counts as one thing.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version, footnote 1",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-bitter",
+          "claim": "Sutton’s bitter lesson: general methods that leverage computation win; the essay asks whether interpretability has a similar lesson.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Sutton, \"The Bitter Lesson\" (2019), archived copy of incompleteideas.net",
+              "url": "https://web.archive.org/web/20200101013420/http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+              "quote": "general methods that leverage computation are ultimately the most effective, and by a large margin"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Maybe there’s a bitter lesson for interpretability too"
+            }
+          ]
+        },
+        {
+          "id": "c5-step1",
+          "claim": "Step one of the argument: networks use one learning principle, so nothing blocks ordinary science on them.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version, four-step argument",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-step2",
+          "claim": "Step two: with modern models and tools, that science goes much better than most people expect.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version, four-step argument",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-step3",
+          "claim": "Step three: understanding compounds, so it gets easier as the map fills in.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version, four-step argument",
+              "url": "https://already-clean.goodfire.com/essay.md"
+            }
+          ]
+        },
+        {
+          "id": "c5-step4",
+          "claim": "Step four, which the author labels highly speculative: this might be most of what interpretability needs.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version, four-step argument",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "Highly speculative"
+            }
+          ]
+        },
+        {
+          "id": "c5-lesson",
+          "claim": "The proposed lesson: scaling ordinary investigation may beat engineering a clever new decomposition.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), The Short Version",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "scaling ordinary investigation beats engineering a clever new decomposition"
+            }
+          ]
+        },
+        {
+          "id": "c5-4e55-payoff",
+          "claim": "On Cammarata’s reading, neuron 4e:55’s inputs and negative pole show a V against an O, and a better visualization explains the whiskers.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "it’s not a cat and car neuron, it’s a V-shape neuron"
+            },
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Cars and Animals, footnote 2",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "The whiskers come along for the ride"
+            }
+          ]
+        },
+        {
+          "id": "c5-close",
+          "claim": "An unexplained neuron is a lead to investigate; superposition belongs far down the list after testable causes.",
+          "caption": 13,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Cammarata, \"Neural Networks Are Already Clean\" (Goodfire, 2026), Superposition of the Gaps",
+              "url": "https://already-clean.goodfire.com/essay.md",
+              "quote": "I now think superposition should be far down the list."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
