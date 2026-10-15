@@ -98,6 +98,38 @@ function cuesFromAlignment(segments, alignment) {
   return { cues, approx, audioEnd };
 }
 
+export const SPEED_MIN = 0.7;
+export const SPEED_MAX = 1.2;
+
+/** Throws unless `speed` is a finite number within ElevenLabs' supported range. */
+export function validateSpeed(speed) {
+  if (typeof speed !== 'number' || !Number.isFinite(speed) || speed < SPEED_MIN || speed > SPEED_MAX) {
+    throw new Error(`speed must be a number between ${SPEED_MIN} and ${SPEED_MAX} (got ${speed})`);
+  }
+  return speed;
+}
+
+/**
+ * The extra request fields for an opt-in speed. With no speed this is `{}`, so
+ * the request is exactly what it always was. With a speed we merge it onto the
+ * voice's STORED settings (a partial voiceSettings object may reset the rest)
+ * and, if those cannot be read (e.g. the API key lacks `voices_read`), warn once
+ * and send the speed alone as a per-request override.
+ */
+export async function voiceSettingsFor(client, voiceId, speed) {
+  if (speed === undefined) return {};
+  validateSpeed(speed);
+  let stored;
+  try {
+    stored = await client.voices.settings.get(voiceId);
+  } catch (e) {
+    const reason = String(e?.message ?? e).split('\n')[0].slice(0, 120);
+    console.error(`⚠ could not read stored voice settings for ${voiceId} (${reason}); sending speed only as a per-request override`);
+    return { voiceSettings: { speed } };
+  }
+  return { voiceSettings: { ...stored, speed } };
+}
+
 export async function synthesizeChapter({
   spokenSegments,
   voiceId,
@@ -107,8 +139,11 @@ export async function synthesizeChapter({
   // storyboard behavior; pass '\n\n' (paragraph break) for natural ~0.6s
   // pauses between narration lines (used by the v3 video pipeline).
   sep = SEP,
+  // Opt-in narration speed (0.7–1.2; 1.0 = the voice's normal pace). Omitted → request unchanged.
+  speed,
 }) {
   if (!apiKey) throw new Error('ELEVENLABS_API_KEY is required for TTS');
+  if (speed !== undefined) validateSpeed(speed);
   const client = new ElevenLabsClient({ apiKey });
 
   // Sanitize the SPOKEN string only (captions on screen keep their typography),
@@ -118,7 +153,11 @@ export async function synthesizeChapter({
   const spoken = spokenSegments.map(sanitizeSpoken);
   const text = spoken.join(sep);
 
-  const res = await client.textToSpeech.convertWithTimestamps(voiceId, { text, modelId });
+  const res = await client.textToSpeech.convertWithTimestamps(voiceId, {
+    text,
+    modelId,
+    ...(await voiceSettingsFor(client, voiceId, speed)),
+  });
   const mp3 = Buffer.from(res.audioBase64, 'base64');
   const al = res.alignment; // maps to the (possibly normalized) input characters
   const alignedExact = al.characters.length === text.length;

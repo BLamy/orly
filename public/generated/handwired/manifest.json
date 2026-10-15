@@ -1,0 +1,128 @@
+{
+  "format": 3,
+  "slug": "handwired",
+  "title": "Handwired",
+  "subtitle": "If-else, loops and state as matrix multiply and relu",
+  "accent": "#41607f",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Both Branches Run",
+      "blurb": "An if-else becomes two ramps and a bit: both branches always compute, and one number picks the survivor.",
+      "scene": "books/handwired/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.905,
+        19.586,
+        28.851,
+        31.323,
+        36.246,
+        43.909,
+        53.649,
+        62.333,
+        72.19,
+        80.399,
+        92.531,
+        100.054,
+        102.156,
+        105.441
+      ],
+      "duration": 108.623
+    },
+    {
+      "number": 2,
+      "title": "A Switch of Arithmetic",
+      "blurb": "A toggle switch with memory, written as comparisons, selects and a matrix power: no if, no loop.",
+      "scene": "books/handwired/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        1.753,
+        8.104,
+        18.762,
+        27.701,
+        37.14,
+        46.649,
+        56.226,
+        66.223,
+        69.056,
+        74.269,
+        80.329,
+        83.731,
+        90.012,
+        98.045
+      ],
+      "duration": 106.439
+    },
+    {
+      "number": 3,
+      "title": "The Host Loop",
+      "blurb": "Waiting, listening and looping live outside the program: the host writes cells, evaluates, and reads results.",
+      "scene": "books/handwired/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.522,
+        14.791,
+        26.621,
+        36.083,
+        46.149,
+        56.075,
+        69.242,
+        76.73,
+        84.52,
+        95.294,
+        105.198
+      ],
+      "duration": 113.87
+    },
+    {
+      "number": 4,
+      "title": "Loops That Cannot Stop",
+      "blurb": "A fixed program cannot stop a loop early, so loops become counts, trees, tables, or the same work everywhere.",
+      "scene": "books/handwired/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.392,
+        16.312,
+        27.516,
+        34.47,
+        43.886,
+        50.422,
+        60.43,
+        70.739,
+        77.925,
+        92.101,
+        101.784,
+        114.253
+      ],
+      "duration": 119.071
+    },
+    {
+      "number": 5,
+      "title": "Exact, Trainable, Wide",
+      "blurb": "Exact bits, gradients through the layers, frozen and learned weights, one program over 100,000 documents.",
+      "scene": "books/handwired/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.413,
+        18.948,
+        29.292,
+        42.017,
+        53.615,
+        67.512,
+        78.588,
+        93.495,
+        104.92,
+        109.958,
+        114.822
+      ],
+      "duration": 122.276
+    }
+  ],
+  "sources": "sources.json"
+}

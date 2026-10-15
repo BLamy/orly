@@ -38,6 +38,43 @@
       "createdAt": "2026-10-15T18:00:31.597Z"
     },
     {
+      "slug": "handwired",
+      "title": "Handwired",
+      "subtitle": "If-else, loops and state as matrix multiply and relu",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=handwired",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Both Branches Run",
+          "duration": 108.623
+        },
+        {
+          "number": 2,
+          "title": "A Switch of Arithmetic",
+          "duration": 106.439
+        },
+        {
+          "number": 3,
+          "title": "The Host Loop",
+          "duration": 113.87
+        },
+        {
+          "number": 4,
+          "title": "Loops That Cannot Stop",
+          "duration": 119.071
+        },
+        {
+          "number": 5,
+          "title": "Exact, Trainable, Wide",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-10-15T21:39:17.372Z"
+    },
+    {
       "slug": "jeva-fresh-decisions",
       "title": "Jeva: Fresh Decisions",
       "subtitle": "Fixed options, set-aware judgment, and reusable memory",
