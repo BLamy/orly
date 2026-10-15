@@ -99,5 +99,9 @@ export function retimeTimelineToNarration(
     timeline.updateCaption(caption.id, { at, dur });
   }
 
+  // The authored hold is not a keyframe, so preserve the recording's full
+  // tail explicitly rather than ending the seekable clock at the last cue.
+  timeline.hold(map.playbackDuration, 0);
+
   return map;
 }

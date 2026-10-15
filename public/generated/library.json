@@ -1,6 +1,35 @@
 {
   "books": [
     {
+      "slug": "jeva-fresh-decisions",
+      "title": "Jeva: Fresh Decisions",
+      "subtitle": "Fixed options, set-aware judgment, and reusable memory",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/jeva-fresh-decisions/animal.webp",
+      "href": "?bundle=jeva-fresh-decisions",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Fixed options, changing judgments",
+          "duration": 85.124
+        },
+        {
+          "number": 2,
+          "title": "Which answer, or no answer?",
+          "duration": 93.343
+        },
+        {
+          "number": 3,
+          "title": "Reuse the options, decide again",
+          "duration": 85.821
+        }
+      ],
+      "createdAt": "2026-10-15T11:16:18.125Z"
+    },
+    {
       "slug": "replay-qa-promo",
       "title": "Replay QA: { fully managed }",
       "subtitle": "End-to-end testing that explores, runs and records on its own",

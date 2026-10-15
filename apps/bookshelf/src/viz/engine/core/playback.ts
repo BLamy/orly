@@ -34,8 +34,11 @@ export function usePlayback(
   const [version, setVersion] = useState(0);
   useEffect(() => timeline.subscribe(() => setVersion((v) => v + 1)), [timeline]);
 
-  const duration = useMemo(() => timeline.duration, [timeline, version]);
-  const beats = useMemo(() => timeline.beats, [timeline, version]);
+  // A parent may retime narration before this hook's subscription effect
+  // attaches. Read the current clock bounds on each render so a missed
+  // notification cannot leave seeking or resume clamped to authored times.
+  const duration = timeline.duration;
+  const beats = timeline.beats;
 
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);

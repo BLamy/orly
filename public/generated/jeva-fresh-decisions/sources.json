@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "slug": "jeva-fresh-decisions",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Fixed options, changing judgments",
+      "claims": [
+        {
+          "id": "c1-beat-1",
+          "claim": "Jeva makes a decision by changing its view of a request while keeping the available options fixed.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Independent encoding and mutable state",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "README.md",
+              "lines": "17-22"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-2",
+          "claim": "The same language encoder reads the request and each option separately. An option sees its type and text, but no current request.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Typed input templates",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/collate.py",
+              "lines": "4-9"
+            },
+            {
+              "label": "Separate state and option encoding",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/model.py",
+              "lines": "38-48"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-3",
+          "claim": "The resulting option vectors become a memory. Each decision block projects that memory into keys and values without rewriting the options.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Prepared normalized option memory",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "247-275"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-4",
+          "claim": "The request supplies a query. Similarity weights the option values, and their weighted sum nudges the request state.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Weighted value aggregation and state residual updates",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "124-159"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-5",
+          "claim": "Here is the paper\u2019s exact two dimensional example, not a measured model output. Two options initially tie against the same request.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Jeva paper v1, Section 3.2, Proposition 1",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-6",
+          "claim": "A third option above the axis pulls the refined state upward. The upper option now wins, even though neither original option moved.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Jeva paper v1, Section 3.2, Proposition 1",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-7",
+          "claim": "Replace only the third option with its reflection. The state moves downward, and the lower option wins instead.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Jeva paper v1, Section 3.2, Proposition 1",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-8",
+          "claim": "That reversal comes from reading the whole set. Independently scoring each retained option cannot reverse their relative preference this way.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Jeva paper v1, Sections 3.1 and 3.2, equations 2 and 5",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-9",
+          "claim": "Now reorder the same options. Their weights move with them, so the weighted sum and the refined state stay the same.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Permutation-equivariant attention and invariant weighted sum",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "137-159"
+            },
+            {
+              "label": "Jeva paper v1, Section 3.4, Proposition 3",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-10",
+          "claim": "Probabilities follow option identity, and a unique winner survives reordering. Exact ties use input order; floating point arithmetic can perturb near ties.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "First maximum and open-set tie handling",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "255-268"
+            },
+            {
+              "label": "Finite precision caveat",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "docs/runtime.md",
+              "lines": "83-85"
+            },
+            {
+              "label": "Jeva paper v1, Appendix B.5",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c1-beat-11",
+          "claim": "The options are reusable, but the judgment remains sensitive to the available set. Next, we must ask whether any option belongs at all.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Set dependence and null awareness",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "README.md",
+              "lines": "17-29"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Which answer, or no answer?",
+      "claims": [
+        {
+          "id": "c2-beat-1",
+          "claim": "A favorite among poor options can still be a poor answer. Jeva separates competition between candidates from coverage of the request.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Competition and coverage are separate",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "391-404"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-2",
+          "claim": "Competition turns score differences into relative probabilities. In this illustrative example, the first option gets about seventy three percent.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Conditional score softmax",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "391-397"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-3",
+          "claim": "Lower both scores by the same amount. Their relative probabilities do not move, although their absolute support has fallen.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Common shift preserves softmax but changes coverage",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "391-404"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-4",
+          "claim": "Coverage looks at the strongest final score against a learned threshold. A sigmoid converts that margin into an estimate of answer availability.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Maximum-score sigmoid coverage",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "399-403"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-5",
+          "claim": "With the lower scores, coverage falls from about eighty eight percent to twenty one percent. The relative preference still stays the same.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Illustrative arithmetic follows the coverage formula",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "399-404"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-6",
+          "claim": "For an open choice, coverage scales every candidate probability. The remaining probability belongs to null: no acceptable candidate is present.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Joint null and candidate distribution",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "399-410"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-7",
+          "claim": "Adding a weaker candidate leaves coverage unchanged when final scores are held fixed. Competition still redistributes probability among the candidates.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Fixed-score behavior",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "391-404"
+            },
+            {
+              "label": "Jeva paper v1, Section 3.3, Proposition 2",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-8",
+          "claim": "That fixed score condition matters. In a full request, adding an option can change the refined state and therefore change the scores.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Set-dependent state precedes final scores",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "366-388"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-9",
+          "claim": "A closed choice selects from the conditional probabilities. An open choice compares candidates and null, with null winning an exact tie.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Closed and open choice plus null tie",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "250-270"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-10",
+          "claim": "The Boolean interface returns the true candidate\u2019s probability. The score interface averages numeric rubric values using the conditional probabilities.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Typed interfaces",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "163-180"
+            },
+            {
+              "label": "Noul and Score outputs",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "265-270"
+            }
+          ]
+        },
+        {
+          "id": "c2-beat-11",
+          "claim": "These are different readings of the same decision. Relative preference answers which option; coverage asks whether the set contains an answer.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Two separate probability calculations",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "391-410"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Reuse the options, decide again",
+      "claims": [
+        {
+          "id": "c3-beat-1",
+          "claim": "The next request may ask a different question about the same options. Jeva can reuse their computation while making a fresh decision.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Fresh state and decision surrounding option-cache lookup",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "207-249"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-2",
+          "claim": "Start with an empty bank and three options. All three pass through the encoder, then their normalized vectors and layer projections are stored.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Cold hybrid option bank",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "224-241"
+            },
+            {
+              "label": "Atomic option memories",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "277-307"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-3",
+          "claim": "One cache keeps the assembled option tuple. The other keeps each option\u2019s vector, keys, and values, ready for a different combination.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Set and option caches",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "217-248"
+            },
+            {
+              "label": "Memory data structures",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/matrix_decision.py",
+              "lines": "13-42"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-4",
+          "claim": "A new request with the same ordered tuple hits the set cache. The request still gets encoded, and the decision still runs.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Complete tuple hit with fresh state and decision",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "217-249"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-5",
+          "claim": "Now replace one option. The whole tuple misses, but hybrid caching finds the two retained options and encodes only the newcomer.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Partial option reuse on new tuple",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "224-241"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-6",
+          "claim": "A third combination uses three options already in the bank. Its tuple is new, yet all three option memories can be assembled without encoding them again.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "New tuple assembled from existing options",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "224-241"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-7",
+          "claim": "Cache identity follows tokenized, typed option text. Changing the weights or encoding policy invalidates the equivalence, so old memory must be cleared.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Token ID cache keys",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "211-218"
+            },
+            {
+              "label": "Invalidation requirement",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "docs/runtime.md",
+              "lines": "68-71"
+            },
+            {
+              "label": "Jeva paper v1, Appendix B.5, cache identity",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-8",
+          "claim": "The bank is bounded by entries and tensor bytes, with least recently used eviction. A miss pays the option encoding cost again.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Least recently used eviction and entry/byte caps",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/_runtime/cache.py",
+              "lines": "12-30"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-9",
+          "claim": "More options still require more gathering, attention, and scoring. Bounded encoding batches keep all candidates, but do not remove individual text limits.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Bounded option encoding",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "129-142"
+            },
+            {
+              "label": "Text length and memory limits",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "docs/runtime.md",
+              "lines": "61-71"
+            },
+            {
+              "label": "Jeva paper v1, Sections 3.4 and B.6",
+              "url": "https://arxiv.org/html/2610.18773v1"
+            }
+          ]
+        },
+        {
+          "id": "c3-beat-10",
+          "claim": "Follow the reusable pieces: encode each option, retain its memory, assemble a set, and refine a fresh request. Shared memory never means a cached answer.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Reuse pipeline retains fresh per-request computation",
+              "repo": "LiQiiiii/Jeva@f231c9ac31ba72f2ca4ca8aac662b279f3438fdb",
+              "path": "src/jeva/inference.py",
+              "lines": "220-249"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
