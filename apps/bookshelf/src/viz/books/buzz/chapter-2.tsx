@@ -23,9 +23,12 @@ const mkId = (pk: string, kind: number, content: string, tags: string[][]) =>
 const MAYA_ID = mkId(MAYA_PK, 9, 'shipping the auth fix — PTAL', [['h', CH]]);
 const GOOSE_ID = mkId(GOOSE_PK, 9, 'reviewed patch 4a2f: LGTM, one nit inline', [['h', CH]]);
 
+// Illustrative 128-hex Schnorr signature (deterministic; the footnote says so).
+const sigOf = (pk: string) => sha256Hex(`sig:${pk}`) + sha256Hex(`sig2:${pk}`);
+
 const ACTORS = [
-  { name: 'maya', role: 'person', pk: MAYA_PK, id: MAYA_ID, x: 120, color: colors.WARM },
-  { name: 'goose', role: 'agent', pk: GOOSE_PK, id: GOOSE_ID, x: 760, color: colors.SECONDARY },
+  { name: 'maya', role: 'person', pk: MAYA_PK, id: MAYA_ID, sig: sigOf(MAYA_PK), x: 120, color: colors.WARM },
+  { name: 'goose', role: 'agent', pk: GOOSE_PK, id: GOOSE_ID, sig: sigOf(GOOSE_PK), x: 760, color: colors.SECONDARY },
 ];
 
 const CAM_KEYS: CameraState = { x: 640, y: 250, k: 1.1 };
@@ -117,34 +120,37 @@ function ActorCard({
           <circle cx={a.x + 40} cy={150} r={18} fill="none" stroke={a.color} strokeWidth={2} />
           <circle cx={a.x + 40} cy={150} r={6} fill={a.color} />
           <text x={a.x + 70} y={146} fill={colors.TEXT} fontSize={16} fontWeight={600}>{a.name}</text>
-          <text x={a.x + 70} y={166} fill={colors.MUTED} fontSize={12} fontFamily="monospace">{a.role}</text>
-          <text x={a.x + 40} y={196} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">nsec 🔒</text>
-          <text x={a.x + 40} y={212} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">{shortHex(a.pk, 6, 2)}</text>
+          <text x={a.x + 70} y={166} fill={colors.MUTED} fontSize={14} fontFamily="monospace">{a.role}</text>
+          <text x={a.x + 40} y={196} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">nsec 🔒</text>
+          <text x={a.x + 40} y={214} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">{shortHex(a.pk, 6, 2)}</text>
         </g>
       )}
       {sameU > 0 && (
-        <text x={cx} y={236} textAnchor="middle" fill={colors.ACCENT} fontSize={12} opacity={sameU} fontFamily="monospace">
+        <text x={cx} y={236} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={sameU} fontFamily="monospace">
           same event · same keys · same rails
         </text>
       )}
       {signU > 0 && (
         <g opacity={signU}>
           <rect x={a.x} y={256} width={380} height={170} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={a.x + 16} y={280} fill={colors.MUTED} fontSize={12} fontFamily="monospace">kind 9 · signed by {a.name}</text>
+          <text x={a.x + 16} y={280} fill={colors.MUTED} fontSize={14} fontFamily="monospace">kind 9 · signed by {a.name}</text>
           <BitField bits={hexToBits(a.id)} x={a.x + 16} y={294} cell={6} gap={2} reveal={signU} settle={settleU} onColor={a.color} seed={a.role === 'agent' ? 12 : 7} />
-          <text x={a.x + 164} y={316} fill={colors.TEXT} fontSize={12} fontFamily="monospace">id</text>
-          <text x={a.x + 164} y={334} fill={a.color} fontSize={12} fontFamily="monospace">{shortHex(a.id, 8, 4)}</text>
+          <text x={a.x + 164} y={312} fill={colors.TEXT} fontSize={14} fontFamily="monospace">id</text>
+          <text x={a.x + 164} y={330} fill={a.color} fontSize={14} fontFamily="monospace">{shortHex(a.id, 8, 4)}</text>
+          <text x={a.x + 164} y={352} fill={colors.MUTED} fontSize={14} fontFamily="monospace">pubkey {shortHex(a.pk, 6, 4)}</text>
+          <text x={a.x + 164} y={372} fill={colors.MUTED} fontSize={14} fontFamily="monospace">sig {shortHex(a.sig, 6, 4)}</text>
+          <text x={a.x + 164} y={392} fill={colors.MUTED} fontSize={14} fontFamily="monospace">h {shortHex(CH, 6, 4)}</text>
           {verifyU > 0 && (
             <g opacity={verifyU}>
-              <circle cx={a.x + 176} cy={372} r={11} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-              <path d={`M${a.x + 170} 372 l4 4 l8 -9`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} strokeLinecap="round" />
-              <text x={a.x + 194} y={376} fill={colors.POSITIVE} fontSize={12}>sig ok</text>
+              <circle cx={a.x + 172} cy={410} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+              <path d={`M${a.x + 167} 410 l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
+              <text x={a.x + 188} y={415} fill={colors.POSITIVE} fontSize={14}>verified, stored</text>
             </g>
           )}
         </g>
       )}
       {equalU > 0 && (
-        <text x={cx} y={452} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={equalU}>
+        <text x={cx} y={452} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={equalU}>
           {a.role === 'agent' ? 'equal member — keys · channels · audit trail' : 'a member of the team'}
         </text>
       )}
@@ -177,20 +183,20 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={verifyU}>
               <rect x={545} y={300} width={170} height={70} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
               <text x={630} y={332} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={600}>your relay</text>
-              <text x={630} y={354} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">verify hash + sig</text>
+              <text x={630} y={354} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">verify, then store</text>
             </g>
           )}
           {authU > 0 && (
             <g opacity={authU}>
-              <text x={630} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">NIP-42 auth · kind 22242</text>
-              <text x={630} y={410} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">no password</text>
+              <text x={630} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">NIP-42 auth · kind 22242</text>
+              <text x={630} y={412} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">no password</text>
             </g>
           )}
         </Camera>
       </g>
 
       {signU > 0 && (
-        <text x={640} y={612} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={signU * mainOp}>
+        <text x={640} y={52} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={signU * mainOp * 0.7}>
           pubkeys and signatures are illustrative · each id is the real SHA-256 of its NIP-01 event
         </text>
       )}
@@ -200,7 +206,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={600}>People and agents, one identity</text>
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={16}>an agent is an equal member — its own keys, channels, and audit trail</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">signed · attributable · NIP-42 auth = kind 22242</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">signed · attributable · NIP-42 auth = kind 22242</text>
         </g>
       )}
     </>

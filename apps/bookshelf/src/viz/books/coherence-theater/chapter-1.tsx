@@ -26,13 +26,14 @@ const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 
 // The tidy output stream: report tiles sliding across the top of the machine.
 const TILES = Array.from({ length: 9 }, (_, i) => i);
-const TILE_W = 74;
+const TILE_W = 56;
 
 // The three correction channels of Section 4 — the ones that quietly go.
+// `cost` is what each one starts to cost the person using it (the caption's words).
 const CHANNELS = [
-  { label: 'challenge the frame', y: 0 },
-  { label: 'escalate the contradiction', y: 1 },
-  { label: 'verify against source', y: 2 },
+  { label: 'challenge the frame', cost: 'costs status', y: 0 },
+  { label: 'escalate the contradiction', cost: 'slows the team', y: 1 },
+  { label: 'verify against source', cost: 'looks inefficient', y: 2 },
 ] as const;
 
 const CAM_PAPER: CameraState = { x: 240, y: 330, k: 1.2 };
@@ -154,11 +155,13 @@ const scene = buildScene();
 function Channel({
   y,
   label,
+  cost,
   decay,
   k,
 }: {
   y: number;
   label: string;
+  cost: string;
   decay: number;
   k: number;
 }) {
@@ -191,11 +194,22 @@ function Channel({
             opacity={health * 0.9}
           />
         ))}
-      <text x={520} y={cy - 12} fill={color} fontSize={12} fontFamily={MONO} opacity={0.5 + health * 0.5}>
+      <text x={520} y={cy - 12} fill={color} fontSize={14} fontFamily={MONO} opacity={0.8 + health * 0.2}>
         {label}
       </text>
+      {/* the local cost appears after the label as the channel weakens (mono: 8.4px per char at 14px) */}
+      <text
+        x={520 + (label.length + 1) * 8.4}
+        y={cy - 12}
+        fill={colors.MUTED}
+        fontSize={14}
+        fontFamily={MONO}
+        opacity={clamp01((1 - health) * 2)}
+      >
+        {`— ${cost}`}
+      </text>
       {dead && (
-        <text x={1140} y={cy - 12} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+        <text x={1140} y={cy - 12} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
           locally irrational
         </text>
       )}
@@ -223,7 +237,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x={640} y={44} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={800} opacity={dim}>
         The orderly failure
       </text>
-      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={dim}>
+      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={dim}>
         a system can keep looking coherent after it stops being correctable
       </text>
       <Camera {...s.get(scene.cam)}>
@@ -246,9 +260,15 @@ export function Render({ s }: { s: SceneState }) {
             <text x={506} y={146} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the visible layer
             </text>
-            <text x={506} y={168} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={506} y={168} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               reports · summaries · approvals — always on time
             </text>
+            {/* the praise for the tidy stream sits in the panel header, inside the edge */}
+            {smoothU > 0 && (
+              <text x={1160} y={146} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily={MONO} fontWeight={700} opacity={smoothU}>
+                smoother than ever
+              </text>
+            )}
 
             {/* the report stream */}
             <g>
@@ -269,46 +289,41 @@ export function Render({ s }: { s: SceneState }) {
                       stroke={sparkle ? colors.ACCENT : colors.POSITIVE}
                       strokeWidth={sparkle ? 2.2 : 1.4}
                     />
-                    <line x1={x + 12} y1={222} x2={x + TILE_W - 12} y2={222} stroke={colors.MUTED} strokeWidth={2} opacity={0.7} />
-                    <line x1={x + 12} y1={234} x2={x + TILE_W - 20} y2={234} stroke={colors.MUTED} strokeWidth={2} opacity={0.5} />
-                    <circle cx={x + TILE_W - 14} cy={248} r={5} fill={colors.POSITIVE} />
+                    <line x1={x + 10} y1={222} x2={x + TILE_W - 10} y2={222} stroke={colors.MUTED} strokeWidth={2} opacity={0.7} />
+                    <line x1={x + 10} y1={234} x2={x + TILE_W - 18} y2={234} stroke={colors.MUTED} strokeWidth={2} opacity={0.5} />
+                    <circle cx={x + TILE_W - 12} cy={248} r={5} fill={colors.POSITIVE} />
                   </g>
                 );
               })}
-              {smoothU > 0 && (
-                <text x={1150} y={200} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={smoothU}>
-                  smoother than ever
-                </text>
-              )}
             </g>
 
             {/* the correction channels */}
             <text x={506} y={330} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the correction layer
             </text>
-            <text x={506} y={352} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={506} y={352} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               what has to stay cheap for the surface to stay honest
             </text>
             {CHANNELS.map((c, k) => (
-              <Channel key={c.label} y={c.y} label={c.label} decay={decayU} k={k} />
+              <Channel key={c.label} y={c.y} label={c.label} cost={c.cost} decay={decayU} k={k} />
             ))}
           </g>
 
           {/* ---- the two names ---- */}
           {namesU > 0 && (
             <g opacity={namesU}>
-              <rect x={470} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
-              <text x={642} y={575} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
+              <rect x={470} y={556} width={400} height={48} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
+              <text x={670} y={577} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 the regime — adversarial epistemic incoherence
               </text>
-              <text x={642} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={670} y={597} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 correction degrades before capability does
               </text>
-              <rect x={836} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-              <text x={1008} y={575} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} fontWeight={700}>
+              <rect x={886} y={556} width={294} height={48} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
+              <text x={1033} y={577} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 the show — coherence theater
               </text>
-              <text x={1008} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={1033} y={597} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 the tidy layer the audience is given
               </text>
             </g>
@@ -317,12 +332,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- Section 4's two orders ---- */}
           {ordersU > 0 && (
             <g opacity={ordersU}>
-              <rect x={90} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={262} y={575} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
+              <rect x={90} y={556} width={344} height={48} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+              <text x={262} y={577} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 order that can still be challenged
               </text>
-              <text x={262} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                the only order that stays answerable to reality
+              <text x={262} y={597} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                the only order still answerable to reality
               </text>
             </g>
           )}
@@ -339,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x={640} y={376} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>
           the question is never the surface — it is whether correction still travels
         </text>
-        <text x={640} y={416} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text x={640} y={416} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
           next: the five force pairs that tip the balance
         </text>
       </g>

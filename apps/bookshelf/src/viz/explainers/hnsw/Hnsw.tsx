@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -60,12 +60,13 @@ function Frame({ s }: { s: SceneState }) {
           {explode > 0.05 &&
             [2, 1, 0].map((L) => {
               const yMid = 340 * 0.28 + 240 * (1 - 0.28) + [150, -10, -170][L];
+              const rows = L === 0 ? [`layer 0`, `all ${N} points`, `short edges`] : [`layer ${L}`, `${LAYERS[L].length} points`, `long edges`];
               return (
                 <g key={L} opacity={explode * 0.9}>
                   <rect
-                    x={110}
+                    x={120}
                     y={yMid - 78}
-                    width={1060}
+                    width={1040}
                     height={156}
                     rx={16}
                     fill={LAYER_COLOR[L]}
@@ -73,9 +74,19 @@ function Frame({ s }: { s: SceneState }) {
                     stroke={LAYER_COLOR[L]}
                     strokeWidth={1}
                   />
-                  <text x={126} y={yMid - 58} fill={LAYER_COLOR[L]} fontSize={13.5}>
-                    {L === 0 ? `layer 0 — all ${N} points, short edges` : `layer ${L} — ${LAYERS[L].length} points, long edges`}
-                  </text>
+                  {/* labels sit in the left margin, clear of the nodes */}
+                  {rows.map((row, r) => (
+                    <text
+                      key={r}
+                      x={18}
+                      y={yMid - 18 + r * 18}
+                      fill={LAYER_COLOR[L]}
+                      fontSize={14}
+                      fontWeight={r === 0 ? 650 : 450}
+                    >
+                      {row}
+                    </text>
+                  ))}
                 </g>
               );
             })}
@@ -143,7 +154,7 @@ function Frame({ s }: { s: SceneState }) {
           {queryU > 0 && (
             <g opacity={queryU}>
               <circle cx={qX} cy={qY(explode)} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />
-              <text x={qX + 4} y={qY(explode) + 26} fill={colors.WARM} fontSize={13.5}>
+              <text x={qX + 4} y={qY(explode) + 26} fill={colors.WARM} fontSize={14}>
                 query
               </text>
             </g>
@@ -152,27 +163,17 @@ function Frame({ s }: { s: SceneState }) {
           {/* the walker */}
           {hopU > 0 && <circle cx={walkerX} cy={walkerY} r={7.5} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />}
 
-          {/* comparison counter */}
-          {hopU > 0 && (
-            <g>
-              <rect x={130} y={80} width={310} height={40} rx={9} fill={colors.PANEL} opacity={0.9} stroke={colors.GRID} />
-              <text x={148} y={106} fill={colors.TEXT} fontSize={15}>
-                {`distance computations: ${compsNow} / ${SEARCH.comps}`}
-              </text>
-            </g>
-          )}
-
-          {/* the receipt */}
+          {/* the receipt: sits in the open band under the bottom layer */}
           {statU > 0 && (
             <g opacity={statU}>
-              <rect x={880} y={80} width={330} height={112} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-              <text x={902} y={112} fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
+              <rect x={880} y={508} width={330} height={84} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+              <text x={900} y={533} fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
                 {`found node ${SEARCH.found} — the true nearest`}
               </text>
-              <text x={902} y={140} fill={colors.TEXT} fontSize={14.5}>
+              <text x={900} y={555} fill={colors.TEXT} fontSize={14.5}>
                 {`${SEARCH.comps} comparisons vs ${N} brute force`}
               </text>
-              <text x={902} y={168} fill={colors.MUTED} fontSize={13.5}>
+              <text x={900} y={577} fill={colors.MUTED} fontSize={14}>
                 {`true nn ${TRUE_NN} — verified by full scan`}
               </text>
             </g>
@@ -180,21 +181,26 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
+      {/* comparison counter: a fixed HUD strip, so no node can sit under it */}
+      {hopU > 0 && (
+        <g opacity={dimU * (1 - endU)}>
+          <rect x={130} y={592} width={320} height={34} rx={9} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={148} y={614} fill={colors.TEXT} fontSize={15}>
+            {`distance computations: ${compsNow} / ${SEARCH.comps}`}
+          </text>
+        </g>
+      )}
+
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             HNSW
           </text>
-          <MathLabel
-            tex={'\\text{comparisons} \\sim O(\\log N) \\;\\; \\text{vs} \\;\\; O(N)'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.ACCENT}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fill={colors.ACCENT} fontSize={22}>
+            {'comparisons ~ O(log N)   vs   O(N)'}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             a skip list in space: express floors, a precise ground floor, one greedy walker
           </text>

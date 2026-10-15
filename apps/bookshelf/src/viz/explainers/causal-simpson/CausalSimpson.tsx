@@ -35,8 +35,20 @@ function renderFrame(s: SceneState) {
   const chipU = s.get(scene.chipU);
   const closeU = s.get(scene.closeU);
 
+  // The pooled line draws in on pooledU, then (once the group colours are on) stays
+  // as a full dim line that fades to 55% rather than leaving a half-drawn stub.
+  const poolOn = colorU > 0.5;
+  const poolU = poolOn ? 1 : pooledU;
+  const poolOpacity = poolOn ? 0.55 + 0.45 * clamp01((pooledU - 0.25) / 0.75) : Math.max(pooledU, 0.001);
+
   return (
     <Camera {...s.get(scene.cam)}>
+      <defs>
+        <marker id="causal-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={colors.WARM} />
+        </marker>
+      </defs>
+
       <Axes x={sx} y={sy} reveal={axU} grid xTicks={5} yTicks={5} xLabel="dose" yLabel="outcome" />
 
       {/* the data */}
@@ -58,8 +70,8 @@ function renderFrame(s: SceneState) {
       })}
 
       {/* fits */}
-      <g opacity={Math.max(pooledU, 0.001)}>
-        {fitLine(FIT_POOLED, 0, 4.1, colors.NEGATIVE, Math.min(1, pooledU * (pooledU > 0.3 ? 1 : pooledU * 3)), `pooled: ${FIT_POOLED.slope.toFixed(2)}`, 'pool')}
+      <g opacity={poolOpacity}>
+        {fitLine(FIT_POOLED, 0, 4.1, colors.NEGATIVE, poolU, `pooled: ${FIT_POOLED.slope.toFixed(2)}`, 'pool')}
       </g>
       {fitLine(FIT_A, 0, 2.0, colors.ACCENT, fitAU, `mild: +${FIT_A.slope.toFixed(2)}`, 'a')}
       {fitLine(FIT_B, 2.0, 4.0, colors.WARM, fitBU, `severe: +${FIT_B.slope.toFixed(2)}`, 'b')}
@@ -69,7 +81,7 @@ function renderFrame(s: SceneState) {
         <text x={sx(0.9)} y={sy(3.8)} textAnchor="middle" fill={colors.ACCENT} fontSize={15}>
           mild cases
         </text>
-        <text x={sx(3.2)} y={sy(-0.6)} textAnchor="middle" fill={colors.WARM} fontSize={15}>
+        <text x={sx(3.5)} y={sy(-0.75)} textAnchor="middle" fill={colors.WARM} fontSize={15}>
           severe cases
         </text>
       </g>
@@ -97,10 +109,15 @@ function renderFrame(s: SceneState) {
         <text x={1135} y={210} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
           outcome Y
         </text>
-        <line x1={1020} y1={132} x2={965} y2={192} stroke={colors.WARM} strokeWidth={2} />
-        <line x1={1070} y1={132} x2={1125} y2={192} stroke={colors.WARM} strokeWidth={2} />
+        <line x1={1020} y1={132} x2={968} y2={188} stroke={colors.WARM} strokeWidth={2} markerEnd="url(#causal-arrow)" />
+        <line x1={1070} y1={132} x2={1122} y2={188} stroke={colors.WARM} strokeWidth={2} markerEnd="url(#causal-arrow)" />
         <line x1={985} y1={205} x2={1095} y2={205} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="4 5" />
       </g>
+
+      {/* grounding: how the points were generated */}
+      <text x={1160} y={272} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+        simulated · seed 3 · y = 0.8x + 2 (mild), 0.8x − 2.4 (severe) + noise
+      </text>
 
       <g opacity={closeU}>
         <text x={640} y={80} textAnchor="middle" fill={colors.TEXT} fontSize={18}>

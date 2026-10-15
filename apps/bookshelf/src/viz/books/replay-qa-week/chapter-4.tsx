@@ -22,6 +22,7 @@ const MERGE_X = 1040;
 const STAGE_LANE = { x: 150, y: 520, w: 980 };
 
 const PREVIEW = { x: 560, y: 60, w: 300, h: 116 }; // the PR's temporary app copy
+const PR_CARD = { x: 892, y: 60, w: 288, h: 128 }; // sits above its rail, clear of the branch line
 // mini field of moments inside the preview card
 const rand = mulberry32(41);
 const MINI = Array.from({ length: 60 }, () => ({
@@ -146,6 +147,9 @@ function BranchRail({ forkU, mergeU, fade }: { forkU: number; mergeU: number; fa
     <g opacity={fade}>
       <path d={`M ${FORK_X} ${MAIN_Y} C ${FORK_X + 40} ${MAIN_Y}, ${FORK_X + 40} ${PR_Y}, ${FORK_X + 80} ${PR_Y}`} fill="none" stroke={colors.SECONDARY} strokeWidth={3} opacity={0.85} />
       <line x1={FORK_X + 80} y1={PR_Y} x2={runX} y2={PR_Y} stroke={colors.SECONDARY} strokeWidth={3} />
+      <text x={560} y={PR_Y + 26} fontSize={14} fill={colors.SECONDARY} fontFamily={mono} opacity={fu}>
+        branch — new checkout
+      </text>
       {clamp01(mergeU) > 0 && (
         <path
           d={`M ${MERGE_X - 80} ${PR_Y} C ${MERGE_X - 40} ${PR_Y}, ${MERGE_X - 40} ${MAIN_Y}, ${MERGE_X} ${MAIN_Y}`}
@@ -164,37 +168,36 @@ function BranchRail({ forkU, mergeU, fade }: { forkU: number; mergeU: number; fa
 function PrCard({ u, comment, check, catchP, fade }: { u: number; comment: number; check: number; catchP: number; fade: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
-  const x = 892;
-  const y = PR_Y - 64;
+  const { x, y, w, h } = PR_CARD;
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 10})`} opacity={e * fade}>
-      <rect width={288} height={128} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={16} y={26} fontSize={14} fill={colors.TEXT} fontWeight={600}>
+      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+      <text x={16} y={26} fontSize={15} fill={colors.TEXT} fontWeight={600}>
         pull request — “new checkout”
       </text>
-      <text x={16} y={46} fontSize={12} fill={colors.MUTED} fontFamily={mono}>
+      <text x={16} y={48} fontSize={13} fill={colors.TEXT} opacity={0.75} fontFamily={mono}>
         proposed change · awaiting review
       </text>
       {clamp01(comment) > 0 && (
         <g opacity={clamp01(comment)}>
           <rect x={12} y={58} width={264} height={30} rx={7} fill="rgba(148,163,184,0.08)" />
-          <text x={20} y={77} fontSize={12} fill={colors.MUTED}>
-            🤖 walked 6 paths · report + the tape
+          <text x={20} y={78} fontSize={13} fill={colors.TEXT} opacity={0.9}>
+            🤖 walked 6 paths · report + tape
           </text>
         </g>
       )}
       {clamp01(check) > 0 && (
-        <g opacity={clamp01(check) * (1 - clamp01(catchP))} transform={`translate(16, ${100})`}>
+        <g opacity={clamp01(check) * (1 - clamp01(catchP))} transform={`translate(16, ${104})`}>
           <circle cx={7} cy={0} r={7} fill={colors.POSITIVE} />
-          <text x={20} y={4} fontSize={13} fill={colors.POSITIVE} fontWeight={700}>
+          <text x={20} y={5} fontSize={14} fill={colors.POSITIVE} fontWeight={700}>
             Replay QA — passed
           </text>
         </g>
       )}
       {clamp01(catchP) > 0 && (
-        <g opacity={clamp01(catchP)} transform="translate(16, 100)">
+        <g opacity={clamp01(catchP)} transform="translate(16, 104)">
           <circle cx={7} cy={0} r={7} fill={colors.NEGATIVE} />
-          <text x={20} y={4} fontSize={13} fill={colors.NEGATIVE} fontWeight={700}>
+          <text x={20} y={5} fontSize={14} fill={colors.NEGATIVE} fontWeight={700}>
             caught on preview — see movie
           </text>
         </g>
@@ -210,13 +213,16 @@ function PreviewCard({ u, walk, fade }: { u: number; walk: number; fade: number 
   const w = clamp01(walk);
   return (
     <g opacity={e * fade}>
+      <text x={PREVIEW.x + PREVIEW.w} y={PREVIEW.y + PREVIEW.h + 20} textAnchor="end" fontSize={14} fill={colors.TEXT} opacity={0.8} fontFamily={mono}>
+        its own address
+      </text>
       <rect x={PREVIEW.x} y={PREVIEW.y} width={PREVIEW.w} height={PREVIEW.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="7 5" />
-      <text x={PREVIEW.x + 14} y={PREVIEW.y + 22} fontSize={13} fill={colors.SECONDARY} fontFamily={mono}>
+      <text x={PREVIEW.x + 14} y={PREVIEW.y + 22} fontSize={14} fill={colors.SECONDARY} fontFamily={mono}>
         preview — this change only
       </text>
       {MINI.map((d, i) => {
         const lit = clamp01(w * MINI.length - MINI_RANK[i]);
-        return <circle key={i} cx={d.x} cy={d.y} r={2.4} fill={lit > 0 ? colors.TEAL : colors.MUTED} opacity={lit > 0 ? 0.4 + 0.6 * lit : d.o * 0.5} />;
+        return <circle key={i} cx={d.x} cy={d.y} r={2.4} fill={lit > 0 ? colors.TEAL : colors.MUTED} opacity={lit > 0 ? 0.4 + 0.6 * lit : 0.3 + d.o * 0.5} />;
       })}
       <path d={`M ${PREVIEW.x + PREVIEW.w / 2} ${PREVIEW.y + PREVIEW.h} C ${PREVIEW.x + PREVIEW.w / 2} ${PR_Y - 40}, ${640} ${PR_Y - 30}, ${660} ${PR_Y - 4}`} fill="none" stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="4 4" opacity={0.5} />
     </g>
@@ -230,7 +236,7 @@ function StagingLane({ u, walk, moon, fade }: { u: number; walk: number; moon: n
   return (
     <g opacity={e * fade}>
       <rect x={STAGE_LANE.x} y={STAGE_LANE.y} width={STAGE_LANE.w} height={78} rx={12} fill="rgba(13,19,33,0.6)" stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={STAGE_LANE.x + 14} y={STAGE_LANE.y + 20} fontSize={13} fill={colors.MUTED} fontFamily={mono}>
+      <text x={STAGE_LANE.x + 14} y={STAGE_LANE.y + 20} fontSize={14} fill={colors.TEXT} opacity={0.8} fontFamily={mono}>
         staging — every night, the deep walk
       </text>
       {clamp01(moon) > 0 && (
@@ -256,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <Camera {...s.get(scene.cam)}>
         <g opacity={fade}>
-          <text x={560} y={MAIN_Y - 14} fontSize={13} fill={colors.MUTED} fontFamily={mono}>
+          <text x={560} y={MAIN_Y - 14} fontSize={14} fill={colors.TEXT} opacity={0.8} fontFamily={mono}>
             main — the version people use
           </text>
         </g>
@@ -269,7 +275,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* the close — a quiet stage and one line */}
       {shipU > 0 && (
         <g opacity={shipU}>
-          <rect x={0} y={0} width={1280} height={720} fill="rgba(10,14,26,0.82)" />
+          <rect x={0} y={0} width={1280} height={720} fill="rgba(10,14,26,1)" />
           <text x={640} y={340} textAnchor="middle" fill={colors.TEXT} fontSize={40} fontWeight={700}>
             And on Friday, we ship.
           </text>

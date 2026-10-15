@@ -27,8 +27,8 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const TAPE = { x: 120, y: 140, w: 1040, h: 26 };
 const MEMO = { x: 400, y: 250, w: 480, h: 110 };
 const GRID = { x: 216, y: 278, cell: 50, gap: 5 };
-const DETAIL = { x: 900, y: 290 };
-const BUG_CARD = { x: 900, y: 396, w: 330, h: 140 };
+const DETAIL = { x: 892, y: 290 };
+const BUG_CARD = { x: 900, y: 396, w: 330, h: 150 };
 
 const COLS = 12;
 const ROWS = 4;
@@ -206,7 +206,7 @@ function MemoryCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="6 5" />
-      <text x={20} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={20} y={30} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         agent memory
       </text>
       <text x={20} y={60} fill={colors.TEXT} fontSize={16} fontStyle="italic" opacity={0.85}>
@@ -226,8 +226,8 @@ function DetailLabel({ u }: { u: number }) {
   const lines = ['POST /api/payment', 'status: 500', 'body: {error: "Internal…"}'];
   return (
     <g transform={`translate(${DETAIL.x}, ${DETAIL.y + (1 - uu) * 8})`} opacity={uu}>
-      <rect x={-12} y={-24} width={214} height={82} rx={9} fill={colors.BG} opacity={0.85} />
-      <rect x={-12} y={-24} width={214} height={82} rx={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.5} />
+      <rect x={-12} y={-24} width={236} height={82} rx={9} fill={colors.PANEL} />
+      <rect x={-12} y={-24} width={236} height={82} rx={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.5} />
       {lines.map((ln, i) => (
         <text key={ln} y={i * 22 - 4} fill={i === 1 ? colors.NEGATIVE : colors.TEXT} fontSize={13} fontFamily={mono} fontWeight={i === 1 ? 700 : 400}>
           {ln}
@@ -245,7 +245,7 @@ function BugCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.3 * dim)}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-      <text x={18} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={18} y={26} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         bugs
       </text>
       <text x={18} y={50} fill={colors.NEGATIVE} fontSize={14} fontWeight={800} fontFamily={mono}>
@@ -257,10 +257,10 @@ function BugCard({ u, dim }: { u: number; dim: number }) {
       <text x={18} y={96} fill={colors.TEXT} fontSize={14}>
         payment submission
       </text>
-      <text x={18} y={120} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+      <text x={18} y={120} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>
         replay_recording_id: b5f2a3c1…
       </text>
-      <text x={18} y={136} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+      <text x={18} y={138} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>
         test_run_id: run-001
       </text>
     </g>
@@ -307,7 +307,7 @@ function renderFrame(s: SceneState) {
             highlight={{ cell: HOT, color: colors.NEGATIVE, u: spot }}
             labelSize={14}
           />
-          <text x={GRID.x} y={GRID.y - 34} fill={colors.MUTED} fontSize={13}>
+          <text x={GRID.x} y={GRID.y - 34} fill={colors.TEXT} opacity={0.8} fontSize={14}>
             what each moment contains — signals × time
           </text>
         </g>

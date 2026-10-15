@@ -232,6 +232,8 @@ function laneParticles(s: SceneState) {
   const lanesU = s.get(scene.lanesU);
   const readU = s.get(scene.readU);
   const flow = s.get(scene.flow);
+  // the lanes dim with the ask card once the closing beat takes the stage
+  const dim = s.get(scene.askDim);
   const pts = [];
   for (const w of WRITERS) {
     const u = (w.phase + flow * 0.08 * w.speed) % 1;
@@ -239,7 +241,7 @@ function laneParticles(s: SceneState) {
       x: LANES.x0 + u * (LANES.x1 - LANES.x0),
       y: WRITE_LANE.y + w.jitter * WRITE_LANE.band * 0.5,
       r: 3.4,
-      alpha: lanesU * 0.9 * Math.min(1, u * 8, (1 - u) * 8),
+      alpha: lanesU * dim * 0.9 * Math.min(1, u * 8, (1 - u) * 8),
       color: colors.WARM,
     });
   }
@@ -249,7 +251,7 @@ function laneParticles(s: SceneState) {
       x: LANES.x0 + u * (LANES.x1 - LANES.x0),
       y: READ_LANE.y + rr.jitter * READ_LANE.band * 0.5,
       r: 2.8,
-      alpha: readU * 0.85 * Math.min(1, u * 8, (1 - u) * 8),
+      alpha: readU * dim * 0.85 * Math.min(1, u * 8, (1 - u) * 8),
       color: colors.ACCENT,
     });
   }
@@ -274,7 +276,7 @@ function Meter({ x, y, value, unit, color, u, flare }: {
       <text x={x} y={y + 1} textAnchor="middle" fill={color} fontSize={f > 0.3 ? 24 : 21} fontWeight={700}>
         {f > 0.3 ? '40+' : value}
       </text>
-      <text x={x} y={y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+      <text x={x} y={y + 20} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
         {unit}
       </text>
     </g>
@@ -326,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={(0.65 - shrinkU) * 0.8}
               />
             ))}
-          <text x={cardX + cardW / 2} y={cardY - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={cardX + cardW / 2} y={cardY - 14} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14} fontStyle="italic">
             {shrinkU > 0.6 ? 'a short link' : 'a wall of text — 1 KB'}
           </text>
           {shrinkU > 0.6 && (
@@ -374,7 +376,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={LANES.x1} y={104} textAnchor="end" fill={colors.TEXT} fontSize={22} fontWeight={700}>
               10 : 1
             </text>
-            <text x={LANES.x1} y={124} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={LANES.x1} y={124} textAnchor="end" fill={colors.TEXT} opacity={0.85} fontSize={14}>
               reads : writes
             </text>
           </g>
@@ -388,7 +390,7 @@ export function Render({ s }: { s: SceneState }) {
           </text>
           {/* the 1 KB content slab */}
           <rect x={78} y={452} width={294 * clamp01(chipsU * 2)} height={40} rx={6} fill={colors.ACCENT} opacity={0.35} />
-          <text x={86} y={477} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={clamp01(chipsU * 2)}>
+          <text x={86} y={477} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={clamp01(chipsU * 2)}>
             content — 1 KB
           </text>
           {/* metadata chips */}
@@ -397,16 +399,16 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={a.label} opacity={u}>
                 <rect x={78} y={500 + i * 22} width={294} height={20} rx={4} fill={colors.BG} stroke={colors.GRID} />
-                <text x={86} y={514 + i * 22} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={86} y={514 + i * 22} fill={colors.TEXT} opacity={0.85} fontSize={14} fontFamily="monospace">
                   {a.label}
                 </text>
-                <text x={364} y={514 + i * 22} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                <text x={364} y={514 + i * 22} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                   {a.bytes}
                 </text>
               </g>
             );
           })}
-          <text x={225} y={606} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={clamp01(chipsU * 3 - 2)}>
+          <text x={225} y={606} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(chipsU * 3 - 2)}>
             ≈ 1.27 KB per paste
           </text>
         </g>
@@ -432,7 +434,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {stackU > 0.1 && (
             <g opacity={clamp01(stackU * 2 - 0.4)}>
-              <text x={614} y={412} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+              <text x={614} y={412} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                 36 months × 12.7 GB
               </text>
               <text x={614} y={432} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>

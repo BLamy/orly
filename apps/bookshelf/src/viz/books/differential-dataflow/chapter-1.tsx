@@ -147,7 +147,8 @@ export function buildScene() {
   const tripleU = tl.channel('tripleU', 0); // (data, time, diff) header
   const rackU = tl.channel('rackU', 0); // bar rack scaffold
 
-  const tau = tl.channel('tau', 0); // THE time cursor (logical 0..3.4)
+  // THE time cursor (logical 0..3.4), starts at round one so the rack opens on bars, not zeros
+  const tau = tl.channel('tau', 1.0);
   const headU = tl.channel('headU', 0); // playhead visibility
 
   const cancelU = tl.channel('cancelU', 0); // the (1,2) pair links + grays
@@ -195,8 +196,6 @@ export function buildScene() {
     text: 'The collection itself is a multiset: every edge has a multiplicity — the running sum of its diffs. Draw one bar per edge.',
   });
   tl.tween(rackU, 1, { at: 28.6, dur: 1.6, ease: ease.enter });
-  // settle the cursor at round one so the rack opens on bars, not zeros
-  tl.tween(tau, 1.0, { at: 28.6, dur: 1.6, ease: ease.move });
 
   // — beat 5 · sweep tau forward —
   tl.caption({
@@ -309,15 +308,18 @@ export function Render({ s }: { s: SceneState }) {
                 const dx = q.x - p.x;
                 const dy = q.y - p.y;
                 const len = Math.hypot(dx, dy) || 1;
-                const ox = (-dy / len) * 7;
-                const oy = (dx / len) * 7;
+                const ux = dx / len;
+                const uy = dy / len;
+                const ox = -uy * 7;
+                const oy = ux * 7;
+                // stop short of the node discs so the arrowhead is not hidden under them
                 return (
                   <g key={i} opacity={a}>
                     <line
-                      x1={p.x + ox}
-                      y1={p.y + oy}
-                      x2={q.x + ox}
-                      y2={q.y + oy}
+                      x1={p.x + ox + ux * 24}
+                      y1={p.y + oy + uy * 24}
+                      x2={q.x + ox - ux * 36}
+                      y2={q.y + oy - uy * 36}
                       stroke={colors.ACCENT}
                       strokeWidth={2.5}
                       markerEnd="url(#dd1-arrow)"
@@ -358,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
                         ({e[0]}, {e[1]})
                       </text>
                     ))}
-                    <text x={x} y={y + CARD_H - 34} textAnchor="middle" fill={colors.WARM} fontSize={12} fontStyle="italic">
+                    <text x={x} y={y + CARD_H - 34} textAnchor="middle" fill={colors.WARM} fontSize={13} fontStyle="italic">
                       full copy #{c + 1}
                     </text>
                   </g>
@@ -375,6 +377,15 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {tapeU > 0.01 && (
             <g>
+              {/* key for the chip signs, top-left: the playhead never travels left of x≈400 */}
+              <g opacity={tapeU * 0.9} fontFamily={MONO} fontSize={14}>
+                <text x={60} y={134} fill={colors.POSITIVE}>
+                  +1 appeared
+                </text>
+                <text x={60} y={154} fill={colors.NEGATIVE}>
+                  −1 went away
+                </text>
+              </g>
               {/* the tau playhead runs beneath the chips so it never cuts through their text */}
               {headU > 0.01 && (
                 <g opacity={headU}>
@@ -432,10 +443,10 @@ export function Render({ s }: { s: SceneState }) {
           {rackU > 0.01 && (
             <g opacity={rackU}>
               <line x1={RACK_X0 - 40} y1={RACK_Y} x2={RACK_X0 + EDGES.length * (BAR_W + BAR_GAP) - BAR_GAP + 40} y2={RACK_Y} stroke={colors.GRID} strokeWidth={2} />
-              <text x={RACK_X0 - 52} y={RACK_Y - BAR_H + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={RACK_X0 - 52} y={RACK_Y - BAR_H + 4} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 ×1
               </text>
-              <text x={RACK_X0 - 52} y={RACK_Y + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={RACK_X0 - 52} y={RACK_Y + 4} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 ×0
               </text>
               {EDGES.map((e, i) => {

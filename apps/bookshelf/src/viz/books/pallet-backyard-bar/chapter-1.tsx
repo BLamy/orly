@@ -229,7 +229,6 @@ export function buildScene(): Scene {
     dur: 6.95,
     text: 'And notice what just happened. By choosing carefully rather than settling, the entire front of the bar needs no cutting at all. Patience at the salvage pile is time you never spend at the saw.',
   });
-  tl.tween(specU, 0, { at: 40.2, dur: 0.6, ease: ease.move });
   tl.tween(othersDim, 0.12, { at: 40.4, dur: 1.2, ease: ease.move });
   tl.tween(cam, CAM_HERO, { at: 40.6, dur: 1.6, ease: ease.move });
   tl.tween(heroU, 1, { at: 41.4, dur: 1.2, ease: ease.enter });
@@ -408,7 +407,8 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the salvage pile ---- */}
-        <g opacity={othersDim}>
+        {/* fades out as the survivor stands, so the stool and dimensions sit on clear ground */}
+        <g opacity={othersDim * (1 - standU)}>
           {CANDIDATES.map((c, i) => (
             <g key={c.id}>
               <PalletFace c={c} boards={BOARDS[i]} u={clamp01(pileU * 3 - i * 0.5)} lit={i === WINNER ? crownU : 0} />
@@ -423,11 +423,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* the survivor gets a ring, not a strike */}
           {crownU > 0 && (
             <g opacity={crownU}>
+              {/* the ring also encloses the candidate's size label above it */}
               <rect
                 x={CANDIDATES[WINNER].cx - hero.lengthIn * IN / 2 - 12}
-                y={CANDIDATES[WINNER].cy - totalH / 2 - 12}
+                y={CANDIDATES[WINNER].cy - totalH / 2 - 36}
                 width={hero.lengthIn * IN + 24}
-                height={totalH + 24}
+                height={totalH + 48}
                 rx={10}
                 fill="none"
                 stroke={colors.POSITIVE}
@@ -448,7 +449,8 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the spec card ---- */}
-        <g opacity={specU}>
+        {/* the card clears on the same window the pile dims in beat 7 */}
+        <g opacity={specU * clamp01((othersDim - 0.12) / 0.88)}>
           <rect x={SPEC.x} y={SPEC.y} width={SPEC.w} height={SPEC.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
           <text x={SPEC.x + 18} y={SPEC.y + 30} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
             WHAT THE FRONT NEEDS
@@ -589,12 +591,15 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={306} y={56} width={668} height={132} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <rect x={306} y={56} width={668} height={166} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={108} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               one pallet · 47 by 40 inches · six-inch boards · uncut
             </text>
             <text x={640} y={150} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
               the front of the bar
+            </text>
+            <text x={640} y={190} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+              Source: Lee Valley, “Make a Backyard Bar Using Pallets”
             </text>
           </g>
         )}

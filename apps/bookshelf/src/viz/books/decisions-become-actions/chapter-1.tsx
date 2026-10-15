@@ -53,7 +53,7 @@ const CTRL: Record<'from' | 'to' | 'ticket' | 'search' | 'sug', Box> = {
   to: { x: 24, y: 176, w: 372, h: 44 },
   ticket: { x: 24, y: 256, w: 190, h: 44 },
   search: { x: 236, y: 256, w: 160, h: 44 },
-  sug: { x: 24, y: 222, w: 372, h: 38 },
+  sug: { x: 24, y: 222, w: 372, h: 32 },
 };
 const world = (b: Box): Box => ({ x: PG.x + b.x, y: PG.y + b.y, w: b.w, h: b.h });
 
@@ -62,11 +62,12 @@ const COL = { idx: TB.x + 14, label: TB.x + 58, value: TB.x + 218, ops: TB.x + 3
 const OPS = ['TYPE_TEXT', 'CLICK', 'SELECT'] as const;
 type Op = (typeof OPS)[number];
 const OP_COLOR: Record<Op, string> = { TYPE_TEXT: ROLE.MODEL, CLICK: ROLE.OBSERVE, SELECT: ROLE.PENDING };
-const ROWS: { key: 'from' | 'to' | 'ticket' | 'search'; role: string; label: string; value: string; tag: string; chipY: number; ops: Op[] }[] = [
-  { key: 'from', role: 'combobox', label: 'From', value: 'Zurich', tag: '<input>', chipY: 228, ops: ['TYPE_TEXT', 'CLICK'] },
-  { key: 'to', role: 'combobox', label: 'To', value: '', tag: '<input>', chipY: 308, ops: ['TYPE_TEXT', 'CLICK'] },
-  { key: 'ticket', role: 'combobox', label: 'Ticket type', value: 'Round trip', tag: '<select>', chipY: 388, ops: ['SELECT'] },
-  { key: 'search', role: 'button', label: 'Search', value: '', tag: '<button>', chipY: 430, ops: ['CLICK'] },
+// ids name the observed actions that fold into each row, so every chip has its row
+const ROWS: { key: 'from' | 'to' | 'ticket' | 'search'; role: string; label: string; value: string; tag: string; chipY: number; ops: Op[]; ids: string }[] = [
+  { key: 'from', role: 'combobox', label: 'From', value: 'Zurich', tag: '<input>', chipY: 228, ops: ['TYPE_TEXT', 'CLICK'], ids: 'e1 e2' },
+  { key: 'to', role: 'combobox', label: 'To', value: '', tag: '<input>', chipY: 308, ops: ['TYPE_TEXT', 'CLICK'], ids: 'e3 e4' },
+  { key: 'ticket', role: 'combobox', label: 'Ticket type', value: 'Round trip', tag: '<select>', chipY: 388, ops: ['SELECT'], ids: 'e5 e6' },
+  { key: 'search', role: 'button', label: 'Search', value: '', tag: '<button>', chipY: 430, ops: ['CLICK'], ids: 'e7' },
 ];
 const CHIP = { x: 476, w: 350, h: 32 };
 // observed actions, in snapshot order (ids are e1…; wait has no element)
@@ -83,8 +84,8 @@ const TILES: { id: string; kind: string; row: number; slot: number; op: Op | nul
 ];
 const TILE = { w: 84, h: 32, pitch: 90, y: 400 };
 const PAIRS = [
-  { text: '3:1 One way', x: COL.ops + 92, w: 100 },
-  { text: '3:2 Multi-city', x: COL.ops + 200, w: 124 },
+  { text: '3:1 One way', x: COL.ops + 92, w: 112 },
+  { text: '3:2 Multi-city', x: COL.ops + 210, w: 136 },
 ];
 const TABS = OPS.map((op, i) => ({ op, x: TB.x + i * 180, key: `${op.toLowerCase()}_target` }));
 // sits directly under the page so its lowest line stays above the caption-safe y=570
@@ -237,7 +238,7 @@ function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: num
     const c = CTRL[key];
     return (
       <g key={key} opacity={key === 'ticket' ? 1 - 0.6 * sugU : 1}>
-        <Txt x={c.x} y={c.y - 9} text={label} size={13} color={colors.MUTED} u={key === 'ticket' ? 1 - sugU : 1} />
+        <Txt x={c.x} y={c.y - 9} text={label} size={14} color={colors.MUTED} u={key === 'ticket' ? 1 - sugU : 1} />
         <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={8} fill="#0d1526" stroke="#2a3754" strokeWidth={1.4} />
         <Txt x={c.x + 14} y={c.y + 28} text={value || (caret ? '' : 'City or airport')} size={17} color={value ? colors.TEXT : '#4b5b78'} weight={value ? 650 : 400} />
         {key === 'ticket' && <Txt x={c.x + c.w - 22} y={c.y + 28} text="▾" size={15} color={colors.MUTED} />}
@@ -257,7 +258,7 @@ function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: num
       {field('ticket', 'Ticket type', 'Round trip')}
       <rect x={CTRL.search.x} y={CTRL.search.y} width={CTRL.search.w} height={CTRL.search.h} rx={8} fill="#1d4ed8" />
       <Txt x={CTRL.search.x + CTRL.search.w / 2} y={CTRL.search.y + 28} text="Search" size={17} weight={700} anchor="middle" />
-      <Txt x={24} y={342} text="Fares shown in CHF. Prices include taxes." size={13} color={colors.MUTED} />
+      <Txt x={24} y={342} text="Fares shown in CHF. Prices include taxes." size={14} color={colors.MUTED} />
       {/* observation outlines + executor-side node handles */}
       {ROWS.map((r, i) => {
         const c = CTRL[r.key];
@@ -270,7 +271,7 @@ function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: num
             {nodeU > 0.002 && (
               <g opacity={nodeU} transform={`translate(${c.x + c.w - 30} ${c.y - 12})`}>
                 <rect width={34} height={20} rx={10} fill="#1e1b4b" stroke={ROLE.MODEL} strokeWidth={1.2} />
-                <Txt x={17} y={14.5} text={`n${i + 1}`} size={12} color={ROLE.MODEL} mono anchor="middle" weight={700} />
+                <Txt x={17} y={14.5} text={`n${i + 1}`} size={13} color={ROLE.MODEL} mono anchor="middle" weight={700} />
               </g>
             )}
           </g>
@@ -280,8 +281,8 @@ function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: num
       {sugU > 0.002 && (
         <g opacity={sugU} transform={`translate(0 ${(1 - sugU) * -6})`}>
           <rect x={CTRL.sug.x} y={CTRL.sug.y} width={CTRL.sug.w} height={CTRL.sug.h} rx={8} fill="#16213a" stroke={ROLE.CHECKED} strokeWidth={1.5} />
-          <Txt x={CTRL.sug.x + 14} y={CTRL.sug.y + 25} text="London, United Kingdom" size={16} weight={650} />
-          <Txt x={CTRL.sug.x + CTRL.sug.w - 12} y={CTRL.sug.y + 25} text="role=option" size={12} color={ROLE.CHECKED} mono anchor="end" />
+          <Txt x={CTRL.sug.x + 14} y={CTRL.sug.y + 21} text="London, United Kingdom" size={16} weight={650} />
+          <Txt x={CTRL.sug.x + CTRL.sug.w - 12} y={CTRL.sug.y + 21} text="role=option" size={13} color={ROLE.CHECKED} mono anchor="end" />
         </g>
       )}
     </g>
@@ -329,24 +330,24 @@ export function Render({ s }: { s: SceneState }) {
     <>
     <Camera {...s.get(scene.cam)}>
       {/* THE PAGE — persistent */}
-      <FlightPage opacity={pageU * (1 - 0.85 * pageDim)} toText={typed} sugU={sugU} found={found} nodeU={regU > 0 ? clamp01(regU * 4) : 0} hot={hotIdx >= 0 ? ROWS[hotIdx].key : null} />
+      <FlightPage opacity={pageU * (1 - 0.6 * pageDim)} toText={typed} sugU={sugU} found={found} nodeU={regU > 0 ? clamp01(regU * 4) : 0} hot={hotIdx >= 0 ? ROWS[hotIdx].key : null} />
       {scanVis > 0.002 && (
         <g opacity={scanVis}>
           <rect x={PG.x} y={scanY - 26} width={PG.w} height={26} fill={ROLE.OBSERVE} opacity={0.1} />
           <line x1={PG.x - 6} x2={PG.x + PG.w + 6} y1={scanY} y2={scanY} stroke={ROLE.OBSERVE} strokeWidth={2.4} />
-          <Txt x={PG.x + PG.w} y={PG.y - 6} text="snapshot.js · one Runtime.evaluate" size={13} color={ROLE.OBSERVE} mono anchor="end" />
+          <Txt x={PG.x + PG.w} y={PG.y - 6} text="snapshot.js · one Runtime.evaluate" size={14} color={ROLE.OBSERVE} mono anchor="end" />
         </g>
       )}
       {sugU > 0.002 && <rect x={PG.x + CTRL.sug.x - 4} y={PG.y + CTRL.sug.y - 4} width={CTRL.sug.w + 8} height={CTRL.sug.h + 8} rx={10} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.8} opacity={scanVis > 0 || rebuildU > 0 ? clamp01((scanY - (PG.y + CTRL.sug.y + 19)) / 18) : 0} />}
-      <Chip x={CHIP.x} y={452} text="text: visible words · ≤ 6000 chars" color={ROLE.OBSERVE} u={s.get(scene.textU)} size={13} />
-      <Chip x={CHIP.x} y={140} text="screenshot=False · optional" color={colors.MUTED} dashed u={s.get(scene.shotU)} size={13} />
+      <Chip x={CHIP.x} y={452} text="text: visible words · ≤ 6000 chars" color={ROLE.OBSERVE} u={s.get(scene.textU)} size={14} />
+      <Chip x={CHIP.x} y={140} text="screenshot=False · optional" color={colors.MUTED} dashed u={s.get(scene.shotU)} size={14} />
       <Chip x={PG.x} y={498} text={'act: TYPE_TEXT → To = "London"'} color={ROLE.MODEL} fill="#1e1b4b" size={14} u={clamp01(actU * 4)} />
 
       {/* executor-side registry of real nodes */}
       {regVis > 0.002 && (
         <g opacity={regVis}>
           <rect x={REG.x} y={REG.y} width={REG.w} height={REG.h} rx={12} fill="#0d0b24" stroke={ROLE.MODEL} strokeWidth={1.3} strokeDasharray="6 4" />
-          <Txt x={REG.x + 14} y={REG.y + 19} text="executor keeps · window.__jevFast.nodes" size={13} color={ROLE.MODEL} mono />
+          <Txt x={REG.x + 14} y={REG.y + 19} text="executor keeps · window.__jevFast.nodes" size={14} color={ROLE.MODEL} mono />
           {ROWS.map((r, i) => {
             const u = ease.move(clamp01(regU * 2.2 - i * 0.4));
             const c = world(CTRL[r.key]);
@@ -356,26 +357,26 @@ export function Render({ s }: { s: SceneState }) {
               <g key={r.key} opacity={clamp01(regU * 6 - i)}>
                 <g transform={`translate(${x} ${y})`}>
                   <rect width={34} height={20} rx={10} fill="#1e1b4b" stroke={ROLE.MODEL} strokeWidth={1.2} />
-                  <Txt x={17} y={14.5} text={`n${i + 1}`} size={12} color={ROLE.MODEL} mono anchor="middle" weight={700} />
+                  <Txt x={17} y={14.5} text={`n${i + 1}`} size={13} color={ROLE.MODEL} mono anchor="middle" weight={700} />
                 </g>
-                <Txt x={REG.x + 18 + i * 100} y={REG.y + 59} text={`→ ${r.tag}`} size={12.5} color={colors.TEXT} mono u={clamp01(u * 3 - 2)} />
+                <Txt x={REG.x + 18 + i * 100} y={REG.y + 59} text={`→ ${r.tag}`} size={14} color={colors.TEXT} mono u={clamp01(u * 3 - 2)} />
               </g>
             );
           })}
         </g>
       )}
 
-      <Txt x={TB.x} y={TB.y - 12} text="illustrative values · not a captured run" size={12.5} mono color={colors.MUTED} u={clamp01(rowsU)} />
+      <Txt x={TB.x} y={TB.y - 12} text="illustrative values · not a captured run" size={14} mono color={colors.MUTED} u={clamp01(rowsU)} />
 
       {/* THE TABLE — observation chips morph into rows */}
       {rowsU > 0.002 && (
         <g opacity={clamp01(rowsU)}>
           <rect x={TB.x} y={TB.y} width={TB.w} height={TB.head - 6} rx={8} fill="#111a2e" />
-          <Txt x={COL.idx} y={TB.y + 20} text="#" size={13} color={colors.MUTED} mono />
-          <Txt x={COL.label} y={TB.y + 20} text="element" size={13} color={colors.MUTED} mono />
-          <Txt x={COL.value} y={TB.y + 20} text="value" size={13} color={valU > 0.5 ? colors.WARM : colors.MUTED} mono />
-          <Txt x={COL.ops} y={TB.y + 20} text="operations" size={13} color={colors.MUTED} mono u={clamp01(groupU * 4)} />
-          <Txt x={TB.x + TB.w - 12} y={TB.y + 20} text="model.py · action_space" size={12} color={colors.MUTED} mono anchor="end" />
+          <Txt x={COL.idx} y={TB.y + 20} text="#" size={14} color={colors.MUTED} mono />
+          <Txt x={COL.label} y={TB.y + 20} text="element" size={14} color={colors.MUTED} mono />
+          <Txt x={COL.value} y={TB.y + 20} text="value" size={14} color={valU > 0.5 ? colors.WARM : colors.MUTED} mono />
+          <Txt x={COL.ops} y={TB.y + 20} text="operations" size={14} color={colors.MUTED} mono u={clamp01(groupU * 4)} />
+          <Txt x={TB.x + TB.w - 12} y={TB.y + 20} text="model.py · action_space" size={14} color={colors.MUTED} mono anchor="end" />
         </g>
       )}
       {ROWS.map((r, i) => {
@@ -396,11 +397,11 @@ export function Render({ s }: { s: SceneState }) {
         return (
           <g key={r.key} opacity={seen * lit * opLit}>
             <rect x={x} y={y} width={w} height={h} rx={9} fill="#0b1324" stroke={hotIdx === i ? colors.WARM : ROLE.OBSERVE} strokeWidth={hotIdx === i ? 2.6 : 1.3} strokeOpacity={side} />
-            <Txt x={x + 12} y={y + 21} text={`${r.role} · "${r.label}" · "${r.value}"`} size={13} mono u={1 - clamp01(u * 2.5)} />
+            <Txt x={x + 12} y={y + 21} text={`${r.role} · "${r.label}" · "${r.value}"`} size={14} mono u={1 - clamp01(u * 2.5)} />
             <g opacity={clamp01(u * 2.5 - 1.5)}>
               <Txt x={COL.idx} y={y + 29} text={numbered > 0.3 ? `[${index}]` : '·'} size={18} mono weight={800} color={numbered > 0.3 ? colors.WARM : colors.MUTED} u={side} />
               <Txt x={COL.label} y={y + 22} text={r.label} size={17} weight={700} u={side} />
-              <Txt x={COL.label} y={y + 39} text={r.role} size={12} color={colors.MUTED} mono u={side} />
+              <Txt x={COL.label} y={y + 39} text={`${r.role} · ${r.ids}`} size={13} color={colors.MUTED} mono u={side} />
               <Txt x={COL.value} y={y + 29} text={`"${value}"`} size={16} mono color={valU > 0.5 ? colors.WARM : colors.TEXT} weight={valU > 0.5 ? 800 : 500} />
             </g>
             {hotIdx === i && <line x1={c.x + c.w + 6} y1={c.y + c.h / 2} x2={TB.x - 2} y2={y + h / 2} stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="5 4" />}
@@ -417,7 +418,7 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={COL.value} y={rowY(2) + 29} text={'""'} size={16} mono />
           <g transform={`translate(${COL.ops} ${rowY(2) + 7})`}>
             <rect width={TILE.w} height={TILE.h} rx={7} fill="#0b1324" stroke={OP_COLOR.CLICK} strokeWidth={1.4} />
-            <Txt x={TILE.w / 2} y={21} text="CLICK" size={12.5} mono anchor="middle" color={OP_COLOR.CLICK} weight={700} />
+            <Txt x={TILE.w / 2} y={22} text="CLICK" size={14} mono anchor="middle" color={OP_COLOR.CLICK} weight={700} />
           </g>
         </g>
       )}
@@ -436,10 +437,12 @@ export function Render({ s }: { s: SceneState }) {
           // e6 hands its slot to the option pair once the pairs appear
           const handoff = t.id === 'e6' ? 1 - pairsU : 1;
           const label = t.label ?? (u > 0.5 && t.op ? t.op : `${t.id} ${t.kind}`.trim());
+          // a tile dims while it is in flight, so it never reads as text on top of a value
+          const flight = 1 - 0.5 * clamp01(1 - Math.abs(2 * u - 1));
           return (
-            <g key={t.id} transform={`translate(${x} ${y})`} opacity={clamp01(tilesU * 4 - i * 0.3) * focus * rowLit * (1 - 0.85 * valU) * handoff}>
+            <g key={t.id} transform={`translate(${x} ${y})`} opacity={clamp01(tilesU * 4 - i * 0.3) * focus * rowLit * (1 - 0.85 * valU) * handoff * flight}>
               <rect width={TILE.w} height={TILE.h} rx={7} fill="#0b1324" stroke={color} strokeWidth={1.4} strokeDasharray={t.op ? undefined : '4 3'} />
-              <Txt x={TILE.w / 2} y={21} text={label} size={12.5} mono anchor="middle" color={color} weight={700} />
+              <Txt x={TILE.w / 2} y={22} text={label} size={14} mono anchor="middle" color={color} weight={700} />
             </g>
           );
         })}
@@ -454,18 +457,18 @@ export function Render({ s }: { s: SceneState }) {
               <g key={tab.op} transform={`translate(${tab.x} ${TILE.y})`} opacity={0.15 + 0.85 * w}>
                 <rect width={168} height={40} rx={9} fill="#0b1324" stroke={OP_COLOR[tab.op]} strokeWidth={1.4 + 1.6 * w} />
                 <Txt x={84} y={26} text={tab.op} size={15} mono anchor="middle" color={OP_COLOR[tab.op]} weight={800} />
-                <Txt x={84} y={62} text={tab.key} size={13} mono anchor="middle" color={colors.TEXT} />
+                <Txt x={84} y={62} text={tab.key} size={14} mono anchor="middle" color={colors.TEXT} />
               </g>
             );
           })}
-          <Txt x={TB.x + TB.w} y={TILE.y + 18} text="WAIT · DONE · BLOCKED" size={13} mono anchor="end" color={colors.MUTED} />
-          <Txt x={TB.x + TB.w} y={TILE.y + 38} text="need no target" size={13} anchor="end" color={colors.MUTED} />
+          <Txt x={TB.x + TB.w} y={TILE.y + 18} text="WAIT · DONE · BLOCKED" size={14} mono anchor="end" color={colors.MUTED} />
+          <Txt x={TB.x + TB.w} y={TILE.y + 38} text="need no target" size={14} anchor="end" color={colors.MUTED} />
         </g>
       )}
       {PAIRS.map((p) => (
         <g key={p.text} transform={`translate(${p.x} ${rowY(slotOf(2)) + 7})`} opacity={pairsU * (1 - 0.85 * valU)}>
           <rect width={p.w} height={TILE.h} rx={7} fill="#1a1405" stroke={ROLE.PENDING} strokeWidth={1.3} />
-          <Txt x={p.w / 2} y={21} text={p.text} size={12} mono anchor="middle" color={ROLE.PENDING} />
+          <Txt x={p.w / 2} y={22} text={p.text} size={14} mono anchor="middle" color={ROLE.PENDING} />
         </g>
       ))}
 
@@ -473,12 +476,12 @@ export function Render({ s }: { s: SceneState }) {
       {reqU > 0.002 && (
         <g opacity={reqU}>
           <rect x={REQ.x} y={REQ.y} width={REQ.w} height={REQ.h} rx={12} fill="#0d1321" stroke="#2a3754" strokeWidth={1.4} />
-          <Txt x={REQ.x + 16} y={REQ.y + 24} text="request body · model.py choose()" size={13} color={colors.MUTED} mono />
+          <Txt x={REQ.x + 16} y={REQ.y + 24} text="request body · model.py choose()" size={14} color={colors.MUTED} mono />
           <rect x={536} y={476} width={440} height={80} rx={9} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.1} opacity={0.6} />
-          <Txt x={548} y={496} text="state" size={13} color={ROLE.OBSERVE} mono weight={700} />
+          <Txt x={548} y={496} text="state" size={14} color={ROLE.OBSERVE} mono weight={700} />
           <rect x={988} y={476} width={236} height={80} rx={9} fill="none" stroke={ROLE.PENDING} strokeWidth={1.1} opacity={0.6} />
-          <Txt x={1000} y={496} text="questions[*].instructions" size={13} color={ROLE.PENDING} mono weight={700} />
-          <Txt x={1116} y={533} text="+ rules" size={13} color={colors.MUTED} mono />
+          <Txt x={1000} y={496} text="questions[*].instructions" size={14} color={ROLE.PENDING} mono weight={700} />
+          <Txt x={1116} y={533} text="+ rules" size={14} color={colors.MUTED} mono />
           {REQ_SLOTS.map((q, i) => {
             const u = ease.move(clamp01(reqFill - i));
             // a chip appears only after it has left its start point, so the goal chip never sits on the top banner
@@ -493,7 +496,7 @@ export function Render({ s }: { s: SceneState }) {
     </Camera>
       {/* goal + honesty label — fixed stage coordinates, outside the camera, so a focus move never clips them */}
       <Chip x={40} y={30} text="goal: find a one-way flight from Zurich to London" color={ROLE.PENDING} fill="#1a1405" size={15} u={s.get(scene.goalU)} />
-      <Txt x={40} y={78} text="illustrative page and values · not a captured run" size={13} color={colors.MUTED} mono u={s.get(scene.goalU)} />
+      <Txt x={40} y={78} text="illustrative page and values · not a captured run" size={14} color={colors.MUTED} mono u={s.get(scene.goalU)} />
     </>
   );
 }

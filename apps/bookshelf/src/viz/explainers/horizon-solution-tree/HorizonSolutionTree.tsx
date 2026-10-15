@@ -211,12 +211,16 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
   const nodeById = (id: string) => TREE.find((n) => n.id === id)!;
+  // the tree hands the stage to the toy measurement, then returns for the cost beat
+  const treeOp = Math.max(1 - toyU, lensU);
 
   // toy dots: 10x20 grids, first half = single-shot, second = harness
   const singleShown = clamp01(runsU * 2);
   const harnessShown = clamp01(runsU * 2 - 1);
+  // the one-shot rate appears as its grid finishes; the harness rate waits for its own beat
+  const singleRateU = clamp01((runsU - 0.4) * 5);
 
   return (
     <>
@@ -225,6 +229,7 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the solution tree */}
+          {treeOp > 0 && <g opacity={treeOp}>
           {TREE.map((n, i) => {
             const u = clamp01(treeU * TREE.length - i);
             if (u <= 0) return null;
@@ -242,13 +247,13 @@ function Frame({ s }: { s: SceneState }) {
                 {isBest && bestU > 0 && (
                   <circle cx={n.x} cy={n.y} r={40 * bestU} fill={colors.POSITIVE} opacity={0.15 * bestU} />
                 )}
-                <rect x={n.x - 62} y={n.y - 24} width={124} height={48} rx={10}
+                <rect x={n.x - 70} y={n.y - 24} width={140} height={48} rx={10}
                   fill={colors.PANEL} stroke={isBest && bestU > 0.4 ? colors.POSITIVE : colors.GRID}
                   strokeWidth={isBest && bestU > 0.4 ? 2 : 1} />
-                <text x={n.x} y={n.y - 5} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
+                <text x={n.x} y={n.y - 5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   {n.op}
                 </text>
-                <text x={n.x} y={n.y + 14} textAnchor="middle" fill={c} fontSize={11} fontFamily={MONO}>
+                <text x={n.x} y={n.y + 14} textAnchor="middle" fill={c} fontSize={13} fontFamily={MONO}>
                   {n.note}
                 </text>
               </g>
@@ -256,18 +261,19 @@ function Frame({ s }: { s: SceneState }) {
           })}
           {notesU > 0 && (
             <g opacity={notesU}>
-              <rect x={440} y={150} width={190} height={78} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={456} y={176} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+              <rect x={430} y={150} width={220} height={78} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
+              <text x={446} y={176} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
                 write_notes / read_notes
               </text>
-              <text x={456} y={198} fill={colors.MUTED} fontSize={11}>
+              <text x={446} y={198} fill={colors.MUTED} fontSize={13}>
                 “branch two direction good;
               </text>
-              <text x={456} y={214} fill={colors.MUTED} fontSize={11}>
+              <text x={446} y={216} fill={colors.MUTED} fontSize={13}>
                 avoid the c-three regression”
               </text>
             </g>
           )}
+          </g>}
 
           {/* toy measurement */}
           {toyU > 0 && (
@@ -275,12 +281,12 @@ function Frame({ s }: { s: SceneState }) {
               <text x={700} y={130} fill={colors.TEXT} fontSize={15}>
                 toy harness · 200 seeded rollouts · 5 steps at p = 0.8
               </text>
-              <text x={700} y={150} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={700} y={150} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 ours, toy scale — not the paper's benchmark
               </text>
               {/* single-shot grid */}
-              <text x={700} y={186} fill={colors.MUTED} fontSize={13}>
-                one shot
+              <text x={700} y={186} fill={colors.MUTED} fontSize={14}>
+                one shot: a single try per step
               </text>
               {Array.from({ length: 100 }, (_, i) => {
                 const u = clamp01(singleShown * 100 - i);
@@ -293,8 +299,8 @@ function Frame({ s }: { s: SceneState }) {
                     fill={win ? colors.POSITIVE : colors.GRID} opacity={win ? 0.9 : 0.5} />
                 );
               })}
-              <text x={700} y={306} fill={colors.MUTED} fontSize={13}>
-                tree + verifier, 3 patches per step
+              <text x={700} y={306} fill={colors.MUTED} fontSize={14}>
+                tree + verifier: up to 3 patches per step, a pass is kept
               </text>
               {Array.from({ length: 100 }, (_, i) => {
                 const u = clamp01(harnessShown * 100 - i);
@@ -306,15 +312,15 @@ function Frame({ s }: { s: SceneState }) {
                     fill={win ? colors.POSITIVE : colors.NEGATIVE} opacity={win ? 0.9 : 0.8} />
                 );
               })}
+              {singleRateU > 0 && (
+                <text x={1015} y={236} fill={colors.WARM} fontSize={20} fontFamily={MONO} opacity={singleRateU}>
+                  {(SINGLE_RATE * 100).toFixed(0)}%
+                </text>
+              )}
               {ratesU > 0 && (
-                <g opacity={ratesU}>
-                  <text x={1015} y={240} fill={colors.WARM} fontSize={20} fontFamily={MONO}>
-                    {(SINGLE_RATE * 100).toFixed(0)}%
-                  </text>
-                  <text x={1015} y={360} fill={colors.POSITIVE} fontSize={20} fontFamily={MONO}>
-                    {(HARNESS_RATE * 100).toFixed(0)}%
-                  </text>
-                </g>
+                <text x={1015} y={356} fill={colors.POSITIVE} fontSize={20} fontFamily={MONO} opacity={ratesU}>
+                  {(HARNESS_RATE * 100).toFixed(0)}%
+                </text>
               )}
             </g>
           )}
@@ -322,7 +328,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* trajectory lengths */}
           {lensU > 0 && (
             <g>
-              <text x={120} y={508} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={lensU}>
+              <text x={120} y={494} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={lensU}>
                 reported mean trajectory length (tokens) — avg 45K
               </text>
               {TRAJ_LENS.map((d, i) => {
@@ -331,11 +337,11 @@ function Frame({ s }: { s: SceneState }) {
                 const w = (d.kTok / 50) * 380;
                 return (
                   <g key={d.domain} opacity={u}>
-                    <text x={318} y={532 + i * 22} textAnchor="end" fill={colors.TEXT} fontSize={12}>
+                    <text x={318} y={522 + i * 22} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                       {d.domain}
                     </text>
-                    <rect x={330} y={522 + i * 22} width={Math.max(w, 3)} height={12} rx={3} fill={colors.ACCENT} opacity={0.7} />
-                    <text x={338 + w} y={532 + i * 22} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                    <rect x={330} y={512 + i * 22} width={Math.max(w, 3)} height={12} rx={3} fill={colors.ACCENT} opacity={0.7} />
+                    <text x={338 + w} y={522 + i * 22} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                       {d.kTok}K
                     </text>
                   </g>
@@ -358,7 +364,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Horizon is search with receipts
           </text>

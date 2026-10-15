@@ -26,6 +26,8 @@ import {
 import type { CameraState, ChannelRef, SceneState } from '../../core';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+// a row fades in only after its empty-state hint has gone, so the two never overlap
+const rowIn = (filled: number): number => clamp01((filled - 0.3) / 0.7);
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 // ---------------------------------------------------------------------------
@@ -80,7 +82,7 @@ const TWENTY = [
 
 // camera marks
 const CAM_TAPE: CameraState = { x: 640, y: 200, k: 1.2 };
-const CAM_TOOL: CameraState = { x: 600, y: 380, k: 1.25 };
+const CAM_TOOL: CameraState = { x: 640, y: 380, k: 1.2 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -195,7 +197,7 @@ export function buildScene(): Scene {
     text: 'Messages and state work identically. An inbox event becomes a message row. Your own collections, declared on the entity definition, become state rows.',
   });
   tl.tween(cam, CAM_WIDE, { at: 56.4, dur: 1.5, ease: ease.move });
-  tl.tween(msgU, 1, { at: 30.0, dur: 1.4, ease: ease.move });
+  tl.tween(msgU, 1, { at: 57.0, dur: 1.4, ease: ease.move });
   tl.tween(noteU, 1, { at: 59.0, dur: 1.4, ease: ease.move });
   tl.hold(63.3, 0.5);
 
@@ -255,7 +257,7 @@ function TablePanel({ box, title, u, filled }: {
         {title}
       </text>
       <line x1={box.x + 10} y1={box.y + 34} x2={box.x + box.w - 10} y2={box.y + 34} stroke={colors.GRID} strokeWidth={1} />
-      <text x={box.x + box.w / 2} y={box.y + 84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={0.6 * clamp01(1 - filled * 3)}>
+      <text x={box.x + box.w / 2} y={box.y + 84} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={0.85 * clamp01(1 - filled * 3)}>
         no rows yet
       </text>
     </g>
@@ -375,14 +377,14 @@ export function Render({ s }: { s: SceneState }) {
                 web_search
               </text>
               <rect x={T_TOOL.x + 218} y={T_TOOL.y + 50} width={124} height={21} rx={10} fill={colors.BG} stroke={stColor} strokeWidth={1.2} />
-              <text x={T_TOOL.x + 280} y={T_TOOL.y + 65} textAnchor="middle" fill={stColor} fontSize={11.5} fontFamily={mono}>
+              <text x={T_TOOL.x + 280} y={T_TOOL.y + 65} textAnchor="middle" fill={stColor} fontSize={12} fontFamily={mono}>
                 {st}
               </text>
               <text x={T_TOOL.x + T_TOOL.w - 18} y={T_TOOL.y + 66} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={st === 'completed' ? 1 : 0.25}>
                 {st === 'completed' ? '1.2 s' : '…'}
               </text>
               {/* column hint */}
-              <text x={T_TOOL.x + 14} y={T_TOOL.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
+              <text x={T_TOOL.x + 14} y={T_TOOL.y + 100} fill={colors.MUTED} fontSize={12} opacity={0.9}>
                 four events · same key · one row
               </text>
             </g>
@@ -399,7 +401,9 @@ export function Render({ s }: { s: SceneState }) {
           const y1 = T_TOOL.y + 60;
           const x = x0 + (x1 - x0) * u;
           const y = y0 + (y1 - y0) * (u * u * (3 - 2 * u));
-          return <rect key={k} x={x - 8} y={y - 10} width={16} height={20} rx={3} fill={FAM_COLOR.tool_call} opacity={0.9} />;
+          // the copy dissolves into the row as it arrives, so it never sits on the status text
+          const fade = clamp01((1 - u) / 0.45);
+          return <rect key={k} x={x - 8} y={y - 10} width={16} height={20} rx={3} fill={FAM_COLOR.tool_call} opacity={0.9 * fade} />;
         })}
 
         {/* inbox row */}
@@ -407,12 +411,12 @@ export function Render({ s }: { s: SceneState }) {
           const u = msgU * alive(6);
           if (u <= 0) return null;
           return (
-            <g opacity={u}>
+            <g opacity={rowIn(u)}>
               <rect x={T_MSG.x + 10} y={T_MSG.y + 46} width={T_MSG.w - 20} height={30} rx={5} fill={colors.BG} stroke={colors.GRID} />
               <text x={T_MSG.x + 20} y={T_MSG.y + 66} fill={FAM_COLOR.inbox} fontSize={12} fontFamily={mono}>
                 from /horton/main
               </text>
-              <text x={T_MSG.x + 14} y={T_MSG.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
+              <text x={T_MSG.x + 14} y={T_MSG.y + 100} fill={colors.MUTED} fontSize={12} opacity={0.9}>
                 one inbox event → one message row
               </text>
             </g>
@@ -424,17 +428,24 @@ export function Render({ s }: { s: SceneState }) {
           const u = noteU * alive(8);
           if (u <= 0) return null;
           return (
-            <g opacity={u}>
+            <g opacity={rowIn(u)}>
               <rect x={T_NOTE.x + 10} y={T_NOTE.y + 46} width={T_NOTE.w - 20} height={30} rx={5} fill={colors.BG} stroke={colors.GRID} />
               <text x={T_NOTE.x + 20} y={T_NOTE.y + 66} fill={FAM_COLOR.state} fontSize={12} fontFamily={mono}>
                 notes · plan v2
               </text>
-              <text x={T_NOTE.x + 14} y={T_NOTE.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
+              <text x={T_NOTE.x + 14} y={T_NOTE.y + 100} fill={colors.MUTED} fontSize={12} opacity={0.9}>
                 declared in state
               </text>
             </g>
           );
         })()}
+
+        {/* ---- the entity / collection definition, under the tables ---- */}
+        {rakeU > 0 && (
+          <text x={130} y={578} fill={colors.MUTED} fontSize={13} opacity={rakeU * (1 - stackU) * (1 - gridU) * (1 - closeU) * 0.9}>
+            entity = one agent&apos;s stream · collection = a typed table projected from it
+          </text>
+        )}
 
         {/* ---- the twenty-collection grid ---- */}
         {gridU > 0 && (
@@ -485,12 +496,12 @@ export function Render({ s }: { s: SceneState }) {
         {/* mini timeline UI fed by the top layer */}
         {uiU > 0 && (
           <g opacity={uiU * (1 - wipeU * 0.9 + (replayU > 0.96 ? 1 : 0))}>
-            <rect x={905} y={252} width={200 } height={124} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={919} y={274} fill={colors.MUTED} fontSize={10.5}>
+            <rect x={905} y={252} width={236} height={124} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={919} y={274} fill={colors.MUTED} fontSize={12}>
               the chat timeline — a query
             </text>
             {[0, 1, 2].map((r) => (
-              <rect key={r} x={919} y={286 + r * 26} width={r === 1 ? 120 : 168} height={16} rx={8} fill={r === 1 ? colors.ACCENT : colors.GRID} opacity={r === 1 ? 0.5 : 0.6} />
+              <rect key={r} x={919} y={286 + r * 26} width={r === 1 ? 130 : 200} height={16} rx={8} fill={r === 1 ? colors.ACCENT : colors.GRID} opacity={r === 1 ? 0.5 : 0.6} />
             ))}
           </g>
         )}
@@ -500,7 +511,7 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <line x1={replayX} y1={TAPE.y - 40} x2={replayX} y2={TAPE.y + 40} stroke={colors.TEAL} strokeWidth={2.5} />
             <path d={`M ${replayX - 8} ${TAPE.y - 48} L ${replayX + 8} ${TAPE.y - 48} L ${replayX} ${TAPE.y - 36} Z`} fill={colors.TEAL} />
-            <text x={replayX} y={TAPE.y - 58} textAnchor="middle" fill={colors.TEAL} fontSize={11.5}>
+            <text x={replayX} y={TAPE.y - 58} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
               replay
             </text>
           </g>

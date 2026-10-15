@@ -56,7 +56,11 @@ export const P_B_WORSE_BIG: number = (() => {
   return worse / N_RUNS_BIG; // small
 })();
 
-export const SIGMA_SMALL = Math.sqrt((P_A * (1 - P_A)) / N_SMALL) * 100; // 4.58 points
+/** One coin flip per question for the old model: true = answered correctly. */
+const randQ = mulberry32(47);
+export const Q_CORRECT: boolean[] = Array.from({ length: N_SMALL }, () => randQ() < P_A);
+
+export const SIGMA_SMALL =Math.sqrt((P_A * (1 - P_A)) / N_SMALL) * 100; // 4.58 points
 export const SIGMA_BIG = Math.sqrt((P_A * (1 - P_A)) / N_BIG) * 100; // 0.458
 
 /** Histograms in percent-score space. */
@@ -90,7 +94,7 @@ export const HH = 280;
 export const hx = (pct: number): number => HX0 + ((pct - HB_MIN) / (HB_MAX - HB_MIN)) * (HX1 - HX0);
 
 export const CAM_HIST: CameraState = { x: 640, y: 330, k: 1.1 };
-export const CAM_GAP: CameraState = { x: hx(70.5), y: 360, k: 1.6 };
+export const CAM_GAP: CameraState = { x: hx(70.5), y: 360, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -176,7 +180,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 43.9, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 44.5, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 44.5, dur: 1.1, ease: ease.move });
   tl.tween(mathU, 0, { at: 44.5, dur: 0.8, ease: ease.move });
   tl.tween(statU, 0, { at: 44.5, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 45.7, dur: 0.9, ease: ease.enter });

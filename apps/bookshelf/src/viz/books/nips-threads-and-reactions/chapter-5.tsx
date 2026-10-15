@@ -190,7 +190,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel sits on a clean field: the body fades out behind it
+  const mainOp = (1 - 0.85 * dimU) * (1 - 0.92 * closeU);
   const sealed = sealU >= 1;
   const oldOp = 1 - 0.85 * clamp01(replaceU * 1.4); // the old list fades wholesale
 
@@ -211,14 +212,14 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={shelfX(i)} y={SHELF_Y - 8} textAnchor="middle" fill={hot ? colors.WARM : colors.TEXT} fontSize={14} fontWeight={600}>
                   {b.label}
                 </text>
-                <text x={shelfX(i)} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={shelfX(i)} y={SHELF_Y + 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                   kind {b.kind}
                 </text>
               </g>
             );
           })}
           {shelfU >= 1 && listU <= 0 && (
-            <text x={640} y={SHELF_Y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={640} y={SHELF_Y + 64} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               replaceable — one per kind, newest wins
             </text>
           )}
@@ -236,7 +237,7 @@ function Frame({ s }: { s: SceneState }) {
               <rect x={CONTENT_ANCHOR.x - 2} y={CONTENT_ANCHOR.y} width={CONTENT_ANCHOR.w + 4} height={CONTENT_ANCHOR.h} fill={colors.BG} />
             )}
             {sealed && (
-              <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.cy + 5} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace" opacity={sealU * oldOp}>
+              <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.cy + 5} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={sealU * oldOp}>
                 "{BLOB.slice(0, 34)}…"
               </text>
             )}
@@ -244,7 +245,7 @@ function Frame({ s }: { s: SceneState }) {
             {/* private items → sealed blob */}
             {privU > 0 && (
               <g>
-                <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={privU * (1 - sealU)}>
+                <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={privU * (1 - sealU)}>
                   private items — encrypted to yourself
                 </text>
                 {PRIVATE_ITEMS.map((it, i) => {
@@ -258,7 +259,7 @@ function Frame({ s }: { s: SceneState }) {
                   return (
                     <g key={i} opacity={u * (1 - 0.9 * sealU)}>
                       <rect x={x - 4} y={y - 16} width={190 * (1 - 0.5 * sealU)} height={26} rx={6} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                      <text x={x + 6} y={y + 1} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+                      <text x={x + 6} y={y + 1} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                         {it}
                       </text>
                     </g>
@@ -268,7 +269,7 @@ function Frame({ s }: { s: SceneState }) {
                   <circle cx={CONTENT_ANCHOR.cx} cy={CONTENT_ANCHOR.cy} r={10 + 26 * (1 - sealU)} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} opacity={sealU} />
                 )}
                 {sealed && (
-                  <text x={PRIV_X} y={PRIV_Y - 46} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={0.8}>
+                  <text x={CONTENT_ANCHOR.x} y={CONTENT_ANCHOR.y + CONTENT_ANCHOR.h + 18} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={0.9}>
                     ciphertext illustrative — key = your own
                   </text>
                 )}
@@ -278,9 +279,9 @@ function Frame({ s }: { s: SceneState }) {
             {/* the relay's eye */}
             {eyeU > 0 && (
               <g opacity={eyeU}>
-                <text x={96} y={520} fill={colors.MUTED} fontSize={12} fontFamily="monospace">the relay sees:</text>
-                <text x={230} y={520} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">tags — indexable</text>
-                <text x={420} y={520} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">content — opaque</text>
+                <text x={96} y={520} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">the relay sees:</text>
+                <text x={250} y={520} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">tags — indexable</text>
+                <text x={470} y={520} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">content — opaque</text>
               </g>
             )}
           </g>
@@ -293,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={576} y={462} fill={colors.WARM} fontSize={12.5} fontWeight={600}>
                 new kind-10000 arrives → old version gone, wholesale
               </text>
-              <text x={576} y={481} fill={colors.MUTED} fontSize={12}>
+              <text x={576} y={481} fill={colors.TEXT} fontSize={13}>
                 no append: always publish the whole list
               </text>
             </g>
@@ -302,7 +303,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* sets */}
           {setsU > 0 && (
             <g opacity={setsU}>
-              <text x={1000} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={1000} y={330} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                 kind 30003 bookmark sets — many per person
               </text>
               {SETS.map((st, i) => {
@@ -313,7 +314,7 @@ function Frame({ s }: { s: SceneState }) {
                   <g key={st.d} opacity={u}>
                     <rect x={880} y={y - 22} width={240} height={48} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
                     <text x={898} y={y} fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace">d "{st.d}"</text>
-                    <text x={898} y={y + 18} fill={colors.MUTED} fontSize={12}>{st.n} items</text>
+                    <text x={898} y={y + 18} fill={colors.TEXT} fontSize={13}>{st.n} items</text>
                   </g>
                 );
               })}

@@ -37,11 +37,11 @@ export function buildScene() {
 
   tl.caption({ at: 12.7, dur: 6.2, text: 'A stable object identifier follows the same asset across states, instead of losing it between screenshots.' });
   tl.tween(objectU, 1, { at: 13.2, dur: 1.3, ease: ease.draw });
-  tl.tween(cam, { x: 330, y: 322, k: 1.12 }, { at: 14.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 300, k: 1.06 }, { at: 14.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.9, dur: 6.2, text: 'Engine output and rendered evidence attach to that exact step, giving the learner both a diagnosis and what the developer saw.' });
   tl.tween(evidenceU, 1, { at: 19.4, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 600, y: 300, k: 1.08 }, { at: 21.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 300, k: 1.02 }, { at: 21.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 25.1, dur: 6.2, text: 'A rejection remains in the record. It is useful supervision, not a mistake to delete from the dataset.' });
   tl.tween(rejectU, 1, { at: 25.6, dur: 0.6, ease: ease.pop });
@@ -94,34 +94,34 @@ export function Render({ s }: { s: SceneState }) {
         {FIELDS.map((field, i) => {
           const u = clamp01(tapeP - i);
           const hi = field.key === 'oₜ' ? objectU : (field.key === 'gₜ' || field.key === 'vₜ') ? evidence : field.key === 'hₜ' ? reject : field.key === 'ρₜ' ? repair : 0;
-          return <g key={field.key} opacity={u} transform={`translate(${fieldX(i)} 234) translate(0 ${(1 - u) * 30}) scale(${0.82 + u * 0.18 + hi * 0.06})`}>
+          return <g key={field.key} opacity={u} transform={`translate(${fieldX(i)} 234) translate(0 ${(1 - u) * 30}) scale(${0.82 + u * 0.18})`}>
             <rect x="-64" y="-50" width="128" height="100" rx="22" fill={field.color} fillOpacity={0.13 + hi * 0.1} stroke={field.color} strokeWidth={2 + hi * 2} />
             <text y="-8" textAnchor="middle" fill={field.color} fontSize="25" fontWeight="850">{field.key}</text>
-            <text y="23" textAnchor="middle" fill={colors.TEXT} fontSize="12">{field.label}</text>
+            <text y="23" textAnchor="middle" fill={colors.TEXT} fontSize="14">{field.label}</text>
           </g>;
         })}
       </g>
 
       <g opacity={objectU * (1 - compile) * (1 - boundary)}>
-        <path d="M249 290 V388 H438" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="9 7" />
+        <path d="M249 284 V388 H438" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="9 7" />
         <rect x="438" y="352" width="226" height="72" rx="20" fill="#251d0f" stroke={colors.WARM} strokeWidth="3" />
-        <text x="551" y="382" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>objectId: phone_booth_07</text>
-        <text x="551" y="407" textAnchor="middle" fill={colors.MUTED} fontSize="12">same object across states</text>
+        <text x="551" y="382" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>objectId: phone_booth_07</text>
+        <text x="551" y="407" textAnchor="middle" fill={colors.TEXT} fillOpacity="0.8" fontSize="14">same object across states</text>
       </g>
 
       <g opacity={evidence * (1 - compile) * (1 - boundary)}>
         <rect x="676" y="338" width="226" height="102" rx="22" fill="#211b10" stroke={colors.WARM} strokeWidth="3" />
-        <text x="789" y="368" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>gₜ: asset_overlap</text>
+        <text x="789" y="368" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>gₜ: asset_overlap</text>
         <path d="M712 404 H866 M736 404 V392 M790 404 V384 M844 404 V394" stroke={colors.WARM} strokeWidth="7" strokeLinecap="round" />
         <rect x="926" y="338" width="214" height="102" rx="22" fill="#10262a" stroke={colors.TEAL} strokeWidth="3" />
         <path d="M958 406 H1108 M980 406 V366 M1032 406 V380" stroke={colors.TEAL} strokeWidth="7" strokeLinecap="round" />
-        <text x="1033" y="458" textAnchor="middle" fill={colors.TEAL} fontSize="12" fontFamily={colors.font.mono}>vₜ: rendered evidence</text>
+        <text x="1033" y="458" textAnchor="middle" fill={colors.TEAL} fontSize="14" fontFamily={colors.font.mono}>vₜ: rendered evidence</text>
       </g>
 
-      <g opacity={reject * (1 - boundary) * (1 - compile)} transform="translate(956 500)">
+      <g opacity={reject * (1 - boundary) * (1 - compile)} transform="translate(956 514)">
         <rect x="-154" y="-34" width="308" height="68" rx="22" fill="#32141c" stroke={colors.NEGATIVE} strokeWidth="4" />
         <text textAnchor="middle" y="-5" fill={colors.NEGATIVE} fontSize="15" fontWeight="800">REJECT · preserve this step</text>
-        <text textAnchor="middle" y="20" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>hₜ = revise placement</text>
+        <text textAnchor="middle" y="20" fill={colors.TEXT} fillOpacity="0.8" fontSize="14" fontFamily={colors.font.mono}>hₜ = revise placement</text>
       </g>
 
       {repair > 0 && <g opacity={repair * (1 - boundary) * (1 - compile)}>
@@ -131,6 +131,9 @@ export function Render({ s }: { s: SceneState }) {
       </g>}
 
       <g opacity={compile * (1 - boundary)}>
+        <path d="M394 288 C394 360, 258 360, 258 436" fill="none" stroke={colors.POSITIVE} strokeWidth="2.5" strokeOpacity="0.7" />
+        <path d="M539 288 C539 360, 550 360, 550 436" fill="none" stroke={colors.NEGATIVE} strokeWidth="2.5" strokeOpacity="0.7" />
+        <path d="M1119 288 C1119 360, 842 360, 842 436" fill="none" stroke={colors.WARM} strokeWidth="2.5" strokeOpacity="0.7" />
         {[
           { x: 258, title: 'accepted state', sub: 'generation target', color: colors.POSITIVE },
           { x: 550, title: 'failed step', sub: 'critique example', color: colors.NEGATIVE },
@@ -138,7 +141,7 @@ export function Render({ s }: { s: SceneState }) {
         ].map((card) => <g key={card.title} transform={`translate(${card.x} 466) translate(0 ${(1 - compile) * 24})`}>
           <rect x="-124" y="-30" width="248" height="60" rx="20" fill={card.color} fillOpacity="0.12" stroke={card.color} strokeWidth="2" />
           <text textAnchor="middle" y="-4" fill={card.color} fontSize="14" fontWeight="780">{card.title}</text>
-          <text textAnchor="middle" y="18" fill={colors.MUTED} fontSize="12">{card.sub}</text>
+          <text textAnchor="middle" y="18" fill={colors.TEXT} fillOpacity="0.8" fontSize="14">{card.sub}</text>
         </g>)}
       </g>
 
@@ -148,7 +151,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x="360" y="342" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontWeight="800">PUBLIC RELEASE KEEPS</text>
         <text x="920" y="342" textAnchor="middle" fill={colors.NEGATIVE} fontSize="18" fontWeight="800">PUBLIC RELEASE EXCLUDES</text>
         {['aggregate metric tables', 'split and feature manifests', 'sanitized reviewer scores', 'provenance and checkpoint pointers'].map((label, i) => <text key={label} x="158" y={384 + i * 34} fill={colors.TEXT} fontSize="14">✓ {label}</text>)}
-        {['raw interactive prompts', 'reviewer prompt templates', 'raw reviewer responses', 'worker traces and render dumps'].map((label, i) => <text key={label} x="718" y={384 + i * 34} fill={colors.MUTED} fontSize="14">— {label}</text>)}
+        {['raw interactive prompts', 'reviewer prompt templates', 'raw reviewer responses', 'worker traces and render dumps'].map((label, i) => <text key={label} x="718" y={384 + i * 34} fill={colors.TEXT} fillOpacity="0.8" fontSize="14">— {label}</text>)}
       </g>
     </g>
 

@@ -17,7 +17,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -35,8 +34,8 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // Layout + precomputed table rows (seeded, deterministic).
 // ---------------------------------------------------------------------------
 
-const CLIENT = { x: 150, y: 260 } as const;
-const WEB = { x: 370, y: 260 } as const;
+const CLIENT = { x: 130, y: 260 } as const;
+const WEB = { x: 350, y: 260 } as const;
 const WRITE = { x: 590, y: 260 } as const;
 const STORE = { x: 1040, y: 190 } as const;
 
@@ -278,7 +277,6 @@ export function Render({ s }: { s: SceneState }) {
             ]}
             u={reqU}
             color={colors.WARM}
-            label="create"
             hold={false}
           />
           {mintU > 0 && (
@@ -307,7 +305,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={colors.TEAL}
                   strokeWidth={1.4}
                 />
-                <text x={cardX + (TABLE.x + 8 - cardX) * rowU + 100} y={cardY + (rowY(NEW_ROW_AT) - cardY) * rowU + 22} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
+                <text x={cardX + (TABLE.x + 8 - cardX) * rowU + 100} y={cardY + (rowY(NEW_ROW_AT) - cardY) * rowU + 22} textAnchor="middle" fill={colors.TEAL} fontSize={13}>
                   metadata — ~270 B
                 </text>
               </g>
@@ -337,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
             glow={clamp01(slabU * 2 - 1) * (1 - raceU)}
           />
           {slabU >= 1 && (
-            <text x={STORE.x} y={STORE.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+            <text x={STORE.x} y={STORE.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               /pastes/{SHORTLINK}
             </text>
           )}
@@ -413,23 +411,25 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                   {/* race pointers */}
                   {scanHere && <circle cx={TABLE.x - 14} cy={y + 11} r={6} fill={colors.NEGATIVE} />}
-                  {hopHere && raceU < 1 && <circle cx={TABLE.x + TABLE.w + 14} cy={y + 11} r={6} fill={colors.POSITIVE} />}
+                  {hopHere && raceU < 1 && <circle cx={TABLE.x + TABLE.w + 26} cy={y + 11} r={6} fill={colors.POSITIVE} />}
                 </g>
               );
             })}
             {/* race labels */}
             {raceU > 0 && (
               <g opacity={clamp01(raceU * 3)}>
-                <text x={TABLE.x - 14} y={TABLE.y + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10}>
+                <text x={TABLE.x} y={TABLE.y - 8} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                   scan
                 </text>
-                <text x={TABLE.x + TABLE.w + 14} y={TABLE.y + 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={10}>
+                <text x={TABLE.x + TABLE.w} y={TABLE.y - 8} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
                   index
                 </text>
               </g>
             )}
             {raceU > 0.6 && (
-              <MathLabel tex={'\\log_2(360\\,\\mathrm{M}) \\approx 28\\ \\text{hops}'} x={TABLE.x + 130} y={TABLE.y - 24} fontSize={16} color={colors.POSITIVE} opacity={clamp01(raceU * 4 - 2.6)} />
+              <text x={TABLE.x + 130} y={TABLE.y - 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} opacity={clamp01(raceU * 4 - 2.6)}>
+                log<tspan baselineShift="sub" fontSize={11}>2</tspan>(360 M) ≈ 28 hops
+              </text>
             )}
           </g>
         )}
@@ -466,7 +466,7 @@ export function Render({ s }: { s: SceneState }) {
               dashed
               arrow
               label="paste_path"
-              labelSize={10}
+              labelSize={12}
             />
           </g>
         )}

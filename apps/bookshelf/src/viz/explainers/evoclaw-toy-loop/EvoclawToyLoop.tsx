@@ -76,7 +76,7 @@ const EVIDENCE = [
 const GRID_COLS = 25;
 const CELL = 13;
 
-const CAM_EVID: CameraState = { x: 320, y: 260, k: 1.35 };
+const CAM_EVID: CameraState = { x: 380, y: 320, k: 1.2 };
 const CAM_GRIDS: CameraState = { x: 860, y: 340, k: 1.15 };
 
 function gridCell(gx: number, gy: number, i: number): { x: number; y: number } {
@@ -199,11 +199,15 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the close fades the whole scene out, so the closing panel sits on clean background
+  const mainOp = 1 - dimU;
+  // evidence and skill cards clear once the grids take over, and return
+  // at 0.4 under the lesson chip, which refers back to them
+  const oldOp = (1 - 0.6 * lessonU) * Math.max(0, 1 - 3 * baseU * (1 - lessonU));
 
   const grids: Array<{ label: string; data: boolean[]; u: number; n: number; gy: number; c: string }> = [
-    { label: 'baseline — no skill', data: BASE, u: baseU, n: BASE_N, gy: 150, c: colors.MUTED },
-    { label: 'general skill', data: GOOD, u: goodU, n: GOOD_N, gy: 310, c: colors.POSITIVE },
+    { label: 'baseline — no skill', data: BASE, u: baseU, n: BASE_N, gy: 170, c: colors.TEXT },
+    { label: 'general skill', data: GOOD, u: goodU, n: GOOD_N, gy: 320, c: colors.POSITIVE },
     { label: 'over-specified skill', data: OVER, u: overU, n: OVER_N, gy: 470, c: colors.NEGATIVE },
   ];
 
@@ -214,14 +218,14 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* evidence card */}
-          {evidU > 0 && (
-            <g opacity={evidU * (1 - 0.6 * lessonU)}>
+          {evidU > 0 && oldOp > 0 && (
+            <g opacity={evidU * oldOp}>
               <rect x={120} y={150} width={380} height={150} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} />
               {EVIDENCE.map((l, i) => {
                 const u = clamp01(evidU * EVIDENCE.length - i);
                 if (u <= 0) return null;
                 return (
-                  <text key={i} x={142} y={182 + i * 30} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily={MONO} opacity={u}>
+                  <text key={i} x={142} y={182 + i * 30} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily={MONO} opacity={u}>
                     {l}
                   </text>
                 );
@@ -230,19 +234,19 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* fork: the two skills */}
-          {forkU > 0 && (
-            <g opacity={forkU * (1 - 0.6 * lessonU)}>
-              <line x1={310} y1={300} x2={220} y2={360} stroke={colors.GRID} strokeWidth={1.5} />
-              <line x1={310} y1={300} x2={430} y2={360} stroke={colors.GRID} strokeWidth={1.5} />
-              <rect x={90} y={366} width={260} height={124} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
+          {forkU > 0 && oldOp > 0 && (
+            <g opacity={forkU * oldOp}>
+              <line x1={310} y1={300} x2={220} y2={366} stroke={colors.GRID} strokeWidth={1.5} />
+              <line x1={310} y1={300} x2={540} y2={366} stroke={colors.GRID} strokeWidth={1.5} />
+              <rect x={70} y={366} width={300} height={124} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
               {GOOD_SKILL.map((l, i) => (
-                <text key={i} x={106} y={394 + i * 24} fill={i === 0 ? colors.POSITIVE : colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text key={i} x={86} y={394 + i * 24} fill={i === 0 ? colors.POSITIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {l}
                 </text>
               ))}
-              <rect x={370} y={366} width={260} height={124} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <rect x={390} y={366} width={300} height={124} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
               {OVER_SKILL.map((l, i) => (
-                <text key={i} x={386} y={394 + i * 24} fill={i === 0 ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text key={i} x={406} y={394 + i * 24} fill={i === 0 ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {l}
                 </text>
               ))}
@@ -253,7 +257,7 @@ function Frame({ s }: { s: SceneState }) {
           {grids.map((g) =>
             g.u > 0 ? (
               <g key={g.label} opacity={1}>
-                <text x={700} y={g.gy - 12} fill={colors.TEXT} fontSize={13} opacity={g.u}>
+                <text x={700} y={g.gy - 12} fill={colors.TEXT} fontSize={14} opacity={g.u}>
                   {g.label}
                 </text>
                 {g.data.map((win, i) => {
@@ -263,7 +267,7 @@ function Frame({ s }: { s: SceneState }) {
                   return (
                     <rect key={i} x={p.x} y={p.y} width={CELL - 3} height={CELL - 3} rx={2}
                       fill={win ? colors.POSITIVE : colors.NEGATIVE}
-                      opacity={win ? 0.75 : 0.55} />
+                      opacity={win ? 0.9 : 0.7} />
                   );
                 })}
                 {numsU > 0 && (
@@ -275,9 +279,16 @@ function Frame({ s }: { s: SceneState }) {
             ) : null
           )}
           {baseU > 0 && (
-            <text x={700} y={120} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={baseU}>
-              toy agent, seeded — ours, not the paper's models
-            </text>
+            <g opacity={baseU}>
+              <text x={700} y={106} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                toy agent, one seed (5) — ours, not the paper's models
+              </text>
+              {/* legend: each cell is one toy task */}
+              <rect x={700} y={130} width={12} height={12} rx={2} fill={colors.POSITIVE} opacity={0.9} />
+              <text x={718} y={141} fill={colors.TEXT} fontSize={14}>passes</text>
+              <rect x={794} y={130} width={12} height={12} rx={2} fill={colors.NEGATIVE} opacity={0.7} />
+              <text x={812} y={141} fill={colors.TEXT} fontSize={14}>fails</text>
+            </g>
           )}
 
           {/* lesson chip */}
@@ -287,7 +298,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={130} y={567} fill={colors.WARM} fontSize={14} fontWeight={600}>
                 skill quality is invisible in the file
               </text>
-              <text x={130} y={589} fill={colors.TEXT} fontSize={13}>
+              <text x={130} y={589} fill={colors.TEXT} fontSize={14}>
                 it only shows up under transfer to a fresh workspace
               </text>
             </g>
@@ -297,17 +308,17 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* screen-fixed */}
       <g opacity={titleU * mainOp}>
-        <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+        <text x={40} y={76} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The loop, on a toy agent
         </text>
-        <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+        <text x={40} y={102} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
           arXiv:2607.09711 · PostSkill pipeline
         </text>
       </g>
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Both endings are possible
           </text>

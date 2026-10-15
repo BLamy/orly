@@ -30,10 +30,11 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 // The pull line — three stations on a rail, a demand wire underneath.
 // ---------------------------------------------------------------------------
 
-const RAIL_Y = 250; // crates travel here, left → right
-const WIRE_Y = 330; // demand pulses travel here, right → left
+const RAIL_Y = 300; // crates travel here, left → right, under the stations
+const WIRE_Y = 370; // demand pulses travel here, right → left
+const STA_Y = 196; // station boxes sit on stalks above the rail
 const SRC = { x: 190, w: 220 } as const;
-const MAP = { x: 640, w: 210 } as const;
+const MAP = { x: 640, w: 240 } as const;
 const RUN = { x: 1090, w: 190 } as const;
 
 // three pull rounds — the source hands out its five values in crates
@@ -44,7 +45,9 @@ const ROUNDS = [
 ] as const;
 
 // the cross-section tower under the rail
-const TOWER = { x: 340, y: 425, w: 600, floorH: 56, gap: 10 } as const;
+const TOWER_FLOOR_H = 52;
+const TOWER_GAP = 8;
+const TOWER = { x: 340, y: 440, w: 600, floorH: TOWER_FLOOR_H, gap: TOWER_GAP } as const;
 const FLOORS = [
   { code: 'Stream<A, E, R>', note: 'values over time, emitted in chunks' },
   { code: 'channel: Channel<NonEmptyReadonlyArray<A>, E, void>', note: 'read input · write output · typed error · typed done' },
@@ -55,7 +58,7 @@ const FLOORS = [
 // gentle pushes only: every station stays inside the 1280×720 stage
 const CAM_LINE: CameraState = { x: 640, y: 300, k: 1.05 };
 const CAM_WIRE: CameraState = { x: 640, y: 300, k: 1.08 };
-const CAM_TOWER: CameraState = { x: 640, y: 440, k: 1.12 };
+const CAM_TOWER: CameraState = { x: 640, y: 390, k: 1.06 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -203,7 +206,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'That is the whole trick. Map, filter, take — every operator you will ever use is just another station bolted into the same pull line.',
   });
-  tl.tween(stageDim, 0.13, { at: 71.4, dur: 1.2, ease: ease.move });
+  tl.tween(stageDim, 0, { at: 71.4, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 72.6, dur: 0.8, ease: ease.enter });
   tl.hold(77.3, 1.5);
 
@@ -242,27 +245,38 @@ function Station({ x, w, title, role, code, u, glow }: {
   glow?: number;
 }) {
   if (u <= 0) return null;
-  const h = 84;
+  const h = 88;
+  const top = STA_Y - h / 2;
+  const lit = glow && glow > 0.05;
   return (
     <g opacity={u}>
-      <text x={x} y={RAIL_Y - h / 2 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+      <text x={x} y={top - 10} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
         {role}
       </text>
+      {/* stalk down to the rail: the station sits beside the line, not on it */}
+      <line
+        x1={x}
+        y1={top + h}
+        x2={x}
+        y2={RAIL_Y - 22}
+        stroke={lit ? colors.ACCENT : colors.GRID}
+        strokeWidth={lit ? 2.5 : 1.5}
+      />
       <rect
         x={x - w / 2}
-        y={RAIL_Y - h / 2}
+        y={top}
         width={w}
         height={h}
         rx={12}
         fill={colors.PANEL}
-        stroke={glow && glow > 0.05 ? colors.ACCENT : colors.GRID}
-        strokeWidth={glow && glow > 0.05 ? 2.5 : 1}
+        stroke={lit ? colors.ACCENT : colors.GRID}
+        strokeWidth={lit ? 2.5 : 1}
       />
-      <text x={x} y={RAIL_Y - 16} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
+      <text x={x} y={top + 28} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
         {title}
       </text>
       {code.map((line, i) => (
-        <text key={i} x={x} y={RAIL_Y + 6 + i * 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+        <text key={i} x={x} y={top + 52 + i * 20} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
           {line}
         </text>
       ))}
@@ -319,7 +333,7 @@ function Pulse({ u }: { u: number }) {
     <g>
       <circle cx={x} cy={WIRE_Y} r={7} fill={colors.WARM} opacity={0.95} />
       <circle cx={x} cy={WIRE_Y} r={13} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={0.5} />
-      <text x={x} y={WIRE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+      <text x={x} y={WIRE_Y + 28} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
         pull
       </text>
     </g>
@@ -343,6 +357,8 @@ export function Render({ s }: { s: SceneState }) {
   const sealU = s.get(scene.sealU);
   const stageDim = s.get(scene.stageDim);
   const closeU = s.get(scene.closeU);
+  // the source is empty once the last crate has reached the collector
+  const srcEmpty = s.get(scene.cyc3) >= 0.995;
 
   // collected values appear as each cycle completes
   const collected: number[] = [];
@@ -372,31 +388,31 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={pipeU}>
             <line x1={railX0} y1={RAIL_Y} x2={lerp(railX0, railX1, pipeU)} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={2} />
             <line x1={railX1} y1={WIRE_Y} x2={lerp(railX1, railX0, pipeU)} y2={WIRE_Y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="3 7" />
-            <text x={railX0 + 8} y={RAIL_Y - 10} fill={colors.MUTED} fontSize={12}>
+            <text x={railX0 + 8} y={RAIL_Y + 36} fill={colors.MUTED} fontSize={14}>
               chunks ⟶
             </text>
-            <text x={RUN.x - RUN.w / 2 - 16} y={WIRE_Y - 10} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={RUN.x - RUN.w / 2 - 16} y={WIRE_Y - 10} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               ⟵ demand
             </text>
           </g>
 
-          {/* stations */}
+          {/* stations: the source reads "now empty" once its last crate has shipped */}
           <Station
             x={SRC.x}
             w={SRC.w}
             title="source"
             role="makes the values"
-            code={['Stream.fromIterable', '([1, 2, 3, 4, 5])']}
+            code={['Stream.fromIterable', srcEmpty ? 'now empty' : '([1, 2, 3, 4, 5])']}
             u={pipeU}
           />
           <Station x={MAP.x} w={MAP.w} title="map" role="changes each value" code={['Stream.map((n) => n * 10)']} u={pipeU} glow={mapGlow} />
           <Station x={RUN.x} w={RUN.w} title="consumer" role="asks, then collects" code={['Stream.runCollect']} u={runU} />
 
-          {/* busy chip on the consumer */}
+          {/* busy chip on the consumer, hung under its stalk */}
           {busyU > 0 && (
             <g opacity={busyU}>
-              <rect x={RUN.x - 70} y={RAIL_Y - 72} width={140} height={24} rx={12} fill={colors.BG} stroke={colors.WARM} />
-              <text x={RUN.x} y={RAIL_Y - 55} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+              <rect x={RUN.x - 84} y={STA_Y + 52} width={168} height={24} rx={12} fill={colors.BG} stroke={colors.WARM} />
+              <text x={RUN.x} y={STA_Y + 68} textAnchor="middle" fill={colors.WARM} fontSize={13}>
                 busy — not asking
               </text>
             </g>
@@ -429,7 +445,7 @@ export function Render({ s }: { s: SceneState }) {
                 y={RAIL_Y + 4}
                 textAnchor="middle"
                 fill={colors.WARM}
-                fontSize={12}
+                fontSize={14}
                 fontFamily="monospace"
                 fontWeight={700}
               >
@@ -442,20 +458,20 @@ export function Render({ s }: { s: SceneState }) {
           {runU > 0 && (
             <g opacity={runU}>
               <rect
-                x={RUN.x - 88}
-                y={RAIL_Y + 64}
-                width={176}
-                height={40}
+                x={RUN.x - 100}
+                y={RAIL_Y + 26}
+                width={200}
+                height={32}
                 rx={8}
                 fill={colors.PANEL}
                 stroke={sealU > 0.5 ? colors.POSITIVE : colors.GRID}
                 strokeWidth={sealU > 0.5 ? 2 : 1}
               />
-              <text x={RUN.x} y={RAIL_Y + 89} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              <text x={RUN.x} y={RAIL_Y + 47} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 {collected.length ? `[${collected.join(', ')}]` : '[ ]'}
               </text>
               {sealU > 0 && (
-                <text x={RUN.x} y={RAIL_Y + 122} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={sealU}>
+                <text x={RUN.x} y={RAIL_Y + 96} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={sealU}>
                   ✓ complete
                 </text>
               )}
@@ -465,7 +481,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the cross-section tower */}
           {towerU > 0 && (
             <g opacity={towerU}>
-              <text x={TOWER.x} y={TOWER.y - 14} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+              <text x={TOWER.x} y={TOWER.y - 12} fill={colors.MUTED} fontSize={14} fontStyle="italic">
                 inside the machine
               </text>
               {FLOORS.map((f, i) => {
@@ -473,7 +489,7 @@ export function Render({ s }: { s: SceneState }) {
                 const hi = Math.round(floorHi) === i + 1;
                 const u = clamp01(towerU * 3 - i);
                 return (
-                  <g key={i} opacity={u * (hi ? 1 : 0.5)}>
+                  <g key={i} opacity={u * (hi ? 1 : 0.8)}>
                     <rect
                       x={TOWER.x}
                       y={y}
@@ -484,10 +500,10 @@ export function Render({ s }: { s: SceneState }) {
                       stroke={hi ? colors.ACCENT : colors.GRID}
                       strokeWidth={hi ? 2.5 : 1}
                     />
-                    <text x={TOWER.x + 18} y={y + 24} fill={hi ? colors.ACCENT : colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                    <text x={TOWER.x + 18} y={y + 22} fill={hi ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily="monospace">
                       {f.code}
                     </text>
-                    <text x={TOWER.x + 18} y={y + 43} fill={colors.MUTED} fontSize={12}>
+                    <text x={TOWER.x + 18} y={y + 41} fill={colors.MUTED} fontSize={13}>
                       {f.note}
                     </text>
                   </g>
@@ -496,11 +512,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* done-in-the-error-channel callout on the Pull floor */}
               {Math.round(floorHi) === 3 && (
                 <g>
-                  <rect x={TOWER.x + TOWER.w + 14} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 6} width={176} height={50} rx={8} fill={colors.BG} stroke={colors.WARM} />
-                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 25} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                  <rect x={TOWER.x + TOWER.w + 14} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 1} width={176} height={50} rx={8} fill={colors.BG} stroke={colors.WARM} />
+                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 22} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                     Cause.Done
                   </text>
-                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 43} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 41} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     end rides the error rail
                   </text>
                 </g>

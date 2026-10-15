@@ -40,6 +40,8 @@ export const NOTES: Note[] = [
 // arrival order from three relays — deliberately not chronological.
 export const ARRIVAL = [4, 2, 9, 0, 7, 1, 6, 3, 8, 5];
 const arrivalIdx = (id: number) => ARRIVAL.indexOf(id);
+// fade-in progress; the window is wide enough that the last arrival still reaches full opacity
+const appearOf = (id: number, bagU: number) => clamp01(bagU * 6 - arrivalIdx(id) * 0.5);
 
 // scattered start positions: a fixed two-row grid, clear of each other and of
 // the caption band in both the bag and tree camera framings
@@ -61,7 +63,8 @@ const NODE_COLOR = [
 const SORTED = [...NOTES].sort((a, b) => (a.t < b.t ? -1 : 1));
 // stage-space row, kept above the caption band (y > 630 is covered by the pill)
 const STRIP_Y = 560;
-const stripX = (rank: number) => 200 + rank * 98;
+// starts right of the orphan's column (x≈300) so the two never touch
+const stripX = (rank: number) => 390 + rank * 88;
 
 const CAM_BAG: CameraState = { x: 640, y: 430, k: 1.15 };
 const CAM_TREE: CameraState = { x: 630, y: 300, k: 1.12 };
@@ -164,7 +167,7 @@ const scene = buildScene();
 function notePos(id: number, bagU: number, placeU: number): { x: number; y: number; waiting: boolean } {
   const note = NOTES[id];
   const k = arrivalIdx(id);
-  const appearU = clamp01(bagU * NOTES.length * 0.5 - k * 0.5);
+  const appearU = appearOf(id, bagU);
   const start = SCATTER[id];
   if (appearU <= 0) return { x: start.x, y: start.y, waiting: false };
   const snapU = clamp01(placeU * NOTES.length - k);
@@ -216,20 +219,19 @@ function Frame({ s }: { s: SceneState }) {
                 <line
                   key={n.id}
                   x1={p.x} y1={p.y + 16} x2={n.x} y2={n.y - 16}
-                  stroke={colors.GRID} strokeWidth={1.6} opacity={u}
+                  stroke={colors.MUTED} strokeWidth={1.6} opacity={u * 0.6}
                 />
               );
             })}
 
             {/* notes */}
             {NOTES.map((n) => {
-              const k = arrivalIdx(n.id);
-              const appearU = clamp01(bagU * NOTES.length * 0.5 - k * 0.5);
+              const appearU = appearOf(n.id, bagU);
               if (appearU <= 0) return null;
               const pos = notePos(n.id, bagU, placeU);
               const snapped = (n.id === 9
                 ? clamp01(placeU * NOTES.length - arrivalIdx(6) - 0.6)
-                : clamp01(placeU * NOTES.length - k)) >= 1;
+                : clamp01(placeU * NOTES.length - arrivalIdx(n.id))) >= 1;
               return (
                 <g key={n.id} opacity={appearU}>
                   <circle cx={pos.x} cy={pos.y} r={16} fill={colors.PANEL} stroke={NODE_COLOR[n.id]} strokeWidth={2} />
@@ -242,7 +244,12 @@ function Frame({ s }: { s: SceneState }) {
                     </text>
                   )}
                   {snapped && n.parent !== null && n.id !== 9 && (
-                    <text x={pos.x + 20} y={pos.y - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={0.8}>
+                    // the parent's edge enters from above, so the tag sits level with the node on the far side
+                    <text
+                      x={pos.x + (NOTES[n.parent].x < n.x ? 20 : -20)} y={pos.y + 5}
+                      textAnchor={NOTES[n.parent].x < n.x ? 'start' : 'end'}
+                      fill={colors.MUTED} fontSize={13} fontFamily="monospace"
+                    >
                       reply
                     </text>
                   )}
@@ -268,6 +275,9 @@ function Frame({ s }: { s: SceneState }) {
               <text x={1090} y={202} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 1 thread
               </text>
+              <text x={1090} y={230} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                rebuilt from NIP-10 markers
+              </text>
             </g>
           )}
         </Camera>
@@ -275,7 +285,7 @@ function Frame({ s }: { s: SceneState }) {
         {/* the markerless strip — stage space, so it sits above the caption band */}
         {stripU > 0 && (
           <g opacity={stripU}>
-            <text x={200} y={STRIP_Y - 26} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+            <text x={stripX(0) - 13} y={STRIP_Y - 26} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               without markers: sort by created_at and hope
             </text>
             {SORTED.map((n, rank) => {
@@ -284,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
               return (
                 <g key={n.id} opacity={u}>
                   <circle cx={stripX(rank)} cy={STRIP_Y} r={13} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-                  <text x={stripX(rank)} y={STRIP_Y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={stripX(rank)} y={STRIP_Y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                     {n.t.slice(3)}
                   </text>
                   {rank > 0 && (

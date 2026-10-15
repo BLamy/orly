@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -62,19 +62,19 @@ function Frame({ s }: { s: SceneState }) {
           {/* axes */}
           <g opacity={curveU}>
             <line x1={PX0} y1={PY0} x2={PX1} y2={PY0} stroke={colors.GRID} />
-            <text x={PX1} y={PY0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+            <text x={PX1} y={PY0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               model ability →
             </text>
-            <text x={PX0 - 14} y={py(1) - 8} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+            <text x={PX0 + 6} y={py(1) - 10} fill={colors.MUTED} fontSize={14}>
               expected score
             </text>
             {[0, 0.5, 1].map((v) => (
-              <text key={v} x={PX0 - 12} y={py(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text key={v} x={PX0 - 12} y={py(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 {Math.round(v * 100)}
               </text>
             ))}
             <line x1={PX0} y1={py(1)} x2={PX1} y2={py(1)} stroke={colors.GRID} strokeDasharray="4 8" opacity={0.6} />
-            <text x={PX0 + 6} y={py(0) - 8} fill={colors.MUTED} fontSize={12.5}>
+            <text x={PX0 + 6} y={py(0) - 8} fill={colors.MUTED} fontSize={13}>
               300 seeded items · score = mean σ(1.7(a−b))
             </text>
           </g>
@@ -87,17 +87,18 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={px(aB)} y1={py(sB)} x2={px(aB)} y2={PY0} stroke={colors.POSITIVE} strokeDasharray="3 5" opacity={0.5} />
               <circle cx={px(aA)} cy={py(sA)} r={9} fill={colors.WARM} />
               <circle cx={px(aB)} cy={py(sB)} r={9} fill={colors.POSITIVE} />
-              <text x={px(aA)} y={py(sA) + 30} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+              {/* labels sit off the dashed drop-lines and clear of the curve */}
+              <text x={px(aA) + 12} y={py(sA) + 28} textAnchor="start" fill={colors.WARM} fontSize={14}>
                 model A
               </text>
-              <text x={px(aB)} y={py(sB) - 18} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
+              <text x={px(aB) - 6} y={py(sB) - 26} textAnchor="end" fill={colors.POSITIVE} fontSize={14}>
                 model B (+0.5 ability)
               </text>
               {/* gap bracket */}
               <line x1={px(aB) + 34} y1={py(sA)} x2={px(aB) + 34} y2={py(sB)} stroke={colors.TEXT} strokeWidth={2} />
               <line x1={px(aB) + 28} y1={py(sA)} x2={px(aB) + 40} y2={py(sA)} stroke={colors.TEXT} strokeWidth={2} />
               <line x1={px(aB) + 28} y1={py(sB)} x2={px(aB) + 40} y2={py(sB)} stroke={colors.TEXT} strokeWidth={2} />
-              <text x={px(aB) + 48} y={(py(sA) + py(sB)) / 2 + 5} fill={gapPts > 5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={15} fontWeight={600}>
+              <text x={px(aB) + 48} y={py(sA) + 26} fill={gapPts > 5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={15} fontWeight={600}>
                 {`gap ${gapPts.toFixed(1)} pts`}
               </text>
             </g>
@@ -113,12 +114,12 @@ function Frame({ s }: { s: SceneState }) {
             public test set (year N)
           </text>
           <rect x={140} y={420} width={1000} height={170} rx={14} fill={colors.PANEL} opacity={0.5} stroke={colors.GRID} />
-          <text x={160} y={448} fill={colors.MUTED} fontSize={14.5}>
+          <text x={1120} y={448} textAnchor="end" fill={colors.MUTED} fontSize={14.5}>
             next crawl → training corpus (year N+1)
           </text>
           {LEAK_DOTS.map((d, i) => {
             const u = clamp01(leakDriftU * 1.5 - (i % 9) * 0.06);
-            const y = d.y0 + d.dy * u;
+            const y = d.y0 + (d.y1 - d.y0) * u;
             const inCorpus = y > 420;
             return <circle key={i} cx={d.x0} cy={y} r={6} fill={inCorpus ? colors.NEGATIVE : colors.WARM} opacity={0.85} />;
           })}
@@ -131,13 +132,13 @@ function Frame({ s }: { s: SceneState }) {
               <text x={700} y={218} fill={colors.POSITIVE} fontSize={14}>
                 canary strings — BIG-bench canary GUID
               </text>
-              <text x={700} y={246} fill={colors.MUTED} fontSize={13}>
+              <text x={700} y={246} fill={colors.MUTED} fontSize={14}>
                 in every eval file: filterable, probeable
               </text>
               <text x={700} y={282} fill={colors.POSITIVE} fontSize={14}>
                 n-gram overlap audits of training corpora
               </text>
-              <text x={700} y={310} fill={colors.MUTED} fontSize={13}>
+              <text x={700} y={310} fill={colors.MUTED} fontSize={14}>
                 (GPT-4 / Llama reports ship these)
               </text>
             </g>
@@ -155,10 +156,10 @@ function Frame({ s }: { s: SceneState }) {
           {['lab A — tuned scaffold', 'lab B — tuned data mix', 'lab C — tuned retries'].map((t, i) => (
             <g key={t}>
               <rect x={216} y={192 + i * 54} width={368} height={40} rx={9} fill={colors.BG} stroke={colors.GRID} />
-              <text x={232} y={218 + i * 54} fill={colors.MUTED} fontSize={13.5}>
+              <text x={232} y={218 + i * 54} fill={colors.MUTED} fontSize={14}>
                 {t}
               </text>
-              <text x={568} y={218 + i * 54} textAnchor="end" fill={colors.WARM} fontSize={14} fontWeight={600}>
+              <text x={568} y={218 + i * 54} textAnchor="end" fill={colors.WARM} fontSize={15} fontWeight={600}>
                 {[92.1, 91.4, 90.8][i]}
               </text>
             </g>
@@ -166,34 +167,36 @@ function Frame({ s }: { s: SceneState }) {
           <text x={216} y={400} fill={colors.NEGATIVE} fontSize={14}>
             optimization pressure → the metric, not the capability
           </text>
-          <rect x={670} y={150} width={440} height={230} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.NEGATIVE} />
-          <text x={696} y={188} fill={colors.TEXT} fontSize={15.5} fontWeight={650}>
+          {/* audit card: same top and bottom as the leaderboard */}
+          <rect x={670} y={130} width={440} height={330} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.NEGATIVE} />
+          <text x={696} y={168} fill={colors.TEXT} fontSize={16} fontWeight={650}>
             SWE-bench+ audit (2024)
           </text>
-          <text x={696} y={230} fill={colors.NEGATIVE} fontSize={22} fontWeight={700}>
+          <text x={696} y={232} fill={colors.NEGATIVE} fontSize={40} fontWeight={700}>
             32.7%
           </text>
-          <text x={696} y={262} fill={colors.MUTED} fontSize={14}>
+          {/* the share of screened passing patches, drawn as a bar */}
+          <rect x={696} y={252} width={388} height={12} rx={6} fill={colors.GRID} />
+          <rect x={696} y={252} width={388 * 0.327} height={12} rx={6} fill={colors.NEGATIVE} />
+          <text x={696} y={296} fill={colors.MUTED} fontSize={14}>
             of screened passing patches: solution was
           </text>
-          <text x={696} y={286} fill={colors.MUTED} fontSize={14}>
+          <text x={696} y={320} fill={colors.MUTED} fontSize={14}>
             already in the issue text or comments
           </text>
-          <text x={696} y={330} fill={colors.WARM} fontSize={13.5}>
+          <text x={696} y={400} fill={colors.WARM} fontSize={14}>
             "solution leakage" — right answer, wrong skill
           </text>
         </g>
       )}
 
-      {/* screen-fixed gap math */}
-      <MathLabel
-        tex={`\\Delta_{mid} = ${GAP_MID.toFixed(1)}\\;\\text{pts}\\quad \\Delta_{ceil} = ${GAP_CEIL.toFixed(1)}\\;\\text{pts}`}
-        x={950}
-        y={80}
-        fontSize={18}
-        color={colors.WARM}
-        opacity={probeU * curveOpacity * dimU}
-      />
+      {/* screen-fixed gap readout */}
+      <text x={1240} y={566} textAnchor="end" fill={colors.WARM} fontSize={18} opacity={probeU * curveOpacity * dimU}>
+        Δ<tspan fontSize={13} dy={4}>mid</tspan>
+        <tspan dy={-4}>{` = ${GAP_MID.toFixed(1)} pts     Δ`}</tspan>
+        <tspan fontSize={13} dy={4}>ceil</tspan>
+        <tspan dy={-4}>{` = ${GAP_CEIL.toFixed(1)} pts`}</tspan>
+      </text>
 
       {/* clean ending card */}
       {endU > 0 && (

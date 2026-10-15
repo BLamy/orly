@@ -25,8 +25,8 @@ const NOTE = { x: 300, y: 340, w: 680, h: 160 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_STAMP: CameraState = { x: 560, y: 280, k: 1.12 };
-const CAM_CTX: CameraState = { x: 380, y: 320, k: 1.22 };
-const CAM_BOARD: CameraState = { x: 780, y: 400, k: 1.1 };
+const CAM_CTX: CameraState = { x: 550, y: 330, k: 1.2 };
+const CAM_BOARD: CameraState = { x: 630, y: 377, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 0.95 };
 
 type SiteKind = 'safe' | 'id' | 'life';
@@ -161,7 +161,7 @@ const scene = buildScene();
 function ContextBox({ u, idField, hazard, dim }: { u: number; idField: number; hazard: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.85 * clamp01(dim));
+  const a = uu * (1 - 0.92 * clamp01(dim));
   const { x, y, w, h } = CTX;
   const f = clamp01(idField);
   const hz = clamp01(hazard);
@@ -171,12 +171,12 @@ function ContextBox({ u, idField, hazard, dim }: { u: number; idField: number; h
       <text x={x + 18} y={y + 28} fill={colors.TEXT} fontSize={13.5} fontWeight={700} fontFamily={mono}>
         v8 Context
       </text>
-      <text x={x + 18} y={y + 50} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x + 18} y={y + 50} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
         ctx=1018006fffd1
       </text>
       {/* interior fields */}
       <rect x={x + 18} y={y + 64} width={w - 36} height={26} rx={6} fill={colors.BG} opacity={0.7} />
-      <text x={x + 28} y={y + 82} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x + 28} y={y + 82} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
         map word · scope info · …
       </text>
       <g opacity={f}>
@@ -187,8 +187,8 @@ function ContextBox({ u, idField, hazard, dim }: { u: number; idField: number; h
         </text>
       </g>
       {hz > 0 && (
-        <text x={x + 18} y={y + h + 24} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono} opacity={hz}>
-          ⚠ deref — faults if this memory is garbage
+        <text x={x + 18} y={y + 152} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono} opacity={hz}>
+          ⚠ deref faults if memory is garbage
         </text>
       )}
     </g>
@@ -199,7 +199,7 @@ function ContextBox({ u, idField, hazard, dim }: { u: number; idField: number; h
 function Stamper({
   stamp, badge, safeArrow, idArrow, idOn, hazard, dim,
 }: { stamp: number; badge: number; safeArrow: number; idArrow: number; idOn: number; hazard: number; dim: number }) {
-  const a = 1 - 0.85 * clamp01(dim);
+  const a = 1 - 0.92 * clamp01(dim);
   const su = clamp01(stamp);
   const bu = clamp01(badge);
   const sa = clamp01(safeArrow);
@@ -211,7 +211,7 @@ function Stamper({
       {su > 0 && (
         <g transform={`translate(${STAMP.x}, ${STAMP.y + (1 - su) * 10})`} opacity={su}>
           <rect width={STAMP.w} height={STAMP.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={18} y={24} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+          <text x={18} y={24} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
             api.cc — one shared token
           </text>
           <text x={18} y={42} fill={colors.TEXT} fontSize={12.5} fontWeight={700} fontFamily={mono}>
@@ -222,7 +222,7 @@ function Stamper({
       {bu > 0 && (
         <g transform={`translate(${BADGE.x}, ${BADGE.y + (1 - bu) * 10})`} opacity={bu}>
           <rect width={BADGE.w} height={BADGE.h} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
-          <text x={18} y={26} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+          <text x={18} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
             printed into the log
           </text>
           <text x={18} y={47} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
@@ -242,8 +242,8 @@ function Stamper({
             stroke={colors.POSITIVE}
             strokeWidth={2}
           />
-          <text x={BADGE.x - 30} y={BADGE.y + BADGE.h / 2 - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
-            pointer only — never dereferenced
+          <text x={BADGE.x} y={BADGE.y - 10} fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+            ← pointer only — never dereferenced
           </text>
         </g>
       )}
@@ -258,7 +258,7 @@ function Stamper({
             strokeDasharray="230"
             strokeDashoffset={230 * (1 - ia)}
           />
-          <text x={BADGE.x - 26} y={CTX.y + 168} textAnchor="end" fill={hz > 0.3 ? colors.NEGATIVE : colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <text x={BADGE.x - 26} y={CTX.y + CTX.h + 22} textAnchor="end" fill={hz > 0.3 ? colors.NEGATIVE : colors.SECONDARY} fontSize={12} fontWeight={700} fontFamily={mono}>
             includeId — reads inside the object
           </text>
         </g>
@@ -271,25 +271,25 @@ function Stamper({
 function EmitBoard({ u, n, dim }: { u: number; n: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.85 * clamp01(dim));
+  const a = uu * (1 - 0.92 * clamp01(dim));
   const { x, y, w, rowH } = BOARD;
   const kindColor = (k: SiteKind) => (k === 'safe' ? colors.POSITIVE : k === 'id' ? colors.SECONDARY : colors.WARM);
   const h = SITES.length * rowH + 46;
   return (
     <g opacity={a}>
       <rect x={x} y={y} width={w} height={h * uu} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={x + 18} y={y + 28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x + 18} y={y + 28} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         where the stamp is printed
       </text>
       {SITES.map((site, i) => {
+        // every site is listed from the start; each one lights up as it is reached
         const lu = clamp01(n - i);
-        if (lu <= 0) return null;
         const c = kindColor(site.kind);
         const ry = y + 44 + i * rowH;
         return (
-          <g key={i} opacity={lu}>
+          <g key={i} opacity={0.5 + 0.5 * lu}>
             <circle cx={x + 26} cy={ry + 8} r={5} fill={c} />
-            <text x={x + 42} y={ry + 13} fill={i < 2 ? colors.TEXT : colors.MUTED} fontSize={12.5} fontWeight={i < 2 ? 700 : 400} fontFamily={mono}>
+            <text x={x + 42} y={ry + 13} fill={i < 2 ? colors.TEXT : colors.MUTED} fontSize={14} fontWeight={i < 2 ? 700 : 400} fontFamily={mono}>
               {site.label}
             </text>
           </g>

@@ -8,8 +8,8 @@ const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const DOTS = Array.from({ length: 64 }, (_, i) => ({
   group: Math.floor(i / 8),
   member: i % 8,
-  x: 180 + (i % 8) * 48,
-  y: 190 + Math.floor(i / 8) * 40,
+  x: 159 + (i % 8) * 48,
+  y: 208 + Math.floor(i / 8) * 38,
   delay: i / 64,
 }));
 const GROUP_COLORS = [colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE];
@@ -91,19 +91,24 @@ export function Render({ s }: { s: SceneState }) {
     <g opacity={1 - close}>
       <text x="640" y="72" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">the execution wall</text>
       <g opacity={s.get(scene.questionU)}>
-        <rect x="70" y="102" width="430" height="58" rx="20" fill="#10243a" stroke={colors.ACCENT} strokeWidth="2.5" />
-        <text x="285" y="137" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>research question → 8 groups × 8 trajectories</text>
+        <rect x="112" y="102" width="430" height="58" rx="20" fill="#10243a" stroke={colors.ACCENT} strokeWidth="2.5" />
+        <text x="327" y="137" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>research question → 8 groups × 8 trajectories</text>
       </g>
       <g opacity={s.get(scene.questionU) * (1 - s.get(scene.fieldU))}>
-        {DOTS.slice(0, 8).map((d) => <path key={d.member} d={`M285 160 L${d.x} 186`} stroke={colors.ACCENT} strokeWidth="2" strokeDasharray="5 6" fill="none" />)}
+        {DOTS.filter((d) => d.member === 0).map((d) => <path key={d.group} d={`M327 160 L${d.x} ${d.y - 8}`} stroke={colors.ACCENT} strokeWidth="1.5" strokeOpacity="0.6" fill="none" />)}
       </g>
       <rect x="92" y="178" width="470" height="366" rx="30" fill="#101827" stroke={colors.GRID} strokeWidth="2" opacity={s.get(scene.fieldU)} />
-      <text x="327" y="526" textAnchor="middle" fill={colors.MUTED} fontSize="13" opacity={s.get(scene.fieldU)}>batched model generation</text>
+      <text x="327" y="528" textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity={0.75 * s.get(scene.fieldU)}>batched model generation</text>
+      {DOTS.map((d) => {
+        // The generator keeps running: a dim lattice of slots lights in a rolling wave, so the panel never goes empty.
+        const lit = 0.5 + 0.5 * Math.sin(pulse * Math.PI * 10 - d.member * 0.9 - d.group * 0.45);
+        return <circle key={`slot-${d.group}-${d.member}`} cx={d.x} cy={d.y} r={4 + lit * 1.5} fill={GROUP_COLORS[d.group % 4]} opacity={s.get(scene.fieldU) * (0.3 + 0.3 * lit)} />;
+      })}
       <g opacity={s.get(scene.wallU)}>
         <rect x="690" y="118" width="500" height="445" rx="32" fill="#221b13" stroke={colors.WARM} strokeWidth="3" />
         <text x="940" y="102" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>isolated sandbox execution</text>
         {[0, 1, 2].map((i) => <rect key={i} x={1128} y={165 + i * 105} width="36" height="72" rx="9" fill="#463619" stroke={colors.WARM} />)}
-        <text x="1146" y="500" textAnchor="middle" fill={colors.MUTED} fontSize="12">3 fixed slots</text>
+        <text x="1146" y="500" textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity="0.75">3 fixed slots</text>
       </g>
       {DOTS.map((d, i) => {
         const u = clamp01(s.get(scene.fieldU) * 1.7 - d.delay * 0.7);
@@ -117,7 +122,7 @@ export function Render({ s }: { s: SceneState }) {
           {cross > 0.96 && <Hourglass x={0} y={0} u={s.get(scene.timerU)} i={i} />}
         </g>;
       })}
-      {s.get(scene.batchU) > 0 && <line x1={120 + 420 * s.get(scene.batchU)} y1="190" x2={120 + 420 * s.get(scene.batchU)} y2="505" stroke={colors.ACCENT} strokeWidth="12" opacity={0.10 + 0.08 * Math.sin(pulse * Math.PI * 12)} />}
+      {s.get(scene.batchU) > 0 && s.get(scene.batchU) < 1 && <line x1={110 + 440 * s.get(scene.batchU)} y1="196" x2={110 + 440 * s.get(scene.batchU)} y2="486" stroke={colors.ACCENT} strokeWidth="3" opacity={0.45} />}
       <g opacity={queue}>
         <rect x="730" y="538" width="420" height="10" rx="5" fill="#321822" />
         <rect x="730" y="538" width={420 * queue} height="10" rx="5" fill={colors.NEGATIVE} />
@@ -125,8 +130,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
       <g opacity={s.get(scene.configU)}>
         <rect x="88" y="558" width="475" height="40" rx="16" fill="#151f31" stroke={colors.SECONDARY} />
-        <text x="326" y="576" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>group_size: 8 · train_batch_size: 8 · max_turns: 4</text>
-        <text x="326" y="592" textAnchor="middle" fill={colors.MUTED} fontSize="12">wmrl_9b.yaml</text>
+        <text x="326" y="576" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>group_size: 8 · train_batch_size: 8 · max_turns: 4</text>
+        <text x="326" y="593" textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity="0.75">wmrl_9b.yaml</text>
       </g>
       <g opacity={s.get(scene.compareU)}>
         <text x="940" y="578" textAnchor="middle" fill={colors.TEXT} fontSize="14">real execution · 1,174 GPU-hours</text>
@@ -138,9 +143,9 @@ export function Render({ s }: { s: SceneState }) {
       <rect x="205" y="145" width="870" height="390" rx="48" fill={colors.BG} stroke={colors.ACCENT} strokeWidth="4" />
       <text x="640" y="260" textAnchor="middle" fill={colors.TEXT} fontSize="44" fontWeight="850">can the experiment be imagined?</text>
       <g transform="translate(365 365)"><circle r="48" fill="#10243a" stroke={colors.ACCENT} strokeWidth="4" /><text y="6" textAnchor="middle" fill={colors.ACCENT} fontSize="14">generate</text></g>
-      <path d="M420 365 H560" stroke={colors.MUTED} strokeWidth="5" />
+      <path d="M421 365 H570" stroke={colors.MUTED} strokeWidth="5" />
       <g transform="translate(640 365)"><circle r="62" fill="#251d34" stroke={colors.SECONDARY} strokeWidth="4" /><text y="6" textAnchor="middle" fill={colors.SECONDARY} fontSize="16">predict?</text></g>
-      <path d="M705 365 H855" stroke={colors.MUTED} strokeWidth="5" />
+      <path d="M710 365 H859" stroke={colors.MUTED} strokeWidth="5" />
       <g transform="translate(915 365)"><circle r="48" fill="#2c2111" stroke={colors.WARM} strokeWidth="4" /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="14">execute</text></g>
       <text x="640" y="474" textAnchor="middle" fill={colors.MUTED} fontSize="17">keep a thin trusted stream of real outcomes</text>
     </g>

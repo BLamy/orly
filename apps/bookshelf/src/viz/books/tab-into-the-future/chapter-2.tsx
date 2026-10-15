@@ -25,9 +25,9 @@ export function Render({s}:{s:SceneState}){
     <line x1={80} x2={866} y1={220} y2={220} stroke={C.model} strokeWidth={2}/><line x1={80} x2={866} y1={400} y2={400} stroke={C.good} strokeWidth={2} opacity={separate}/>
     {events.map((e,i)=>{
       const cy=lerp(220,e.source==='human'?400:220,separate),u=i<2?on(p,i*.5):on(p,2);
-      return <g key={e.label} opacity={u}><circle cx={x(i)} cy={cy} r={13} fill={e.color}/><Label x={x(i)!} y={cy+43} anchor='middle' size={14}>{e.label}</Label><Label x={x(i)!} y={cy+68} anchor='middle' size={12} color={C.muted}>{e.source==='extension'?'exposure / system origin':'needs interpretation'}</Label></g>;
+      return <g key={e.label} opacity={u}><circle cx={x(i)} cy={cy} r={13} fill={e.color}/><Label x={x(i)!} y={cy+43} anchor='middle' size={14}>{e.label}</Label><Label x={x(i)!} y={cy+68} anchor='middle' size={13} color={C.muted}>{e.source==='extension'?'exposure / system origin':'needs interpretation'}</Label></g>;
     })}
-    <g opacity={on(p,1)*(1-checkpoint)}><path d='M392,206 Q640,92 1070,185' fill='none' stroke={C.bad} strokeWidth={2} strokeDasharray='6 5'/><Chip x={533} y={131} w={307} text='× focus is not a positive label' color={C.bad}/></g>
+    <g opacity={on(p,1)*(1-checkpoint)}><path d='M392,206 Q470,146 533,146' fill='none' stroke={C.bad} strokeWidth={2} strokeDasharray='6 5'/><path d='M840,146 L916,146' fill='none' stroke={C.bad} strokeWidth={2} strokeDasharray='6 5'/><path d='M906,140 L916,146 L906,152' fill='none' stroke={C.bad} strokeWidth={2}/><Chip x={533} y={131} w={307} text='× focus is not a positive label' color={C.bad}/></g>
     <Panel x={920} y={131} w={291} h={213} title='Feedback review buffer' color={C.pending}>
       <Label x={940} y={192} size={16}>{qualify>.5?'Meaningful interaction':'No automatic positives'}</Label><Label x={940} y={231} size={15}>each label: goal / source / outcome</Label><Label x={940} y={273} color={C.pending} size={14}>{caution>.5?'Acceptance can be ambiguous':'Keep event origins distinct'}</Label>
       <Label x={940} y={315} size={14} color={C.muted}>Versioned · controlled collection</Label>
@@ -36,8 +36,11 @@ export function Render({s}:{s:SceneState}){
     <Panel x={921} y={375} w={290} h={146} title='Candidate checkpoint' color={C.good} opacity={checkpoint}>
       <Label x={942} y={433} size={15}>Train → evaluate → compare</Label><Label x={942} y={477} size={16} color={C.pending}>Rollback stays available</Label>
     </Panel>
-    <g opacity={controls}><Chip x={100} y={504} w={205} text='Recording control' color={C.observation}/><Chip x={359} y={504} w={205} text='Training control' color={C.model}/><Chip x={618} y={504} w={205} text='Model-use control' color={C.good}/></g>
-    <Label x={640} y={563} anchor='middle' size={15} color={C.muted}>Personalization follows human evidence, with review and provenance</Label>
+    <g opacity={controls}><Chip x={80} y={504} w={256} text='Recording control' color={C.observation}/><Chip x={352} y={504} w={256} text='Training control' color={C.model}/><Chip x={624} y={504} w={256} text='Model-use control' color={C.good}/></g>
+    <Panel x={920} y={530} w={291} h={94} title='Worked record' color={C.observation} opacity={qualify}>
+      <Label x={938} y={580} size={14}>Tab accepted · source: extension</Label><Label x={938} y={597} size={14}>dismissed · source: human</Label><Label x={938} y={614} size={14} color={C.pending}>label: ambiguous, not positive</Label>
+    </Panel>
+    <Label x={80} y={563} size={15} color={C.muted}>Personalization follows human evidence, with review and provenance</Label>
   </Camera></>;
 }
 export const vizScene=()=>scene;

@@ -53,6 +53,11 @@ const URL_Y = 120;
 // URL box sits inside the pay-response camera view (world x ≈ 189–1331 at CAM_RESP).
 const URL_X = 200;
 const URL_W = 600;
+// The well-known URL split into its two parts: the domain (becomes the server)
+// and the name (becomes the path). URL_CHAR_W is the monospace advance at 14px.
+const DOMAIN_PART = 'wallet.example';
+const NAME_PART = 'derek';
+const URL_CHAR_W = 14 * 0.602;
 
 const CAM_PROFILE: CameraState = { x: 380, y: 300, k: 1.25 };
 const CAM_RESP: CameraState = { x: 760, y: 330, k: 1.12 };
@@ -190,6 +195,7 @@ export function Render({ s }: { s: SceneState }) {
             reveal={profU}
             focus={ludU > 0 ? ['content'] : undefined}
             focusU={ludU * (1 - 0.6 * urlU)}
+            dim={0.5}
             opacity={1 - respU}
           />
           {ludU > 0 && (
@@ -213,7 +219,16 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={(urlU - 0.8) / 0.2}>
               <rect x={URL_X} y={URL_Y - 24} width={URL_W} height={38} rx={8} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
               <text x={URL_X + 20} y={URL_Y} fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
-                {WELL_KNOWN}
+                {'https://'}
+                <tspan fill={colors.ACCENT}>{DOMAIN_PART}</tspan>
+                {'/.well-known/lnurlp/'}
+                <tspan fill={colors.WARM}>{NAME_PART}</tspan>
+              </text>
+              <text x={URL_X + 20 + (8 + DOMAIN_PART.length / 2) * URL_CHAR_W} y={URL_Y + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+                domain → server
+              </text>
+              <text x={URL_X + 20 + (8 + DOMAIN_PART.length + 20 + NAME_PART.length / 2) * URL_CHAR_W} y={URL_Y + 26} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+                name → path
               </text>
             </g>
           )}
@@ -237,9 +252,10 @@ export function Render({ s }: { s: SceneState }) {
             reveal={respU}
             focus={nostrU > 0 ? ['allowsNostr', 'nostrPubkey'] : undefined}
             focusU={nostrU}
+            dim={0.5}
           />
           {respU > 0 && (
-            <text x={620} y={310} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace" opacity={respU}>
+            <text x={620} y={310} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={respU}>
               pay-request response
             </text>
           )}
@@ -250,7 +266,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {plainU > 0 && (
             <g opacity={plainU}>
-              <text x={620} y={232} fill={colors.MUTED} fontSize={14}>
+              <text x={620} y={232} fill={colors.WARM} fontSize={14}>
                 without allowsNostr:
               </text>
               <text x={620} y={256} fill={colors.TEXT} fontSize={14}>

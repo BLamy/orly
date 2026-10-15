@@ -26,7 +26,6 @@ import type {
   SceneState,
   TimelineOverrides,
 } from '../../core';
-import { Axes } from '../../primitives';
 import overrides from './overrides.json';
 
 // ---------------------------------------------------------------------------
@@ -70,11 +69,12 @@ const TOK_H = 40;
 const STRIP_X = 220;
 const STRIP_Y = 240;
 
-const HIST_X = scaleLinear().domain([-0.5, K + 0.5]).range([760, 1140]);
+const HIST_X = scaleLinear().domain([-0.5, K + 0.5]).range([800, 1160]);
 const HIST_Y = scaleLinear().domain([0, 700]).range([560, 330]);
 
 const CAM_STRIP: CameraState = { x: 560, y: 300, k: 1.25 };
-const CAM_HIST: CameraState = { x: 900, y: 440, k: 1.2 };
+// frames the histogram and the bill side by side (the strip fades out first)
+const CAM_HIST: CameraState = { x: 690, y: 450, k: 1.2 };
 
 interface Scene {
   tl: Timeline;
@@ -213,7 +213,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel stands alone: the chart fades fully out behind it
+  const mainOp = 1 - dimU;
 
   // per-round progress: stripU and verifyU advance by 1 per demo round
   const draftProg = clamp01(stripU - roundIdx); // guesses appearing
@@ -231,9 +232,43 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* the draft strip */}
+          {/* beat 1 — the asymmetry: one parallel check vs one pass per token */}
+          {titleU * clamp01(1 - stripU * 8) > 0 && (
+            <g opacity={titleU * clamp01(1 - stripU * 8)}>
+              <text x={200} y={246} fill={colors.TEXT} fontSize={18}>
+                check 4 tokens: one parallel pass
+              </text>
+              {Array.from({ length: K }, (_, i) => (
+                <g key={`check${i}`}>
+                  <rect x={200 + i * 130} y={266} width={112} height={44} rx={7} fill={colors.POSITIVE} opacity={0.9} />
+                  <text x={200 + i * 130 + 56} y={293} textAnchor="middle" fill={colors.BG} fontSize={14} fontFamily="monospace">
+                    token {i + 1}
+                  </text>
+                </g>
+              ))}
+              <text x={740} y={293} fill={colors.WARM} fontSize={18} fontFamily="monospace" fontWeight={700}>
+                1 pass
+              </text>
+              <text x={200} y={376} fill={colors.TEXT} fontSize={18}>
+                make 4 tokens: four passes, one by one
+              </text>
+              {Array.from({ length: K }, (_, i) => (
+                <g key={`make${i}`}>
+                  <rect x={200 + i * 130} y={396} width={112} height={44} rx={7} fill={colors.ACCENT} opacity={0.9} />
+                  <text x={200 + i * 130 + 56} y={423} textAnchor="middle" fill={colors.BG} fontSize={14} fontFamily="monospace">
+                    pass {i + 1}
+                  </text>
+                </g>
+              ))}
+              <text x={740} y={423} fill={colors.WARM} fontSize={18} fontFamily="monospace" fontWeight={700}>
+                4 passes
+              </text>
+            </g>
+          )}
+
+          {/* the draft strip (fades out once the histogram takes over) */}
           {stripU > 0 && (
-            <g>
+            <g opacity={clamp01(1 - histU * 3)}>
               <text x={STRIP_X} y={STRIP_Y - 66} fill={colors.TEXT} fontSize={16}>
                 round {Math.min(3, roundIdx + 1)} of the simulation — drafter guesses, big model verifies
               </text>
@@ -285,18 +320,18 @@ function Frame({ s }: { s: SceneState }) {
                   <rect
                     x={STRIP_X + accepted * (TOK_W + 12)}
                     y={STRIP_Y + TOK_H + 16}
-                    width={TOK_W + 26}
+                    width={TOK_W + 36}
                     height={TOK_H}
                     rx={7}
                     fill={colors.ACCENT}
                     opacity={0.9}
                   />
                   <text
-                    x={STRIP_X + accepted * (TOK_W + 12) + (TOK_W + 26) / 2}
+                    x={STRIP_X + accepted * (TOK_W + 12) + (TOK_W + 36) / 2}
                     y={STRIP_Y + TOK_H + 16 + TOK_H / 2 + 5}
                     textAnchor="middle"
                     fill={colors.BG}
-                    fontSize={12}
+                    fontSize={14}
                     fontFamily="monospace"
                   >
                     +1 verified
@@ -308,7 +343,7 @@ function Frame({ s }: { s: SceneState }) {
                 tokens banked: {banked} · big-model passes: {Math.min(3, roundIdx + (verifyProg >= 1 ? 1 : 0))}
               </text>
               {bankU > 0 && (
-                <text x={STRIP_X} y={STRIP_Y + 158} fill={colors.MUTED} fontSize={13} opacity={bankU}>
+                <text x={STRIP_X} y={STRIP_Y + 158} fill={colors.MUTED} fontSize={14} opacity={bankU}>
                   runs {DEMO_RUNS.map((a) => `${a} kept`).join(' · ')} — straight from the seeded simulation
                 </text>
               )}
@@ -321,14 +356,29 @@ function Frame({ s }: { s: SceneState }) {
               <text x={HIST_X(-0.5)} y={300} fill={colors.TEXT} fontSize={15}>
                 guesses kept per pass, {ROUNDS.toLocaleString()} rounds
               </text>
-              <Axes
-                x={HIST_X}
-                y={HIST_Y}
-                reveal={histU}
-                xTicks={5}
-                yTicks={4}
-                fontSize={10}
-              />
+              {/* axes drawn here: the shared Axes would cross the y-axis through bar 0 */}
+              {[200, 400, 600].map((v) => (
+                <g key={v}>
+                  <line
+                    x1={HIST_X(-0.5)}
+                    x2={HIST_X(K + 0.5)}
+                    y1={HIST_Y(v)}
+                    y2={HIST_Y(v)}
+                    stroke={colors.GRID}
+                    strokeWidth={1}
+                  />
+                  <text x={HIST_X(-0.5) - 10} y={HIST_Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                    {v}
+                  </text>
+                </g>
+              ))}
+              <line x1={HIST_X(-0.5)} x2={HIST_X(-0.5)} y1={HIST_Y(0)} y2={HIST_Y(700)} stroke={colors.MUTED} strokeWidth={2} />
+              <line x1={HIST_X(-0.5)} x2={HIST_X(K + 0.5)} y1={HIST_Y(0)} y2={HIST_Y(0)} stroke={colors.MUTED} strokeWidth={2} />
+              {HIST.map((_, i) => (
+                <text key={`x${i}`} x={HIST_X(i)} y={HIST_Y(0) + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                  {i}
+                </text>
+              ))}
               {HIST.map((n, i) => {
                 const h = (HIST_Y(0) - HIST_Y(n)) * histU;
                 return (
@@ -342,7 +392,7 @@ function Frame({ s }: { s: SceneState }) {
                       fill={i === K ? colors.POSITIVE : colors.ACCENT}
                       opacity={0.8}
                     />
-                    <text x={HIST_X(i)} y={HIST_Y(0) - h - 8} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={HIST_X(i)} y={HIST_Y(0) - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                       {n}
                     </text>
                   </g>
@@ -353,6 +403,21 @@ function Frame({ s }: { s: SceneState }) {
                   closed form {EXPECTED.toFixed(3)} tok/pass · measured {SIM_MEAN.toFixed(3)}
                 </text>
               )}
+            </g>
+          )}
+
+          {/* the closed form, worked out from the same p and k */}
+          {mathU > 0 && (
+            <g opacity={mathU}>
+              <text x={220} y={300} fill={colors.TEXT} fontSize={16}>
+                expected tokens per pass, p = {P}, k = {K}
+              </text>
+              <text x={220} y={336} fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">
+                {Array.from({ length: K + 1 }, (_, i) => (P ** i).toFixed(3)).join(' + ')}
+              </text>
+              <text x={220} y={368} fill={colors.WARM} fontSize={18} fontFamily="monospace" fontWeight={700}>
+                = {EXPECTED.toFixed(3)} tokens per pass
+              </text>
             </g>
           )}
 
@@ -389,15 +454,15 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
-            Cheap guesses, one expensive check.
+            Speculation stretches each step forward.
           </text>
           <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            2.77 tokens per pass at 70% agreement, ≈ 2× end to end —
+            Batching filled the chip sideways.
           </text>
           <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            and the big model still gets the final word on every token.
+            One lever remains: shrink the weights themselves.
           </text>
         </g>
       )}

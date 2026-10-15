@@ -13,10 +13,11 @@ const PARTITIONS = [
   { label: 'ota_0', w: 210, color: colors.SECONDARY },
   { label: 'ota_1', w: 210, color: colors.POSITIVE },
 ];
+// Segments are copied out of ota_0 (absolute x ≈ 609 = 86 + its centre), then fan out into rows above the bar.
 const SEGMENTS = [
-  { label: '.text', from: 535, to: 760, y: 235, color: colors.ACCENT },
-  { label: '.rodata', from: 535, to: 900, y: 335, color: colors.SECONDARY },
-  { label: '.data', from: 535, to: 1040, y: 435, color: colors.POSITIVE },
+  { label: '.text', from: 609, to: 700, y: 215, color: colors.ACCENT },
+  { label: '.rodata', from: 609, to: 820, y: 290, color: colors.SECONDARY },
+  { label: '.data', from: 609, to: 940, y: 365, color: colors.POSITIVE },
 ];
 
 export function buildScene() {
@@ -83,37 +84,43 @@ function Chip({ x, y, w, label, color, u }: { x: number; y: number; w: number; l
 }
 
 export function Render({ s }: { s: SceneState }) {
-  const main = 1 - 0.9 * s.get(scene.dimU);
+  // Old content fades fully out so the closing panel sits on clean background.
+  const main = 1 - s.get(scene.dimU);
   const flashU = s.get(scene.flashU);
   const scan = s.get(scene.scanU);
-  const selectedX = 494 + 218 * s.get(scene.selectX);
+  // The selector starts on otadata (update metadata) and slides to ota_0 (the first update slot).
+  const selectedX = 152 + 371 * s.get(scene.selectX);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
-    <g opacity={main}><text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>The boot conveyor</text><text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>ROM → second-stage bootloader → selected app image</text></g>
+    <g opacity={main}><text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>The boot conveyor</text><text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>ROM → second-stage bootloader → selected app image</text></g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={main}>
         <Chip x={150} y={225} w={170} label="mask ROM" color={colors.WARM} u={s.get(scene.romU)} />
+        <text x={150} y={292} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={s.get(scene.romU)}>read-only, baked into</text>
+        <text x={150} y={310} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={s.get(scene.romU)}>the silicon</text>
         <path d="M235 225 H350" stroke={colors.ACCENT} strokeWidth={4} opacity={s.get(scene.bootU)} />
         <circle cx={235 + 115 * clamp01(s.get(scene.bootU))} cy={225} r={9} fill={colors.ACCENT} opacity={s.get(scene.bootU)} />
         <Chip x={450} y={225} w={210} label="call_start_cpu0" color={colors.ACCENT} u={s.get(scene.bootU)} />
-        <text x={450} y={284} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={s.get(scene.bootU)}>flash cache: recently read flash, kept in fast RAM</text>
+        <text x={450} y={284} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={s.get(scene.bootU)}>flash cache: recently read flash, kept in fast RAM</text>
+        <Chip x={1040} y={225} w={170} label="app CPU: waiting" color={colors.MUTED} u={s.get(scene.bootU) * (1 - s.get(scene.cpuU))} />
 
         <g opacity={flashU} transform="translate(86 440)">
-          <text x={0} y={-12} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>partition table in external flash</text>
+          <text x={0} y={-12} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>partition table in external flash</text>
           <rect x={0} y={0} width={838} height={82} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          {PARTITIONS.map((p, i) => { const x = PARTITIONS.slice(0, i).reduce((n, q) => n + q.w, 0); return <g key={p.label}><rect x={x} y={0} width={p.w} height={82} fill={p.color} opacity={0.08} stroke={p.color} /><text x={x + p.w / 2} y={68} textAnchor="middle" fill={p.color} fontFamily={MONO} fontSize={13}>{p.label}</text></g>; })}
-          {scan > 0 && <line x1={838 * scan} x2={838 * scan} y1={-8} y2={90} stroke={colors.WARM} strokeWidth={5} />}
-          {s.get(scene.selectX) > 0 && <g transform={`translate(${selectedX} -10)`}><path d="M0 0 l-12 -18 h24z" fill={colors.POSITIVE} /><text x={0} y={-28} textAnchor="middle" fill={colors.POSITIVE} fontFamily={MONO} fontSize={12}>selected</text></g>}
+          {PARTITIONS.map((p, i) => { const x = PARTITIONS.slice(0, i).reduce((n, q) => n + q.w, 0); return <rect key={p.label} x={x} y={0} width={p.w} height={82} fill={p.color} opacity={0.16} stroke={p.color} />; })}
+          {scan > 0 && scan < 1 && <line x1={838 * scan} x2={838 * scan} y1={-8} y2={90} stroke={colors.WARM} strokeWidth={5} />}
+          {PARTITIONS.map((p, i) => { const x = PARTITIONS.slice(0, i).reduce((n, q) => n + q.w, 0); return <text key={p.label} x={x + p.w / 2} y={68} textAnchor="middle" fill={p.color} fontFamily={MONO} fontSize={14}>{p.label}</text>; })}
+          {s.get(scene.selectX) > 0 && <g transform={`translate(${selectedX} -10)`}><path d="M0 0 l-12 -18 h24z" fill={colors.POSITIVE} /><text x={0} y={-28} textAnchor="middle" fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>selected</text></g>}
         </g>
 
         <g opacity={s.get(scene.segmentU)}>
-          {SEGMENTS.map((seg, i) => { const u = clamp01(s.get(scene.segmentU) * 3 - i); const x = seg.from + (seg.to - seg.from) * u; return <g key={seg.label}><path d={`M${seg.from} 445 C${seg.from + 80} 445 ${x - 80} ${seg.y} ${x} ${seg.y}`} fill="none" stroke={seg.color} strokeWidth={3} strokeDasharray="8 6" /><rect x={x - 55} y={seg.y - 23} width={110} height={46} rx={10} fill={colors.PANEL} stroke={seg.color} /><text x={x} y={seg.y + 5} textAnchor="middle" fill={seg.color} fontFamily={MONO} fontSize={13}>{seg.label}</text></g>; })}
+          {SEGMENTS.map((seg, i) => { const u = clamp01(s.get(scene.segmentU) * 3 - i); const x = seg.from + (seg.to - seg.from) * u; return <g key={seg.label}><path d={`M${seg.from} 436 C${seg.from + 80} 436 ${x - 80} ${seg.y} ${x} ${seg.y}`} fill="none" stroke={seg.color} strokeWidth={3} strokeDasharray="8 6" /><rect x={x - 55} y={seg.y - 23} width={110} height={46} rx={10} fill={colors.PANEL} stroke={seg.color} /><text x={x} y={seg.y + 5} textAnchor="middle" fill={seg.color} fontFamily={MONO} fontSize={14}>{seg.label}</text></g>; })}
         </g>
-        <Chip x={1085} y={335} w={190} label="call_start_cpu0" color={colors.POSITIVE} u={s.get(scene.cpuU)} />
-        {s.get(scene.cpuU) > 0 && <text x={1085} y={390} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={s.get(scene.cpuU)}>BSS · cache · MMU · init</text>}
+        <Chip x={1120} y={335} w={190} label="call_start_cpu0" color={colors.POSITIVE} u={s.get(scene.cpuU)} />
+        {s.get(scene.cpuU) > 0 && <text x={1120} y={390} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={s.get(scene.cpuU)}>BSS · cache · MMU · init</text>}
       </g>
     </Camera>
-    {s.get(scene.endU) > 0 && <g opacity={s.get(scene.endU)}><rect x={190} y={235} width={900} height={200} rx={26} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={3} /><text x={640} y={305} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={820}>Reset → selected instructions</text><text x={640} y={355} textAnchor="middle" fill={colors.POSITIVE} fontSize={21}>ROM verifies the path; flash supplies the program.</text><text x={640} y={395} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>bootloader_utility_load_boot_image()</text></g>}
+    {s.get(scene.endU) > 0 && <g opacity={s.get(scene.endU)}><rect x={190} y={235} width={900} height={200} rx={26} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={3} /><text x={640} y={305} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={820}>Reset → selected instructions</text><text x={640} y={355} textAnchor="middle" fill={colors.POSITIVE} fontSize={21}>ROM verifies the path; flash supplies the program.</text><text x={640} y={395} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>bootloader_utility_load_boot_image()</text></g>}
   </>;
 }
 

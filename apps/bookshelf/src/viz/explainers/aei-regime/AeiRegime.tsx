@@ -88,7 +88,7 @@ const TOTAL_ROUNDS = Math.max(...flipRound.filter((r) => Number.isFinite(r))); /
 // agent grid layout (10 × 6), centred in its own room
 const GRID_COLS = 10;
 const AG_X0 = 430;
-const AG_Y0 = 210;
+const AG_Y0 = 175;
 const AG_DX = 46;
 const AG_DY = 52;
 const agPos = (i: number) => ({
@@ -280,6 +280,12 @@ function Frame({ s }: { s: SceneState }) {
 
   const round = cascadeU * TOTAL_ROUNDS;
   const flipped = flipRound.filter((r) => r <= round).length;
+  // A room the camera has left is faded out (and one it is moving toward is
+  // faded in), so no dressed room sits idle off the stage and every frame shows
+  // only the subject in view.
+  const inView = (c: number, r: number) =>
+    clamp01(1 - Math.abs(cam.x - (c * ROOM_DX + STAGE_W / 2)) / STAGE_W) *
+    clamp01(1 - Math.abs(cam.y - (r * ROOM_DY + STAGE_H / 2)) / STAGE_H);
 
   return (
     <>
@@ -287,7 +293,7 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         {/* ---------- ROOM (0,0) — the five durable properties ---------- */}
-        <g transform={roomAt(0, 0)} opacity={propsU}>
+        <g transform={roomAt(0, 0)} opacity={propsU * inView(0, 0)}>
           <RoomHeader title="The regime" sub="AEI threat model — SSRN 6325939 §2" />
           {PROPS.map((p, i) => {
             const u = clamp01(propsU * PROPS.length - i);
@@ -312,7 +318,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,0) — the sixty agents ---------- */}
-        <g transform={roomAt(1, 0)} opacity={gridU}>
+        <g transform={roomAt(1, 0)} opacity={gridU * inView(1, 0)}>
           <RoomHeader
             title="Preference falsification"
             sub="illustrative simulation — threshold conformity model (Kuran 1995)"
@@ -337,11 +343,11 @@ function Frame({ s }: { s: SceneState }) {
           </text>
           {countU > 0 && (
             <g opacity={Math.min(1, countU * 4)}>
-              <text x={AG_X0 - 14} y={AG_Y0 + 5 * AG_DY + 64} fill={colors.TEXT} fontSize={17}
+              <text x={AG_X0 - 14} y={AG_Y0 + 5 * AG_DY + 60} fill={colors.TEXT} fontSize={17}
                 fontFamily="monospace">
                 public “ready”: {flipped}/60 · round {Math.floor(round)}
               </text>
-              <text x={AG_X0 - 14} y={AG_Y0 + 5 * AG_DY + 94} fill={colors.ACCENT} fontSize={17}
+              <text x={AG_X0 - 14} y={AG_Y0 + 5 * AG_DY + 88} fill={colors.ACCENT} fontSize={17}
                 fontFamily="monospace">
                 private belief moved: 0/60
               </text>
@@ -350,7 +356,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,0) — metric capture ---------- */}
-        <g transform={roomAt(2, 0)} opacity={plotU}>
+        <g transform={roomAt(2, 0)} opacity={plotU * inView(2, 0)}>
           <RoomHeader
             title="Metric capture"
             sub="illustrative — optimize the proxy, watch the target (Mattson et al. 2021)"
@@ -360,7 +366,8 @@ function Frame({ s }: { s: SceneState }) {
           {proxyU > 0 && (
             <>
               <polyline points={curvePts(proxyF, proxyU)} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
-              <text x={px(0.74)} y={py(proxyF(0.74)) - 16} fill={colors.POSITIVE} fontSize={15}
+              {/* under the rising curve: the dashed "bar" line runs above it at the right */}
+              <text x={px(0.42)} y={py(proxyF(0.42)) + 24} fill={colors.POSITIVE} fontSize={15}
                 opacity={clamp01(proxyU * 2 - 1)}>
                 proxy score
               </text>
@@ -369,7 +376,8 @@ function Frame({ s }: { s: SceneState }) {
           {targetU > 0 && (
             <>
               <polyline points={curvePts(targetF, targetU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} />
-              <text x={px(0.60)} y={py(targetF(0.60)) + 30} fill={colors.NEGATIVE} fontSize={15}
+              {/* below the peak, clear of both curves */}
+              <text x={px(0.22)} y={py(targetF(0.22)) + 40} fill={colors.NEGATIVE} fontSize={15}
                 opacity={clamp01(targetU * 2 - 1)}>
                 the thing it measured
               </text>
@@ -396,7 +404,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,1) — trust-chain mimicry ---------- */}
-        <g transform={roomAt(2, 1)} opacity={provU}>
+        <g transform={roomAt(2, 1)} opacity={provU * inView(2, 1)}>
           <RoomHeader title="Trust-chain mimicry" sub="SSRN 6325939 §2 — Power 1997" />
           <rect x={330} y={190} width={620} height={230} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} />
           <text x={640} y={244} textAnchor="middle" fill={colors.SECONDARY} fontSize={19} fontWeight={600}>
@@ -415,7 +423,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,1) — the close, on an empty stage ---------- */}
-        <g transform={roomAt(1, 1)}>
+        <g transform={roomAt(1, 1)} opacity={inView(1, 1)}>
           <g opacity={closeU}>
             <rect x={190} y={140} width={900} height={210} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={640} y={204} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={600}>
@@ -433,7 +441,7 @@ function Frame({ s }: { s: SceneState }) {
           </g>
           <Figure
             src={`${FIG}/adversarial.png`}
-            x={190} y={400} w={900} h={103}
+            x={190} y={378} w={900} h={124}
             reveal={advFigU} opacity={advFigU}
             accent={colors.WARM}
             caption="the paper's own sentence (§2)"

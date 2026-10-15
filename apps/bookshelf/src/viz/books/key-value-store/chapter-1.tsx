@@ -106,12 +106,13 @@ function along(pts: { x: number; y: number }[], u: number): { x: number; y: numb
   };
 }
 
-/** card → gate → down the spine → into the slot. */
+/** card → under the gate (clear of its text) → down the spine → into the slot. */
+const GATE_GAP_Y = GATE.y + GATE.h + 11;
 function keyPath(k: KeyDatum): { x: number; y: number }[] {
   return [
     { x: CARD.x + CARD.w - 10, y: CARD.y + 108 },
-    { x: GATE.x - 24, y: GATE.y + GATE.h / 2 },
-    { x: GATE.x + GATE.w / 2, y: GATE.y + GATE.h / 2 },
+    { x: GATE.x - 24, y: GATE_GAP_Y },
+    { x: GATE.x + GATE.w / 2, y: GATE_GAP_Y },
     { x: GATE.x + GATE.w / 2, y: rowY(k.bucket) },
     { x: SLOT_X0 + k.slot * SLOT_DX, y: rowY(k.bucket) },
   ];
@@ -160,7 +161,6 @@ export function buildScene() {
     text: 'The primer answers with a data structure before it answers with servers. A key-value store is, at heart, a hash table — this exact class from the solutions folder.',
   });
   tl.tween(cam, CAM_TABLE, { at: 7.4, dur: 1.4, ease: ease.move });
-  tl.tween(qU, 0, { at: 7.4, dur: 0.9, ease: ease.move }); // card leaves frame as the table takes over
   tl.tween(tableU, 1, { at: 7.8, dur: 1.6, ease: ease.draw });
 
   // — beat 3 · our key drops through the gate —
@@ -200,7 +200,6 @@ export function buildScene() {
     text: 'But the interview is never about small scale. Turn up the traffic: millions of keys, thousands of requests a second, all aimed at this one box.',
   });
   tl.tween(cam, CAM_WIDE, { at: 33.8, dur: 1.5, ease: ease.move });
-  tl.tween(qU, 0.35, { at: 33.8, dur: 1.5, ease: ease.move }); // faint card: the source the rain falls from
   tl.tween(rainU, 1, { at: 34.6, dur: 8.5, ease: ease.linear });
   tl.tween(rpsU, 1, { at: 34.6, dur: 11, ease: ease.linear });
 
@@ -289,7 +288,8 @@ export function Render({ s }: { s: SceneState }) {
   const q2U = s.get(scene.q2U);
   const teaseU = s.get(scene.teaseU);
 
-  const machineOp = (1 - 0.88 * dimU) * (1 - 0.4 * Math.abs(Math.sin(Math.PI * flickU)));
+  // dims to near-invisible under the closing cards, so the teaser ring sits on clean stage
+  const machineOp = (1 - 0.97 * dimU) * (1 - 0.4 * Math.abs(Math.sin(Math.PI * flickU)));
   const ourPos = along(OUR_PATH, keyU);
   const getPos = along(OUR_PATH, getU <= 1 ? getU : 2 - getU);
   const rps = Math.round(120 * Math.pow(10, 2.6 * rpsU)); // 120 → ~48k req/s
@@ -300,9 +300,10 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the interview card */}
-        <g opacity={qU * (1 - 0.88 * dimU)}>
+        {/* it leaves frame as the table draws on (tableU), so no separate fade is timed */}
+        <g opacity={qU * (1 - tableU) * (1 - 0.88 * dimU)}>
           <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={CARD.x + 22} y={CARD.y + 36} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={CARD.x + 22} y={CARD.y + 36} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             the interview question
           </text>
           <text x={CARD.x + 22} y={CARD.y + 64} fill={colors.TEXT} fontSize={19} fontWeight={600}>
@@ -337,16 +338,16 @@ export function Render({ s }: { s: SceneState }) {
             <text x={TABLE.x + 18} y={TABLE.y + 28} fill={colors.TEXT} fontSize={15} fontWeight={600}>
               HashTable
             </text>
-            <text x={TABLE.x + TABLE.w - 18} y={TABLE.y + 28} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={TABLE.x + TABLE.w - 18} y={TABLE.y + 28} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               hash_map.py
             </text>
 
             {/* the hash gate */}
             <rect x={GATE.x} y={GATE.y} width={GATE.w} height={GATE.h} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={GATE.x + 14} y={GATE.y + 30} fill={colors.ACCENT} fontSize={13.5} fontFamily={MONO}>
+            <text x={GATE.x + 14} y={GATE.y + 30} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
               _hash_function(key)
             </text>
-            <text x={GATE.x + 14} y={GATE.y + 54} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
+            <text x={GATE.x + 14} y={GATE.y + 54} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               return hash(key) % self.size
             </text>
 
@@ -363,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={b === OUR.bucket && keyU > 0.9 ? colors.WARM : colors.GRID}
                   opacity={0.9}
                 />
-                <text x={TABLE.x + TABLE.w - 30} y={ROW_Y0 + b * ROW_H + 23} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text x={TABLE.x + TABLE.w - 30} y={ROW_Y0 + b * ROW_H + 23} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                   [{b}]
                 </text>
               </g>
@@ -373,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the "hash % 8 → 6" computation chip, inside the gate's top-right corner */}
           <g opacity={calcU}>
             <rect x={GATE.x + GATE.w - 148} y={GATE.y + 8} width={140} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={GATE.x + GATE.w - 78} y={GATE.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily={MONO}>
+            <text x={GATE.x + GATE.w - 78} y={GATE.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               {'hash % 8 → [6]'}
             </text>
           </g>
@@ -396,10 +397,13 @@ export function Render({ s }: { s: SceneState }) {
           {keyU > 0 && (
             <g>
               <circle cx={ourPos.x} cy={ourPos.y} r={8} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              {/* the name only appears once the key has landed, so it never prints over the gate text */}
-              <text x={ourPos.x} y={ourPos.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={clamp01((keyU - 0.9) * 10)}>
-                user:42
-              </text>
+              {/* the name only appears once the key has landed; a tag straddling the row's top edge, so it never prints over the gate or the dots */}
+              <g opacity={clamp01((keyU - 0.9) * 10)}>
+                <rect x={ourPos.x - 36} y={ourPos.y - 23} width={72} height={15} rx={4} fill={colors.BG} stroke={colors.WARM} strokeWidth={0.8} />
+                <text x={ourPos.x} y={ourPos.y - 11} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
+                  user:42
+                </text>
+              </g>
             </g>
           )}
 
@@ -420,7 +424,8 @@ export function Render({ s }: { s: SceneState }) {
             const u = win(rainU, KEYS.length - 1, i, 2.5);
             if (u <= 0) return null;
             const p = along(keyPath(k), u);
-            return <circle key={k.name} cx={p.x} cy={p.y} r={6} fill={colors.ACCENT} opacity={0.9} stroke={colors.BG} strokeWidth={1} />;
+            // eases in from nothing: the card they fall from has already left frame
+            return <circle key={k.name} cx={p.x} cy={p.y} r={6} fill={colors.ACCENT} opacity={0.9 * clamp01(u * 6)} stroke={colors.BG} strokeWidth={1} />;
           })}
 
           {/* memory bar */}
@@ -435,7 +440,7 @@ export function Render({ s }: { s: SceneState }) {
               fill={memU > 0.96 ? colors.NEGATIVE : colors.ACCENT}
               opacity={0.85}
             />
-            <text x={MEM.x + MEM.w / 2} y={MEM.y - 10} textAnchor="middle" fill={memU > 0.96 ? colors.NEGATIVE : colors.MUTED} fontSize={12}>
+            <text x={MEM.x + MEM.w / 2} y={MEM.y - 10} textAnchor="middle" fill={memU > 0.96 ? colors.NEGATIVE : colors.TEXT} fontSize={14}>
               {memU > 0.96 ? 'mem — FULL' : 'mem'}
             </text>
           </g>
@@ -445,7 +450,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={METER.x} y={METER.y} fill={rpsU > 0.8 ? colors.NEGATIVE : colors.TEXT} fontSize={30} fontFamily={MONO} fontWeight={600}>
               {rps.toLocaleString('en-US')}
             </text>
-            <text x={METER.x} y={METER.y + 24} fill={colors.MUTED} fontSize={13}>
+            <text x={METER.x} y={METER.y + 24} fill={colors.TEXT} fontSize={15}>
               requests / second
             </text>
           </g>

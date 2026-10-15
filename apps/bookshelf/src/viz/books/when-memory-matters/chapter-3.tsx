@@ -225,7 +225,7 @@ export function Render({ s }: { s: SceneState }) {
   const insetO = win(b, 4, 4);
   const repairO = win(b, 8, 8);
   // D and E read as "not yet written" until their beats write them
-  const pendingO = on(b, 4) * 0.8;
+  const pendingO = on(b, 4);
   const chipTop = { x: GROUNDING.x + 97, y: GROUNDING.y - 13 };
 
   return (
@@ -233,7 +233,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <LedgerRow st={st} />
 
-        <Txt x={X_DISTANT} y={TAPE_Y + 20} size={12} anchor="middle" fill={INK.claim} opacity={st.tape * (1 - verified) * clamp01(open)}>
+        <Txt x={X_DISTANT} y={TAPE_Y + 20} size={14} anchor="middle" fill={INK.claim} opacity={st.tape * (1 - verified) * clamp01(open)}>
           unverified claim
         </Txt>
 
@@ -244,20 +244,20 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={scanX} y1={TAPE_Y + 13} x2={scanX} y2={282} stroke={INK.thread} strokeDasharray="3 4" opacity={0.5} />
           </g>
         )}
-        <Txt x={392} y={262} size={12} fill={INK.muted} opacity={win(b, 2, 3) * bands[1]}>
+        <Txt x={392} y={262} size={14} fill={INK.muted} opacity={win(b, 2, 3) * bands[1]}>
           teeth: counts, not turn ids
         </Txt>
 
         {/* D and E: pending placeholders until their bands are written */}
         {[3, 4].map((i) => (
-          <Txt key={i} x={LEDGER.cx1} y={(BANDS[i].y0 + BANDS[i].y1) / 2 + 4} size={12} anchor="end" fill={INK.muted} opacity={pendingO * (1 - bands[i]) * clamp01(open - i)}>
+          <Txt key={i} x={LEDGER.cx1} y={(BANDS[i].y0 + BANDS[i].y1) / 2 + 4} size={14} anchor="end" fill={INK.muted} opacity={pendingO * (1 - bands[i]) * clamp01(open - i)}>
             {i === 3 ? 'reply not yet written' : 'checks not yet run'}
           </Txt>
         ))}
 
         {/* margin: profile claim re-verification totals (aggregate) */}
         <g opacity={insetO}>
-          <Txt x={INSET.x} y={262} size={12} fill={INK.text}>
+          <Txt x={INSET.x} y={262} size={14} fill={INK.text}>
             profile claim totals
           </Txt>
           <rect x={INSET.x} y={INSET.y} width={INSET.w} height={INSET.h} rx={3} fill="none" stroke={INK.claim} strokeOpacity={0.6} strokeDasharray="4 3" />
@@ -265,10 +265,10 @@ export function Render({ s }: { s: SceneState }) {
           {Array.from({ length: Math.floor(INSET.w / 10) }, (_, i) => (
             <line key={i} x1={INSET.x + 10 * i + 5} y1={INSET.y + INSET.h} x2={INSET.x + 10 * i + 5} y2={INSET.y + INSET.h + (INSET.x + 10 * i + 5 <= INSET.x + insetW ? 8 : 3)} stroke={INK.muted} opacity={0.7} />
           ))}
-          <Txt x={INSET.x} y={324} size={12} mono fill={INK.claim}>
+          <Txt x={INSET.x} y={324} size={14} mono fill={INK.claim}>
             1,544 matched
           </Txt>
-          <Txt x={INSET.x + INSET.w} y={324} size={12} mono anchor="end" fill={INK.ok} opacity={clamp01(shrink * 3 - 2)}>
+          <Txt x={INSET.x + INSET.w} y={324} size={14} mono anchor="end" fill={INK.ok} opacity={clamp01(shrink * 3 - 2)}>
             752 kept
           </Txt>
         </g>
@@ -278,13 +278,13 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={EPISODE.x - 5} y={SOCKET_Y - 5} width={SOCKET_W + 10} height={SOCKET_H + 10} rx={8} fill="none" stroke={INK.claim} strokeDasharray="5 4" opacity={illus} />
           <Tether x1={EPISODE.x + SOCKET_W + 5} y1={SOCKET_Y + 15} x2={926} y2={SOCKET_Y + 15} u={illus} color={INK.claim} dashed opacity={0.7} />
           <rect x={930} y={348} width={272} height={76} rx={8} fill={INK.panel} stroke={INK.claim} strokeOpacity={0.7} />
-          <Txt x={944} y={371} size={13} weight={600} fill={INK.claim}>
+          <Txt x={944} y={371} size={14} weight={600} fill={INK.claim}>
             Rule illustration
           </Txt>
-          <Txt x={944} y={392} size={12} mono fill={INK.text} opacity={0.35 + 0.65 * illus}>
+          <Txt x={944} y={392} size={13} mono fill={INK.text} opacity={0.35 + 0.65 * illus}>
             has_evidence: false → basic
           </Txt>
-          <Txt x={944} y={411} size={12} fill={INK.muted}>
+          <Txt x={944} y={411} size={13} fill={INK.muted}>
             the real row is restored
           </Txt>
         </g>
@@ -293,8 +293,9 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={on(b, 7) * bands[3]}>
           <rect x={168} y={SOCKET_Y - 6} width={LEDGER.cx1 - 168 + 6} height={SOCKET_H + 12} rx={9} fill="none" stroke={INK.ok} strokeDasharray="6 4" opacity={0.55 * clamp01(tether * 2)} />
           <Tether x1={chipTop.x} y1={chipTop.y} x2={EPISODE.x + SOCKET_W / 2} y2={SOCKET_Y + SOCKET_H + 2} u={tether} color={INK.distant} width={1.6} />
-          <Txt x={LEDGER.cx1} y={432} size={12} anchor="end" fill={INK.muted} opacity={clamp01(tether * 3 - 2)}>
-            allowed: recorded context + probe
+          {/* sits right of the tether's path, which rises from the chip toward the episode socket */}
+          <Txt x={LEDGER.cx1} y={432} size={13} anchor="end" fill={INK.text} opacity={clamp01(tether * 3 - 2)}>
+            allowed: context + probe
           </Txt>
         </g>
 

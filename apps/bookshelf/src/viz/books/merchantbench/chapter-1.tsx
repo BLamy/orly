@@ -81,24 +81,24 @@ const scene = buildScene();
 function Store({ u }: { u: number }) {
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(640 344) scale(${0.82 + 0.18 * uu})`}>
-    <rect x={-132} y={-82} width={264} height={164} rx={22} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} />
+    <rect x={-160} y={-82} width={320} height={164} rx={22} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} />
     <path d="M-94 -26 H94 L78 52 H-78 Z" fill={colors.ACCENT} opacity={0.14} />
     <path d="M-105 -50 H105 M-84 -50 V-18 M-42 -50 V-18 M0 -50 V-18 M42 -50 V-18 M84 -50 V-18" stroke={colors.WARM} strokeWidth={8} strokeLinecap="round" />
     <text y={17} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={800}>one persistent store</text>
-    <text y={48} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>cash · deposit · listings · orders</text>
+    <text y={48} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>cash · deposit · listings · orders</text>
   </g>;
 }
 
 export function Render({ s }: { s: SceneState }) {
   const yearU = s.get(scene.yearU);
   const hourU = s.get(scene.hourU);
-  const dim = 1 - 0.9 * s.get(scene.dimU);
+  const dim = 1 - 0.94 * s.get(scene.dimU);
   const cursor = Math.floor(hourU * 364);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={44} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={850}>A year is the task</text>
-      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>horizon_steps: 8760 · activation_period: 12</text>
+      <text x={1240} y={44} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>horizon_steps: 8760 · activation_period: 12</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim}>
@@ -110,42 +110,42 @@ export function Render({ s }: { s: SceneState }) {
         })}
         {MONTHS.map((m, i) => {
           const a = -Math.PI / 2 + ((i * 30.42 + 15) / 365) * Math.PI * 2;
-          return <text key={m} x={640 + Math.cos(a) * 266} y={344 + Math.sin(a) * 266} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(yearU * 12 - i)}>{m}</text>;
+          return <text key={m} x={640 + Math.cos(a) * 268} y={344 + Math.sin(a) * 268} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={clamp01(yearU * 12 - i)}>{m}</text>;
         })}
-        <Store u={s.get(scene.storeU)} />
         {hourU > 0 && <g>
           <line x1={640} y1={344} x2={DAY_POINTS[cursor].x} y2={DAY_POINTS[cursor].y} stroke={colors.WARM} strokeWidth={2} opacity={0.68} />
           <circle cx={DAY_POINTS[cursor].x} cy={DAY_POINTS[cursor].y} r={10} fill={colors.WARM} />
           <text x={640} y={454} textAnchor="middle" fill={colors.WARM} fontSize={15} fontFamily={MONO}>hour {Math.round(hourU * 8760).toLocaleString()}</text>
         </g>}
+        <Store u={s.get(scene.storeU)} />
 
         <g opacity={s.get(scene.hiddenU)}>
-          <path d="M732 164 A220 220 0 0 1 880 520" fill="none" stroke={colors.NEGATIVE} strokeWidth={18} opacity={0.14} />
-          <text x={985} y={278} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>hidden</text>
-          <text x={985} y={301} textAnchor="middle" fill={colors.MUTED} fontSize={12}>future demand</text>
-          <text x={985} y={321} textAnchor="middle" fill={colors.MUTED} fontSize={12}>risk parameters</text>
-          <text x={985} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>recovery times</text>
+          <path d="M813 199 A226 226 0 0 1 753 540" fill="none" stroke={colors.NEGATIVE} strokeWidth={18} opacity={0.14} />
+          <text x={985} y={278} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>hidden</text>
+          <text x={985} y={301} textAnchor="middle" fill={colors.MUTED} fontSize={14}>future demand</text>
+          <text x={985} y={321} textAnchor="middle" fill={colors.MUTED} fontSize={14}>risk parameters</text>
+          <text x={985} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={14}>recovery times</text>
         </g>
 
         {s.get(scene.wakeU) > 0 && Array.from({ length: 8 }, (_, i) => {
           const u = clamp01(s.get(scene.wakeU) * 8 - i);
           const p = DAY_POINTS[25 + i * 25];
           return <g key={i} opacity={u}>
-            <circle cx={p.x} cy={p.y} r={7 + i * 0.8} fill={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM][i % 4]} opacity={0.22 + u * 0.35} />
+            <circle cx={p.x} cy={p.y} r={5 + i * 0.3} fill={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM][i % 4]} opacity={0.22 + u * 0.35} />
             {i > 0 && <line x1={DAY_POINTS[25 + (i - 1) * 25].x} y1={DAY_POINTS[25 + (i - 1) * 25].y} x2={p.x} y2={p.y} stroke={colors.SECONDARY} strokeWidth={2} opacity={u * 0.55} />}
           </g>;
         })}
 
         <g opacity={s.get(scene.horizonU)}>
-          <path d="M510 575 H770" stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />
-          <text x={784} y={580} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>control horizon · no new demand</text>
+          <path d="M520 560 H760" stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />
+          <text x={640} y={548} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>control horizon · no new demand</text>
         </g>
         <g opacity={s.get(scene.settleU)}>
-          {[0, 1, 2, 3].map((i) => <circle key={i} cx={lerp(430, 850, clamp01(s.get(scene.settleU) * 1.8 - i * 0.22))} cy={575} r={8} fill={i === 3 ? colors.POSITIVE : colors.WARM} />)}
+          {[0, 1, 2, 3].map((i) => <circle key={i} cx={lerp(530, 750, clamp01(s.get(scene.settleU) * 1.8 - i * 0.22))} cy={560} r={8} fill={i === 3 ? colors.POSITIVE : colors.WARM} />)}
         </g>
-        <g opacity={s.get(scene.ledgerU)} transform="translate(490 495)">
+        <g opacity={s.get(scene.ledgerU)} transform="translate(945 448)">
           <rect width={300} height={82} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
-          <text x={150} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>terminal objective</text>
+          <text x={150} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>terminal objective</text>
           <text x={150} y={59} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={850}>final net assets</text>
         </g>
       </g>
@@ -156,6 +156,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x={66} y={352} fill={colors.MUTED} fontSize={14}>every twelve hours</text>
     </g>
     <g opacity={s.get(scene.endU)}>
+      <rect x={180} y={230} width={920} height={206} rx={28} fill={colors.BG} />
       <rect x={180} y={230} width={920} height={206} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={307} textAnchor="middle" fill={colors.TEXT} fontSize={35} fontWeight={850}>The past stays on the ledger</text>
       <text x={640} y={356} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>365 days of accumulated state</text>

@@ -36,6 +36,11 @@ const API = { x: 170, y: 330 } as const;
 const CACHE = { x: 520, y: 330, w: 300, h: 210 } as const;
 const IDX = { x: 880, y: 220 } as const;
 const DOC = { x: 880, y: 440 } as const;
+// elbows that carry the api round trips around the cache panel
+const IDX_VIA = { x: 330, y: 190 } as const;
+const DOC_VIA = { x: 330, y: 490 } as const;
+const IDX_PATH = [{ x: API.x + 60, y: API.y - 26 }, IDX_VIA, { x: IDX.x - 100, y: IDX.y }] as const;
+const DOC_PATH = [{ x: API.x + 60, y: API.y + 26 }, DOC_VIA, { x: DOC.x - 100, y: DOC.y }] as const;
 
 const ENTRIES = [
   { q: 'best AND coffee AND sf', ttl: 0.9 },
@@ -225,6 +230,22 @@ function Box({ x, y, w = 180, h = 62, title, sub, stroke = colors.GRID, opacity 
   );
 }
 
+type Pt = { x: number; y: number };
+
+/** A packet that follows an elbow path; u runs over the whole path */
+function RoutedPacket({ pts, u, r, color }: { pts: readonly Pt[]; u: number; r: number; color: string }) {
+  const lens = pts.slice(1).map((p, i) => Math.hypot(p.x - pts[i].x, p.y - pts[i].y));
+  const total = lens.reduce((a, b) => a + b, 0);
+  let d = u * total;
+  for (let i = 0; i < lens.length; i++) {
+    if (d <= lens[i] || i === lens.length - 1) {
+      return <Packet from={pts[i]} to={pts[i + 1]} u={clamp01(d / lens[i])} r={r} color={color} />;
+    }
+    d -= lens[i];
+  }
+  return null;
+}
+
 /** TTL arc — a draining clock */
 function TtlArc({ cx, cy, r, u, color }: { cx: number; cy: number; r: number; u: number; color: string }) {
   const frac = Math.max(0.001, 1 - u);
@@ -256,7 +277,7 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const dimAll = 1 - closeU * 0.88;
-  const single = 1 - splitU; // single-cache act opacity
+  const single = clamp01(1 - splitU * 2); // single-cache act fades out before the cluster is in
   const missOut = clamp01(missX * 2); // toward cache
   const missBack = clamp01(missX * 2 - 1); // bounce back
   const idxOut = clamp01(toIdx * 2);
@@ -287,7 +308,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={entryU * (dead ? 0.18 : 1)}>
                 <rect x={CACHE.x - CACHE.w / 2 + 16 - (1 - entryU) * 60} y={y} width={CACHE.w - 32} height={38} rx={8} fill={colors.BG} stroke={dead ? colors.NEGATIVE : isNew && setU < 1 ? colors.POSITIVE : colors.GRID} strokeWidth={1.2} />
-                <text x={CACHE.x - CACHE.w / 2 + 28} y={y + 24} fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={CACHE.x - CACHE.w / 2 + 28} y={y + 24} fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                   {e.q}
                 </text>
                 {ttlU > 0.02 && (
@@ -297,17 +318,17 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {ttlU > 0.02 && (
-            <text x={CACHE.x} y={CACHE.y + CACHE.h / 2 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
-              TTL — max time an entry may live
+            <text x={CACHE.x} y={CACHE.y + CACHE.h / 2 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
+              TTL = max age per entry
             </text>
           )}
           {/* services */}
           <Box x={IDX.x} y={IDX.y} w={200} title="Reverse Index Service" sub="find + rank matches" stroke={colors.WARM} />
           <Box x={DOC.x} y={DOC.y} w={200} title="Document Service" sub="titles + snippets" stroke={colors.WARM} />
-          {/* wires */}
+          {/* wires; the two service round trips bend around the cache panel */}
           <line x1={API.x + 85} y1={API.y} x2={cacheLeft.x} y2={cacheLeft.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={API.x + 60} y1={API.y - 26} x2={IDX.x - 100} y2={IDX.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
-          <line x1={API.x + 60} y1={API.y + 26} x2={DOC.x - 100} y2={DOC.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <polyline points={IDX_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <polyline points={DOC_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
 
           {/* rank bars beside the reverse index */}
           <g opacity={rankU}>
@@ -327,8 +348,8 @@ export function Render({ s }: { s: SceneState }) {
           </g>
           {/* the world-changed pulse */}
           <g opacity={worldU}>
-            <circle cx={IDX.x + 88} cy={IDX.y - 40} r={9} fill={colors.NEGATIVE} opacity={0.9} />
-            <text x={IDX.x + 74} y={IDX.y - 56} textAnchor="end" fill={colors.NEGATIVE} fontSize={12}>
+            <circle cx={IDX.x + 60} cy={IDX.y - 50} r={9} fill={colors.NEGATIVE} opacity={0.9} />
+            <text x={IDX.x + 46} y={IDX.y - 46} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
               page contents changed
             </text>
           </g>
@@ -343,23 +364,15 @@ export function Render({ s }: { s: SceneState }) {
             {missBack > 0 && missBack < 1 && (
               <>
                 <Packet from={{ x: cacheLeft.x, y: cacheLeft.y }} to={{ x: API.x + 85, y: API.y }} u={missBack} r={6.5} color={colors.NEGATIVE} />
-                <text x={(cacheLeft.x + API.x + 85) / 2} y={API.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dimAll}>
-                  get(query) → None
+                <text x={(cacheLeft.x + API.x + 85) / 2} y={API.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+                  get → None
                 </text>
               </>
             )}
-            {idxOut > 0 && idxOut < 1 && (
-              <Packet from={{ x: API.x + 60, y: API.y - 26 }} to={{ x: IDX.x - 100, y: IDX.y }} u={idxOut} r={6} color={colors.WARM} />
-            )}
-            {idxBack > 0 && idxBack < 1 && (
-              <Packet from={{ x: IDX.x - 100, y: IDX.y }} to={{ x: API.x + 60, y: API.y - 26 }} u={idxBack} r={6} color={colors.POSITIVE} />
-            )}
-            {docOut > 0 && docOut < 1 && (
-              <Packet from={{ x: API.x + 60, y: API.y + 26 }} to={{ x: DOC.x - 100, y: DOC.y }} u={docOut} r={6} color={colors.WARM} />
-            )}
-            {docBack > 0 && docBack < 1 && (
-              <Packet from={{ x: DOC.x - 100, y: DOC.y }} to={{ x: API.x + 60, y: API.y + 26 }} u={docBack} r={6} color={colors.POSITIVE} />
-            )}
+            {idxOut > 0 && idxOut < 1 && <RoutedPacket pts={IDX_PATH} u={idxOut} r={6} color={colors.WARM} />}
+            {idxBack > 0 && idxBack < 1 && <RoutedPacket pts={[...IDX_PATH].reverse()} u={idxBack} r={6} color={colors.POSITIVE} />}
+            {docOut > 0 && docOut < 1 && <RoutedPacket pts={DOC_PATH} u={docOut} r={6} color={colors.WARM} />}
+            {docBack > 0 && docBack < 1 && <RoutedPacket pts={[...DOC_PATH].reverse()} u={docBack} r={6} color={colors.POSITIVE} />}
             {setU > 0 && setU < 1 && (
               <Packet from={{ x: API.x + 85, y: API.y }} to={{ x: cacheLeft.x + 30, y: CACHE.y - CACHE.h / 2 + 70 }} u={setU} r={7} color={colors.POSITIVE} />
             )}
@@ -367,40 +380,47 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* =================== act 3 · the sharded cluster =================== */}
-        <g opacity={splitU * dimAll}>
+        <g opacity={clamp01(splitU * 2) * (1 - closeU)}>
           {/* rejected options, whispered */}
           <g opacity={optU}>
             <text x={640} y={206} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               own cache per machine → low hit rate · full copy per machine → wasted memory
             </text>
           </g>
-          {SHARDS.map((sh, i) => (
-            <g key={i}>
-              <rect x={sh.x - 85} y={sh.y - 70} width={170} height={140} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={sh.x} y={sh.y - 46} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
-                {sh.label}
-              </text>
-              {[0, 1, 2].map((r) => (
-                <rect key={r} x={sh.x - 65} y={sh.y - 28 + r * 30} width={130} height={22} rx={5} fill={colors.BG} stroke={colors.GRID} />
-              ))}
-            </g>
-          ))}
-          <text x={640} y={470} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
+          {SHARDS.map((sh, i) => {
+            // a shard lights its top row when a routed query lands in it
+            const landed = Math.max(0, ...ROUTED.map((rt, j) => (rt.shard === i ? clamp01((routeU * 3.4 - j * 1.05 - 1) * 4) : 0)));
+            return (
+              <g key={i}>
+                <rect x={sh.x - 85} y={sh.y - 70} width={170} height={140} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+                <text x={sh.x} y={sh.y - 46} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+                  {sh.label}
+                </text>
+                {[0, 1, 2].map((r) => (
+                  <rect key={r} x={sh.x - 65} y={sh.y - 28 + r * 30} width={130} height={22} rx={5} fill={colors.BG} stroke={colors.GRID} />
+                ))}
+                <rect x={sh.x - 65} y={sh.y - 28} width={130} height={22} rx={5} fill={colors.POSITIVE} opacity={0.45 * landed} />
+              </g>
+            );
+          })}
+          <text x={640} y={500} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
             machine = hash(query) · consistent hashing
           </text>
           {/* on-screen note for consistent hashing: resharding moves a small slice */}
-          <text x={640} y={508} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(routeU * 2)}>
+          <text x={640} y={530} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(routeU * 2)}>
             add a machine and only about 1/n of the keys move
           </text>
-          {/* hash-routed packets from the api position */}
+          <text x={150} y={572} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            incoming queries
+          </text>
+          {/* hash-routed packets from the api position; each label sits under its own shard */}
           {ROUTED.map((rt, i) => {
             const u = clamp01(routeU * 3.4 - i * 1.05);
-            if (u <= 0 || u >= 1) return null;
             const target = SHARDS[rt.shard];
             return (
               <g key={i}>
-                <Packet from={{ x: 150, y: 560 }} to={{ x: target.x, y: target.y + 78 }} u={u} r={7} color={colors.ACCENT} />
-                <text x={150} y={596} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                {u > 0 && u < 1 && <Packet from={{ x: 150, y: 540 }} to={{ x: target.x, y: target.y + 78 }} u={u} r={7} color={colors.ACCENT} />}
+                <text x={target.x} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace" opacity={clamp01((routeU * 3.4 - i * 1.05) * 4)}>
                   {rt.label}
                 </text>
               </g>

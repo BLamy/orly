@@ -56,22 +56,37 @@ const REG_CHIP = { x: 440, y: 422, w: 196, h: 30 } as const;
 // With RequestFlow defaults (dwell 0.12, turnDwell 0.08, 3 hops each way)
 // the packet dwells at: SW fwd u∈[0.117,0.172] · bridge fwd u∈[0.288,0.343]
 // · vite turn u∈[0.46,0.54] · SW return u∈[0.828,0.883].
-const REQ_PATH = [IFR, SW, BRIDGE, VITE];
+// The waypoints sit on each node's bottom edge, not its centre, so the packet
+// never covers a node title (the node box is 56 tall, so +28 is its bottom edge).
+const under = (n: { x: number; y: number }) => ({ x: n.x, y: n.y + 28 });
+const REQ_PATH = [under(IFR), under(SW), under(BRIDGE), under(VITE)];
 const U_AT_SW = 0.144;
 const U_AT_BRIDGE = 0.315;
 const U_AT_VITE = 0.5;
 
-// The request label rides under whichever node the packet is at, instead of
-// sitting on the packet (where it collided with the node titles).
+// The request label rides beneath whichever node the packet is at (or above
+// ViteDevServer, whose connector to the filesystem leaves from its bottom edge).
 const REQ_LABELS = [
-  { to: 0.23, node: SW, text: 'GET /', color: colors.ACCENT },
-  { to: 0.4, node: BRIDGE, text: 'GET /', color: colors.ACCENT },
-  { to: 0.6, node: VITE, text: 'GET /', color: colors.ACCENT },
-  { to: 0.75, node: BRIDGE, text: '200 · base64', color: colors.POSITIVE },
-  { to: 0.95, node: SW, text: '200 · base64', color: colors.POSITIVE },
-  { to: 1, node: IFR, text: '200 · base64', color: colors.POSITIVE },
+  { to: 0.23, node: SW, above: false, text: 'GET /', color: colors.ACCENT },
+  { to: 0.4, node: BRIDGE, above: false, text: 'GET /', color: colors.ACCENT },
+  { to: 0.6, node: VITE, above: true, text: 'GET /', color: colors.ACCENT },
+  { to: 0.75, node: BRIDGE, above: false, text: '200 · base64', color: colors.POSITIVE },
+  { to: 0.95, node: SW, above: false, text: '200 · base64', color: colors.POSITIVE },
+  { to: 1, node: IFR, above: false, text: '200 · base64', color: colors.POSITIVE },
 ] as const;
 const requestLabel = (u: number) => (u <= 0 || u >= 1 ? null : REQ_LABELS.find((l) => u < l.to) ?? null);
+const LABEL_CHAR_W = 8.4; // 14px monospace
+const NODE_LABEL = 16; // node title; its sublabel draws at 12px
+
+// phase A — the three "no" chips that name what this tab does not have
+const NO_CHIPS = [
+  { text: 'no operating system', x: 402, w: 184 },
+  { text: 'no disk', x: 602, w: 86 },
+  { text: 'no network sockets', x: 704, w: 176 },
+] as const;
+
+// the service worker, defined on screen as it appears (sits above its zone)
+const SW_DEF = ['service worker: a script that', 'sits between the page and the network'] as const;
 
 // mini page that paints inside the preview iframe when the response lands
 const PAINT = { x: 898, y: 372, w: 230, h: 168 } as const;
@@ -313,7 +328,8 @@ export function Render({ s }: { s: SceneState }) {
   const localU = s.get(scene.localU);
   const urlGlow = s.get(scene.urlGlow);
   const dimU = s.get(scene.dimU);
-  const machineOp = 1 - 0.88 * dimU;
+  // the machine fades out fully under the closer, so no faint nodes sit behind the layer cards
+  const machineOp = 1 - dimU;
   const reqU = s.get(scene.reqU);
   const regexGlow = s.get(scene.regexGlow);
   const bridgeGlow = s.get(scene.bridgeGlow);
@@ -339,15 +355,36 @@ export function Render({ s }: { s: SceneState }) {
             height={TAB.h}
             rx={16}
             fill="none"
-            stroke={tabGlow > 0.02 ? colors.WARM : colors.GRID}
+            stroke={tabGlow > 0.02 ? colors.WARM : colors.MUTED}
+            strokeOpacity={tabGlow > 0.02 ? 1 : 0.55}
             strokeWidth={1.6 + 1.6 * tabGlow}
           />
           <circle cx={TAB.x + 24} cy={TAB.y + 20} r={5} fill={colors.NEGATIVE} opacity={0.7} />
           <circle cx={TAB.x + 44} cy={TAB.y + 20} r={5} fill={colors.WARM} opacity={0.7} />
           <circle cx={TAB.x + 64} cy={TAB.y + 20} r={5} fill={colors.POSITIVE} opacity={0.7} />
-          <text x={STAGE_W / 2} y={TAB.y + 25} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={STAGE_W / 2} y={TAB.y + 25} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             one browser tab
           </text>
+        </g>
+
+        {/* phase A — what this tab does not have, struck through under the terminal */}
+        <g opacity={tabU * s.get(scene.termOp)}>
+          {NO_CHIPS.map((c) => (
+            <g key={c.text}>
+              <rect x={c.x} y={392} width={c.w} height={36} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+              <text
+                x={c.x + c.w / 2}
+                y={415}
+                textAnchor="middle"
+                fill={colors.MUTED}
+                fontSize={14}
+                fontFamily={MONO}
+                style={{ textDecoration: 'line-through' }}
+              >
+                {c.text}
+              </text>
+            </g>
+          ))}
         </g>
 
         {/* phase A — the terminal */}
@@ -375,7 +412,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={TERM.x + 114} y={TERM.y + 84} fill={urlGlow > 0.3 ? colors.WARM : colors.ACCENT} fontSize={15} fontFamily={MONO}>
               {LOCAL_URL}
             </text>
-            <text x={TERM.x + 24} y={TERM.y + 118} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={0.8}>
+            <text x={TERM.x + 24} y={TERM.y + 118} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={0.9}>
               ready in 213 ms
             </text>
           </g>
@@ -391,6 +428,7 @@ export function Render({ s }: { s: SceneState }) {
             label="main thread"
             kind="group"
             u={s.get(scene.uZoneMain)}
+            labelSize={14}
           />
           <Zone
             x={Z_SW.x}
@@ -401,6 +439,7 @@ export function Render({ s }: { s: SceneState }) {
             kind="group"
             u={s.get(scene.uZoneSw)}
             color={colors.WARM}
+            labelSize={14}
           />
           <Zone
             x={Z_IFR.x}
@@ -411,7 +450,24 @@ export function Render({ s }: { s: SceneState }) {
             kind="group"
             u={s.get(scene.uZoneIfr)}
             color={colors.SECONDARY}
+            labelSize={14}
           />
+          {/* the definition sits above the service-worker zone, revealed with it */}
+          <g opacity={s.get(scene.uZoneSw) * machineOp}>
+            {SW_DEF.map((line, i) => (
+              <text
+                key={line}
+                x={Z_SW.x + Z_SW.w / 2}
+                y={Z_SW.y - 36 + i * 20}
+                textAnchor="middle"
+                fill={colors.TEXT}
+                fontSize={14}
+                opacity={i === 0 ? 1 : 0.8}
+              >
+                {line}
+              </text>
+            ))}
+          </g>
 
           <Connection
             from={{ x: VITE.x, y: VITE.y + 28 }}
@@ -430,6 +486,7 @@ export function Render({ s }: { s: SceneState }) {
             sublabel="vite-dev-server.ts"
             u={s.get(scene.uVite)}
             glow={viteGlow}
+            labelSize={NODE_LABEL}
           />
           <ServiceNode
             x={BRIDGE.x}
@@ -439,6 +496,7 @@ export function Render({ s }: { s: SceneState }) {
             sublabel="server-bridge.ts"
             u={s.get(scene.uBridge)}
             glow={bridgeGlow}
+            labelSize={NODE_LABEL}
           />
           <ServiceNode
             x={VFS.x}
@@ -447,6 +505,7 @@ export function Render({ s }: { s: SceneState }) {
             label="VirtualFS"
             sublabel="in-memory tree"
             u={s.get(scene.uVfs)}
+            labelSize={NODE_LABEL}
           />
           <ServiceNode
             x={SW.x}
@@ -456,6 +515,7 @@ export function Render({ s }: { s: SceneState }) {
             sublabel="fetch listener"
             u={s.get(scene.uSw)}
             glow={regexGlow}
+            labelSize={NODE_LABEL}
           />
           <ServiceNode
             x={IFR.x}
@@ -465,6 +525,7 @@ export function Render({ s }: { s: SceneState }) {
             sublabel="iframe"
             u={s.get(scene.uIfr)}
             glow={ifrGlow}
+            labelSize={NODE_LABEL}
           />
 
           {/* the regex chip under the SW */}
@@ -479,7 +540,7 @@ export function Render({ s }: { s: SceneState }) {
               stroke={regexGlow > 0.1 ? colors.WARM : colors.GRID}
               strokeWidth={1.2 + regexGlow}
             />
-            <text x={REGEX_CHIP.x} y={REGEX_CHIP.y + 5} textAnchor="middle" fill={regexGlow > 0.1 ? colors.WARM : colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={REGEX_CHIP.x} y={REGEX_CHIP.y + 5} textAnchor="middle" fill={regexGlow > 0.1 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily={MONO}>
               {'/__virtual__/(\\d+)/'}
             </text>
           </g>
@@ -496,7 +557,7 @@ export function Render({ s }: { s: SceneState }) {
               stroke={bridgeGlow > 0.1 ? colors.ACCENT : colors.GRID}
               strokeWidth={1.2 + bridgeGlow}
             />
-            <text x={REG_CHIP.x} y={REG_CHIP.y + 5} textAnchor="middle" fill={bridgeGlow > 0.1 ? colors.ACCENT : colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={REG_CHIP.x} y={REG_CHIP.y + 5} textAnchor="middle" fill={bridgeGlow > 0.1 ? colors.ACCENT : colors.MUTED} fontSize={14} fontFamily={MONO}>
               {'servers: 3000 → vite'}
             </text>
           </g>
@@ -509,30 +570,18 @@ export function Render({ s }: { s: SceneState }) {
             color={colors.ACCENT}
             responseColor={colors.POSITIVE}
           />
-          {reqLabel && (
-            <g>
-              <rect
-                x={reqLabel.node.x - (reqLabel.text.length * 7.8 + 16) / 2}
-                y={reqLabel.node.y + 35}
-                width={reqLabel.text.length * 7.8 + 16}
-                height={22}
-                rx={6}
-                fill={colors.BG}
-                stroke={reqLabel.color}
-                strokeWidth={1}
-              />
-              <text
-                x={reqLabel.node.x}
-                y={reqLabel.node.y + 50}
-                textAnchor="middle"
-                fill={reqLabel.color}
-                fontSize={13}
-                fontFamily={MONO}
-              >
-                {reqLabel.text}
-              </text>
-            </g>
-          )}
+          {reqLabel && (() => {
+            const w = reqLabel.text.length * LABEL_CHAR_W + 16;
+            const top = reqLabel.above ? reqLabel.node.y - 56 : reqLabel.node.y + 42;
+            return (
+              <g>
+                <rect x={reqLabel.node.x - w / 2} y={top} width={w} height={22} rx={6} fill={colors.BG} stroke={reqLabel.color} strokeWidth={1} />
+                <text x={reqLabel.node.x} y={top + 15} textAnchor="middle" fill={reqLabel.color} fontSize={14} fontFamily={MONO}>
+                  {reqLabel.text}
+                </text>
+              </g>
+            );
+          })()}
 
           {/* the page paints */}
           <g opacity={paintU}>
@@ -546,7 +595,7 @@ export function Render({ s }: { s: SceneState }) {
               y={PAINT.y + 112}
               textAnchor="middle"
               fill={colors.POSITIVE}
-              fontSize={13}
+              fontSize={14}
               fontFamily={MONO}
               opacity={clamp01(paintU * 2 - 1)}
             >
@@ -563,13 +612,13 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={l.label} opacity={u}>
               <rect x={x} y={LAYERS_Y - 14 * (1 - u)} width={LAYER_W} height={110} rx={12} fill={colors.PANEL} stroke={l.color} strokeWidth={1.5} />
-              <text x={x + 20} y={LAYERS_Y + 34} fill={colors.MUTED} fontSize={13}>
+              <text x={x + 20} y={LAYERS_Y + 34} fill={colors.MUTED} fontSize={14}>
                 chapter {i + 2}
               </text>
               <text x={x + 20} y={LAYERS_Y + 62} fill={colors.TEXT} fontSize={19} fontWeight={650}>
                 {l.label}
               </text>
-              <text x={x + 20} y={LAYERS_Y + 86} fill={l.color} fontSize={13} fontFamily={MONO}>
+              <text x={x + 20} y={LAYERS_Y + 86} fill={l.color} fontSize={14} fontFamily={MONO}>
                 {l.sub}
               </text>
             </g>

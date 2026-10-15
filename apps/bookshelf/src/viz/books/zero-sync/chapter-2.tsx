@@ -38,10 +38,12 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const PG = { x: 190, y: 330 };
 const ZC_ZONE = { x: 700, y: 120, w: 540, h: 440 } as const;
 const REPLICA = { x: 1060, y: 330 };
-const HEAD = { x: 810, y: 330 }; // the pgoutput reader head
+const HEAD = { x: 850, y: 330 }; // the pgoutput reader head
 const TAPE_Y = 330;
-const TAPE_X0 = 300; // where chips are born (postgres edge)
-const TAPE_X1 = HEAD.x - 52; // where chips enter the head
+const TAPE_X0 = 320; // where chips are born (just clear of the postgres node)
+const TAPE_X1 = HEAD.x - 86; // where chips leave the tape, clear of the head box
+const LIVE_Y = TAPE_Y - 74; // the live commit rides above the head box
+const LIVE_X1 = HEAD.x + 80; // where the live commit lands, short of the replica label
 
 // Act 1: the initial COPY pour — table slabs postgres → replica
 const TABLES = ['issue', 'comment', 'user', 'label'];
@@ -66,7 +68,8 @@ const CHIP_CYCLE: Chip[] = [
 // Act 3: the live commit — one UPDATE traced end to end
 const LIVE_SQL = "UPDATE issue SET status = 'closed' WHERE id = 42";
 
-const CAM_HEAD: CameraState = { x: 820, y: 340, k: 1.55 };
+// Frames the whole tape: postgres node left edge to replica node right edge.
+const CAM_TAPE: CameraState = { x: 625, y: 340, k: 1.18 };
 const CAM_PG: CameraState = { x: 320, y: 330, k: 1.35 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -157,7 +160,7 @@ export function buildScene(): Scene {
   });
   tl.tween(tapeU, 1, { at: 26.6, dur: 30, ease: ease.linear });
   tl.tween(lsnN, 84512960, { at: 26.6, dur: 30, ease: ease.linear });
-  tl.tween(cam, CAM_HEAD, { at: 28.0, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_TAPE, { at: 28.0, dur: 1.5, ease: ease.move });
   tl.caption({
     at: 33.4,
     dur: 6,
@@ -252,20 +255,20 @@ export function Render({ s }: { s: SceneState }) {
           {/* your Postgres, crowned */}
           <g opacity={pgU}>
             <ServiceNode x={PG.x} y={PG.y} kind="db" label="your Postgres" sublabel="ZERO_UPSTREAM_DB" glow={0.25} />
-            <text x={PG.x} y={PG.y - 64} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700} letterSpacing={2}>
+            <text x={PG.x} y={PG.y - 64} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} letterSpacing={2}>
               SOURCE OF TRUTH
             </text>
             {/* the live UPDATE card */}
             <g opacity={liveU}>
               <rect x={PG.x - 170} y={PG.y + 78} width={360} height={34} rx={8} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-              <text x={PG.x + 10} y={PG.y + 100} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={PG.x + 10} y={PG.y + 100} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                 {LIVE_SQL}
               </text>
             </g>
             {/* the slot chip */}
             <g opacity={slotU}>
               <rect x={PG.x - 90} y={PG.y - 130} width={430} height={30} rx={15} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-              <text x={PG.x + 125} y={PG.y - 110} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={PG.x + 125} y={PG.y - 110} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
                 CREATE_REPLICATION_SLOT … LOGICAL pgoutput
               </text>
             </g>
@@ -275,18 +278,18 @@ export function Render({ s }: { s: SceneState }) {
           <Zone x={ZC_ZONE.x} y={ZC_ZONE.y} w={ZC_ZONE.w} h={ZC_ZONE.h} label="zero-cache" u={zoneU} color={colors.ACCENT} />
           <g opacity={replicaU}>
             <ServiceNode x={REPLICA.x} y={REPLICA.y} kind="storage" label="replica" sublabel="zero.db · SQLite" glow={0.5 * applyGlowPulse(applyGlow) + liveApplyU * 0.8} />
-            <text x={REPLICA.x} y={REPLICA.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={REPLICA.x} y={REPLICA.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
               ZERO_REPLICA_FILE
             </text>
             {rowsN > 0 && (
-              <text x={REPLICA.x} y={REPLICA.y - 58} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={700} fontFamily="ui-monospace, monospace">
+              <text x={REPLICA.x} y={REPLICA.y - 58} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={700} fontFamily="ui-monospace, monospace">
                 {fmt(rowsN)} rows
               </text>
             )}
             {/* issue 42 flips closed in the replica */}
             <g opacity={liveApplyU}>
               <rect x={REPLICA.x - 82} y={REPLICA.y + 74} width={164} height={26} rx={6} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-              <text x={REPLICA.x} y={REPLICA.y + 91} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+              <text x={REPLICA.x} y={REPLICA.y + 91} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
                 issue 42 → closed
               </text>
             </g>
@@ -297,41 +300,42 @@ export function Render({ s }: { s: SceneState }) {
             TABLES.map((t, i) => {
               const u = clamp01(copyU * 1.6 - i * 0.18);
               if (u <= 0 || u >= 1) return null;
-              const x = PG.x + 90 + (REPLICA.x - PG.x - 180) * u;
-              const y = 210 + i * 32;
+              // slabs leave postgres and stop short of the replica, above the reader head
+              const x = PG.x + 150 + (REPLICA.x - PG.x - 320) * u;
+              const y = 190 + i * 24;
               return (
                 <g key={t} opacity={0.95}>
-                  <rect x={x - 52} y={y - 13} width={104} height={26} rx={6} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+                  <rect x={x - 52} y={y - 11} width={104} height={24} rx={6} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
+                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
                     COPY {t}
                   </text>
                 </g>
               );
             })}
           {copyU > 0 && copyU < 1 && (
-            <text x={(PG.x + REPLICA.x) / 2} y={168} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={380} y={168} textAnchor="start" fill={colors.MUTED} fontSize={12} fontStyle="italic">
               initial sync — snapshot of every published table
             </text>
           )}
 
           {/* the tape bed */}
           <g opacity={headU}>
-            <line x1={TAPE_X0} y1={TAPE_Y + 22} x2={TAPE_X1 + 40} y2={TAPE_Y + 22} stroke={colors.GRID} strokeWidth={2} />
-            <line x1={TAPE_X0} y1={TAPE_Y - 22} x2={TAPE_X1 + 40} y2={TAPE_Y - 22} stroke={colors.GRID} strokeWidth={2} />
+            <line x1={PG.x + 84} y1={TAPE_Y + 22} x2={TAPE_X1 + 40} y2={TAPE_Y + 22} stroke={colors.GRID} strokeWidth={2} />
+            <line x1={PG.x + 84} y1={TAPE_Y - 22} x2={TAPE_X1 + 40} y2={TAPE_Y - 22} stroke={colors.GRID} strokeWidth={2} />
             <text x={(TAPE_X0 + TAPE_X1) / 2} y={TAPE_Y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
               the write-ahead log, played as a tape
             </text>
             {/* the reader head */}
             <rect x={HEAD.x - 46} y={TAPE_Y - 44} width={92} height={88} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-            <text x={HEAD.x} y={TAPE_Y - 6} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontWeight={700}>
+            <text x={HEAD.x} y={TAPE_Y - 6} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
               reader
             </text>
-            <text x={HEAD.x} y={TAPE_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={HEAD.x} y={TAPE_Y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               pgoutput
             </text>
             {/* log-position counter */}
             {lsnN > 0 && (
-              <text x={HEAD.x} y={TAPE_Y + 68} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, monospace">
+              <text x={HEAD.x} y={TAPE_Y + 68} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
                 log position {fmt(lsnN)}
               </text>
             )}
@@ -346,28 +350,28 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0.02 || u >= 0.98) return null;
               return (
                 <g key={k} opacity={0.95}>
-                  <rect x={x - 34} y={TAPE_Y - 12} width={68} height={24} rx={6} fill={colors.BG} stroke={c.color} strokeWidth={1.4} />
-                  <text x={x} y={TAPE_Y + 4} textAnchor="middle" fill={c.color} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                  <rect x={x - 26} y={TAPE_Y - 13} width={52} height={26} rx={6} fill={colors.BG} stroke={c.color} strokeWidth={1.4} />
+                  <text x={x} y={TAPE_Y + 5} textAnchor="middle" fill={c.color} fontSize={12} fontFamily="ui-monospace, monospace">
                     {c.tag}
                   </text>
                 </g>
               );
             })}
 
-          {/* the live chip — issue 42's commit, traced */}
+          {/* the live chip — issue 42's commit, traced, riding above the head box */}
           {liveChipU > 0 && liveChipU < 1 && (
             <g>
-              <rect x={TAPE_X0 + (REPLICA.x - 70 - TAPE_X0) * liveChipU - 44} y={TAPE_Y - 40} width={88} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.8} />
-              <text x={TAPE_X0 + (REPLICA.x - 70 - TAPE_X0) * liveChipU} y={TAPE_Y - 24} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontWeight={700} fontFamily="ui-monospace, monospace">
+              <rect x={TAPE_X0 + (LIVE_X1 - TAPE_X0) * liveChipU - 50} y={LIVE_Y - 13} width={100} height={26} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.8} />
+              <text x={TAPE_X0 + (LIVE_X1 - TAPE_X0) * liveChipU} y={LIVE_Y + 5} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily="ui-monospace, monospace">
                 update · 42
               </text>
             </g>
           )}
 
-          {/* litestream backup aside */}
+          {/* litestream backup aside, leaving the replica's top-right corner clear of its row count */}
           <g opacity={backupU}>
-            <Connection from={{ x: REPLICA.x + 30, y: REPLICA.y - 40 }} to={{ x: REPLICA.x + 120, y: REPLICA.y - 120 }} u={backupU} color={colors.GRID} dashed arrow />
-            <text x={REPLICA.x + 60} y={REPLICA.y - 132} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+            <Connection from={{ x: REPLICA.x + 50, y: REPLICA.y - 28 }} to={{ x: REPLICA.x + 120, y: REPLICA.y - 120 }} u={backupU} color={colors.GRID} dashed arrow />
+            <text x={REPLICA.x + 60} y={REPLICA.y - 132} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               litestream → s3
             </text>
           </g>
@@ -375,14 +379,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* closing panel */}
         <g opacity={closeU}>
-          <rect x={330} y={215} width={620} height={200} rx={18} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={278} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={800} letterSpacing={1}>
+          <rect x={330} y={236} width={620} height={164} rx={18} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={286} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={800} letterSpacing={1}>
             your Postgres stays the boss
           </text>
-          <text x={640} y={318} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+          <text x={640} y={324} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
             the replica is written by the tape, and only the tape
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             Postgres → replication slot → pgoutput → zero.db
           </text>
         </g>

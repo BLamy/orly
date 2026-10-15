@@ -62,8 +62,10 @@ const BAR_MAX = 300;
 
 const CAV_Y = 300;
 
-const CAM_RAIL: CameraState = { x: 640, y: 210, k: 1.25 };
-const CAM_BARS: CameraState = { x: 600, y: 400, k: 1.15 };
+// Zoom levels chosen so the widest content (the 4-box rail, x 150–1168, and the
+// layer panel, x 800–1160) sits fully inside the 1280-wide stage.
+const CAM_RAIL: CameraState = { x: 659, y: 210, k: 1.2 };
+const CAM_BARS: CameraState = { x: 640, y: 400, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -139,10 +141,10 @@ export function buildScene(): Scene {
     text: 'Now the caveats, straight from the paper. The lens is noisy in early layers. Only intermediates you can name in vocabulary are decodable — computation that never projects onto tokens stays invisible.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 33.0, dur: 1.4, ease: ease.move });
-  tl.tween(barsU, 0.15, { at: 33.0, dur: 1.0, ease: ease.move });
-  tl.tween(layerU, 0.15, { at: 33.0, dur: 1.0, ease: ease.move });
-  tl.tween(failU, 0.15, { at: 33.0, dur: 1.0, ease: ease.move });
-  tl.tween(railU, 0.15, { at: 33.0, dur: 1.0, ease: ease.move });
+  tl.tween(barsU, 0, { at: 33.0, dur: 1.0, ease: ease.move });
+  tl.tween(layerU, 0, { at: 33.0, dur: 1.0, ease: ease.move });
+  tl.tween(failU, 0, { at: 33.0, dur: 1.0, ease: ease.move });
+  tl.tween(railU, 0, { at: 33.0, dur: 1.0, ease: ease.move });
   tl.tween(cavU, 1, { at: 34.0, dur: 1.4, ease: ease.enter });
   tl.caption({
     at: 39.1,
@@ -183,7 +185,8 @@ function Frame({ s }: { s: SceneState }) {
   const cavU = s.get(scene.cavU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the closing card replaces the scene, so the old content fades fully out
+  const mainOp = 1 - closeU;
 
   return (
     <>
@@ -277,7 +280,7 @@ function Frame({ s }: { s: SceneState }) {
                   />
                 </g>
               ))}
-              <text x={880} y={BARS_Y + 24 + 3 * 34 + 8} fill={colors.MUTED} fontSize={11}>
+              <text x={880} y={BARS_Y + 24 + 3 * 34 + 8} fill={colors.MUTED} fontSize={12}>
                 early layers ————————— late layers
               </text>
               {failU > 0 && (
@@ -291,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* caveats */}
           {cavU > 0 && (
             <g opacity={cavU}>
-              <rect x={240} y={CAV_Y - 46} width={800} height={40 + CAVEATS.length * 38} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
+              <rect x={240} y={CAV_Y - 46} width={800} height={60 + CAVEATS.length * 38} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={270} y={CAV_Y - 16} fill={colors.WARM} fontSize={17} fontWeight={600}>
                 the authors’ own caveats
               </text>
@@ -320,14 +323,15 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
+          {/* solid panel: it also hides the faded caveat box and bars underneath */}
+          <rect x={210} y={232} width={860} height={252} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={326} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Readable — where we can look.
           </text>
-          <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            80–95% of hidden intermediates decoded, on two open models,
+          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+            82–94% of hidden intermediates decoded (table, Fig. 3), on two open models,
           </text>
-          <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             by the method’s own authors. Closed models remain untested.
           </text>
         </g>

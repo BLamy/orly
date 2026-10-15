@@ -112,16 +112,42 @@ const MAX_DIFF: number = (() => {
   return md; // ≈ 3.9e-16
 })();
 
+// The first transition, split into its parts for the single-step picture:
+// A_1 = Λ_1 − u_1 r_1ᵀ. Scales map each block onto the heat ramp.
+const UR_FIRST: Mat = US[0].map((u) => RS[0].map((r) => u * r));
+const A_FIRST: Mat = denseA(0);
+const UR_SCALE = Math.max(...UR_FIRST.flat().map(Math.abs));
+const A_SCALE = Math.max(...A_FIRST.flat().map(Math.abs));
+
 // ---------------------------------------------------------------------------
-// Layout.
+// Layout. Everything lives in one 1280×720 world; the header (title and the
+// formula) sits in y < 90 and no camera keeps content above that line.
 // ---------------------------------------------------------------------------
 
-const CHAIN_Y = 150;
-const FACT_Y = 320;
-const CELLF = 14;
+const CHAIN_Y = 170;
+const CHAIN_X = 140;
+const CHAIN_PITCH = 128;
+const CHAIN_W = 100;
+const PIC_Y = 310; // single-transition picture (beat 1b)
+const FACT_Y = 330; // growing factorization (beat 2) and the check (beat 3)
+const CELLF = 15;
+const CELL = CELLF - 2;
 
-const CAM_CHAIN: CameraState = { x: 640, y: 170, k: 1.25 };
-const CAM_FACT: CameraState = { x: 640, y: 380, k: 1.2 };
+// Factorization columns, left to right: Γ, Y, M, W.
+const GAM_X = 144;
+const Y_X = 344;
+const M_X = 544;
+const W_X = 744;
+// Single-step picture columns: Λ − u rᵀ = A.
+const PIC_X = [390, 580, 770];
+
+const STAT_X = 920;
+
+// Camera targets: the chain, the factorization, then home.
+const CAM_CHAIN: CameraState = { x: 640, y: 290, k: 1.1 };
+const CAM_FACT: CameraState = { x: 640, y: 380, k: 1.15 };
+
+const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -245,7 +271,44 @@ const MOTION = {
 // Pure render.
 // ---------------------------------------------------------------------------
 
-const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+/** One d×d block of square cells; `fill` returns the cell colour, or null for an empty cell. */
+function Block({
+  x,
+  y,
+  rows,
+  cols,
+  fill,
+  opacity = 1,
+}: {
+  x: number;
+  y: number;
+  rows: number;
+  cols: number;
+  fill: (i: number, j: number) => string | null;
+  opacity?: number;
+}) {
+  return (
+    <g opacity={opacity}>
+      {Array.from({ length: rows }, (_, i) =>
+        Array.from({ length: cols }, (_, j) => {
+          const f = fill(i, j);
+          return (
+            <rect
+              key={`${i}-${j}`}
+              x={x + j * CELLF}
+              y={y + i * CELLF}
+              width={CELL}
+              height={CELL}
+              rx={2}
+              fill={f ?? colors.GRID}
+              opacity={f ? 1 : 0.3}
+            />
+          );
+        }),
+      )}
+    </g>
+  );
+}
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -264,6 +327,10 @@ function Frame({ s }: { s: SceneState }) {
   const step = Math.max(0, Math.min(C - 1, Math.ceil(nCols) - 1));
   const wy = WY_STEPS[Math.max(0, step)];
 
+  // The single-step picture gives way to the factorization as it draws in.
+  const picOp = formU * (1 - factU);
+  const chainOp = chainU * (1 - 0.75 * formU) * (1 - factU);
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
@@ -271,122 +338,170 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the sequential chain */}
-          <g opacity={chainU}>
-            <text x={200} y={CHAIN_Y - 40} fill={colors.TEXT} fontSize={16}>
+          <g opacity={chainOp}>
+            <text x={CHAIN_X} y={CHAIN_Y - 40} fill={colors.TEXT} fontSize={16}>
               a chunk of eight delta-rule transitions
             </text>
             {Array.from({ length: C }, (_, t) => (
               <g key={t} opacity={clamp01(chainU * C - t)}>
-                <rect x={200 + t * 110} y={CHAIN_Y - 20} width={84} height={44} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                <text x={200 + t * 110 + 42} y={CHAIN_Y + 7} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                <rect x={CHAIN_X + t * CHAIN_PITCH} y={CHAIN_Y - 28} width={CHAIN_W} height={56} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                <text x={CHAIN_X + t * CHAIN_PITCH + CHAIN_W / 2} y={CHAIN_Y + 6} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontFamily="monospace">
                   A{t + 1}
                 </text>
+                <text x={CHAIN_X + t * CHAIN_PITCH + CHAIN_W / 2} y={CHAIN_Y + 50} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={13} fontFamily="monospace">
+                  t = {t + 1}
+                </text>
                 {t < C - 1 && (
-                  <text x={200 + t * 110 + 96} y={CHAIN_Y + 7} fill={colors.MUTED} fontSize={15}>
-                    ·
+                  <text x={CHAIN_X + t * CHAIN_PITCH + CHAIN_W + (CHAIN_PITCH - CHAIN_W) / 2} y={CHAIN_Y + 7} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={16}>
+                    →
                   </text>
                 )}
               </g>
             ))}
+            <text x={640} y={CHAIN_Y + 80} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
+              each state waits for the one before it
+            </text>
+          </g>
+
+          {/* one transition: Λ − u rᵀ = A */}
+          <g opacity={picOp}>
+            <text x={PIC_X[0] + 60} y={PIC_Y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
+              Λ — diagonal
+            </text>
+            <text x={PIC_X[1] + 60} y={PIC_Y - 12} textAnchor="middle" fill={colors.WARM} fontSize={15}>
+              u rᵀ — rank one
+            </text>
+            <text x={PIC_X[2] + 60} y={PIC_Y - 12} textAnchor="middle" fill={colors.ACCENT} fontSize={15}>
+              A — one transition
+            </text>
+            <Block
+              x={PIC_X[0]}
+              y={PIC_Y}
+              rows={D}
+              cols={D}
+              fill={(i, j) => (i === j ? colors.heat(clamp01(LAM[0][i])) : null)}
+            />
+            <text x={545} y={PIC_Y + 70} textAnchor="middle" fill={colors.TEXT} fontSize={30}>
+              −
+            </text>
+            <Block
+              x={PIC_X[1]}
+              y={PIC_Y}
+              rows={D}
+              cols={D}
+              fill={(i, j) => colors.heat(clamp01(0.5 + 0.5 * UR_FIRST[i][j] / UR_SCALE))}
+            />
+            <text x={735} y={PIC_Y + 70} textAnchor="middle" fill={colors.TEXT} fontSize={30}>
+              =
+            </text>
+            <Block
+              x={PIC_X[2]}
+              y={PIC_Y}
+              rows={D}
+              cols={D}
+              fill={(i, j) => colors.heat(clamp01(0.5 + 0.5 * A_FIRST[i][j] / A_SCALE))}
+            />
+            <text x={640} y={PIC_Y + D * CELLF + 40} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={15}>
+              one diagonal, minus one rank-one correction
+            </text>
           </g>
 
           {/* the growing factorization */}
-          <g opacity={factU}>
-            <text x={200} y={FACT_Y - 24} fill={colors.TEXT} fontSize={16}>
+          <g opacity={factU * (1 - 0.6 * mapU) * (1 - closeU)}>
+            <text x={120} y={FACT_Y - 40} fill={colors.TEXT} fontSize={16}>
               the chunk product, factored — rank grows only inside the chunk
             </text>
             {/* Γ diagonal */}
-            <g>
-              <text x={200} y={FACT_Y + 4} fill={colors.WARM} fontSize={14} fontFamily="monospace">
-                Γ
-              </text>
-              {wy.Gam.map((g, i) => (
-                <rect
-                  key={i}
-                  x={224 + i * CELLF}
-                  y={FACT_Y + i * CELLF - 4}
-                  width={CELLF - 2}
-                  height={CELLF - 2}
-                  rx={2}
-                  fill={colors.heat(clamp01(g))}
-                />
-              ))}
-            </g>
+            <text x={GAM_X} y={FACT_Y - 12} fill={colors.WARM} fontSize={15} fontFamily="monospace">
+              Γ
+            </text>
+            <Block
+              x={GAM_X}
+              y={FACT_Y}
+              rows={D}
+              cols={D}
+              fill={(i, j) => (i === j ? colors.heat(clamp01(wy.Gam[i])) : null)}
+            />
             {/* Y (d × t) */}
-            <g>
-              <text x={420} y={FACT_Y + 4} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
-                Y
-              </text>
-              {wy.Y.map((col, c) =>
-                col.map((v, i) => (
-                  <rect
-                    key={`${c}-${i}`}
-                    x={444 + c * CELLF}
-                    y={FACT_Y + i * CELLF - 4}
-                    width={CELLF - 2}
-                    height={CELLF - 2}
-                    rx={2}
-                    fill={colors.heat(clamp01(0.5 + v))}
-                    opacity={c < nCols ? 1 : 0}
-                  />
-                )),
-              )}
-            </g>
+            <text x={Y_X} y={FACT_Y - 12} fill={colors.ACCENT} fontSize={15} fontFamily="monospace">
+              Y
+            </text>
+            {wy.Y.map((col, c) =>
+              col.map((v, i) => (
+                <rect
+                  key={`y-${c}-${i}`}
+                  x={Y_X + c * CELLF}
+                  y={FACT_Y + i * CELLF}
+                  width={CELL}
+                  height={CELL}
+                  rx={2}
+                  fill={colors.heat(clamp01(0.5 + v))}
+                  opacity={c < nCols ? 1 : 0}
+                />
+              )),
+            )}
             {/* M (t × t lower-tri) */}
-            <g>
-              <text x={610} y={FACT_Y + 4} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
-                M
-              </text>
-              {wy.M.map((row, i) =>
-                row.map((v, j) => (
-                  <rect
-                    key={`${i}-${j}`}
-                    x={634 + j * CELLF}
-                    y={FACT_Y + i * CELLF - 4}
-                    width={CELLF - 2}
-                    height={CELLF - 2}
-                    rx={2}
-                    fill={colors.heat(clamp01(0.5 + v * 0.5))}
-                    opacity={i < nCols && j < nCols ? 1 : 0}
-                  />
-                )),
-              )}
-            </g>
+            <text x={M_X} y={FACT_Y - 12} fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">
+              M
+            </text>
+            {wy.M.map((row, i) =>
+              row.map((v, j) => (
+                <rect
+                  key={`m-${i}-${j}`}
+                  x={M_X + j * CELLF}
+                  y={FACT_Y + i * CELLF}
+                  width={CELL}
+                  height={CELL}
+                  rx={2}
+                  fill={colors.heat(clamp01(0.5 + v * 0.5))}
+                  opacity={i < nCols && j < nCols ? 1 : 0}
+                />
+              )),
+            )}
             {/* W (d × t) */}
-            <g>
-              <text x={800} y={FACT_Y + 4} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
-                W
+            <text x={W_X} y={FACT_Y - 12} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace">
+              W
+            </text>
+            {wy.W.map((col, c) =>
+              col.map((v, i) => (
+                <rect
+                  key={`w-${c}-${i}`}
+                  x={W_X + c * CELLF}
+                  y={FACT_Y + i * CELLF}
+                  width={CELL}
+                  height={CELL}
+                  rx={2}
+                  fill={colors.heat(clamp01(0.5 + v))}
+                  opacity={c < nCols ? 1 : 0}
+                />
+              )),
+            )}
+            {/* shape labels under each block */}
+            {[
+              { x: GAM_X, label: 'diagonal' },
+              { x: Y_X, label: 'd × t' },
+              { x: M_X, label: 't × t' },
+              { x: W_X, label: 'd × t' },
+            ].map((b) => (
+              <text key={b.label + b.x} x={b.x} y={FACT_Y + D * CELLF + 18} fill={colors.TEXT} opacity={0.75} fontSize={13}>
+                {b.label}
               </text>
-              {wy.W.map((col, c) =>
-                col.map((v, i) => (
-                  <rect
-                    key={`${c}-${i}`}
-                    x={824 + c * CELLF}
-                    y={FACT_Y + i * CELLF - 4}
-                    width={CELLF - 2}
-                    height={CELLF - 2}
-                    rx={2}
-                    fill={colors.heat(clamp01(0.5 + v))}
-                    opacity={c < nCols ? 1 : 0}
-                  />
-                )),
-              )}
-            </g>
-            <text x={444} y={FACT_Y + D * CELLF + 20} fill={colors.MUTED} fontSize={12}>
+            ))}
+            <text x={120} y={FACT_Y + D * CELLF + 46} fill={colors.TEXT} opacity={0.85} fontSize={14}>
               columns absorbed: {Math.round(nCols)} of {C} — rank ≤ {C}
             </text>
 
             {/* verification badge */}
             {checkU > 0 && (
               <g opacity={checkU}>
-                <rect x={960} y={FACT_Y - 8} width={230} height={104} rx={10} fill={colors.PANEL} stroke={colors.GRID} opacity={0.95} />
-                <text x={1075} y={FACT_Y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                <rect x={STAT_X} y={FACT_Y + 4} width={240} height={104} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={STAT_X + 120} y={FACT_Y + 30} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   dense product vs factors
                 </text>
-                <text x={1075} y={FACT_Y + 46} textAnchor="middle" fill={colors.POSITIVE} fontSize={19} fontFamily="monospace" fontWeight={700}>
+                <text x={STAT_X + 120} y={FACT_Y + 62} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontFamily="monospace" fontWeight={700}>
                   {MAX_DIFF.toExponential(1)}
                 </text>
-                <text x={1075} y={FACT_Y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={STAT_X + 120} y={FACT_Y + 92} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13}>
                   max error, 64 entries
                 </text>
               </g>
@@ -397,22 +512,22 @@ function Frame({ s }: { s: SceneState }) {
           {mapU > 0 && (
             <g opacity={mapU}>
               {[
-                { x: 240, name: 'KDA', desc: 'gated real decay', tex: true, color: colors.WARM },
-                { x: 640, name: 'Gated DeltaNet-2', desc: 'erase ≠ write', tex: false, color: colors.ACCENT },
-                { x: 1040, name: 'SFDA', desc: 'phase-decay Λ', tex: false, color: colors.SECONDARY },
+                { x: 240, name: 'KDA', desc: 'gated real decay', color: colors.WARM },
+                { x: 640, name: 'Gated DeltaNet-2', desc: 'erase ≠ write strength', color: colors.ACCENT },
+                { x: 1040, name: 'SFDA', desc: 'decay rotates in phase', color: colors.SECONDARY },
               ].map((p) => (
                 <g key={p.name}>
-                  <rect x={p.x - 130} y={520} width={260} height={78} rx={10} fill={colors.PANEL} stroke={p.color} strokeWidth={1.5} opacity={0.95} />
-                  <text x={p.x} y={552} textAnchor="middle" fill={p.color} fontSize={17} fontWeight={600}>
+                  <rect x={p.x - 130} y={520} width={260} height={70} rx={10} fill={colors.PANEL} stroke={p.color} strokeWidth={1.5} opacity={0.95} />
+                  <text x={p.x} y={548} textAnchor="middle" fill={p.color} fontSize={17} fontWeight={600}>
                     {p.name}
                   </text>
-                  <text x={p.x} y={578} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={p.x} y={573} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
                     {p.desc}
                   </text>
                 </g>
               ))}
-              <line x1={370} y1={559} x2={510} y2={559} stroke={colors.GRID} strokeWidth={1.5} />
-              <line x1={770} y1={559} x2={910} y2={559} stroke={colors.GRID} strokeWidth={1.5} />
+              <line x1={370} y1={555} x2={510} y2={555} stroke={colors.MUTED} strokeWidth={1.5} />
+              <line x1={770} y1={555} x2={910} y2={555} stroke={colors.MUTED} strokeWidth={1.5} />
             </g>
           )}
         </Camera>
@@ -422,21 +537,22 @@ function Frame({ s }: { s: SceneState }) {
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The chunked frontier
         </text>
-        <text x={40} y={70} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+        <text x={40} y={70} fill={colors.TEXT} opacity={0.75} fontSize={14} fontFamily="monospace">
           arXiv:2607.11897 · chunk-WY
         </text>
       </g>
+      {/* one formula at a time, centred in the header */}
       <MathLabel
         tex="A_t = \Lambda_t - u_t r_t^{*}"
-        x={560}
+        x={640}
         y={44}
         fontSize={20}
         color={colors.ACCENT}
-        opacity={formU * mainOp}
+        opacity={formU * (1 - factU) * mainOp}
       />
       <MathLabel
         tex="P = \Gamma - Y M W^{*}"
-        x={820}
+        x={640}
         y={44}
         fontSize={20}
         color={colors.POSITIVE}
@@ -445,14 +561,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={210} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={210} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             The little update the frontier converged on.
           </text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={326} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             Fast weights → error correction → decay and gates →
           </text>
-          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={17}>
             phase — all riding one exact chunked factorization.
           </text>
           <text x={640} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">

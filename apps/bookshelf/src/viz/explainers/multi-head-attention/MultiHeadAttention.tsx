@@ -141,9 +141,12 @@ function Frame({ s }: { s: SceneState }) {
 
   // lane opacity: the visiting spotlight dims the two other lanes; the merge
   // beat then folds all three lanes down as their content flows to the output.
+  // the middle lane sits exactly where the merged output row lands, so it hands
+  // over to that row (fades out as the output chips appear) instead of stacking under it
   const laneOp = (h: number) => {
     const spot = lerp(1, lerp(0.18, 1, hi[h]), visit);
-    return spot * (1 - 0.75 * merge) * machineDim;
+    const handOver = h === 1 ? 1 - out : 1;
+    return spot * (1 - 0.75 * merge) * handOver * machineDim;
   };
   // matrix beat also whispers the lower lanes behind the panel
   const matShade = (h: number) => (h > 0 ? 1 - 0.5 * matUv : 1);
@@ -153,6 +156,28 @@ function Frame({ s }: { s: SceneState }) {
 
   return (
     <Camera {...s.get(scene.cam)}>
+      {/* ── beat 6: three streams weave back into one (under the chips, so no dot covers a word) ── */}
+      {merge > 0.01 &&
+        TOKENS.map((tok, i) => {
+          const u = clamp01(merge * 1.35 - i * 0.05);
+          if (u <= 0) return null;
+          return (
+            <g key={`m${i}`}>
+              {[0, 1, 2].map((h) => {
+                const y0 = LANE_YS[h];
+                const cx = TOKEN_XS[i] + (h - 1) * 46; // the weave: side lanes bow outward
+                // quadratic bezier from lane to the merged stream
+                const t = u;
+                const mt = 1 - t;
+                const px = mt * mt * TOKEN_XS[i] + 2 * mt * t * cx + t * t * TOKEN_XS[i];
+                const py = mt * mt * y0 + 2 * mt * t * (y0 + OUT_Y) * 0.5 + t * t * OUT_Y;
+                const fade = t < 0.82 ? 1 : clamp01(1 - (t - 0.82) / 0.18);
+                return <circle key={h} cx={px} cy={py} r={6} fill={HEAD_COLORS[h]} opacity={fade * 0.95 * machineDim} />;
+              })}
+            </g>
+          );
+        })}
+
       {/* ── the three lanes (collapsed to one before the split) ── */}
       {[0, 1, 2].map((h) => {
         const y = laneY(h);
@@ -163,7 +188,8 @@ function Frame({ s }: { s: SceneState }) {
         return (
           <g key={`lane${h}`} opacity={op * laneVis}>
             {/* head tag */}
-            <text x={54} y={y + 5} fill={HEAD_COLORS[h]} fontSize={15} fontWeight={600} opacity={tag}>
+            {/* head tag sits under its lane, flush with the first chip, clear of the arcs */}
+            <text x={TOKEN_XS[0] - 29} y={y + 30}fill={HEAD_COLORS[h]} fontSize={15} fontWeight={600} opacity={tag}>
               {HEAD_NAMES[h]}
             </text>
             {/* token chips */}
@@ -228,7 +254,7 @@ function Frame({ s }: { s: SceneState }) {
             emphasize={0.55}
             rowLabels={TOKENS}
             colLabels={TOKENS}
-            labelSize={11}
+            labelSize={12}
             highlight={{
               cell: [Math.min(N - 1, Math.max(1, Math.round(stripe * (N - 1)))), Math.min(N - 2, Math.max(0, Math.round(stripe * (N - 1)) - 1))] as [number, number],
               color: HEAD_COLORS[0],
@@ -238,28 +264,6 @@ function Frame({ s }: { s: SceneState }) {
           />
         </g>
       )}
-
-      {/* ── beat 6: three streams weave back into one ── */}
-      {merge > 0.01 &&
-        TOKENS.map((tok, i) => {
-          const u = clamp01(merge * 1.35 - i * 0.05);
-          if (u <= 0) return null;
-          return (
-            <g key={`m${i}`}>
-              {[0, 1, 2].map((h) => {
-                const y0 = LANE_YS[h];
-                const cx = TOKEN_XS[i] + (h - 1) * 46; // the weave: side lanes bow outward
-                // quadratic bezier from lane to the merged stream
-                const t = u;
-                const mt = 1 - t;
-                const px = mt * mt * TOKEN_XS[i] + 2 * mt * t * cx + t * t * TOKEN_XS[i];
-                const py = mt * mt * y0 + 2 * mt * t * (y0 + OUT_Y) * 0.5 + t * t * OUT_Y;
-                const fade = t < 0.82 ? 1 : clamp01(1 - (t - 0.82) / 0.18);
-                return <circle key={h} cx={px} cy={py} r={7} fill={HEAD_COLORS[h]} opacity={fade * 0.95 * machineDim} />;
-              })}
-            </g>
-          );
-        })}
 
       {/* the merged output row */}
       {out > 0.01 &&
@@ -310,6 +314,8 @@ function Frame({ s }: { s: SceneState }) {
       {/* ── closing card ── */}
       {s.get(scene.endU) > 0.01 && (
         <g opacity={s.get(scene.endU)}>
+          {/* solid panel so the closing card never sits on the faded machinery */}
+          <rect x={200} y={176} width={880} height={170} rx={14} fill={colors.BG} fillOpacity={0.94} stroke={colors.GRID} />
           <text x={640} y={230} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={700}>
             many conversations, one stream
           </text>

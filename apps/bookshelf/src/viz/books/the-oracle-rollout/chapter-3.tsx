@@ -89,13 +89,13 @@ const scene = buildScene();
 
 function RowBead({ row, x, y, u, selected, drop, oracleKeep }: { row: typeof ROWS[number]; x: number; y: number; u: number; selected: boolean; drop: number; oracleKeep: number }) {
   const color = row.oracle ? colors.WARM : row.score > 0 ? colors.POSITIVE : row.score < 0 ? colors.NEGATIVE : colors.MUTED;
-  const dim = selected ? 0 : drop * 0.9;
+  const dim = selected ? 0 : drop;
   const halo = row.oracle ? oracleKeep : selected ? clamp01(drop * 2) : 0;
   return <g opacity={u * (1 - dim)} transform={`translate(${x} ${y}) scale(${0.82 + u * 0.18})`}>
     <circle r={halo > 0 ? 29 : 23} fill={color} opacity={0.22 + halo * 0.16} />
     <circle r="20" fill={color} stroke="#07101d" strokeWidth="3" />
-    <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">{row.oracle ? 'GT' : row.id}</text>
-    <text y="-46" textAnchor="middle" fill={color} fontSize="13" fontFamily={colors.font.mono}>{row.score > 0 ? '+' : ''}{row.score.toFixed(1)}</text>
+    <text y="5" textAnchor="middle" fill="#07101d" fontSize="14" fontWeight="900">{row.oracle ? 'GT' : row.id}</text>
+    <text y="-46" textAnchor="middle" fill={color} fontSize="14" fontFamily={colors.font.mono}>{row.score > 0 ? '+' : ''}{row.score.toFixed(1)}</text>
   </g>;
 }
 
@@ -114,15 +114,15 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="94" textAnchor="middle" fill={colors.MUTED} fontSize="16">advantage = how much better a rollout did than the group average</text>
       <text x="640" y="124" textAnchor="middle" fill={colors.SECONDARY} fontSize="16">keep the best rows of each sign, so both learning directions survive</text>
 
-      <g opacity={split}>
-        <rect x="198" y="270" width="318" height="104" rx="26" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="357" y="256" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">positive policy</text>
-        <rect x="566" y="390" width="318" height="104" rx="26" fill="#2a131d" stroke={colors.NEGATIVE} strokeWidth="2" />
-        <text x="725" y="376" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">negative policy</text>
-        <rect x="912" y="492" width="108" height="102" rx="25" fill="#182130" stroke={colors.MUTED} strokeWidth="2" />
-        <text x="966" y="478" textAnchor="middle" fill={colors.MUTED} fontSize="13">zero</text>
-        <rect x="1036" y="270" width="108" height="104" rx="26" fill="#2b240d" stroke={colors.WARM} strokeWidth="2" />
-        <text x="1090" y="256" textAnchor="middle" fill={colors.WARM} fontSize="13">oracle</text>
+      <g opacity={0.25 + 0.75 * split}>
+        <rect x="198" y="250" width="318" height="144" rx="26" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="2" />
+        <text x="357" y="236" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">positive policy</text>
+        <rect x="566" y="370" width="318" height="144" rx="26" fill="#2a131d" stroke={colors.NEGATIVE} strokeWidth="2" />
+        <text x="725" y="356" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">negative policy</text>
+        <rect x="912" y="478" width="108" height="132" rx="25" fill="#182130" stroke={colors.MUTED} strokeWidth="2" />
+        <text x="966" y="464" textAnchor="middle" fill={colors.MUTED} fontSize="14">zero</text>
+        <rect x="1036" y="250" width="108" height="144" rx="26" fill="#2b240d" stroke={colors.WARM} strokeWidth="2" />
+        <text x="1090" y="236" textAnchor="middle" fill={colors.WARM} fontSize="14">oracle</text>
       </g>
 
       {ROWS.map((row, i) => {
@@ -146,7 +146,7 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={s.get(scene.fallbackU)}>
         <path d="M512 548 C610 580 748 580 900 548" fill="none" stroke={colors.SECONDARY} strokeWidth="3" strokeDasharray="8 7" />
-        <text x="706" y="590" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">cross-sign fallback → zero fallback</text>
+        <text x="706" y="596" textAnchor="middle" fill={colors.SECONDARY} fontSize="14">cross-sign fallback → zero fallback</text>
       </g>
     </g>
 
@@ -165,13 +165,14 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={x - 42} y={Math.min(AXIS_Y, top)} width="84" height={Math.max(3, Math.abs(AXIS_Y - top))} rx="12" fill={color} opacity="0.8" />
           <circle cx={x} cy={top} r={s.get(scene.updateU) > 0 ? 16 : 10} fill={color} />
           <text x={x} y="478" textAnchor="middle" fill={color} fontSize="14" fontWeight="800">{row.oracle ? 'oracle' : `row ${row.id}`}</text>
-          <text x={x} y="500" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{value >= 0 ? '+' : ''}{value.toFixed(2)}</text>
+          <text x={x} y="500" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{value >= 0 ? '+' : ''}{value.toFixed(2)}</text>
         </g>;
       })}
       <g opacity={correction}>
-        <rect x="314" y="516" width="652" height="60" rx="24" fill="#101a2d" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="640" y="541" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>Σ Â = 0 · Âgt ≥ 0 · λ = {RMS_SCALE.toFixed(2)}</text>
-        <text x="640" y="562" textAnchor="middle" fill={colors.MUTED} fontSize="14">recenter the mean to 0 · oracle stays ≥ 0 · λ = size ratio, shrink only</text>
+        <rect x="314" y="512" width="652" height="84" rx="24" fill="#101a2d" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="640" y="536" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>Σ Â = 0 · Âgt ≥ 0 · λ = {RMS_SCALE.toFixed(2)}</text>
+        <text x="640" y="556" textAnchor="middle" fill={colors.MUTED} fontSize="14">recenter the mean to 0 · oracle stays ≥ 0 · λ = size ratio, shrink only</text>
+        <text x="640" y="580" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>example, row 2: −0.90 → −0.93 recentred → ×{RMS_SCALE.toFixed(2)} → −0.81</text>
       </g>
     </g>
 

@@ -51,11 +51,11 @@ const PLATE_H = 40;
 
 const DOOR = { cx: 640, y: FRAME.y + FRAME.h } as const;
 
-const RING = { cx: 660, cy: 300, r: 62 } as const;
+const RING = { cx: 660, cy: 300, r: 92 } as const;
 
 const POOLS = [
-  { label: 'DatabasePool · acme', x: 230 },
-  { label: 'DatabasePool · globex', x: 520 },
+  { label: 'DatabasePool · acme', x: 300 },
+  { label: 'DatabasePool · globex', x: 580 },
 ] as const;
 const POOL_Y = 300;
 
@@ -64,10 +64,10 @@ const RECAP_CY = RECAP.y + 44;
 
 const CAM_OPEN: CameraState = { x: 640, y: 330, k: 1.22 };
 const CAM_SCOPE: CameraState = { x: 640, y: 360, k: 1.08 };
-const CAM_STACK: CameraState = { x: 760, y: 380, k: 1.12 };
+const CAM_STACK: CameraState = { x: 740, y: 380, k: 1.12 };
 const CAM_DOOR: CameraState = { x: 640, y: 420, k: 1.14 };
 const CAM_RING: CameraState = { x: 640, y: 330, k: 1.12 };
-const CAM_POOLS: CameraState = { x: 540, y: 340, k: 1.12 };
+const CAM_POOLS: CameraState = { x: 555, y: 340, k: 1.12 };
 const CAM_RECAP: CameraState = { x: 640, y: 330, k: 1.28 };
 
 // ---------------------------------------------------------------------------
@@ -112,7 +112,7 @@ export function buildScene() {
   });
   tl.tween(cam, CAM_SCOPE, { at: 8.0, dur: 1.4, ease: ease.move });
   tl.tween(scopeU, 1, { at: 8.4, dur: 1.6, ease: ease.draw });
-  tl.tween(acq1U, 1, { at: 9.4, dur: 1.6, ease: ease.move });
+  tl.tween(acq1U, 1, { at: 11.2, dur: 1.6, ease: ease.move });
 
   // — beat 3 · the stack remembers —
   tl.caption({
@@ -222,7 +222,7 @@ function Plate({ i, label, u, popped }: { i: number; label: string; u: number; p
   return (
     <g opacity={u * (1 - 0.4 * fly)} transform={`translate(0 ${-18 * fly})`}>
       <rect x={STACK_X} y={y} width={STACK_W} height={PLATE_H} rx={9} fill={colors.BG} stroke={fly > 0.2 ? colors.POSITIVE : colors.WARM} strokeWidth={1.6} />
-      <text x={STACK_X + STACK_W / 2} y={y + 25} textAnchor="middle" fill={fly > 0.2 ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+      <text x={STACK_X + STACK_W / 2} y={y + 25} textAnchor="middle" fill={fly > 0.2 ? colors.POSITIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
         {fly > 0.2 ? '✓ ' + label : label}
       </text>
     </g>
@@ -248,10 +248,10 @@ function ResourceCard({
   return (
     <g opacity={u * (1 - 0.85 * dim)}>
       <rect x={box.x} y={box.y} width={box.w} height={box.h} rx={13} fill={colors.PANEL} stroke={dead > 0.5 ? colors.GRID : colors.POSITIVE} strokeWidth={1.5} />
-      <text x={box.x + 18} y={box.y + 28} fill={dead > 0.5 ? colors.MUTED : colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={600}>
+      <text x={box.x + 18} y={box.y + 28} fill={colors.TEXT} fontSize={14} fontFamily={MONO} fontWeight={600}>
         {title}
       </text>
-      <text x={box.x + 18} y={box.y + 52} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text x={box.x + 18} y={box.y + 52} fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
         {sub}
       </text>
       <circle cx={box.x + box.w - 22} cy={box.y + 24} r={6} fill={dead > 0.5 ? colors.GRID : colors.POSITIVE} opacity={0.9} />
@@ -318,7 +318,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={i} opacity={u}>
                   <circle cx={x} cy={300} r={13} fill="none" stroke={orphan ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={2} />
                   <circle cx={x} cy={300} r={6} fill={orphan ? colors.NEGATIVE : colors.POSITIVE} opacity={orphan ? 0.6 + 0.4 * Math.sin(TAU * crashU) : 0.9} />
-                  <text x={x} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={x} y={336} textAnchor="middle" fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
                     {['connection', 'transporter', 'heartbeat'][i]}
                   </text>
                 </g>
@@ -330,7 +330,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={790} y={252} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
                   the run dies here
                 </text>
-                <text x={810} y={336} fill={colors.NEGATIVE} fontSize={11} fontStyle="italic" opacity={crashU}>
+                <text x={810} y={336} fill={colors.NEGATIVE} fontSize={12} fontStyle="italic" opacity={crashU}>
                   …and who closes these?
                 </text>
               </g>
@@ -362,7 +362,7 @@ export function Render({ s }: { s: SceneState }) {
             {!stackGone && (
               <g opacity={clamp01(acq1U * 2) * (1 - 0.8 * stackDim)}>
                 <line x1={STACK_X - 18} y1={STACK_Y0 + PLATE_H + 6} x2={STACK_X + STACK_W + 18} y2={STACK_Y0 + PLATE_H + 6} stroke={colors.GRID} strokeWidth={2} />
-                <text x={STACK_X + STACK_W / 2} y={STACK_Y0 + PLATE_H + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text x={STACK_X + STACK_W / 2} y={STACK_Y0 + PLATE_H + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   finalizers · last in, first out
                 </text>
               </g>
@@ -371,10 +371,10 @@ export function Render({ s }: { s: SceneState }) {
             {exitU > 0.01 && !stackGone && (
               <g opacity={clamp01(exitU * 2) * (1 - 0.85 * clamp01(ringDim + stackDim))}>
                 <rect x={DOOR.cx - 46} y={DOOR.y - 14} width={92} height={28} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
-                <text x={DOOR.cx} y={DOOR.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                <text x={DOOR.cx} y={DOOR.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                   exit
                 </text>
-                <text x={DOOR.cx} y={DOOR.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                <text x={DOOR.cx} y={DOOR.y + 34} textAnchor="middle" fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
                   Scope.addFinalizerExit((exit) =&gt; …)
                 </text>
                 {(
@@ -394,7 +394,7 @@ export function Render({ s }: { s: SceneState }) {
                         y={lerp(250, DOOR.y - 20, u) - 15}
                         textAnchor="middle"
                         fill={e.color}
-                        fontSize={11.5}
+                        fontSize={12}
                         fontFamily={MONO}
                         opacity={1 - clamp01(u * 1.6 - 0.55)}
                       >
@@ -455,18 +455,22 @@ export function Render({ s }: { s: SceneState }) {
               strokeDashoffset={-spinU * 48}
               opacity={cutU > 0.5 ? 0.5 : 0.95}
             />
-            <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={cutU > 0.5 ? colors.MUTED : colors.TEAL} fontSize={12} fontFamily={MONO}>
+            <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={cutU > 0.5 ? colors.MUTED : colors.TEAL} fontSize={13} fontFamily={MONO}>
               Effect.forkScoped
             </text>
-            <text x={RING.cx} y={RING.cy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={RING.cx} y={RING.cy + 14} textAnchor="middle" fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
               sleep 5s · log · repeat
             </text>
             {cutU > 0.02 && (
               <g opacity={cutU}>
                 <circle cx={RING.cx} cy={RING.cy} r={RING.r + 16 * cutU} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} opacity={1 - 0.6 * cutU} />
                 <path d={`M${RING.cx - 14} ${RING.cy - RING.r - 10} l28 20 m0 -20 l-28 20`} stroke={colors.NEGATIVE} strokeWidth={2.5} fill="none" />
-                <text x={RING.cx - 60} y={RING.cy + RING.r + 22} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
-                  Background task interrupted: layer scope closed
+                {/* two lines, centred under the ring, so the label stays clear of the plates */}
+                <text x={RING.cx} y={RING.cy + RING.r + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                  Background task interrupted:
+                </text>
+                <text x={RING.cx} y={RING.cy + RING.r + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                  layer scope closed
                 </text>
               </g>
             )}
@@ -476,10 +480,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- beat 7: tenant pools with idle timers ---------------- */}
         {poolU > 0.01 && !machineGone && (
           <g opacity={poolU * (1 - 0.9 * poolDim)}>
-            <text x={230} y={POOL_Y - 42} fill={colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={600}>
+            <text x={POOLS[0].x} y={POOL_Y - 42} fill={colors.TEXT} fontSize={14} fontFamily={MONO} fontWeight={600}>
               LayerMap · app/PoolMap
             </text>
-            <text x={230} y={POOL_Y - 22} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={POOLS[0].x} y={POOL_Y - 22} fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
               idleTimeToLive: &quot;1 minute&quot;
             </text>
             {POOLS.map((p, i) => {
@@ -489,10 +493,10 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={p.label} opacity={(1 - 0.8 * gone) * clamp01(poolU * 2 - i * 0.4)}>
                   <rect x={p.x} y={POOL_Y} width={230} height={72} rx={13} fill={colors.PANEL} stroke={gone > 0.3 ? colors.GRID : colors.ACCENT} strokeWidth={1.5} />
-                  <text x={p.x + 16} y={POOL_Y + 28} fill={gone > 0.3 ? colors.MUTED : colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+                  <text x={p.x + 16} y={POOL_Y + 28} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                     {p.label}
                   </text>
-                  <text x={p.x + 16} y={POOL_Y + 50} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={p.x + 16} y={POOL_Y + 50} fill={colors.TEXT} opacity={0.78} fontSize={12} fontFamily={MONO}>
                     own child scope
                   </text>
                   {/* idle dial */}
@@ -511,7 +515,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {poolGone > 0.3 && (
-              <text x={520} y={POOL_Y + 100} fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO} opacity={poolGone}>
+              <text x={POOLS[1].x} y={POOL_Y + 100} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={poolGone}>
                 ✓ Closing tenant pool globex
               </text>
             )}
@@ -547,7 +551,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={slot.cx} y={RECAP_CY + 6} textAnchor="middle" fill={slot.color} fontSize={16} fontFamily={MONO} fontWeight={700} opacity={0.4 + 0.6 * slot.lit}>
                   {slot.label}
                 </text>
-                <text x={slot.cx} y={RECAP.y + RECAP.h + 22} textAnchor="middle" fill={slot.color} fontSize={11.5} opacity={slot.lit}>
+                <text x={slot.cx} y={RECAP.y + RECAP.h + 22} textAnchor="middle" fill={slot.color} fontSize={12} opacity={slot.lit}>
                   {slot.sub}
                 </text>
                 {slot.lit > 0.5 && slot.lit < 1 && (

@@ -71,7 +71,7 @@ export function buildScene() {
   tl.tween(cam, { x: 640, y: 375, k: 1.08 }, { at: 38.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 42.4, dur: 5.5, text: 'Before the proposal mutates request state, the backend snapshots encoder, concept, and decoder history.' });
-  tl.tween(snapshotU, 1, { at: 37.4, dur: 1.0, ease: ease.pop });
+  tl.tween(snapshotU, 1, { at: 42.9, dur: 1.3, ease: ease.pop });
 
   tl.caption({ at: 48.4, dur: 5.5, text: 'Accepted tokens commit. A rejected suffix restores the snapshot, so speed cannot quietly change the generated sequence.' });
   tl.tween(rollbackU, 1, { at: 49.0, dur: 2.4, ease: ease.move });
@@ -99,7 +99,7 @@ function LedgerCard({ x, y, title, value, color, u }: { x: number; y: number; ti
   if (u <= 0) return null;
   return <g transform={`translate(${x} ${y + (1 - u) * 18})`} opacity={u}>
     <rect width="238" height="74" rx="18" fill="#111c2c" stroke={color} strokeWidth="2" />
-    <text x="18" y="27" fill={color} fontSize="12" fontFamily={colors.font.mono}>{title}</text>
+    <text x="18" y="27" fill={color} fontSize="13" fontFamily={colors.font.mono}>{title}</text>
     <text x="18" y="52" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{value}</text>
   </g>;
 }
@@ -129,7 +129,7 @@ export function Render({ s }: { s: SceneState }) {
         <line x1={xScale(0.513)} y1={yScale(2.42)} x2={xScale(0.513)} y2={yScale(1.85)} stroke={colors.WARM} strokeWidth="2.5" opacity={s.get(scene.crossingU)} />
         <circle cx={xScale(0.513)} cy={yScale(1.85)} r={10 + 4 * s.get(scene.crossingU)} fill={colors.WARM} />
         <text x={xScale(0.513) + 12} y={yScale(2.40)} fill={colors.WARM} fontSize="13">51.3% of tokens</text>
-        <text x={xScale(0.93)} y={yScale(baselineLoss(0.93)) - 14} textAnchor="end" fill={colors.MUTED} fontSize="13">OLMo-3-7B</text>
+        <text x={xScale(0.70)} y={yScale(baselineLoss(0.70)) - 10} fill={colors.MUTED} fontSize="13">OLMo-3-7B</text>
         <text x={xScale(0.62) + 4} y={yScale(ncpLoss(0.62)) + 26} fill={colors.ACCENT} fontSize="13">NCP-ArchPreview</text>
         <g opacity={s.get(scene.resultsU)}>
           {[
@@ -139,7 +139,7 @@ export function Render({ s }: { s: SceneState }) {
           ].map((r) => <g key={r.big} transform={`translate(980 ${r.y})`}>
             <rect x="-110" y="-38" width="220" height="82" rx="20" fill="#101827" stroke={r.big.startsWith('−') ? colors.ACCENT : colors.POSITIVE} strokeWidth="2.5" />
             <text y="3" textAnchor="middle" fill={r.big.startsWith('−') ? colors.ACCENT : colors.POSITIVE} fontSize="28" fontWeight="850">{r.big}</text>
-            <text y="27" textAnchor="middle" fill={colors.MUTED} fontSize="12">{r.small}</text>
+            <text y="27" textAnchor="middle" fill={colors.MUTED} fontSize="13">{r.small}</text>
           </g>)}
         </g>
       </g>
@@ -147,6 +147,7 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={ledger * ledgerFade}>
         <rect x="92" y="116" width="1096" height="450" rx="40" fill="#101827" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="640" y="160" textAnchor="middle" fill={colors.TEXT} fontSize="27" fontWeight="820">immutable evaluation ledger</text>
+        <text x="640" y="189" textAnchor="middle" fill={colors.MUTED} fontSize="16" opacity={ledger}>a persuasive curve is not a record</text>
         <LedgerCard x={142} y={204} title="MODEL_SCHEMA_VERSION" value="conceptlm…model-v1" color={colors.ACCENT} u={clamp01(s.get(scene.taskU) * 6)} />
         <LedgerCard x={398} y={204} title="source_state" value="repo_commit + tree_sha256" color={colors.SECONDARY} u={clamp01(s.get(scene.taskU) * 6 - 1)} />
         <LedgerCard x={654} y={204} title="prepared data" value="pinned file + sha256" color={colors.WARM} u={clamp01(s.get(scene.taskU) * 6 - 2)} />
@@ -155,8 +156,8 @@ export function Render({ s }: { s: SceneState }) {
         <LedgerCard x={782} y={318} title="artifact validation" value="fail closed" color={colors.NEGATIVE} u={clamp01(s.get(scene.taskU) * 6 - 5)} />
         <path d="M389 430 H891" stroke={colors.MUTED} strokeWidth="4" strokeDasharray="12 9" opacity={s.get(scene.taskU)} />
         <rect x="436" y="410" width="408" height="58" rx="20" fill="#12291f" stroke={colors.POSITIVE} strokeWidth="3" opacity={s.get(scene.taskU)} />
-        <text x="640" y="445" textAnchor="middle" fill={colors.POSITIVE} fontSize="15">materialize only after every identity agrees</text>
-        <text x="640" y="526" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>ncp_olmo_eval/evaluation_cli.py</text>
+        <text x="640" y="445" textAnchor="middle" fill={colors.POSITIVE} fontSize="15" opacity={s.get(scene.taskU)}>materialize only after every identity agrees</text>
+        <text x="640" y="526" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>ncp_olmo_eval/evaluation_cli.py</text>
       </g>
 
       <g opacity={draft * draftFade}>
@@ -164,14 +165,21 @@ export function Render({ s }: { s: SceneState }) {
         <text x="640" y="158" textAnchor="middle" fill={colors.TEXT} fontSize="27" fontWeight="820">transactional speculative decoding</text>
         <rect x="126" y="207" width="244" height="104" rx="24" fill="#211a36" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="248" y="250" textAnchor="middle" fill={colors.SECONDARY} fontSize="15">NCP DFlash drafter</text>
-        <text x="248" y="278" textAnchor="middle" fill={colors.MUTED} fontSize="12">proposal horizon: 16</text>
+        <text x="248" y="278" textAnchor="middle" fill={colors.MUTED} fontSize="13">small model · guesses ahead</text>
         <path d="M370 260 H1110" stroke={colors.MUTED} strokeWidth="5" />
+        <g opacity={draft}>
+          <rect x="560" y="372" width="240" height="90" rx="22" fill="#151f31" stroke={colors.ACCENT} strokeWidth="3" />
+          <text x="680" y="402" textAnchor="middle" fill={colors.ACCENT} fontSize="15">target model</text>
+          <text x="680" y="428" textAnchor="middle" fill={colors.TEXT} fontSize="13">owns the verdict</text>
+          <text x="680" y="450" textAnchor="middle" fill={colors.MUTED} fontSize="13">accepts or rejects each token</text>
+          <path d="M686 287 V372" stroke={colors.ACCENT} strokeWidth="2.5" strokeDasharray="6 6" />
+        </g>
         {Array.from({ length: 8 }, (_, i) => {
           const u = clamp01(proposal - i);
           const rejected = rollback > 0 && i >= 5;
           const x = 440 + i * 82;
           const y = 260 + (rejected ? 80 * rollback : 0);
-          return <g key={i} transform={`translate(${x} ${y})`} opacity={u * (rejected ? 1 - rollback * 0.72 : 1)}>
+          return <g key={i} transform={`translate(${x} ${y})`} opacity={u * (rejected ? 1 - rollback * 0.5 : 1)}>
             <rect x="-27" y="-27" width="54" height="54" rx="14" fill="#111c2c" stroke={rejected ? colors.NEGATIVE : rollback > 0 ? colors.POSITIVE : colors.SECONDARY} strokeWidth="3" />
             <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`t${i + 1}`}</text>
           </g>;
@@ -179,13 +187,14 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={s.get(scene.snapshotU)}>
           <rect x="126" y="358" width="326" height="114" rx="24" fill="#151f31" stroke={colors.WARM} strokeWidth="3" />
           <text x="289" y="392" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>_DFlashStateTransaction</text>
-          <text x="289" y="420" textAnchor="middle" fill={colors.TEXT} fontSize="12">encoder · concept · decoder</text>
-          <text x="289" y="446" textAnchor="middle" fill={colors.MUTED} fontSize="12">snapshot_request_state()</text>
+          <text x="289" y="420" textAnchor="middle" fill={colors.TEXT} fontSize="13">encoder · concept · decoder</text>
+          <text x="289" y="446" textAnchor="middle" fill={colors.MUTED} fontSize="13">snapshot_request_state()</text>
         </g>
         <g opacity={rollback}>
           <text x="604" y="320" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">5 accepted · commit</text>
           <text x="932" y="394" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13">3 rejected · restore</text>
-          <path d="M932 404 C900 500 600 520 452 430" fill="none" stroke={colors.NEGATIVE} strokeWidth="4" strokeDasharray="10 8" />
+          <path d="M932 404 C900 520 560 520 452 430" fill="none" stroke={colors.NEGATIVE} strokeWidth="4" strokeDasharray="10 8" />
+          <polygon points="452,430 468.8,434.8 459.8,445.6" fill={colors.NEGATIVE} />
           <text x="690" y="528" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13">rejected suffix restores the request snapshot</text>
         </g>
         <g opacity={proof}>
@@ -198,12 +207,13 @@ export function Render({ s }: { s: SceneState }) {
           <text x="466" y="188" textAnchor="end" fill={colors.WARM} fontSize="13">mean accepted length</text>
           <rect x="476" y="176" width={238 * accepted} height="14" rx="7" fill={colors.MUTED} />
           <rect x="476" y="194" width={248 * accepted} height="14" rx="7" fill={colors.POSITIVE} />
-          <text x="748" y="187" fill={colors.MUTED} fontSize="11">5.933</text>
-          <text x="758" y="205" fill={colors.POSITIVE} fontSize="11">6.180 · +4.17%</text>
+          <text x="748" y="187" fill={colors.MUTED} fontSize="13">5.933</text>
+          <text x="758" y="205" fill={colors.POSITIVE} fontSize="13">6.180 · +4.17%</text>
         </g>
       </g>
 
       <g opacity={recap}>
+        <text x="640" y="236" textAnchor="middle" fill={colors.POSITIVE} fontSize="20" fontWeight="820">mean accepted length 5.933 → 6.180 · +4.17%</text>
         <path d="M190 340 H1090" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
         {RECAP.map((item, i) => {
           const u = clamp01(recap * RECAP.length - i);

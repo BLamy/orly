@@ -66,7 +66,7 @@ export function Render({ s }: { s: SceneState }) {
   const noise = s.get(scene.noiseU);
   return <><text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - close}>what if the teacher is not the lesson?</text><Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="112" y="140" fill={colors.MUTED} fontSize="15" fontFamily={colors.font.mono} opacity={remove}>teacher score removed</text>
+      <text x="112" y="140" fill={colors.TEXT} fontSize="15" fontFamily={colors.font.mono} opacity={remove}>teacher score removed</text>
       <g opacity={(1 - remove) * s.get(scene.teacherU)}>
         <text x="112" y="140" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>teacher scores student trajectory</text>
         {TEACHER.map((p, i) => {
@@ -74,13 +74,16 @@ export function Render({ s }: { s: SceneState }) {
           return <rect key={i} x={128 + i * 64} y={270 - h} width="34" height={h} rx="8" fill={colors.SECONDARY} opacity={0.35 + 0.25 * Math.sin(noise * 3 + i)} />;
         })}
       </g>
+      <g opacity={remove * s.get(scene.teacherU) * 0.4}>
+        {TEACHER.map((p, i) => <rect key={`ghost${i}`} x={128 + i * 64} y={270 - p * 640} width="34" height={p * 640} rx="8" fill="none" stroke={colors.SECONDARY} strokeWidth="2" strokeDasharray="6 5" />)}
+      </g>
       <g opacity={s.get(scene.ribbonU)}>
         {PROBS.map((p, i) => {
           const h = p * 920;
           const selected = i >= 13;
           return <g key={i}>
-            <rect x={128 + i * 64} y={542 - h} width="34" height={h} rx="8" fill={selected ? colors.NEGATIVE : colors.ACCENT} opacity={selected ? 0.55 + 0.45 * tail : 0.82 - tail * 0.58} stroke={selected && tail ? colors.WARM : 'none'} strokeWidth="3" />
-            <text x={145 + i * 64} y="568" textAnchor="middle" fill={selected && tail ? colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
+            <rect x={128 + i * 64} y={542 - h} width="34" height={h} rx="8" fill={selected ? colors.NEGATIVE : colors.ACCENT} opacity={selected ? 0.55 + 0.45 * tail : 0.82 - tail * 0.42} stroke={selected && tail ? colors.WARM : 'none'} strokeWidth="3" />
+            <text x={145 + i * 64} y="568" textAnchor="middle" fill={selected && tail ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
           </g>;
         })}
       </g>
@@ -90,20 +93,21 @@ export function Render({ s }: { s: SceneState }) {
         <text x="967" y="177" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>off-policy teacher noise</text>
       </g>
       <g opacity={s.get(scene.ribbonU)}>
-        <rect x="104" y="306" width="392" height="26" rx="8" fill={colors.BG} opacity="0.85" />
-        <text x="112" y="324" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>current actor sampled-token probabilities</text>
+        <rect x="104" y="580" width="560" height="26" rx="8" fill={colors.BG} opacity="0.85" />
+        <text x="112" y="598" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>sampled token = a word the actor chose; bar = its probability</text>
       </g>
-      <g opacity={s.get(scene.insensitiveU) * (1 - remove)} transform="translate(176 600)">
+      <g opacity={s.get(scene.insensitiveU) * (1 - remove)} transform="translate(176 618)">
         <path d="M0 0 C140 -10 240 4 350 -4 S570 4 730 -2" fill="none" stroke={colors.MUTED} strokeWidth="4" />
         <path d="M0 0 C140 -8 240 2 350 -3 S570 3 730 0" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
         <text x="760" y="4" fill={colors.POSITIVE} fontSize="14">similar convergence</text>
       </g>
-      <g opacity={s.get(scene.fixedU)} transform="translate(826 164)">
-        <rect x="-116" y="-32" width="232" height="64" rx="20" fill="#2d2117" stroke={colors.WARM} strokeWidth="3" />
+      <g opacity={s.get(scene.fixedU)} transform="translate(1040 430)">
+        <rect x="-150" y="-32" width="300" height="64" rx="20" fill="#2d2117" stroke={colors.WARM} strokeWidth="3" />
         <text y="-4" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>fixed-negative</text>
-        <text y="20" textAnchor="middle" fill={colors.TEXT} fontSize="13">same lowest tokens</text>
+        <text y="20" textAnchor="middle" fill={colors.TEXT} fontSize="14">same lowest tokens, pushed down</text>
+        <line x1="0" y1="36" x2="0" y2="84" stroke={colors.WARM} strokeWidth="3" strokeDasharray="6 5" />
       </g>
-      <g opacity={s.get(scene.selfU)} transform="translate(438 164)">
+      <g opacity={s.get(scene.selfU)} transform="translate(640 164)">
         <rect x="-150" y="-34" width="300" height="68" rx="22" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="3" />
         <text y="-5" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontFamily={colors.font.mono}>On-Policy Self-Adaptation</text>
         <text y="20" textAnchor="middle" fill={colors.TEXT} fontSize="13">actor logp + actor entropy</text>

@@ -93,9 +93,22 @@ const COL_DEL_X = 880;
 const COL_Y = 160;
 const CELL = 11;
 
+// Each camera keeps the columns its caption is about inside the 1280 stage:
+// CAM_MID frames attention + accumulate, CAM_DEL frames accumulate + delta.
 const CAM_ATT: CameraState = { x: 260, y: 300, k: 1.35 };
-const CAM_MID: CameraState = { x: 690, y: 320, k: 1.3 };
-const CAM_DEL: CameraState = { x: 1000, y: 320, k: 1.3 };
+const CAM_MID: CameraState = { x: 600, y: 320, k: 1.3 };
+const CAM_DEL: CameraState = { x: 830, y: 290, k: 1.5 };
+
+// Family portrait: three empty cards shown while the title is up, before
+// attention draws in. Screen-space, so they do not ride the camera.
+const CARDS = [
+  { x: 140, name: 'attention', note: 'keeps the exact list', color: colors.ACCENT },
+  { x: 490, name: 'state-space', note: 'one gated state, decays', color: colors.SECONDARY },
+  { x: 840, name: 'delta rule', note: 'erases, then writes', color: colors.POSITIVE },
+];
+
+// Write-stage tag beside each state grid.
+const STAGE_TAGS = ['empty state', 'write k → v', 'rewrite k → v′'];
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -245,24 +258,33 @@ function StateGrid({ S, x, y, u }: { S: Mat; x: number; y: number; u: number }) 
   );
 }
 
+function StageTag({ x, y, stage, u }: { x: number; y: number; stage: number; u: number }) {
+  return (
+    <text x={x} y={y} fill={colors.MUTED} fontSize={14} opacity={u}>
+      {STAGE_TAGS[Math.round(stage)]}
+    </text>
+  );
+}
+
 function SimBars({ x, y, simNew, simOld, u }: { x: number; y: number; simNew: number; simOld: number; u: number }) {
   const W = 130;
+  const ZERO = 110; // zero line sits right of the labels, so a negative bar never reaches them
   return (
     <g opacity={u}>
-      <text x={x} y={y - 8} fill={colors.MUTED} fontSize={12}>
-        read the key back — similarity with…
+      <text x={x} y={y - 8} fill={colors.MUTED} fontSize={14}>
+        read the key back — cosine with…
       </text>
       {[
         { label: 'new value', v: simNew, color: colors.POSITIVE },
         { label: 'old value', v: simOld, color: colors.WARM },
       ].map((row, r) => (
         <g key={row.label}>
-          <text x={x} y={y + 22 + r * 26} fill={colors.MUTED} fontSize={12}>
+          <text x={x} y={y + 22 + r * 26} fill={colors.MUTED} fontSize={14}>
             {row.label}
           </text>
-          <line x1={x + 78} y1={y + 18 + r * 26} x2={x + 78} y2={y + 26 + r * 26} stroke={colors.GRID} />
+          <line x1={x + ZERO} y1={y + 18 + r * 26} x2={x + ZERO} y2={y + 26 + r * 26} stroke={colors.GRID} />
           <rect
-            x={row.v >= 0 ? x + 78 : x + 78 + row.v * W}
+            x={row.v >= 0 ? x + ZERO : x + ZERO + row.v * W}
             y={y + 12 + r * 26}
             width={Math.abs(row.v) * W}
             height={12}
@@ -270,11 +292,14 @@ function SimBars({ x, y, simNew, simOld, u }: { x: number; y: number; simNew: nu
             fill={row.color}
             opacity={0.9}
           />
-          <text x={x + 78 + Math.max(0, row.v) * W + 8} y={y + 22 + r * 26} fill={row.color} fontSize={13} fontFamily="monospace" fontWeight={600}>
+          <text x={x + ZERO + Math.max(0, row.v) * W + 8} y={y + 22 + r * 26} fill={row.color} fontSize={14} fontFamily="monospace" fontWeight={600}>
             {row.v.toFixed(2)}
           </text>
         </g>
       ))}
+      <text x={x} y={y + 74} fill={colors.MUTED} fontSize={13}>
+        cosine: 1.00 = same direction · 0 = unrelated
+      </text>
     </g>
   );
 }
@@ -291,95 +316,119 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Old content fades all the way out before the closing panel, so nothing
+  // sits faintly behind the closing text.
+  const mainOp = 1 - dimU;
   const accS = matAt(ACC_STATES, writeStage);
   const delS = matAt(DELTA_STATES, writeStage);
   const gridW = D * CELL;
+  const tagX = gridW + 16;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* attention column */}
-          <g opacity={attU}>
-            <text x={COL_ATT_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
-              attention
-            </text>
-            <text x={COL_ATT_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={13}>
-              keep the exact list
-            </text>
-            {Array.from({ length: 9 }, (_, i) => (
-              <g key={i} opacity={clamp01(attU * 9 - i)}>
-                <rect
-                  x={COL_ATT_X}
-                  y={COL_Y + i * 26}
-                  width={200}
-                  height={20}
-                  rx={4}
-                  fill={colors.ACCENT}
-                  opacity={0.14 + 0.05 * i}
-                />
-                <text x={COL_ATT_X + 8} y={COL_Y + i * 26 + 14} fill={colors.TEXT} fontSize={11} fontFamily="monospace" opacity={0.8}>
-                  {i === 3 ? 'key → old value' : i === 7 ? 'key → new value' : `k${i + 1} v${i + 1}`}
-                </text>
-              </g>
-            ))}
-            <text x={COL_ATT_X} y={COL_Y + 9 * 26 + 22} fill={colors.NEGATIVE} fontSize={13}>
-              grows forever · recalls exactly
-            </text>
-          </g>
-
-          {/* accumulate column */}
-          <g opacity={gridU}>
-            <text x={COL_ACC_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
-              state-space: accumulate
-            </text>
-            <text x={COL_ACC_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={13}>
-              add on top, decay later
-            </text>
-            <StateGrid S={accS} x={COL_ACC_X} y={COL_Y} u={gridU} />
-            <rect x={COL_ACC_X - 5} y={COL_Y - 5} width={gridW + 8} height={gridW + 8} rx={6} fill="none" stroke={colors.SECONDARY} strokeWidth={1.5} opacity={0.7} />
-            <SimBars x={COL_ACC_X} y={COL_Y + gridW + 26} simNew={ACC_NEW * readU} simOld={ACC_OLD * readU} u={readU} />
-          </g>
-
-          {/* delta column */}
-          <g opacity={deltaEqU}>
-            <text x={COL_DEL_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
-              delta rule: correct
-            </text>
-            <text x={COL_DEL_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={13}>
-              erase first, then write
-            </text>
-            <StateGrid S={delS} x={COL_DEL_X} y={COL_Y} u={deltaEqU} />
-            <rect x={COL_DEL_X - 5} y={COL_Y - 5} width={gridW + 8} height={gridW + 8} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} opacity={0.7} />
-            <SimBars x={COL_DEL_X} y={COL_Y + gridW + 26} simNew={DELTA_NEW * deltaEqU} simOld={DELTA_OLD * deltaEqU} u={deltaEqU * readU} />
-          </g>
-
-          {/* the spectrum strip */}
-          {spectrumU > 0 && (
-            <g opacity={spectrumU}>
-              <line x1={160} y1={600} x2={1120} y2={600} stroke={colors.GRID} strokeWidth={2} />
-              {[
-                { x: 220, label: 'forgets nothing', sub: 'attention', color: colors.ACCENT },
-                { x: 640, label: 'forgets by time', sub: 'gated SSM', color: colors.SECONDARY },
-                { x: 1060, label: 'forgets by content', sub: 'delta rule', color: colors.POSITIVE },
-              ].map((p) => (
-                <g key={p.sub}>
-                  <circle cx={p.x} cy={600} r={7} fill={p.color} />
-                  <text x={p.x} y={580} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
-                    {p.label}
-                  </text>
-                  <text x={p.x} y={624} textAnchor="middle" fill={p.color} fontSize={12}>
-                    {p.sub}
+      {mainOp > 0 && (
+        <g opacity={mainOp}>
+          <Camera {...cam}>
+            {/* attention column */}
+            <g opacity={attU}>
+              <text x={COL_ATT_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
+                attention
+              </text>
+              <text x={COL_ATT_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={14}>
+                keep the exact list
+              </text>
+              {Array.from({ length: 9 }, (_, i) => (
+                <g key={i} opacity={clamp01(attU * 9 - i)}>
+                  <rect
+                    x={COL_ATT_X}
+                    y={COL_Y + i * 26}
+                    width={200}
+                    height={20}
+                    rx={4}
+                    fill={colors.ACCENT}
+                    opacity={0.14 + 0.05 * i}
+                  />
+                  <text x={COL_ATT_X + 8} y={COL_Y + i * 26 + 14} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={0.85}>
+                    {i === 3 ? 'key → old value' : i === 7 ? 'key → new value' : `k${i + 1} v${i + 1}`}
                   </text>
                 </g>
               ))}
+              <text x={COL_ATT_X} y={COL_Y + 9 * 26 + 22} fill={colors.NEGATIVE} fontSize={14}>
+                grows forever · recalls exactly
+              </text>
             </g>
-          )}
-        </Camera>
-      </g>
+
+            {/* accumulate column */}
+            <g opacity={gridU}>
+              <text x={COL_ACC_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
+                state-space: accumulate
+              </text>
+              <text x={COL_ACC_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={14}>
+                add on top, decay later
+              </text>
+              <StateGrid S={accS} x={COL_ACC_X} y={COL_Y} u={gridU} />
+              <rect x={COL_ACC_X - 5} y={COL_Y - 5} width={gridW + 8} height={gridW + 8} rx={6} fill="none" stroke={colors.SECONDARY} strokeWidth={1.5} opacity={0.7} />
+              <StageTag x={COL_ACC_X + tagX} y={COL_Y + 12} stage={writeStage} u={gridU} />
+              <SimBars x={COL_ACC_X} y={COL_Y + gridW + 26} simNew={ACC_NEW * readU} simOld={ACC_OLD * readU} u={readU} />
+            </g>
+
+            {/* delta column */}
+            <g opacity={deltaEqU}>
+              <text x={COL_DEL_X} y={COL_Y - 34} fill={colors.TEXT} fontSize={18}>
+                delta rule: correct
+              </text>
+              <text x={COL_DEL_X} y={COL_Y - 12} fill={colors.MUTED} fontSize={14}>
+                erase first, then write
+              </text>
+              <StateGrid S={delS} x={COL_DEL_X} y={COL_Y} u={deltaEqU} />
+              <rect x={COL_DEL_X - 5} y={COL_Y - 5} width={gridW + 8} height={gridW + 8} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} opacity={0.7} />
+              <StageTag x={COL_DEL_X + tagX} y={COL_Y + 12} stage={writeStage} u={deltaEqU} />
+              <SimBars x={COL_DEL_X} y={COL_Y + gridW + 26} simNew={DELTA_NEW * deltaEqU} simOld={DELTA_OLD * deltaEqU} u={deltaEqU * readU} />
+            </g>
+
+            {/* the spectrum strip — kept above the caption band (y < 630) */}
+            {spectrumU > 0 && (
+              <g opacity={spectrumU}>
+                <line x1={160} y1={520} x2={1120} y2={520} stroke={colors.GRID} strokeWidth={2} />
+                {[
+                  { x: 220, label: 'forgets nothing', sub: 'attention', color: colors.ACCENT },
+                  { x: 640, label: 'forgets by time', sub: 'gated SSM', color: colors.SECONDARY },
+                  { x: 1060, label: 'forgets by content', sub: 'delta rule', color: colors.POSITIVE },
+                ].map((p) => (
+                  <g key={p.sub}>
+                    <circle cx={p.x} cy={520} r={7} fill={p.color} />
+                    <text x={p.x} y={498} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                      {p.label}
+                    </text>
+                    <text x={p.x} y={546} textAnchor="middle" fill={p.color} fontSize={14}>
+                      {p.sub}
+                    </text>
+                  </g>
+                ))}
+              </g>
+            )}
+          </Camera>
+        </g>
+      )}
+
+      {/* family portrait: the three designs, before attention draws in */}
+      {titleU * (1 - attU) * mainOp > 0 && (
+        <g opacity={titleU * (1 - attU) * mainOp}>
+          {CARDS.map((c) => (
+            <g key={c.name}>
+              <rect x={c.x} y={190} width={300} height={130} rx={12} fill={colors.PANEL} stroke={c.color} strokeWidth={1.5} />
+              <text x={c.x + 150} y={248} textAnchor="middle" fill={c.color} fontSize={22} fontWeight={600}>
+                {c.name}
+              </text>
+              <text x={c.x + 150} y={282} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+                {c.note}
+              </text>
+            </g>
+          ))}
+        </g>
+      )}
 
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
@@ -400,7 +449,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Three ways to forget.
           </text>

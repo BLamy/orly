@@ -197,22 +197,20 @@ export function Render({ s }: { s: SceneState }) {
               opacity={pipeU}
               accent={colors.TEAL}
             />
-            {/* spotlight the active phase by dimming the other two thirds (lighter, so the figures stay readable) */}
-            {phase >= 1 &&
-              [0, 1, 2].map((i) => {
-                const active = phase - 1 === i;
-                return (
-                  <rect
-                    key={i}
-                    x={PIPE.x + i * third}
-                    y={PIPE.y}
-                    width={third}
-                    height={PIPE.h}
-                    fill={colors.BG}
-                    opacity={active ? 0 : 0.5 * pipeU}
-                  />
-                );
-              })}
+            {/* spotlight the active phase with a teal frame; the figure itself stays undimmed and fully legible */}
+            {phase >= 1 && (
+              <rect
+                x={PIPE.x + (phase - 1) * third + 4}
+                y={PIPE.y - 4}
+                width={third - 8}
+                height={PIPE.h + 8}
+                rx={10}
+                fill="none"
+                stroke={colors.TEAL}
+                strokeWidth={2.4}
+                opacity={0.9 * pipeU}
+              />
+            )}
             <g opacity={pipeU}>
               <rect
                 x={chipX - 165}
@@ -240,12 +238,12 @@ export function Render({ s }: { s: SceneState }) {
           {[0, 10, 20, 30, 40, 50].map((v) => (
             <g key={v}>
               <line x1={AXIS.x0 - 5} y1={yOf(v)} x2={AXIS.x1} y2={yOf(v)} stroke={colors.GRID} strokeWidth={0.6} opacity={0.35} />
-              <text x={AXIS.x0 - 12} y={yOf(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={AXIS.x0 - 12} y={yOf(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 {v}
               </text>
             </g>
           ))}
-          <text x={AXIS.x0 - 40} y={AXIS.top - 14} fill={colors.MUTED} fontSize={12}>
+          <text x={AXIS.x0 - 40} y={AXIS.top - 14} fill={colors.MUTED} fontSize={14}>
             win rate (%)
           </text>
           <text x={AXIS.x0} y={AXIS.top - 40} fill={colors.TEXT} fontSize={15}>

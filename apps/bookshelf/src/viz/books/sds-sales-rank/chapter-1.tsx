@@ -114,11 +114,7 @@ export function buildScene(): Scene {
     text: 'Every sale writes one log line from the sales service. Rather than run our own distributed file system, the raw log files land in a managed object store.',
   });
   tl.tween(cam, CAM_TAPE, { at: 8.2, dur: 1.4, ease: ease.move });
-  tl.tween(streamU, 0, { at: 13.6, dur: 0.8, ease: ease.move });
   tl.hold(14.5, 0.5);
-
-  // the rig steps out of frame for the close-up beats and returns for the home view
-  tl.tween(rigU, 0, { at: 14.2, dur: 0.8, ease: ease.move });
 
   // — Beat 3 · the anatomy —
   tl.caption({
@@ -137,11 +133,9 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'For sales rank, only three of them matter: when it happened, what was sold, and which category it counts toward. Keep those three in mind.',
   });
-  tl.tween(keepU, 1, { at: 22.4, dur: 0.8, ease: ease.enter });
   tl.set(colK, 0, 23.0);
   tl.set(colK, 1, 24.2);
   tl.set(colK, 2, 25.4);
-  tl.tween(keepU, 0, { at: 27.4, dur: 0.6, ease: ease.move });
   tl.hold(28.0, 0.5);
 
   // — Beat 5 · the envelope —
@@ -151,7 +145,6 @@ export function buildScene(): Scene {
     text: 'The envelope math sets the stakes. A billion transactions a month at roughly forty bytes each is forty gigabytes of new receipts, four hundred writes a second, and one hundred times as many reads.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 28.7, dur: 1.4, ease: ease.move });
-  tl.tween(rigU, 1, { at: 28.9, dur: 1.0, ease: ease.move });
   tl.tween(statsU, 1, { at: 29.4, dur: 0.9, ease: ease.pop });
   tl.hold(35.5, 0.5);
 
@@ -171,7 +164,6 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'The naive plan, load everything into one machine and sort it, dies on contact. The receipts of a single week are a mountain, and the mountain grows while you climb it.',
   });
-  tl.tween(rigU, 0, { at: 43.2, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_MOUNT, { at: 43.7, dur: 1.5, ease: ease.move });
   tl.tween(mountU, 1, { at: 44.2, dur: 2.4, ease: ease.draw });
   tl.hold(50.5, 0.5);
@@ -183,7 +175,6 @@ export function buildScene(): Scene {
     text: 'The answer is to stop moving the data to the computation, and move the computation to the data. That trick has a name, map reduce, and it is the whole next chapter.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 51.2, dur: 1.4, ease: ease.move });
-  tl.tween(rigU, 1, { at: 51.0, dur: 1.0, ease: ease.move });
   tl.tween(closeU, 1, { at: 51.8, dur: 1.4, ease: ease.move });
   tl.hold(58.0, 1.5);
 
@@ -203,22 +194,27 @@ export function Render({ s }: { s: SceneState }) {
   const streamU = s.get(scene.streamU);
   const anatU = s.get(scene.anatU);
   const colK = s.get(scene.colK);
-  const keepU = s.get(scene.keepU);
   const statsU = s.get(scene.statsU);
   const askU = s.get(scene.askU);
   const weekU = s.get(scene.weekU);
   const mountU = s.get(scene.mountU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.94;
   const kSel = Math.round(colK);
+  // the rig is out of frame during the close-ups: it fades as the camera pans in
+  const rigFade = 1 - clamp01((cam.x - CAMERA_HOME.x) / 160);
+  // "keep these three" brackets the three highlighted fields until the envelope arrives
+  const keepU = colK === kSel && kSel >= 0 && kSel <= 2 && statsU < 0.5 ? 1 : 0;
+  // the stream clears as the last receipts land, so it never drifts into the close-ups
+  const clearU = 1 - clamp01((flowU - 0.7) / 0.3);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the rig: sales api above, object store below ---- */}
-        <g opacity={rigU * dimAll}>
+        <g opacity={rigU * rigFade * dimAll}>
           <rect x={API.x - 95} y={API.y - 32} width={190} height={64} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
           <text x={API.x} y={API.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             Sales API
@@ -241,13 +237,13 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the streaming receipts ---- */}
-        <g opacity={dimAll * streamU}>
+        <g opacity={dimAll * streamU * clearU}>
           {LINES.map((l, i) => {
             const u = clamp01((flowU - l.delay) * 3.2);
             if (u <= 0) return null;
             const y = API.y + 44 + u * (STORE.y - API.y - 108);
             return (
-              <text key={i} x={l.x} y={y} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={0.75 * (1 - Math.max(0, u - 0.85) / 0.15)}>
+              <text key={i} x={l.x} y={y} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace" opacity={0.6 * (1 - Math.max(0, u - 0.85) / 0.15)}>
                 {l.text}
               </text>
             );
@@ -265,10 +261,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i}>
                 <rect x={x} y={190} width={84} height={40} rx={7} fill={hot ? colors.PANEL : colors.BG} stroke={hot ? colors.ACCENT : colors.GRID} strokeWidth={hot ? 1.8 : 1} />
-                <text x={x + 42} y={215} textAnchor="middle" fill={hot ? colors.ACCENT : colors.TEXT} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <text x={x + 42} y={215} textAnchor="middle" fill={hot ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                   {v}
                 </text>
-                <text x={x + 42} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={x + 42} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                   {COLS[i]}
                 </text>
               </g>
@@ -309,9 +305,9 @@ export function Render({ s }: { s: SceneState }) {
           </text>
           {/* the week window slider */}
           <g opacity={weekU}>
-            <line x1={935} y1={408} x2={1155} y2={408} stroke={colors.GRID} strokeWidth={2} />
-            <rect x={1155 - 70 * weekU} y={400} width={70 * weekU} height={16} rx={4} fill={colors.POSITIVE} opacity={0.5} />
-            <text x={1045} y={436} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+            <line x1={935} y1={408} x2={1155} y2={408} stroke={colors.MUTED} strokeOpacity={0.5} strokeWidth={2} />
+            <rect x={1155 - 70 * weekU} y={400} width={70 * weekU} height={16} rx={4} fill={colors.POSITIVE} opacity={0.6} />
+            <text x={1045} y={436} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
               within_past_week(timestamp)
             </text>
           </g>
@@ -323,10 +319,10 @@ export function Render({ s }: { s: SceneState }) {
             const w = 320 - r * 24;
             const u = clamp01(mountU * 1.6 - (r / 12) * 0.6);
             return (
-              <rect key={r} x={860 - (w * u) / 2} y={600 - r * 11} width={w * u} height={9} rx={3} fill={colors.MUTED} opacity={0.24 + r * 0.035} />
+              <rect key={r} x={860 - (w * u) / 2} y={600 - r * 11} width={w * u} height={9} rx={3} fill={colors.MUTED} opacity={0.4 + r * 0.04} />
             );
           })}
-          <text x={860} y={626} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={860} y={626} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
             one week of receipts — too big for one box to sort
           </text>
         </g>
@@ -340,7 +336,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={326} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
             Sales API logs → Object Store → MapReduce → sales_rank
           </text>
-          <text x={640} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={640} y={376} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontStyle="italic" opacity={0.85}>
             a billion receipts, and nobody ever loads them all at once
           </text>
         </g>

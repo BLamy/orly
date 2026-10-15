@@ -153,7 +153,7 @@ export function buildScene(): Scene {
     text: 'Crash here and the collector has taken no meaningful action at all. A file full of plans that nobody acted on is not a corruption; it is a note you can throw away.',
   });
   tl.tween(crashU, 1, { at: 43.6, dur: 0.7, ease: ease.pop });
-  tl.tween(crashU, 0.2, { at: 47.4, dur: 1.0, ease: ease.move });
+  tl.tween(crashU, 0.6, { at: 47.4, dur: 1.0, ease: ease.move });
   tl.hold(49.3, 0.6);
 
   // BEAT 8 — phase two: the writer moves the manifest.
@@ -226,7 +226,7 @@ function Pin({ x, u, label, sub, color, lift = 0 }: { x: number; u: number; labe
       <line x1={0} y1={lift > 0 ? top + 46 : 252} x2={0} y2={RAIL_Y} stroke={color} strokeWidth={1.8} />
       <circle cx={0} cy={250} r={7} fill={color} />
       <rect x={-96} y={top} width={192} height={46} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.3} />
-      <text x={0} y={top + 20} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={12}>{label}</text>
+      <text x={0} y={top + 20} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={13}>{label}</text>
       <text x={0} y={top + 38} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>{sub}</text>
     </g>
   );
@@ -264,7 +264,7 @@ function Rail({
           </g>
         );
       })}
-      <text x={RAIL_X0} y={RAIL_Y - 96} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(railU / 4)}>
+      <text x={RAIL_X0} y={RAIL_Y - 96} fill={colors.MUTED} fontSize={13} letterSpacing="0.02em" opacity={clamp01(railU / 4)}>
         FRAGMENTS · OLDEST AT LEFT
       </text>
     </g>
@@ -280,7 +280,7 @@ function Cutoff({ u }: { u: number }) {
       <text x={x - 10} y={520} textAnchor="end" fill={colors.WARM} fontFamily={MONO} fontSize={13}>
         first_to_keep
       </text>
-      <text x={x - 10} y={540} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+      <text x={x - 10} y={540} textAnchor="end" fill={colors.MUTED} fontSize={13}>
         earliest pin wins
       </text>
     </g>
@@ -297,15 +297,15 @@ function GarbageFile({ u, phase, manifestU, waitU, deleteU }: { u: number; phase
   ];
   return (
     <g opacity={clamp01(u)}>
-      <rect x={772} y={488} width={410} height={132} rx={12} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-      <text x={794} y={512} fill={colors.WARM} fontFamily={MONO} fontSize={14}>gc/GARBAGE</text>
+      <rect x={728} y={488} width={410} height={132} rx={12} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
+      <text x={750} y={512} fill={colors.WARM} fontFamily={MONO} fontSize={14}>gc/GARBAGE</text>
       {rows.map(([k, v, o], i) => (
-        <g key={k} opacity={0.35 + 0.65 * o}>
-          <text x={794} y={536 + i * 21} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>{k}</text>
-          <text x={1158} y={536 + i * 21} textAnchor="end" fill={colors.TEXT} fontFamily={MONO} fontSize={12}>{v}</text>
+        <g key={k} opacity={0.6 + 0.4 * o}>
+          <text x={750} y={536 + i * 21} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>{k}</text>
+          <text x={1114} y={536 + i * 21} textAnchor="end" fill={colors.TEXT} fontFamily={MONO} fontSize={13}>{v}</text>
         </g>
       ))}
-      <text x={772} y={472} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">
+      <text x={728} y={472} fill={colors.MUTED} fontSize={13} letterSpacing="0.11em">
         {phase >= 2.5
           ? `PHASE THREE · DELETE${deleteU > 0.5 ? '' : waitU > 0.2 ? ' · WAITING OUT READERS' : ''}`
           : phase >= 1.5
@@ -370,6 +370,18 @@ export function Render({ s }: { s: SceneState }) {
             deleteU={deleteU}
           />
           <CrashMark u={s.get(scene.crashU)} />
+
+          {/* Beat 4 picture: the pins live beside the manifest, not in it. Fades out as the cutoff sweeps in. */}
+          <text
+            x={railX(CUTOFF_I) + 14}
+            y={484}
+            fill={colors.MUTED}
+            fontFamily={MONO}
+            fontSize={13}
+            opacity={clamp01(s.get(scene.pinB)) * (1 - clamp01(s.get(scene.cutU)))}
+          >
+            cursor files sit beside manifest/MANIFEST, not inside it
+          </text>
 
           {manifestU > 0.05 && (
             <text x={RAIL_X0} y={604} fill={colors.POSITIVE} fontFamily={MONO} fontSize={13} opacity={clamp01(manifestU)}>

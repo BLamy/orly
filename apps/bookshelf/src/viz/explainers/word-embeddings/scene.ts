@@ -165,36 +165,43 @@ export const SCATTER: readonly (readonly [number, number])[] = WORDS.map(
   () => [120 + rand() * (STAGE_W - 240), 95 + rand() * 460] as const,
 );
 
-// Cluster halos (stage-space centroid + radius per group).
+// Cluster halos (stage-space centroid + ellipse radii per group). The halo is
+// an ellipse hugging the group's spread, so a wide group does not spill off
+// the stage. Each name sits just above its halo, clear of the captions.
 export interface Cluster {
   group: Group;
   label: string;
   cx: number;
   cy: number;
-  r: number;
+  rx: number;
+  ry: number;
   labelDx: number;
   labelDy: number;
 }
 
-const clusterOf = (group: Group, label: string, pad: number, dx: number, dy: number): Cluster => {
+const clusterOf = (group: Group, label: string, pad: number, below = false): Cluster => {
   const pts = POS.filter((_, i) => WORDS[i].group === group);
   const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
   const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
-  const r = Math.max(...pts.map((p) => Math.hypot(p[0] - cx, p[1] - cy))) + pad;
-  return { group, label, cx, cy, r, labelDx: dx, labelDy: dy };
+  const rx = Math.max(...pts.map((p) => Math.abs(p[0] - cx))) + pad;
+  const ry = Math.max(...pts.map((p) => Math.abs(p[1] - cy))) + pad;
+  const labelDy = below ? ry + 20 : -ry - 8;
+  return { group, label, cx, cy, rx, ry, labelDx: 0, labelDy };
 };
 
+// the animals and royals names sit above their halos; the foods name sits
+// below its halo, since the similarity camera lifts the top edge off the stage
 export const CLUSTERS: readonly Cluster[] = [
-  clusterOf('animals', 'the animals', 42, 0, 148),
-  clusterOf('royals', 'the royals', 46, 30, -104),
-  clusterOf('foods', 'the foods', 40, 0, -78),
+  clusterOf('animals', 'the animals', 44),
+  clusterOf('royals', 'the royals', 44),
+  clusterOf('foods', 'the foods', 40, true),
 ];
 
 // ---------------------------------------------------------------------------
 // Camera marks
 // ---------------------------------------------------------------------------
 
-export const CAM_SIM: CameraState = { x: 420, y: 310, k: 1.35 }; // cat–dog–apple triangle
+export const CAM_SIM: CameraState = { x: 420, y: 352, k: 1.35 }; // cat–dog–apple triangle, lifted clear of the caption
 export const CAM_ANIMALS: CameraState = { x: 548, y: 408, k: 1.75 }; // the second analogy
 export const CAM_END: CameraState = { ...CAMERA_HOME };
 

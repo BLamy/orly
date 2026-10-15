@@ -45,7 +45,7 @@ const dripDotX = (i: number): number => STRIP.x0 + 26 + i * 152;
 const rand = mulberry32(20260716);
 const HOSTS = Array.from({ length: 12 }, (_, i) => ({
   x: 800 + (i % 4) * 128,
-  y: 80 + Math.floor(i / 4) * 120,
+  y: 110 + Math.floor(i / 4) * 128,
   label: i === 1 ? 'foo' : i === 6 ? 'bar' : i === 8 ? 'baz' : '',
   phase: rand(),
 }));
@@ -165,7 +165,7 @@ export function buildScene(): Scene {
     text: 'Per host you are deliberately slow. The crawler stays fast the other way: thousands of hosts, each politely dripped, all in parallel.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 46.2, dur: 1.6, ease: ease.move });
-  tl.tween(robotsU, 0, { at: 46.4, dur: 1.0, ease: ease.move });
+  tl.tween(robotsU, 0.15, { at: 46.4, dur: 1.0, ease: ease.move });
   tl.tween(hostsU, 1, { at: 47.0, dur: 1.6, ease: ease.enter });
   tl.tween(poolPhase, 6, { at: 47.0, dur: 24, ease: ease.linear });
   tl.hold(53.2, 0.4);
@@ -243,9 +243,9 @@ export function Render({ s }: { s: SceneState }) {
   const status: 'ok' | 'warn' | 'down' = health > 1.5 ? 'down' : health > 0.5 ? 'warn' : 'ok';
   const burstGone = 1 - rewindU;
   const dripping = dripP > 0 && dripP < 6;
-  const dimAll = 1 - closeU * 0.92;
+  const dimAll = 1 - closeU * 0.85;
   // lattice fades the single-host story back
-  const soloOp = clamp01(1 - hostsU);
+  const soloOp = clamp01(1 - hostsU * 0.9);
 
   return (
     <>
@@ -311,8 +311,8 @@ export function Render({ s }: { s: SceneState }) {
               />
               <g opacity={soloOp}>
                 <TimerArc cx={FOO.x - 120} cy={FOO.y - 70} r={20} u={1 - fract(dripP)} color={colors.POSITIVE} />
-                <text x={FOO.x - 120} y={FOO.y - 102} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                  per-host timer = Crawl-delay
+                <text x={FOO.x - 120} y={FOO.y - 102} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                  wait before next visit
                 </text>
               </g>
             </>
@@ -320,14 +320,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* robots.txt — the pact */}
           <g opacity={robotsU}>
-            <rect x={FOO.x - 128} y={FOO.y + 62} width={256} height={84} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+            <rect x={FOO.x - 128} y={FOO.y + 62} width={256 } height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
             <text x={FOO.x} y={FOO.y + 88} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               robots.txt
             </text>
-            <text x={FOO.x} y={FOO.y + 110} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
-              Crawl-delay: 10 s
-            </text>
-            <text x={FOO.x} y={FOO.y + 130} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={FOO.x} y={FOO.y + 108} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
               webmaster-controlled crawl frequency
             </text>
           </g>

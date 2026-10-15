@@ -69,12 +69,13 @@ const DIST1 = distribution(DEG1); // deg0:1 deg1:1 deg2:3 deg3:0
 // ---------------------------------------------------------------------------
 
 const RAIL_Y = 222;
+// Five equal boxes, centred on the stage, so the rail reads as one row.
 const STOPS = [
-  { key: 'src', x: 128, w: 118, label: 'edges', sub: 'Collection' },
-  { key: 'map1', x: 348, w: 128, label: 'map', sub: '|(src, _dst)| src' },
-  { key: 'cnt1', x: 568, w: 128, label: 'count', sub: 'per node' },
-  { key: 'map2', x: 788, w: 128, label: 'map', sub: '|(_src, deg)| deg' },
-  { key: 'cnt2', x: 1008, w: 128, label: 'count', sub: 'per degree' },
+  { key: 'src', x: 200, w: 172, label: 'edges', sub: 'Collection' },
+  { key: 'map1', x: 420, w: 172, label: 'map', sub: '|(src, _dst)| src' },
+  { key: 'cnt1', x: 640, w: 172, label: 'count', sub: 'per node' },
+  { key: 'map2', x: 860, w: 172, label: 'map', sub: '|(_src, deg)| deg' },
+  { key: 'cnt2', x: 1080, w: 172, label: 'count', sub: 'per degree' },
 ] as const;
 const STOP_H = 54;
 const stopX = (i: number) => STOPS[i].x;
@@ -125,6 +126,7 @@ export function buildScene() {
   const h3 = tl.channel('h3', 0); // two diffs: count → map
   const h4 = tl.channel('h4', 0); // two diffs: map → count
   const cnt2Glow = tl.channel('cnt2Glow', 0);
+  const cnt2Lit = tl.channel('cnt2Lit', 0); // second count's box lights up as its beat opens
   const distSwap = tl.channel('distSwap', 0); // distribution 0 → 1
   const timer2U = tl.channel('timer2U', 0); // "1 key touched"
 
@@ -144,7 +146,6 @@ export function buildScene() {
     dur: 5.4,
     text: 'Extract the source of each edge, count occurrences per node, then count how many nodes share each count.',
   });
-  tl.tween(graphU, 1, { at: 8.2, dur: 1.4, ease: ease.draw });
 
   // — beat 2 · initial load —
   tl.caption({
@@ -152,6 +153,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'Load six edges and the whole thing runs once. Degrees per node on the left, the distribution of degrees on the right.',
   });
+  tl.tween(graphU, 1, { at: 13.8, dur: 1.2, ease: ease.draw });
   tl.tween(loadU, 1, { at: 15.2, dur: 3.6, ease: ease.linear });
 
   // — beat 3 · one edge arrives; the batch instinct —
@@ -209,6 +211,7 @@ export function buildScene() {
     dur: 6.8,
     text: 'Those two differences ride on. The final count restates only the rows they touch: one fewer node with degree one, one more with degree two. The distribution is current.',
   });
+  tl.tween(cnt2Lit, 1, { at: 57.8, dur: 1.3, ease: ease.enter });
   tl.tween(h4, 1, { at: 58.8, dur: 1.6, ease: ease.linear });
   tl.tween(cnt2Glow, 1, { at: 60.2, dur: 0.3, ease: ease.enter });
   tl.tween(cnt2Glow, 0, { at: 61.0, dur: 0.6, ease: ease.enter });
@@ -250,6 +253,7 @@ export function buildScene() {
     h3,
     h4,
     cnt2Glow,
+    cnt2Lit,
     distSwap,
     timer2U,
     dimU,
@@ -264,11 +268,11 @@ const scene = buildScene();
 // ---------------------------------------------------------------------------
 
 function Chip({ x, y, text, tone, op = 1 }: { x: number; y: number; text: string; tone: string; op?: number }) {
-  const w = Math.max(72, text.length * 8.2 + 22);
+  const w = Math.max(72, text.length * 8.6 + 22);
   return (
     <g opacity={op}>
       <rect x={x - w / 2} y={y - 15} width={w} height={30} rx={8} fill={colors.PANEL} stroke={tone} strokeWidth={1.5} />
-      <text x={x} y={y + 4.5} textAnchor="middle" fill={tone} fontSize={13.5} fontFamily={MONO}>
+      <text x={x} y={y + 4.5} textAnchor="middle" fill={tone} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -291,6 +295,7 @@ export function Render({ s }: { s: SceneState }) {
   const h3 = s.get(scene.h3);
   const h4 = s.get(scene.h4);
   const cnt2Glow = s.get(scene.cnt2Glow);
+  const cnt2Lit = s.get(scene.cnt2Lit);
   const distSwap = s.get(scene.distSwap);
   const timer2U = s.get(scene.timer2U);
   const dimU = s.get(scene.dimU);
@@ -317,10 +322,13 @@ export function Render({ s }: { s: SceneState }) {
                       <rect x={st.x - st.w / 2 - 6} y={RAIL_Y - STOP_H / 2 - 6} width={st.w + 12} height={STOP_H + 12} rx={14} fill={colors.WARM} opacity={0.25 * glow} />
                     )}
                     <rect x={st.x - st.w / 2} y={RAIL_Y - STOP_H / 2} width={st.w} height={STOP_H} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+                    {i === 4 && cnt2Lit > 0.01 && (
+                      <rect x={st.x - st.w / 2} y={RAIL_Y - STOP_H / 2} width={st.w} height={STOP_H} rx={11} fill="none" stroke={colors.ACCENT} strokeWidth={1.5} opacity={cnt2Lit} />
+                    )}
                     <text x={st.x} y={RAIL_Y - 3} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                       {st.label}
                     </text>
-                    <text x={st.x} y={RAIL_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={st.x} y={RAIL_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                       {st.sub}
                     </text>
                   </g>
@@ -389,7 +397,7 @@ export function Render({ s }: { s: SceneState }) {
               {IDS.map((id) => (
                 <g key={id}>
                   <circle cx={NODE_POS[id].x} cy={NODE_POS[id].y} r={19} fill={colors.PANEL} stroke={id === 'B' && newEdgeU > 0.3 ? colors.WARM : colors.GRID} strokeWidth={2} />
-                  <text x={NODE_POS[id].x} y={NODE_POS[id].y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+                  <text x={NODE_POS[id].x} y={NODE_POS[id].y + 5} textAnchor="middle" fill={colors.TEXT} opacity={id === 'B' ? 1 : 1 - 0.6 * timer2U} fontSize={14} fontFamily={MONO}>
                     {id}
                   </text>
                 </g>
@@ -425,7 +433,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={degBarX(i)} y={DEGB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {id}
                     </text>
-                    <text x={degBarX(i)} y={DEGB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    <text x={degBarX(i)} y={DEGB.y - h - 7} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {deg[id]}
                     </text>
                   </g>
@@ -450,7 +458,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={distBarX(d)} y={DISTB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       deg {d}
                     </text>
-                    <text x={distBarX(d)} y={DISTB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    <text x={distBarX(d)} y={DISTB.y - h - 7} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {c}
                     </text>
                   </g>

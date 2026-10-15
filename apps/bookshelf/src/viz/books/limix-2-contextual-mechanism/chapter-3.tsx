@@ -85,18 +85,26 @@ export function Render({ s }: { s: SceneState }) {
         const restored = m0 && reconstruct > 0.15;
         return <g key={i} opacity={u}>
           <rect x={x} y={y} width="48" height="48" rx="10" fill={m0 && mask > 0.1 ? '#2b2513' : '#101827'} stroke={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : r >= 5 ? colors.SECONDARY : colors.ACCENT} strokeWidth={m0 && mask > 0.1 ? 3 : 1.3} />
-          <text x={x + 24} y={y + 29} textAnchor="middle" fill={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{m0 && mask > 0.1 ? restored ? `x${r}${c}` : 'MASK' : `${(r * 3 + c * 5) % 19}`}</text>
+          <text x={x + 24} y={y + 29} textAnchor="middle" fill={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{m0 && mask > 0.1 ? restored ? `x${r}${c}` : 'MASK' : `${(r * 3 + c * 5) % 19}`}</text>
         </g>;
       })}
+      <g opacity={table * (1 - split)}>
+        <text x="760" y="296" fill={colors.TEXT} fontSize="20" fontWeight="800">one fixed question</text>
+        <text x="760" y="324" fill={colors.MUTED} fontSize="16">given the features, what is the label?</text>
+      </g>
       <g opacity={split}>
         <path d="M210 427 H744" stroke={colors.WARM} strokeWidth="3" strokeDasharray="12 8" />
-        <text x="180" y="300" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontWeight="800" transform="rotate(-90 180 300)">CONTEXT Ict</text>
-        <text x="180" y="510" textAnchor="middle" fill={colors.WARM} fontSize="13" fontWeight="800" transform="rotate(-90 180 510)">QUERY Ite</text>
+        <text x="180" y="300" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontWeight="800" transform="rotate(-90 180 300)">CONTEXT ROWS</text>
+        <text x="180" y="510" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="800" transform="rotate(-90 180 510)">QUERY ROWS</text>
+        <g opacity={1 - mask}>
+          <text x="760" y="262" fill={colors.ACCENT} fontSize="16" fontWeight="800">observed values</text>
+          <text x="760" y="520" fill={colors.WARM} fontSize="16" fontWeight="800">hidden, to infer</text>
+        </g>
       </g>
       <g opacity={mask}>
         <rect x="812" y="145" width="330" height="170" rx="30" fill="#141c2b" stroke={colors.WARM} strokeWidth="2.5" />
         <text x="977" y="181" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">three mask patterns</text>
-        {['individual entries', 'query columns', 'entry blocks'].map((label, i) => <g key={label} opacity={Math.max(0.16, 1 - Math.abs(mode - i))}>
+        {['individual entries', 'query columns', 'entry blocks'].map((label, i) => <g key={label} opacity={Math.max(0.5, 1 - Math.abs(mode - i))}>
           <circle cx="850" cy={220 + i * 35} r="7" fill={colors.WARM} />
           <text x="870" y={225 + i * 35} fill={colors.TEXT} fontSize="14">{label}</text>
         </g>)}
@@ -104,14 +112,14 @@ export function Render({ s }: { s: SceneState }) {
       <MathLabel tex={'q_\\theta(x_{i,j} \\mid x_{i,-\\pi_i}, X_{ct}, y_{ct})'} x={976} y={360} fontSize={20} opacity={s.get(scene.targetU)} />
       <g opacity={s.get(scene.invariantU)}>
         <rect x="804" y="402" width="346" height="78" rx="24" fill="#10261f" stroke={colors.POSITIVE} strokeWidth="2.5" />
-        <text x="977" y="432" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">query-batch invariant</text>
-        <text x="977" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="13">query → context · never query → query</text>
+        <text x="977" y="432" textAnchor="middle" fill={colors.POSITIVE} fontSize="15" fontWeight="800">query-batch invariant</text>
+        <text x="977" y="458" textAnchor="middle" fill={colors.TEXT} fontSize="14">query → context · never query → query</text>
       </g>
       <g opacity={outcomes}>
-        {[['class', 'probabilities'], ['regression', 'value'], ['imputed', 'matrix']].map(([a, b], i) => <g key={a} transform={`translate(${830 + i * 140} 542)`}>
-          <circle r="54" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="3" />
-          <text y="-2" textAnchor="middle" fill={colors.TEXT} fontSize="13">{a}</text>
-          <text y="15" textAnchor="middle" fill={colors.TEXT} fontSize="13">{b}</text>
+        {[['class', 'probabilities'], ['regression', 'value'], ['imputed', 'matrix']].map(([a, b], i) => <g key={a} transform={`translate(${830 + i * 140} 556)`}>
+          <circle r="50" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="3" />
+          <text y="-2" textAnchor="middle" fill={colors.TEXT} fontSize="14">{a}</text>
+          <text y="16" textAnchor="middle" fill={colors.TEXT} fontSize="14">{b}</text>
         </g>)}
       </g>
     </g>
@@ -124,7 +132,7 @@ export function Render({ s }: { s: SceneState }) {
         <circle cx="-126" r="12" fill={colors.ACCENT} /><circle cx="126" r="12" fill={colors.POSITIVE} />
         <path d="M-114 0 H-92 M92 0 H114" stroke={colors.MUTED} strokeWidth="4" />
       </g>
-      <text x="640" y="492" textAnchor="middle" fill={colors.MUTED} fontSize="16">learn the joint structure · answer any conditional</text>
+      <text x="640" y="492" textAnchor="middle" fill={colors.TEXT} fontSize="18">learn the joint structure · answer any conditional</text>
     </g>
   </Camera>;
 }

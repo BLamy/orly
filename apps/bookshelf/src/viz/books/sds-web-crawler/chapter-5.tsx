@@ -24,7 +24,7 @@ import {
   mulberry32,
 } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
-import { Connection, Packet, RequestFlow, ServiceNode, TimerArc } from '../../primitives';
+import { Connection, Packet, pointAlong, RequestFlow, ServiceNode, TimerArc } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const fract = (v: number): number => v - Math.floor(v);
@@ -33,9 +33,18 @@ const fract = (v: number): number => v - Math.floor(v);
 // Layout + the inverted index data.
 // ---------------------------------------------------------------------------
 
+// every service box is NODE_W wide, so its label fits and edges are NODE_W / 2 from centre
+const NODE_W = 190;
 const CRAWLER = { x: 170, y: 150 } as const;
 const RIS = { x: 590, y: 140 } as const; // Reverse Index Service
 const DOCS = { x: 1030, y: 140 } as const; // Document Service
+// the document queue runs under the Reverse Index box, not through it
+const DOC_ROUTE = [
+  { x: CRAWLER.x + 40, y: CRAWLER.y + 28 },
+  { x: CRAWLER.x + 40, y: 188 },
+  { x: DOCS.x - 40, y: 188 },
+  { x: DOCS.x - 40, y: DOCS.y + 28 },
+];
 
 const TERMS = ['hello', 'world', 'system', 'design', 'scale', 'cache'];
 const PAGES = ['foo', 'bar', 'baz', 'p7', 'p9', 'p12'];
@@ -81,8 +90,8 @@ const JOURNEY = [
 const CAM_CRAWL: CameraState = { x: 330, y: 200, k: 1.3 };
 const CAM_MATRIX: CameraState = { x: 600, y: 320, k: 1.2 };
 const CAM_DOCS: CameraState = { x: 640, y: 370, k: 1.15 };
-const CAM_SEARCH: CameraState = { x: 640, y: 390, k: 1.1 };
-const CAM_MATCH: CameraState = { x: 640, y: 350, k: 1.16 };
+const CAM_SEARCH: CameraState = { x: 630, y: 390, k: 1.1 };
+const CAM_MATCH: CameraState = { x: 620, y: 350, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -322,6 +331,41 @@ function JourneyGlyph({ i, x, y, lit }: { i: number; x: number; y: number; lit: 
   );
 }
 
+/** a queue's name, drawn above its packets so no packet covers the word */
+function QueueTag({ x, y, label, color, u }: { x: number; y: number; label: string; color: string; u: number }) {
+  const size = 12;
+  return (
+    <g transform={`translate(${x}, ${y})`} opacity={clamp01(u * 3 - 2)}>
+      <rect
+        x={-label.length * size * 0.31 - 7}
+        y={-size * 0.85}
+        width={label.length * size * 0.62 + 14}
+        height={size * 1.7}
+        rx={size * 0.85}
+        fill={colors.PANEL}
+        stroke={color}
+        strokeWidth={0.8}
+        opacity={0.92}
+      />
+      <text y={size * 0.36} textAnchor="middle" fill={colors.TEXT} fontSize={size} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+        {label}
+      </text>
+    </g>
+  );
+}
+
+/** a fetched page leaving the crawler: the "fuel" the first caption names */
+function PageTile({ x, y, o }: { x: number; y: number; o: number }) {
+  return (
+    <g transform={`translate(${x}, ${y})`} opacity={o}>
+      <rect x={-11} y={-14} width={22} height={28} rx={3} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+      {[-6, -1, 4].map((ly) => (
+        <line key={ly} x1={-6} y1={ly} x2={6} y2={ly} stroke={colors.MUTED} strokeWidth={1.6} />
+      ))}
+    </g>
+  );
+}
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const crawlU = s.get(scene.crawlU);
@@ -342,10 +386,12 @@ export function Render({ s }: { s: SceneState }) {
   const journeyP = s.get(scene.journeyP);
   const endU = s.get(scene.endU);
 
-  const dimAll = 1 - recapU * 0.88;
+  // the search scene fades out fully under the recap, so no slivers show around its panel
+  const dimAll = 1 - recapU * 0.97;
   const jobU = fract(jobsP); // one page job forever in flight on each queue
-  // the matrix steps back while the query is being parsed, and again under results
-  const matDim = (1 - resultsU * 0.75) * (1 - clamp01(parseU - matchU) * 0.7);
+  const docJob = pointAlong(DOC_ROUTE, fract(jobsP + 0.4)); // the document queue's packet
+  // the matrix steps back while the query is being parsed, and nearly clears under results
+  const matDim = (1 - resultsU * 0.9) * (1 - clamp01(parseU - matchU) * 0.7);
 
   return (
     <>
@@ -354,35 +400,33 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* ---- crawler + its loop ring ---- */}
           <g opacity={crawlU}>
-            <ServiceNode x={CRAWLER.x} y={CRAWLER.y} kind="server" label="Crawler Service" sublabel="the loop" u={crawlU} />
-            <circle
-              cx={CRAWLER.x}
-              cy={CRAWLER.y - 58}
-              r={17}
-              fill="none"
-              stroke={colors.ACCENT}
-              strokeWidth={3}
-              strokeDasharray="70 37"
-              strokeDashoffset={-loopPhase * 30}
-              opacity={0.85}
-            />
+            <ServiceNode x={CRAWLER.x} y={CRAWLER.y} kind="server" label="Crawler Service" sublabel="the loop" u={crawlU} w={NODE_W} labelSize={16} />
+            {/* pages leave the crawler to the right, one after another, while the crawl runs */}
+            {[0, 1, 2].map((k) => {
+              const p = fract(loopPhase * 0.5 + k / 3);
+              return <PageTile key={k} x={CRAWLER.x + 110 + p * 200} y={156} o={Math.sin(Math.PI * p) * (1 - queuesU)} />;
+            })}
           </g>
 
           {/* ---- the two queues ---- */}
           <g opacity={queuesU}>
-            <Connection from={{ x: CRAWLER.x + 90, y: CRAWLER.y - 14 }} to={{ x: RIS.x - 84, y: RIS.y - 14 }} u={queuesU} color={colors.SECONDARY} label="reverse_index_queue" labelSize={12} />
-            <Connection from={{ x: CRAWLER.x + 90, y: CRAWLER.y + 18 }} to={{ x: DOCS.x - 88, y: DOCS.y + 18 }} u={queuesU} color={colors.TEAL} label="doc_index_queue" labelSize={12} />
+            <Connection from={{ x: CRAWLER.x + NODE_W / 2, y: CRAWLER.y - 14 }} to={{ x: RIS.x - NODE_W / 2, y: RIS.y - 14 }} u={queuesU} color={colors.SECONDARY} />
+            <Connection from={DOC_ROUTE[0]} via={DOC_ROUTE.slice(1, -1)} to={DOC_ROUTE[DOC_ROUTE.length - 1]} u={queuesU} color={colors.TEAL} />
             {jobsP > 0 && jobsP < 5.98 && (
               <>
-                <Packet from={{ x: CRAWLER.x + 90, y: CRAWLER.y - 14 }} to={{ x: RIS.x - 84, y: RIS.y - 14 }} u={jobU} r={5} color={colors.SECONDARY} />
-                <Packet from={{ x: CRAWLER.x + 90, y: CRAWLER.y + 18 }} to={{ x: DOCS.x - 88, y: DOCS.y + 18 }} u={fract(jobsP + 0.4)} r={5} color={colors.TEAL} />
+                <Packet from={{ x: CRAWLER.x + NODE_W / 2, y: CRAWLER.y - 14 }} to={{ x: RIS.x - NODE_W / 2, y: RIS.y - 14 }} u={jobU} r={5} color={colors.SECONDARY} />
+                <circle cx={docJob.x} cy={docJob.y} r={11} fill={colors.TEAL} opacity={0.18} />
+                <circle cx={docJob.x} cy={docJob.y} r={5} fill={colors.TEAL} />
               </>
             )}
-            <text x={(CRAWLER.x + 90 + RIS.x - 84) / 2} y={CRAWLER.y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(1 - fillP * 3)}>
+            {/* the queue names sit above the packets, at the midpoint of each line */}
+            <QueueTag x={(CRAWLER.x + NODE_W / 2 + RIS.x - NODE_W / 2) / 2} y={(CRAWLER.y - 14 + RIS.y - 14) / 2} label="reverse_index_queue" color={colors.SECONDARY} u={queuesU} />
+            <QueueTag x={pointAlong(DOC_ROUTE, 0.5).x} y={pointAlong(DOC_ROUTE, 0.5).y} label="doc_index_queue" color={colors.TEAL} u={queuesU} />
+            <text x={(CRAWLER.x + NODE_W / 2 + RIS.x - NODE_W / 2) / 2} y={CRAWLER.y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(1 - fillP * 3)}>
               one job per fetched page, on each queue
             </text>
-            <ServiceNode x={RIS.x} y={RIS.y} kind="search" label="Reverse Index" sublabel="Service" u={queuesU} />
-            <ServiceNode x={DOCS.x} y={DOCS.y} kind="storage" label="Document" sublabel="Service" u={queuesU} />
+            <ServiceNode x={RIS.x} y={RIS.y} kind="search" label="Reverse Index" sublabel="Service" u={queuesU} w={NODE_W} labelSize={16} />
+            <ServiceNode x={DOCS.x} y={DOCS.y} kind="storage" label="Document" sublabel="Service" u={queuesU} w={NODE_W} labelSize={16} />
           </g>
 
           {/* ---- the inverted index matrix ---- */}
@@ -462,7 +506,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={921} y={276 + i * 74} fill={colors.TEXT} fontSize={13}>
                   {r2.title}
                 </text>
-                <text x={921} y={296 + i * 74} fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
+                <text x={921} y={296 + i * 74} fill={colors.MUTED} fontSize={12} fontStyle="italic">
                   {r2.snip}
                 </text>
               </g>
@@ -474,52 +518,27 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the search path ---- */}
           <g opacity={searchU}>
-            <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="Client" u={searchU} />
-            <ServiceNode x={WEB.x} y={WEB.y} kind="gateway" label="Web Server" sublabel="reverse proxy" u={searchU} />
-            <ServiceNode x={QAPI.x} y={QAPI.y} kind="server" label="Query API" u={searchU} />
-            <ServiceNode x={CACHE.x} y={CACHE.y} kind="cache" label="Memory Cache" sublabel="popular queries" u={searchU} />
-            <Connection from={{ x: CLIENT.x + 60, y: CLIENT.y }} to={{ x: WEB.x - 70, y: WEB.y }} u={searchU} color={colors.MUTED} dim={0.5} />
-            <Connection from={{ x: WEB.x + 70, y: WEB.y }} to={{ x: QAPI.x - 62, y: QAPI.y }} u={searchU} color={colors.MUTED} dim={0.5} />
-            <Connection from={{ x: QAPI.x + 62, y: QAPI.y }} to={{ x: CACHE.x - 74, y: CACHE.y }} u={searchU} color={colors.MUTED} dim={0.5} />
+            {/* lanes and packets go first, so a packet passing a box slides underneath it */}
+            <Connection from={{ x: CLIENT.x + NODE_W / 2, y: CLIENT.y }} to={{ x: WEB.x - NODE_W / 2, y: WEB.y }} u={searchU} color={colors.MUTED} dim={0.5} />
+            <Connection from={{ x: WEB.x + NODE_W / 2, y: WEB.y }} to={{ x: QAPI.x - NODE_W / 2, y: QAPI.y }} u={searchU} color={colors.MUTED} dim={0.5} />
+            <Connection from={{ x: QAPI.x + NODE_W / 2, y: QAPI.y }} to={{ x: CACHE.x - NODE_W / 2, y: CACHE.y }} u={searchU} color={colors.MUTED} dim={0.5} />
             <RequestFlow
               path={[
-                { x: CLIENT.x + 60, y: CLIENT.y },
+                { x: CLIENT.x + NODE_W / 2, y: CLIENT.y },
                 { x: WEB.x, y: WEB.y },
                 { x: QAPI.x, y: QAPI.y },
               ]}
               u={reqP}
               color={colors.WARM}
             />
-            {/* the request's query, held above the first hop so the packet never sits on a box */}
-            <text x={(CLIENT.x + 60 + WEB.x) / 2} y={WEB.y - 36} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace" opacity={clamp01(reqP * 4)}>
-              hello world
-            </text>
-            {/* the parsed terms; they step aside once the results panel takes over */}
-            <g opacity={parseU * (1 - resultsU)}>
-              <rect x={QAPI.x - 190} y={QAPI.y - 138} width={380} height={84} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} opacity={0.96} />
-              {['hello', 'world'].map((t, i) => (
-                <g key={t}>
-                  <rect x={QAPI.x - 66 + i * 70} y={QAPI.y - 96} width={62} height={28} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-                  <text x={QAPI.x - 35 + i * 70} y={QAPI.y - 77} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
-                    {t}
-                  </text>
-                </g>
-              ))}
-              <text x={QAPI.x} y={QAPI.y - 112} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                strip markup · split terms · fix typos · normalize case
-              </text>
-              {matchU > 0.02 && (
-                <line x1={QAPI.x} y1={QAPI.y - 106} x2={MAT.x0 + 100} y2={MAT.y0 + TERMS.length * MAT.cell + 8} stroke={colors.WARM} strokeWidth={1.2} opacity={0.4 * matchU * matDim} />
-              )}
-            </g>
             {/* the cached round trip */}
             {cacheP > 0 && (
               <RequestFlow
                 path={[
-                  { x: CLIENT.x + 60, y: CLIENT.y },
+                  { x: CLIENT.x + NODE_W / 2, y: CLIENT.y },
                   { x: WEB.x, y: WEB.y },
                   { x: QAPI.x, y: QAPI.y },
-                  { x: CACHE.x - 40, y: CACHE.y },
+                  { x: CACHE.x, y: CACHE.y },
                 ]}
                 u={cacheP}
                 roundTrip
@@ -528,6 +547,35 @@ export function Render({ s }: { s: SceneState }) {
                 responseLabel="cached"
               />
             )}
+            <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="Client" u={searchU} w={NODE_W} labelSize={16} />
+            <ServiceNode x={WEB.x} y={WEB.y} kind="gateway" label="Web Server" sublabel="reverse proxy" u={searchU} w={NODE_W} labelSize={16} />
+            <ServiceNode x={QAPI.x} y={QAPI.y} kind="server" label="Query API" u={searchU} w={NODE_W} labelSize={16} />
+            <ServiceNode x={CACHE.x} y={CACHE.y} kind="cache" label="Memory Cache" sublabel="popular queries" u={searchU} w={NODE_W} labelSize={16} />
+            {/* the request's query, held above the first hop, clear of both boxes */}
+            <text x={(CLIENT.x + NODE_W / 2 + WEB.x - NODE_W / 2) / 2} y={WEB.y - 36} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace" opacity={clamp01(reqP * 4)}>
+              hello world
+            </text>
+            {/* the parsed terms, in the open space left of the matrix; they step aside once results take over */}
+            <g opacity={parseU * (1 - resultsU)}>
+              <rect x={96} y={380} width={260} height={108} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+              <text x={226} y={400} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                Query API · parse
+              </text>
+              <text x={226} y={419} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                strip markup · split terms
+              </text>
+              <text x={226} y={435} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                fix typos · normalize case
+              </text>
+              {['hello', 'world'].map((t, i) => (
+                <g key={t}>
+                  <rect x={124 + i * 124} y={448} width={80} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+                  <text x={164 + i * 124} y={465} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+                    {t}
+                  </text>
+                </g>
+              ))}
+            </g>
             <g opacity={statsU}>
               <rect x={1000} y={520} width={196} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={1098} y={540} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
@@ -550,7 +598,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={492} y={316 + i * 56} fill={colors.TEXT} fontSize={13}>
                   {r2.title}
                 </text>
-                <text x={492} y={334 + i * 56} fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
+                <text x={492} y={334 + i * 56} fill={colors.MUTED} fontSize={12} fontStyle="italic">
                   {r2.snip}
                 </text>
               </g>

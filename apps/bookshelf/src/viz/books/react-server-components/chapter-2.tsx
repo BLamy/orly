@@ -32,7 +32,7 @@ const win = (p: number, n: number, i: number, span: number): number =>
   clamp01((p * (n + span) - i) / span);
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
-const FS = 10.5; // row font size
+const FS = 12; // row font size
 const CW = FS * 0.602; // monospace advance width
 
 // ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ export function buildScene() {
     dur: 8.6,
     text: 'Because rows frame themselves, the client never waits for the end of the tape. The tree stands up the moment row zero lands — and late rows drop into their holes as they arrive.',
   });
-  tl.tween(galU, 0.15, { at: 64.3, dur: 0.6, ease: ease.enter });
+  tl.tween(galU, 0.7, { at: 64.3, dur: 0.6, ease: ease.enter });
   tl.tween(playU, 1, { at: 64.7, dur: 3.4, ease: ease.linear });
   tl.tween(treeU, 1, { at: 65.6, dur: 1.8, ease: ease.move });
   tl.tween(lateU, 1, { at: 69.4, dur: 1.6, ease: ease.move });
@@ -314,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={TAPE.x + 16} y={TAPE.y + 24} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               response body — text/x-component
             </text>
-            <text x={TAPE.x + TAPE.w - 16} y={TAPE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={TAPE.x + TAPE.w - 16} y={TAPE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               ReactFlightServer.js
             </text>
           </g>
@@ -322,12 +322,20 @@ export function Render({ s }: { s: SceneState }) {
           {/* rows */}
           {ROWS.map((r, i) => {
             const u = rowIn(i);
-            if (u <= 0) return null;
+            if (u <= 0) {
+              // before the writer starts, the tape shows its rows as a faint ghost
+              const ghostU = tapeU * (1 - clamp01(rowsU * 20));
+              return ghostU > 0.01 ? (
+                <text key={i} x={TAPE.x + PAD} y={rowY(i) + 5} fontSize={FS} fontFamily={MONO} fill={colors.MUTED} opacity={0.35 * ghostU}>
+                  {r.full}
+                </text>
+              ) : null;
+            }
             const y = rowY(i);
             const chars = Math.round(r.full.length * clamp01(u * 1.15));
             const isImport = i === 0;
             const spot = isImport ? impU : 0;
-            const anatDim = anatU > 0 && i !== 1 ? 1 - 0.8 * anatU : 1;
+            const anatDim = anatU > 0 && i !== 1 ? 1 - 0.6 * anatU : 1;
             const impDim = impU > 0 && !isImport ? 1 - 0.6 * impU : 1;
             return (
               <g key={i} opacity={anatDim * impDim}>
@@ -383,7 +391,7 @@ export function Render({ s }: { s: SceneState }) {
               const y = rowY(1);
               // labels sit in the gaps between rows: above row one, or below it
               const items = [
-                { x: TAPE.x + PAD + 0.5 * CW, t: 'row id (hex)', c: colors.WARM, anchor: 'start', above: true },
+                { x: TAPE.x + PAD + 0.5 * CW, t: 'row id (hex)', c: colors.WARM, anchor: 'start', above: false },
                 { x: TAPE.x + PAD + 22 * CW, t: 'body — one line of text', c: colors.TEXT, anchor: 'start', above: false },
                 { x: TAPE.x + PAD + ROWS[1].full.length * CW, t: 'newline ends the row', c: colors.MUTED, anchor: 'end', above: true },
               ];
@@ -394,7 +402,7 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={it.t}>
                         <line x1={it.x} y1={it.above ? ly + 4 : ly - 12} x2={it.x} y2={it.above ? y - 14 : y + 18} stroke={it.c} strokeWidth={1} opacity={0.7} />
-                        <text x={it.x} y={ly} textAnchor={it.anchor as 'start' | 'end'} fill={it.c} fontSize={12}>
+                        <text x={it.x} y={ly} textAnchor={it.anchor as 'start' | 'end'} fill={it.c} fontSize={14}>
                           {it.t}
                         </text>
                       </g>
@@ -402,8 +410,8 @@ export function Render({ s }: { s: SceneState }) {
                   })}
                   {/* the tag callout points at the I on the row above */}
                   <g>
-                    <line x1={TAPE.x + PAD + 2.5 * CW} y1={rowY(0) + 18} x2={340} y2={rowY(0) + 28} stroke={colors.SECONDARY} strokeWidth={1} opacity={0.7} />
-                    <text x={342} y={rowY(0) + 32} fill={colors.SECONDARY} fontSize={12}>
+                    <line x1={TAPE.x + PAD + 2.5 * CW} y1={rowY(0) + 18} x2={340} y2={rowY(0) + 24} stroke={colors.SECONDARY} strokeWidth={1} opacity={0.7} />
+                    <text x={342} y={rowY(0) + 30} fill={colors.SECONDARY} fontSize={14}>
                       optional tag — this one is I, an import
                     </text>
                   </g>
@@ -432,7 +440,7 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={t.label}>
                         <rect x={x - 2} y={y - 13} width={w + 4} height={26} rx={4} fill="none" stroke={t.color} strokeWidth={1.2} opacity={0.85} />
-                        <text x={x + w / 2} y={ly} textAnchor="middle" fill={t.color} fontSize={12} fontWeight={650}>
+                        <text x={x + w / 2} y={ly} textAnchor="middle" fill={t.color} fontSize={14} fontWeight={650}>
                           {t.label}
                         </text>
                       </g>
@@ -450,14 +458,16 @@ export function Render({ s }: { s: SceneState }) {
               const late = ROWS[rt.target].late;
               const targetIn = late ? lateU : 1;
               const x0 = tokX(ROWS[rt.row], rt.token) + tokW(rt.token) / 2;
-              const y0 = rowY(rt.row) + 14;
-              const x1 = TAPE.x + 30;
-              const y1 = rowY(rt.target) - (rt.target > rt.row ? 18 : -18);
-              const bendX = TAPE.x - 34;
+              // the line drops into the gap under its row, runs down the left gutter,
+              // and enters the target row's edge, so it never crosses row text
+              const gapY = rowY(rt.row) + 26;
+              const gutterX = TAPE.x - 14 - i * 5;
+              const x1 = TAPE.x + 8;
+              const y1 = rowY(rt.target) + 1;
               return (
                 <g key={i} opacity={u * 0.9}>
                   <path
-                    d={`M ${x0} ${y0} C ${x0} ${y0 + 26}, ${bendX} ${(y0 + y1) / 2}, ${x1} ${y1}`}
+                    d={`M ${x0} ${rowY(rt.row) + 18} L ${x0} ${gapY} L ${gutterX} ${gapY} L ${gutterX} ${y1} L ${x1} ${y1}`}
                     fill="none"
                     stroke={targetIn >= 1 ? colors.ACCENT : colors.MUTED}
                     strokeWidth={1.3}
@@ -536,7 +546,7 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={p.label}>
                         <rect x={x - 2} y={y - 13} width={w + 4} height={26} rx={4} fill="none" stroke={p.color} strokeWidth={1.2} opacity={0.9} />
-                        <text x={x + w / 2} y={y + 30} textAnchor="middle" fill={p.color} fontSize={12} fontWeight={650}>
+                        <text x={x + w / 2} y={y + 30} textAnchor="middle" fill={p.color} fontSize={14} fontWeight={650}>
                           {p.label}
                         </text>
                       </g>
@@ -550,6 +560,7 @@ export function Render({ s }: { s: SceneState }) {
           {galU > 0.02 && (
             <g opacity={galU}>
               {/* recap of the row-prefix table: the letter after the colon */}
+              <rect x={150} y={464} width={830} height={162} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
               <text x={170} y={484} fill={colors.MUTED} fontSize={14}>
                 row tags — the letter after the colon (model rows have none)
               </text>
@@ -565,7 +576,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={0} y={6} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO} fontWeight={700}>
                       {t.t}
                     </text>
-                    <text x={40} y={5} fill={colors.MUTED} fontSize={14}>
+                    <text x={40} y={5} fill={colors.TEXT} fontSize={14}>
                       {t.d}
                     </text>
                   </g>
@@ -586,6 +597,7 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.6}
                 opacity={0.8}
               />
+              <rect x={TAPE.x + TAPE.w - 136} y={rowY(0) - 40 + playU * (rowY(5) - rowY(0) + 30)} width={128} height={17} rx={4} fill={colors.BG} />
               <text x={TAPE.x + TAPE.w - 8} y={rowY(0) - 28 + playU * (rowY(5) - rowY(0) + 30)} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
                 client reads here
               </text>
@@ -619,7 +631,7 @@ export function Render({ s }: { s: SceneState }) {
                       />
                     </g>
                   ))}
-                  <text x={target.x + 120} y={target.y + 34} fill={colors.MUTED} fontSize={14}>
+                  <text x={TAPE.x + TAPE.w - 16} y={rowY(5) + 38} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                     writtenObjects — written once, referenced forever
                   </text>
                 </g>
@@ -630,6 +642,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* closing card */}
         {closeU > 0.02 && (
           <g opacity={closeU}>
+            <rect x={-2000} y={-2000} width={6000} height={6000} fill={colors.BG} opacity={0.85} />
             <rect x={280} y={220} width={720} height={190} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
             <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>
               The tape carries descriptions — never code.

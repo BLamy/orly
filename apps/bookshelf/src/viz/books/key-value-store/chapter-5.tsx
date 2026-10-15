@@ -73,6 +73,8 @@ const P_C = ringPt(NODE_S.C);
 const P_D = ringPt(NODE_S.D);
 const P_E = ringPt(NODE_S.E);
 const POCKET = { x: 880, y: 500, w: 150, h: 60 } as const;
+// the doomed copy's walk runs inside the ring, clear of the node labels outside it
+const WALK_OFF = 30;
 
 // the recap rail
 const CHIP_W = 196;
@@ -291,7 +293,7 @@ export function Render({ s }: { s: SceneState }) {
   // the doomed packet: coordinator → C, then the bounce, then the reroute walk
   const doomedU = clamp01(writeU * 1.05);
   const doomed = (() => {
-    if (rerouteU > 0) return walkPt(NODE_S.C, NODE_S.E, rerouteU, -30);
+    if (rerouteU > 0) return walkPt(NODE_S.C, NODE_S.E, rerouteU, WALK_OFF);
     const base = {
       x: COORD.x + (P_C.x - COORD.x) * Math.min(doomedU, 0.88),
       y: COORD.y + (P_C.y - COORD.y) * Math.min(doomedU, 0.88),
@@ -358,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={COORD.x} y={COORD.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             coordinator
           </text>
-          <text x={COORD.x} y={COORD.y + 18} textAnchor="middle" fill={okU > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={COORD.x} y={COORD.y + 18} textAnchor="middle" fill={okU > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily={MONO}>
             {writeU > 0.05 ? `acks ${acks}/2${okU > 0.5 ? ' → OK' : ''}` : 'W = 2'}
           </text>
 
@@ -369,20 +371,28 @@ export function Render({ s }: { s: SceneState }) {
               <Packet from={COORD} to={P_D} u={clamp01(writeU * 0.85)} r={6.5} color={colors.WARM} opacity={0.8} />
             </g>
           )}
-          {/* B's ack */}
-          {ack1U > 0 && ack1U < 1 && <Packet from={P_B} to={COORD} u={ack1U} r={5} color={colors.SECONDARY} />}
+          {/* B's ack, leaving from just beside B so it does not sit on the node */}
+          {ack1U > 0 && ack1U < 1 && (
+            <Packet
+              from={{ x: P_B.x + (COORD.x - P_B.x) * 0.14, y: P_B.y + (COORD.y - P_B.y) * 0.14 }}
+              to={COORD}
+              u={ack1U}
+              r={5}
+              color={colors.SECONDARY}
+            />
+          )}
 
           {/* the doomed copy: flight, thud, reroute — one continuous life */}
           {doomedVisible && (
             <g>
               {rerouteU > 0 && rerouteU < 1 && (
-                <path d={walkD(NODE_S.C, NODE_S.E, rerouteU, -30)} fill="none" stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="2 5" opacity={0.7} />
+                <path d={walkD(NODE_S.C, NODE_S.E, rerouteU, WALK_OFF)} fill="none" stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="2 5" opacity={0.7} />
               )}
               <circle cx={doomed.x} cy={doomed.y} r={6.5} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.2} opacity={bounceU > 0 && rerouteU === 0 ? 1 - 0.4 * bounceU : 1} />
               {hintU > 0 && rerouteU > 0 && (
                 <g opacity={hintU}>
-                  <rect x={doomed.x + 10} y={doomed.y - 26} width={104} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} />
-                  <text x={doomed.x + 62} y={doomed.y - 9} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <rect x={doomed.x + 10} y={doomed.y - 28} width={120} height={26} rx={6} fill={colors.BG} stroke={colors.WARM} />
+                  <text x={doomed.x + 70} y={doomed.y - 10} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                     hint: for C
                   </text>
                 </g>
@@ -395,12 +405,12 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={pocketU}>
               <line x1={P_E.x + 12} y1={P_E.y + 8} x2={POCKET.x} y2={POCKET.y + 18} stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 4" />
               <rect x={POCKET.x} y={POCKET.y} width={POCKET.w} height={POCKET.h} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="6 4" />
-              <text x={POCKET.x + POCKET.w / 2} y={POCKET.y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+              <text x={POCKET.x + POCKET.w / 2} y={POCKET.y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
                 side pocket
               </text>
               <g opacity={clamp01(pocketU * 2 - 1)}>
                 <circle cx={POCKET.x + 36} cy={POCKET.y + 42} r={6} fill={colors.WARM} />
-                <text x={POCKET.x + 52} y={POCKET.y + 47} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                <text x={POCKET.x + 52} y={POCKET.y + 47} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                   for C
                 </text>
               </g>
@@ -414,7 +424,19 @@ export function Render({ s }: { s: SceneState }) {
           {handU > 0 && handU < 1 && (
             <g>
               <line x1={P_E.x} y1={P_E.y} x2={P_C.x} y2={P_C.y} stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="5 5" opacity={0.5} />
-              <Packet from={P_E} to={P_C} u={handU} r={6.5} color={colors.WARM} label="going home" />
+              <Packet from={P_E} to={P_C} u={handU} r={6.5} color={colors.WARM} />
+              <text
+                x={P_E.x + (P_C.x - P_E.x) * handU + 14}
+                y={P_E.y + (P_C.y - P_E.y) * handU - 12}
+                fill={colors.WARM}
+                fontSize={14}
+                fontFamily={MONO}
+                stroke={colors.BG}
+                strokeWidth={5}
+                paintOrder="stroke"
+              >
+                going home
+              </text>
             </g>
           )}
 
@@ -426,10 +448,10 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={62} y={262} fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
                   fail the write
                 </text>
-                <text x={62} y={288} fill={colors.TEXT} fontSize={13}>
+                <text x={62} y={288} fill={colors.TEXT} fontSize={14}>
                   consistency kept,
                 </text>
-                <text x={62} y={308} fill={colors.TEXT} fontSize={13}>
+                <text x={62} y={308} fill={colors.TEXT} fontSize={14}>
                   availability lost
                 </text>
               </g>
@@ -438,10 +460,10 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={62} y={388} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>
                   sloppy quorum
                 </text>
-                <text x={62} y={414} fill={colors.TEXT} fontSize={13}>
+                <text x={62} y={414} fill={colors.TEXT} fontSize={14}>
                   stay available, repair
                 </text>
-                <text x={62} y={434} fill={colors.TEXT} fontSize={13}>
+                <text x={62} y={434} fill={colors.TEXT} fontSize={14}>
                   the copies later
                 </text>
                 {chooseU > 0.5 && (
@@ -467,10 +489,10 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x + CHIP_W / 2} y={CHIP_Y + 40} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
                     {c.title}
                   </text>
-                  <text x={x + CHIP_W / 2} y={CHIP_Y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                  <text x={x + CHIP_W / 2} y={CHIP_Y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {c.sub}
                   </text>
-                  <text x={x + CHIP_W / 2} y={CHIP_Y + 128} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={x + CHIP_W / 2} y={CHIP_Y + 128} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {i + 1}
                   </text>
                 </g>
@@ -480,7 +502,7 @@ export function Render({ s }: { s: SceneState }) {
             {keyRunU > 0 && (
               <g>
                 <circle cx={railP.x} cy={railP.y} r={7.5} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-                <text x={railP.x} y={railP.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+                <text x={railP.x} y={railP.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                   user:42
                 </text>
               </g>

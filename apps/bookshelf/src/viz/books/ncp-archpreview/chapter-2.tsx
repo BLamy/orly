@@ -7,6 +7,8 @@ import { MatrixGrid } from '../../primitives';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const PALETTE = [colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE];
+// Small annotations: brighter than colors.MUTED so they stay legible on the dark stage.
+const LABEL = '#c3d0e2';
 const GRID = Array.from({ length: 8 }, (_, i) =>
   Array.from({ length: 8 }, (_, j) => clamp01(0.10 + (((i * 17 + j * 29 + i * j * 3) % 89) / 100))),
 );
@@ -36,7 +38,7 @@ export function buildScene() {
   tl.tween(cam, CAMERA_HOME, { at: 8.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.5, text: 'There are thirty-two segments, each one hundred twenty-eight dimensions wide.' });
-  tl.tween(splitU, 1, { at: 6.9, dur: 2.4, ease: ease.move });
+  tl.tween(splitU, 1, { at: 12.9, dur: 2.0, ease: ease.move });
 
   tl.caption({ at: 18.4, dur: 5.5, text: 'Each segment gets its own codebook with one hundred twenty-eight learned entries.' });
   tl.tween(gridU, 1, { at: 18.9, dur: 2.2, ease: ease.enter });
@@ -80,7 +82,7 @@ function SegmentBar({ y, u, product = false }: { y: number; u: number; product?:
       const dx = (i - 15.5) * gap * 0.10;
       return <rect key={i} x={x + dx} y={y} width="27" height="38" rx="7" fill={PALETTE[i % 4]} opacity={product ? 0.78 : 0.28 + 0.45 * clamp01(u * 32 - i)} stroke={product ? colors.TEXT : PALETTE[i % 4]} strokeWidth={product ? 1.5 : 0.8} />;
     })}
-    <text x="640" y={y - 12} textAnchor="middle" fill={product ? colors.POSITIVE : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{product ? 'concat(d₁ … d₃₂)' : 'c ∈ R⁴⁰⁹⁶ → 32 segments × 128 dimensions'}</text>
+    <text x="640" y={y - 12} textAnchor="middle" fill={product ? colors.POSITIVE : LABEL} fontSize="14" fontFamily={colors.font.mono}>{product ? 'concat(d₁ … d₃₂)' : 'c ∈ R⁴⁰⁹⁶ → 32 segments × 128 dimensions'}</text>
   </g>;
 }
 
@@ -100,15 +102,20 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">a vocabulary of products</text>
       <g opacity={vector * (1 - grid * 0.75)}>
         <SegmentBar y={112} u={split} />
-        {split < 0.98 && <g opacity={1 - split}>
+        {split < 0.98 && <g opacity={(1 - split) * clamp01((1 - drift) * 5)}>
           <rect x="150" y="122" width="980" height="28" rx="14" fill="#18243a" stroke={colors.ACCENT} strokeWidth="2" />
           <circle cx={190 + 900 * drift} cy={136 - Math.sin(drift * Math.PI * 5) * 24} r="13" fill={colors.ACCENT} />
-          <text x="640" y="182" textAnchor="middle" fill={colors.MUTED} fontSize="13">an unconstrained continuous target can drift</text>
+          <text x="640" y="182" textAnchor="middle" fill={LABEL} fontSize="14">an unconstrained continuous target can drift</text>
         </g>}
+        {/* Once split completes, a bracket shows the 32 × 128 layout the caption names. */}
+        <g opacity={split * clamp01((split - 0.9) / 0.1) * clamp01(1 - grid * 2)}>
+          <path d="M124 162 V170 H1125 V162" fill="none" stroke={LABEL} strokeWidth="2" />
+          <text x="640" y="194" textAnchor="middle" fill={LABEL} fontSize="14">32 segments · 128 dimensions each</text>
+        </g>
       </g>
 
       <g opacity={grid * (1 - probabilities)}>
-        <text x="330" y="194" textAnchor="middle" fill={colors.MUTED} fontSize="13">representative window · 32 codebooks × 128 entries</text>
+        <text x="330" y="194" textAnchor="middle" fill={LABEL} fontSize="14">representative window · 32 codebooks × 128 entries</text>
         <MatrixGrid
           x={188}
           y={218}
@@ -134,10 +141,10 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="676" y="206" width="504" height="246" rx="30" fill="#101827" stroke={colors.POSITIVE} strokeWidth="2.5" />
         <text x="928" y="240" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">selected segments concatenate</text>
         {Array.from({ length: 8 }, (_, i) => <rect key={i} x={728 + i * 50} y={258 + (1 - product) * 60} width="40" height="60" rx="10" fill={PALETTE[i % 4]} opacity={0.35 + 0.55 * clamp01(product * 8 - i)} />)}
-        <text x="928" y="338" textAnchor="middle" fill={colors.MUTED} fontSize="13">8 shown · 32 in the released configuration</text>
+        <text x="928" y="338" textAnchor="middle" fill={LABEL} fontSize="14">8 shown · 32 in the released configuration</text>
         <g opacity={s.get(scene.capacityU)}>
           <MathLabel tex={'128^{32}'} x={928} y={397} fontSize={34} opacity={1} />
-          <text x="928" y="435" textAnchor="middle" fill={colors.WARM} fontSize="13">possible product combinations</text>
+          <text x="928" y="435" textAnchor="middle" fill={colors.WARM} fontSize="14">possible product combinations</text>
         </g>
       </g>
 
@@ -147,7 +154,7 @@ export function Render({ s }: { s: SceneState }) {
         {Array.from({ length: 6 }, (_, i) => {
           const weights = [0.14, 0.31, 0.72, 0.46, 0.22];
           return <g key={i} transform={`translate(145 ${292 + i * 38})`} opacity={clamp01(probabilities * 7 - i)}>
-            <text x="-18" y="5" textAnchor="end" fill={PALETTE[i % 4]} fontSize="12">{`π${i + 1}`}</text>
+            <text x="-18" y="5" textAnchor="end" fill={PALETTE[i % 4]} fontSize="14">{`π${i + 1}`}</text>
             {weights.map((w, j) => <rect key={j} x={j * 66} y="-9" width={54 * w} height="18" rx="6" fill={j === 2 ? PALETTE[i % 4] : colors.MUTED} opacity={0.35 + 0.55 * w} />)}
           </g>;
         })}
@@ -162,9 +169,9 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.identityU)}>
-        <rect x="262" y="580" width="756" height="46" rx="16" fill="#151f31" stroke={colors.ACCENT} />
-        <text x="640" y="599" textAnchor="middle" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>ConceptLMProductCodebook · ModuleList[Linear(hidden_size, codebook_size)]</text>
-        <text x="640" y="616" textAnchor="middle" fill={colors.MUTED} fontSize="12">src/ncp_olmo_eval/vllm_plugin/hlm.py</text>
+        <rect x="200" y="574" width="880" height="52" rx="16" fill="#151f31" stroke={colors.ACCENT} />
+        <text x="640" y="595" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>ConceptLMProductCodebook · ModuleList[Linear(hidden_size, codebook_size)]</text>
+        <text x="640" y="615" textAnchor="middle" fill={LABEL} fontSize="14" fontFamily={colors.font.mono}>src/ncp_olmo_eval/vllm_plugin/hlm.py</text>
       </g>
     </g>
 
@@ -173,7 +180,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="220" textAnchor="middle" fill={colors.TEXT} fontSize="44" fontWeight="850">structure makes concepts predictable</text>
       {['split', 'select', 'concatenate', 'blend'].map((label, i) => <g key={label} transform={`translate(${310 + i * 220} 376)`}>
         <circle r="50" fill="#101827" stroke={PALETTE[i]} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="13">{label}</text>
+        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
       </g>)}
       <MathLabel tex={'\\mathbb{R}^{4096}\\to 32\\times 128\\to \\hat c'} x={640} y={492} fontSize={24} opacity={1} />
     </g>

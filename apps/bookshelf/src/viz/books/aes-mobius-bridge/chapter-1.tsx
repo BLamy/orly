@@ -65,7 +65,7 @@ function RoundRail({ u, peel }: { u: number; peel: number }) {
   return (
     <g opacity={clamp01(u)}>
       {labels.map((label, i) => {
-        const x = 120 + i * 170;
+        const x = 130 + i * 170;
         const outer = i === 0 || i === 6;
         return (
           <g key={label} transform={`translate(${x},135)`} opacity={outer ? 1 - 0.8 * peel : 1}>
@@ -74,6 +74,7 @@ function RoundRail({ u, peel }: { u: number; peel: number }) {
           </g>
         );
       })}
+      <text x={130} y={186} textAnchor="start" fill={colors.TEXT} fontSize={14} fontFamily={mono}>seven reduced rounds</text>
     </g>
   );
 }
@@ -94,18 +95,18 @@ export function Render({ s }: { s: SceneState }) {
         <Panel x={CORE.x} y={CORE.y} w={CORE.w} h={CORE.h} opacity={peel} accent={colors.ACCENT}>
           <text x={640} y={225} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono}>four-round core</text>
           {Array.from({ length: 16 }, (_, i) => {
-            const x = 535 + (i % 4) * 70;
+            const x = 512 + (i % 4) * 70;
             const y = 270 + Math.floor(i / 4) * 48;
             return <rect key={i} x={x} y={y} width={46} height={30} rx={5} fill={colors.ACCENT} opacity={0.08 + 0.34 * ((i % 5) / 4)} />;
           })}
-          <text x={640} y={470} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>precomputed family T</text>
+          <text x={640} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>precomputed family T</text>
         </Panel>
         <g opacity={s.get(scene.setU)}>
           {Array.from({ length: 32 }, (_, i) => {
             const a = (i / 32) * Math.PI * 2;
             return <circle key={i} cx={250 + Math.cos(a) * 82} cy={340 + Math.sin(a) * 82} r={4} fill={colors.SECONDARY} />;
           })}
-          <text x={250} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={mono}>256 texts</text>
+          <text x={250} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>256 texts</text>
         </g>
         <Arrow x1={340} y1={340} x2={470} y2={340} reveal={peel} color={colors.SECONDARY} />
         <Arrow x1={1010} y1={340} x2={810} y2={340} reveal={peel} color={colors.WARM} />
@@ -115,7 +116,7 @@ export function Render({ s }: { s: SceneState }) {
           {GUESSES.map((g, i) => {
             const u = clamp01(n - i);
             const gone = i === 0 ? erase : 0;
-            const x = 160 + i * 118;
+            const x = 172 + i * 118;
             return (
               <g key={g} opacity={u * (1 - gone)} transform={`translate(0,${gone * -24})`}>
                 <GuessChip x={x} y={555} text={g} color={i < 4 ? colors.SECONDARY : colors.WARM} />

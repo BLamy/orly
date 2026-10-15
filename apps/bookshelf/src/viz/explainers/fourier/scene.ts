@@ -27,7 +27,7 @@ export const HISTORY = 4 * Math.PI;
 export const ODD = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25];
 
 /** Layout on the 1280×720 stage. Captions own the bottom ~12% (y ≳ 633). */
-export const SQ = { cx: 300, cy: 300, R: 110, traceX0: 560, traceX1: 1200 };
+export const SQ = { cx: 300, cy: 300, R: 120, traceX0: 560, traceX1: 1200 };
 export const SPEC = { x0: 560, x1: 1180, y: 595, barMax: 96 };
 export const SHAPE = { cx: 640, cy: 330 };
 
@@ -231,7 +231,8 @@ export function buildScene() {
     dur: 6.2,
     text: 'Second view, same recipe: the spectrum. One bar per arrow — frequency n, height 1/n.',
   });
-  tl.tween(cam, { x: 780, y: 460, k: 1.28 }, { at: 25.2, dur: 1.3, ease: ease.move });
+  // Zoom just enough that the arrows (left) and the spectrum (right) both stay on stage.
+  tl.tween(cam, { x: 655, y: 390, k: 1.12 }, { at: 25.2, dur: 1.3, ease: ease.move });
   tl.tween(specReveal, 1, { at: 25.5, dur: 1.1, ease: ease.draw });
   for (let i = 0; i < 4; i++) {
     tl.tween(bars[i], 1, { at: 26.8 + i * 0.35, dur: 0.55, ease: ease.pop });

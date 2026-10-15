@@ -8,6 +8,7 @@ import {
   CLUSTERS,
   COS_CAT_APPLE,
   COS_CAT_DOG,
+  FEATURES,
   POS,
   SCATTER,
   WORDS,
@@ -51,6 +52,9 @@ const FOCUS_2 = new Set([ANALOGY_2.a, ANALOGY_2.b, ANALOGY_2.c, ANALOGY_2.target
 // arrow ends exactly at the projected 4-D result)
 const RES_1 = resultPos(ANALOGY_1);
 const RES_2 = resultPos(ANALOGY_2);
+
+// the feature readout's king vector, as printed numbers
+const KING = WORDS[WORDS.findIndex((w) => w.word === 'king')].v.map((x) => x.toFixed(1));
 
 // the similarity beat's probes
 const CAT = posOf('cat');
@@ -144,24 +148,26 @@ function Frame({ s }: { s: SceneState }) {
           {/* cluster halos + names */}
           {clusterU > 0 &&
             CLUSTERS.map((c) => (
-              <g key={c.group} opacity={clusterU}>
-                <circle
+              <g key={c.group} opacity={clusterU * (1 - 0.85 * focus2U)}>
+                <ellipse
                   cx={c.cx}
                   cy={c.cy}
-                  r={c.r}
+                  rx={c.rx}
+                  ry={c.ry}
                   fill={GROUP_COLOR[c.group]}
                   fillOpacity={0.07}
                   stroke={GROUP_COLOR[c.group]}
-                  strokeOpacity={0.3}
+                  strokeOpacity={0.45}
                   strokeDasharray="4 5"
                 />
                 <text
                   x={c.cx + c.labelDx}
                   y={c.cy + c.labelDy}
                   textAnchor="middle"
-                  fill={colors.MUTED}
+                  fill={GROUP_COLOR[c.group]}
                   fontSize={17}
                   fontStyle="italic"
+                  fontWeight={600}
                 >
                   {c.label}
                 </text>
@@ -195,16 +201,18 @@ function Frame({ s }: { s: SceneState }) {
               />
               <MathLabel
                 tex={`\\cos(\\text{cat},\\text{dog}) = ${COS_CAT_DOG.toFixed(2)}`}
-                x={655}
-                y={455}
+                x={600}
+                y={470}
+                anchor="start"
                 fontSize={16}
                 color={colors.TEAL}
                 opacity={simLabelU}
               />
               <MathLabel
                 tex={`\\cos(\\text{cat},\\text{apple}) = ${COS_CAT_APPLE.toFixed(2)}`}
-                x={330}
-                y={250}
+                x={331}
+                y={330}
+                anchor="start"
                 fontSize={16}
                 color={colors.TEAL}
                 opacity={simLabelU}
@@ -303,51 +311,56 @@ function Frame({ s }: { s: SceneState }) {
             height={142}
             rx={12}
             fill={colors.PANEL}
-            opacity={0.92}
             stroke={colors.GRID}
           />
           <text x={64} y={500} fill={colors.TEXT} fontSize={16}>
             four hand-picked features
           </text>
-          <MathLabel
-            tex="\text{king} = [\,-1.0,\ \ 1.0,\ \ 0.5,\ \ 0.0\,]"
-            x={64}
-            y={526}
-            anchor="start"
-            fontSize={18}
-            color={colors.WARM}
-          />
-          <text x={124} y={584} fill={colors.MUTED} fontSize={13}>
-            gender
+          <text x={64} y={526} fill={colors.WARM} fontSize={16}>
+            king, as numbers
           </text>
-          <text x={196} y={584} fill={colors.MUTED} fontSize={13}>
-            royalty
-          </text>
-          <text x={268} y={584} fill={colors.MUTED} fontSize={13}>
-            size
-          </text>
-          <text x={318} y={584} fill={colors.MUTED} fontSize={13}>
-            edibility
-          </text>
+          {/* a small table: one column per feature, the king vector beneath */}
+          {FEATURES.map((name, j) => (
+            <g key={name}>
+              <text x={64 + j * 92} y={556} fill={colors.MUTED} fontSize={14}>
+                {name}
+              </text>
+              <text x={64 + j * 92} y={586} fill={colors.TEXT} fontSize={18} fontWeight={600}>
+                {KING[j]}
+              </text>
+            </g>
+          ))}
         </g>
       )}
 
-      {/* screen-fixed analogy equations (top strip, clear of the clusters) */}
+      {/* screen-fixed analogy equations (top strip, on a solid panel so the words behind never cross them) */}
+      {(tex1U > 0 || tex2U > 0) && (
+        <rect
+          x={632}
+          y={22}
+          width={636}
+          height={64}
+          rx={10}
+          fill={colors.PANEL}
+          stroke={colors.GRID}
+          opacity={0.96 * Math.max(tex1U, tex2U)}
+        />
+      )}
       <MathLabel
         tex="\vec{v}_{\text{king}} - \vec{v}_{\text{man}} + \vec{v}_{\text{woman}}"
         x={650}
         y={54}
         anchor="start"
-        fontSize={21}
+        fontSize={18}
         color={colors.SECONDARY}
         opacity={tex1U}
       />
       <MathLabel
         tex="\approx\ \vec{v}_{\text{queen}}"
-        x={942}
+        x={1092}
         y={54}
         anchor="start"
-        fontSize={21}
+        fontSize={18}
         color={colors.WARM}
         opacity={Math.min(tex1U, res1U)}
       />
@@ -356,29 +369,41 @@ function Frame({ s }: { s: SceneState }) {
         x={650}
         y={54}
         anchor="start"
-        fontSize={21}
+        fontSize={18}
         color={colors.SECONDARY}
         opacity={tex2U}
       />
       <MathLabel
         tex="\approx\ \vec{v}_{\text{cat}}"
-        x={952}
+        x={1064}
         y={54}
         anchor="start"
-        fontSize={21}
+        fontSize={18}
         color={colors.POSITIVE}
         opacity={Math.min(tex2U, res2U)}
       />
 
       {/* the closing beat — the world has faded to a whisper behind it */}
       {endU > 0 && (
-        <g opacity={endU}>
-          <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={38} fontWeight={600}>
-            Meaning is geometry.
-          </text>
-          <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
-            The model never sees words — only directions.
-          </text>
+        <g>
+          <rect
+            x={300}
+            y={252}
+            width={680}
+            height={132}
+            rx={14}
+            fill={colors.BG}
+            stroke={colors.GRID}
+            opacity={0.94 * endU}
+          />
+          <g opacity={endU}>
+            <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={38} fontWeight={600}>
+              Meaning is geometry.
+            </text>
+            <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
+              The model never sees words — only directions.
+            </text>
+          </g>
         </g>
       )}
     </>

@@ -55,7 +55,7 @@ function AuthGate({ u, open, denied, opacity = 1 }: { u: number; open: number; d
     <g opacity={uu * opacity}>
       <rect x={536} y={236} width={208} height={228} rx={20} fill={colors.PANEL} stroke={dd > 0.1 ? colors.NEGATIVE : oo > 0.5 ? colors.POSITIVE : colors.WARM} strokeWidth={2.2} />
       <text x={640} y={270} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={750}>authentication gate</text>
-      <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>WithBiscuitAuth</text>
+      <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>WithBiscuitAuth</text>
       <path d="M580 322h120v90H580z" fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
       <path d="M580 322 640 350 700 322" fill="none" stroke={colors.GRID} strokeWidth={1.5} />
       <g transform={`translate(${doorX} 366)`}>
@@ -77,7 +77,7 @@ function Token({ x, y, u, glow, label, opacity = 1 }: { x: number; y: number; u:
       {glow > 0 && <circle r={38} fill="none" stroke={colors.WARM} strokeWidth={2.4} opacity={0.28 * clamp01(glow)} />}
       <rect x={-31} y={-22} width={62} height={44} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
       <path d="M-18-6h36M-18 4h24M-18 14h15" stroke={colors.WARM} strokeWidth={2} strokeLinecap="round" opacity={0.8} />
-      <text y={38} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>{label}</text>
+      <text y={60} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={650} fontFamily={MONO}>{label}</text>
     </g>
   );
 }
@@ -123,7 +123,7 @@ export function buildScene() {
   // Hold this explanation through the mutual-proof return. The recorded cue
   // is long enough to cover the verifier's mid-chapter seek after retiming.
   tl.caption({ at: 21.8, dur: 6.2, text: "The answer carries the router's own proof, so both sides can inspect the other." });
-  tl.tween(authU, 0.22, { at: 22.1, dur: 0.8, ease: ease.move });
+  tl.tween(authU, 1, { at: 22.1, dur: 0.8, ease: ease.move });
   tl.tween(mutualU, 1, { at: 22.4, dur: 1.2, ease: ease.linear });
   tl.tween(cam, CAMERA_HOME, { at: 22.8, dur: 1.3, ease: ease.move });
   tl.hold(26.9, 0.4);
@@ -167,9 +167,9 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>The gate before the road</text>
-        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>AuthFrame · HandleAuthHandshake · authenticatedPeers · relayACL</text>
+        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>AuthFrame · HandleAuthHandshake · authenticatedPeers · relayACL</text>
 
-        <Connection from={{ x: 260, y: NODE.y }} to={{ x: 520, y: NODE.y }} u={s.get(scene.directU)} dim={1 - directOpacity} color={colors.MUTED} dashed label="direct address" />
+        <Connection from={{ x: 260, y: NODE.y }} to={{ x: 520, y: NODE.y }} u={s.get(scene.directU)} dim={1 - directOpacity} color={colors.MUTED} dashed />
         <Connection from={{ x: 760, y: ROUTER.y }} to={{ x: 1050, y: REMOTE.y }} u={s.get(scene.relayU)} flow={s.get(scene.routeU)} color={colors.POSITIVE} label="/p2p-circuit" />
         <Connection from={{ x: 760, y: ROUTER.y }} to={{ x: 1050, y: REMOTE.y }} via={[{ x: ROUTER.x, y: RELAY_TOP.y }, { x: REMOTE.x, y: RELAY_TOP.y }]} u={s.get(scene.relayU)} flow={s.get(scene.routeU)} color={colors.POSITIVE} label="relay circuit" />
 
@@ -185,15 +185,25 @@ export function Render({ s }: { s: SceneState }) {
         <RequestFlow path={[NODE, ROUTER, REMOTE]} u={s.get(scene.routeU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="request" responseLabel="response" hold />
 
         <g opacity={s.get(scene.verifyU)}>
-          <Chip x={430} y={140} text="VerifyBiscuit" color={colors.WARM} w={132} />
-          <Chip x={850} y={140} text="trusted public keys" color={colors.SECONDARY} w={158} />
+          {/* Biscuit rises from the token, passes the verifier, and enters the gate */}
+          <path d="M330 326V268H534" fill="none" stroke={colors.WARM} strokeWidth={1.8} opacity={0.85} />
+          <polygon points="536,268 528,263.5 528,272.5" fill={colors.WARM} />
+          <Chip x={430} y={268} text="VerifyBiscuit" color={colors.WARM} w={132} />
+          {/* Trusted keys feed the verifier from the right */}
+          <path d="M801 268H746" fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} opacity={0.85} />
+          <polygon points="744,268 752,263.5 752,272.5" fill={colors.SECONDARY} />
+          <Chip x={880} y={268} text="trusted public keys" color={colors.SECONDARY} w={158} />
         </g>
+        <Chip x={440} y={392} text="direct address" color={colors.MUTED} w={122} opacity={s.get(scene.directU) * directOpacity} />
         <g opacity={s.get(scene.deniedU)}>
-          <line x1={444} y1={418} x2={520} y2={490} stroke={colors.NEGATIVE} strokeWidth={3} />
-          <line x1={520} y1={418} x2={444} y2={490} stroke={colors.NEGATIVE} strokeWidth={3} />
-          <Chip x={482} y={514} text="AllowReserve = false" color={colors.NEGATIVE} w={166} />
+          <line x1={468} y1={336} x2={496} y2={364} stroke={colors.NEGATIVE} strokeWidth={3} />
+          <line x1={496} y1={336} x2={468} y2={364} stroke={colors.NEGATIVE} strokeWidth={3} />
+          <Chip x={440} y={306} text="AllowReserve = false" color={colors.NEGATIVE} w={166} />
         </g>
         <g opacity={s.get(scene.relayU)}>
+          {/* Relay permission hangs off the authenticated gate */}
+          <path d="M640 464V535" fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} opacity={0.85} />
+          <path d="M744 440H820V535" fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} opacity={0.85} />
           <Chip x={640} y={548} text="AllowConnect" color={colors.POSITIVE} w={126} />
           <Chip x={820} y={548} text="authenticated peer" color={colors.POSITIVE} w={152} />
         </g>
@@ -205,7 +215,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={32} fontWeight={800}>The road is earned</text>
           <text x={640} y={330} textAnchor="middle" fill={colors.POSITIVE} fontSize={18}>Biscuit verified · peers mutual · relay allowed</text>
           <text x={640} y={374} textAnchor="middle" fill={colors.MUTED} fontSize={14}>one request, now able to cross the mesh</text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>AuthProtocolID → authenticatedPeers → relay circuit</text>
+          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>AuthProtocolID → authenticatedPeers → relay circuit</text>
         </g>
       )}
     </>

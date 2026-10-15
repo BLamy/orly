@@ -7,7 +7,7 @@ import type { CameraState, ChannelRef } from '../../core';
  * Real computation at module scope: a 300-item benchmark with difficulties
  * drawn from a seeded normal; a model's expected score is the mean logistic
  * of ability minus difficulty. Two models half a point of ability apart are
- * 13.3 points apart mid-curve — and 0.7 points apart near the ceiling.
+ * about 13.6 points apart mid-curve — and about 0.5 points apart near the ceiling.
  * The leakage and Goodhart beats carry the sourced public record:
  * BIG-bench canary strings, n-gram overlap audits, and SWE-bench+'s finding
  * that 32.7% of screened passing patches had the solution leaked in the
@@ -27,15 +27,16 @@ export const N_PLOT = 160;
 export const CURVE: number[] = Array.from({ length: N_PLOT }, (_, i) => score(A_MIN + ((A_MAX - A_MIN) * i) / (N_PLOT - 1)));
 
 // The two probe models: B is always 0.5 ability ahead of A.
-export const GAP_MID = 100 * (score(0.0) - score(-0.5)); // 13.3 pts at mid-curve
-export const GAP_CEIL = 100 * (score(4.0) - score(3.5)); // 0.7 pts near ceiling
+export const GAP_MID = 100 * (score(0.0) - score(-0.5)); // ~13.6 pts at mid-curve
+export const GAP_CEIL = 100 * (score(4.0) - score(3.5)); // ~0.5 pts near ceiling
 
-// Leaked-question dots for the leakage beat (positions seeded, drift precomputed)
+// Leaked-question dots for the leakage beat: each starts in the public test set
+// and drifts to a resting place inside the training-corpus box (y 420–590).
 const rand2 = mulberry32(31);
-export const LEAK_DOTS: { x0: number; y0: number; dy: number }[] = Array.from({ length: 26 }, () => ({
+export const LEAK_DOTS: { x0: number; y0: number; y1: number }[] = Array.from({ length: 26 }, () => ({
   x0: 180 + rand2() * 380,
   y0: 170 + rand2() * 180,
-  dy: 240 + rand2() * 90,
+  y1: 478 + rand2() * 80,
 }));
 
 // Stage mapping for the ability→score curve
@@ -46,7 +47,7 @@ export const PY1 = 150;
 export const px = (a: number): number => PX0 + ((a - A_MIN) / (A_MAX - A_MIN)) * (PX1 - PX0);
 export const py = (v: number): number => PY0 + v * (PY1 - PY0); // v in 0..1
 
-export const CAM_MID: CameraState = { x: 470, y: 380, k: 1.25 };
+export const CAM_MID: CameraState = { x: 600, y: 380, k: 1.25 };
 export const CAM_CEILING: CameraState = { x: 950, y: 250, k: 1.35 };
 
 export interface Scene {
@@ -138,7 +139,7 @@ export function buildScene(): Scene {
   tl.hold(48.9, 0.7);
 
   // — Close ————————————————————————————————————————————————————————————
-  tl.tween(dimU, 0.13, { at: 49.6, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 49.6, dur: 1.1, ease: ease.move });
   tl.tween(goodU, 0, { at: 49.6, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 50.7, dur: 0.9, ease: ease.enter });
   tl.caption({

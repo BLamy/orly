@@ -201,12 +201,30 @@ function BucketRing({ u, dim }: { u: number; dim: number }) {
       <text x={BUCKET.x} y={BUCKET.y - BUCKET.r - 26} textAnchor="middle" fill={colors.TEAL} fontSize={13.5} fontWeight={700} opacity={uu}>
         the fleet bucket · S3-compatible · you own it
       </text>
-      <text x={BUCKET.x} y={BUCKET.y - 98} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={uu}>
+      <text x={BUCKET.x} y={BUCKET.y - 98} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={uu}>
         deployments/ · cells/
       </text>
-      <text x={BUCKET.x} y={BUCKET.y - 80} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={uu}>
+      <text x={BUCKET.x} y={BUCKET.y - 80} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={uu}>
         wake/ · fleet/
       </text>
+    </g>
+  );
+}
+
+/** What celld does not run. Shown in the empty bucket frame, then cleared as the nodes arrive. */
+function LeftOut({ u, nodes }: { u: number; nodes: number }) {
+  const o = clamp01(u) * (1 - clamp01(nodes));
+  if (o <= 0) return null;
+  return (
+    <g opacity={o}>
+      <text x={70} y={352} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={MONO} letterSpacing="0.08em">
+        WHAT CELLD LEAVES OUT
+      </text>
+      {['no membership protocol', 'no failure detector', 'no consensus service'].map((s, i) => (
+        <text key={s} x={70} y={394 + i * 36} fill={colors.TEXT} fontSize={18} fontWeight={600} style={{ textDecoration: 'line-through', textDecorationColor: colors.NEGATIVE }}>
+          {s}
+        </text>
+      ))}
     </g>
   );
 }
@@ -231,12 +249,27 @@ function Nodes({
         const p = clamp01(u * 3 - i * 0.7);
         if (p <= 0) return null;
         const dead = n.id === 'node-a' ? clamp01((fence - 0.55) * 3) : 0;
-        const leaseR = 44;
-        // lease arc: sweeps as it renews; node-a's decays once fence begins
+        // lease arc: a rounded outline hugging the node box, sweeping as it renews; node-a's decays once fence begins
         const sweep = n.id === 'node-a' ? Math.max(0, 1 - clamp01(fence * 1.6)) : 0.4 + 0.6 * Math.abs(Math.sin(lease * Math.PI * (1.3 + i * 0.3)));
-        const dash = TAU * leaseR;
         return (
-          <g key={n.id} transform={`translate(${n.x}, ${n.y})`} opacity={p * (1 - dead * 0.75)}>
+          <g key={n.id} transform={`translate(${n.x}, ${n.y})`} opacity={p * (1 - dead * 0.5)}>
+            {lease > 0 && (
+              <g opacity={clamp01(lease * 3)}>
+                <rect
+                  x={-NODE_HALF_W - 9}
+                  y={-43}
+                  width={NODE_HALF_W * 2 + 18}
+                  height={86}
+                  rx={18}
+                  fill="none"
+                  stroke={dead > 0.3 ? colors.NEGATIVE : n.color}
+                  strokeWidth={2}
+                  pathLength={100}
+                  strokeDasharray={`${sweep * 30 + 0.5} 100`}
+                  opacity={0.7}
+                />
+              </g>
+            )}
             <rect x={-NODE_HALF_W} y={-34} width={NODE_HALF_W * 2} height={68} rx={12} fill={colors.PANEL} stroke={dead > 0.3 ? colors.NEGATIVE : n.color} strokeWidth={1.8} />
             <text y={-6} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
               {n.id}
@@ -244,21 +277,8 @@ function Nodes({
             <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               celld · embeds V8
             </text>
-            {lease > 0 && (
-              <g opacity={clamp01(lease * 3)}>
-                <circle
-                  r={leaseR}
-                  fill="none"
-                  stroke={dead > 0.3 ? colors.NEGATIVE : n.color}
-                  strokeWidth={2}
-                  strokeDasharray={`${dash * 0.25 * sweep + 0.01} ${dash}`}
-                  transform="rotate(-90)"
-                  opacity={0.7}
-                />
-              </g>
-            )}
             {dead > 0.3 && (
-              <text y={54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={(dead - 0.3) * 2}>
+              <text y={60} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={600} fontFamily={MONO} opacity={clamp01((dead - 0.2) * 2.5)}>
                 lease expired · fenced
               </text>
             )}
@@ -266,7 +286,7 @@ function Nodes({
         );
       })}
       {lease > 0.15 && lease < 1 && fence < 0.4 && (
-        <text x={250} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(lease * 4)}>
+        <text x={250} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={clamp01(lease * 4)}>
           NodeLeaseRenew → NodeLeaseFence
         </text>
       )}
@@ -354,7 +374,7 @@ function CasRace({ u, dim }: { u: number; dim: number }) {
         </g>
       )}
       {bounce > 0.1 && bounce < 0.9 && (
-        <text x={880} y={250} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={Math.sin(bounce * Math.PI)}>
+        <text x={935} y={250} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={Math.sin(bounce * Math.PI)}>
           clean rejection — the only safe “no”
         </text>
       )}
@@ -372,11 +392,11 @@ function ProxyPath({ u, dim }: { u: number; dim: number }) {
   const y = a.y - 62;
   return (
     <g opacity={1 - 0.85 * dim}>
-      <line x1={b.x - NODE_HALF_W} y1={y} x2={a.x + NODE_HALF_W} y2={y} stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 6" opacity={uu} />
+      <line x1={b.x - NODE_HALF_W} y1={y} x2={a.x + NODE_HALF_W} y2={y} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="4 6" opacity={uu * 0.6} />
       {pu > 0 && pu < 1 && (
         <g transform={`translate(${x}, ${y})`}>
           <circle r={9} fill={colors.WARM} />
-          <text y={-14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+          <text y={-14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
             proxied to owner
           </text>
         </g>
@@ -424,13 +444,13 @@ function ClosingCard({ u }: { u: number }) {
       <text y={-40} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={750}>
         The bucket is the coordinator.
       </text>
-      <text y={-2} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+      <text y={-2} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         one conditional write · put_cas → clean 412 is the only “no”
       </text>
-      <text y={30} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+      <text y={30} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
         owner record = node + epoch · every handoff advances it
       </text>
-      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         no membership · no failure detector · no consensus service
       </text>
     </g>
@@ -448,6 +468,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
         {!faded && <BucketRing u={s.get(scene.bucketU)} dim={dim} />}
+        {!faded && <LeftOut u={s.get(scene.bucketU)} nodes={s.get(scene.nodesU)} />}
         {!faded && (
           <Nodes
             u={s.get(scene.nodesU)}

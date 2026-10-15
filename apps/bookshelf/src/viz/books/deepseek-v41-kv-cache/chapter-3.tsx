@@ -112,7 +112,7 @@ const Q_NEAR = { x: 640, y: 215 };
 // Focus for the layer beats (2, 5, 8): keeps the whole 32-position comb (screen x ≈ 136–1206)
 // and the mode cards on the 1280×720 stage, unlike the old push that cropped the right end.
 const FOCUS = { x: 610, y: 330, k: 1.2 };
-const EMPTY_RING = { x: 420, y: 300, r: 86 };
+const EMPTY_RING = { x: 640, y: 300, r: 86 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -228,7 +228,7 @@ export function buildScene() {
 
   // 9 — work rulers: paper deployment algorithm vs the reference
   tl.tween(cam, CAMERA_HOME, { at: B(9), dur: 1.2, ease: ease.move });
-  to(combO, 0.15, B(9));
+  to(combO, 0, B(9));
   to(poolLbl, 0, B(9));
   to(queryO, 0, B(9));
   to(rulerO, 0, B(9));
@@ -370,6 +370,11 @@ export function Render({ s }: { s: SceneState }) {
             <Note x={COMB.x + COMB.dx * N - 4} y={COMB.y + 32} text={`${BASE + N - 1}`} size={12} anchor="end" />
           </g>
 
+          {/* beat 1 label: the history the comb is searching */}
+          <Note x={COMB.x} y={COMB.y - 22} size={14} color={TEXT}
+            o={g(scene.railO) * (1 - g(scene.rulerO)) * (1 - g(scene.ringO))}
+            text="visible history: every token so far" />
+
           {/* selected reads — solid outlines + teeth to the query */}
           {selO > 0 &&
             [
@@ -422,7 +427,7 @@ export function Render({ s }: { s: SceneState }) {
               })}
               <g opacity={g(scene.blockLbl)}>
                 <Code x={COMB.x} y={196} text="select_candidate_blocks" color={TEXT} />
-                <Code x={COMB.x} y={214} text="amax(dim=-1)" color={MUTED} size={12} />
+                <Code x={COMB.x} y={214} text="amax(dim=-1)" color={TEXT} size={13} />
               </g>
               <g opacity={pin}>
                 <Code x={COMB.x} y={196} text="scores.masked_fill(..., torch.inf)" color={ACCENT} />
@@ -440,7 +445,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* published sizes (beat 7) */}
         <g opacity={g(scene.pubO)}>
           <rect x={330} y={150} width={620} height={100} rx={10} fill={PANEL} stroke={MUTED} strokeOpacity={0.4} />
-          <MathLabel tex={`2048 \\times 8 = ${PUBLISHED_POOL}`} x={640} y={184} fontSize={24} />
+          <text x={640} y={186} fill={TEXT} fontFamily={font.mono} fontSize={24} textAnchor="middle">{`2048 × 8 = ${PUBLISHED_POOL}`}</text>
           <Code x={640} y={222} anchor="middle" size={12}
             text="candidate_topk_blocks = 2048 · candidate_block_size = 8 · index_topk = 512" />
           <Note x={640} y={240} text="published configuration — the comb below is a toy" size={12} anchor="middle" />
@@ -489,8 +494,8 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={630} y1={270} x2={630} y2={310} stroke={ACCENT} strokeDasharray="4 3" opacity={w1 > 330 ? 1 : 0.3} />
             <Note x={640} y={295} text="plateaus at the candidate-pool bound" size={12} />
             <Note x={300} y={200} text="context length →" size={12} />
-            <Chip x={300} y={330} text="einsum → masked_fill" o={1} color={MUTED} />
-            <Note x={470} y={346} text="reference Indexer.forward: scores everything, then masks" size={12} />
+            <Chip x={300} y={330} text="einsum → masked_fill" o={1} color={WARM} />
+            <Note x={470} y={346} text="reference Indexer.forward: scores everything, then masks" size={13} color={TEXT} />
           </g>
         )}
 

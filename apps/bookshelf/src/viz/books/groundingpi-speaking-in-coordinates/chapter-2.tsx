@@ -103,7 +103,7 @@ const INK = {
   ground: '#262d3b',
   text: colors.TEXT,
   muted: colors.MUTED,
-  faint: colors.ink.faint,
+  faint: colors.MUTED,
   panel: colors.PANEL,
   bg: colors.BG,
 } as const;
@@ -260,8 +260,8 @@ const CHIP_TAPE = { x: IN_PHRASE_CELL.x + IN_PHRASE_CELL.w / 2, y: IN_Y + IN_H /
 // output tape (the canonical response), two rows, left-aligned with the input tape
 const OUT_X = 120;
 const CELL_H = 44;
-const PHRASE_Y = 484;
-const PAYLOAD_Y = 536;
+const PHRASE_Y = 496;
+const PAYLOAD_Y = 550;
 const PHRASE_CELLS = layoutRow([
   { key: 'ref_start', lines: ['<|object_ref_', 'start|>'], w: 152, cls: 'marker' },
   { key: 'phrase', lines: [PHRASE], w: 160, cls: 'phrase' },
@@ -293,7 +293,7 @@ const PREFIX_PATH: Array<{ x: number; y: number }> = [
 const OUT_CENTERS = OUT_CELLS.map((c) => ({ x: c.x + c.w / 2, y: c.y + CELL_H / 2 }));
 
 // request boundary (beat 0) and vocabulary shelf (beat 6) share the station region
-const REQ = { x: 560, y: 150, w: 300, h: 150 } as const;
+const REQ = { x: 560, y: 150, w: 500, h: 150 } as const;
 const SHELF = [
   { label: 'labels / words', color: INK.phrase },
   { label: 'boundary markers', color: INK.marker },
@@ -442,7 +442,7 @@ export function buildScene() {
   tl.tween(insetO, 0, { at: 68.0, dur: 0.8, ease: ease.enter });
   tl.tween(mosaicO, 0, { at: 68.2, dur: 1.0, ease: ease.enter });
   tl.tween(artO, 1, { at: 68.2, dur: 1.0, ease: ease.enter });
-  tl.tween(chipMoveU, 0, { at: 68.4, dur: 1.0, ease: ease.move });
+  tl.tween(chipMoveU, 1, { at: 68.4, dur: 1.0, ease: ease.move }); // the phrase stays in its input slot; no chip bounce back
   tl.tween(inTapeO, 0.12, { at: 68.4, dur: 0.8, ease: ease.enter });
   tl.tween(panelU, 1, { at: 69.6, dur: 0.8, ease: ease.enter });
   tl.hold(TOTAL - 1, 1);
@@ -600,7 +600,7 @@ export function Render({ s }: { s: SceneState }) {
         {reqU > 0.003 && reqO > 0.003 && (
           <g opacity={reqO}>
             <rect x={REQ.x} y={REQ.y} width={REQ.w * reqU} height={REQ.h} rx={14} fill={INK.panel} stroke={INK.embed} strokeWidth={1.5} strokeDasharray="7 5" />
-            <Txt x={REQ.x + 16} y={REQ.y - 12} size={18} fill={INK.embed} mono opacity={reqU}>GroundingPi.predict(image, phrase, task="bbox")</Txt>
+            <Txt x={REQ.x + 16} y={REQ.y - 12} size={16} fill={INK.embed} mono opacity={reqU}>GroundingPi.predict(image, phrase, task="bbox")</Txt>
             <Txt x={REQ.x + 18} y={REQ.y + 54} size={16} fill={INK.muted} mono opacity={reqU}>"image_url" · base64 data URI</Txt>
             <Txt x={REQ.x + 18} y={REQ.y + 110} size={16} fill={INK.phrase} mono opacity={reqU}>"text" · Locate the target … the red car.</Txt>
             <Txt x={REQ.x + 18} y={REQ.y + 136} size={14} fill={INK.faint} mono opacity={reqU}>POST /chat/completions · skip_special_tokens: false</Txt>
@@ -627,7 +627,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={sh.label} opacity={u}>
                   <rect x={sh.x - 13} y={ROW_Y - 58} width={26} height={116} rx={6} fill={INK.panel} stroke={norm ? INK.muted : INK.phrase} strokeWidth={norm ? 1.2 : 1.8} strokeDasharray={norm ? '4 4' : undefined} />
                   <Txt x={sh.x} y={ROW_Y + 84} size={16} fill={norm ? INK.muted : INK.text} anchor="middle" mono>{sh.label}</Txt>
-                  <Txt x={sh.x} y={ROW_Y + (i % 2 === 0 ? 104 : 122)} size={13} fill={INK.faint} anchor="middle" mono>{sh.sub}</Txt>
+                  <Txt x={sh.x} y={ROW_Y + (i % 2 === 0 ? 104 : 122)} size={14} fill={INK.faint} anchor="middle" mono>{sh.sub}</Txt>
                 </g>
               );
             })}
@@ -724,7 +724,7 @@ export function Render({ s }: { s: SceneState }) {
             })}
             <circle cx={HEAD.x} cy={HEAD.y} r={HEAD.r} fill={INK.panel} stroke={INK.text} strokeWidth={2} />
             <Txt x={HEAD.x} y={HEAD.y + 6} size={16} fill={INK.text} anchor="middle" mono>head</Txt>
-            <Txt x={HEAD.x} y={HEAD.y + HEAD.r + 22} size={16} fill={INK.muted} anchor="middle">one output vocabulary</Txt>
+            <Txt x={HEAD.x + HEAD.r + 14} y={HEAD.y + 6} size={16} fill={INK.muted}>one output vocabulary</Txt>
             {emitPulse > 0 && k < N_OUT && (
               <line x1={HEAD.x} y1={HEAD.y + HEAD.r} x2={OUT_CENTERS[k].x} y2={OUT_CENTERS[k].y - CELL_H / 2} stroke={CLS_COLOR[OUT_CELLS[k].cls]} strokeWidth={2} strokeDasharray="6 6" opacity={emitPulse} />
             )}
@@ -782,11 +782,11 @@ export function Render({ s }: { s: SceneState }) {
                 {Array.from({ length: G_CANDIDATES }, (_, r) => {
                   const u = clamp01((candU * (G_CANDIDATES + 2) - r) / 2);
                   if (u <= 0) return null;
-                  const y = INSET.y + 72 + r * 20;
+                  const y = INSET.y + 72 + r * 18;
                   const hot = r === CHECKED_ROW;
                   return (
                     <g key={r} opacity={u}>
-                      <Txt x={INSET.x + 36} y={y + 12} size={13} fill={INK.faint} mono>{r + 1}</Txt>
+                      <Txt x={INSET.x + 36} y={y + 12} size={14} fill={INK.faint} mono>{r + 1}</Txt>
                       {OUT_CELLS.map((c, i) => (
                         <rect key={c.key} x={MINI_X0 + i * 30} y={y} width={26} height={14} rx={3} fill={CLS_COLOR[c.cls]} opacity={hot ? 0.9 : 0.35} />
                       ))}

@@ -22,7 +22,7 @@ const STAGES = ['call_remote_tool', 'SplitToolName', 'AuthFrame', 'session.CallT
 const CALL_START: Pt = { x: 280, y: 356 };
 const CALL_PATH: Pt[] = [CALL_START, { x: GATE.x - 114, y: GATE.y }, { x: TARGET.x - 104, y: TARGET.y }];
 
-function Chip({ x, y, text, color = colors.MUTED, opacity = 1, w, h = 26, fontSize = 11, fill = colors.PANEL }: { x: number; y: number; text: string; color?: string; opacity?: number; w?: number; h?: number; fontSize?: number; fill?: string }) {
+function Chip({ x, y, text, color = colors.MUTED, opacity = 1, w, h = 26, fontSize = 14, fill = colors.PANEL }: { x: number; y: number; text: string; color?: string; opacity?: number; w?: number; h?: number; fontSize?: number; fill?: string }) {
   const width = w ?? Math.max(62, text.length * fontSize * 0.62 + 18);
   return (
     <g opacity={clamp01(opacity)}>
@@ -43,10 +43,10 @@ function CallCard({ u, split, labels, opacity = 1 }: { u: number; split: number;
       <Chip x={92} y={222} text="peer_id" color={colors.ACCENT} w={88} />
       <Chip x={226} y={222} text="tool_name" color={colors.SECONDARY} w={102} />
       <Chip x={92} y={258} text="arguments" color={colors.POSITIVE} w={102} />
-      <Chip x={226} y={258} text="required_labels" color={colors.WARM} w={128} fontSize={12} />
+      <Chip x={222} y={258} text="required_labels" color={colors.WARM} w={156} />
       {ss > 0.2 && <path d="M310 228h42M310 254h48" stroke={colors.WARM} strokeWidth={2.2} strokeDasharray="6 5" opacity={ss} />}
-      {ss > 0.2 && <g opacity={ss}><Chip x={430} y={222} text="mcp://code-reviewer" color={colors.SECONDARY} w={150} fontSize={12} /><Chip x={412} y={258} text="review_pr" color={colors.POSITIVE} w={108} fontSize={12} /></g>}
-      {labels > 0.2 && <Chip x={163} y={288} text="labels checked before call" color={colors.WARM} w={200} fontSize={12} />}
+      {ss > 0.2 && <g opacity={ss}><Chip x={436} y={222} text="mcp://code-reviewer" color={colors.SECONDARY} w={190} /><Chip x={412} y={258} text="review_pr" color={colors.POSITIVE} w={108} /></g>}
+      {labels > 0.2 && <Chip x={163} y={288} text="labels checked before call" color={colors.WARM} w={250} />}
     </g>
   );
 }
@@ -60,7 +60,7 @@ function SessionGate({ u, auth, ack, opacity = 1 }: { u: number; auth: number; a
     <g opacity={uu * opacity}>
       <rect x={526} y={248} width={228} height={218} rx={20} fill={colors.PANEL} stroke={kk > 0.4 ? colors.POSITIVE : colors.WARM} strokeWidth={2.2} />
       <text x={640} y={280} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={750}>MCP stream</text>
-      <text x={640} y={304} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>ConnectMCPSession</text>
+      <text x={640} y={304} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ConnectMCPSession</text>
       <Chip x={640} y={342} text="AuthFrame" color={colors.WARM} w={112} opacity={aa} />
       <path d="M640 360v38" stroke={colors.GRID} strokeWidth={2} strokeDasharray="5 6" opacity={aa} />
       <Chip x={640} y={420} text="AuthResponse" color={colors.POSITIVE} w={126} opacity={kk} />
@@ -87,7 +87,7 @@ function CallRibbon({ u, opacity = 1 }: { u: number; opacity?: number }) {
         return (
           <g key={stage}>
             <circle cx={cx} cy={y} r={on ? 14 : 10} fill={on ? (i === STAGES.length - 1 ? colors.POSITIVE : colors.ACCENT) : colors.PANEL} stroke={on ? colors.ACCENT : colors.GRID} strokeWidth={2} />
-            <text x={cx} y={y - 24} textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={MONO}>{stage}</text>
+            <text x={cx} y={y - 24} textAnchor="middle" fill={colors.TEXT} fillOpacity={on ? 1 : 0.6} fontSize={14} fontFamily={MONO}>{stage}</text>
           </g>
         );
       })}
@@ -103,9 +103,9 @@ function EgressRibbon({ u, opacity = 1 }: { u: number; opacity?: number }) {
       <rect x={250} y={548} width={780} height={56} rx={28} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
       <path d="M300 576H970" stroke={colors.SECONDARY} strokeWidth={3} strokeDasharray="8 8" strokeDashoffset={-uu * 120} />
       <Packet from={{ x: 300, y: 576 }} to={{ x: 970, y: 576 }} u={uu} color={colors.SECONDARY} r={6} />
-      <Chip x={390} y={576} text="X-Sam-Biscuit" color={colors.POSITIVE} w={132} fontSize={10} />
-      <Chip x={640} y={576} text="libp2p://peer/service" color={colors.SECONDARY} w={174} fontSize={10} />
-      <Chip x={884} y={576} text="local gate stripped" color={colors.WARM} w={144} fontSize={10} />
+      <Chip x={390} y={576} text="X-Sam-Biscuit" color={colors.POSITIVE} w={150} />
+      <Chip x={640} y={576} text="libp2p://peer/service" color={colors.SECONDARY} w={212} />
+      <Chip x={884} y={576} text="local gate stripped" color={colors.WARM} w={202} />
     </g>
   );
 }
@@ -192,52 +192,62 @@ export function buildScene() {
 const scene = buildScene();
 
 export function Render({ s }: { s: SceneState }) {
-  const mainOpacity = 1 - 0.9 * s.get(scene.dimU);
+  // the stage goes fully clear for the closing recap, so no faded scene shows around the panel
+  const mainOpacity = 1 - s.get(scene.dimU);
+  // the call only travels once the MCP stream and the remote service both exist, so it never floats in empty space
+  const flowOpacity = s.get(scene.streamU) * s.get(scene.targetU);
   return (
     <>
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>One call, many proofs</text>
-        <text x={640} y={74} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>StartSidecarServer · ConnectMCPSession · WithBiscuitAuth · HandleMCPStream</text>
+        <text x={640} y={74} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>StartSidecarServer · ConnectMCPSession · WithBiscuitAuth · HandleMCPStream</text>
 
         <CallRibbon u={s.get(scene.callU)} />
         <Connection from={{ x: SIDECAR.x + 90, y: SIDECAR.y }} to={{ x: GATE.x - 114, y: GATE.y }} u={s.get(scene.streamU)} flow={s.get(scene.callU)} color={colors.ACCENT} label="MCPProtocolID" />
         <Connection from={{ x: GATE.x + 114, y: GATE.y }} to={{ x: TARGET.x - 104, y: TARGET.y }} u={s.get(scene.targetU)} flow={s.get(scene.resultU)} color={colors.POSITIVE} label="selected service" />
 
         <NodeBadge x={SIDECAR.x} y={SIDECAR.y} w={184} h={78} label="sidecar" sublabel="/mcp · /sam/ · /v1/*" color={colors.ACCENT} u={s.get(scene.sidecarU)} glow={s.get(scene.requestU)} />
+        <g opacity={s.get(scene.sidecarU)}>
+          <path d="M300 326V386" stroke={colors.WARM} strokeWidth={3} strokeLinecap="round" />
+          <Chip x={300} y={404} text="one door" color={colors.WARM} w={96} />
+        </g>
         <NodeBadge x={TARGET.x} y={TARGET.y} w={196} h={78} label="remote service" sublabel="MCPService" color={colors.POSITIVE} u={s.get(scene.targetU)} glow={s.get(scene.resultU)} />
         <SessionGate u={s.get(scene.streamU)} auth={s.get(scene.authU)} ack={s.get(scene.ackU)} />
         <CallCard u={s.get(scene.requestU)} split={s.get(scene.splitU)} labels={s.get(scene.labelsU)} />
 
         <Packet from={CALL_START} to={{ x: GATE.x - 122, y: GATE.y }} u={s.get(scene.authU)} color={colors.WARM} r={6} label="AuthFrame" />
         <Packet from={{ x: GATE.x + 122, y: GATE.y }} to={TARGET} u={s.get(scene.ackU)} color={colors.POSITIVE} r={5} label="AuthResponse" />
-        <RequestFlow path={CALL_PATH} u={s.get(scene.callU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} hold />
-        <g opacity={s.get(scene.callU)}>
-          <text x={820} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>tool call →</text>
+        <g opacity={flowOpacity}>
+          <RequestFlow path={CALL_PATH} u={s.get(scene.callU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} hold />
+        </g>
+        <g opacity={s.get(scene.callU) * flowOpacity}>
+          <text x={820} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>tool call →</text>
         </g>
         <g opacity={s.get(scene.resultU)}>
-          <text x={820} y={408} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>← result</text>
+          <text x={820} y={408} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>← result</text>
         </g>
 
         <g opacity={s.get(scene.resultU)}>
-          <rect x={968} y={470} width={292} height={86} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-          <text x={1114} y={500} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={720}>session.CallTool</text>
-          <text x={1114} y={530} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>structured result</text>
+          <rect x={968} y={432} width={292} height={86} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={1114} y={462} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={720}>session.CallTool</text>
+          <text x={1114} y={492} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>structured result</text>
         </g>
         <EgressRibbon u={s.get(scene.egressU)} />
         <g opacity={s.get(scene.labelsU)}>
-          <Chip x={318} y={420} text="required_labels" color={colors.WARM} w={132} fontSize={12} />
-          <Chip x={452} y={420} text="checkPeerLabels" color={colors.WARM} w={134} fontSize={12} />
+          <Chip x={190} y={436} text="required_labels" color={colors.WARM} w={156} />
+          <Chip x={352} y={436} text="checkPeerLabels" color={colors.WARM} w={150} />
         </g>
       </g>
 
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
+          <rect x={178} y={198} width={924} height={270} rx={26} fill={colors.BG} />
           <rect x={178} y={198} width={924} height={270} rx={26} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
           <text x={640} y={266} textAnchor="middle" fill={colors.TEXT} fontSize={32} fontWeight={800}>A request that can prove itself</text>
           <text x={640} y={314} textAnchor="middle" fill={colors.POSITIVE} fontSize={18}>identity → route → discovery → tool result</text>
-          <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={14}>the same request changes transport without losing its facts</text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>call_remote_tool → ConnectMCPSession → session.CallTool</text>
+          <text x={640} y={360} textAnchor="middle" fill={colors.TEXT} fontSize={16}>without a verified proof, the stream never becomes a session</text>
+          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>call_remote_tool → ConnectMCPSession → session.CallTool</text>
         </g>
       )}
     </>

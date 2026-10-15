@@ -36,8 +36,8 @@ const N_SYS = 8;
 const N_MSG = 16;
 const N = N_TOOLS + N_SYS + N_MSG;
 
-const CELL_W = 20;
-const PITCH = 22;
+const CELL_W = 24;
+const PITCH = 26;
 const CELL_H = 30;
 const TAPE_X = 168;
 const TOP_Y = 208; // the stored request (what the cache remembers)
@@ -73,9 +73,9 @@ const BRACKETS: { label: string; from: number; to: number }[] = [
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_TAPES: CameraState = { x: 560, y: 280, k: 1.22 };
-const CAM_MISS_A: CameraState = { x: 440, y: 280, k: 1.3 };
-const CAM_CHIP: CameraState = { x: 700, y: 380, k: 1.15 };
+const CAM_TAPES: CameraState = { x: 661, y: 280, k: 1.05 };
+const CAM_MISS_A: CameraState = { x: 620, y: 280, k: 1.1 };
+const CAM_CHIP: CameraState = { x: 690, y: 380, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~68s, ten beats). One scan channel per scenario keeps every
@@ -287,12 +287,19 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={machineOp}>
           {/* labels */}
-          <text x={TAPE_X} y={TOP_Y - 62} fill={colors.MUTED} fontSize={13}>
+          <text x={TAPE_X} y={TOP_Y - 62} fill={colors.TEXT} fontSize={14}>
             what the cache remembers — your previous request
           </text>
-          <text x={TAPE_X} y={BOT_Y + CELL_H + 34} fill={colors.MUTED} fontSize={13}>
+          <text x={TAPE_X} y={BOT_Y + CELL_H + 34} fill={colors.TEXT} fontSize={14}>
             this request
           </text>
+
+          {/* illustration note: the caption's "walks left to right" is a picture of keying, not the literal mechanism */}
+          <g opacity={bracketsU}>
+            <text x={TAPE_X} y={490} fill={colors.MUTED} fontSize={13}>
+              illustration: keyed on the prefix to a breakpoint
+            </text>
+          </g>
 
           {/* stored tape (ghost) — never changes */}
           <Tape y={TOP_Y} ghost diffAt={N + 1} flare={0} opacity={1} />
@@ -305,8 +312,11 @@ export function Render({ s }: { s: SceneState }) {
               {Array.from({ length: sc.appended }, (_, j) => (
                 <rect key={j} x={cellX(N + j)} y={BOT_Y} width={CELL_W} height={CELL_H} rx={3} fill={colors.POSITIVE} opacity={0.65} />
               ))}
-              <text x={cellX(N)} y={BOT_Y - 10} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
-                new suffix — the only new work
+              <text x={cellX(N)} y={BOT_Y - 30} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
+                new suffix
+              </text>
+              <text x={cellX(N)} y={BOT_Y - 12} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
+                the only new work
               </text>
             </g>
           )}
@@ -326,7 +336,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={TOP_Y - 32}
                   textAnchor="middle"
                   fill={SECTION_FILL[sectionOf(b.from)]}
-                  fontSize={12}
+                  fontSize={14}
                   fontFamily={MONO}
                 >
                   {b.label}
@@ -358,7 +368,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={flare * swapU}>
               <circle cx={cellX(sc.diffAt) + CELL_W / 2} cy={BOT_Y + CELL_H / 2} r={16 + 6 * flare} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.8} />
               <rect x={cellX(sc.diffAt + 1)} y={BOT_Y + CELL_H + 8} width={cellX(N) - cellX(sc.diffAt + 1)} height={4} rx={2} fill={colors.NEGATIVE} opacity={0.7} />
-              <text x={cellX(sc.diffAt + 1)} y={BOT_Y + CELL_H + 26} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+              <text x={cellX(sc.diffAt + 1)} y={BOT_Y + CELL_H + 26} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                 re-processed at full price
               </text>
             </g>
@@ -385,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={582} y={512} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             {'  '}cache_missed_input_tokens: {(sc.missedTokens || 41200).toLocaleString('en-US')} {'}'}
           </text>
-          <text x={582} y={538} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={582} y={538} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             also: system_changed · messages_changed · model_changed
           </text>
         </g>
@@ -408,7 +418,7 @@ export function Render({ s }: { s: SceneState }) {
           {['same model', 'same tools', 'same system', 'append only'].map((t, i) => (
             <g key={t}>
               <rect x={330 + i * 158} y={318} width={146} height={40} rx={10} fill={colors.BG} stroke={colors.POSITIVE} />
-              <text x={330 + i * 158 + 73} y={343} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
+              <text x={330 + i * 158 + 73} y={343} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 {t}
               </text>
             </g>

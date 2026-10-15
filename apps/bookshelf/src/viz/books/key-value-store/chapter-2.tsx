@@ -13,7 +13,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -92,7 +91,7 @@ const CARD3_X = [430, 640, 850];
 const CARD4_X = [372, 551, 730, 909];
 const CARD_Y = 356;
 function strawSlot(xs: number[], bucket: number, slot: number): { x: number; y: number } {
-  return { x: xs[bucket] - 51 + (slot % 4) * 34, y: CARD_Y + 34 + Math.floor(slot / 4) * 26 };
+  return { x: xs[bucket] - 51 + (slot % 4) * 34, y: CARD_Y + 42 + Math.floor(slot / 4) * 26 };
 }
 const slots3 = (() => {
   const fill = [0, 0, 0];
@@ -349,7 +348,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={b} opacity={b === 3 ? add4U : 1}>
                   <rect x={x - 62} y={CARD_Y} width={124} height={96} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={x} y={CARD_Y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={x} y={CARD_Y + 22} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     node {b + 1}
                   </text>
                 </g>
@@ -372,7 +371,7 @@ export function Render({ s }: { s: SceneState }) {
               };
               const p = {
                 x: base.x + (at4.x - base.x) * jump,
-                y: base.y + (at4.y - base.y) * jump - Math.sin(Math.PI * jump) * 46,
+                y: base.y + (at4.y - base.y) * jump - Math.sin(Math.PI * jump) * 92,
               };
               const moved = STRAW_B3[i] !== STRAW_B4[i];
               return (
@@ -400,22 +399,41 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <path d={keyspaceD(bendU, lineU)} fill="none" stroke={colors.GRID} strokeWidth={2.5} />
             {/* endpoint labels ride the bend, then meet at the top */}
-            <MathLabel
-              tex={'0'}
-              x={bendPoint(0, bendU, 34).x}
-              y={bendPoint(0, bendU, 34).y - 8}
+            {/* both ends sit just inside the seam, one on each side, so the
+                camera's caption band never clips them */}
+            <text
+              x={bendPoint(0, bendU, 34).x - 22}
+              y={bendPoint(0, bendU, 34).y + 5}
+              textAnchor="middle"
+              fill={colors.TEXT}
               fontSize={17}
-              color={colors.MUTED}
+              fontFamily={MONO}
               opacity={lineU * (1 - bendU * 0.25)}
-            />
-            <MathLabel
-              tex={'2^{32}'}
-              x={bendPoint(1, bendU, -38).x - 16}
-              y={bendPoint(1, bendU, -38).y - 10}
+            >
+              0
+            </text>
+            <text
+              x={bendPoint(1, bendU, 34).x + 22}
+              y={bendPoint(1, bendU, 34).y + 5}
+              textAnchor="middle"
+              fill={colors.TEXT}
               fontSize={17}
-              color={colors.MUTED}
+              fontFamily={MONO}
               opacity={lineU * (1 - bendU * 0.25)}
-            />
+            >
+              2³²
+            </text>
+            {/* before the bend, say what the line is: a fixed-size space */}
+            <text
+              x={640}
+              y={LINE_Y + 64}
+              textAnchor="middle"
+              fill={colors.TEXT}
+              fontSize={16}
+              opacity={lineU * clamp01(1 - bendU * 4)}
+            >
+              one fixed space: 2³² positions, never resized
+            </text>
 
             {/* the 40 keys */}
             {KEY_S.map((ks, i) => {
@@ -458,7 +476,15 @@ export function Render({ s }: { s: SceneState }) {
                   {isNext && nextU > 0 && (
                     <g opacity={nextU}>
                       <circle cx={p.x} cy={p.y} r={26} fill="none" stroke={NODE_COLOR[nd]} strokeWidth={1.5} strokeDasharray="3 4" />
-                      <text x={lp.x} y={lp.y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+                      {/* inside the ring, clear of the node letter and the dashed ring */}
+                      <text
+                        x={bendPoint(NODE_S[nd], bendU, 46).x}
+                        y={bendPoint(NODE_S[nd], bendU, 46).y + 5}
+                        textAnchor="middle"
+                        fill={colors.TEXT}
+                        fontSize={14}
+                        fontStyle="italic"
+                      >
                         next in line
                       </text>
                     </g>
@@ -520,8 +546,8 @@ export function Render({ s }: { s: SceneState }) {
                   x={bendPoint(OUR_S, 1, 46).x - 26}
                   y={bendPoint(OUR_S, 1, 46).y + 22}
                   textAnchor="end"
-                  fill={colors.MUTED}
-                  fontSize={12}
+                  fill={colors.TEXT}
+                  fontSize={14}
                   fontStyle="italic"
                 >
                   home: B

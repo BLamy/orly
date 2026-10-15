@@ -50,17 +50,17 @@ export const T_SLOTS = M_SHOW + P_STAGES - 1; // 11
 // ---------------------------------------------------------------------------
 
 export const MAT_Y = 150;
-export const CELL = 34;
-export const MX_X = 120; // X position
-export const MW_X = 330; // W position
-export const MY_X = 620; // Y position
+export const CELL = 40;
+export const MX_X = 180; // X position
+export const MW_X = 390; // W position
+export const MY_X = 680; // Y position
 
 export const PL_X0 = 150;
 export const PL_Y0 = 420;
 export const PL_CW = 62;
 export const PL_CH = 34;
 
-export const CAM_MAT: CameraState = { x: 520, y: 240, k: 1.2 };
+export const CAM_MAT: CameraState = { x: 520, y: 200, k: 1.2 };
 export const CAM_PIPE: CameraState = { x: 560, y: 470, k: 1.2 };
 
 export interface Scene {

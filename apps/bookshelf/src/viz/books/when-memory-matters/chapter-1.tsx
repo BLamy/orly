@@ -50,7 +50,7 @@ const LEN = MESSAGES.map((n) => px(n));
 const RAG = LEN.map((l) => (AX.x1 - AX.x0 - l) / 2); // centred until the axis aligns them
 
 // the enlarged U10 tape; marks are bins, three of them keyed by real identifiers
-const HERO = { x0: 110, len: 1060, y: 310, h: 26 } as const;
+const HERO = { x0: 110, len: 1060, y: 296, h: 44 } as const;
 const BINS = 72;
 const PITCH = HERO.len / BINS;
 const BIN_DISTANT = 15; // day7-50
@@ -70,6 +70,12 @@ const TEXTURE = (() => {
   );
 })();
 
+// opening frame: a few message bubbles above the tape, so the top band is not empty
+const PREVIEW = (() => {
+  const rand = mulberry32(1349);
+  return Array.from({ length: 4 }, (_, i) => ({ w: 260 + 300 * rand(), right: i % 2 === 1 }));
+})();
+
 // slots below the tape
 const SLOT_Y = 385;
 const SLOT = { distant: X_DISTANT, recent: 770, probe: 990 } as const;
@@ -81,7 +87,7 @@ const LAYERS = [
   { key: 'chat', note: 'verbatim probe', color: INK.thread, bins: [BIN_PROBE] },
   { key: 'qa', note: 'authored question', color: INK.text, bins: [22, 44] },
 ] as const;
-const layerY = (k: number): number => 250 - 50 * k;
+const layerY = (k: number): number => 240 - 50 * k;
 
 const CAPTIONS = [
   'A companion can remember a conversation and still miss the moment when that memory matters.',
@@ -220,13 +226,13 @@ function TenTapes({ u, align, axis, counts }: { u: number; align: number; axis: 
         const x = AX.x0 + RAG[i] * (1 - align);
         return (
           <g key={name} opacity={o}>
-            <Txt x={148} y={rowY(i) + 4} size={12} anchor="end" mono fill={INK.muted}>
+            <Txt x={148} y={rowY(i) + 4} size={14} anchor="end" mono fill={INK.muted}>
               {name}
             </Txt>
             {i < 9 && (
               <rect x={x} y={rowY(i) - 5} width={Math.max(LEN[i], 2)} height={10} rx={2} fill={INK.thread} opacity={0.6} />
             )}
-            <Txt x={x + LEN[i] + 8} y={rowY(i) + 4} size={12} mono fill={INK.muted} opacity={counts}>
+            <Txt x={x + LEN[i] + 8} y={rowY(i) + 4} size={14} mono fill={INK.muted} opacity={counts}>
               {fmt(MESSAGES[i])}
             </Txt>
           </g>
@@ -237,12 +243,12 @@ function TenTapes({ u, align, axis, counts }: { u: number; align: number; axis: 
         {[0, 5000, 10000].map((v) => (
           <g key={v} opacity={clamp01(axis * 3 - v / 5000)}>
             <line x1={AX.x0 + px(v)} y1={AX.y} x2={AX.x0 + px(v)} y2={AX.y + 6} stroke={colors.ink.axis} />
-            <Txt x={AX.x0 + px(v)} y={AX.y + 20} size={12} anchor="middle" fill={INK.muted}>
+            <Txt x={AX.x0 + px(v)} y={AX.y + 20} size={14} anchor="middle" fill={INK.muted}>
               {fmt(v)}
             </Txt>
           </g>
         ))}
-        <Txt x={AX.x1} y={AX.y + 38} size={12} anchor="end" fill={INK.muted} opacity={axis}>
+        <Txt x={AX.x1} y={AX.y + 38} size={14} anchor="end" fill={INK.muted} opacity={axis}>
           messages per subject (length is message count, not calendar span)
         </Txt>
       </g>
@@ -302,7 +308,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* the U10 tape — the persistent object */}
-        <Txt x={g.x0 - 12} y={g.y + 4} size={lerp(12, 13, hero)} anchor="end" mono fill={INK.muted} opacity={hero}>
+        <Txt x={g.x0 - 12} y={g.y + 4} size={lerp(14, 15, hero)} anchor="end" mono fill={INK.muted} opacity={hero}>
           U10
         </Txt>
         <rect
@@ -368,29 +374,29 @@ export function Render({ s }: { s: SceneState }) {
             )}
           </g>
         )}
-        <Txt x={560} y={292} size={12} fill={INK.muted} opacity={hero * (1 - on(b, 5)) * clamp01(reveal * 4)}>
+        <Txt x={560} y={346} size={14} fill={INK.muted} opacity={hero * (1 - on(b, 5)) * clamp01(reveal * 4)}>
           Each mark summarizes turns
         </Txt>
 
         {/* beat-0 plain words under the three marks */}
-        <Txt x={X_DISTANT} y={346} size={12} anchor="middle" fill={INK.distant} opacity={wordsO}>
+        <Txt x={X_DISTANT} y={346} size={14} anchor="middle" fill={INK.distant} opacity={wordsO}>
           earlier turn
         </Txt>
-        <Txt x={X_RECENT - 6} y={346} size={12} anchor="end" fill={INK.thread} opacity={wordsO}>
+        <Txt x={X_RECENT - 6} y={346} size={14} anchor="end" fill={INK.thread} opacity={wordsO}>
           recent thread
         </Txt>
-        <Txt x={X_PROBE + 2} y={346} size={12} fill={INK.text} opacity={wordsO}>
+        <Txt x={X_PROBE + 2} y={346} size={14} fill={INK.text} opacity={wordsO}>
           probe
         </Txt>
 
         {/* identifiers stay with their marks */}
-        <Txt x={X_DISTANT} y={346} size={12} anchor="middle" mono fill={INK.distant} opacity={idsO * (1 - liftD)}>
+        <Txt x={X_DISTANT} y={346} size={14} anchor="middle" mono fill={INK.distant} opacity={idsO * (1 - liftD)}>
           day7-50
         </Txt>
-        <Txt x={X_RECENT + 3} y={346} size={12} anchor="end" mono fill={INK.thread} opacity={idsO * (1 - liftR)}>
+        <Txt x={X_RECENT + 3} y={346} size={14} anchor="end" mono fill={INK.thread} opacity={idsO * (1 - liftR)}>
           day8-150
         </Txt>
-        <Txt x={X_PROBE + 2} y={346} size={12} mono fill={INK.text} opacity={idsO * (1 - extract)}>
+        <Txt x={X_PROBE + 2} y={346} size={14} mono fill={INK.text} opacity={idsO * (1 - extract)}>
           day8-151
         </Txt>
 
@@ -405,28 +411,28 @@ export function Render({ s }: { s: SceneState }) {
             opacity={0.8}
           />
         )}
-        <Txt x={1062} y={346} size={12} anchor="middle" fill={INK.muted} opacity={win(b, 5, 6) * clamp01(shadow * 2 - 1)}>
+        <Txt x={1062} y={346} size={14} anchor="middle" fill={INK.muted} opacity={win(b, 5, 6) * clamp01(shadow * 2 - 1)}>
           not given to the system
         </Txt>
         <Brace
           x0={HERO.x0}
           x1={X_PROBE - PITCH / 2 - 2}
-          y={288}
+          y={266}
           below={false}
           u={s.get(scene.braceU)}
           color={INK.thread}
           opacity={win(b, 5, 6)}
         />
-        <Txt x={(HERO.x0 + X_PROBE) / 2} y={262} size={13} anchor="middle" fill={INK.thread} opacity={win(b, 5, 6) * s.get(scene.braceU)}>
+        <Txt x={(HERO.x0 + X_PROBE) / 2} y={244} size={14} anchor="middle" fill={INK.thread} opacity={win(b, 5, 6) * s.get(scene.braceU)}>
           history strictly before probe
         </Txt>
 
         {/* slots: probe, recent thread, earlier evidence — tethered to their marks */}
-        <Tether x1={X_PROBE} y1={HERO.y + 15} x2={lerp(X_PROBE, SLOT.probe, extract)} y2={lerp(HERO.y + 15, SLOT_Y - 13, extract)} color={INK.text} opacity={0.5 * clamp01(extract * 4)} />
+        <Tether x1={X_PROBE} y1={HERO.y + HERO.h / 2} x2={lerp(X_PROBE, SLOT.probe, extract)} y2={lerp(HERO.y + HERO.h / 2, SLOT_Y - 13, extract)} color={INK.text} opacity={0.5 * clamp01(extract * 4)} />
         <Chip x={lerp(X_PROBE, SLOT.probe, extract)} y={lerp(HERO.y, SLOT_Y, extract)} text="U10 / probe_dayid: day8-151" color={INK.text} opacity={clamp01(extract * 3)} />
-        <Tether x1={X_RECENT} y1={HERO.y + 15} x2={lerp(X_RECENT, SLOT.recent, liftR)} y2={lerp(HERO.y + 15, SLOT_Y - 13, liftR)} color={INK.thread} opacity={0.5 * clamp01(liftR * 4)} />
+        <Tether x1={X_RECENT} y1={HERO.y + HERO.h / 2} x2={lerp(X_RECENT, SLOT.recent, liftR)} y2={lerp(HERO.y + HERO.h / 2, SLOT_Y - 13, liftR)} color={INK.thread} opacity={0.5 * clamp01(liftR * 4)} />
         <Chip x={lerp(X_RECENT, SLOT.recent, liftR)} y={lerp(HERO.y, SLOT_Y, liftR)} text="recent_context: day8-150" color={INK.thread} opacity={clamp01(liftR * 3)} />
-        <Tether x1={X_DISTANT} y1={HERO.y + 15} x2={X_DISTANT} y2={lerp(HERO.y + 15, SLOT_Y - 13, liftD)} color={INK.distant} opacity={0.5 * clamp01(liftD * 4)} />
+        <Tether x1={X_DISTANT} y1={HERO.y + HERO.h / 2} x2={X_DISTANT} y2={lerp(HERO.y + HERO.h / 2, SLOT_Y - 13, liftD)} color={INK.distant} opacity={0.5 * clamp01(liftD * 4)} />
         <Chip x={SLOT.distant} y={lerp(HERO.y, SLOT_Y, liftD)} text="episode_refs: day7-50" color={INK.distant} opacity={clamp01(liftD * 3)} />
 
         {/* four overlays fan above the base tape, then bind back into it */}
@@ -443,7 +449,7 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={HERO.x0 + 12} y={y + 5} size={14} mono fill={layer.color}>
                 {layer.key}
               </Txt>
-              <Txt x={HERO.x0 + HERO.len - 12} y={y + 4} size={12} anchor="end" fill={layer.color} opacity={0.85}>
+              <Txt x={HERO.x0 + HERO.len - 12} y={y + 4} size={14} anchor="end" fill={layer.color} opacity={0.85}>
                 {layer.note}
               </Txt>
               {layer.bins.map((j) =>
@@ -456,7 +462,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           );
         })}
-        <Txt x={HERO.x0} y={346 + 82} size={12} fill={INK.muted} opacity={win(b, 7, 8)}>
+        <Txt x={HERO.x0} y={346 + 82} size={14} fill={INK.muted} opacity={win(b, 7, 8)}>
           Overlay marks are schematic
         </Txt>
 
@@ -469,6 +475,18 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed overlays */}
+      {PREVIEW.map((p, i) => (
+        <rect
+          key={i}
+          x={p.right ? 1170 - p.w : 110}
+          y={132 + i * 22}
+          width={p.w}
+          height={12}
+          rx={6}
+          fill={INK.muted}
+          opacity={0.22 * (1 - on(b, 1))}
+        />
+      ))}
       <Txt x={640} y={232} size={18} anchor="middle" fill={INK.muted} opacity={1 - on(b, 1)}>
         U10 · one released conversation · 12,627 messages
       </Txt>

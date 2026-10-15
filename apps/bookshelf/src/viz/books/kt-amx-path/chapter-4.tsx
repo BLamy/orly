@@ -35,16 +35,23 @@ const KERNEL = [
   { key: 'Int8', val: 35, unit: 'TOPS', color: colors.POSITIVE },
 ] as const;
 
+// Two different models: the 91 is DeepSeek-V3 before the tile path, the 347 is
+// Qwen3 on a workstation with it. The panel subtitle says so; no ratio is drawn.
 const PREFILL = [
-  { key: 'before AMX', val: 91, color: colors.MUTED },
-  { key: 'AMX path', val: 347, color: colors.WARM },
+  { key: 'before AMX', val: 91, unit: 'tok/s', color: colors.MUTED },
+  { key: 'AMX path', val: 347, unit: 'tok/s', color: colors.WARM },
 ] as const;
 
 const BARS = { x: 260, y0: 480, w: 46, gap: 130, hMax: 260 } as const;
 
-// One fixed frame for the whole board: both panels, the chips and the
-// receipts stay inside the stage, so no beat has to pan and crop a label.
+// The board opens on one frame: both panels, the chips and the receipts fit
+// inside the stage. The beats then nudge toward the kernel and the prefill
+// panels, and pull back to the wide frame for the caveat. Every pan keeps the
+// subtitles and chips on the stage, so no label is cut off.
 const CAM_BOARD: CameraState = { x: 640, y: 340, k: 1.08 };
+const CAM_KERNEL: CameraState = { x: 600, y: 360, k: 1.3 };
+const CAM_PREFILL: CameraState = { x: 690, y: 360, k: 1.35 };
+const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
   tl: Timeline;
@@ -84,6 +91,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'First, the raw kernel: twenty one trillion floating point operations per second in sixteen bit, thirty five trillion integer operations in eight bit, on one server processor.',
   });
+  tl.tween(cam, CAM_KERNEL, { at: 6.7, dur: 1.4, ease: ease.move });
   tl.tween(kbar[0], 1, { at: 7.3, dur: 1.6, ease: ease.move });
   tl.tween(kbar[1], 1, { at: 8.3, dur: 1.6, ease: ease.move });
   tl.hold(13.0, 0.5);
@@ -103,6 +111,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'Second, what it means for a real model. Before the tile path, Deepseek V three prefill crawled at ninety one tokens per second. With it: three hundred forty seven on a workstation.',
   });
+  tl.tween(cam, CAM_PREFILL, { at: 19.7, dur: 1.4, ease: ease.move });
   tl.tween(pbar[0], 1, { at: 20.3, dur: 1.4, ease: ease.move });
   tl.tween(pbar[1], 1, { at: 21.7, dur: 1.8, ease: ease.move });
   tl.hold(26.0, 0.5);
@@ -113,6 +122,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And end to end — one server processor, one consumer graphics card — four hundred eighteen tokens per second, which the authors describe as close to multi machine, multi card setups.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 26.7, dur: 1.4, ease: ease.move });
   tl.tween(e2eU, 1, { at: 27.5, dur: 1.8, ease: ease.move });
   tl.hold(33.0, 0.5);
 
@@ -164,7 +174,7 @@ function Bar({ x, val, max, u, color, label, unit }: { x: number; val: number; m
       <text x={x + BARS.w / 2} y={BARS.y0 + 20} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
         {label}
       </text>
-      <text x={x + BARS.w / 2} y={BARS.y0 + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+      <text x={x + BARS.w / 2} y={BARS.y0 + 38} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
         reported
       </text>
     </g>
@@ -181,7 +191,8 @@ export function Render({ s }: { s: SceneState }) {
   const capU = s.get(scene.capU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.94;
+  // At the close the board fades to near nothing, so the closing panel sits on a clean background.
+  const dimAll = 1 - closeU * 0.97;
 
   return (
     <>
@@ -195,7 +206,10 @@ export function Render({ s }: { s: SceneState }) {
               kernel throughput · Xeon 4
             </text>
             <text x={820} y={150} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
-              DeepSeek-V3 prefill · tokens/s
+              prefill · tokens/s
+            </text>
+            <text x={820} y={172} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              91: DeepSeek-V3 before AMX · 347: Qwen3 on a workstation
             </text>
           </g>
 
@@ -212,13 +226,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* prefill bars */}
           {PREFILL.map((p, i) => (
-            <Bar key={p.key} x={700 + i * BARS.gap} val={p.val} max={400} u={pbar[i]} color={p.color} label={p.key} unit={''} />
+            <Bar key={p.key} x={700 + i * BARS.gap} val={p.val} max={400} u={pbar[i]} color={p.color} label={p.key} unit={p.unit} />
           ))}
-          {pbar[1] >= 1 && (
-            <text x={830 + BARS.w / 2} y={BARS.y0 - (347 / 400) * BARS.hMax - 30} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
-              3.8× prefill
-            </text>
-          )}
 
           {/* end-to-end chip */}
           <g opacity={e2eU}>
@@ -226,13 +235,13 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={556} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
               418 tokens/s end-to-end
             </text>
-            <text x={640} y={576} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <text x={640} y={576} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               DeepSeek-V3 · 1× Xeon 4 + 1× RTX 4090
             </text>
           </g>
 
           {/* the reported stamp */}
-          <g opacity={capU} transform="rotate(-8 1050 200)">
+          <g opacity={capU} transform="translate(0 34) rotate(-8 1050 200)">
             <rect x={975} y={178} width={150} height={44} rx={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.2} />
             <text x={1050} y={206} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontWeight={700} letterSpacing={2}>
               REPORTED
@@ -252,12 +261,12 @@ export function Render({ s }: { s: SceneState }) {
             ['the feed', 'aligned bricks,\ncache-resident blocks', colors.WARM],
           ].map(([head, sub, c], i) => (
             <g key={head}>
-              <rect x={338 + i * 210} y={288} width={190} height={100} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={433 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              <rect x={335 + i * 210} y={288} width={190} height={100} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
+              <text x={430 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={433 + i * 210} y={344 + k * 17} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text key={k} x={430 + i * 210} y={344 + k * 18} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {line}
                 </text>
               ))}

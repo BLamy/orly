@@ -1,12 +1,14 @@
 // Grounding: arXiv:2609.10715 Sections 2.3–2.5 and 3.1–3.5;
 // official source files src/ncp_olmo_eval/vllm_plugin/hlm.py,
 // src/ncp_olmo_eval/vllm_plugin/routes.py, and src/ncp_olmo_eval/vllm_plugin/state.py.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Vec } from '../../primitives';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const GROUP_COLORS = [colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE];
+// Annotation ink: brighter than MUTED so small captions stay legible on the dark stage.
+const NOTE = '#b9c6da';
 
 export function buildScene() {
   const tl = new Timeline();
@@ -79,7 +81,7 @@ function ConceptBead({ x, y, label, color, u = 1, glow = 0 }: { x: number; y: nu
   return <g transform={`translate(${x} ${y}) scale(${0.75 + 0.25 * u})`} opacity={u}>
     <circle r={29 + glow * 5} fill="#101827" stroke={color} strokeWidth={2.5 + glow * 2} />
     <circle r="17" fill={color} opacity={0.18 + glow * 0.18} />
-    <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{label}</text>
+    <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
   </g>;
 }
 
@@ -104,7 +106,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">one chunk behind</text>
 
       <g opacity={pipelineFade}>
-        <text x="232" y="112" textAnchor="middle" fill={colors.MUTED} fontSize="14">completed concept history</text>
+        <text x="232" y="112" textAnchor="middle" fill={NOTE} fontSize="14">completed concept history</text>
         {[0, 1, 2].map((i) => <ConceptBead key={i} x={122 + i * 110} y={166} label={`c${i + 1}`} color={GROUP_COLORS[i]} u={clamp01(history * 4 - i)} />)}
         <path d="M390 166 H510" stroke={colors.MUTED} strokeWidth="3" strokeDasharray="9 7" opacity={history} />
 
@@ -119,7 +121,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x="950" y="292" textAnchor="start" fill={colors.WARM} fontSize="14" opacity={predict}>weighted codeword prediction</text>
 
         <g opacity={expand}>
-          <text x="936" y="344" textAnchor="middle" fill={colors.MUTED} fontSize="14">repeat k = 4</text>
+          <text x="936" y="344" textAnchor="middle" fill={NOTE} fontSize="14">repeat k = 4</text>
           {[0, 1, 2, 3].map((i) => <ConceptBead key={i} x={828 + i * 72} y={384} label="ĉ4" color={colors.WARM} u={clamp01(expand * 5 - i)} />)}
         </g>
 
@@ -136,11 +138,11 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(shift * 14 - i);
             return <g key={i} transform={`translate(${x} 496)`} opacity={history}>
               <rect x="-29" y="-27" width="58" height="54" rx="14" fill="#111c2c" stroke={color} strokeWidth={u > 0 ? 3 : 1.5} />
-              <text y="-5" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`h${i + 1}`}</text>
-              <text y="15" textAnchor="middle" fill={u > 0 ? color : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{u > 0 ? `+ ${afterShift}` : ''}</text>
+              <text y="-4" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{`h${i + 1}`}</text>
+              <text y="16" textAnchor="middle" fill={u > 0 ? color : NOTE} fontSize="14" fontFamily={colors.font.mono}>{u > 0 ? `+ ${afterShift}` : ''}</text>
             </g>;
           })}
-          <text x="640" y="560" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={fuse}>shifted concept signal enters the Token Decoder · 16 layers</text>
+          <text x="640" y="560" textAnchor="middle" fill={NOTE} fontSize="14" opacity={fuse}>shifted concept signal enters the Token Decoder · 16 layers</text>
           <rect x="112" y="576" width={1056 * fuse} height="14" rx="7" fill={colors.POSITIVE} opacity={0.55 + 0.3 * Math.sin(pulse * Math.PI * 16) ** 2} />
         </g>
       </g>
@@ -158,10 +160,14 @@ export function Render({ s }: { s: SceneState }) {
           <rect x="928" y={192 + i * 38} width="210" height="20" rx="10" fill={colors.WARM} opacity={0.12 + 0.07 * i} />
         </g>)}
         {[0, 1, 2, 3].map((i) => <Vec key={`irc${i}`} x1={155} y1={230 + i * 62} x2={340} y2={264 + i * 62} color={colors.ACCENT} grow={clamp01(routes * 7 - i)} opacity={0.62} />)}
-        <Vec x1={352} y1={286} x2={536} y2={316} color={colors.SECONDARY} grow={clamp01(routes * 3 - 1)} label="CRC" labelSize={14} />
-        <Vec x1={352} y1={410} x2={928} y2={442} color={colors.POSITIVE} grow={clamp01(routes * 3 - 1.5)} label="CRC" labelSize={14} />
-        <Vec x1={744} y1={330} x2={928} y2={318} color={colors.WARM} grow={clamp01(routes * 3 - 2)} label="CRC" labelSize={14} />
-        <text x="640" y="552" textAnchor="middle" fill={colors.MUTED} fontSize="14">dynamic dense connections choose useful depths</text>
+        <Vec x1={352} y1={286} x2={536} y2={316} color={colors.SECONDARY} grow={clamp01(routes * 3 - 1)} />
+        <Vec x1={352} y1={410} x2={928} y2={442} color={colors.POSITIVE} grow={clamp01(routes * 3 - 1.5)} />
+        <Vec x1={744} y1={330} x2={928} y2={318} color={colors.WARM} grow={clamp01(routes * 3 - 2)} />
+        {/* CRC labels sit in the gaps between the boxes, clear of every arrow */}
+        <text x="444" y="280" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontStyle="italic" opacity={clamp01(routes * 3 - 1)}>CRC</text>
+        <text x="830" y="424" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontStyle="italic" opacity={clamp01(routes * 3 - 1.5)}>CRC</text>
+        <text x="836" y="304" textAnchor="middle" fill={colors.WARM} fontSize="14" fontStyle="italic" opacity={clamp01(routes * 3 - 2)}>CRC</text>
+        <text x="640" y="552" textAnchor="middle" fill={NOTE} fontSize="14">dynamic dense connections choose useful depths</text>
       </g>
 
       <g opacity={clamp01(losses) * lossFade}>
@@ -174,10 +180,17 @@ export function Render({ s }: { s: SceneState }) {
         ].map((item, i) => <g key={item.label} opacity={clamp01(losses * 4 - i)}>
           <circle cx={item.x} cy="330" r="82" fill="#111c2c" stroke={item.color} strokeWidth="4" />
           <text x={item.x} y="323" textAnchor="middle" fill={item.color} fontSize="21" fontFamily={colors.font.mono}>{item.label}</text>
-          <text x={item.x} y="352" textAnchor="middle" fill={colors.MUTED} fontSize="13">{item.sub}</text>
-          <Vec x1={item.x} y1={416} x2={640} y2={482} color={item.color} grow={clamp01(losses * 2 - 0.8)} opacity={0.72} />
+          <text x={item.x} y="352" textAnchor="middle" fill={NOTE} fontSize="14">{item.sub}</text>
+          <Vec x1={item.x} y1={416} x2={640} y2={458} color={item.color} grow={clamp01(losses * 2 - 0.8)} opacity={0.72} />
         </g>)}
-        <MathLabel tex={'L_{total}=L_{NTP}+\\alpha L_{NCP}+\\beta L_{VQ}'} x={640} y={498} fontSize={25} opacity={clamp01(losses - 0.8)} />
+        {/* Plain SVG text with sub-scripts: no KaTeX, so there is no MathML fallback to double up */}
+        <text x="640" y="500" textAnchor="middle" fill={colors.TEXT} fontSize="25" opacity={clamp01(losses - 0.8)}>
+          <tspan fontStyle="italic">L</tspan><tspan dy="6" fontSize="17">total</tspan>
+          <tspan dy="-6"> = </tspan>
+          <tspan fontStyle="italic">L</tspan><tspan dy="6" fontSize="17">NTP</tspan>
+          <tspan dy="-6"> + α</tspan><tspan fontStyle="italic">L</tspan><tspan dy="6" fontSize="17">NCP</tspan>
+          <tspan dy="-6"> + β</tspan><tspan fontStyle="italic">L</tspan><tspan dy="6" fontSize="17">VQ</tspan>
+        </text>
       </g>
 
       <g opacity={causal}>
@@ -186,11 +199,11 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(causal * 14 - i);
           return <g key={i} transform={`translate(${164 + i * 86} 326)`} opacity={u}>
             <circle r="27" fill="#101827" stroke={i % 4 === 0 ? colors.WARM : colors.POSITIVE} strokeWidth="3" />
-            <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`x̂${i + 2}`}</text>
+            <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{`x̂${i + 2}`}</text>
             {i < 11 && <path d="M30 0 H58" stroke={colors.POSITIVE} strokeWidth="3" />}
           </g>;
         })}
-        <text x="640" y="405" textAnchor="middle" fill={colors.POSITIVE} fontSize="15">canonical autoregressive token output remains intact</text>
+        <text x="640" y="405" textAnchor="middle" fill={colors.POSITIVE} fontSize="16">canonical autoregressive token output remains intact</text>
       </g>
     </g>
 
@@ -199,7 +212,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="220" textAnchor="middle" fill={colors.TEXT} fontSize="46" fontWeight="850">one chunk behind</text>
       {['predict', 'repeat ×4', 'shift by 4', 'fuse'].map((label, i) => <g key={label} transform={`translate(${300 + i * 226} 380)`}>
         <circle r="48" fill="#101827" stroke={GROUP_COLORS[i]} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="13">{label}</text>
+        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
       </g>)}
       <text x="640" y="492" textAnchor="middle" fill={colors.POSITIVE} fontSize="17">the delay preserves causality</text>
     </g>

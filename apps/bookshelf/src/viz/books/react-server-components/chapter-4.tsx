@@ -41,7 +41,7 @@ const TAPE = { x: 44, y: 128, w: 296, h: 332 } as const;
 const tapeRowY = (i: number): number => TAPE.y + 40 + i * 41;
 const CELL = { x0: 384, y: 142, w: 108, h: 82, dx: 120 } as const;
 const cellX = (i: number): number => CELL.x0 + i * CELL.dx;
-const BROWSER = { x: 452, y: 306, w: 480, h: 296 } as const;
+const BROWSER = { x: 384, y: 306, w: 548, h: 296 } as const;
 const DL = { x: 1006, y: 306, w: 218 } as const;
 
 const TAPE_ROWS = [
@@ -200,6 +200,10 @@ interface CellView {
   dash: boolean;
 }
 
+// text colour for a cell's index and state: pending cells read as muted ink,
+// not as their faint dashed outline
+const inkFor = (c: CellView): string => (c.label === 'pending' ? colors.MUTED : c.stroke);
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const tapeU = s.get(scene.tapeU);
@@ -245,7 +249,7 @@ export function Render({ s }: { s: SceneState }) {
         ? { stroke: colors.POSITIVE, label: "'fulfilled'", filled: true, dash: false }
         : dlU >= 1
           ? { stroke: colors.SECONDARY, label: 'resolved_module', filled: false, dash: false }
-          : { stroke: colors.SECONDARY, label: 'blocked — loading', filled: false, dash: true }
+          : { stroke: colors.SECONDARY, label: 'blocked', filled: false, dash: true }
       : pendingCell,
     // cell 3 — text
     landed[3] >= 1 ? { stroke: colors.POSITIVE, label: "'fulfilled'", filled: true, dash: false } : pendingCell,
@@ -267,13 +271,17 @@ export function Render({ s }: { s: SceneState }) {
           <text x={TAPE.x + 14} y={TAPE.y + 22} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             the tape, arriving
           </text>
+          {/* before the first row lands, the tape is simply waiting */}
+          <text x={TAPE.x + 20} y={TAPE.y + 60} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(1 - rowsAU * 4)}>
+            waiting for the first row…
+          </text>
           {TAPE_ROWS.map((r, i) => {
             const u = landed[i];
             if (u <= 0) return null;
             return (
               <g key={r.id} opacity={clamp01(u * 1.4)}>
                 <rect x={TAPE.x + 10} y={tapeRowY(i) - 14} width={TAPE.w - 20} height={30} rx={6} fill={colors.BG} stroke={i === 6 && errU > 0.5 ? colors.NEGATIVE : colors.GRID} opacity={0.9} />
-                <text x={TAPE.x + 20} y={tapeRowY(i) + 5} fill={i === 6 ? colors.NEGATIVE : colors.TEXT} fontSize={11} fontFamily={MONO}>
+                <text x={TAPE.x + 20} y={tapeRowY(i) + 5} fill={i === 6 ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily={MONO}>
                   {r.txt.slice(0, Math.round(r.txt.length * clamp01(u * 1.2)))}
                 </text>
               </g>
@@ -286,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={cellX(0)} y={CELL.y - 22} fill={colors.MUTED} fontSize={12}>
             the chunk table — one promise-like cell per row id
           </text>
-          <text x={cellX(6) + CELL.w} y={CELL.y - 22} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={cellX(6) + CELL.w} y={CELL.y - 22} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             ReactFlightClient.js
           </text>
           {cells.map((c, i) => {
@@ -306,27 +314,27 @@ export function Render({ s }: { s: SceneState }) {
                   strokeWidth={c.filled ? 1.8 : 1.2}
                   strokeDasharray={c.dash ? '5 4' : undefined}
                 />
-                <text x={x + CELL.w / 2} y={CELL.y + 34} textAnchor="middle" fill={c.stroke} fontSize={20} fontFamily={MONO} fontWeight={700}>
+                <text x={x + CELL.w / 2} y={CELL.y + 34} textAnchor="middle" fill={inkFor(c)} fontSize={20} fontFamily={MONO} fontWeight={700}>
                   {i}
                 </text>
-                <text x={x + CELL.w / 2} y={CELL.y + 58} textAnchor="middle" fill={c.stroke} fontSize={12}>
+                <text x={x + CELL.w / 2} y={CELL.y + 58} textAnchor="middle" fill={inkFor(c)} fontSize={12}>
                   {c.label}
                 </text>
               </g>
             );
           })}
-          {/* legend — fades back while the recap threads run through it */}
-          <g opacity={clamp01(tableU * 1.2) * 0.95 * (1 - 0.7 * clamp01(linkU * 2))}>
+          {/* legend — fades out while the recap threads run through it */}
+          <g opacity={clamp01(tableU * 1.2) * 0.95 * (1 - 0.88 * clamp01(linkU * 2))}>
             {LEGEND.map((l, i) => (
               <g key={l.t}>
-                <circle cx={402 + i * 168} cy={CELL.y + CELL.h + 26} r={4} fill={l.c} />
-                <text x={412 + i * 168} y={CELL.y + CELL.h + 31} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <circle cx={cellX(0) + 8 + i * 168} cy={CELL.y + CELL.h + 26} r={4} fill={l.c} />
+                <text x={cellX(0) + 18 + i * 168} y={CELL.y + CELL.h + 31} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {l.t}
                 </text>
               </g>
             ))}
           </g>
-          <text x={cellX(0)} y={CELL.y + CELL.h + 52} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={tableU * 0.9 * (1 - 0.7 * clamp01(linkU * 2))}>
+          <text x={cellX(0)} y={CELL.y + CELL.h + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={tableU * 0.9 * (1 - 0.88 * clamp01(linkU * 2))}>
             ReactPromise — "We subclass Promise.prototype so that we get other methods like .catch"
           </text>
         </g>
@@ -338,8 +346,12 @@ export function Render({ s }: { s: SceneState }) {
           {[0, 1, 2].map((i) => (
             <circle key={i} cx={BROWSER.x + 18 + i * 16} cy={BROWSER.y + 15} r={4.5} fill={colors.GRID} />
           ))}
-          <text x={BROWSER.x + BROWSER.w / 2} y={BROWSER.y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+          <text x={BROWSER.x + 34} y={BROWSER.y + 282} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             the page, assembling
+          </text>
+          {/* React has the first bytes but no page yet */}
+          <text x={BROWSER.x + BROWSER.w / 2} y={BROWSER.y + 150} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(1 - readU * 4)}>
+            React is building…
           </text>
 
           {/* h1 — appears when root is read */}
@@ -400,21 +412,6 @@ export function Render({ s }: { s: SceneState }) {
               );
             })()}
 
-          {/* error toast */}
-          {errU > 0.5 && (
-            <g opacity={clamp01((errU - 0.5) / 0.5)}>
-              <rect x={BROWSER.x + 244} y={BROWSER.y + 110} width={200} height={64} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-              <text x={BROWSER.x + 258} y={BROWSER.y + 129} fill={colors.NEGATIVE} fontSize={12} fontWeight={650}>
-                error boundary caught it
-              </text>
-              <text x={BROWSER.x + 258} y={BROWSER.y + 147} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-                digest: "1f8a"
-              </text>
-              <text x={BROWSER.x + 258} y={BROWSER.y + 163} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-                see server logs
-              </text>
-            </g>
-          )}
         </g>
 
         {/* download bar */}
@@ -425,7 +422,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             <rect x={DL.x} y={DL.y + 14} width={DL.w} height={12} rx={6} fill={colors.BG} stroke={colors.GRID} />
             <rect x={DL.x + 2} y={DL.y + 16} width={(DL.w - 4) * dlU} height={8} rx={4} fill={colors.SECONDARY} opacity={0.9} />
-            <text x={DL.x} y={DL.y + 46} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={DL.x} y={DL.y + 46} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {dlU >= 1 ? 'loaded — requireModule on first read' : 'preloadModule — fetching early'}
             </text>
           </g>
@@ -446,9 +443,9 @@ export function Render({ s }: { s: SceneState }) {
         {/* recap threads: row → cell → page */}
         {linkU > 0.02 &&
           ([
-            { row: 1, cell: 0, tx: BROWSER.x + 70, ty: BROWSER.y + 66 },
-            { row: 0, cell: 2, tx: BROWSER.x + 129, ty: BROWSER.y + 131 },
-            { row: 3, cell: 3, tx: BROWSER.x + 120, ty: BROWSER.y + 238 },
+            { row: 1, cell: 0, tx: BROWSER.x + 150, ty: BROWSER.y + 66 }, // beside the heading
+            { row: 0, cell: 2, tx: BROWSER.x + 180, ty: BROWSER.y + 104 }, // top edge of the counter
+            { row: 3, cell: 3, tx: BROWSER.x + 300, ty: BROWSER.y + 190 }, // top edge of the section
           ] as const).map((l, i) => {
             const u = win(linkU, 3, i, 1.8);
             if (u <= 0) return null;
@@ -464,6 +461,22 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
+
+        {/* error toast — drawn last so the recap thread passes under it */}
+        {errU > 0.5 && (
+          <g opacity={clamp01((errU - 0.5) / 0.5)}>
+            <rect x={BROWSER.x + 244} y={BROWSER.y + 110} width={220} height={70} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+            <text x={BROWSER.x + 258} y={BROWSER.y + 130} fill={colors.NEGATIVE} fontSize={13} fontWeight={650}>
+              error boundary caught it
+            </text>
+            <text x={BROWSER.x + 258} y={BROWSER.y + 150} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              digest: "1f8a"
+            </text>
+            <text x={BROWSER.x + 258} y={BROWSER.y + 168} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              see server logs
+            </text>
+          </g>
+        )}
 
         {/* closing line */}
         {closeU > 0.02 && (

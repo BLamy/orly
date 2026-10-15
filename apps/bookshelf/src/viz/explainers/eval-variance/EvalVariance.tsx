@@ -15,6 +15,7 @@ import {
   HY0,
   P_B_WORSE,
   P_B_WORSE_BIG,
+  Q_CORRECT,
   SIGMA_BIG,
   SIGMA_SMALL,
   buildScene,
@@ -103,24 +104,45 @@ function Frame({ s }: { s: SceneState }) {
           {[60, 65, 70, 75, 80].map((p) => (
             <g key={p} opacity={markU}>
               <line x1={hx(p)} y1={HY0} x2={hx(p)} y2={HY0 + 6} stroke={colors.MUTED} />
-              <text x={hx(p)} y={HY0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={hx(p)} y={HY0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 {p}
               </text>
             </g>
           ))}
-          <text x={hx(HB_MAX)} y={HY0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13} opacity={markU}>
+          <text x={hx(HB_MAX)} y={HY0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={markU}>
             benchmark score →
           </text>
+
+          {/* the hundred questions: one coin flip each, handing off to the histogram */}
+          <g opacity={markU * (1 - histAU)}>
+            {Q_CORRECT.map((ok, i) => (
+              <rect
+                key={i}
+                x={hx(56) + i * 9.5}
+                y={HY0 + 56}
+                width={7.5}
+                height={7.5}
+                rx={1.5}
+                fill={ok ? colors.MUTED : 'none'}
+                stroke={colors.MUTED}
+                strokeWidth={1}
+                opacity={ok ? 0.85 : 0.5}
+              />
+            ))}
+            <text x={640} y={HY0 + 84} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              100 questions, one coin flip each
+            </text>
+          </g>
 
           {/* headline markers */}
           {markU > 0 && (
             <g opacity={markU}>
               <line x1={hx(70)} y1={HY0 - HH - 26} x2={hx(70)} y2={HY0} stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="6 6" opacity={0.8} />
-              <text x={hx(70) - 8} y={HY0 - HH - 34} textAnchor="end" fill={colors.ACCENT} fontSize={14.5}>
+              <text x={hx(70) - 8} y={HY0 - HH - 34} textAnchor="end" fill={colors.ACCENT} fontSize={15}>
                 old model: 70
               </text>
               <line x1={hx(71)} y1={HY0 - HH - 26} x2={hx(71)} y2={HY0} stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 6" opacity={0.8} />
-              <text x={hx(71) + 8} y={HY0 - HH - 34} fill={colors.WARM} fontSize={14.5}>
+              <text x={hx(71) + 8} y={HY0 - HH - 34} fill={colors.WARM} fontSize={15}>
                 new model: 71
               </text>
             </g>
@@ -133,15 +155,17 @@ function Frame({ s }: { s: SceneState }) {
           {histBU > 0 && (
             <Hist small={HIST_B} big={HIST_B_BIG} maxSmall={HIST_MAX_SMALL} maxBig={HIST_MAX_BIG} bigW={bigW} reveal={histBU} color={colors.WARM} shift={0} />
           )}
-          {histAU > 0.5 && (
-            <text x={hx(HB_MIN) + 4} y={HY0 - HH - 4} fill={colors.MUTED} fontSize={13.5}>
-              {bigW > 0.5
-                ? '240 simulated evals each, 10,000 questions'
-                : '2000 simulated evals each, 100 questions'}
-            </text>
-          )}
         </g>
       </Camera>
+
+      {/* sample-size caption, screen-fixed so no camera move can push it off stage */}
+      {histAU > 0.5 && (
+        <text x={72} y={64} fill={colors.MUTED} fontSize={15} opacity={dimU}>
+          {bigW > 0.5
+            ? '240 simulated evals each, 10,000 questions'
+            : '2000 simulated evals each, 100 questions'}
+        </text>
+      )}
 
       {/* screen-fixed math */}
       <MathLabel
@@ -164,7 +188,7 @@ function Frame({ s }: { s: SceneState }) {
             {`score noise σ ≈ ${sigma.toFixed(sigma < 1 ? 2 : 1)} points`}
           </text>
           <text x={94} y={184} fill={pWorse > 0.1 ? colors.NEGATIVE : colors.POSITIVE} fontSize={15} fontWeight={600}>
-            {`better model loses ${(pWorse * 100).toFixed(pWorse > 0.1 ? 0 : 1)}% of reruns`}
+            {`better model loses ${(pWorse * 100).toFixed(pWorse > 0.1 ? 0 : 1)}% of ${bigW > 0.5 ? 240 : 2000} reruns`}
           </text>
         </g>
       )}
@@ -176,14 +200,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             A One-Point Gain
           </text>
-          <MathLabel
-            tex={'+1 \\text{ pt at } n{=}100:\\;\\; P(\\text{better loses rerun}) = 0.47'}
-            x={640}
-            y={340}
-            fontSize={20}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontWeight={600}>
+            {`+1 pt at n = 100:   P(better model loses a rerun) = ${P_B_WORSE.toFixed(2)}`}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             a coin flip wearing a lab coat — until you buy enough questions
           </text>

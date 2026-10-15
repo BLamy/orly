@@ -212,7 +212,7 @@ function CellField({ u, wide, dim, cellU }: { u: number; wide: number; dim: numb
           <g key={i} transform={`translate(${c.x}, ${c.y})`} opacity={p * 0.9}>
             <circle r={c.r * p} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.8} />
             {showLabel(c) && (
-              <text y={-c.r - 6} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text y={-c.r - 6} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 {c.label}
               </text>
             )}
@@ -282,8 +282,8 @@ function CellRoom({
           />
         )}
         {iso > 0.5 && (
-          <text x={CELL.x + CELL.w - 8} y={CELL.y - 24} textAnchor="end" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO} opacity={(iso - 0.5) * 2}>
-            one isolate per cell · env.NS.get(id) · js.rs
+          <text x={CELL.x + CELL.w - 8} y={CELL.y - 24} textAnchor="end" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO} opacity={(iso - 0.5) * 2}>
+            isolate = its own sandboxed JS runtime · one per cell
           </text>
         )}
         <text x={CELL.x + 22} y={CELL.y + 32} fill={colors.TEXT} fontSize={16} fontWeight={700}>
@@ -336,8 +336,8 @@ function CellRoom({
               fill={colors.POSITIVE}
               opacity={0.95}
             />
-            {store > 0.35 && (
-              <text x={LANE.x + LANE.w} y={LANE.y - 20} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={(store - 0.35) * 2}>
+            {store > 0.2 && (
+              <text x={LANE.x + LANE.w} y={LANE.y - 20} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={Math.min(1, (store - 0.2) * 3)}>
                 storage op · synchronous · nothing interleaves
               </text>
             )}
@@ -350,13 +350,14 @@ function CellRoom({
 
 function RequestPill({ label, color, u, slot, started }: { label: string; color: string; u: number; slot: number; started: boolean }) {
   if (u <= 0 || started) return null;
-  const x0 = 250;
-  const x1 = LANE.x - 46 - slot * 78;
+  // Queued pills wait just left of the cell's border, A nearest the lane, B behind it.
+  const x0 = 240;
+  const x1 = CELL.x - 56 - slot * 82;
   const x = x0 + (x1 - x0) * ease.move(u);
   return (
     <g transform={`translate(${x}, ${LANE.y})`} opacity={Math.min(1, u * 4)}>
       <rect x={-32} y={-14} width={64} height={28} rx={14} fill={colors.PANEL} stroke={color} strokeWidth={1.5} />
-      <text y={4} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
+      <text y={5} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
         {label}
       </text>
     </g>
@@ -381,6 +382,9 @@ function DbCard({ u, rows, sync, dim }: { u: number; rows: number; sync: number;
           </text>
         );
       })}
+      <text x={DB.w - 16} y={24} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.9}>
+        no other cell can touch it
+      </text>
       {sync > 0 && (
         <g opacity={sync}>
           <rect x={DB.w - 262} y={40} width={246} height={58} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
@@ -409,7 +413,7 @@ function ClosingCard({ u }: { u: number }) {
         requests interleave only at await · storage never does
       </text>
       <text y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
-        each cell: its own isolate + its own SQLite file
+        each cell: its own isolate (sandboxed JS) + its own SQLite file
       </text>
       <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         next: how a fleet decides who runs it
@@ -431,7 +435,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         {bg > 0 && (
           <g opacity={bg}>
-            <CellField u={s.get(scene.fieldU) * (1 - clamp01(cellU) * 0.88 * (1 - wide))} wide={wide} dim={dim} cellU={cellU} />
+            <CellField u={s.get(scene.fieldU) * (1 - clamp01(cellU) * (1 - wide))} wide={wide} dim={dim} cellU={cellU} />
             <CellRoom
               u={cellU}
               queue={s.get(scene.queueU)}
@@ -447,6 +451,12 @@ export function Render({ s }: { s: SceneState }) {
               sync={s.get(scene.syncU)}
               dim={Math.max(dim, s.get(scene.wideU) * 0.7)}
             />
+          </g>
+        )}
+        {/* the field returns faintly behind the closing card: many cells, one panel */}
+        {s.get(scene.closeU) > 0 && (
+          <g opacity={clamp01(s.get(scene.closeU))}>
+            <CellField u={s.get(scene.fieldU)} wide={0} dim={1} cellU={1} />
           </g>
         )}
         <ClosingCard u={s.get(scene.closeU)} />

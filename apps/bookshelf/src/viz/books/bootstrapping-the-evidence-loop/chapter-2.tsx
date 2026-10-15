@@ -39,8 +39,8 @@ const CONTROL = { x: 935, y: 155 };
 const FRPS = { x: 750, y: 300 };
 const NLB = { x: 1080, y: 300 };
 const BROWSER = { x: 1080, y: 440 };
-const ORCH = { x: 870, y: 440 };
-const PROJECT = { x: 470, y: 575 };
+const ORCH = { x: 850, y: 440 };
+const PROJECT = { x: 440, y: 575 };
 const MCP = { x: 820, y: 575 };
 const AGENT = { x: 1080, y: 575 };
 
@@ -53,8 +53,8 @@ const CAM_MCP: CameraState = { x: 720, y: 380, k: 0.98 };
 const CAM_WIDE: CameraState = { x: 640, y: 385, k: 0.95 };
 
 const DATA_PATH = [
-  { x: BROWSER.x - 92, y: BROWSER.y },
-  { x: FRPS.x + 92, y: FRPS.y },
+  { x: BROWSER.x - 92, y: BROWSER.y - 10 },
+  { x: FRPS.x + 105, y: FRPS.y + 26 },
   { x: FRPC.x + 92, y: FRPC.y },
   { x: PROXY.x - 92, y: PROXY.y },
   { x: APP.x + 75, y: APP.y },
@@ -264,15 +264,18 @@ function OnboardingCard({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   return (
     <g opacity={uu * (1 - 0.78 * dim)}>
-      <rect x={480} y={28} width={480} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-      <text x={500} y={52} fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={700}>
+      <rect x={520} y={16} width={420} height={74} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+      <text x={540} y={39} fill={colors.WARM} fontSize={14} fontFamily={MONO} fontWeight={700}>
         WEB ONBOARDING
       </text>
-      <text x={500} y={70} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-        POST /api/v1/projects · use_reverse_proxy: true · start_paused
+      <text x={540} y={58} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+        POST /api/v1/projects
+      </text>
+      <text x={540} y={77} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+        use_reverse_proxy: true · start_paused
       </text>
       <path
-        d={`M 655 82 C 655 105, ${ONBOARD.x} 112, ${ONBOARD.x} ${115 + 40 * uu}`}
+        d={`M 655 90 L 655 ${90 + (ONBOARD.y - 25 - 90) * uu}`}
         fill="none"
         stroke={colors.WARM}
         strokeWidth={1.6}
@@ -286,9 +289,9 @@ function CommandChip({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(86, ${76 + (1 - uu) * 12})`} opacity={uu * (1 - 0.8 * dim)}>
-      <rect width={362} height={44} rx={11} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={18} y={27} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+    <g transform={`translate(86, ${60 + (1 - uu) * 12})`} opacity={uu * (1 - 0.8 * dim)}>
+      <rect width={406} height={44} rx={11} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+      <text x={18} y={27} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         npx replayqa proxy --project &lt;qa-project-id&gt;
       </text>
     </g>
@@ -337,13 +340,13 @@ function ToolFan({ u, dim }: { u: number; dim: number }) {
         const p = clamp01(uu * 4.5 - i * 0.9);
         if (p <= 0) return null;
         // a row of tool chips under the MCP server, clear of the readiness rail
-        const x = MCP.x + (i - 1.5) * 150;
+        const x = MCP.x + (i - 1.5) * 168;
         const y = MCP.y + 44 + (1 - p) * 10;
-        const w = tool.length * 7.4 + 20;
+        const w = tool.length * 8.4 + 22;
         return (
           <g key={tool} transform={`translate(${x}, ${y})`} opacity={p}>
             <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+            <text y={5} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               {tool}
             </text>
           </g>
@@ -416,7 +419,7 @@ function ReadinessRail({
           <g key={stage.label} transform={`translate(${x}, 0)`}>
             <circle r={11} fill={u > 0.82 ? stage.color : colors.BG} stroke={u > 0.82 ? stage.color : colors.MUTED} strokeWidth={2} />
             {u > 0.82 && <circle r={4} fill={colors.BG} />}
-            <text y={28} textAnchor="middle" fill={u > 0.82 ? stage.color : colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text y={30} textAnchor="middle" fill={u > 0.82 ? stage.color : colors.TEXT} fontSize={14} fontFamily={MONO} opacity={u > 0.82 ? 1 : 0.6}>
               {stage.label}
             </text>
           </g>
@@ -424,8 +427,8 @@ function ReadinessRail({
       })}
       {disconnect > 0.2 && (
         <g transform="translate(318, -22)" opacity={clamp01(disconnect)}>
-          <rect x={-98} y={-13} width={196} height={26} rx={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+          <rect x={-116} y={-13} width={232} height={26} rx={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             SUSPENDED · frpc offline
           </text>
         </g>
@@ -433,7 +436,7 @@ function ReadinessRail({
       {resume > 0.2 && (
         <g transform="translate(598, -22)" opacity={clamp01(resume)}>
           <rect x={-58} y={-13} width={116} height={26} rx={13} fill={colors.BG} stroke={colors.TEAL} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
+          <text y={5} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontFamily={MONO}>
             RESUMED
           </text>
         </g>
@@ -447,13 +450,13 @@ function RecoveryCard({ disconnect, resume, dim }: { disconnect: number; resume:
   if (u <= 0) return null;
   const recovering = resume > disconnect;
   return (
-    <g transform={`translate(1080, ${54 + (1 - u) * 8})`} opacity={u * (1 - 0.72 * dim)}>
-      <rect x={-150} y={-20} width={300} height={40} rx={10} fill={colors.PANEL} stroke={recovering ? colors.TEAL : colors.NEGATIVE} strokeWidth={1.4} />
-      <text y={-3} textAnchor="middle" fill={recovering ? colors.TEAL : colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
+    <g transform={`translate(1100, ${54 + (1 - u) * 8})`} opacity={u * (1 - 0.72 * dim)}>
+      <rect x={-150} y={-24} width={300} height={50} rx={10} fill={colors.PANEL} stroke={recovering ? colors.TEAL : colors.NEGATIVE} strokeWidth={1.4} />
+      <text y={-4} textAnchor="middle" fill={recovering ? colors.TEAL : colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
         {recovering ? 'frpc online · resume run' : 'frpc offline · suspend run'}
       </text>
-      <text y={13} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-        same session row · evidence preserved
+      <text y={14} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+        same session · evidence kept
       </text>
     </g>
   );
@@ -468,7 +471,7 @@ function WarningCard({ u, dim }: { u: number; dim: number }) {
       <text y={-7} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={750}>
         dead endpoint ≠ a transient wait
       </text>
-      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text y={18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
         timeout → reap host → reprovision cleanly
       </text>
     </g>
@@ -493,8 +496,8 @@ function ClosingCard({ u }: { u: number }) {
       <text x={-264} y={63} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
         agent → LoopQA MCP → project evidence catalog
       </text>
-      <text y={91} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-        NLB control + DNS gate · suspend/reconnect · correlation by project identifier
+      <text y={91} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+        three gates: cloud ready · local target · frpc online
       </text>
     </g>
   );
@@ -504,9 +507,9 @@ function OutboundNote({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform="translate(180, 470)" opacity={uu * (1 - 0.7 * dim)}>
-      <rect x={-125} y={-14} width={250} height={28} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-      <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+    <g transform="translate(220, 470)" opacity={uu * (1 - 0.7 * dim)}>
+      <rect x={-148} y={-14} width={296} height={28} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+      <text y={5} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         outbound only · nothing dials in
       </text>
     </g>
@@ -528,8 +531,12 @@ export function Render({ s }: { s: SceneState }) {
   const resume = clamp01(s.get(scene.resumeU));
   const mcp = clamp01(s.get(scene.mcpU));
   const project = clamp01(s.get(scene.projectU));
+  const warning = clamp01(s.get(scene.warningU));
   const localDim = clamp01((1 - target) * 0.65 + disconnect * 0.55);
-  const upperDim = clamp01(mcp * 0.9);
+  // the AWS / laptop rail stays bright while the MCP rail runs its beat; it steps
+  // back during the disconnect and resume beats, where the browser path is the subject
+  const upperDim = clamp01(warning * 0.6);
+  const lowerDim = clamp01(mcp * Math.max(disconnect, resume) * 0.85);
   const localLayerDim = Math.max(dim, localDim, upperDim);
   const awsLayerDim = Math.max(dim, upperDim, disconnect * 0.35);
   const projectStageU = project * clamp01(1 - health + mcp + resume * 0.2);
@@ -560,10 +567,8 @@ export function Render({ s }: { s: SceneState }) {
           <Connection
             from={{ x: ONBOARD.x + 100, y: ONBOARD.y }}
             to={{ x: CONTROL.x - 100, y: CONTROL.y }}
-            u={s.get(scene.onboardU)}
+            u={s.get(scene.onboardU) * aws}
             color={colors.WARM}
-            label="provision session"
-            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
@@ -572,7 +577,7 @@ export function Render({ s }: { s: SceneState }) {
             u={aws}
             color={colors.SECONDARY}
             label="gateway API"
-            labelSize={12}
+            labelSize={14}
             dim={awsLayerDim}
           />
           <Connection
@@ -581,7 +586,7 @@ export function Render({ s }: { s: SceneState }) {
             u={aws * dns}
             color={colors.WARM}
             label="allocate NLB hostname"
-            labelSize={12}
+            labelSize={14}
             dim={awsLayerDim}
           />
 
@@ -592,8 +597,8 @@ export function Render({ s }: { s: SceneState }) {
             flow={controlFlow * 5}
             color={colors.ACCENT}
             dashed
-            label="outbound control · NLB :7000"
-            labelSize={12}
+            label="outbound control"
+            labelSize={14}
             dim={Math.max(localLayerDim, awsLayerDim)}
           />
           <Connection
@@ -603,17 +608,15 @@ export function Render({ s }: { s: SceneState }) {
             flow={controlFlow * 4}
             color={colors.ACCENT}
             dashed
-            label="control to frps pod"
-            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
-            from={{ x: BROWSER.x - 95, y: BROWSER.y }}
-            to={{ x: FRPS.x + 105, y: FRPS.y }}
+            from={{ x: BROWSER.x - 95, y: BROWSER.y - 10 }}
+            to={{ x: FRPS.x + 105, y: FRPS.y + 26 }}
             u={clamp01(data * 3)}
             color={colors.TEAL}
-            label="ClusterIP data · private"
-            labelSize={12}
+            label="private data"
+            labelSize={14}
             dim={awsLayerDim}
           />
           <Connection
@@ -621,8 +624,8 @@ export function Render({ s }: { s: SceneState }) {
             to={{ x: FRPC.x + 94, y: FRPC.y }}
             u={clamp01(data * 3 - 0.8) * (1 - localDim)}
             color={colors.TEAL}
-            label="frp data · tunnel"
-            labelSize={12}
+            label="data tunnel"
+            labelSize={14}
             dim={Math.max(localLayerDim, awsLayerDim)}
           />
           <Connection
@@ -631,7 +634,7 @@ export function Render({ s }: { s: SceneState }) {
             u={clamp01(data * 3 - 1.4) * (1 - localDim)}
             color={colors.TEAL}
             label="local"
-            labelSize={12}
+            labelSize={14}
             dim={localLayerDim}
           />
           <Connection
@@ -639,8 +642,6 @@ export function Render({ s }: { s: SceneState }) {
             to={{ x: APP.x + 75, y: APP.y }}
             u={clamp01(data * 3 - 2) * (1 - localDim)}
             color={colors.TEAL}
-            label="allowlist"
-            labelSize={12}
             dim={localLayerDim}
           />
           <DataPacket u={data * (1 - localDim)} dim={Math.max(localLayerDim, awsLayerDim)} />
@@ -652,18 +653,16 @@ export function Render({ s }: { s: SceneState }) {
             flow={health * 4}
             color={colors.WARM}
             dashed
-            label="admin · frps health"
-            labelSize={12}
             dim={awsLayerDim}
           />
         </g>
 
         <CommandChip u={local * (1 - localDim)} dim={Math.max(dim, upperDim)} />
-        <OnboardingCard u={s.get(scene.onboardU) * (1 - upperDim)} dim={awsLayerDim} />
+        <OnboardingCard u={s.get(scene.onboardU) * (1 - warning)} dim={awsLayerDim} />
         <RecoveryCard disconnect={disconnect} resume={resume} dim={Math.max(dim, upperDim)} />
         <ReadinessRail aws={aws} dns={dns} target={target} frp={controlFlow} health={health} disconnect={disconnect} resume={resume} dim={Math.max(dim, upperDim)} />
 
-        <g opacity={1 - 0.82 * dim}>
+        <g opacity={(1 - 0.82 * dim) * (1 - 0.8 * lowerDim)}>
           <ServiceNode x={PROJECT.x} y={PROJECT.y} kind="db" label="Replay QA project" sublabel="qa-project-id · catalog" w={230} labelSize={16} u={projectStageU} />
           <ServiceNode x={MCP.x} y={MCP.y} kind="gateway" label="LoopQA MCP server" sublabel="project · journey · test" w={238} labelSize={16} u={mcp} />
           <ServiceNode x={AGENT.x} y={AGENT.y} kind="client" label="coding agent" sublabel="catalog control path" w={190} labelSize={16} u={mcp} />
@@ -674,7 +673,7 @@ export function Render({ s }: { s: SceneState }) {
             flow={mcp * 5}
             color={colors.SECONDARY}
             label="MCP"
-            labelSize={12}
+            labelSize={14}
           />
           <Connection
             from={{ x: MCP.x - 120, y: MCP.y }}
@@ -682,8 +681,8 @@ export function Render({ s }: { s: SceneState }) {
             u={mcp}
             flow={mcp * 5}
             color={colors.SECONDARY}
-            label="tool call / result"
-            labelSize={12}
+            label="tool call"
+            labelSize={14}
           />
         </g>
 

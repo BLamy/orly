@@ -124,14 +124,18 @@ export const { NODES, MERGES, CODES, EXP_LEN, ENTROPY } = (() => {
 export const N_MERGES = MERGES.length; // 7
 export const nodeById = (id: number): LaidNode => NODES.find((n) => n.id === id)!;
 
-// frequency bars (opening beat) — drawn at the leaves' final x positions
-export const BAR_BASE = 560;
-export const BAR_HMAX = 300;
+// frequency bars (opening beat) — drawn at the leaves' final x positions.
+// Baseline sits well above the caption band (y ≈ 585+) so letters and
+// percentages never sit under the lower-third.
+export const BAR_BASE = 470;
+export const BAR_HMAX = 460;
+export const barHeight = (p: number): number => (p / 0.3) * BAR_HMAX * 0.55;
 
 // meters (right column)
 export const METERS = { x: 900, y: 190, w: 280, rowH: 84 };
 
-export const CAM_TREE: CameraState = { x: 400, y: 300, k: 1.22 };
+// tree close-up: fits the whole tree plus its letter row above the caption
+export const CAM_TREE: CameraState = { x: 500, y: 330, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

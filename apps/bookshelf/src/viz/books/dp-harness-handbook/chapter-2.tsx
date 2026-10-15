@@ -8,7 +8,9 @@
 // spine is a shallow→deep gradient: read only as far down as the task needs.
 //
 // We show the authors' REAL Fig. 1 as the artifact, then animate the same three
-// levels as a persistent spine the camera drills into, L1 → L2 → L3.
+// levels as a persistent spine the camera drills into, L1 → L2 → L3. Each level
+// card carries a crop of its own panel from that real Fig. 1, so the zoom never
+// loses the paper's picture.
 import {
   CAMERA_HOME,
   Camera,
@@ -43,27 +45,38 @@ const LEVELS = [
   {
     tag: 'L2',
     title: 'Component Overview',
-    x: 570,
+    x: 590,
     items: ['working units', 'roles & goals', 'inputs / outputs', 'dependencies'],
   },
   {
     tag: 'L3',
     title: 'Unit Deep Dive',
-    x: 930,
+    x: 970,
     items: ['internal logic', 'state transitions', 'edge cases', 'code anchors'],
   },
 ] as const;
-const CARD_W = 300;
+const CARD_W = 340;
 const CARD_H = 262;
 const CARD_TOP = 168;
+// the authors' real Fig. 1 (996×561 px) and, per level, the crop of its own panel
+// (the L1/L2/L3 column's diagram), shown in the card's right-hand inset
+const FIG_SRC = '/generated/dp-harness-handbook/figures/fig-01.png';
+const FIG_W = 996;
+const FIG_H = 561;
+const CROPS = [
+  { x: 483, y: 100, w: 169, h: 224 },
+  { x: 662, y: 100, w: 190, h: 251 },
+  { x: 850, y: 100, w: 135, h: 179 },
+] as const;
+const INSET = { dx: 196, dy: 74, w: 124, h: 164 };
 // the persistent spine sits in screen space, under the cards at every zoom
 const SPINE_Y = 540;
 
 const CAM_FIG: CameraState = { x: 640, y: 300, k: 1.0 };
 const CAM_SPINE: CameraState = { x: 640, y: 360, k: 1.02 };
-const CAM_L1: CameraState = { x: 260, y: 340, k: 1.5 };
-const CAM_L2: CameraState = { x: 570, y: 340, k: 1.3 };
-const CAM_L3: CameraState = { x: 930, y: 340, k: 1.3 };
+const CAM_L1: CameraState = { x: 240, y: 340, k: 1.5 };
+const CAM_L2: CameraState = { x: 590, y: 340, k: 1.3 };
+const CAM_L3: CameraState = { x: 970, y: 340, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -105,9 +118,6 @@ export function buildScene(): Scene {
   });
   tl.tween(figU, 0, { at: 7.6, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_SPINE, { at: 7.6, dur: 1.3, ease: ease.move });
-  tl.tween(l1U, 1, { at: 8.0, dur: 1.0, ease: ease.enter });
-  tl.tween(l2U, 1, { at: 8.3, dur: 1.0, ease: ease.enter });
-  tl.tween(l3U, 1, { at: 8.6, dur: 1.0, ease: ease.enter });
   tl.tween(spineU, 1, { at: 8.2, dur: 1.4, ease: ease.draw });
   tl.tween(depthU, 1, { at: 8.6, dur: 3.6, ease: ease.linear });
   tl.hold(13.4, 0.5);
@@ -179,6 +189,27 @@ function LevelCard({ i, u }: { i: number; u: number }) {
       <text x={L.x - CARD_W / 2 + 74} y={CARD_TOP + 39} fill={colors.TEXT} fontSize={18}>
         {L.title}
       </text>
+      <svg
+        x={L.x - CARD_W / 2 + INSET.dx}
+        y={CARD_TOP + INSET.dy}
+        width={INSET.w}
+        height={INSET.h}
+        viewBox={`${CROPS[i].x} ${CROPS[i].y} ${CROPS[i].w} ${CROPS[i].h}`}
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <image href={FIG_SRC} x={0} y={0} width={FIG_W} height={FIG_H} />
+      </svg>
+      <rect
+        x={L.x - CARD_W / 2 + INSET.dx}
+        y={CARD_TOP + INSET.dy}
+        width={INSET.w}
+        height={INSET.h}
+        rx={6}
+        fill="none"
+        stroke={depthTint}
+        strokeWidth={1}
+        opacity={0.7}
+      />
       {L.items.map((it, j) => {
         const iu = clamp01(u * 5 - 1 - j);
         return (
@@ -219,10 +250,10 @@ export function Render({ s }: { s: SceneState }) {
           </linearGradient>
         </defs>
         <rect x={110} y={SPINE_Y} width={1060 * clamp01(depthU)} height={8} rx={4} fill="url(#hh-depth)" opacity={0.9} />
-        <text x={110} y={SPINE_Y + 26} fill={colors.MUTED} fontSize={13}>
+        <text x={110} y={SPINE_Y + 26} fill={colors.MUTED} fontSize={14}>
           shallow · high-level
         </text>
-        <text x={1170} y={SPINE_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+        <text x={1170} y={SPINE_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
           deep · implementation
         </text>
       </g>
@@ -269,10 +300,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- close ---- */}
         <g opacity={closeU}>
-          <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={24}>
+          <rect x={300} y={276} width={680} height={150} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+          <text x={640} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={24}>
             right information, right level, right amount
           </text>
-          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             but only if the map is true — how is it built?
           </text>
         </g>

@@ -48,14 +48,25 @@ const Z_CACHE = { x: 1052, y: 210 }; // the local store inside the device
 const Z_ZC = { x: 860, y: 470 };
 const Z_PG = { x: 1090, y: 470 };
 
+// packet endpoints sit on the node edges, so the dots never cover a label
+const C_LINK_A = { x: C_DEV.x - 30, y: C_DEV.y + 30 }; // the wire leaves the app
+const C_HOP_TOP = { x: C_API.x, y: C_API.y - 34 }; // the wire meets the api box
+const C_API_R = { x: C_API.x + 58, y: C_API.y };
+const C_PG_L = { x: C_PG.x - 58, y: C_PG.y };
+const C_PG_TL = { x: C_PG.x - 40, y: C_PG.y - 34 };
+const C_DEV_BR = { x: C_DEV.x + 40, y: C_DEV.y + 20 };
+const Z_HOP_A = { x: Z_APP.x + 52, y: Z_APP.y };
+const Z_HOP_B = { x: Z_CACHE.x - 58, y: Z_CACHE.y };
+
 // the query chip both lanes are answering
 const QUERY = "z.query.issue.where('status', 'open').limit(10)";
 
 // result list rows (shared look for both panes)
 const ROWS = ['fix: login loops on expired token', 'flaky sync test on CI', 'dark mode flashes white'];
 
-const CAM_LEFT: CameraState = { x: 330, y: 330, k: 1.28 };
-const CAM_RIGHT: CameraState = { x: 950, y: 260, k: 1.5 };
+// both lanes framed at a near-home zoom so each zone's labels and bottom row stay above the caption
+const CAM_LEFT: CameraState = { x: 327, y: 352, k: 1.05 };
+const CAM_RIGHT: CameraState = { x: 953, y: 352, k: 1.05 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -209,7 +220,7 @@ function ResultList({ x, y, u, w }: { x: number; y: number; u: number; w: number
           <g key={i} opacity={rowU}>
             <rect x={x} y={y + i * 26} width={w} height={20} rx={5} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1} />
             <circle cx={x + 12} cy={y + i * 26 + 10} r={3.5} fill={colors.POSITIVE} />
-            <text x={x + 24} y={y + i * 26 + 14} fill={colors.TEXT} fontSize={10.5}>
+            <text x={x + 24} y={y + i * 26 + 14} fill={colors.TEXT} fontSize={12.5}>
               {r}
             </text>
           </g>
@@ -225,7 +236,7 @@ function MsCounter({ x, y, ms, label, color }: { x: number; y: number; ms: strin
       <text x={x} y={y} textAnchor="middle" fill={color} fontSize={26} fontWeight={800} fontFamily="ui-monospace, monospace">
         {ms}
       </text>
-      <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+      <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
         {label}
       </text>
     </g>
@@ -257,30 +268,29 @@ export function Render({ s }: { s: SceneState }) {
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+      {/* the shared query chip, pinned top center on screen so it stays readable through the pans */}
+      <g opacity={queryU * faded}>
+        <rect x={STAGE_W / 2 - 240} y={28} width={480} height={34} rx={17} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+        <text x={STAGE_W / 2} y={50} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          {QUERY}
+        </text>
+      </g>
       <Camera {...cam}>
         <g opacity={faded}>
-          {/* the shared query chip, top center */}
-          <g opacity={queryU}>
-            <rect x={STAGE_W / 2 - 240} y={30} width={480} height={34} rx={17} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={STAGE_W / 2} y={52} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
-              {QUERY}
-            </text>
-          </g>
-
           {/* ---------------- classic lane ---------------- */}
           <Zone x={LANE_L.x} y={LANE_L.y} w={LANE_L.w} h={LANE_L.h} label="the usual way" u={laneLU} color={colors.MUTED} />
           <g opacity={laneLU}>
             <ServiceNode x={C_DEV.x} y={C_DEV.y} kind="browser" label="your app" sublabel="fetch on render" u={laneLU} />
             <ServiceNode x={C_API.x} y={C_API.y} kind="server" label="api server" u={laneLU} dim={cutU * 0.5} />
             <ServiceNode x={C_PG.x} y={C_PG.y} kind="db" label="Postgres" sublabel="the data, far away" u={laneLU} dim={cutU * 0.5} />
-            <Connection from={{ x: C_DEV.x - 30, y: C_DEV.y + 30 }} to={{ x: C_API.x, y: C_API.y - 32 }} u={laneLU} color={cutU > 0.5 ? colors.NEGATIVE : colors.GRID} dashed={cutU > 0.5} label={cutU > 0.5 ? 'offline' : 'network'} />
-            <Connection from={{ x: C_API.x + 55, y: C_API.y }} to={{ x: C_PG.x - 55, y: C_PG.y }} u={laneLU} color={colors.GRID} />
+            <Connection from={C_LINK_A} to={C_HOP_TOP} u={laneLU} color={cutU > 0.5 ? colors.NEGATIVE : colors.GRID} dashed={cutU > 0.5} label={cutU > 0.5 ? 'offline' : 'network'} />
+            <Connection from={C_API_R} to={C_PG_L} u={laneLU} color={colors.GRID} />
             {/* the timed round trip */}
-            <Packet from={C_DEV} to={C_API} u={tripU * 3} r={7} color={colors.WARM} label="query" />
-            <Packet from={C_API} to={C_PG} u={tripU * 3 - 1} r={7} color={colors.WARM} />
-            <Packet from={C_PG} to={C_DEV} u={tripU * 3 - 2} r={7} color={colors.POSITIVE} label={tripU > 0.7 ? 'rows' : undefined} />
+            <Packet from={C_LINK_A} to={C_HOP_TOP} u={tripU * 3} r={7} color={colors.WARM} label="query" />
+            <Packet from={C_API_R} to={C_PG_L} u={tripU * 3 - 1} r={7} color={colors.WARM} />
+            <Packet from={C_PG_TL} to={C_DEV_BR} u={tripU * 3 - 2} r={7} color={colors.POSITIVE} label={tripU > 0.7 ? 'rows' : undefined} />
             {/* the doomed retry after the cut */}
-            <Packet from={C_DEV} to={C_API} u={trip2U * 3} r={7} color={colors.NEGATIVE} label="query?" />
+            <Packet from={C_LINK_A} to={C_HOP_TOP} u={trip2U * 3} r={7} color={colors.NEGATIVE} label="query?" />
             {msL > 1 && (
               <MsCounter x={C_DEV.x + 150} y={C_DEV.y - 10} ms={`${Math.floor(msL)} ms`} label="waiting" color={msL > 200 ? colors.NEGATIVE : colors.WARM} />
             )}
@@ -293,7 +303,7 @@ export function Render({ s }: { s: SceneState }) {
                 </text>
               </g>
             )}
-            <ResultList x={C_DEV.x - 118} y={C_DEV.y + 44} w={236} u={listLU * (1 - cutU * 0.65)} />
+            <ResultList x={C_DEV.x + 10} y={C_DEV.y + 44} w={262} u={listLU * (1 - cutU * 0.65)} />
           </g>
 
           {/* ---------------- zero lane ---------------- */}
@@ -308,19 +318,19 @@ export function Render({ s }: { s: SceneState }) {
             <ServiceNode x={Z_CACHE.x} y={Z_CACHE.y} kind="cache" label="local cache" sublabel="zero-client · IndexedDB" u={laneRU} glow={clamp01(hopU * 2) * (1 - dimU)} />
             <Connection from={{ x: Z_APP.x + 52, y: Z_APP.y }} to={{ x: Z_CACHE.x - 58, y: Z_CACHE.y }} u={laneRU} color={colors.GRID} />
             {/* the local hop: there and back inside the device */}
-            <Packet from={Z_APP} to={Z_CACHE} u={hopU * 2} r={6} color={colors.WARM} />
-            <Packet from={Z_CACHE} to={Z_APP} u={hopU * 2 - 1} r={6} color={colors.POSITIVE} />
+            <Packet from={Z_HOP_A} to={Z_HOP_B} u={hopU * 2} r={6} color={colors.WARM} />
+            <Packet from={Z_HOP_B} to={Z_HOP_A} u={hopU * 2 - 1} r={6} color={colors.POSITIVE} />
             {/* zero keeps answering after the cut */}
-            <Packet from={Z_APP} to={Z_CACHE} u={frac(hop2U) * 2} r={5} color={colors.WARM} opacity={hop2U > 0 && hop2U < 3 ? 0.9 : 0} />
-            <Packet from={Z_CACHE} to={Z_APP} u={frac(hop2U) * 2 - 1} r={5} color={colors.POSITIVE} opacity={hop2U > 0 && hop2U < 3 ? 0.9 : 0} />
-            {msRU > 0 && <MsCounter x={Z_DEV.x + 158} y={Z_DEV.y - 44} ms="<1 ms" label="no network hop" color={colors.POSITIVE} />}
-            <ResultList x={Z_APP.x - 110} y={Z_DEV.y + 62} w={236} u={listRU} />
+            <Packet from={Z_HOP_A} to={Z_HOP_B} u={frac(hop2U) * 2} r={5} color={colors.WARM} opacity={hop2U > 0 && hop2U < 3 ? 0.9 : 0} />
+            <Packet from={Z_HOP_B} to={Z_HOP_A} u={frac(hop2U) * 2 - 1} r={5} color={colors.POSITIVE} opacity={hop2U > 0 && hop2U < 3 ? 0.9 : 0} />
+            {msRU > 0 && <MsCounter x={Z_DEV.x + 135} y={Z_DEV.y + 62} ms="<1 ms" label="no network hop" color={colors.POSITIVE} />}
+            <ResultList x={Z_DEV.x - 171} y={Z_DEV.y + 50} w={244} u={listRU} />
 
             {/* the sync stack below, kept faint — chapters 2–4 live here */}
-            <ServiceNode x={Z_ZC.x} y={Z_ZC.y} kind="server" label="zero-cache" sublabel=":4848" u={laneRU} dim={0.45 + cutU * 0.3} />
-            <ServiceNode x={Z_PG.x} y={Z_PG.y} kind="db" label="your Postgres" sublabel="ZERO_UPSTREAM_DB" u={laneRU} dim={0.45 + cutU * 0.3} />
-            <Connection from={{ x: Z_DEV.x - 40, y: Z_DEV.y + 132 }} to={{ x: Z_ZC.x, y: Z_ZC.y - 32 }} u={laneRU} color={cutU > 0.5 ? colors.NEGATIVE : colors.GRID} dashed label={cutU > 0.5 ? 'offline' : 'socket · /sync/v… /connect'} labelSize={10} dim={0.3} />
-            <Connection from={{ x: Z_ZC.x + 62, y: Z_ZC.y }} to={{ x: Z_PG.x - 62, y: Z_PG.y }} u={laneRU} color={colors.GRID} dim={0.3} />
+            <ServiceNode x={Z_ZC.x} y={Z_ZC.y} kind="server" label="zero-cache" sublabel=":4848" u={laneRU} dim={0.6 + cutU * 0.2} />
+            <ServiceNode x={Z_PG.x} y={Z_PG.y} kind="db" label="your Postgres" sublabel="ZERO_UPSTREAM_DB" u={laneRU} dim={0.6 + cutU * 0.2} />
+            <Connection from={{ x: Z_DEV.x - 40, y: Z_DEV.y + 132 }} to={{ x: Z_ZC.x, y: Z_ZC.y - 32 }} u={laneRU} color={cutU > 0.5 ? colors.NEGATIVE : colors.GRID} dashed label={cutU > 0.5 ? 'offline' : 'socket · /sync/v… /connect'} labelSize={12} dim={0.5} />
+            <Connection from={{ x: Z_ZC.x + 62, y: Z_ZC.y }} to={{ x: Z_PG.x - 62, y: Z_PG.y }} u={laneRU} color={colors.GRID} dim={0.5} />
             {/* the whisper: changes trickling up into the cache */}
             {whisperU > 0 && whisperU < 1 &&
               [0, 1, 2].map((i) => (

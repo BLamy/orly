@@ -418,17 +418,17 @@ function FiberChip({ x, y, label, u, parked, done }: {
   return (
     <g opacity={u}>
       <rect x={x - 58} y={y - 20} width={116} height={40} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={parked || done ? 2 : 1} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={x} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
       {/* status notes sit under the chip so they never collide with lane headers */}
       {parked && (
-        <text x={x} y={y + 36} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+        <text x={x} y={y + 36} textAnchor="middle" fill={colors.WARM} fontSize={13}>
           ⏸ parked — offer suspended
         </text>
       )}
       {done && (
-        <text x={x} y={y + 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
+        <text x={x} y={y + 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
           ✓ done
         </text>
       )}
@@ -440,9 +440,9 @@ function Ball({ x, y, a, value, color }: Frame & { value: number; color: string 
   if (a <= 0.01) return null;
   return (
     <g opacity={a}>
-      <circle cx={x} cy={y} r={13} fill={color} opacity={0.28} />
-      <circle cx={x} cy={y} r={13} fill="none" stroke={color} strokeWidth={1.6} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontWeight={700}>
+      <circle cx={x} cy={y} r={14} fill={color} opacity={0.28} />
+      <circle cx={x} cy={y} r={14} fill="none" stroke={color} strokeWidth={1.6} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
         {value}
       </text>
     </g>
@@ -467,10 +467,10 @@ function Lane({ y, simT, sim, code, note, u, verdict, verdictU, endGate }: {
   const gateOn = endGate && simT >= 6.6;
   return (
     <g opacity={u * (started ? 1 : 0.45)}>
-      <text x={LABEL_X} y={y - 46} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+      <text x={LABEL_X} y={y - 50} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
         {code}
       </text>
-      <text x={LABEL_X} y={y - 31} fill={colors.MUTED} fontSize={12}>
+      <text x={LABEL_X} y={y - 33} fill={colors.MUTED} fontSize={14}>
         {note}
       </text>
       <Rack y={y} u={1} hot={started} />
@@ -483,13 +483,13 @@ function Lane({ y, simT, sim, code, note, u, verdict, verdictU, endGate }: {
       {gateOn && (
         <g>
           <line x1={ENTRY_X + 18} y1={y - 26} x2={ENTRY_X + 18} y2={y + 26} stroke={colors.WARM} strokeWidth={3} />
-          <text x={ENTRY_X + 18} y={y - 34} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+          <text x={ENTRY_X + 18} y={y - 34} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
             Queue.end
           </text>
         </g>
       )}
       {verdictU > 0 && (
-        <text x={CONS_X + 118} y={y - 34} textAnchor="end" fill={colors.WARM} fontSize={14} opacity={verdictU} fontStyle="italic">
+        <text x={CONS_X + 118} y={y - 34} textAnchor="end" fill={colors.WARM} fontSize={15} opacity={verdictU} fontStyle="italic">
           {verdict}
         </text>
       )}
@@ -530,7 +530,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={LABEL_X} y={DEMO_Y - 52} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={rackU}>
               Queue.bounded(4)
             </text>
-            <text x={LABEL_X} y={DEMO_Y - 32} fill={colors.MUTED} fontSize={12} opacity={rackU}>
+            <text x={LABEL_X} y={DEMO_Y - 32} fill={colors.MUTED} fontSize={14} opacity={rackU}>
               offer ⟶ four slots ⟶ take
             </text>
             <Rack y={DEMO_Y} u={rackU} />
@@ -541,10 +541,10 @@ export function Render({ s }: { s: SceneState }) {
             <Ball {...b2} t={0} value={2} color={colors.POSITIVE} />
             <Ball {...b3} t={0} value={3} color={colors.SECONDARY} />
             {/* offer / take labels around the rack */}
-            <text x={ENTRY_X - 4} y={DEMO_Y + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={rackU}>
+            <text x={ENTRY_X} y={DEMO_Y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={rackU}>
               Queue.offer
             </text>
-            <text x={slotX(0) + 30} y={DEMO_Y + 40} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={rackU}>
+            <text x={slotX(0)} y={DEMO_Y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={rackU}>
               Queue.take
             </text>
           </g>

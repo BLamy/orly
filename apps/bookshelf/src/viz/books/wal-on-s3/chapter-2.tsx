@@ -108,6 +108,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'It waits in the batch manager with its neighbours. Writing one file per append would be ruinous, so the writer trades a little latency for a lot of throughput.',
   });
+  tl.tween(gateU, 0.35, { at: 8.0, dur: 1.0, ease: ease.enter });
   tl.hold(13.9, 0.6);
 
   // BEAT 3 — the batch becomes a fragment.
@@ -212,8 +213,13 @@ const scene = buildScene();
 function Appends({ queueU, packU, uploadU }: { queueU: number; packU: number; uploadU: number }) {
   // once packed, the records ride upward with the fragment tile as it uploads
   const drift = -uploadU * 8;
+  const batchOpacity = clamp01(queueU / 3) * (1 - packU * 2);
   return (
     <g>
+      {packU < 0.5 && (
+        // the dashed box is the batch: everything inside it waits together
+        <rect x={QUEUE_X - 16} y={QUEUE_Y - 52} width={160} height={124} rx={10} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="4 4" opacity={batchOpacity} />
+      )}
       {QUEUE.map((q, i) => {
         const born = clamp01(queueU - i);
         if (born <= 0) return null;
@@ -221,11 +227,11 @@ function Appends({ queueU, packU, uploadU }: { queueU: number; packU: number; up
         const x = lerp(q.x, p.x, packU);
         const y = lerp(q.y, p.y, packU) + drift * packU;
         return (
-          <rect key={i} x={x - 6} y={y - 5} width={12} height={10} rx={2} fill={colors.ACCENT} opacity={born * (0.5 + 0.4 * packU)} />
+          <rect key={i} x={x - 6} y={y - 5} width={12} height={10} rx={2} fill={colors.ACCENT} opacity={born * (0.75 + 0.25 * packU)} />
         );
       })}
       {packU < 0.5 && (
-        <text x={QUEUE_X - 4} y={QUEUE_Y - 34} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(queueU / 3) * (1 - packU * 2)}>
+        <text x={QUEUE_X - 4} y={QUEUE_Y - 34} fill={colors.MUTED} fontSize={14} letterSpacing="0.08em" opacity={batchOpacity}>
           APPENDS · BatchManager
         </text>
       )}
@@ -233,7 +239,7 @@ function Appends({ queueU, packU, uploadU }: { queueU: number; packU: number; up
   );
 }
 
-function FragmentTile({ packU, uploadU }: { packU: number; uploadU: number }) {
+function FragmentTile({ packU, uploadU, gateU, applyU }: { packU: number; uploadU: number; gateU: number; applyU: number }) {
   if (packU <= 0.02) return null;
   const y = FRAG_Y - uploadU * 8;
   return (
@@ -248,24 +254,29 @@ function FragmentTile({ packU, uploadU }: { packU: number; uploadU: number }) {
         stroke={uploadU > 0.5 ? colors.POSITIVE : colors.GRID}
         strokeWidth={1.5}
       />
-      <text x={FRAG_X + 16} y={y + 26} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>Fragment</text>
-      <text x={FRAG_X + 16} y={y + 112} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>start · limit · setsum</text>
+      <text x={FRAG_X + 16} y={y + 26} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>Fragment</text>
+      <text x={FRAG_X + 16} y={y + 112} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>412–428 · setsum</text>
       {uploadU > 0.35 && (
         <text x={FRAG_X + 96} y={y - 14} textAnchor="middle" fill={colors.POSITIVE} fontFamily={MONO} fontSize={13} opacity={clamp01(uploadU * 1.6 - 0.5)}>
           PutMode::IfNotExist
         </text>
       )}
+      {/* before apply_fragment runs, nothing points at this tile yet */}
+      <text x={FRAG_X} y={FRAG_Y + 146} fill={colors.MUTED} fontSize={13} opacity={clamp01(gateU) * (1 - clamp01(applyU))}>
+        no pointer in the manifest yet
+      </text>
     </g>
   );
 }
 
 function Gate({ u, swapU, applyU, tagN }: { u: number; swapU: number; applyU: number; tagN: number }) {
-  if (u <= 0.02) return null;
+  // the early 0.35 ghost sits past the edge of the batch shot, so it stays hidden until the gate is in frame
+  if (u < 0.5) return null;
   const tag = tagN > 0.5 ? '"a91c"' : '"7f30"';
   return (
-    <g opacity={clamp01(u)}>
+    <g opacity={clamp01((u - 0.5) * 2)}>
       <rect x={GATE_X} y={GATE_Y - 62} width={330} height={198} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-      <text x={GATE_X + 22} y={GATE_Y - 34} fill={colors.MUTED} fontSize={11} letterSpacing="0.11em">MANIFEST MANAGER</text>
+      <text x={GATE_X + 22} y={GATE_Y - 34} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">MANIFEST MANAGER</text>
       <text x={GATE_X + 22} y={GATE_Y - 2} fill={colors.ACCENT} fontFamily={MONO} fontSize={16}>manifest/MANIFEST</text>
       <text x={GATE_X + 22} y={GATE_Y + 32} fill={applyU > 0.4 ? colors.POSITIVE : colors.MUTED} fontFamily={MONO} fontSize={14} opacity={0.2 + 0.8 * clamp01(applyU)}>
         apply_fragment
@@ -278,7 +289,7 @@ function Gate({ u, swapU, applyU, tagN }: { u: number; swapU: number; applyU: nu
         {`If-Match: ${tag}`}
       </text>
       {swapU > 0.55 && (
-        <text x={GATE_X + 22} y={GATE_Y + 128} fill={colors.POSITIVE} fontSize={12} opacity={clamp01(swapU * 2 - 1.1)}>
+        <text x={GATE_X + 22} y={GATE_Y + 128} fill={colors.POSITIVE} fontSize={13} opacity={clamp01(swapU * 2 - 1.1)}>
           durable
         </text>
       )}
@@ -293,16 +304,16 @@ function Rival({ u, bounce, retry }: { u: number; bounce: number; retry: number 
   const x = lerp(MANIFEST_X - 690, MANIFEST_X - 220, clamp01(travel * 1.9));
   return (
     <g opacity={clamp01(u)}>
-      {/* sits below the fragment row and above the caption band */}
-      <rect x={x - 92} y={560} width={184} height={50} rx={12} fill={colors.PANEL} stroke={bounce > 0.4 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth={1.5} />
-      <text x={x} y={580} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>second writer</text>
-      <text x={x} y={599} textAnchor="middle" fill={bounce > 0.4 ? colors.NEGATIVE : colors.MUTED} fontFamily={MONO} fontSize={12}>
+      {/* sits just below the fragment row and clears the caption pill */}
+      <rect x={x - 92} y={552} width={184} height={42} rx={12} fill={colors.PANEL} stroke={bounce > 0.4 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth={1.5} />
+      <text x={x} y={571} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>second writer</text>
+      <text x={x} y={587} textAnchor="middle" fill={bounce > 0.4 ? colors.NEGATIVE : colors.MUTED} fontFamily={MONO} fontSize={12}>
         If-Match: &quot;7f30&quot;
       </text>
       {retry > 0.1 && (
         <g opacity={clamp01(retry)}>
-          <rect x={x - 108} y={618} width={216} height={26} rx={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-          <text x={x} y={636} textAnchor="middle" fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>LogContentionRetry</text>
+          <rect x={x - 108} y={602} width={216} height={24} rx={12} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+          <text x={x} y={618} textAnchor="middle" fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>LogContentionRetry</text>
         </g>
       )}
     </g>
@@ -323,8 +334,9 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
         <g opacity={dim}>
+          {/* the tile is drawn before the records so packed appends sit visibly inside it */}
+          <FragmentTile packU={s.get(scene.packU)} uploadU={s.get(scene.uploadU)} gateU={s.get(scene.gateU)} applyU={s.get(scene.applyU)} />
           <Appends queueU={s.get(scene.queueU)} packU={s.get(scene.packU)} uploadU={s.get(scene.uploadU)} />
-          <FragmentTile packU={s.get(scene.packU)} uploadU={s.get(scene.uploadU)} />
           <Gate u={s.get(scene.gateU)} swapU={s.get(scene.swapU)} applyU={s.get(scene.applyU)} tagN={s.get(scene.tagN)} />
           <Rival u={s.get(scene.rivalU)} bounce={s.get(scene.bounceU)} retry={s.get(scene.retryU)} />
 
@@ -341,7 +353,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {loopU > 0.05 && (
-            <text x={200} y={198} fill={colors.MUTED} fontSize={13} opacity={clamp01(loopU)}>
+            <text x={170} y={352} fill={colors.TEXT} fontSize={14} opacity={clamp01(loopU) * 0.85}>
               best-effort leader election · at most one writer can win
             </text>
           )}

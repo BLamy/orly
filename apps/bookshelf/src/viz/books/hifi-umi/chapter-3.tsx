@@ -21,7 +21,7 @@ function lanePos(i: number, x0: number) {
 }
 function ringPos(i: number) {
   const a = (i / 96) * Math.PI * 2 - Math.PI / 2;
-  return { x: 862 + Math.cos(a) * 130, y: 375 + Math.sin(a) * 130 };
+  return { x: 858 + Math.cos(a) * 124, y: 375 + Math.sin(a) * 124 };
 }
 function lerp(a: number, b: number, u: number) { return a + (b - a) * u; }
 
@@ -89,7 +89,7 @@ function Gate({ x, label, value, u, color }: { x: number; label: string; value: 
   return (
     <g opacity={u}>
       <path d={`M${x} 170 L${x + 34} 210 L${x + 34} 480 L${x} 520 L${x - 34} 480 L${x - 34} 210 Z`} fill={colors.PANEL} stroke={color} strokeWidth={2} />
-      <text x={x} y={245} textAnchor="middle" fill={color} fontSize={13} fontWeight={700} fontFamily={MONO} transform={`rotate(-90 ${x} 245)`}>{label}</text>
+      <text x={x} y={245} textAnchor="middle" fill={color} fontSize={14} fontWeight={700} fontFamily={MONO} transform={`rotate(-90 ${x} 245)`}>{label}</text>
       <text x={x} y={455} textAnchor="middle" fill={color} fontSize={18} fontWeight={800}>{value}</text>
     </g>
   );
@@ -101,31 +101,48 @@ export function Render({ s }: { s: SceneState }) {
   const replayP = s.get(scene.replayP);
   const yieldU = s.get(scene.yieldU);
   const annotateU = s.get(scene.annotateU);
-  const mainOpacity = 1 - 0.88 * s.get(scene.dimU);
+  const mainOpacity = 1 - 0.9 * s.get(scene.dimU);
 
   return (
     <>
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={750}>Replay before training</text>
-        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>reconstruct 98% · replay 98% · cumulative basic validity ≈ 96%</text>
+        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>reconstruct 98% · replay 98% · cumulative basic validity ≈ 96%</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
-          <Gate x={430} label="SLAM + CLEAN" value="98%" u={clamp01(reconP * 2)} color={colors.ACCENT} />
-          <Gate x={690} label="WBC REPLAY" value="98%" u={clamp01(replayP * 2)} color={colors.SECONDARY} />
+          <Figure
+            src="/generated/hifi-umi/figures/fig-04.png"
+            x={40}
+            y={390}
+            w={250}
+            h={150}
+            reveal={s.get(scene.figureU)}
+            opacity={0.95 * (1 - yieldU) * (1 - clamp01(reconP * 1.5)) * (1 - clamp01(replayP * 2))}
+            caption="Paper Fig. 4 · data flywheel"
+            accent={colors.WARM}
+          />
+
+          <g opacity={clamp01(dotsU) * 0.9 * (1 - clamp01(reconP * 2))}>
+            <path d="M125 268 C 215 236, 300 300, 470 262" fill="none" stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 6" />
+            <text x={125} y={232} fill={colors.WARM} fontSize={14} fontFamily={MONO}>reconstructed trajectory: a claim</text>
+          </g>
 
           {DOTS.map((i) => {
             const p0 = startPos(i);
-            const p1 = lanePos(i, 465);
-            const p2 = lanePos(i, 725);
+            const p1 = lanePos(i, 490);
+            const p2 = lanePos(i, 750);
             const fail1 = i >= 98;
             const fail2 = i >= 96 && i < 98;
-            let x = lerp(p0.x, fail1 ? 430 : p1.x, reconP);
-            let y = lerp(p0.y, fail1 ? 555 + (i - 98) * 16 : p1.y, reconP);
-            if (reconP > 0.99 && replayP > 0) {
-              x = lerp(p1.x, fail2 ? 690 : p2.x, replayP);
-              y = lerp(p1.y, fail2 ? 555 + (i - 96) * 16 : p2.y, replayP);
+            // Failed captures drop out of the flow and stay under the gate that rejected them.
+            const drop1 = { x: 430, y: 555 + (i - 98) * 16 };
+            const drop2 = { x: 690, y: 555 + (i - 96) * 16 };
+            let x = lerp(p0.x, fail1 ? drop1.x : p1.x, reconP);
+            let y = lerp(p0.y, fail1 ? drop1.y : p1.y, reconP);
+            if (reconP > 0.99 && replayP > 0 && !fail1) {
+              x = lerp(p1.x, fail2 ? drop2.x : p2.x, replayP);
+              y = lerp(p1.y, fail2 ? drop2.y : p2.y, replayP);
             }
             if (yieldU > 0 && i < 96) {
               const ring = ringPos(i);
@@ -133,26 +150,22 @@ export function Render({ s }: { s: SceneState }) {
               y = lerp(p2.y, ring.y, yieldU);
             }
             const failed = (fail1 && reconP > 0.7) || (fail2 && replayP > 0.7);
-            return <circle key={i} cx={x} cy={y} r={4.2} fill={failed ? colors.NEGATIVE : colors.ACCENT} opacity={clamp01(dotsU * 8 - (i % 8)) * (failed ? 0.8 : 0.72)} />;
+            return <circle key={i} cx={x} cy={y} r={3.8} fill={failed ? colors.NEGATIVE : colors.ACCENT} opacity={clamp01(dotsU * 8 - (i % 8)) * (failed ? 0.8 : 0.72)} />;
           })}
 
-          <Figure
-            src="/generated/hifi-umi/figures/fig-04.png"
-            x={40}
-            y={100}
-            w={250}
-            h={150}
-            reveal={s.get(scene.figureU)}
-            opacity={0.95 * (1 - yieldU) * (1 - clamp01(replayP * 2))}
-            caption="Paper Fig. 4 · data flywheel"
-            accent={colors.WARM}
-          />
+          {/* Gates sit above the flow so captures pass behind them instead of crossing their labels. */}
+          <Gate x={430} label="SLAM + CLEAN" value="98%" u={clamp01(reconP * 2)} color={colors.ACCENT} />
+          <Gate x={690} label="WBC REPLAY" value="98%" u={clamp01(replayP * 2)} color={colors.SECONDARY} />
 
           {yieldU > 0 && (
             <g opacity={yieldU}>
-              <text x={862} y={365} textAnchor="middle" fill={colors.POSITIVE} fontSize={32} fontWeight={850}>≈96%</text>
-              <text x={862} y={393} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>98% × 98%</text>
+              <text x={858} y={365} textAnchor="middle" fill={colors.POSITIVE} fontSize={32} fontWeight={850}>≈96%</text>
+              <text x={858} y={393} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>98% × 98%</text>
             </g>
+          )}
+
+          {annotateU > 0 && (
+            <text x={1133} y={214} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={annotateU}>annotation drafts</text>
           )}
 
           {META.map((label, i) => {
@@ -160,28 +173,29 @@ export function Render({ s }: { s: SceneState }) {
             const col = i % 2;
             const row = Math.floor(i / 2);
             return (
-              <g key={label} opacity={u} transform={`translate(${1055 + col * 130} ${245 + row * 70})`}>
-                <rect x={-60} y={-17} width={120} height={34} rx={17} fill={colors.PANEL} stroke={i < 2 ? colors.ACCENT : colors.WARM} />
-                <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label}</text>
+              <g key={label} opacity={u} transform={`translate(${1066 + col * 134} ${245 + row * 70})`}>
+                <rect x={-66} y={-17} width={132} height={34} rx={17} fill={colors.PANEL} stroke={i < 2 ? colors.ACCENT : colors.WARM} />
+                <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label}</text>
               </g>
             );
           })}
 
           {s.get(scene.humanU) > 0 && (
-            <g opacity={s.get(scene.humanU)} transform="translate(1055 485)">
+            <g opacity={s.get(scene.humanU)} transform="translate(1133 485)">
               <circle cx={0} cy={-22} r={16} fill={colors.SECONDARY} />
               <path d="M-28 32 Q0 -6 28 32" fill={colors.SECONDARY} opacity={0.7} />
-              <text x={0} y={58} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>review flags + uncertainty</text>
+              <text x={0} y={60} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>review flags + uncertainty</text>
             </g>
           )}
         </g>
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
+          <rect x={225} y={238} width={830} height={188} rx={22} fill={colors.BG} />
           <rect x={225} y={238} width={830} height={188} rx={22} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
           <text x={640} y={299} textAnchor="middle" fill={colors.TEXT} fontSize={31} fontWeight={760}>A training episode has receipts</text>
           <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={16}>reconstruction · executable replay · labels · review history</text>
-          <text x={640} y={386} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>raw capture → replay-validated export</text>
+          <text x={640} y={386} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>raw capture → replay-validated export</text>
         </g>
       )}
     </>

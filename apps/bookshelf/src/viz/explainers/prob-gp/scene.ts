@@ -117,11 +117,13 @@ export function gridF(vals: number[]): (x: number) => number {
   };
 }
 
-export const sx: ScaleLinear<number, number> = scaleLinear().domain([0, 4]).range([110, 1170]);
+// x range leaves room for the y tick labels and the "input x" label inside the 1280-wide stage
+export const sx: ScaleLinear<number, number> = scaleLinear().domain([0, 4]).range([150, 1130]);
 export const sy: ScaleLinear<number, number> = scaleLinear().domain([-2.6, 2.6]).range([620, 100]);
 
 export const CAM_MID: CameraState = { x: 640, y: 350, k: 1.15 };
-export const CAM_GAP: CameraState = { x: sx(2.2), y: 360, k: 1.35 };
+// zoomed onto the pinch band; k and x keep the y ticks and the x = 4 end in frame
+export const CAM_GAP: CameraState = { x: 648, y: 360, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;

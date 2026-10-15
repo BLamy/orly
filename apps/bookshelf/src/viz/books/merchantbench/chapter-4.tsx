@@ -88,22 +88,22 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={44} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={850}>Activity is not coherence</text>
-      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Table 1 · final net assets after 365 simulated days</text>
+      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>Table 1 · final net assets after 365 simulated days</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim}>
         <g opacity={s.get(scene.axisU)}>
           <line x1={110} y1={525} x2={650} y2={525} stroke={colors.GRID} strokeWidth={3} />
           <line x1={110} y1={150} x2={110} y2={525} stroke={colors.GRID} strokeWidth={3} />
-          <text x={118} y={138} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>net assets · thousand renminbi</text>
+          <text x={118} y={138} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>net assets · thousand renminbi</text>
         </g>
         <AssetBar x={175} label="Rule-based" value={RULE} u={s.get(scene.bestU)} color={colors.MUTED} />
         <AssetBar x={345} label="Best model" value={BEST} u={s.get(scene.bestU)} color={colors.ACCENT} />
         <AssetBar x={515} label="Human" value={HUMAN} u={s.get(scene.humanU)} color={colors.POSITIVE} />
-        <g opacity={s.get(scene.ratioU)} transform="translate(300 262)">
-          <rect width={180} height={62} rx={18} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
-          <text x={90} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>best model ÷ human mean</text>
-          <text x={90} y={51} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={850}>27.3%</text>
+        <g opacity={s.get(scene.ratioU)} transform="translate(290 262)">
+          <rect width={210} height={62} rx={18} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
+          <text x={105} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>best model ÷ human mean</text>
+          <text x={105} y={51} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={850}>27.3%</text>
         </g>
 
         <g transform="translate(730 140)" opacity={s.get(scene.sustainedU)}>
@@ -113,28 +113,28 @@ export function Render({ s }: { s: SceneState }) {
             { label: 'Human', lo: 100, hi: 100, color: colors.POSITIVE },
             { label: 'ReAct models', lo: 10.6, hi: 99.4, color: colors.ACCENT },
             { label: 'Hermes models', lo: 17.8, hi: 66.1, color: colors.SECONDARY },
-          ].map((r, i) => <g key={r.label} transform={`translate(0 ${48 + i * 29})`}>
-            <text x={18} y={10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{r.label}</text>
+          ].map((r, i) => <g key={r.label} transform={`translate(0 ${44 + i * 27})`}>
+            <text x={18} y={10} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{r.label}</text>
             <line x1={145 + r.lo * 2.3} y1={5} x2={145 + r.hi * 2.3} y2={5} stroke={r.color} strokeWidth={10} strokeLinecap="round" />
             <circle cx={145 + r.lo * 2.3} cy={5} r={6} fill={r.color} />
             <circle cx={145 + r.hi * 2.3} cy={5} r={6} fill={r.color} />
           </g>)}
-          <text x={215} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ReAct = reason-then-act agent loop</text>
+          <text x={215} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ReAct = reason-then-act agent loop</text>
         </g>
 
         <g transform="translate(730 296)" opacity={decayU}>
           <rect width={430} height={220} rx={20} fill={colors.PANEL} stroke={colors.SECONDARY} />
           <text x={215} y={27} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={800}>Qwen effective windows</text>
-          <text x={215} y={44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Qwen and Hermes are open model families</text>
-          <text x={50} y={190} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Q1</text>
-          <text x={370} y={190} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Q4</text>
+          <text x={215} y={44} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>Qwen and Hermes are open model families</text>
+          <text x={50} y={190} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>Q1</text>
+          <text x={370} y={190} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>Q4</text>
           <line x1={70} y1={92} x2={lerp(70, 360, decayU)} y2={lerp(92, 140, decayU)} stroke={colors.SECONDARY} strokeWidth={5} />
           <circle cx={70} cy={92} r={8} fill={colors.SECONDARY} />
           <circle cx={lerp(70, 360, decayU)} cy={lerp(92, 140, decayU)} r={8} fill={colors.SECONDARY} />
           <text x={70} y={74} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>62%</text>
           <text x={374} y={146} fill={colors.SECONDARY} fontSize={14} opacity={decayU}>37%</text>
           <line x1={70} y1={82} x2={lerp(70, 360, decayU)} y2={lerp(82, 172, decayU)} stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="7 6" />
-          <text x={215} y={207} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>solid Hermes 62 → 37 · dashed ReAct 68 → 23</text>
+          <text x={215} y={207} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>solid Hermes 62 → 37 · dashed ReAct 68 → 23</text>
         </g>
 
         <g opacity={s.get(scene.operationalU)} transform="translate(730 528)">
@@ -143,7 +143,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         <g opacity={s.get(scene.beliefU)} transform="translate(110 585)">
-          <text x={0} y={-14} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>false belief → shelf contraction</text>
+          <text x={0} y={-14} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>false belief → shelf contraction</text>
           {Array.from({ length: 47 }, (_, i) => {
             const keep = i < Math.round(47 - 44 * s.get(scene.beliefU));
             return <rect key={i} x={(i % 24) * 20} y={Math.floor(i / 24) * 22} width={15} height={15} rx={3} fill={keep ? colors.WARM : colors.GRID} opacity={keep ? 0.85 : 0.12} />;
@@ -151,16 +151,17 @@ export function Render({ s }: { s: SceneState }) {
           <text x={490} y={13} fill={colors.WARM} fontSize={14} fontFamily={MONO}>47 → 3 listings</text>
         </g>
 
-        <g opacity={s.get(scene.abandonU)} transform="translate(730 572)">
-          <rect width={430} height={54} rx={18} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
-          <text x={16} y={20} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>Day 104 · “store cannot recover”</text>
-          <text x={414} y={20} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>355 silent windows</text>
-          <rect x={16} y={30} width={398} height={12} rx={6} fill={colors.GRID} />
-          <rect x={16} y={30} width={398 * (355 / 523) * s.get(scene.abandonU)} height={12} rx={6} fill={colors.NEGATIVE} />
+        <g opacity={s.get(scene.abandonU)} transform="translate(730 556)">
+          <rect width={430} height={70} rx={18} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
+          <text x={16} y={22} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>Day 104 · “store cannot recover”</text>
+          <rect x={16} y={34} width={398} height={12} rx={6} fill={colors.GRID} />
+          <rect x={16} y={34} width={398 * (355 / 523) * s.get(scene.abandonU)} height={12} rx={6} fill={colors.NEGATIVE} />
+          <text x={16} y={62} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>355 of 523 remaining windows silent</text>
         </g>
       </g>
     </Camera>
     <g opacity={s.get(scene.endU)}>
+      <rect x={150} y={214} width={980} height={238} rx={30} fill={colors.BG} />
       <rect x={150} y={214} width={980} height={238} rx={30} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={283} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={850}>A year makes coherence measurable</text>
       <text x={640} y={334} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>keep acting · keep the objective</text>

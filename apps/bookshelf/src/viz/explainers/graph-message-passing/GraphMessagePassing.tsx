@@ -89,12 +89,21 @@ function renderFrame(s: SceneState) {
               stroke={isFocus && focusU > 0.02 ? colors.WARM : colors.MUTED}
               strokeWidth={isFocus ? 2 + 2 * focusU : 1.5}
             />
-            <text x={p.x} y={p.y + 5} textAnchor="middle" fill="#0a0e1a" fontSize={13} fontWeight={700}>
+            <text
+              x={p.x}
+              y={p.y + 5}
+              textAnchor="middle"
+              fill={featU > 0.02 ? '#0a0e1a' : colors.TEXT}
+              fontSize={14}
+              fontWeight={700}
+            >
               {i}
             </text>
-            {/* two-channel feature bar */}
+            {/* two-channel feature bar, drawn over a track so a small share still reads as a bar */}
             <g opacity={featU}>
+              <rect x={p.x - 20} y={p.y + 22} width={40} height={6} rx={2} fill={colors.GRID} />
               <rect x={p.x - 20} y={p.y + 22} width={40 * h[0]} height={6} rx={2} fill={RED} />
+              <rect x={p.x - 20} y={p.y + 30} width={40} height={6} rx={2} fill={colors.GRID} />
               <rect x={p.x - 20} y={p.y + 30} width={40 * h[1]} height={6} rx={2} fill={BLUE} />
             </g>
           </g>
@@ -102,18 +111,23 @@ function renderFrame(s: SceneState) {
       })}
 
       {/* the arithmetic panel */}
+      {/* sits in the open gap above the bridge, clear of nodes and edges */}
       <g opacity={panelU}>
-        <rect x={700} y={520} width={470} height={78} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
-        <text x={725} y={552} fill={colors.TEXT} fontSize={15} fontFamily="ui-monospace, Menlo, monospace">
-          node 4: mean(1,1,1,0) = 0.75 red
+        <rect x={370} y={196} width={255} height={100} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
+        <text x={388} y={226} fill={colors.TEXT} fontSize={15} fontFamily="ui-monospace, Menlo, monospace">
+          node 4 averages 4 votes
         </text>
-        <text x={725} y={580} fill={colors.TEXT} fontSize={15} fontFamily="ui-monospace, Menlo, monospace">
-          mean(0,0,0,1) = 0.25 blue
+        <text x={388} y={252} fill={colors.NEGATIVE} fontSize={15} fontFamily="ui-monospace, Menlo, monospace">
+          red   1 1 1 0 → 0.75
+        </text>
+        <text x={388} y={278} fill={colors.ACCENT} fontSize={15} fontFamily="ui-monospace, Menlo, monospace">
+          blue  0 0 0 1 → 0.25
         </text>
       </g>
 
-      {/* closing */}
+      {/* closing: solid panel so the line reads over the graph */}
       <g opacity={closeU}>
+        <rect x={460} y={50} width={360} height={46} rx={10} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
         <text x={640} y={80} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
           one layer = one hop of influence
         </text>

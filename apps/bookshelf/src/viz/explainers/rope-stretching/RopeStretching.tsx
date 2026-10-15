@@ -71,12 +71,13 @@ const DIAL_R = 120;
 const KER_X = scaleLinear().domain([0, 16]).range([680, 1150]);
 const KER_Y = scaleLinear().domain([-0.1, 1.05]).range([340, 130]);
 
-const BARS_Y0 = 470;
+const BARS_Y0 = 420;
 const BAR_MAXW = 360;
 
+// the bars camera also holds the kernel curves, so the shift in scores is in frame
 const CAM_DIAL: CameraState = { x: 330, y: 300, k: 1.35 };
 const CAM_KER: CameraState = { x: 915, y: 240, k: 1.35 };
-const CAM_BARS: CameraState = { x: 900, y: 470, k: 1.35 };
+const CAM_BARS: CameraState = { x: 940, y: 330, k: 1.1 };
 
 /** dial arc path from angle a0 to a1 (screen convention: clockwise-negative). */
 const arcPath = (cx: number, cy: number, r: number, a1: number): string => {
@@ -223,7 +224,7 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
   // effective slow-hand rate under the current mode (blend raw → PI → NTK)
   const slowRaw = THETA[D2 - 1];
   const slowNTK = THETA_NTK[D2 - 1];
@@ -236,6 +237,8 @@ function Frame({ s }: { s: SceneState }) {
   const ang = angRaw + (angPI - angRaw) * m1 + (angNTK - angPI) * m2;
   const outOfArc = ang > SLOW_AT_W + 1e-6;
   const modeLabel = mode < 0.5 ? 'raw extrapolation' : mode < 1.5 ? 'position interpolation ÷4' : 'NTK: base 100 → 488';
+  // the kernel charts leave the frame with the NTK pan and return for the bars
+  const kerOp = kerU * Math.max(1 - Math.min(1, Math.max(0, mode - 1)), barsU);
 
   return (
     <>
@@ -244,7 +247,7 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the slow dial — a whisper while the camera studies the charts */}
-          <g opacity={dialU * (1 - 0.8 * Math.max(kerU * (1 - Math.min(1, Math.max(0, s.get(scene.mode) - 1))), barsU))}>
+          <g opacity={dialU * (1 - Math.max(kerU * (1 - Math.min(1, Math.max(0, s.get(scene.mode) - 1))), barsU))}>
             <text x={DIAL_X - DIAL_R} y={DIAL_Y - DIAL_R - 40} fill={colors.TEXT} fontSize={18}>
               the slowest clock hand
             </text>
@@ -261,10 +264,11 @@ function Frame({ s }: { s: SceneState }) {
               strokeWidth={3.5}
               strokeLinecap="round"
             />
-            <text x={DIAL_X - DIAL_R} y={DIAL_Y + DIAL_R + 30} fill={colors.MUTED} fontSize={13}>
+            <text x={DIAL_X - DIAL_R} y={DIAL_Y + DIAL_R + 30} fill={colors.MUTED} fontSize={14}>
               position {pos.toFixed(0)} · angle {ang.toFixed(2)} rad · {modeLabel}
             </text>
-            <text x={DIAL_X + DIAL_R * 0.55} y={DIAL_Y - DIAL_R * 0.42} fill={colors.POSITIVE} fontSize={12}>
+            {/* outside the arc, so the hand never crosses the label */}
+            <text x={DIAL_X + DIAL_R * 1.08} y={DIAL_Y - DIAL_R * 0.95} fill={colors.POSITIVE} fontSize={14}>
               seen in training: 0 – {SLOW_AT_W.toFixed(2)} rad
             </text>
             {oodU > 0 && outOfArc && (
@@ -275,12 +279,12 @@ function Frame({ s }: { s: SceneState }) {
           </g>
 
           {/* kernel curves: raw vs interpolated */}
-          {kerU > 0 && (
-            <g opacity={kerU}>
+          {kerOp > 0.001 && (
+            <g opacity={kerOp}>
               <text x={680} y={KER_Y(1.05) - 14} fill={colors.TEXT} fontSize={16}>
                 score vs offset: raw ruler vs squeezed ruler
               </text>
-              <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="offset (tokens)" fontSize={11} />
+              <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="offset (tokens)" fontSize={13} />
               <FunctionPlot
                 x={KER_X}
                 y={KER_Y}
@@ -301,11 +305,12 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.WARM}
                 width={2.4}
               />
-              <text x={KER_X(15.8)} y={KER_Y(gOff(15.8 / S)) - 10} textAnchor="end" fill={colors.WARM} fontSize={12}>
-                interpolated: flat near zero offset — neighbors blur
+              {/* end labels sit right of each curve's tail, clear of the lines */}
+              <text x={KER_X(16) + 12} y={KER_Y(gOff(16 / S)) + 5} fill={colors.WARM} fontSize={14}>
+                ÷4 interpolated
               </text>
-              <text x={KER_X(15.8)} y={KER_Y(0.34)} textAnchor="end" fill={colors.ACCENT} fontSize={12}>
-                raw: steep near zero — neighbors distinct
+              <text x={KER_X(16) + 12} y={KER_Y(gOff(16)) + 5} fill={colors.ACCENT} fontSize={14}>
+                raw ruler
               </text>
             </g>
           )}
@@ -334,7 +339,7 @@ function Frame({ s }: { s: SceneState }) {
                     fill={b.c}
                     opacity={0.85}
                   />
-                  <text x={838 + (b.v / CONTRAST_RAW) * BAR_MAXW * barsU} y={BARS_Y0 + i * 34 + 13} fill={b.c} fontSize={12} fontWeight={600}>
+                  <text x={838 + (b.v / CONTRAST_RAW) * BAR_MAXW * barsU} y={BARS_Y0 + i * 34 + 13} fill={b.c} fontSize={14} fontWeight={600}>
                     {b.v.toFixed(3)}
                   </text>
                 </g>
@@ -363,7 +368,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Reach costs resolution.
           </text>

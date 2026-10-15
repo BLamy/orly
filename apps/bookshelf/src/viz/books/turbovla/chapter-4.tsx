@@ -27,16 +27,18 @@ const sy = scaleLinear([74, 100], [540, 120]);
 // Label anchors in plot space. Crowded cluster labels fan out above the
 // points with leader lines so none of them sit on top of each other.
 const LABEL: Record<string, { x: number; y: number; anchor?: 'start' | 'middle' | 'end'; lead?: boolean }> = {
+  // Cluster labels sit in two rows ordered left to right like their points, so
+  // no leader crosses another label or point.
   'TurboVLA': { x: 196, y: 150, anchor: 'start' },
-  'VLA-Adapter': { x: 330, y: 124, anchor: 'end', lead: true },
-  'π0.5': { x: 382, y: 110, anchor: 'start', lead: true },
-  'VLA-JEPA': { x: 420, y: 134, anchor: 'end', lead: true },
-  'CogVLA': { x: 500, y: 110, anchor: 'start', lead: true },
+  'VLA-Adapter': { x: 330, y: 118, anchor: 'end', lead: true },
+  'π0.5': { x: 350, y: 118, anchor: 'start', lead: true },
+  'VLA-JEPA': { x: 398, y: 118, anchor: 'start', lead: true },
+  'CogVLA': { x: 488, y: 118, anchor: 'start', lead: true },
   'DDVLA': { x: 261, y: 222, anchor: 'middle' },
   'π0': { x: 355, y: 250, anchor: 'middle' },
-  'Evo-1': { x: 556, y: 208, anchor: 'start' },
+  'Evo-1': { x: 564, y: 208, anchor: 'start' },
   'Mantis': { x: 786, y: 178, anchor: 'start' },
-  'OpenVLA': { x: 796, y: 504, anchor: 'start' },
+  'OpenVLA': { x: 806, y: 504, anchor: 'start' },
 };
 const RECIPE = ['semantic text', '6 × bidirectional', '12-step chunk', 'masked L1 loss'];
 
@@ -75,6 +77,7 @@ export function buildScene() {
 
   tl.caption({ at: 26.0, dur: 5.9, text: 'Its average comes from ninety nine point two spatial, ninety nine point eight object, ninety seven point four goal, and ninety four point two long-horizon success.' });
   tl.tween(suitesU, 1, { at: 26.5, dur: 1.7, ease: ease.enter });
+  tl.tween(cam, { x: 700, y: 340, k: 1.1 }, { at: 27.0, dur: 1.3, ease: ease.move });
   tl.hold(31.9, 0.6);
 
   tl.caption({ at: 32.5, dur: 5.9, text: 'This is not a language-free policy. Removing language drops the average to seventy point eight and the goal suite to eleven point six.' });
@@ -129,7 +132,7 @@ export function Render({ s }: { s: SceneState }) {
         {METHODS.map((m, i) => {
           const u = clamp01(pointsU * METHODS.length - i);
           const isTurbo = m.name === 'TurboVLA';
-          const r = 7 + sizeU * Math.sqrt(m.params) * 5;
+          const r = 7 + sizeU * Math.sqrt(m.params) * 4;
           const cx = sx(m.latency);
           const cy = sy(m.success);
           const lab = LABEL[m.name];
@@ -137,7 +140,7 @@ export function Render({ s }: { s: SceneState }) {
             {vramU > 0 && <circle cx={cx} cy={cy} r={r + m.vram * 0.4} fill="none" stroke={isTurbo ? colors.POSITIVE : colors.SECONDARY} strokeWidth={1.5} opacity={0.12 + 0.35 * vramU} />}
             {lab.lead && <line x1={cx} y1={cy} x2={lab.x} y2={lab.y + 2} stroke={colors.MUTED} strokeWidth={1} opacity={0.6} />}
             <circle cx={cx} cy={cy} r={isTurbo ? r + turboU * 7 : r} fill={isTurbo ? colors.POSITIVE : colors.ACCENT} opacity={isTurbo ? 0.95 : 0.48} stroke={isTurbo ? colors.WARM : colors.ACCENT} strokeWidth={isTurbo ? 3 : 1} />
-            <text x={lab.x} y={lab.y} textAnchor={lab.anchor ?? 'start'} fill={isTurbo ? colors.POSITIVE : colors.MUTED} fontSize={isTurbo ? 14 : 12} fontWeight={isTurbo ? 800 : 500}>{m.name}</text>
+            <text x={lab.x} y={lab.y} textAnchor={lab.anchor ?? 'start'} fill={isTurbo ? colors.POSITIVE : colors.TEXT} fontSize={14} fontWeight={isTurbo ? 800 : 600}>{m.name}</text>
           </g>;
         })}
 
@@ -145,7 +148,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect width={260} height={245} rx={20} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={130} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>LIBERO suites</text>
           {SUITES.map((d, i) => {
-            const w = (d.v - 90) * 17;
+            const w = (d.v - 90) * 11.5;
             return <g key={d.name} transform={`translate(28 ${65 + i * 43})`}>
               <text x={0} y={14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{d.name}</text>
               <rect x={74} y={0} width={w} height={18} rx={9} fill={colors.POSITIVE} opacity={0.78} />
@@ -183,7 +186,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x={640} y={280} textAnchor="middle" fill={colors.TEXT} fontSize={31} fontWeight={800}>An execution specialist</text>
       <text x={640} y={326} textAnchor="middle" fill={colors.POSITIVE} fontSize={19}>97.7% · 31.2 ms · 0.9 GB</text>
       <text x={640} y={370} textAnchor="middle" fill={colors.MUTED} fontSize={15}>semantic language + direct interaction + parallel actions</text>
-      <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>scope: execution-level control · high-level planning remains future work</text>
+      <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>scope: execution-level control · high-level planning remains future work</text>
     </g>}
   </>;
 }

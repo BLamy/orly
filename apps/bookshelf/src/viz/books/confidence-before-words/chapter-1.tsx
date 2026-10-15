@@ -23,7 +23,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Timeline,
   cameraInterp,
   colors,
@@ -238,7 +237,7 @@ export function buildScene() {
   tl.hold(B(4) + DUR, 1.2);
 
   // 5 — instrument two: the ribbon fans into traces that narrow, eq. 2
-  to(boxA, 0.1, B(5));
+  to(boxA, 0, B(5));
   look({ x: 600, y: BOX_CY[1], k: 1.9 }, B(5), 1.5);
   to(fanB, 1, B(5) + 0.4, 1.0, ease.draw);
   to(boxB, 1, B(5) + 0.8);
@@ -248,7 +247,7 @@ export function buildScene() {
   tl.hold(B(5) + DUR, 1.2);
 
   // 6 — instrument three: the final column enters a small learned head, eq. 3
-  to(boxB, 0.1, B(6));
+  to(boxB, 0, B(6));
   look({ x: 650, y: BOX_CY[2] - 6, k: 2.2 }, B(6), 1.5);
   to(fanC, 1, B(6) + 0.4, 1.0, ease.draw);
   to(boxC, 1, B(6) + 0.8);
@@ -269,10 +268,10 @@ export function buildScene() {
   tl.hold(B(7) + DUR, 1.2);
 
   // 8 — mismatched rulers meet an outlined '?' adapter
-  to(boxA, 0.1, B(8));
-  to(boxB, 0.1, B(8));
-  to(boxC, 0.1, B(8));
-  to(eq4, 0.1, B(8));
+  to(boxA, 0, B(8));
+  to(boxB, 0, B(8));
+  to(boxC, 0, B(8));
+  to(eq4, 0, B(8));
   look({ x: 900, y: 250, k: 1.35 }, B(8), 1.5);
   to(rulerO, 1, B(8) + 1.0);
   to(adapterO, 1, B(8) + 2.6);
@@ -280,8 +279,8 @@ export function buildScene() {
   tl.hold(B(8) + DUR, 1.2);
 
   // 9 — pull back: a routing score, not a probability; the gate starts choosing a lane
-  to(rulerO, 0.12, B(9));
-  to(adapterO, 0.12, B(9));
+  to(rulerO, 0, B(9));
+  to(adapterO, 0, B(9));
   to(eqDim, 0.12, B(9));
   to(joinU, 1, B(9), 0.1);
   to(wordsO, 0, B(9), 0.6);
@@ -318,6 +317,28 @@ function Frame({ i, title }: { i: number; title: string }) {
 
 function draw(u: number) {
   return { pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - clamp01(u) };
+}
+
+// Plain-SVG equation: `_x` or `_{...}` is a subscript. Stays legible without the KaTeX stylesheet.
+function MathText({ tex, x, y, size = 11, color = TEXT, o = 1, anchor = 'start' }: {
+  tex: string; x: number; y: number; size?: number; color?: string; o?: number; anchor?: 'start' | 'middle';
+}) {
+  if (o <= 0) return null;
+  const runs = tex.split(/(_\{[^}]*\}|_[A-Za-zφ]+)/).filter(Boolean);
+  let lowered = false;
+  return (
+    <text x={x} y={y} fill={color} opacity={o} fontFamily={font.ui} fontSize={size} textAnchor={anchor}>
+      {runs.map((r, i) => {
+        if (r.startsWith('_')) {
+          lowered = true;
+          return <tspan key={i} dy={size * 0.3} fontSize={size * 0.72}>{r.replace(/^_\{?|\}$/g, '')}</tspan>;
+        }
+        const dy = lowered ? -size * 0.3 : 0;
+        lowered = false;
+        return <tspan key={i} dy={dy}>{r}</tspan>;
+      })}
+    </text>
+  );
 }
 
 export function Render({ s }: { s: SceneState }) {
@@ -378,7 +399,9 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* fan: ribbon → three instruments */}
         {[scene.fanA, scene.fanB, scene.fanC].map((ch, i) => (
-          <path key={i} d={FAN[i].d} fill="none" stroke={TINTS[i]} strokeWidth={1.6} strokeOpacity={0.75} {...draw(g(ch))} />
+          <g key={i} opacity={g([scene.boxA, scene.boxB, scene.boxC][i])}>
+            <path d={FAN[i].d} fill="none" stroke={TINTS[i]} strokeWidth={1.6} strokeOpacity={0.75} {...draw(g(ch))} />
+          </g>
         ))}
 
         {/* instrument A — semantic alignment (eq. 1) */}
@@ -389,13 +412,13 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={VO.x} cy={VO.y} r={2.6} fill={TEXT} opacity={vecU} />
           <path d={`M${a0.x},${a0.y} A${ar},${ar} 0 0 1 ${a1.x},${a1.y}`} fill="none" stroke={WARM} strokeWidth={1.6} opacity={g(scene.arcO)} />
           <g opacity={g(scene.mapLbl)}>
-            <MathLabel tex={'P\\,h_L'} x={modTip.x + 4} y={modTip.y - 10} fontSize={10} color={ACCENT} boxWidth={80} />
-            <MathLabel tex={'e_{\\text{ref}}'} x={refTip.x - 6} y={refTip.y + 16} fontSize={10} color={MUTED} boxWidth={80} />
+            <MathText tex="P h_L" x={modTip.x + 4} y={modTip.y - 10} size={11} color={ACCENT} anchor="middle" />
+            <MathText tex="e_ref" x={refTip.x - 6} y={refTip.y + 16} size={11} color={MUTED} anchor="middle" />
             <Label x={664} y={146} text="P: state → 384-d" size={12} color={TEXT} />
             <Label x={664} y={162} text="ref: all-MiniLM-L6-v2" size={12} />
           </g>
-          <MathLabel tex={'s_{\\text{sem}}=\\cos\\!\\big(P\\,h_L,\\;e_{\\text{ref}}\\big)'} x={748} y={92} fontSize={11}
-            opacity={g(scene.eq1) * eqDim} boxWidth={200} />
+          <MathText tex="s_sem = cos(P h_L, e_ref)" x={664} y={96} size={12} o={g(scene.eq1) * eqDim} />
+          <Label x={490} y={207} text="small angle = same direction" size={11} color={MUTED} o={g(scene.mapLbl)} />
           <g opacity={g(scene.arcO)}>
             <Label x={664} y={122} text={`cos θ = ${cosv >= 0 ? '+' : '−'}${Math.abs(cosv).toFixed(2)}`} size={12} color={WARM} />
           </g>
@@ -421,8 +444,9 @@ export function Render({ s }: { s: SceneState }) {
           {TRACE_D.map((d, j) => (
             <path key={j} d={d} fill="none" stroke={WARM} strokeOpacity={0.85} strokeWidth={1.2} {...draw(g(scene.traceU))} />
           ))}
-          <MathLabel tex={'s_{\\text{conv}}=\\dfrac{\\sigma^2_{\\text{early}}}{\\sigma^2_{\\text{late}}+\\epsilon}'} x={746} y={298} fontSize={11}
-            opacity={g(scene.eq2) * eqDim} boxWidth={200} />
+          <Label x={664} y={282} text="narrow = settled" size={11} color={MUTED} o={g(scene.eq2)} />
+          <MathText tex="s_conv = σ²_early / σ²_late" x={664} y={306} size={12} o={g(scene.eq2) * eqDim} />
+          <MathText tex="+ ε avoids division by zero" x={664} y={324} size={11} color={MUTED} o={g(scene.eq2) * eqDim} />
           <g opacity={g(scene.eq2)}>
             <Label x={664} y={352} text={`ratio ≈ ${VAR_RATIO.toFixed(1)}`} size={12} color={WARM} />
             <Label x={664} y={368} text="(can exceed 1)" size={12} />
@@ -455,8 +479,8 @@ export function Render({ s }: { s: SceneState }) {
             }),
           )}
           <line x1={COL.x + COL.w + 4} y1={BOX_CY[2]} x2={HEAD_X[0] - 8} y2={BOX_CY[2]} stroke={SECONDARY} strokeOpacity={0.5} strokeWidth={1} />
-          <MathLabel tex={'s_{\\text{learn}}'} x={HEAD_X[2] + 44} y={BOX_CY[2]} fontSize={12} color={TEXT} opacity={seg(headU, 0.85, 1)} boxWidth={70} />
-          <MathLabel tex={'s_{\\text{learn}}=f_{\\phi}(h_L)'} x={746} y={486} fontSize={11} opacity={g(scene.eq3) * eqDim} boxWidth={200} />
+          <MathText tex="s_learn" x={HEAD_X[2] + 44} y={BOX_CY[2] + 4} size={13} color={TEXT} o={seg(headU, 0.85, 1)} />
+          <MathText tex="s_learn = f_φ(h_L)" x={664} y={486} size={12} o={g(scene.eq3) * eqDim} />
           <Label x={COL.x} y={BOX_CY[2] + 66} text="final state" size={12} />
           <Label x={664} y={556} text="Paper-reported:" size={12} o={g(scene.eq3)} color={TEXT} />
           <Label x={664} y={572} text="72 examples, 30 epochs" size={12} o={g(scene.eq3)} color={TEXT} />
@@ -476,15 +500,14 @@ export function Render({ s }: { s: SceneState }) {
         {JOIN.map((j, i) => {
           const p = cubic(j.pts[0], j.pts[1], j.pts[2], j.pts[3], pktU);
           return (
-            <g key={i} opacity={Math.max(0.15, eqDim)}>
+            <g key={i} opacity={g([scene.boxA, scene.boxB, scene.boxC][i])}>
               <path d={j.d} fill="none" stroke={TINTS[i]} strokeWidth={1.6} strokeOpacity={0.75} {...draw(g(scene.joinU))} />
               {pktU > 0 && pktU < 1 ? <circle cx={p.x} cy={p.y} r={4.5} fill={TINTS[i]} /> : null}
             </g>
           );
         })}
-        <MathLabel tex={'C = w_1\\,s_{\\text{sem}} + w_2\\,s_{\\text{conv}} + w_3\\,s_{\\text{learn}}'} x={990} y={436} fontSize={14}
-          opacity={g(scene.eq4)} boxWidth={320} />
-        <Label x={990} y={464} text="weights: learned, symbolic here" size={12} anchor="middle"
+        <MathText tex="C = w₁ s_sem + w₂ s_conv + w₃ s_learn" x={990} y={462} size={14} anchor="middle" o={g(scene.eq4)} />
+        <Label x={990} y={484} text="weights: learned, symbolic here" size={12} anchor="middle"
           o={g(scene.eq4)} />
 
         <g opacity={g(scene.dialO)}>
@@ -504,7 +527,7 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={DIAL.x} cy={DIAL.y} r={4.5} fill={TEXT} />
           <Label x={DIAL.x - DIAL.r} y={DIAL.y + 16} text="0" anchor="middle" size={12} />
           <Label x={DIAL.x + DIAL.r} y={DIAL.y + 16} text="1" anchor="middle" size={12} />
-          <MathLabel tex={'C'} x={DIAL.x} y={DIAL.y + 20} fontSize={14} opacity={1 - routeLbl} boxWidth={60} />
+          <MathText tex="C" x={DIAL.x} y={DIAL.y + 20} size={14} anchor="middle" o={1 - routeLbl} />
           <Note x={DIAL.x} y={DIAL.y + 26} text="routing score" anchor="middle" size={14} weight={600} o={routeLbl} />
           <Label x={DIAL.x} y={DIAL.y + 42} text="not a calibrated probability" anchor="middle" size={12} o={routeLbl} />
           <Tag x={DIAL.x} y={DIAL.y - DIAL.r - 12} text="Illustrative score" size={12} anchor="middle" o={seg(dialV, 0.1, 0.4)} />

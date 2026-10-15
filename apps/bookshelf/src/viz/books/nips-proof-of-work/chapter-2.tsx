@@ -56,8 +56,16 @@ const LAYOUT = layoutJson(EVENT, {
   abbrev: (_p, raw) => (raw.length > 26 ? shortHex(raw) : raw),
 });
 const NONCE_ANCHOR = LAYOUT.anchor('tags[0][1]');
+const TAG_TARGET_ANCHOR = LAYOUT.anchor('tags[0][2]');
 // the live counter sits in the empty gap under the blanked slot (the `],` row is short)
 const COUNTER_W = LAYOUT.charW * 17 + 8;
+// slot legend: names the three values the nonce tag carries, to the right of the row
+const LEGEND_X = Math.max(TAG_TARGET_ANCHOR.x + TAG_TARGET_ANCHOR.w, NONCE_ANCHOR.x - 4 + COUNTER_W) + 40;
+const LEGEND = [
+  { slot: '1st slot', name: 'nonce', note: 'the tag name', color: colors.ACCENT },
+  { slot: '2nd slot', name: 'counter', note: 'the miner bumps it', color: colors.WARM },
+  { slot: '3rd slot', name: 'target', note: 'zero bits to aim for', color: colors.POSITIVE },
+];
 
 const GRID = { x: 812, y: 128, cell: 15, gap: 3 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
@@ -190,7 +198,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
   // which milestone are we on?
   const mi = Math.min(MILESTONES.length - 1, Math.floor(mineU * MILESTONES.length));
   const started = mineU > 0;
@@ -210,11 +218,11 @@ export function Render({ s }: { s: SceneState }) {
             reveal={jsonU}
             focus={tagU > 0 ? ['tags'] : undefined}
             focusU={tagU * 0.9}
-            hidden={started ? ['tags[0][1]'] : undefined}
+            hidden={gridU > 0 ? ['tags[0][1]'] : undefined}
           />
-          {/* live nonce counter, tucked under the blanked slot it fills */}
-          {started && (
-            <g>
+          {/* live nonce counter, tucked under the blanked slot it fills (appears with the rig) */}
+          {gridU > 0 && (
+            <g opacity={gridU}>
               <rect x={NONCE_ANCHOR.x - 4} y={NONCE_ANCHOR.y + NONCE_ANCHOR.h + 1} width={COUNTER_W} height={NONCE_ANCHOR.h - 2} rx={4} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
               <text x={NONCE_ANCHOR.x} y={NONCE_ANCHOR.y + 2 * NONCE_ANCHOR.h - 6} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={600}>
                 ↑ counter {shownNonce.toLocaleString('en-US')}
@@ -222,13 +230,39 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* slot legend: fades out as the counter takes over the nonce slot */}
+          <g opacity={tagU * (1 - clamp01(mineU / 0.05))}>
+            <line
+              x1={TAG_TARGET_ANCHOR.x + TAG_TARGET_ANCHOR.w + 8}
+              y1={NONCE_ANCHOR.cy}
+              x2={LEGEND_X - 10}
+              y2={NONCE_ANCHOR.cy}
+              stroke={colors.GRID}
+              strokeWidth={1.5}
+              strokeDasharray="4 4"
+            />
+            {LEGEND.map((row, i) => (
+              <text
+                key={row.name}
+                x={LEGEND_X}
+                y={NONCE_ANCHOR.y + LAYOUT.fontSize + (i - 1) * LAYOUT.lineH}
+                fill={colors.TEXT}
+                fontSize={14}
+                fontFamily="monospace"
+              >
+                <tspan fill={row.color} fontWeight={600}>{row.slot} · {row.name}</tspan>
+                <tspan fill={colors.MUTED}>{`  —  ${row.note}`}</tspan>
+              </text>
+            ))}
+          </g>
+
           {/* the mining rig */}
           {gridU > 0 && (
             <g>
-              <text x={GRID.x} y={GRID.y - 40} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 40} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={gridU}>
                 id = SHA-256(serialization with nonce {shownNonce.toLocaleString('en-US')})
               </text>
-              <text x={GRID.x} y={GRID.y - 20} fill={winU > 0 ? colors.POSITIVE : colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 20} fill={winU > 0 ? colors.POSITIVE : colors.ACCENT} fontSize={14} fontFamily="monospace" opacity={gridU}>
                 {shortHex(started ? MILE_IDS[mi] : MILE_IDS[0], 14, 6)}
               </text>
               <BitField
@@ -252,11 +286,11 @@ export function Render({ s }: { s: SceneState }) {
               ))}
               <g opacity={started ? 1 : 0}>
                 <circle cx={LADDER_X} cy={ladderY(best)} r={7} fill={winU > 0 ? colors.POSITIVE : colors.WARM} />
-                <text x={LADDER_X - 14} y={ladderY(best) + 5} textAnchor="end" fill={winU > 0 ? colors.POSITIVE : colors.WARM} fontSize={13} fontWeight={600}>
+                <text x={LADDER_X - 14} y={ladderY(best) + 5} textAnchor="end" fill={winU > 0 ? colors.POSITIVE : colors.WARM} fontSize={14} fontWeight={600}>
                   {best}
                 </text>
               </g>
-              <text x={LADDER_X} y={ladderY(TARGET) - 12} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={gridU}>
+              <text x={LADDER_X} y={ladderY(TARGET) - 12} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={gridU}>
                 target {TARGET}
               </text>
 
@@ -274,10 +308,10 @@ export function Render({ s }: { s: SceneState }) {
           {gateU > 0 && (
             <g opacity={gateU}>
               <rect x={330} y={520} width={620} height={58} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={358} y={546} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={358} y={546} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 relay check: leading_zero_bits(id) ≥ 14 ?
               </text>
-              <text x={358} y={566} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
+              <text x={358} y={566} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                 accepted — one hash to verify
               </text>
               <circle cx={914} cy={549} r={14} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} />
@@ -289,14 +323,14 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Expensive to make, free to check
           </text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             52,665 hashes for fourteen zero bits — verified here in one
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-13 · ["nonce", "&lt;counter&gt;", "&lt;target&gt;"]
           </text>
         </g>

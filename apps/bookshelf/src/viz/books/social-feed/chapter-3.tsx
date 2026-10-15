@@ -16,7 +16,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -78,10 +77,10 @@ const rowY = (i: number): number => FEED.y + i * (FEED.rowH + FEED.gap);
 // The real path is ~1,150 wide (client at x 130 to the strip's end at 1215), so
 // the path cameras stay near k 1.1 to keep every node and its label on stage.
 const CAM_NAIVE: CameraState = { x: 560, y: 340, k: 1.12 };
-const CAM_JAM: CameraState = { x: 360, y: 340, k: 1.45 };
-const CAM_PATH: CameraState = { x: 660, y: 160, k: 1.1 };
-const CAM_GRAB: CameraState = { x: 632, y: 170, k: 1.08 };
-const CAM_FEED: CameraState = { x: 664, y: 340, k: 1.08 };
+const CAM_JAM: CameraState = { x: 600, y: 340, k: 1.0 };
+const CAM_PATH: CameraState = { x: 650, y: 160, k: 1.0 };
+const CAM_GRAB: CameraState = { x: 650, y: 170, k: 1.0 };
+const CAM_FEED: CameraState = { x: 650, y: 340, k: 1.0 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -255,9 +254,11 @@ export function Render({ s }: { s: SceneState }) {
             {/* the latency clock drains as the plan jams */}
             <g opacity={jamU}>
               <TimerArc cx={READER.x - 80} cy={READER.y - 70} r={22} u={1 - 0.9 * jamU} color={colors.NEGATIVE} />
-              <text x={READER.x - 80} y={READER.y - 30} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
+              <text x={READER.x - 80} y={READER.y - 30} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                 latency
               </text>
+              {/* a backing panel keeps the red fan-out lines from running through the words */}
+              <rect x={READER.x + 130 - 128} y={READER.y + 90 - 19} width={256} height={27} rx={13} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeOpacity={0.5} />
               <text x={READER.x + 130} y={READER.y + 90} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                 × 100,000 / s — again and again
               </text>
@@ -268,7 +269,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ============ the real read path ============ */}
         {laneU > 0.01 && (
           <g>
-            <Connection from={N_CLIENT} to={N_WEB} u={laneU} arrow label="GET home_timeline" labelSize={12} />
+            <Connection from={N_CLIENT} to={N_WEB} u={laneU} arrow />
+            {/* the request label sits above the boxes, clear of the Client and Web Server frames */}
+            <text x={(N_CLIENT.x + N_WEB.x) / 2} y={N_CLIENT.y - 40} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace" opacity={laneU}>
+              GET home_timeline
+            </text>
             <Connection from={N_WEB} to={N_READ} u={laneU} arrow />
             <Connection from={N_READ} to={N_TLSVC} u={laneU} arrow />
             <Connection from={N_TLSVC} to={N_CACHE} u={laneU} arrow />
@@ -282,8 +287,6 @@ export function Render({ s }: { s: SceneState }) {
               path={[N_CLIENT, N_WEB, N_READ, N_TLSVC, N_CACHE]}
               u={grabU}
               roundTrip
-              label="read"
-              responseLabel="your list"
               responseColor={colors.POSITIVE}
               dwell={0.12}
               turnDwell={0.12}
@@ -291,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* your home-timeline list — precomputed in chapter two */}
             <g opacity={stripU}>
-              <text x={STRIP.x - 10} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+              <text x={STRIP.x - 10} y={STRIP.y + STRIP.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
                 your list
               </text>
               <rect x={STRIP.x} y={STRIP.y} width={STRIP.w} height={STRIP.h} rx={7} fill={colors.PANEL} stroke={gotU > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1 + gotU} />
@@ -311,15 +314,15 @@ export function Render({ s }: { s: SceneState }) {
                   />
                 );
               })}
-              <text x={STRIP.x + CELL_W / 2} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={700} fontFamily="ui-monospace, monospace">
+              <text x={STRIP.x + CELL_W / 2} y={STRIP.y + STRIP.h / 2 + 5} textAnchor="middle" fill={colors.BG} fontSize={13} fontWeight={700} fontFamily="ui-monospace, monospace">
                 987
               </text>
               {/* O(1) sits under the strip, inside the frame (the strip's end is at the stage edge) */}
-              <MathLabel tex="O(1)" x={STRIP.x + STRIP.w / 2} y={STRIP.y + STRIP.h + 14} fontSize={16} color={colors.POSITIVE} opacity={gotU} anchor="middle" />
+              <text x={STRIP.x + STRIP.w / 2} y={STRIP.y + STRIP.h + 18} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontStyle="italic" fontFamily="Georgia, serif" opacity={gotU}>O(1)</text>
               {/* the trim — several hundred, no more */}
               <g opacity={trimU}>
                 <line x1={STRIP.x + keep * CELL_W} y1={STRIP.y - 6} x2={STRIP.x + keep * CELL_W} y2={STRIP.y + STRIP.h + 6} stroke={colors.WARM} strokeWidth={2} strokeDasharray="4 4" />
-                <text x={STRIP.x + keep * CELL_W + 8} y={STRIP.y - 12} fill={colors.WARM} fontSize={12}>
+                <text x={STRIP.x + keep * CELL_W + 8} y={STRIP.y - 12} fill={colors.WARM} fontSize={14}>
                   keep several hundred, no more
                 </text>
               </g>
@@ -327,14 +330,14 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* the dormant user's strip — evicted, rebuilt on return */}
             <g opacity={trimU}>
-              <text x={DORM.x - 10} y={DORM.y + DORM.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={1 - 0.6 * dormU}>
-                inactive 30 days
+              <text x={DORM.x - 10} y={DORM.y + DORM.h / 2 + 5} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace" opacity={1 - 0.4 * dormU}>
+                dormant user
               </text>
               <rect x={DORM.x} y={DORM.y} width={DORM.w} height={DORM.h} rx={6} fill={colors.PANEL} stroke={colors.GRID} opacity={1 - 0.65 * dormU} strokeDasharray="5 4" />
               {dormU > 0 && (
                 <>
-                  <ServiceNode {...N_SQL} kind="db" label="SQL Database" u={clamp01(dormU * 3)} labelSize={12} w={120} h={46} />
-                  <Packet from={{ x: N_SQL.x + 64, y: N_SQL.y }} to={{ x: DORM.x + 40, y: DORM.y + DORM.h / 2 }} u={clamp01(dormU * 1.6 - 0.4)} r={4.5} color={colors.SECONDARY} label="rebuild" labelSize={12} />
+                  <ServiceNode {...N_SQL} kind="db" label="SQL Database" u={clamp01(dormU * 3)} labelSize={14} w={164} h={46} />
+                  <Packet from={{ x: N_SQL.x + 64, y: N_SQL.y }} to={{ x: DORM.x + 40, y: DORM.y + DORM.h / 2 }} u={clamp01(dormU * 1.6 - 0.4)} r={4.5} color={colors.SECONDARY} label="rebuild" labelSize={14} />
                 </>
               )}
             </g>
@@ -355,13 +358,13 @@ export function Render({ s }: { s: SceneState }) {
                       </>
                     ) : (
                       <g opacity={clamp01((h - 0.6) / 0.4)}>
-                        <text x={FEED.x + 48} y={y + 21} fill={colors.TEXT} fontSize={13} fontWeight={600}>
+                        <text x={FEED.x + 48} y={y + 21} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                           user {r.user}
                         </text>
-                        <text x={FEED.x + 48} y={y + 38} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                        <text x={FEED.x + 48} y={y + 38} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                           “{r.status}”
                         </text>
-                        <text x={FEED.x + FEED.w - 12} y={y + 21} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                        <text x={FEED.x + FEED.w - 12} y={y + 21} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                           {r.tweet}
                         </text>
                       </g>
@@ -374,19 +377,24 @@ export function Render({ s }: { s: SceneState }) {
             {/* the two batched multigets */}
             {mgU > 0 && mgU < 1 && (
               <>
-                <RequestFlow path={[{ x: FEED.x, y: rowY(1) + 20 }, N_TWEETINFO]} u={mgU} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="MGET tweet ids" responseLabel="text" labelSize={12} />
-                <RequestFlow path={[{ x: FEED.x, y: rowY(2) + 20 }, N_USERINFO]} u={clamp01(mgU * 1.25 - 0.25)} roundTrip color={colors.SECONDARY} responseColor={colors.POSITIVE} label="MGET user ids" responseLabel="names" labelSize={12} />
+                <RequestFlow path={[{ x: FEED.x, y: rowY(1) + 20 }, { x: N_TWEETINFO.x + 100, y: N_TWEETINFO.y }]} u={mgU} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} />
+                <RequestFlow path={[{ x: FEED.x, y: rowY(2) + 20 }, { x: N_USERINFO.x + 100, y: N_USERINFO.y }]} u={clamp01(mgU * 1.25 - 0.25)} roundTrip color={colors.SECONDARY} responseColor={colors.POSITIVE} />
+                {/* fixed captions between the boxes and the feed, so they never sit on a moving packet */}
+                <g opacity={clamp01(mgU * 4) * (1 - clamp01((mgU - 0.85) * 6.6))}>
+                  <text x={835} y={rowY(1) + 8} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">MGET tweet ids</text>
+                  <text x={835} y={rowY(2) + 2} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace">MGET user ids</text>
+                </g>
               </>
             )}
             <g opacity={clamp01(mgU * 3) * feedU}>
-              <ServiceNode {...N_TWEETINFO} kind="cache" label="Tweet Info Service" u={clamp01(mgU * 3)} labelSize={12} />
-              <ServiceNode {...N_USERINFO} kind="cache" label="User Info Service" u={clamp01(mgU * 3)} labelSize={12} />
+              <ServiceNode {...N_TWEETINFO} kind="cache" label="Tweet Info Service" u={clamp01(mgU * 3)} labelSize={14} w={190} />
+              <ServiceNode {...N_USERINFO} kind="cache" label="User Info Service" u={clamp01(mgU * 3)} labelSize={14} w={190} />
             </g>
 
             {/* the trade chip */}
             <g opacity={tradeU}>
               <rect x={80} y={545} width={430} height={44} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-              <MathLabel tex="\text{write } O(n) \;\Rightarrow\; \text{read } O(1)" x={295} y={567} fontSize={15} color={colors.TEXT} anchor="middle" />
+              <text x={295} y={572} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontFamily="Georgia, serif">write O(n) ⇒ read O(1)</text>
             </g>
           </g>
         )}

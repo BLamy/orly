@@ -40,6 +40,9 @@ const THRESHOLDS = 16;
 const contourColor = (_level: number, i: number): string =>
   colors.heat(0.88 - (0.62 * i) / (THRESHOLDS - 1));
 
+// dark halo behind text so labels stay legible over the contour lines
+const HALO = { stroke: colors.BG, strokeWidth: 4, paintOrder: 'stroke' } as const;
+
 // stage positions of the numerically-found landmarks
 const GLOBAL_PX: Pt = [bScale(GLOBAL_MIN[1]), aScale(GLOBAL_MIN[0])];
 const MIRROR_PX: Pt = [bScale(MIRROR_MIN[1]), aScale(MIRROR_MIN[0])];
@@ -100,7 +103,7 @@ function Walk({
   return (
     <g opacity={u}>
       <circle cx={sx} cy={sy} r={9} fill="none" stroke={color} strokeWidth={1.6} strokeDasharray="3 3" />
-      <text x={sx + 14} y={sy + 4} fill={color} fontSize={14} fontStyle="italic">
+      <text x={sx + 14} y={sy + 4} fill={color} fontSize={14} fontStyle="italic" {...HALO}>
         {startLabel}
       </text>
       <path
@@ -149,6 +152,7 @@ function Landmark({
         fill={color}
         fontSize={16}
         fontStyle="italic"
+        {...HALO}
       >
         {label}
       </text>
@@ -200,7 +204,7 @@ function Frame({ s }: { s: SceneState }) {
         />
 
         {/* the parameter plane's crosshair axes */}
-        <g opacity={planeAxU * Math.max(contourOp, 0.5)}>
+        <g opacity={planeAxU * Math.max(contourOp, 0.5) * (1 - closeU)}>
           <line
             x1={originX}
             y1={62}
@@ -221,16 +225,25 @@ function Frame({ s }: { s: SceneState }) {
             strokeDasharray="4 5"
             opacity={0.7}
           />
-          <text x={originX + 14} y={82} fill={colors.MUTED} fontSize={15} fontStyle="italic">
-            a · amplitude
-          </text>
           <text
-            x={1264}
-            y={originY - 12}
+            x={originX - 14}
+            y={originY - 14}
             textAnchor="end"
             fill={colors.MUTED}
             fontSize={15}
             fontStyle="italic"
+            {...HALO}
+          >
+            a · amplitude
+          </text>
+          <text
+            x={1264}
+            y={originY + 44}
+            textAnchor="end"
+            fill={colors.MUTED}
+            fontSize={15}
+            fontStyle="italic"
+            {...HALO}
           >
             b · frequency
           </text>
@@ -273,7 +286,7 @@ function Frame({ s }: { s: SceneState }) {
           color={colors.WARM}
           label="a shallow local minimum"
           dx={-40}
-          dy={-24}
+          dy={-32}
         />
         <Landmark
           px={GLOBAL_PX}
@@ -320,13 +333,12 @@ function Frame({ s }: { s: SceneState }) {
             height={PANEL.h}
             rx={12}
             fill={colors.PANEL}
-            opacity={0.92}
             stroke={colors.GRID}
           />
           <text x={PANEL.x + 22} y={PANEL.y + 32} fill={colors.TEXT} fontSize={16}>
             the data, and one candidate fit
           </text>
-          <Axes x={dataX} y={dataY} reveal={panelOp} xTicks={4} yTicks={4} fontSize={10} />
+          <Axes x={dataX} y={dataY} reveal={panelOp} xTicks={4} yTicks={4} fontSize={12} />
           {/* residual whiskers — the loss, drawn */}
           {whiskerU > 0 && (
             <g opacity={whiskerU}>
@@ -382,25 +394,21 @@ function Frame({ s }: { s: SceneState }) {
       {/* screen-fixed loss formula (top right) */}
       <MathLabel
         tex="L(a,b) = \tfrac{1}{N}\sum_i \big(y_i - a\sin(b\,x_i)\big)^2"
-        x={950}
+        x={1264}
         y={52}
-        anchor="start"
+        anchor="end"
         fontSize={17}
         opacity={s.get(scene.lossTexU)}
       />
 
       {/* closing card */}
       {closeU > 0 && (
-        <text
-          x={640}
-          y={340}
-          textAnchor="middle"
-          fill={colors.TEXT}
-          fontSize={29}
-          opacity={closeU}
-        >
-          Every training run is a walk on this surface.
-        </text>
+        <g opacity={closeU}>
+          <rect x={250} y={290} width={780} height={100} rx={14} fill={colors.BG} />
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} fontSize={29}>
+            Every training run is a walk on this surface.
+          </text>
+        </g>
       )}
     </>
   );

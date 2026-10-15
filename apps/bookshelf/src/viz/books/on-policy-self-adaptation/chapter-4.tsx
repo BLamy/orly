@@ -84,17 +84,21 @@ export function Render({ s }: { s: SceneState }) {
           const hot = Math.max(0, 1 - Math.abs(scan * 20 - i) / 8);
           return <rect key={i} x={38 + col * 52} y={68 + row * 36} width="42" height="26" rx="7" fill={chosen && selected ? colors.NEGATIVE : colors.ACCENT} opacity={u * (chosen && selected ? 0.92 : 0.18 + hot * 0.55)} stroke={chosen && selected ? colors.WARM : 'none'} strokeWidth="2" />;
         })}
-        <g opacity={s.get(scene.lossU)} transform="translate(300 366)">
+        <g opacity={s.get(scene.selectedU) * (1 - s.get(scene.lossU))} transform="translate(300 370)">
+          <rect x="-190" y="-15" width="380" height="30" rx="12" fill="#2d2117" stroke={colors.WARM} />
+          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>selected cells → advantage + loss mask</text>
+        </g>
+        <g opacity={s.get(scene.lossU)} transform="translate(300 370)">
           <rect x="-190" y="-15" width="380" height="30" rx="12" fill="#102a22" stroke={colors.POSITIVE} />
-          <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>policy loss uses opsa_loss_mask</text>
+          <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>policy loss uses opsa_loss_mask</text>
         </g>
       </g>
       <g transform="translate(704 118)" opacity={s.get(scene.stageU) * (1 - result)}>
         {STAGES.map((label, i) => {
           const active = scan >= i * 0.72;
           return <g key={label} transform={`translate(0 ${i * 62})`}>
-            <rect width="440" height="46" rx="16" fill={active ? '#17283b' : '#111827'} stroke={active ? (i >= 3 ? colors.POSITIVE : colors.SECONDARY) : colors.GRID} strokeWidth={active ? 2.5 : 1.2} />
-            <text x="220" y="29" textAnchor="middle" fill={active ? colors.TEXT : colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{label}</text>
+            <rect width="440" height="46" rx="16" fill={active ? '#17283b' : '#152033'} stroke={active ? (i >= 3 ? colors.POSITIVE : colors.SECONDARY) : '#33415c'} strokeWidth={active ? 2.5 : 1.2} />
+            <text x="220" y="29" textAnchor="middle" fill={active ? colors.TEXT : '#aebfd6'} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
             {i < STAGES.length - 1 && <path d="M220 47 V61" stroke={colors.MUTED} strokeWidth="3" />}
           </g>;
         })}
@@ -104,22 +108,22 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.launcherU)} transform="translate(132 560)">
         {[0, 1, 2, 3].map((i) => <rect key={`a${i}`} x={i * 54} y="-22" width="44" height="44" rx="10" fill="#14243a" stroke={colors.ACCENT} />)}
         {[0, 1, 2, 3].map((i) => <rect key={`r${i}`} x={254 + i * 54} y="-22" width="44" height="44" rx="10" fill="#241d38" stroke={colors.SECONDARY} />)}
-        <text x="82" y="44" textAnchor="middle" fill={colors.ACCENT} fontSize="13">4 actor GPUs</text>
-        <text x="336" y="44" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">4 rollout GPUs</text>
+        <text x="82" y="44" textAnchor="middle" fill={colors.ACCENT} fontSize="14">4 actor GPUs</text>
+        <text x="336" y="44" textAnchor="middle" fill={colors.SECONDARY} fontSize="14">4 rollout GPUs</text>
       </g>
       <g opacity={result} transform="translate(690 132)">
         <rect width="480" height="430" rx="30" fill="#0f1728" stroke={colors.POSITIVE} strokeWidth="3" />
         <text x="240" y="42" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">Qwen3-1.7B · manuscript results</text>
         <text x="240" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="20" fontWeight="800">AIME24 Avg@32: 13.44 → 48.85</text>
-        <text x="240" y="94" textAnchor="middle" fill={colors.MUTED} fontSize="12">paper figures from the manuscript, not a fresh run</text>
-        {RESULTS.map((item, i) => <g key={item.label} transform={`translate(28 ${118 + i * 66})`}>
-          <text x="0" y="0" fill={colors.TEXT} fontSize="13">{item.label}</text>
+        <text x="240" y="94" textAnchor="middle" fill={colors.MUTED} fontSize="14">paper figures from the manuscript, not a fresh run</text>
+        {RESULTS.map((item, i) => <g key={item.label} transform={`translate(28 ${120 + i * 66})`}>
+          <text x="0" y="0" fill={colors.TEXT} fontSize="14">{item.label}</text>
           <rect x="0" y="12" width={item.base * 3.8 * result} height="16" rx="8" fill={colors.MUTED} />
           <rect x="0" y="34" width={item.opsa * 3.8 * result} height="16" rx="8" fill={colors.POSITIVE} />
-          <text x="420" y="25" textAnchor="end" fill={colors.MUTED} fontSize="12">{item.base.toFixed(2)}</text>
-          <text x="420" y="47" textAnchor="end" fill={colors.POSITIVE} fontSize="12">{item.opsa.toFixed(2)}</text>
+          <text x="420" y="25" textAnchor="end" fill={colors.TEXT} fontSize="14">{item.base.toFixed(2)}</text>
+          <text x="420" y="47" textAnchor="end" fill={colors.POSITIVE} fontSize="14">{item.opsa.toFixed(2)}</text>
         </g>)}
-        <g opacity={s.get(scene.cautionU)} transform="translate(240 398)"><rect x="-210" y="-24" width="420" height="48" rx="18" fill="#2d2117" stroke={colors.WARM} /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="12">CPU/CLI validated · not a fresh GPU reproduction</text></g>
+        <g opacity={s.get(scene.cautionU)} transform="translate(240 396)"><rect x="-210" y="-22" width="420" height="44" rx="18" fill="#2d2117" stroke={colors.WARM} /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="14">CPU/CLI validated · not a fresh GPU reproduction</text></g>
       </g>
     </g>
     <g opacity={close}>
@@ -127,10 +131,11 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="186" textAnchor="middle" fill={colors.TEXT} fontSize="40" fontWeight="850">self-adaptation is a closed loop</text>
       {['roll out', 'actor logp', 'lowest 20%', 'entropy rank', 'update'].map((label, i) => <g key={label} transform={`translate(${250 + i * 195} 350)`}>
         <circle r="58" fill="#13243a" stroke={i === 2 ? colors.WARM : i === 3 ? colors.SECONDARY : colors.ACCENT} strokeWidth="3" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="13" fontWeight="750">{label}</text>
+        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontWeight="750">{label}</text>
         {i < 4 && <><line x1="60" y1="0" x2="132" y2="0" stroke={colors.MUTED} strokeWidth="4" /><polygon points="132,0 114,-10 114,10" fill={colors.MUTED} /></>}
       </g>)}
       <path d="M1030 420 C1030 510 250 510 250 412" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="10 8" />
+      <polygon points="250,412 241,396 259,396" fill={colors.WARM} />
       <text x="640" y="532" textAnchor="middle" fill={colors.POSITIVE} fontSize="17" fontFamily={colors.font.mono}>teacher-free · reward-free · reference-free</text>
     </g>
   </Camera></>;

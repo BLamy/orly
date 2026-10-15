@@ -42,8 +42,8 @@ export const LINK_MID = (LINK_A.x + LINK_B.x) / 2;
 export const BREAK_GAP = 150;
 
 /** The big shared total under each badge, and the vector cells beneath it. */
-export const COUNTER_DY = 80;
-export const GRID_DY = 112;
+export const COUNTER_DY = 70;
+export const GRID_DY = 120;
 export const CELL = 46;
 export const GAP = 6;
 export const GRID_W = CELL * 2 + GAP;
@@ -75,8 +75,8 @@ export interface ReplayRow {
 
 export const REPLAY_ROWS: ReplayRow[] = [
   { y: 200, a: [2, 0], b: [0, 3], note: '' },
-  { y: 290, a: [0, 3], b: [2, 0], note: 'swapped' },
-  { y: 380, a: [2, 3], b: [0, 3], note: 'again' },
+  { y: 290, a: [0, 3], b: [2, 0], note: 'commutative' },
+  { y: 380, a: [2, 3], b: [0, 3], note: 'idempotent' },
 ];
 export const REPLAY_RESULT: [number, number] = [2, 3];
 /** Column x-positions of the strip: a ⊔ b = result ✓ note. */

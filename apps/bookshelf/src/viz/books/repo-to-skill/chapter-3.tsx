@@ -16,6 +16,7 @@ const GRAPH = [
   { x: 1080, y: 430, label: 'recovery' },
 ] as const;
 const GRID_BOTTOM = GRID.y + ROWS * (GRID.cellH + GRID.gapY) - GRID.gapY;
+const CRITERIA = ['capability', 'task surface', 'format', 'runtime intent'];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -127,14 +128,23 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.evidenceU)} transform="translate(900 234)">
-        <rect x="-150" y="-29" width="300" height="58" rx="16" fill={colors.PANEL} stroke={colors.POSITIVE} />
+        <rect x="-160" y="-29" width="320" height="58" rx="16" fill={colors.PANEL} stroke={colors.POSITIVE} />
         <text y="-5" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">assignment gate</text>
-        <text y="17" textAnchor="middle" fill={colors.MUTED} fontSize="12">repository evidence · rationale · confidence</text>
+        <text y="17" textAnchor="middle" fill={colors.MUTED} fontSize="13">repository evidence · rationale · confidence</text>
       </g>
-      <g opacity={s.get(scene.weakFitU)} transform="translate(1110 330)">
+      <g opacity={s.get(scene.weakFitU)} transform="translate(1120 300)">
         <rect x="-120" y="-28" width="240" height="56" rx="15" fill="#2a1720" stroke={colors.NEGATIVE} />
         <text y="-4" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">NO FORCED MATCH</text>
-        <text y="17" textAnchor="middle" fill={colors.MUTED} fontSize="12">keyword-only is not evidence</text>
+        <text y="17" textAnchor="middle" fill={colors.MUTED} fontSize="13">keyword-only is not evidence</text>
+      </g>
+      <g opacity={clamp01((area - 0.5) * 2) * clamp01((1 - repo) * 4)} transform="translate(840 458)">
+        <rect x="0" y="0" width="300" height="128" rx="16" fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="20" y="26" fill={colors.SECONDARY} fontSize="14" fontWeight="800">FAMILY MATCH</text>
+        {CRITERIA.map((c, i) => <g key={c} transform={`translate(20 ${54 + i * 22})`}>
+          <text fill={colors.TEXT} fontSize="14">{c}</text>
+          <circle cx="262" cy="-5" r="7" fill="none" stroke={colors.MUTED} strokeWidth="1.5" />
+          <circle cx="262" cy="-5" r="7" fill={colors.POSITIVE} opacity={clamp01(family * 4 - i)} />
+        </g>)}
       </g>
 
       <g opacity={repo}>
@@ -145,7 +155,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>)}
       </g>
 
-      <g transform="translate(860 520)" opacity={request * (1 - area)}>
+      <g transform="translate(860 520)" opacity={request * clamp01((0.5 - area) * 4)}>
         <rect x="-240" y="-13" width="480" height="26" rx="13" fill="#1b2231" />
         <rect x="-240" y="-13" width="480" height="26" rx="13" fill={colors.NEGATIVE} opacity="0.85" />
         <text y="40" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>whole library in context: overflow</text>
@@ -159,10 +169,10 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={transaction} transform="translate(650 592)">
         {['taxonomy.json', 'repositories.jsonl', 'assignments.jsonl'].map((label, i) => <g key={label} transform={`translate(${(i - 1) * 190} 0)`}>
           <rect x="-82" y="-20" width="164" height="40" rx="11" fill={colors.PANEL} stroke={colors.ACCENT} />
-          <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+          <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
         </g>)}
         <path d={`M 440 0 H ${440 + 110 * rollback}`} stroke={rollback > 0.5 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth="6" />
-        <text x="520" y="-18" textAnchor="middle" fill={rollback > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize="12">stage → swap → restore</text>
+        <text x="520" y="-18" textAnchor="middle" fill={rollback > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize="13">stage → swap → restore</text>
       </g>
     </g>
     <g opacity={close}>

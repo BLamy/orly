@@ -34,14 +34,18 @@ const CAM_WIDE: CameraState = { x: 640, y: 380, k: 1.0 };
 
 /** The recording's runtime points — the vocabulary of a Replay session. */
 const POINTS: RecordingPoint[] = [
-  { at: 0.08, kind: 'interaction', label: 'boot' },
+  { at: 0.08, kind: 'interaction' },
   { at: 0.22, kind: 'network' },
   { at: 0.34, kind: 'render' },
-  { at: 0.48, kind: 'interaction', label: 'the write' },
+  { at: 0.48, kind: 'interaction' },
   { at: 0.6, kind: 'network' },
-  { at: 0.72, kind: 'render', label: 'digest shown' },
+  { at: 0.72, kind: 'render' },
   { at: 0.88, kind: 'interaction' },
 ];
+// one word under every marker, drawn here at a readable size (the strip's own labels are 10.5px)
+const POINT_LABELS = ['boot', 'request', 'render', 'the write', 'fetch', 'digest shown', 'click'];
+// the three things the reviewer's diff does not mention, sliding under the approval
+const BUG_TAGS = ['edge case', 'race', 'never ran'];
 
 /* -------------------------------------------------------------- timeline */
 export interface Scene {
@@ -233,9 +237,11 @@ export function Render({ s }: { s: SceneState }) {
   const cx0 = CLAIM.x + CLAIM.w / 2;
   const claimY = CLAIM.y + bob;
 
-  // tether endpoint: the "digest shown" point at 0.72 of the tape
+  // tether endpoint: the "digest shown" point at 0.72 of the tape; it lands on the
+  // top of that point's link chip so the line never runs through the chip's text
   const px = TAPE.x + 0.72 * TAPE.w;
   const py = TAPE.y;
+  const chipTop = py - 37;
 
   const links: RecordingLink[] = [{ at: 0.72, label: 'point at 41 s', pop: linkPop }];
 
@@ -276,6 +282,26 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* the asymmetry: a bug report is cheap to accept, "it works" is the expensive claim */}
+          {floatU > 1 && (
+            <g opacity={clamp01(floatU - 1) * (1 - clamp01(reviewerU))}>
+              <rect x={300} y={300} width={280} height={58} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              <text x={440} y={325} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
+                a bug report
+              </text>
+              <text x={440} y={345} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                cheap to accept: worst case, you look
+              </text>
+              <rect x={700} y={300} width={280} height={58} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+              <text x={840} y={325} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
+                “it works”
+              </text>
+              <text x={840} y={345} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                expensive: you have to trust it
+              </text>
+            </g>
+          )}
+
           {/* ---- the passive reviewer ---- */}
           {reviewerU > 0 && (
             <g opacity={reviewerU * (1 - reviewFade)}>
@@ -302,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 ))}
                 {stampU > 0 && (
-                  <g transform={`translate(170 20) rotate(-14) scale(${0.7 + 0.3 * stampU})`} opacity={stampU}>
+                  <g transform={`translate(150 22) rotate(-14) scale(${0.7 + 0.3 * stampU})`} opacity={stampU}>
                     <rect x={-52} y={-16} width={104} height={32} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
                     <text y={6} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={800} letterSpacing={2}>
                       LGTM
@@ -310,21 +336,19 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 )}
               </g>
-              {/* bugs slipping under the approval */}
+              {/* bugs slipping under the approval: each one is named and slides past the diff's bottom edge */}
               {bugU > 0 &&
-                [0, 1, 2].map((i) => {
+                BUG_TAGS.map((tag, i) => {
                   const u = clamp01(bugU * 3.4 - i * 0.9);
                   if (u <= 0) return null;
                   const bx = REVIEWER.x + 60 + u * 300;
-                  const by = REVIEWER.y + 220 + i * 18 + Math.sin(u * 9 + i) * 5;
+                  const by = REVIEWER.y + 214;
                   return (
-                    <g key={i} opacity={Math.min(1, u * 3) * (1 - clamp01((u - 0.85) * 6))}>
-                      <circle cx={bx} cy={by} r={5.5} fill={colors.NEGATIVE} />
-                      {i === 0 && u > 0.2 && u < 0.8 && (
-                        <text x={bx} y={by + 22} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontStyle="italic" opacity={0.85}>
-                          never mentioned by the diff
-                        </text>
-                      )}
+                    <g key={tag} opacity={Math.min(1, u * 3) * (1 - clamp01((u - 0.85) * 6))}>
+                      <rect x={bx} y={by} width={92} height={24} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+                      <text x={bx + 46} y={by + 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                        {tag}
+                      </text>
                     </g>
                   );
                 })}
@@ -343,6 +367,25 @@ export function Render({ s }: { s: SceneState }) {
             links={links}
             title="the recorded session — every moment addressable"
           />
+          {/* marker words, staggered in with the same reveal as the markers */}
+          {POINTS.map((p, i) => {
+            const lu = clamp01(tapeU * (POINTS.length + 2) - (i + 2));
+            if (lu <= 0) return null;
+            return (
+              <text
+                key={i}
+                x={TAPE.x + p.at * TAPE.w}
+                y={TAPE.y + TAPE.h + 24}
+                textAnchor="middle"
+                fill={colors.MUTED}
+                fontSize={13}
+                fontFamily={MONO}
+                opacity={lu}
+              >
+                {POINT_LABELS[i]}
+              </text>
+            );
+          })}
 
           {/* ---- the tether ---- */}
           {tetherU > 0 && (
@@ -351,7 +394,7 @@ export function Render({ s }: { s: SceneState }) {
                 x1={cx0}
                 y1={claimY + CLAIM.h}
                 x2={cx0 + (px - cx0) * tetherU}
-                y2={claimY + CLAIM.h + (py - claimY - CLAIM.h) * tetherU}
+                y2={claimY + CLAIM.h + (chipTop - claimY - CLAIM.h) * tetherU}
                 stroke={colors.POSITIVE}
                 strokeWidth={2}
                 strokeDasharray="5 5"
@@ -378,23 +421,27 @@ export function Render({ s }: { s: SceneState }) {
           <AgentBadge x={CRITIC.x} y={CRITIC.y} label="critic" sub="fresh session · attacks" color={colors.NEGATIVE} u={agentsU} />
           {onlyU > 0 && (
             <g opacity={onlyU} transform={`translate(0 ${(1 - onlyU) * 8})`}>
-              <rect x={CRITIC.x - 120} y={CRITIC.y - 78} width={240} height={34} rx={17} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
-              <text x={CRITIC.x} y={CRITIC.y - 56} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700} fontFamily={MONO}>
+              <rect x={CRITIC.x - 120} y={CRITIC.y - 70} width={240} height={34} rx={17} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+              <text x={CRITIC.x} y={CRITIC.y - 48} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700} fontFamily={MONO}>
                 only the critic sets verified
               </text>
             </g>
           )}
         </g>
 
-        {/* ---- closing panel ---- */}
+        {/* ---- closing panel: a veil clears the faded world so no old card shows through ---- */}
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={340} y={250} width={600} height={130} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={640} y={302} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={700}>
+            <rect x={-400} y={-400} width={STAGE_W + 800} height={STAGE_H + 800} fill={colors.BG} opacity={0.85} />
+            <rect x={340} y={236} width={600} height={168} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+            <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={700}>
               claim → evidence → attack → verified
             </text>
-            <text x={640} y={338} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               the loop that builds electric-forest
+            </text>
+            <text x={640} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+              sources: AGENTS.md · .eforest/loop.md
             </text>
           </g>
         )}

@@ -42,6 +42,8 @@ const CAM_WIDE: CameraState = { ...CAMERA_HOME };
 const MINUTES = ['14:29', '14:30', '14:31', '14:32', '14:33', '14:34'];
 const DUE_INDEX = 3; // 14:32 holds room-7's entry
 const minuteX = (i: number) => RAIL.x + 60 + i * ((RAIL.w - 120) / (MINUTES.length - 1));
+// The resident cut-off sits right of the 14:32 entry, so room-7 is "due sooner".
+const THRESHOLD_X = 1000;
 
 /* -------------------------------------------------------------- timeline */
 export interface Scene {
@@ -192,10 +194,10 @@ function NodeBox({ u, density, orphan, dim }: { u: number; density: number; orph
       <text x={NODE.x + 16} y={NODE.y + 26} fill={colors.TEXT} fontSize={15} fontWeight={700} opacity={1 - dead * 0.5}>
         {dead > 0.5 ? 'node-a · dead' : 'node-a · 8 GB'}
       </text>
-      <text x={NODE.x + 16} y={NODE.y + 46} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={1 - dead * 0.5}>
+      <text x={NODE.x + 16} y={NODE.y + 46} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={1 - dead * 0.5}>
         ~1,000 resident cells
       </text>
-      <text x={NODE.x + 16} y={NODE.y + 62} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={1 - dead * 0.5}>
+      <text x={NODE.x + 16} y={NODE.y + 62} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={1 - dead * 0.5}>
         ≈ $0.05 per cell / month
       </text>
       <g opacity={1 - dead * 0.6}>
@@ -226,18 +228,18 @@ function BucketBox({ u, hibernate, dim }: { u: number; hibernate: number; dim: n
       <text x={BUCKET.x + 18} y={BUCKET.y + 28} fill={colors.TEAL} fontSize={14.5} fontWeight={700}>
         the bucket — hibernated cells are just objects
       </text>
-      <text x={BUCKET.x + 18} y={BUCKET.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={BUCKET.x + 18} y={BUCKET.y + 52} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
         cells/room-7/ltx/e4/ · idle ⇒ ~zero cost
       </text>
       {/* room-7 starts resident in the node, then shrinks into the bucket */}
       <g transform={`translate(${x}, ${y})`}>
         <circle r={r} fill={hu >= 1 ? colors.TEAL : colors.ACCENT} opacity={0.9} />
-        <text y={-40} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={700}>
+        <text y={-40} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={700}>
           room-7
         </text>
       </g>
       {hu >= 1 && (
-        <text x={BUCKET.x + 130} y={BUCKET.y + 190} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text x={BUCKET.x + 130} y={BUCKET.y + 190} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           asleep · an object in S3
         </text>
       )}
@@ -256,7 +258,7 @@ function AlarmRing({ u, dim }: { u: number; dim: number }) {
       <text x={cx + 40} y={cy - 18} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
         alarm: today 14:32
       </text>
-      <text x={cx + 40} y={cy + 2} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={cx + 40} y={cy + 2} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
         set via ctx.storage — who will wake it?
       </text>
     </g>
@@ -292,7 +294,7 @@ function WakeRail({
       <text x={RAIL.x} y={RAIL.y - 58} fill={colors.TEXT} fontSize={15} fontWeight={700} opacity={uu}>
         the wake calendar · wake/ prefix in the bucket
       </text>
-      <text x={RAIL.x} y={RAIL.y - 38} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={uu}>
+      <text x={RAIL.x} y={RAIL.y - 38} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={uu}>
         minute buckets, lexicographically ordered — wake.rs · logic/wake.rs
       </text>
       <line x1={RAIL.x} y1={RAIL.y} x2={RAIL.x + RAIL.w * uu} y2={RAIL.y} stroke={colors.GRID} strokeWidth={3} strokeLinecap="round" />
@@ -304,7 +306,7 @@ function WakeRail({
         return (
           <g key={m} transform={`translate(${x}, ${RAIL.y})`} opacity={p}>
             <line y1={-8} y2={8} stroke={colors.GRID} strokeWidth={2} />
-            <text y={30} textAnchor="middle" fill={isDue && entry > 0.5 ? colors.WARM : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text y={30} textAnchor="middle" fill={isDue && entry > 0.5 ? colors.WARM : colors.MUTED} fontSize={13} fontFamily={MONO}>
               {'2026-08-06T' + m}
             </text>
             {isDue && entry > 0.3 && (
@@ -314,7 +316,7 @@ function WakeRail({
                   stroke={adopted > 0 ? colors.SECONDARY : orphanGlow > 0 ? colors.NEGATIVE : revive > 0.6 ? colors.POSITIVE : colors.WARM}
                   strokeWidth={1.6 + orphanGlow * 1.6}
                 />
-                <text y={-38} textAnchor="middle" fill={adopted > 0 ? colors.SECONDARY : orphanGlow > 0 ? colors.NEGATIVE : colors.WARM} fontSize={12.5} fontFamily={MONO}>
+                <text y={-38} textAnchor="middle" fill={adopted > 0 ? colors.SECONDARY : orphanGlow > 0 ? colors.NEGATIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
                   room-7
                 </text>
               </g>
@@ -325,12 +327,15 @@ function WakeRail({
       {/* stay-resident threshold marker */}
       {threshold > 0 && (
         <g opacity={threshold * (1 - clamp01(sweep) * 0.8)}>
-          <line x1={minuteX(1) + 30} y1={RAIL.y - 70} x2={minuteX(1) + 30} y2={RAIL.y + 12} stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="4 5" />
-          <text x={minuteX(1) + 30 - 8} y={RAIL.y - 78} textAnchor="end" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+          <line x1={THRESHOLD_X} y1={RAIL.y - 70} x2={THRESHOLD_X} y2={RAIL.y + 12} stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="4 5" />
+          <text x={THRESHOLD_X - 8} y={RAIL.y - 78} textAnchor="end" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
             due sooner: stay resident
           </text>
-          <text x={minuteX(1) + 30 + 8} y={RAIL.y - 78} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
-            further out: hibernate · one hour default
+          <text x={THRESHOLD_X + 8} y={RAIL.y - 78} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+            further out: hibernate
+          </text>
+          <text x={THRESHOLD_X + 8} y={RAIL.y - 62} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+            one hour default
           </text>
         </g>
       )}
@@ -338,13 +343,13 @@ function WakeRail({
       {invariant > 0 && (
         <g transform={`translate(640, ${RAIL.y + 78})`} opacity={invariant * (1 - clamp01(sweep) * 0.8)}>
           <rect x={-345} y={-30} width={690} height={60} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
-          <text x={-325} y={-6} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+          <text x={-325} y={-6} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
             stale entry → one spurious wake · cheap
           </text>
-          <text x={-325} y={16} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
+          <text x={-325} y={16} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
             missing entry → a lost alarm · never acceptable
           </text>
-          <text x={325} y={5} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={325} y={5} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             delete: completed activation only
           </text>
         </g>
@@ -352,8 +357,8 @@ function WakeRail({
       {/* sweep cursor */}
       {sweep > 0 && (
         <g transform={`translate(${cursor}, ${RAIL.y})`} opacity={Math.min(1, sweep * 4)}>
-          <line y1={-64} y2={14} stroke={colors.POSITIVE} strokeWidth={2} />
-          <text y={-70} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+          <line y1={-28} y2={14} stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={9} y={-14} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
             due scan · in order
           </text>
         </g>
@@ -369,7 +374,7 @@ function WakeRail({
       )}
       {/* orphan adoption note */}
       {adopted > 0 && (
-        <text x={minuteX(DUE_INDEX)} y={RAIL.y + 52} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO} opacity={adopted}>
+        <text x={minuteX(DUE_INDEX)} y={RAIL.y + 52} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO} opacity={adopted}>
           owner died · fleet waker adopts the entry
         </text>
       )}
@@ -408,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <NodeBox u={s.get(scene.nodeU)} density={s.get(scene.densityU)} orphan={s.get(scene.orphanU)} dim={dim} />
         <BucketBox u={s.get(scene.bucketU)} hibernate={s.get(scene.hibernateU)} dim={dim} />
-        <AlarmRing u={s.get(scene.alarmU) * (1 - clamp01(s.get(scene.railU)) * 0.7)} dim={dim} />
+        <AlarmRing u={s.get(scene.alarmU)} dim={dim} />
         <WakeRail
           u={s.get(scene.railU)}
           entry={s.get(scene.entryU)}

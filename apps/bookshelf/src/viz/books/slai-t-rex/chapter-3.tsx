@@ -120,8 +120,8 @@ export function Render({ s }: { s: SceneState }) {
               <text x={62} y={249} fill={colors.TEXT} fontSize={13}>portfolio weights sum to one</text>
               <text x={62} y={276} fill={colors.TEXT} fontSize={13}>sector minimums and maximums</text>
               <text x={62} y={303} fill={colors.TEXT} fontSize={13}>minimize total cost</text>
-              <text x={62} y={341} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>EquityFund · BondFund</text>
-              <text x={62} y={361} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>MoneyMarket</text>
+              <text x={62} y={341} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>EquityFund · BondFund</text>
+              <text x={62} y={361} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>MoneyMarket</text>
               <path d={`M 280 ${IR_Y} L ${280 + (IR_X - IR_R - 280) * irU} ${IR_Y}`} stroke={colors.GRID} strokeWidth={2} fill="none" />
             </g>
           )}
@@ -138,13 +138,23 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={label}>
                     <line x1={IR_X} y1={IR_Y} x2={IR_X + c * IR_R * irU} y2={IR_Y + Math.sin(a) * IR_R * irU} stroke={colors.GRID} />
-                    <text x={lx} y={ly} textAnchor={anchor} fill={colors.MUTED} fontSize={12}>{label}</text>
+                    <text x={lx} y={ly} textAnchor={anchor} fill={colors.MUTED} fontSize={13}>{label}</text>
                   </g>
                 );
               })}
               <text x={IR_X} y={IR_Y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>IR</text>
               <text x={IR_X} y={440} textAnchor="middle" fill={colors.TEXT} fontSize={13}>intermediate representation (IR)</text>
               <text x={IR_X} y={460} textAnchor="middle" fill={colors.MUTED} fontSize={12}>one explicit value per dimension</text>
+            </g>
+          )}
+
+          {/* The red exit is drawn before the candidates so their label chips sit on top of it, not under it. */}
+          {qualityU > 0 && (
+            <g opacity={qualityU}>
+              <path d="M 760 198 L 760 486" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 6" />
+              <rect x={590} y={140} width={340} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={760} y={163} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>validate_ir → validate_sft_record</text>
+              <text x={760} y={186} textAnchor="middle" fill={colors.MUTED} fontSize={13}>checks the IR and the final SFT record</text>
             </g>
           )}
 
@@ -157,30 +167,22 @@ export function Render({ s }: { s: SceneState }) {
                 <path d={hexPath(x, c.y, 38, 0.55 + i * 0.08)} fill={c.good ? colors.ACCENT : colors.WARM} fillOpacity={0.12} stroke={c.good ? colors.ACCENT : colors.WARM} />
                 {s.get(scene.renderU) > 0 && (
                   <g opacity={s.get(scene.renderU)}>
-                    <rect x={x - 55} y={405 + (i % 2) * 42} width={110} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-                    <text x={x} y={425 + (i % 2) * 42} textAnchor="middle" fill={colors.TEXT} fontSize={12}>user → assistant</text>
+                    <rect x={x - 58} y={405 + (i % 2) * 42} width={116} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
+                    <text x={x} y={425 + (i % 2) * 42} textAnchor="middle" fill={colors.TEXT} fontSize={13}>user → assistant</text>
                   </g>
                 )}
               </g>
             );
           })}
 
-          {qualityU > 0 && (
-            <g opacity={qualityU}>
-              <rect x={590} y={140} width={340} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={760} y={164} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>validate_ir → validate_sft_record</text>
-              <text x={760} y={186} textAnchor="middle" fill={colors.MUTED} fontSize={12}>checks the IR and the final SFT record</text>
-              <path d="M 760 198 L 760 486" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 6" />
-            </g>
-          )}
-
           {similarityU > 0 && (
             <g opacity={similarityU}>
-              <rect x={945} y={140} width={280} height={104} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={1085} y={166} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>similarity gate</text>
-              <text x={1085} y={190} textAnchor="middle" fill={colors.TEXT} fontSize={13}>token-set Jaccard overlap</text>
-              <text x={1085} y={210} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>shared tokens ÷ all tokens</text>
-              <text x={1085} y={230} textAnchor="middle" fill={colors.MUTED} fontSize={12}>near-duplicates score high</text>
+              <rect x={945} y={140} width={280} height={108} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
+              <rect x={945} y={140} width={280} height={108} rx={12} fill={colors.WARM} fillOpacity={0.1} />
+              <text x={1085} y={166} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={700}>similarity gate</text>
+              <text x={1085} y={192} textAnchor="middle" fill={colors.TEXT} fontSize={14}>token-set Jaccard overlap</text>
+              <text x={1085} y={213} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>shared tokens ÷ all tokens</text>
+              <text x={1085} y={234} textAnchor="middle" fill={colors.TEXT} fontSize={13}>near-duplicates score high</text>
             </g>
           )}
 
@@ -192,8 +194,9 @@ export function Render({ s }: { s: SceneState }) {
                 { x: 920, c: colors.WARM, label: 'surplus_sft.jsonl' },
               ].map((r) => (
                 <g key={r.label}>
-                  <rect x={r.x - 75} y={486} width={150} height={42} rx={10} fill={r.c} fillOpacity={0.12} stroke={r.c} />
-                  <text x={r.x} y={512} textAnchor="middle" fill={r.c} fontSize={12} fontFamily={MONO}>{r.label}</text>
+                  <rect x={r.x - 75} y={486} width={150} height={42} rx={10} fill={colors.PANEL} stroke={r.c} />
+                  <rect x={r.x - 75} y={486} width={150} height={42} rx={10} fill={r.c} fillOpacity={0.12} />
+                  <text x={r.x} y={512} textAnchor="middle" fill={r.c} fontSize={13} fontFamily={MONO}>{r.label}</text>
                 </g>
               ))}
             </g>
@@ -202,13 +205,13 @@ export function Render({ s }: { s: SceneState }) {
           {poolU > 0 && (
             <g opacity={poolU}>
               <path d={`M 525 507 C ${430 + 20 * (1 - poolU)} ${520 + 20 * (1 - poolU)} 330 470 270 412`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} strokeDasharray="6 6" />
-              <text x={40} y={452} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>accepted_synthetic_pool.jsonl ↺</text>
+              <text x={40} y={452} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>accepted_synthetic_pool.jsonl ↺</text>
             </g>
           )}
           {s.get(scene.countU) > 0 && (
             <g opacity={s.get(scene.countU)}>
-              <rect x={405} y={546} width={470} height={30} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={566} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>accepted_count / accepted_target_count · manifest.json</text>
+              <rect x={380} y={546} width={520} height={30} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={640} y={566} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>accepted_count / accepted_target_count · manifest.json</text>
             </g>
           )}
         </g>
@@ -218,7 +221,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={235} y={244} width={810} height={180} rx={18} fill={colors.PANEL} stroke={colors.SECONDARY} />
           <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={700}>A flywheel with brakes</text>
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>generate → render → validate → compare → accept</text>
-          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>accepted · rejected · surplus · provenance</text>
+          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>accepted · rejected · surplus · provenance</text>
         </g>
       )}
     </>

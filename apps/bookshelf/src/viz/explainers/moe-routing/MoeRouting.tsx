@@ -89,11 +89,19 @@ const ACTIVE_PCT = ((ACTIVE_B / TOTAL_B) * 100).toFixed(1); // 5.5%
 
 const TOK_X = 200;
 const EXP_X = 760;
-const rowYTok = (t: number): number => 120 + t * 40;
-const rowYExp = (e: number): number => 140 + e * 58;
+const TOK_W = 70;
+const TOK_H = 24;
+const EXP_W = 120;
+const EXP_H = 36;
+// Rows are packed so both columns share one vertical span (tokens 130–506, experts 132–504),
+// clear of the caption band at the bottom of the stage.
+const rowYTok = (t: number): number => 130 + t * 32;
+const rowYExp = (e: number): number => 132 + e * 48;
+// The sparsity bar sits under the token column, on the same left edge.
+const SPARSE_Y = 540;
 
-const CAM_ONE: CameraState = { x: 480, y: 300, k: 1.35 };
-const CAM_ALL: CameraState = { x: 560, y: 330, k: 1.1 };
+const CAM_ONE: CameraState = { x: 540, y: 318, k: 1.35 };
+const CAM_ALL: CameraState = { x: 640, y: 380, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -196,10 +204,10 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 function Ribbon({ t, e, w, color, u }: { t: number; e: number; w: number; color: string; u: number }) {
   if (u <= 0 || w < 0.03) return null;
-  const x0 = TOK_X + 60;
-  const y0 = rowYTok(t) + 12;
+  const x0 = TOK_X + TOK_W;
+  const y0 = rowYTok(t) + TOK_H / 2;
   const x1 = EXP_X - 8;
-  const y1 = rowYExp(e) + 18;
+  const y1 = rowYExp(e) + EXP_H / 2;
   const mx = (x0 + x1) / 2;
   return (
     <path
@@ -224,7 +232,7 @@ function Frame({ s }: { s: SceneState }) {
   const sparseU = s.get(scene.sparseU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  const mainOp = 1 - 0.9 * closeU;
 
   return (
     <>
@@ -238,8 +246,8 @@ function Frame({ s }: { s: SceneState }) {
             if (u <= 0) return null;
             return (
               <g key={t} opacity={u}>
-                <rect x={TOK_X} y={rowYTok(t)} width={60} height={24} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={TOK_X + 30} y={rowYTok(t) + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily="monospace">
+                <rect x={TOK_X} y={rowYTok(t)} width={TOK_W} height={TOK_H} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={TOK_X + TOK_W / 2} y={rowYTok(t) + 17} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   tok {t + 1}
                 </text>
               </g>
@@ -251,14 +259,14 @@ function Frame({ s }: { s: SceneState }) {
             if (u <= 0) return null;
             return (
               <g key={e} opacity={u}>
-                <rect x={EXP_X} y={rowYExp(e)} width={120} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                <text x={EXP_X + 60} y={rowYExp(e) + 23} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                <rect x={EXP_X} y={rowYExp(e)} width={EXP_W} height={EXP_H} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
+                <text x={EXP_X + EXP_W / 2} y={rowYExp(e) + 23} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                   expert {e + 1}
                 </text>
                 {loadU > 0 && (
                   <g opacity={loadU}>
                     <rect x={EXP_X + 130} y={rowYExp(e) + 10} width={LOAD[e] * 22 * loadU} height={16} rx={4} fill={colors.WARM} opacity={0.8} />
-                    <text x={EXP_X + 136 + LOAD[e] * 22 * loadU} y={rowYExp(e) + 23} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                    <text x={EXP_X + 136 + LOAD[e] * 22 * loadU} y={rowYExp(e) + 23} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                       {LOAD[e]}
                     </text>
                   </g>
@@ -286,12 +294,12 @@ function Frame({ s }: { s: SceneState }) {
           {/* the sparsity bar */}
           {sparseU > 0 && (
             <g opacity={Math.min(1, sparseU * 1.4)}>
-              <text x={200} y={550} fill={colors.TEXT} fontSize={15}>
+              <text x={200} y={SPARSE_Y} fill={colors.TEXT} fontSize={15}>
                 parameters held vs activated per token
               </text>
-              <rect x={200} y={562} width={760 * sparseU} height={20} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
-              <rect x={200} y={562} width={760 * (ACTIVE_B / TOTAL_B) * sparseU} height={20} rx={5} fill={colors.POSITIVE} />
-              <text x={970} y={577} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={sparseU}>
+              <rect x={200} y={SPARSE_Y + 12} width={760 * sparseU} height={20} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={200} y={SPARSE_Y + 12} width={760 * (ACTIVE_B / TOTAL_B) * sparseU} height={20} rx={5} fill={colors.POSITIVE} />
+              <text x={976} y={SPARSE_Y + 27} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={sparseU}>
                 671B total · 37B active ({ACTIVE_PCT}%)
               </text>
             </g>
@@ -319,7 +327,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Sparse to compute, huge to hold.
           </text>

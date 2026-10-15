@@ -60,7 +60,7 @@ const FIRST_WAVE = 8; // tokens delivered before the refresh snaps the pipe
 const READ_BOOKMARK = 8; // cells the reader has consumed when it vanishes
 
 // camera marks
-const CAM_PIPE: CameraState = { x: 640, y: 210, k: 1.22 };
+const CAM_PIPE: CameraState = { x: 640, y: 210, k: 1.12 };
 // k is held at 1.18 so both endpoint boxes stay inside the stage
 const CAM_BREAK: CameraState = { x: 640, y: 215, k: 1.18 };
 // frames the bill (top) down to the tape's offset readout (bottom)
@@ -241,7 +241,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const cardU = s.get(scene.cardU);
 
-  const machineOp = 1 - 0.95 * dimU;
+  // fully gone under the closing card, so no ghost of the machine shows behind it
+  const machineOp = 1 - dimU;
   // the direct pipe is fully gone once the tape takes over (no ghost chips)
   const pipeLayerOp = (1 - phaseU) * machineOp;
 
@@ -307,16 +308,25 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={pipeLayerOp}>
           {/* the wire, whole or snapped */}
           {snapU < 0.5 ? (
-            <Connection from={{ x: PIPE_X0, y: PIPE_Y }} to={{ x: PIPE_X1, y: PIPE_Y }} u={pipeU} label="one live connection" color={colors.ACCENT} />
+            <Connection from={{ x: PIPE_X0, y: PIPE_Y }} to={{ x: PIPE_X1, y: PIPE_Y }} u={pipeU} color={colors.ACCENT} />
           ) : (
             <g>
               <line x1={PIPE_X0} y1={PIPE_Y} x2={620 - 26 * snapU} y2={PIPE_Y + 10 * snapU} stroke={colors.NEGATIVE} strokeWidth={2} />
               <line x1={660 + 26 * snapU} y1={PIPE_Y + 14 * snapU} x2={PIPE_X1} y2={PIPE_Y} stroke={colors.NEGATIVE} strokeWidth={2} />
-              <text x={640} y={PIPE_Y - 20} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
-                refresh
-              </text>
             </g>
           )}
+          {/* wire caption sits above the lane, clear of the tokens riding it */}
+          <text
+            x={640}
+            y={PIPE_Y - 24}
+            textAnchor="middle"
+            opacity={snapU < 0.5 ? pipeU : 1}
+            fill={snapU < 0.5 ? colors.MUTED : colors.NEGATIVE}
+            fontSize={14}
+            fontWeight={snapU < 0.5 ? 400 : 600}
+          >
+            {snapU < 0.5 ? 'one live connection' : 'refresh'}
+          </text>
 
           {/* wave 1 tokens: delivered, in-flight (falling on snap), or unsent */}
           {TOKENS.map((tok, i) => {
@@ -330,8 +340,8 @@ export function Render({ s }: { s: SceneState }) {
             if (op <= 0) return null;
             return (
               <g key={i} opacity={op}>
-                <rect x={p.x - 20} y={p.y - 12 + dy} width={40} height={22} rx={6} fill={dropped ? colors.NEGATIVE : colors.ACCENT} opacity={0.92} />
-                <text x={p.x} y={p.y + 3 + dy} textAnchor="middle" fill={colors.BG} fontSize={11} fontFamily={MONO}>
+                <rect x={p.x - 23} y={p.y - 12 + dy} width={46} height={22} rx={6} fill={dropped ? colors.NEGATIVE : colors.ACCENT} opacity={0.92} />
+                <text x={p.x} y={p.y + 3 + dy} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily={MONO}>
                   {tok}
                 </text>
               </g>
@@ -345,8 +355,8 @@ export function Render({ s }: { s: SceneState }) {
               if (p.u <= 0 || p.u >= 0.98) return null;
               return (
                 <g key={`r${i}`}>
-                  <rect x={p.x - 20} y={p.y + 16} width={40} height={22} rx={6} fill={colors.WARM} opacity={0.92} />
-                  <text x={p.x} y={p.y + 31} textAnchor="middle" fill={colors.BG} fontSize={11} fontFamily={MONO}>
+                  <rect x={p.x - 23} y={p.y + 16} width={46} height={22} rx={6} fill={colors.WARM} opacity={0.92} />
+                  <text x={p.x} y={p.y + 31} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily={MONO}>
                     {tok}
                   </text>
                 </g>
@@ -431,8 +441,8 @@ export function Render({ s }: { s: SceneState }) {
           {readerU > 0 && (
             <g opacity={readerOp}>
               <path d={`M ${headX} ${TAPE.y - TAPE.cellH / 2 - 26} l 9 -14 l -18 0 Z`} fill={colors.POSITIVE} />
-              <rect x={headX - 58} y={TAPE.y - TAPE.cellH / 2 - 70} width={116} height={24} rx={7} fill={colors.BG} stroke={colors.POSITIVE} />
-              <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 53} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+              <rect x={headX - 62} y={TAPE.y - TAPE.cellH / 2 - 70} width={124} height={24} rx={7} fill={colors.BG} stroke={colors.POSITIVE} />
+              <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 53} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 {`offset=…${String(Math.floor(Math.min(headCell, N - 0.001))).padStart(2, '0')}`}
               </text>
             </g>
@@ -440,8 +450,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* while gone: the bookmark survives on the browser side */}
           <g opacity={goneU * (1 - backU) * machineOp}>
-            <rect x={BROWSER.x - 70} y={BROWSER.y + 62} width={140} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={BROWSER.x} y={BROWSER.y + 80} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+            {/* left of the read connector, which rises along the browser's centre line */}
+            <rect x={BROWSER.x - 154} y={BROWSER.y + 62} width={140} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
+            <text x={BROWSER.x - 84} y={BROWSER.y + 80} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               saved: offset=…08
             </text>
           </g>

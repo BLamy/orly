@@ -30,8 +30,9 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const CONFIG = { x: 80, y: 160, w: 420, h: 226 };
 const PROJECT = { x: 760, y: 290, r: 104, ring: 175 };
-const EXPLORE = { x: 440, y: 500, w: 640, h: 26 };
-const STREAM = { x: 120, y: 596, w: 1040 };
+const EXPLORE = { x: 400, y: 500, w: 720, h: 30 };
+const STREAM = { x: 120, y: 590, w: 1040 };
+const PULSE_X = EXPLORE.x + EXPLORE.w * 0.66;
 
 const CAM_CONFIG: CameraState = { x: 380, y: 270, k: 1.1 };
 const CAM_PROJECT: CameraState = { x: 640, y: 290, k: 1.0 };
@@ -40,12 +41,18 @@ const CAM_SPLIT: CameraState = { x: 640, y: 420, k: 1.1 };
 const CAM_CLOSE: CameraState = { x: 640, y: 360, k: 1.0 };
 
 const RECORDING_POINTS: RecordingPoint[] = [
-  { at: 0.08, kind: 'interaction', label: 'open' },
+  { at: 0.08, kind: 'interaction' },
   { at: 0.24, kind: 'network' },
-  { at: 0.4, kind: 'render', label: 'journey' },
+  { at: 0.4, kind: 'render' },
   { at: 0.58, kind: 'interaction' },
   { at: 0.73, kind: 'network' },
-  { at: 0.9, kind: 'render', label: 'recorded' },
+  { at: 0.9, kind: 'render' },
+];
+// Strip labels are drawn here (the shared strip sets them at 10.5px).
+const RECORDING_LABELS: { i: number; text: string }[] = [
+  { i: 0, text: 'open' },
+  { i: 2, text: 'journey' },
+  { i: 5, text: 'recorded' },
 ];
 
 const CATALOG_ITEMS = [
@@ -300,7 +307,7 @@ function ProjectMachine({
         <circle r={PROJECT.ring} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 8" />
         <circle r={PROJECT.r} fill={colors.PANEL} stroke={glow > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2 + glow * 2} />
         <circle r={PROJECT.r - 20} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.25 + 0.45 * catalog} />
-        <text y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+        <text y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
           LOOPQA PROJECT
         </text>
         <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={700}>
@@ -309,7 +316,7 @@ function ProjectMachine({
         <text y={34} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
           qa-project-id
         </text>
-        <text y={58} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+        <text y={58} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
           target_url fingerprint
         </text>
 
@@ -386,7 +393,7 @@ function StreamLedger({ u, dim }: { u: number; dim: number }) {
   ];
   return (
     <g opacity={(1 - 0.1 * dim) * uu}>
-      <text x={STREAM.x} y={STREAM.y - 18} fill={colors.TEAL} fontSize={15} fontWeight={700}>
+      <text x={STREAM.x} y={STREAM.y - 18} fill={colors.TEAL} fontSize={16} fontWeight={700}>
         Slack app authority · Durable Streams
       </text>
       <line
@@ -405,7 +412,7 @@ function StreamLedger({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={entry.label} opacity={e} transform={`translate(${x}, ${STREAM.y})`}>
             <circle r={7} fill={colors.TEAL} />
-            <text y={28} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text y={28} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {entry.label}
             </text>
           </g>
@@ -448,6 +455,17 @@ export function Render({ s }: { s: SceneState }) {
         <ConfigCard u={s.get(scene.configU) * (1 - 0.9 * dim)} />
         <ConfigKey u={s.get(scene.keyU)} dim={dim} />
         <InputFlights u={s.get(scene.inputsU)} dim={dim} />
+        {/* empty slot the project fills in beat 2 */}
+        <circle
+          cx={PROJECT.x}
+          cy={PROJECT.y}
+          r={PROJECT.r}
+          fill="none"
+          stroke={colors.MUTED}
+          strokeWidth={1.4}
+          strokeDasharray="4 6"
+          opacity={0.6 * clamp01(s.get(scene.configU)) * (1 - clamp01(s.get(scene.projectU))) * (1 - 0.9 * dim)}
+        />
         <ProjectMachine
           u={s.get(scene.projectU)}
           queue={s.get(scene.queueU)}
@@ -457,6 +475,15 @@ export function Render({ s }: { s: SceneState }) {
         />
 
         <g opacity={1 - 0.9 * dim}>
+          <text
+            x={EXPLORE.x}
+            y={EXPLORE.y - 14}
+            fill={colors.TEXT}
+            fontSize={15}
+            opacity={s.get(scene.exploreU)}
+          >
+            initial exploration · Replay recording
+          </text>
           <RecordingStrip
             x={EXPLORE.x}
             y={EXPLORE.y}
@@ -465,11 +492,31 @@ export function Render({ s }: { s: SceneState }) {
             points={RECORDING_POINTS}
             reveal={s.get(scene.exploreU)}
             u={s.get(scene.recordingU)}
-            title="initial exploration · Replay recording"
+            title=""
           />
+          {RECORDING_LABELS.map(({ i, text }) => {
+            const rv = clamp01(s.get(scene.exploreU));
+            const mu = clamp01(rv * (RECORDING_POINTS.length + 2) - (i + 2));
+            if (mu <= 0) return null;
+            return (
+              <text
+                key={text}
+                x={EXPLORE.x + RECORDING_POINTS[i].at * EXPLORE.w}
+                y={EXPLORE.y + EXPLORE.h + 18}
+                textAnchor="middle"
+                fill={colors.TEXT}
+                fontSize={14}
+                fontFamily={MONO}
+                opacity={mu}
+              >
+                {text}
+              </text>
+            );
+          })}
           {s.get(scene.queueU) > 0 && (
-            <text x={PROJECT.x} y={472} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={s.get(scene.queueU)}>
-              queueJourneyTasksForProject() · triggerSpawnForProject()
+            <text x={PROJECT.x + PROJECT.ring + 22} y={PROJECT.y - 4} fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={s.get(scene.queueU)}>
+              <tspan x={PROJECT.x + PROJECT.ring + 22} dy={0}>queueJourneyTasksForProject()</tspan>
+              <tspan x={PROJECT.x + PROJECT.ring + 22} dy={22}>triggerSpawnForProject()</tspan>
             </text>
           )}
         </g>
@@ -478,16 +525,16 @@ export function Render({ s }: { s: SceneState }) {
         {correlation > 0 && (
           <g opacity={correlation * (1 - 0.9 * dim)}>
             <line
-              x1={900}
+              x1={PULSE_X}
               y1={EXPLORE.y + EXPLORE.h + 4}
-              x2={900}
+              x2={PULSE_X}
               y2={STREAM.y - 6}
               stroke={colors.WARM}
               strokeWidth={1.6}
               strokeDasharray="3 5"
             />
-            <rect x={770} y={556} width={260} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={900} y={575} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <rect x={PULSE_X - 150} y={554} width={300} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+            <text x={PULSE_X} y={573} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               ticket evidence correlates both
             </text>
           </g>

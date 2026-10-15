@@ -98,8 +98,11 @@ export const STRIP = { x: 90, y: 330, w: 1100 };
 export const STEPX = STRIP.w / L;
 export const tokX = (i: number): number => STRIP.x + i * STEPX + STEPX / 2;
 
-export const CAM_STRIP: CameraState = { x: 400, y: 330, k: 1.12 };
-export const CAM_POS10: CameraState = { x: 340, y: 320, k: 1.35 };
+// The whole 20-token strip (STRIP.x .. STRIP.x + STRIP.w) fits the stage at k = 1.
+export const CAM_STRIP: CameraState = { x: 640, y: 330, k: 1 };
+// Zoomed on the first pass and the query: keeps head 2's labels and the
+// "the repeat" label on stage while the query sits on token 10.
+export const CAM_POS10: CameraState = { x: 560, y: 320, k: 1.2 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

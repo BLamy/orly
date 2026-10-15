@@ -40,6 +40,11 @@ const SKILL_LINES = [
   'scripts: normalize.py',
 ];
 
+// the suite's task families, stacked under the card's column
+const SUITE_KINDS = ['coding', 'data transformation', 'office workflows', 'security review', 'operations', 'document extraction'];
+const SUITE_ROW_H = 44;
+const SUITE_ROW_GAP = 12;
+
 const MODES = [
   { name: 'Baseline', desc: 'solve directly — skill creation forbidden', c: colors.MUTED },
   { name: 'PreSkill', desc: 'author skills first, then a fresh workspace runs with only them', c: colors.SECONDARY },
@@ -173,7 +178,11 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
+  // the loop hook clears before the card's lines start to appear
+  const hookOp = hookU * clamp01((0.35 - skillU) / 0.35);
+  // the card leaves as the modes arrive, so no half-panned card sits at the edge
+  const cardOp = skillU * (1 - clamp01(modesU / 0.25));
 
   return (
     <>
@@ -182,8 +191,8 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the loop hook */}
-          {hookU > 0 && (
-            <g opacity={hookU * (1 - 0.75 * skillU)}>
+          {hookOp > 0.02 && (
+            <g opacity={hookOp}>
               {['run the task', 'read the run', 'write a skill', 'run smarter'].map((t, i) => {
                 const cx = 640 + 220 * Math.cos((i / 4) * Math.PI * 2 - Math.PI / 2);
                 const cy = 330 + 140 * Math.sin((i / 4) * Math.PI * 2 - Math.PI / 2);
@@ -203,8 +212,8 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* SKILL.md card */}
-          {skillU > 0 && (
-            <g opacity={skillU}>
+          {cardOp > 0.02 && (
+            <g opacity={cardOp}>
               <rect x={CARD_X} y={CARD_Y} width={CARD_W} height={44 + SKILL_LINES.length * LINE_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               {SKILL_LINES.map((l, i) => {
                 const u = clamp01(skillU * SKILL_LINES.length - i);
@@ -217,8 +226,8 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {hashU > 0 && (
                 <g opacity={hashU}>
-                  <rect x={CARD_X + 8} y={CARD_Y - 38} width={310} height={28} rx={8} fill={colors.SECONDARY} opacity={0.14} />
-                  <text x={CARD_X + 20} y={CARD_Y - 19} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+                  <rect x={CARD_X + 8} y={CARD_Y - 38} width={386} height={28} rx={8} fill={colors.SECONDARY} opacity={0.14} />
+                  <text x={CARD_X + 20} y={CARD_Y - 19} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
                     sha256 before == sha256 after · immutable
                   </text>
                 </g>
@@ -237,7 +246,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={MODE_X + 22} y={y + 34} fill={m.c} fontSize={16} fontWeight={600}>
                   {m.name}
                 </text>
-                <text x={MODE_X + 22} y={y + 62} fill={colors.TEXT} fontSize={13}>
+                <text x={MODE_X + 22} y={y + 62} fill={colors.TEXT} fontSize={14}>
                   {m.desc}
                 </text>
               </g>
@@ -247,8 +256,19 @@ function Frame({ s }: { s: SceneState }) {
           {/* suite chip */}
           {suiteU > 0 && (
             <g opacity={suiteU}>
+              {SUITE_KINDS.map((k, i) => {
+                const y = CARD_Y + i * (SUITE_ROW_H + SUITE_ROW_GAP);
+                return (
+                  <g key={k}>
+                    <rect x={CARD_X} y={y} width={CARD_W} height={SUITE_ROW_H} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                    <text x={CARD_X + 22} y={y + 28} fill={colors.TEXT} fontSize={16}>
+                      {k}
+                    </text>
+                  </g>
+                );
+              })}
               <rect x={330} y={560} width={620} height={44} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+              <text x={640} y={588} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 100 tasks · 502 sub-problems · 2 runtimes · 5 models
               </text>
             </g>

@@ -40,19 +40,23 @@ const HOT = [
   { x: 400, y: 290 },
 ] as const;
 const COLD = [
-  { x: 860, y: 200 },
-  { x: 1000, y: 200 },
-  { x: 1140, y: 200 },
-  { x: 860, y: 290 },
-  { x: 1000, y: 290 },
-  { x: 1140, y: 290 },
+  { x: 830, y: 200 },
+  { x: 970, y: 200 },
+  { x: 1110, y: 200 },
+  { x: 830, y: 290 },
+  { x: 970, y: 290 },
+  { x: 1110, y: 290 },
 ] as const;
 const COMBINE = { x: 400, y: 430 } as const;
 const BRIDGE_Y = 250;
 
-// One framing for the whole chapter. Both zones, their outer experts and the
-// layer counter stay on stage; a push toward either zone would crop the other.
+// Opening framing: both zones, their outer experts and the layer counter on
+// stage. The beats push toward the card, then the processor, then pull back.
 const FRAME: CameraState = { x: 640, y: 330, k: 1.04 };
+// Pushes are mild: at 1.1 the whole layout still fits the 1280-wide stage.
+const CAM_GPU: CameraState = { x: 600, y: 330, k: 1.1 };
+const CAM_CPU: CameraState = { x: 660, y: 330, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
   tl: Timeline;
@@ -107,6 +111,7 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'A token arrives. Attention runs where it always runs — on the card, dense, fast, no surprises.',
   });
+  tl.tween(cam, CAM_GPU, { at: 7.2, dur: 1.3, ease: ease.move });
   tl.tween(tokIn, 1, { at: 7.8, dur: 1.6, ease: ease.linear });
   tl.hold(12.5, 0.5);
 
@@ -136,6 +141,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'On the processor side a wrapper object owns the experts. It fans the work across thread pools — one per memory domain — so every socket chews on its own slice.',
   });
+  tl.tween(cam, CAM_CPU, { at: 27.2, dur: 1.4, ease: ease.move });
   tl.tween(poolU, 1, { at: 28.2, dur: 1.4, ease: ease.enter });
   tl.hold(33.5, 0.5);
 
@@ -145,6 +151,7 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'And here is the whole trick: both neighborhoods compute at the same time. The card is never waiting politely for the processor, or the other way around.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 34.2, dur: 1.4, ease: ease.move });
   tl.tween(bothU, 1, { at: 35.2, dur: 2.6, ease: ease.linear });
   tl.hold(40.0, 0.5);
 
@@ -200,11 +207,11 @@ function Box({ x, y, w = 150, h = 52, label, sub, color, u, glow = 0 }: { x: num
     <g opacity={u}>
       {glow > 0.05 && <rect x={x - w / 2 - 5} y={y - h / 2 - 5} width={w + 10} height={h + 10} rx={12} fill={color} opacity={glow * 0.25} />}
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={9} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x} y={sub ? y - 2 : y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+      <text x={x} y={sub ? y - 2 : y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -243,15 +250,19 @@ export function Render({ s }: { s: SceneState }) {
           <Zone x={CPUZ.x} y={CPUZ.y} w={CPUZ.w} h={CPUZ.h} label="CPU · system RAM" kind="group" u={zonesU} color={colors.POSITIVE} />
           {/* PCIe bridge */}
           <g opacity={zonesU}>
-            <line x1={GPUZ.x + GPUZ.w} y1={BRIDGE_Y} x2={CPUZ.x} y2={BRIDGE_Y} stroke={colors.GRID} strokeWidth={10} opacity={0.5} strokeLinecap="round" />
-            <text x={(GPUZ.x + GPUZ.w + CPUZ.x) / 2} y={BRIDGE_Y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <line x1={GPUZ.x + GPUZ.w} y1={BRIDGE_Y} x2={CPUZ.x} y2={BRIDGE_Y} stroke={colors.MUTED} strokeWidth={8} opacity={0.45} strokeLinecap="round" />
+            <text x={(GPUZ.x + GPUZ.w + CPUZ.x) / 2} y={BRIDGE_Y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               PCIe
+            </text>
+            {/* what crossed the bridge stays labelled once the cold beat is over */}
+            <text x={(GPUZ.x + GPUZ.w + CPUZ.x) / 2} y={BRIDGE_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={coldGo}>
+              activations only
             </text>
           </g>
 
           {/* GPU internals */}
-          <Box x={ATTN.x} y={ATTN.y} label="attention" sub="dense · every token" color={colors.ACCENT} u={attnU} glow={tokIn >= 1 ? 0.7 : 0} />
-          <Box x={ROUTER.x} y={ROUTER.y} label="router" sub="top-k gate" color={colors.SECONDARY} u={attnU} glow={pickU} />
+          <Box x={ATTN.x} y={ATTN.y} w={170} label="attention" sub="dense · every token" color={colors.ACCENT} u={attnU} glow={tokIn >= 1 ? 0.7 : 0} />
+          <Box x={ROUTER.x} y={ROUTER.y} w={170} label="router" sub="top-k gate" color={colors.SECONDARY} u={attnU} glow={pickU} />
           {HOT.map((p, i) => (
             <Box key={i} x={p.x} y={p.y} w={110} h={44} label={`hot expert`} color={colors.WARM} u={attnU} glow={Math.max(hotGo >= 1 ? 0.6 : 0, pulse)} />
           ))}
@@ -263,10 +274,10 @@ export function Render({ s }: { s: SceneState }) {
           ))}
           <g opacity={poolU}>
             <rect x={CPUZ.x + 40} y={370} width={CPUZ.w - 80} height={62} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={CPUZ.x + CPUZ.w / 2} y={394} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <text x={CPUZ.x + CPUZ.w / 2} y={394} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               KTMoEWrapper.forward
             </text>
-            <text x={CPUZ.x + CPUZ.w / 2} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={CPUZ.x + CPUZ.w / 2} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
               cpuinfer_threads: 64 · threadpool_count: 2 (NUMA)
             </text>
           </g>
@@ -311,8 +322,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* deferral chip */}
           <g opacity={deferU}>
-            <rect x={556} y={540} width={330} height={30} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={721} y={560} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
+            <rect x={CPUZ.x} y={540} width={330} height={32} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
+            <text x={CPUZ.x + 165} y={561} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
               --kt-max-deferred-experts-per-token 2
             </text>
           </g>
@@ -320,8 +331,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* layer counter */}
           {loopN > 0.5 && (
             <g>
-              <rect x={80} y={548} width={190} height={34} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-              <text x={175} y={570} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+              <rect x={GPUZ.x} y={540} width={190} height={32} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+              <text x={GPUZ.x + 95} y={561} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                 layer {Math.min(61, Math.ceil(loopN))} / 61
               </text>
             </g>
@@ -330,14 +341,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* close */}
         <g opacity={closeU}>
-          <rect x={330} y={228} width={620} height={204} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={276} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+          <rect x={300} y={196} width={680} height={288} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={252} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             the heterogeneous forward pass
           </text>
-          <text x={640} y={316} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             weights stay home · activations travel · both processors stay busy
           </text>
-          <text x={640} y={390} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={380} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             KTMoEWrapper.forward(hidden_states, topk_ids, topk_weights, cuda_stream)
           </text>
         </g>

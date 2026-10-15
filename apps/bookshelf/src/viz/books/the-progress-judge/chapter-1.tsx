@@ -66,7 +66,7 @@ const VOLLEYS = [
 ];
 
 const CAM_PAIR: CameraState = { x: 380, y: 300, k: 1.2 };
-const CAM_PLANE: CameraState = { x: 935, y: 355, k: 1.18 };
+const CAM_PLANE: CameraState = { x: 660, y: 355, k: 1.05 };
 const CAM_WIDE: CameraState = { x: 640, y: 355, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
@@ -232,7 +232,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={worldOp}>
           {/* ---- LEFT: builder ↔ critic, and the volley ledger ---- */}
           {pairU > 0 && (
-            <g opacity={Math.min(1, pairU * 2) * (1 - 0.9 * leftDim)}>
+            <g opacity={Math.min(1, pairU * 2) * (1 - 0.55 * leftDim)}>
               <rect x={PAIR.bx} y={PAIR.by} width={PAIR.w} height={PAIR.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
               <text x={PAIR.bx + 16} y={PAIR.by + 32} fill={colors.TEXT} fontSize={14} fontWeight={700}>builder</text>
               <text x={PAIR.bx + 16} y={PAIR.by + 54} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>implement-task · rework: true</text>
@@ -262,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
                         </g>
                       );
                     })}
-                    <text x={PAIR.bx + 250} y={y + 46} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={u}>
+                    <text x={PAIR.bx + 250} y={y + 46} fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={u}>
                       fair on its own
                     </text>
                   </g>
@@ -284,6 +284,9 @@ export function Render({ s }: { s: SceneState }) {
               {/* the origin: zero findings, verified */}
               <circle cx={ORIGIN.x} cy={ORIGIN.y} r={7} fill={colors.POSITIVE} opacity={0.9} />
               <text x={ORIGIN.x + 14} y={ORIGIN.y + 20} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>0 findings — verified</text>
+              {/* the key for the plane: one dot per verdict */}
+              <circle cx={ORIGIN.x + 22} cy={PLANE.y + 22} r={5.5} fill={colors.MUTED} />
+              <text x={ORIGIN.x + 38} y={PLANE.y + 27} fill={colors.MUTED} fontSize={13}>one dot = one verdict</text>
 
               {/* converging spiral */}
               {convU > 0 && (
@@ -293,7 +296,7 @@ export function Render({ s }: { s: SceneState }) {
                     <circle key={k} cx={p.x} cy={p.y} r={k === 7 ? 0 : 5.5} fill={colors.POSITIVE} opacity={clamp01(convU - k + 0.5)} />
                   ))}
                   {convU > 6.5 && (
-                    <text x={CONV[2].x + 12} y={CONV[2].y - 16} fill={colors.POSITIVE} fontSize={12.5} fontWeight={700} opacity={clamp01((convU - 6.5) * 2)}>
+                    <text x={CONV[2].x + 12} y={CONV[2].y - 16} fill={colors.POSITIVE} fontSize={12.5} fontWeight={700} opacity={clamp01((convU - 6.5) * 2) * (1 - convDim)}>
                       converging
                     </text>
                   )}
@@ -314,9 +317,14 @@ export function Render({ s }: { s: SceneState }) {
                     );
                   })}
                   {orbitU > 8.5 && (
-                    <text x={1050} y={265} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700} opacity={clamp01((orbitU - 8.5) * 2) * (1 - spotU)}>
-                      circling
-                    </text>
+                    <g opacity={clamp01((orbitU - 8.5) * 2) * (1 - spotU)}>
+                      <text x={1050} y={261} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700}>
+                        circling
+                      </text>
+                      <text x={1050} y={279} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                        never reaches zero
+                      </text>
+                    </g>
                   )}
                 </g>
               )}

@@ -196,7 +196,7 @@ export function Render({ s }: { s: SceneState }) {
   //   sync:     GPU at k*SYNC_STEP,          CPU at k*SYNC_STEP + GPU_T
   //   deferred: GPU at k*max(GPU_T, ...)... — CPU pipelined: CPU k starts when GPU k done,
   //             GPU k+1 starts as soon as GPU k done (doesn't wait for CPU k)
-  const gpuStart = (k: number): number => k * SYNC_STEP * (1 - deferK) + k * CPU_T * deferK;
+  const gpuStart = (k: number): number => k * SYNC_STEP * (1 - deferK) + k * GPU_T * deferK;
   const cpuStart = (k: number): number => (k * SYNC_STEP + GPU_T) * (1 - deferK) + (k * CPU_T + GPU_T) * deferK;
   const syncTotal = STEPS * SYNC_STEP;
   const deferTotal = (STEPS - 1) * CPU_T + GPU_T + CPU_T;
@@ -228,7 +228,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={LANES.x + LANES.w} y={CPU_Y + LANE_H + 44} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               time →
             </text>
-            <text x={LANES.x} y={CPU_Y + LANE_H + 44} fill={colors.MUTED} fontSize={12}>
+            <text x={LANES.x} y={CPU_Y + LANE_H + 44} fill={colors.MUTED} fontSize={13}>
               schematic timing: 1 GPU unit, 1.6 CPU units per step
             </text>
           </g>
@@ -286,9 +286,9 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
           <g opacity={gainU}>
-            <rect x={tX(deferTotal) + 12} y={GPU_Y + 40} width={210} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={tX(deferTotal) + 117} y={GPU_Y + 60} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
-              ~{Math.round((1 - deferTotal / syncTotal) * 100)}% sooner (schematic)
+            <rect x={tX(deferTotal) + 12} y={GPU_Y + 40} width={296} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={tX(deferTotal) + 160}y={GPU_Y + 60} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              same four steps · schematic, not measured
             </text>
           </g>
 
@@ -308,7 +308,7 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             ))}
             <circle cx={724 + 312 * clamp01(dialV / 7)} cy={502} r={9} fill={riskU > 0.4 ? colors.WARM : colors.POSITIVE} />
-            <text x={880} y={540} textAnchor="middle" fill={riskU > 0.4 ? colors.WARM : colors.MUTED} fontSize={12}>
+            <text x={880} y={540} textAnchor="middle" fill={riskU > 0.4 ? colors.WARM : colors.TEXT} fontSize={13}>
               {riskU > 0.4 ? 'accuracy risk: stale expert outputs' : '0 sync · 1–4 recommended · 5–7 risky'}
             </text>
           </g>

@@ -220,7 +220,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* strategy selector rail */}
           <g opacity={selU}>
-            <text x={GRID.x - 4} y={84} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x - 4} y={84} fill={colors.TEXT} opacity={0.75} fontSize={14} fontFamily="ui-monospace, monospace">
               --kt-expert-placement-strategy
             </text>
             {STRATS.map((st, k) => {
@@ -228,7 +228,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={st.key}>
                   <rect x={GRID.x - 4 + k * 158} y={94} width={146} height={30} rx={8} fill={on > 0.5 ? colors.PANEL : colors.BG} stroke={on > 0.5 ? st.color : colors.GRID} strokeWidth={on > 0.5 ? 1.6 : 1} />
-                  <text x={GRID.x + 69 + k * 158} y={114} textAnchor="middle" fill={on > 0.5 ? st.color : colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
+                  <text x={GRID.x + 69 + k * 158} y={114} textAnchor="middle" fill={on > 0.5 ? st.color : colors.TEXT} opacity={on > 0.5 ? 1 : 0.6} fontSize={14} fontFamily="ui-monospace, monospace">
                     {st.key}
                   </text>
                 </g>
@@ -252,7 +252,7 @@ export function Render({ s }: { s: SceneState }) {
                     height={GRID.cell}
                     rx={5}
                     fill={v > 0.5 ? colors.WARM : v > 0.25 ? colors.SECONDARY : colors.MUTED}
-                    opacity={0.1 + 0.6 * v}
+                    opacity={0.16 + 0.6 * v}
                   />
                   {m > 0.02 && (
                     <rect x={x} y={y} width={GRID.cell} height={GRID.cell} rx={5} fill="none" stroke={colors.TEXT} strokeWidth={2} opacity={m} />
@@ -262,9 +262,23 @@ export function Render({ s }: { s: SceneState }) {
             }),
           )}
           <g opacity={gridU}>
-            <text x={GRID.x - 18} y={GRID.y + 10} textAnchor="end" fill={colors.MUTED} fontSize={12}>
-              layers
+            <text x={GRID.x - 10} y={GRID.y - 8} textAnchor="end" fill={colors.TEXT} opacity={0.75} fontSize={14}>
+              layer
             </text>
+            {HEAT.map((_, i) => (
+              <text
+                key={`layer-${i}`}
+                x={GRID.x - 10}
+                y={GRID.y + i * (GRID.cell + GRID.gap) + GRID.cell / 2 + 5}
+                textAnchor="end"
+                fill={colors.TEXT}
+                opacity={0.75}
+                fontSize={14}
+                fontFamily="ui-monospace, monospace"
+              >
+                L{i + 1}
+              </text>
+            ))}
             <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               brighter = hotter expert · outlined = seated on the GPU (4 per layer)
             </text>
@@ -280,10 +294,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* stats-file chip (frequency) */}
           <g opacity={statsU}>
             <rect x={GRID.x + gridW + 22} y={GRID.y + 6} width={214} height={52} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={GRID.x + gridW + 129} y={GRID.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x + gridW + 129} y={GRID.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               --init-expert-location
             </text>
-            <text x={GRID.x + gridW + 129} y={GRID.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={GRID.x + gridW + 129} y={GRID.y + 46} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
               activation_stats.pt
             </text>
           </g>
@@ -291,7 +305,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* coverage meter: live strategy vs the uniform baseline */}
           <g opacity={scoreU}>
             <rect x={GRID.x + gridW + 22} y={GRID.y + 78} width={214} height={112} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={GRID.x + gridW + 129} y={GRID.y + 98} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            <text x={GRID.x + gridW + 129} y={GRID.y + 98} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               heat captured on the card
             </text>
             <rect x={GRID.x + gridW + 42} y={GRID.y + 108} width={174} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
@@ -300,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
               {(liveCoverage * 100).toFixed(0)}%
             </text>
             <rect x={GRID.x + gridW + 42} y={GRID.y + 158} width={174 * coverage[0]} height={5} rx={2} fill={colors.MUTED} opacity={0.8} />
-            <text x={GRID.x + gridW + 42} y={GRID.y + 180} textAnchor="start" fill={colors.MUTED} fontSize={12}>
+            <text x={GRID.x + gridW + 42} y={GRID.y + 180} textAnchor="start" fill={colors.TEXT} opacity={0.8} fontSize={14}>
               uniform baseline: {(coverage[0] * 100).toFixed(0)}%
             </text>
           </g>
@@ -312,10 +326,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             four deals, one flag
           </text>
-          <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+          <text x={640} y={324} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
             uniform when you know nothing · frequency when you have receipts
           </text>
-          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} opacity={0.85} fontSize={14}>
             all of them decided at boot — next: a schedule that moves at runtime
           </text>
           <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">

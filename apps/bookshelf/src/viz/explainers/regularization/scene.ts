@@ -272,9 +272,10 @@ export const barH = (w: number): number => Math.log10(1 + Math.abs(w)) / Math.lo
 // The timeline
 // ---------------------------------------------------------------------------
 
-export const CAM_PUSH: CameraState = { x: 610, y: 350, k: 1.06 };
-export const CAM_PLOT: CameraState = { x: 560, y: 352, k: 1.1 };
-export const CAM_WIDE: CameraState = { x: 640, y: 358, k: 0.97 };
+// every camera keeps the right-hand panel (x 812–1240) and the plot inside the 1280 stage
+export const CAM_PUSH: CameraState = { x: 650, y: 356, k: 1.04 };
+export const CAM_PLOT: CameraState = { x: 650, y: 356, k: 1 };
+export const CAM_WIDE: CameraState = { x: 425, y: 358, k: 0.97 };
 
 export interface Scene {
   tl: Timeline;
@@ -396,7 +397,7 @@ export function buildScene(): Scene {
     dur: 6.8,
     text: 'There is a stranger way to buy the same insurance. Instead of shrinking every weight, randomly silence some of the building blocks entirely.',
   });
-  tl.tween(panelU, 0.12, { at: 60.0, dur: 1.0, ease: ease.move });
+  tl.tween(panelU, 0, { at: 60.0, dur: 1.0, ease: ease.move });
   tl.tween(dotU, 0, { at: 60.0, dur: 0.8, ease: ease.move });
   tl.tween(sweetU, 0, { at: 60.0, dur: 0.8, ease: ease.move });
   tl.tween(fitOp, 0.12, { at: 60.4, dur: 1.0, ease: ease.move });

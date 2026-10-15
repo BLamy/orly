@@ -75,7 +75,7 @@ function renderFrame(s: SceneState) {
   const v2Tip = T(V2);
   const det = detOf(m);
   const sqPts = SQ_CORNERS.map(T);
-  const sqCenter = T({ x: 0.5, y: 0.5 });
+  const sqTop = T({ x: 1, y: 1 });
   const e1 = EIG_SPAN_1.map(S);
   const e2 = EIG_SPAN_2.map(S);
   const popK = 0.6 + 0.4 * scaleU;
@@ -154,8 +154,17 @@ function renderFrame(s: SceneState) {
             strokeOpacity={0.65}
             strokeWidth={2}
           />
-          <text x={sqCenter.x} y={sqCenter.y + 6} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
-            area ×{det.toFixed(1)}
+          <text
+            x={sqTop.x + 10}
+            y={sqTop.y - 10}
+            textAnchor="start"
+            fill={colors.TEXT}
+            fontSize={19}
+            stroke={colors.BG}
+            strokeWidth={5}
+            paintOrder="stroke"
+          >
+            area ×{Number(det.toFixed(1))}
           </text>
         </g>
       )}

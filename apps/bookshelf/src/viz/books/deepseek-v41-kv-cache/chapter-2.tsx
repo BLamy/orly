@@ -22,7 +22,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Timeline,
   cameraInterp,
   colors,
@@ -268,7 +267,7 @@ function Chip({ x, text, o, color = MUTED }: { x: number; text: string; o: numbe
   return (
     <g opacity={o}>
       <rect x={x} y={88} width={w} height={24} rx={12} fill={PANEL} stroke={color} strokeOpacity={0.6} />
-      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={12} textAnchor="middle">{text}</text>
+      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={13} textAnchor="middle">{text}</text>
     </g>
   );
 }
@@ -285,16 +284,21 @@ function Box({ x, y, w, text, color = ACCENT }: { x: number; y: number; w: numbe
   return (
     <g>
       <rect x={x} y={y - 17} width={w} height={34} rx={6} fill={PANEL} stroke={color} strokeOpacity={0.75} />
-      <text x={x + w / 2} y={y + 4} fill={TEXT} fontFamily={font.mono} fontSize={12} textAnchor="middle">{text}</text>
+      <text x={x + w / 2} y={y + 4} fill={TEXT} fontFamily={font.mono} fontSize={13} textAnchor="middle">{text}</text>
     </g>
   );
 }
 /** beat 10 recap: one card per squeeze, numbers drawn from the chapter's own constants */
 const RECAP = [
   { x: 200, title: 'Fewer entries', body: 'encoder: 2 tokens → 1 pooled entry', color: SECONDARY },
-  { x: 495, title: 'Fewer bits', body: 'E2M1 values + 1 E4M3 scale per 16', color: ACCENT },
+  { x: 495, title: 'Fewer bits', body: '4-bit values, 1 scale per 16', color: ACCENT },
   { x: 790, title: 'Fewer copies', body: `${KV_SOURCES.length} source layers serve all ${N_LAYERS}`, color: POSITIVE },
 ];
+
+/** subscript run inside a plain SVG text line (no KaTeX CSS needed) */
+const Sub = ({ children }: { children: string }) => (
+  <tspan baselineShift="sub" fontSize={14}>{children}</tspan>
+);
 
 function drawn(u: number) {
   return { pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - clamp01(u), fill: 'none' } as const;
@@ -306,7 +310,7 @@ function ValueCell({ x, y, v, w, color, o }: { x: number; y: number; v: number; 
   return (
     <g opacity={o}>
       <rect x={x - COL.w / 2} y={y} width={COL.w} height={COL.h} rx={4} fill={PANEL} stroke={color} strokeOpacity={0.8} />
-      <text x={x} y={y + 16} fill={TEXT} fontFamily={font.mono} fontSize={12} textAnchor="middle">{fmt(v)}</text>
+      <text x={x} y={y + 16} fill={TEXT} fontFamily={font.mono} fontSize={13} textAnchor="middle">{fmt(v)}</text>
       {w !== null && (
         <>
           <rect x={x - 18} y={y + 23} width={36} height={5} rx={2} fill={color} fillOpacity={0.15} />
@@ -392,26 +396,26 @@ export function Render({ s }: { s: SceneState }) {
                 <ValueCell x={COL.m} y={COL.y + COL.dy * d} v={lerp(POOLED[d], NORMED[d], norm)} w={null} color={SECONDARY} o={latO} />
               </g>
             ))}
-            <Code x={aX} y={232} text="142" size={12} color={MUTED} anchor="middle" o={srcO} />
-            <Code x={bX} y={232} text="143" size={12} color={WARM} anchor="middle" o={srcO * bO} />
+            <Code x={aX} y={232} text="142" size={13} color={MUTED} anchor="middle" o={srcO} />
+            <Code x={bX} y={232} text="143" size={13} color={WARM} anchor="middle" o={srcO * bO} />
             <g opacity={latO}>
               <path d={`M${COL.m - 20},236 a20,10 0 0 1 40,0`} fill="none" stroke={WARM} strokeWidth={2} />
-              <Note x={COL.m} y={408} text={`entry for group ${GROUP}`} size={12} color={SECONDARY} anchor="middle" />
-              <Note x={COL.m} y={424} text="pooled" size={12} anchor="middle" o={1 - norm} />
-              <Note x={COL.m} y={424} text="pooled, then RMSNorm" size={12} anchor="middle" o={norm} />
+              <Note x={COL.m} y={408} text={`entry for group ${GROUP}`} size={13} color={SECONDARY} anchor="middle" />
+              <Note x={COL.m} y={424} text="pooled" size={13} anchor="middle" o={1 - norm} />
+              <Note x={COL.m} y={424} text="pooled, then RMSNorm" size={13} anchor="middle" o={norm} />
             </g>
             {/* pending half-group */}
             <g opacity={g(scene.pendO)}>
               <rect x={COL.a - 34} y={COL.y - 26} width={68} height={COL.dy * 4 + 32} rx={8} fill="none" stroke={MUTED} strokeDasharray="5 4" />
-              <Code x={COL.a + 44} y={COL.y + 60} text="kv_state" size={12} color={MUTED} />
-              <Code x={COL.a + 44} y={COL.y + 78} text="score_state" size={12} color={MUTED} />
-              <Code x={COL.a + 44} y={COL.y + 104} text="compress_ratio = 2" size={12} color={SECONDARY} />
+              <Code x={COL.a + 44} y={COL.y + 60} text="kv_state" size={13} color={MUTED} />
+              <Code x={COL.a + 44} y={COL.y + 78} text="score_state" size={13} color={MUTED} />
+              <Code x={COL.a + 44} y={COL.y + 104} text="compress_ratio = 2" size={13} color={SECONDARY} />
               <rect x={COL.m - COL.w / 2} y={COL.y} width={COL.w} height={COL.dy * 3 + COL.h} rx={4} fill="none" stroke={MUTED} strokeOpacity={0.6} strokeDasharray="4 4" />
-              <Note x={COL.m} y={408} text="no entry yet" size={12} anchor="middle" />
+              <Note x={COL.m} y={408} text="no entry yet" size={13} anchor="middle" />
             </g>
             <g opacity={g(scene.pressLbl)}>
               <Code x={268} y={196} text="Compressor.forward" color={TEXT} />
-              <Code x={268} y={212} text="wkv → values · wgate → score.softmax(dim=2) → bars" size={12} color={MUTED} />
+              <Code x={268} y={212} text="wkv → values · wgate → score.softmax(dim=2) → bars" size={13} color={MUTED} />
             </g>
           </g>
         )}
@@ -425,17 +429,17 @@ export function Render({ s }: { s: SceneState }) {
               <Box x={748} y={236} w={72} text="k_norm" color={POSITIVE} />
             </g>
             <g opacity={clamp01(g(scene.ribU) * 3 - 2)}>
-              <Note x={900} y={240} text="index K — unrotated latent" color={POSITIVE} size={12} />
-              <Note x={600} y={204} text="① first" color={POSITIVE} size={12} />
+              <Note x={900} y={240} text="index K — unrotated latent" color={POSITIVE} size={13} />
+              <Note x={600} y={204} text="① first" color={POSITIVE} size={13} />
             </g>
             <path d="M524,350 C570,350 590,384 652,384 L960,384" stroke={SECONDARY} strokeWidth={2} {...drawn(g(scene.mainU))} />
             <g opacity={clamp01(g(scene.mainU) * 3 - 0.5)}>
               <circle cx={680} cy={384} r={24} fill={PANEL} stroke={SECONDARY} strokeWidth={2} />
               <line x1={680} y1={384} x2={680 + 20 * Math.sin(rot * 5.2)} y2={384 - 20 * Math.cos(rot * 5.2)} stroke={SECONDARY} strokeWidth={3} strokeLinecap="round" />
-              <Code x={680} y={428} text="apply_rotary_emb" size={12} color={SECONDARY} anchor="middle" />
+              <Code x={680} y={428} text="apply_rotary_emb" size={13} color={SECONDARY} anchor="middle" />
               <Box x={790} y={384} w={118} text="fp4_act_quant" color={SECONDARY} />
-              <Note x={970} y={388} text="main cache entry" color={SECONDARY} size={12} />
-              <Note x={600} y={452} text="② afterward" color={SECONDARY} size={12} />
+              <Note x={970} y={388} text="main cache entry" color={SECONDARY} size={13} />
+              <Note x={600} y={452} text="② afterward" color={SECONDARY} size={13} />
             </g>
           </g>
         )}
@@ -450,8 +454,8 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i}>
                   <rect x={x} y={BITS.y} width={w} height={BITS.h} rx={2} fill={SECONDARY} fillOpacity={0.22} stroke={SECONDARY} strokeOpacity={0.8} />
-                  <text x={x + w / 2} y={ty} fill={MUTED} opacity={1 - narrow} fontFamily={font.mono} fontSize={12} textAnchor="middle">{raw}</text>
-                  <text x={x + w / 2} y={ty} fill={TEXT} opacity={narrow} fontFamily={font.mono} fontSize={12} textAnchor="middle">{QUANT16[i]}</text>
+                  <text x={x + w / 2} y={ty} fill={MUTED} opacity={1 - narrow} fontFamily={font.mono} fontSize={13} textAnchor="middle">{raw}</text>
+                  <text x={x + w / 2} y={ty} fill={TEXT} opacity={narrow} fontFamily={font.mono} fontSize={13} textAnchor="middle">{QUANT16[i]}</text>
                 </g>
               );
             })}
@@ -460,20 +464,22 @@ export function Render({ s }: { s: SceneState }) {
               <rect key={b} x={BITS.x + BITS.dx * b - 1} y={BITS.y - 3} width={BITS.dx} height={BITS.h + 6} rx={4} fill="none"
                 stroke={TEXT} strokeOpacity={0.5} opacity={clamp01(narrow * 3 - 2)} />
             ))}
-            <g opacity={g(scene.scaleO)}>
+            {/* the scale block fades in as the values finish packing, so it reads as "one per 16" */}
+            <g opacity={Math.max(g(scene.scaleO), clamp01(narrow * 2 - 1))}>
               <rect x={BITS.x + BITS.dx * 8 + 10} y={BITS.y - 3} width={BITS.dx} height={BITS.h + 6} rx={4} fill={POSITIVE} fillOpacity={0.2} stroke={POSITIVE} />
-              <text x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 22} fill={TEXT} fontFamily={font.mono} fontSize={12} textAnchor="middle">×1</text>
-              <Code x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 62} text="E4M3" size={12} color={POSITIVE} anchor="middle" />
-              <Note x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 78} text="1 scale byte" size={12} anchor="middle" />
-              <Note x={BITS.x} y={BITS.y + 118} text="8 value bytes + 1 scale byte per 16 channels" size={12} color={TEXT} />
+              <text x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 22} fill={TEXT} fontFamily={font.mono} fontSize={13} textAnchor="middle">×1</text>
+              <Note x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 62} text="1 scale byte" size={13} anchor="middle" />
+              <Code x={BITS.x + BITS.dx * 8.5 + 10} y={BITS.y + 78} text="E4M3" size={13} color={POSITIVE} anchor="middle" />
+              <Note x={BITS.x} y={BITS.y + 118} text="8 value bytes + 1 scale byte per 16 channels" size={13} color={TEXT} />
             </g>
-            <Code x={BITS.x} y={BITS.y - 44} text="E2M1" size={13} color={SECONDARY} />
-            <Note x={BITS.x + 46} y={BITS.y - 44} text="4-bit values" size={12} o={narrow} />
-            <Brace x0={BITS.x} x1={BITS.x + lerp(BITS.dx, BITS.dx / 2, narrow) * 16} y={BITS.y + BITS.h + 8} label="block_size = 16" fontSize={12} color={MUTED} />
+            {/* plain description first, then the format names */}
+            <Note x={BITS.x} y={BITS.y - 44} text="4-bit values" size={13} color={TEXT} o={1} />
+            <Code x={BITS.x + 104} y={BITS.y - 44} text="= E2M1" size={13} color={SECONDARY} o={clamp01(narrow * 2 - 1)} />
+            <Brace x0={BITS.x} x1={BITS.x + lerp(BITS.dx, BITS.dx / 2, narrow) * 16} y={BITS.y + BITS.h + 8} label="block_size = 16" fontSize={13} color={MUTED} />
             <circle cx={330} cy={308} r={30} fill="none" stroke={ACCENT} strokeWidth={5} strokeOpacity={0.7} />
-            <Code x={330} y={312} text="FP8" size={12} color={ACCENT} anchor="middle" />
-            <Code x={330} y={360} text="FP8 SWA" size={12} color={ACCENT} anchor="middle" />
-            <Note x={330} y={376} text="local window: 8-bit" size={12} anchor="middle" />
+            <Code x={330} y={312} text="FP8" size={13} color={ACCENT} anchor="middle" />
+            <Code x={330} y={360} text="FP8 SWA" size={13} color={ACCENT} anchor="middle" />
+            <Note x={330} y={376} text="local window: 8-bit" size={13} anchor="middle" />
           </g>
         )}
 
@@ -499,12 +505,12 @@ export function Render({ s }: { s: SceneState }) {
             {KV_SOURCES.map((src) => (
               <g key={src} opacity={clamp01(conv * 2 - 0.6)}>
                 <rect x={trackX(src) - 16} y={TRACK.y1} width={32} height={24} rx={5} fill={SECONDARY} fillOpacity={0.3} stroke={SECONDARY} />
-                <text x={trackX(src)} y={TRACK.y1 + 16} fill={TEXT} fontFamily={font.mono} fontSize={12} textAnchor="middle">{src}</text>
+                <text x={trackX(src)} y={TRACK.y1 + 16} fill={TEXT} fontFamily={font.mono} fontSize={13} textAnchor="middle">{src}</text>
               </g>
             ))}
             <Code x={TRACK.x - 4} y={200} text="kv_source_layers = [2, 8, 14, 20]" color={SECONDARY} />
-            <Note x={trackX(39)} y={200} text="40 backbone layers, zero-based" size={12} anchor="end" />
-            <Note x={trackX(0) - 8} y={TRACK.y0 + 22} text="0–1: window only" size={12} anchor="end" />
+            <Note x={trackX(39)} y={200} text="40 backbone layers, zero-based" size={13} anchor="end" />
+            <Note x={trackX(0) - 8} y={TRACK.y0 + 22} text="0–1: window only" size={13} anchor="end" />
           </g>
         )}
 
@@ -516,20 +522,20 @@ export function Render({ s }: { s: SceneState }) {
             {[0, 1].map((k) => (
               <g key={k}>
                 <rect x={492 + 40 * k} y={258} width={34} height={26} rx={4} fill={PANEL} stroke={k ? WARM : MUTED} strokeWidth={k ? 2 : 1} />
-                <text x={509 + 40 * k} y={275} fill={k ? WARM : MUTED} fontFamily={font.mono} fontSize={12} textAnchor="middle">{142 + k}</text>
+                <text x={509 + 40 * k} y={275} fill={k ? WARM : MUTED} fontFamily={font.mono} fontSize={13} textAnchor="middle">{142 + k}</text>
                 <line x1={509 + 40 * k} y1={286} x2={529} y2={344} stroke={SECONDARY} strokeOpacity={0.6} />
               </g>
             ))}
             <rect x={512} y={346} width={34} height={26} rx={4} fill={SECONDARY} fillOpacity={0.3} stroke={SECONDARY} />
-            <Code x={529} y={396} text="compress_ratio = 2" size={12} color={MUTED} anchor="middle" />
-            <Note x={529} y={412} text="encoder sources 2, 8, 14" size={12} anchor="middle" />
+            <Code x={529} y={396} text="compress_ratio = 2" size={13} color={MUTED} anchor="middle" />
+            <Note x={529} y={412} text="encoder sources 2, 8, 14" size={13} anchor="middle" />
             {/* decoder: the pair entry opens into two */}
             {[0, 1].map((k) => {
               const x = pairX + (k ? 20 : -20) * split;
               return (
                 <g key={k} opacity={travel}>
                   <rect x={803 + 40 * k - 20} y={258} width={34} height={26} rx={4} fill={PANEL} stroke={k ? WARM : MUTED} strokeWidth={k ? 2 : 1} opacity={split} />
-                  <text x={800 + 40 * k} y={275} fill={k ? WARM : MUTED} fontFamily={font.mono} fontSize={12} textAnchor="middle" opacity={split}>{142 + k}</text>
+                  <text x={800 + 40 * k} y={275} fill={k ? WARM : MUTED} fontFamily={font.mono} fontSize={13} textAnchor="middle" opacity={split}>{142 + k}</text>
                   <line x1={800 + 40 * k} y1={286} x2={800 + 40 * k} y2={344} stroke={SECONDARY} strokeOpacity={0.6} opacity={split} />
                   <rect x={x - 17} y={346} width={34} height={26} rx={4} fill={SECONDARY} fillOpacity={0.3}
                     stroke={k && split > 0.5 ? WARM : SECONDARY} strokeWidth={k && split > 0.5 ? 2 : 1} />
@@ -537,9 +543,9 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             <g opacity={split}>
-              <Code x={820} y={396} text="compress_ratio = 1" size={12} color={SECONDARY} anchor="middle" />
-              <Code x={820} y={412} text="self.norm(self.wkv(x))" size={12} color={TEXT} anchor="middle" />
-              <Note x={820} y={246} text="decoder source 20 — final encoder hidden states" size={12} anchor="middle" />
+              <Code x={820} y={396} text="compress_ratio = 1" size={13} color={SECONDARY} anchor="middle" />
+              <Code x={820} y={412} text="self.norm(self.wkv(x))" size={13} color={TEXT} anchor="middle" />
+              <Note x={820} y={246} text="decoder source 20 — final encoder hidden states" size={13} anchor="middle" />
             </g>
           </g>
         )}
@@ -549,19 +555,19 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={g(scene.acctO)}>
             <rect x={300} y={230} width={MAIN_BYTES * acctU} height={28} rx={4} fill={SECONDARY} fillOpacity={0.35} stroke={SECONDARY} />
             <rect x={300 + MAIN_BYTES + 10} y={230} width={INDEX_BYTES * acctU} height={28} rx={4} fill={POSITIVE} fillOpacity={0.3} stroke={POSITIVE} />
-            <Note x={300} y={278} text={`main entry ${MAIN_BYTES} B`} color={SECONDARY} size={12} />
-            <Note x={300 + MAIN_BYTES + 10} y={278} text={`indexer ${INDEX_BYTES} B`} color={POSITIVE} size={12} />
-            <MathLabel tex={'512\\cdot\\tfrac{4}{8} + \\tfrac{512}{16} = 288'} x={300} y={322} fontSize={18} anchor="start" opacity={clamp01(acctU * 3 - 1)} />
-            <MathLabel tex={'128\\cdot\\tfrac{4}{8} + \\tfrac{128}{32} = 68'} x={300} y={362} fontSize={18} anchor="start" opacity={clamp01(acctU * 3 - 1.5)} />
-            <MathLabel tex={'\\tfrac{3}{2} + 1 = 2.5\\ \\text{entries per token}'} x={300} y={402} fontSize={18} anchor="start" opacity={clamp01(acctU * 3 - 2)} />
+            <Note x={300} y={278} text={`main entry ${MAIN_BYTES} B`} color={SECONDARY} size={13} />
+            <Note x={300 + MAIN_BYTES + 10} y={278} text={`indexer ${INDEX_BYTES} B`} color={POSITIVE} size={13} />
+            <Code x={300} y={322} text="512 × 4/8 + 512/16 = 288" size={18} color={TEXT} o={clamp01(acctU * 3 - 1)} />
+            <Code x={300} y={362} text="128 × 4/8 + 128/32 = 68" size={18} color={TEXT} o={clamp01(acctU * 3 - 1.5)} />
+            <Code x={300} y={402} text="3/2 + 1 = 2.5 entries per token" size={18} color={TEXT} o={clamp01(acctU * 3 - 2)} />
             <g opacity={g(scene.totalO)}>
-              <MathLabel tex={'2.5 \\times (288 + 68)'} x={900} y={300} fontSize={22} />
+              <text x={900} y={300} fill={TEXT} fontFamily={font.mono} fontSize={22} textAnchor="middle">2.5 × (288 + 68)</text>
               <text x={900} y={362} fill={TEXT} fontFamily={font.ui} fontSize={34} fontWeight={700} textAnchor="middle">{TOTAL_BYTES} bytes/token</text>
             </g>
             <g opacity={g(scene.refO)}>
               <rect x={760} y={404} width={340} height={52} rx={8} fill={PANEL} stroke={MUTED} strokeOpacity={0.6} strokeDasharray="5 4" />
               <Code x={930} y={426} text="inplace=True → dequantized values" size={13} anchor="middle" />
-              <Note x={930} y={444} text="reference code: fp4_act_quant simulates the format" size={12} anchor="middle" />
+              <Note x={930} y={444} text="reference code: fp4_act_quant simulates the format" size={13} anchor="middle" />
             </g>
           </g>
         )}
@@ -583,9 +589,13 @@ export function Render({ s }: { s: SceneState }) {
       <text x={48} y={64} fill={TEXT} fontFamily={font.ui} fontSize={24} fontWeight={600}>Squeeze the Global Memory</text>
       <Chip x={48} text="4 shown channels; actual head_dim = 512" o={g(scene.chipIll)} />
       <Chip x={340} text="Illustrative projections and gates" o={g(scene.chipIll)} color={WARM} />
-      <Chip x={48} text="CED: Paper §2.2, Eq. 1" o={g(scene.chipCed)} color={SECONDARY} />
+      <Chip x={48} text="CED (compressed entry): paper §2.2, Eq. 1" o={g(scene.chipCed)} color={SECONDARY} />
       <Chip x={48} text="Derived packed-format accounting; global cache only" o={g(scene.chipAcct)} color={SECONDARY} />
-      <MathLabel tex={'c_d = \\mathrm{RMSNorm}\\Big(\\sum_t \\mathrm{softmax}_t(z_{t,d})\\, v_{t,d}\\Big)'} x={930} y={140} fontSize={20} opacity={g(scene.formulaO)} />
+      {g(scene.formulaO) > 0 && (
+        <text x={640} y={150} fill={TEXT} fontFamily={font.mono} fontSize={19} textAnchor="middle" opacity={g(scene.formulaO)}>
+          c<Sub>d</Sub> = RMSNorm(Σ<Sub>t</Sub> softmax<Sub>t</Sub>(z<Sub>t,d</Sub>) · v<Sub>t,d</Sub>)
+        </text>
+      )}
       <Takeaway text="Sequence × precision × layer sharing" o={g(scene.takeO)} />
     </g>
   );

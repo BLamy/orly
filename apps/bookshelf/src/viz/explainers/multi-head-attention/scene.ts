@@ -196,7 +196,7 @@ export function buildScene() {
   });
   tl.tween(hiU[0], 0, { at: 36.6, dur: 0.6 });
   tl.tween(hiU[1], 1, { at: 36.6, dur: 0.7, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 360, k: 1.25 }, { at: 36.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 380, k: 1.25 }, { at: 36.6, dur: 1.3, ease: ease.move });
   tl.hold(42.4, 0.6);
   // lane 3 — description
   tl.caption({

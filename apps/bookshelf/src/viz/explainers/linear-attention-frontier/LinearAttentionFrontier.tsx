@@ -42,7 +42,7 @@ interface Node {
 
 const LINEAGE: Node[] = [
   {
-    x: 190,
+    x: 250,
     y: 250,
     name: 'delta net',
     sub: 'the delta rule',
@@ -50,7 +50,7 @@ const LINEAGE: Node[] = [
     color: colors.MUTED,
   },
   {
-    x: 480,
+    x: 510,
     y: 250,
     name: 'gated delta net',
     sub: 'scalar gate + decay',
@@ -66,7 +66,7 @@ const LINEAGE: Node[] = [
     color: colors.SECONDARY,
   },
   {
-    x: 1060,
+    x: 1030,
     y: 250,
     name: 'gated delta net two',
     sub: 'decoupled erase / write',
@@ -124,8 +124,8 @@ const GROUP_Y = 420;
 const BAR_W_MAX = 260;
 const ROW_H = 44;
 
-const CAM_RAIL: CameraState = { x: 640, y: 260, k: 1.15 };
-const CAM_LAST: CameraState = { x: 1000, y: 260, k: 1.35 };
+const CAM_RAIL: CameraState = { x: 640, y: 260, k: 1.0 };
+const CAM_LAST: CameraState = { x: 680, y: 260, k: 1.0 };
 
 interface Scene {
   tl: Timeline;
@@ -232,7 +232,7 @@ function Bars({ g, x, u, fill }: { g: BarGroup; x: number; u: number; fill: numb
       <text x={x} y={GROUP_Y - 34} fill={colors.TEXT} fontSize={15}>
         {g.title}
       </text>
-      <text x={x} y={GROUP_Y - 14} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+      <text x={x} y={GROUP_Y - 14} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
         {g.note} · reported, not re-run
       </text>
       {g.rows.map((r, i) => {
@@ -240,7 +240,7 @@ function Bars({ g, x, u, fill }: { g: BarGroup; x: number; u: number; fill: numb
         const w = Math.max(2, BAR_W_MAX * frac);
         return (
           <g key={r.label}>
-            <text x={x} y={GROUP_Y + i * ROW_H + 12} fill={colors.MUTED} fontSize={12}>
+            <text x={x} y={GROUP_Y + i * ROW_H + 12} fill={colors.TEXT} fontSize={14}>
               {r.label}
             </text>
             <rect x={x} y={GROUP_Y + i * ROW_H + 18} width={w} height={14} rx={4} fill={r.color} opacity={0.85} />
@@ -248,7 +248,7 @@ function Bars({ g, x, u, fill }: { g: BarGroup; x: number; u: number; fill: numb
               x={x + w + 8}
               y={GROUP_Y + i * ROW_H + 30}
               fill={r.color}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
               opacity={fill > 0.9 ? 1 : 0}
             >
@@ -269,12 +269,15 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The lineage and bars fade fully out (and are dropped from the scene) before
+  // the closing card, so no old label sits under the card's text.
+  const mainOp = 1 - dimU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the rail */}
@@ -296,7 +299,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={n.x} y={n.y - 44} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                   {n.name}
                 </text>
-                <text x={n.x} y={n.y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={n.x} y={n.y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {n.sub}
                 </text>
                 <MathLabel tex={n.tex} x={n.x} y={n.y + 52} fontSize={13} color={n.color} opacity={u} />
@@ -310,30 +313,33 @@ function Frame({ s }: { s: SceneState }) {
           ))}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          The 2026 linear-attention frontier
-        </text>
-        <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
-          arXiv:2605.22791 · Tables 2–4 (1.3B, 100B tokens)
-        </text>
-      </g>
+      {mainOp > 0 && titleU > 0 && (
+        <g opacity={titleU * mainOp}>
+          <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            The 2026 linear-attention frontier
+          </text>
+          <text x={40} y={80} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+            arXiv:2605.22791 · Tables 2–4 (1.3B, 100B tokens)
+          </text>
+        </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={220} width={880} height={200} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
-          <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
+          <rect x={200} y={230} width={880} height={230} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             A fixed memory is a budget.
           </text>
-          <text x={640} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={346} textAnchor="middle" fill={colors.TEXT} fontSize={17}>
             Erase, write, and decay — spent on separate accounts,
           </text>
-          <text x={640} y={354} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={370} textAnchor="middle" fill={colors.TEXT} fontSize={17}>
             channel by channel, inside one head.
           </text>
-          <text x={640} y={394} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={414} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             DeltaNet → Gated DeltaNet → KDA → Gated DeltaNet-2 (arXiv:2605.22791)
           </text>
         </g>

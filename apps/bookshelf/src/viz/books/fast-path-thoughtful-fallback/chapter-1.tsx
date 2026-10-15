@@ -24,27 +24,28 @@ export function Render({s}:{s:SceneState}){
   const scores=[.24,.84,.18].map((v,i)=>lerp(v,[.48,.50,.47][i],uncertain));
   const points=scores.map((v,i)=>[x(i),y(v)] as [number,number]);
   return <><Header title='Learn the familiar, escalate the unfamiliar'/><Camera {...s.get(scene.cam)}>
-    <Panel x={65} y={114} w={633} h={104} title='Small local policy · current page and eligible menu' color={C.model}>
+    <Panel x={65} y={114} w={633} h={104} title='Small local policy · picks the next action from a menu' color={C.model}>
       <Label x={84} y={181} size={17}>{subgoal>.5?'Subgoal: focus the display-name field':'Example task: set the display name · local features + history'}</Label>
+      <Label x={84} y={205} size={14} color={C.muted}>{subgoal>.5?'A subgoal is a waypoint toward the task goal, not the goal itself.':'The menu lists the only moves this policy may pick.'}</Label>
     </Panel>
     <path d={path(points)!} fill='none' stroke={C.model} strokeWidth={4}/>
     {points.map(([px,py],i)=><g key={i}><line x1={px} x2={px} y1={py} y2={460} stroke={C.model} opacity={.35}/><circle cx={px} cy={py} r={12} fill={i===1?C.good:C.model}/><Label x={px} y={492} anchor='middle' size={15}>{targets[i]}</Label></g>)}
     <circle cx={x(1)} cy={y(scores[1])} r={31} fill='none' stroke={uncertain>.5?C.pending:C.good} strokeWidth={3} strokeDasharray={uncertain>.5?'6 5':undefined}/>
     <Label x={380} y={533} anchor='middle' size={15} color={C.muted}>Illustrative ranking scores · not confidence</Label>
     <Panel x={770} y={114} w={440} h={186} title='Configured larger model' color={C.pending} opacity={1-.85*local}>
-      <Label x={791} y={174} size={17}>Plan · propose labels · help on fallback</Label>
+      <Label x={791} y={174} size={17}>Plan · interpret · teach · help on fallback</Label>
       <Label x={791} y={211} size={15} color={C.muted}>Served identity and interface need inspection</Label>
       <Label x={791} y={267} size={16} color={C.pending}>{hybrid>.5?'Hybrid enabled: ask for help':'A separate, explicit deployment'}</Label>
     </Panel>
     <Arrow x1={770} y1={189} x2={698} y2={189} color={C.pending} opacity={span(p,2,3)}/>
     <Arrow x1={628} y1={y(.47)} x2={760} y2={342} color={C.pending} opacity={hybrid}/>
-    <Chip x={766} y={328} w={444} text='abstain → configured fallback → observe again' color={C.pending} opacity={hybrid}/>
+    <Chip x={770} y={328} w={440} text='abstain (take no action) → configured fallback → observe again' color={C.pending} opacity={hybrid}/>
     <g opacity={cost}>{['input','network','compute','observe'].map((v,i)=><Chip key={v} x={775+i*109} y={387} w={100} text={v} color={C.pending}/>)}<Label x={990} y={449} anchor='middle' size={15}>Every fallback cost belongs in task latency</Label></g>
     <Panel x={770} y={328} w={440} h={139} title='Local-only mode' color={C.good} opacity={local}>
       <Label x={791} y={389} size={18}>Uncertain → stop or ask the person</Label><Label x={791} y={428} size={17} color={C.pending}>No remote inference request</Label>
     </Panel>
-    <Chip x={761} y={504} w={449} text='Intended GLM 5.3 Flash · provider not pinned' color={C.pending} opacity={pin}/>
-    <Label x={640} y={565} anchor='middle' size={15} color={C.muted}>Checked moves remain bound to a fresh observation</Label>
+    <Chip x={770} y={504} w={440} text='Intended GLM 5.3 Flash · provider not pinned' color={C.pending} opacity={pin}/>
+    <Label x={640} y={565} anchor='middle' size={15} color={C.muted}>A checked move is verified against a fresh observation of the page</Label>
   </Camera></>;
 }
 export const vizScene=()=>scene;

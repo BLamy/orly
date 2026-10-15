@@ -8,6 +8,14 @@ import type { CameraState, SceneState } from '../../core';
 import { MatrixGrid } from '../../primitives';
 
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
+// Cubic Bézier through four [x, y] points, for the two attention arrows.
+const bezier = (u: number, [p0, p1, p2, p3]: number[][]) => {
+  const v = 1 - u;
+  return [0, 1].map((k) => v * v * v * p0[k] + 3 * v * v * u * p1[k] + 3 * v * u * u * p2[k] + u * u * u * p3[k]);
+};
+// Instruction → visual leaves the "bowls" token and lands on the bowl-patch row; visual → instruction runs back.
+const INSTR_TO_VISUAL = [[432, 446], [432, 370], [470, 302], [534, 302]];
+const VISUAL_TO_INSTR = [[540, 356], [500, 356], [480, 400], [466, 446]];
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const WORDS = ['stack', 'the', 'three', 'bowls', '.', 'pad'];
 const HEAT = Array.from({ length: 8 }, (_, i) => Array.from({ length: 6 }, (_, j) => {
@@ -40,7 +48,7 @@ export function buildScene() {
   tl.caption({ at: 13.1, dur: 5.8, text: 'First, instruction tokens query the visual field. The word for bowls pulls weight toward patches that can explain that part of the command.' });
   tl.tween(matrixU, 1, { at: 13.5, dur: 1.3, ease: ease.draw });
   tl.tween(l2vU, 1, { at: 14.0, dur: 2.5, ease: ease.linear });
-  tl.tween(cam, { x: 615, y: 350, k: 1.13 }, { at: 14.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 580, y: 350, k: 1.13 }, { at: 14.2, dur: 1.3, ease: ease.move });
   tl.hold(18.9, 0.6);
 
   tl.caption({ at: 19.5, dur: 5.7, text: 'Then the current reverses. Visual tokens query the instruction, so the words become specific to the scene in front of the robot.' });
@@ -85,68 +93,68 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={mainOpacity}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={760}>Make the tokens look at each other</text>
-      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>BiAttentionBlock · 6 stacked fusion layers</text>
+      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>BiAttentionBlock · 6 stacked fusion layers</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity}>
         <g transform="translate(128 132)" opacity={visionU}>
           {[0, 1].map((view) => <g key={view} transform={`translate(${view * 198} 0)`}>
-            <text x={72} y={-14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>view_embed[{view}]</text>
+            <text x={72} y={-14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>view_embed[{view}]</text>
             {Array.from({ length: 16 }, (_, i) => {
               const x = (i % 4) * 35; const y = Math.floor(i / 4) * 35;
               const hot = view === 0 ? [5, 6, 9, 10].includes(i) : [6, 7, 10, 11].includes(i);
               return <rect key={i} x={x} y={y} width={29} height={29} rx={5} fill={hot ? colors.ACCENT : colors.PANEL} opacity={clamp01(visionU * 20 - i) * (hot ? 0.9 : 0.72)} stroke={colors.ACCENT} strokeWidth={1} />;
             })}
           </g>)}
-          <text x={168} y={164} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>visual_tokens = cat([feat_img1, feat_img2])</text>
+          <text x={168} y={164} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>visual_tokens = cat([feat_img1, feat_img2])</text>
         </g>
 
         <g transform="translate(150 448)" opacity={textU}>
           {WORDS.map((word, i) => <g key={word + i} transform={`translate(${i * 82} 0)`} opacity={clamp01(textU * WORDS.length - i)}>
             <rect width={72} height={42} rx={10} fill={i === 3 ? colors.WARM : colors.PANEL} stroke={colors.WARM} />
-            <text x={36} y={26} textAnchor="middle" fill={i === 3 ? colors.BG : colors.TEXT} fontSize={12} fontFamily={MONO}>{word}</text>
+            <text x={36} y={26} textAnchor="middle" fill={i === 3 ? colors.BG : colors.TEXT} fontSize={14} fontFamily={MONO}>{word}</text>
           </g>)}
-          <text x={205} y={69} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>cached_text.last_hidden_state</text>
+          <text x={205} y={69} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>cached_text.last_hidden_state</text>
         </g>
 
         {s.get(scene.matrixU) > 0 && <g opacity={s.get(scene.matrixU)}>
-          <MatrixGrid x={610} y={182} values={HEAT} cell={24} gap={3} cellU={(i, j) => clamp01(s.get(scene.matrixU) * 48 - (i * 6 + j))} highlight={{ cell: [4, 3], color: colors.WARM, u: s.get(scene.residualU) }} />
-          <text x={676} y={164} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>attention weights · nimg × ntxt</text>
-          <text x={610 + 3 * 27 + 12} y={414} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700} fontFamily={MONO}>bowls</text>
-          <text x={610 + 6 * 27 + 8} y={306} fill={colors.WARM} fontSize={12} fontFamily={MONO}>← bowl patches</text>
+          <MatrixGrid x={540} y={182} values={HEAT} cell={24} gap={3} cellU={(i, j) => clamp01(s.get(scene.matrixU) * 48 - (i * 6 + j))} highlight={{ cell: [4, 3], color: colors.WARM, u: s.get(scene.residualU) }} />
+          <text x={606} y={164} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>attention weights · nimg × ntxt</text>
+          <text x={540 + 3 * 27 + 12} y={414} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={MONO}>bowls</text>
+          <text x={540 + 6 * 27 + 8} y={306} fill={colors.WARM} fontSize={14} fontFamily={MONO}>← bowl patches</text>
         </g>}
 
         {l2vU > 0 && <g opacity={l2vU}>
-          <path d="M435 470 C560 470 520 332 620 332" fill="none" stroke={colors.WARM} strokeWidth={3} />
-          <circle cx={435 + l2vU * 185} cy={470 - Math.sin(l2vU * Math.PI / 2) * 138} r={8} fill={colors.WARM} />
-          <text x={535} y={408} fill={colors.WARM} fontSize={12} fontFamily={MONO}>instruction → visual</text>
+          <path d={`M${INSTR_TO_VISUAL[0]} C${INSTR_TO_VISUAL[1]} ${INSTR_TO_VISUAL[2]} ${INSTR_TO_VISUAL[3]}`} fill="none" stroke={colors.WARM} strokeWidth={3} />
+          <circle cx={bezier(l2vU, INSTR_TO_VISUAL)[0]} cy={bezier(l2vU, INSTR_TO_VISUAL)[1]} r={8} fill={colors.WARM} />
+          <text x={420} y={372} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO}>instruction → visual</text>
         </g>}
         {v2lU > 0 && <g opacity={v2lU}>
-          <path d="M610 286 C520 330 565 438 420 448" fill="none" stroke={colors.ACCENT} strokeWidth={3} />
-          <circle cx={610 - v2lU * 190} cy={286 + v2lU * 162} r={8} fill={colors.ACCENT} />
-          <text x={500} y={350} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>visual → instruction</text>
+          <path d={`M${VISUAL_TO_INSTR[0]} C${VISUAL_TO_INSTR[1]} ${VISUAL_TO_INSTR[2]} ${VISUAL_TO_INSTR[3]}`} fill="none" stroke={colors.ACCENT} strokeWidth={3} />
+          <circle cx={bezier(v2lU, VISUAL_TO_INSTR)[0]} cy={bezier(v2lU, VISUAL_TO_INSTR)[1]} r={8} fill={colors.ACCENT} />
+          <text x={548} y={432} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>visual → instruction</text>
         </g>}
 
         <g transform="translate(928 120)">
           {Array.from({ length: 6 }, (_, i) => {
             const u = clamp01(layerP - i);
-            return <g key={i} transform={`translate(0 ${i * 64})`} opacity={0.16 + 0.84 * u}>
+            return <g key={i} transform={`translate(0 ${i * 64})`} opacity={0.3 + 0.7 * u}>
               <rect width={220} height={48} rx={12} fill={colors.PANEL} stroke={u > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={u > 0.5 ? 2 : 1} />
-              <text x={20} y={29} fill={u > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={MONO}>fusion layer {i + 1}</text>
+              <text x={20} y={29} fill={u > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily={MONO}>fusion layer {i + 1}</text>
               <circle cx={190} cy={24} r={7} fill={u > 0.5 ? colors.POSITIVE : colors.GRID} />
             </g>;
           })}
         </g>
 
         {ablationU > 0 && <g opacity={ablationU}>
-          <text x={680} y={470} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ablation · LIBERO success %</text>
+          <text x={664} y={470} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ablation · LIBERO success %</text>
           <g transform="translate(480 600)">
             {[['concat', 95.2, colors.MUTED], ['L→V', 96.1, colors.ACCENT], ['V→L', 96.5, colors.WARM], ['both', 97.7, colors.POSITIVE]].map(([label, value, color], i) => {
               const v = Number(value); const h = (v - 94) * 24;
               return <g key={String(label)} transform={`translate(${i * 120} 0)`}>
                 <rect x={0} y={-h} width={92} height={h} rx={7} fill={String(color)} opacity={0.78} />
                 <text x={46} y={-h - 9} textAnchor="middle" fill={String(color)} fontSize={15} fontWeight={760}>{v.toFixed(1)}</text>
-                <text x={46} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{String(label)}</text>
+                <text x={46} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>{String(label)}</text>
               </g>;
             })}
           </g>
@@ -158,7 +166,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={32} fontWeight={800}>Two streams, both changed</text>
       <text x={640} y={342} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>instruction-conditioned visual features</text>
       <text x={640} y={376} textAnchor="middle" fill={colors.WARM} fontSize={18}>vision-aware instruction features</text>
-      <text x={640} y={408} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>97.7% average LIBERO success</text>
+      <text x={640} y={408} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>97.7% average LIBERO success</text>
     </g>}
   </>;
 }

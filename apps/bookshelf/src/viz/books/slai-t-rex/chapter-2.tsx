@@ -93,13 +93,20 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={76} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>The packed-index rendezvous</text>
-          <text x={640} y={101} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>prepare_sft_indexmap.py</text>
+          <text x={640} y={101} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>prepare_sft_indexmap.py</text>
+
+          {raceU > 0 && (
+            <g opacity={raceU * (1 - tapeU) * (1 - builderU)}>
+              <rect x={475} y={tapeY - 16} width={330} height={42} rx={9} fill={colors.NEGATIVE} opacity={0.12} stroke={colors.NEGATIVE} strokeDasharray="4 4" />
+              <text x={640} y={tapeY + 10} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>same index file, many writers</text>
+            </g>
+          )}
 
           {Array.from({ length: 16 }, (_, i) => {
             const u = clamp01(readersU * 6 - i / 3);
             const angle = (i / 16) * Math.PI * 2;
-            const baseX = 640 + Math.cos(angle) * 420;
-            const baseY = 244 + Math.sin(angle) * 68;
+            const baseX = 640 + Math.cos(angle) * 440;
+            const baseY = 244 + Math.sin(angle) * 74;
             // Row slot follows the node's left-to-right ring position, so nodes slide without crossing.
             const rank = Array.from({ length: 16 }, (_, j) => j).filter(j => {
               const x = Math.cos((j / 16) * Math.PI * 2);
@@ -115,7 +122,7 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i} opacity={u} transform={`translate(${x} ${y})`}>
                 <circle r={i === 0 && builderU > 0 ? 17 : 13} fill={i === 0 && builderU > 0 ? colors.ACCENT : colors.SECONDARY} opacity={0.22 + 0.38 * u} stroke={i === 0 ? colors.ACCENT : colors.SECONDARY} />
                 <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{i}</text>
-                {waiting && releaseU < 0.5 && <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={12}>wait</text>}
+                {waiting && releaseU < 0.5 && <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={14}>wait</text>}
                 {raceU > 0 && builderU < 0.2 && (
                   <line x1={0} y1={10} x2={(640 - baseX) * raceU * 0.45} y2={(tapeY - baseY) * raceU * 0.45} stroke={colors.NEGATIVE} strokeDasharray="3 5" opacity={0.45} />
                 )}
@@ -123,10 +130,17 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
 
+          {releaseU > 0 && (
+            <g opacity={Math.max(0, releaseU - 0.5) * 2}>
+              <line x1={285} y1={578} x2={995} y2={578} stroke={colors.POSITIVE} strokeWidth={2} opacity={0.5} />
+              <text x={640} y={604} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>one release: every reader crosses together</text>
+            </g>
+          )}
+
           {builderU > 0 && (
-            <g opacity={builderU}>
-              <path d="M 1050 258 C 1030 300 990 330 930 350" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="5 6" />
-              <text x={1088} y={249} textAnchor="start" fill={colors.ACCENT} fontSize={14} fontWeight={700}>node 0 builds</text>
+            <g opacity={builderU * (1 - releaseU)}>
+              <path d="M 1066 256 C 1046 300 996 330 930 350" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="5 6" />
+              <text x={1110} y={249} textAnchor="start" fill={colors.ACCENT} fontSize={14} fontWeight={700}>node 0 builds</text>
             </g>
           )}
 
@@ -146,11 +160,11 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u} transform={`translate(${195 + i * 44} ${tapeY})`}>
                     <rect width={36} height={36} rx={7} fill={i % 2 ? colors.ACCENT : colors.SECONDARY} opacity={0.18} stroke={i % 2 ? colors.ACCENT : colors.SECONDARY} />
-                    <text x={18} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{order}</text>
+                    <text x={18} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{order}</text>
                   </g>
                 );
               })}
-              <text x={640} y={tapeY + 80} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={640} y={tapeY + 80} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 train_indexmap_*_1234s_shuffle_decoder_packed_idx.npy
               </text>
             </g>
@@ -159,19 +173,19 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.tempU) > 0 && releaseU < 0.6 && (
             <g opacity={s.get(scene.tempU) * (1 - s.get(scene.replaceU)) * (1 - 0.5 * releaseU)} transform={`translate(${260 + 430 * s.get(scene.replaceU)} 472)`}>
               <rect width={330} height={42} rx={9} fill={colors.WARM} opacity={0.16} stroke={colors.WARM} />
-              <text x={165} y={26} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>.tmp.&lt;pid&gt;.npy</text>
+              <text x={165} y={26} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>.tmp.&lt;pid&gt;.npy</text>
             </g>
           )}
           {s.get(scene.replaceU) > 0 && releaseU < 0.6 && (
             <g opacity={s.get(scene.replaceU) * (1 - 0.5 * releaseU)} transform="translate(690 472)">
               <rect width={330} height={42} rx={9} fill={colors.POSITIVE} opacity={0.16} stroke={colors.POSITIVE} />
-              <text x={165} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>os.replace → final index</text>
+              <text x={165} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>os.replace → final index</text>
             </g>
           )}
           {s.get(scene.readyU) > 0 && releaseU < 0.6 && (
             <g opacity={s.get(scene.readyU) * (1 - 0.5 * releaseU)} transform="translate(1036 472)">
               <rect width={160} height={38} rx={19} fill={colors.POSITIVE} opacity={0.2} stroke={colors.POSITIVE} />
-              <text x={80} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>.npy.ready ✓</text>
+              <text x={80} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>.npy.ready ✓</text>
             </g>
           )}
         </g>

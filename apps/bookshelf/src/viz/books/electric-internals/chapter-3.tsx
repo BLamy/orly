@@ -280,7 +280,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={tapeU}>
             <rect x={TAPE_X0 - 4} y={TAPE_Y - CELL_H / 2 - 46} width={318} height={28} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={TAPE_X0 + 8} y={TAPE_Y - CELL_H / 2 - 27} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-              Content-Type: application/json
+              {typedU > 0.01 ? 'Content-Type: application/json' : 'Content-Type: application/octet-stream'}
             </text>
           </g>
           {/* main event cells */}
@@ -313,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y - 2 - lanePulse * 8} textAnchor="middle" fill={color} fontSize={17} fontWeight={700}>
                       {OP_GLYPH[e.op]}
                     </text>
-                    <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 16 - lanePulse * 8} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 16 - lanePulse * 8} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                       {e.type[0]}:{e.key}
                     </text>
                   </>
@@ -352,7 +352,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y + 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 ⟲
               </text>
-              <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y - CELL_H / 2 - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+              <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y + CELL_H / 2 + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 reset
               </text>
             </g>
@@ -364,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={t}>
                   <circle cx={lx} cy={TAPE_Y + CELL_H / 2 + 46} r={6} fill={TYPE_COLOR[t]} />
-                  <text x={lx + 12} y={TAPE_Y + CELL_H / 2 + 51} fill={TYPE_COLOR[t]} fontSize={13} fontFamily={MONO}>
+                  <text x={lx + 12} y={TAPE_Y + CELL_H / 2 + 51} fill={TYPE_COLOR[t]} fontSize={14} fontFamily={MONO}>
                     {t}
                   </text>
                 </g>
@@ -388,10 +388,10 @@ export function Render({ s }: { s: SceneState }) {
               { k: '', v: '  "txid": "abc-123" }', c: colors.POSITIVE },
             ].map((line, i) => (
               <g key={i}>
-                <text x={CARD.x - 146} y={CARD.y - 54 + i * 28} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
+                <text x={CARD.x - 146} y={CARD.y - 54 + i * 28} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                   {line.k}
                 </text>
-                <text x={CARD.x - 146 + (line.k ? 84 : 0)} y={CARD.y - 54 + i * 28} fill={line.c} fontSize={13.5} fontFamily={MONO}>
+                <text x={CARD.x - 146 + (line.k ? 84 : 0)} y={CARD.y - 54 + i * 28} fill={line.c} fontSize={14} fontFamily={MONO}>
                   {line.k ? `: ${line.v}` : line.v}
                 </text>
               </g>
@@ -429,14 +429,14 @@ export function Render({ s }: { s: SceneState }) {
               // flash if the most recent applied event touched this row
               const flash = st.changedStep === foldCount - 1 ? Math.max(0, 1 - (evtCount - foldCount) * 2.2) : 0;
               const wiped = gridWipe > (row + 1) / ROW_IDS.length;
-              const op = (st.exists ? 1 : 0.28) * (wiped ? 0.08 : 1);
+              const op = (st.exists ? 1 : 0.45) * (wiped ? 0.08 : 1);
               return (
                 <g key={`${r.type}:${r.key}`} opacity={op}>
                   <rect x={GRID_X - 8} y={rowY(row) - 15} width={GRID_W + 16} height={ROW_H - 8} rx={7} fill={flash > 0 ? TYPE_COLOR[r.type] : colors.BG} fillOpacity={flash > 0 ? 0.12 + 0.2 * flash : 0.5} stroke={TYPE_COLOR[r.type]} strokeWidth={flash > 0 ? 2 : 1} strokeOpacity={st.exists ? 0.9 : 0.35} />
-                  <text x={GRID_X + 4} y={rowY(row) + 5} fill={TYPE_COLOR[r.type]} fontSize={12.5} fontFamily={MONO}>
+                  <text x={GRID_X + 4} y={rowY(row) + 5} fill={TYPE_COLOR[r.type]} fontSize={14} fontFamily={MONO}>
                     {r.type}:{r.key}
                   </text>
-                  <text x={GRID_X + 128} y={rowY(row) + 5} fill={st.exists ? colors.TEXT : colors.MUTED} fontSize={12.5} fontFamily={MONO} textDecoration={st.exists ? undefined : 'line-through'}>
+                  <text x={GRID_X + 128} y={rowY(row) + 5} fill={st.exists ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={MONO} textDecoration={st.exists ? undefined : 'line-through'}>
                     {st.exists ? `→ ${st.val}` : '(deleted)'}
                   </text>
                 </g>
@@ -460,7 +460,7 @@ export function Render({ s }: { s: SceneState }) {
             const x1 = GRID_X + 60;
             const y1 = rowY(row);
             const x = x0 + (x1 - x0) * u;
-            const y = y0 + (y1 - y0) * u - Math.sin(Math.PI * u) * 60;
+            const y = y0 + (y1 - y0) * u;
             return (
               <g key={`f${i}`} opacity={Math.sin(Math.PI * u)}>
                 <circle cx={x} cy={y} r={11} fill={colors.BG} stroke={TYPE_COLOR[e.type]} strokeWidth={2} />
@@ -479,7 +479,7 @@ export function Render({ s }: { s: SceneState }) {
               d={`M${TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} ${TAPE_Y + CELL_H / 2 + 26} l -8 12 l 16 0 z`}
               fill={colors.TEAL}
             />
-            <text x={TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} y={TAPE_Y + CELL_H / 2 + 56} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
+            <text x={TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} y={TAPE_Y + CELL_H / 2 + 56} textAnchor="middle" fill={colors.TEAL} fontSize={13}>
               reader 2 · offset=-1
             </text>
             {/* twin mini-grid */}
@@ -490,7 +490,7 @@ export function Render({ s }: { s: SceneState }) {
                 const seen = ROW_HISTORY[row][0].step < clamp01(replayU) * N_EVT;
                 if (!seen) return null;
                 return (
-                  <text key={row} x={200} y={GRID_Y0 + 16 + row * 26} fill={mini.exists ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={MONO} opacity={mini.exists ? 0.95 : 0.4}>
+                  <text key={row} x={200} y={GRID_Y0 + 16 + row * 26} fill={mini.exists ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={MONO} opacity={mini.exists ? 0.95 : 0.6}>
                     {r.type}:{r.key} {mini.exists ? `→ ${mini.val}` : '(deleted)'}
                   </text>
                 );

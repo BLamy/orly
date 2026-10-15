@@ -27,7 +27,7 @@ const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const PHASES = ['plan', 'execute', 'verify', 'handoff'] as const;
-const PHASE_X = [170, 480, 790, 1090];
+const PHASE_X = [170, 480, 790, 1100];
 const TOKEN_COLORS = [colors.MUTED, colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE];
 const TRACE = Array.from({ length: 52 }, (_, i) => ({
   x: 84 + i * 21.5,
@@ -37,7 +37,7 @@ const TRACE = Array.from({ length: 52 }, (_, i) => ({
   plan: i < 4,
 }));
 
-const CAM_PLAN: CameraState = { x: 640, y: 285, k: 1.08 };
+const CAM_PLAN: CameraState = { x: 640, y: 320, k: 1.08 };
 const CAM_TRACE: CameraState = { x: 660, y: 425, k: 1.1 };
 const CAM_SPLIT: CameraState = { x: 640, y: 330, k: 1.02 };
 
@@ -181,7 +181,7 @@ function PhaseGraph({ u, pointer, dim }: { u: number; pointer: number; dim: numb
           </g>
         );
       })}
-      <text x={82} y={115} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">VERSIONED RUNBOOK · runbook.yaml</text>
+      <text x={82} y={115} fill={colors.MUTED} fontSize={14} letterSpacing="0.12em">VERSIONED RUNBOOK · runbook.yaml</text>
     </g>
   );
 }
@@ -194,7 +194,7 @@ function RuntimeCard({ u, pointer, curU, dim }: { u: number; pointer: number; cu
   return (
     <g opacity={u * dim} transform={`translate(0 ${lerp(16, 0, u)}) scale(${pop})`}>
       <rect x={385} y={238} width={510} height={142} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={412} y={268} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">PER-RUN STATE · .statem/runs/demo/state.json</text>
+      <text x={412} y={268} fill={colors.MUTED} fontFamily={MONO} fontSize={14}>PER-RUN STATE · .statem/runs/demo/state.json</text>
       <text x={420} y={306} fill={colors.MUTED} fontFamily={MONO} fontSize={14}>current</text>
       <text x={610} y={306} fill={colors.ACCENT} fontFamily={MONO} fontSize={17}>{phase}</text>
       <text x={420} y={334} fill={colors.MUTED} fontFamily={MONO} fontSize={14}>current_entry_id</text>
@@ -217,6 +217,9 @@ export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
   const dim = 1 - endDim * 0.9;
+  // Candidate "current" labels surface as the loop grows the trace, then settle to a faint
+  // echo once the runbook takes over (the trace is still there, the labels no longer decide).
+  const noiseU = clamp01((s.get(scene.traceU) - 30) / 10) * (1 - 0.75 * clamp01(s.get(scene.graphU)));
 
   return (
     <>
@@ -234,27 +237,27 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={PHASE_X[i]} y={196} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={15}>{phase}</text>
                 </g>
               ))}
-              <text x={84} y={122} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">THE PLAN</text>
+              <text x={84} y={122} fill={colors.MUTED} fontSize={14} letterSpacing="0.12em">THE PLAN</text>
             </g>
           )}
 
           <g>
-            <line x1={76} y1={515} x2={1205} y2={515} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
+            <line x1={76} y1={515} x2={1205} y2={515} stroke={colors.GRID} strokeWidth={1} opacity={0.8} />
             {TRACE.map((token, i) => {
               const u = clamp01(traceU - i);
               if (u <= 0) return null;
               const tokenDim = token.plan ? 1 - planDim * 0.72 : 1;
-              return <rect key={i} x={token.x} y={token.y} width={token.w} height={12} rx={3} fill={token.color} opacity={u * tokenDim * 0.78} />;
+              return <rect key={i} x={token.x} y={token.y} width={token.w} height={12} rx={3} fill={token.color} opacity={u * tokenDim * 0.95} />;
             })}
-            <text x={84} y={404} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(traceU / 8)}>APPEND-ONLY EXECUTION TRACE</text>
+            <text x={84} y={404} fill={colors.TEXT} fontSize={14} letterSpacing="0.12em" opacity={clamp01(traceU / 8) * 0.7}>APPEND-ONLY EXECUTION TRACE</text>
           </g>
 
-          {ambigU > 0 && (
-            <g opacity={clamp01(ambigU)}>
+          {noiseU > 0 && (
+            <g opacity={noiseU}>
               {['execute?', 'repair?', 'verify?'].map((label, i) => (
-                <g key={label} transform={`translate(${500 + i * 145} ${568 + (i % 2) * 10}) scale(${0.9 + 0.1 * clamp01(ambigU)})`}>
+                <g key={label} transform={`translate(${490 + i * 150} 546) scale(${0.9 + 0.1 * clamp01(ambigU)})`}>
                   <rect x={-62} y={-17} width={124} height={34} rx={17} fill={colors.PANEL} stroke={i === 1 ? colors.WARM : colors.NEGATIVE} strokeWidth={1.2} />
-                  <text y={5} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.NEGATIVE} fontFamily={MONO} fontSize={14}>{label}</text>
+                  <text y={5} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.NEGATIVE} fontFamily={MONO} fontSize={15}>{label}</text>
                 </g>
               ))}
             </g>
@@ -264,7 +267,7 @@ export function Render({ s }: { s: SceneState }) {
         <PhaseGraph u={graphU} pointer={pointer} dim={dim} />
         <RuntimeCard u={stateU} pointer={pointer} curU={curU} dim={dim} />
         {s.get(scene.splitU) > 0 && (
-          <text x={640} y={410} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={s.get(scene.splitU) * dim}>shared definition above · private execution record below</text>
+          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={s.get(scene.splitU) * dim}>shared definition above · private execution record below</text>
         )}
 
         {curU > 0.05 && (
@@ -279,7 +282,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={-1000} y={-1000} width={STAGE_W + 2000} height={STAGE_H + 2000} fill={colors.BG} opacity={0.88} />
+            <rect x={-1000} y={-1000} width={STAGE_W + 2000} height={STAGE_H + 2000} fill={colors.BG} />
             <rect x={250} y={215} width={780} height={250} rx={24} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
             <text x={640} y={290} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>THE RUN HAS AN AUTHORITATIVE PLACE</text>
             <text x={640} y={338} textAnchor="middle" fill={colors.TEXT} fontSize={18}>broad autonomy inside the phase</text>

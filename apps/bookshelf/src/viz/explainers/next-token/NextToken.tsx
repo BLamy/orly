@@ -46,6 +46,11 @@ function Frame({ s }: { s: SceneState }) {
   const cur = Math.max(0, Math.min(N_STEPS - 1, Math.round(cursorRaw)));
   const step = STEPS[cur];
   const chars = TEST.split('');
+  // Six bars: the top predictions, and always the true next character, so a low-probability
+  // answer (the surprise beat) is visible as a short bar rather than missing.
+  const bars = step.dist.some((d) => d.ch === step.next)
+    ? step.dist
+    : [...step.dist.slice(0, 5), { ch: step.next, p: step.p }].sort((a, b) => b.p - a.p);
 
   return (
     <>
@@ -96,25 +101,25 @@ function Frame({ s }: { s: SceneState }) {
               <text x={DIST_X + 3 * (DIST_BAR_W + 14)} y={DIST_Y0 - 250} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
                 {`model's guess after "${show(step.ctx)}"`}
               </text>
-              {step.dist.map((d, i) => {
+              {bars.map((d, i) => {
                 const x = DIST_X + i * (DIST_BAR_W + 14);
                 const h = distScale(d.p);
                 const isTrue = d.ch === step.next;
                 return (
                   <g key={i}>
                     <rect x={x} y={DIST_Y0 - h} width={DIST_BAR_W} height={h} rx={5} fill={isTrue ? colors.WARM : colors.ACCENT} opacity={isTrue ? 0.95 : 0.55} />
-                    <text x={x + DIST_BAR_W / 2} y={DIST_Y0 - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                    <text x={x + DIST_BAR_W / 2} y={DIST_Y0 - h - 8} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                       {(d.p * 100).toFixed(0)}
                     </text>
-                    <text x={x + DIST_BAR_W / 2} y={DIST_Y0 + 22} textAnchor="middle" fill={isTrue ? colors.WARM : colors.MUTED} fontSize={16} fontFamily="ui-monospace, monospace">
+                    <text x={x + DIST_BAR_W / 2} y={DIST_Y0 + 24} textAnchor="middle" fill={isTrue ? colors.WARM : colors.MUTED} fontSize={16} fontFamily="ui-monospace, monospace">
                       {show(d.ch)}
                     </text>
                   </g>
                 );
               })}
-              {/* the cost of the true next character */}
-              <text x={DIST_X} y={DIST_Y0 + 58} fill={colors.WARM} fontSize={16}>
-                {`true next "${show(step.next)}" costs ${step.bits.toFixed(1)} bits`}
+              {/* the cost of the true next character: its probability, then its bits */}
+              <text x={DIST_X} y={DIST_Y0 + 60} fill={colors.WARM} fontSize={16}>
+                {`true next "${show(step.next)}": p = ${step.p.toFixed(2)}, so it costs ${step.bits.toFixed(1)} bits`}
               </text>
             </g>
           )}
@@ -127,7 +132,7 @@ function Frame({ s }: { s: SceneState }) {
               {uniformU > 0 && (
                 <g opacity={uniformU}>
                   <line x1={METER_X - 60} y1={meterY(UNIFORM_TOTAL)} x2={METER_X + 60} y2={meterY(UNIFORM_TOTAL)} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="6 5" />
-                  <text x={METER_X + 68} y={meterY(UNIFORM_TOTAL) + 4} fill={colors.NEGATIVE} fontSize={13}>
+                  <text x={METER_X - 68} y={meterY(UNIFORM_TOTAL) + 5} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
                     blind: {UNIFORM_BITS.toFixed(1)} / char
                   </text>
                 </g>
@@ -137,7 +142,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={METER_X} y={meterY(step.cum) - 10} textAnchor="middle" fill={colors.POSITIVE} fontSize={15}>
                 {`${step.cum.toFixed(0)} bits`}
               </text>
-              <text x={METER_X} y={meterY(0) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={METER_X} y={meterY(0) + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 total cost
               </text>
             </g>
@@ -146,11 +151,11 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed math + badge */}
-      <MathLabel tex={'\\text{bits} = -\\log_2 p(\\text{next})'} x={1030} y={70} fontSize={21} opacity={s.get(scene.texU) * dimU} />
+      <MathLabel tex={'\\text{bits} = -\\log_2 p(\\text{next})'} x={1030} y={36} fontSize={21} opacity={s.get(scene.texU) * dimU} />
       {badgeU > 0 && (
         <g opacity={badgeU * dimU}>
-          <rect x={48} y={110} width={210} height={38} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
-          <text x={66} y={135} fill={colors.TEXT} fontSize={15}>
+          <rect x={48} y={236} width={210} height={38} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
+          <text x={66} y={261} fill={colors.TEXT} fontSize={15}>
             {`character ${cur + 1} / ${N_STEPS}`}
           </text>
         </g>
@@ -159,7 +164,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={220} width={780} height={210} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={250} y={220} width={780} height={210} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Prediction is Compression
           </text>

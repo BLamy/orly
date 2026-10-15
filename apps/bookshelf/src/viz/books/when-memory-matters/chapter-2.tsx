@@ -9,8 +9,9 @@
 //   docs/pipeline.md (on-screen field; strata) · audit/counts.py in_stratum
 //
 // Machine: a population ribbon of exactly 1,169 cells (167 × 7). Forty cells
-// turn violet in true proportion and a magnified copy peels out; twenty-five
-// of those go hollow under the stricter reading. The enriched extension
+// turn violet in true proportion and a magnified copy peels out; under the
+// stricter reading twenty-five of those (the clear-referent cases) are removed
+// and become outlines, leaving fifteen violet cells and the 1.3% rate. The enriched extension
 // (364 = 52 × 7) and the abstention controls (434 = 62 × 7) are separate
 // ribbons that never enter the natural-rate brace. A single bracket carries
 // the paper's aggregate distance figure — no distribution is drawn.
@@ -37,7 +38,8 @@ import {
 
 const SCOREABLE = 1169;
 const RECORDED = 40; // expected/on_screen.json, proportional.recorded
-const STRICT = 15; // proportional.clear_removed
+const STRICT = 15; // stricter reading: what remains after the clear referents are removed
+const REMOVED = RECORDED - STRICT; // 25 outlined cells
 const ENRICHED = 364;
 const CONTROLS = 434;
 const MEDIAN_DISTANCE = 2157; // paper §6
@@ -80,7 +82,7 @@ const INSET = { x: 139, y: 120, pitch: 22, cell: 17, rows: 5 } as const;
 const HEAD = Array.from({ length: RECORDED }, (_, n) => ({
   from: cellXY(n, MAIN),
   to: { x: INSET.x + Math.floor(n / INSET.rows) * INSET.pitch, y: INSET.y + (n % INSET.rows) * INSET.pitch },
-  clear: n >= STRICT, // 25 with referent_on_screen: clear
+  clear: n >= STRICT, // the 25 with referent_on_screen: clear, removed under the stricter reading
 }));
 const INSET_W = (RECORDED / INSET.rows) * INSET.pitch;
 const INSET_BOTTOM = INSET.y + INSET.rows * INSET.pitch;
@@ -146,7 +148,7 @@ export function buildScene() {
 
   // BEAT 2 — forty turn violet; push into them
   t = beatAt(2);
-  tl.tween(cam, { x: 290, y: 236, k: 1.2 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 300, y: 250, k: 1.1 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
   tl.tween(violetU, 1, { at: t + 0.9, dur: 1.4, ease: ease.linear });
   tl.tween(peelU, 1, { at: t + 2.5, dur: 1.6, ease: ease.move });
   tl.tween(recEqU, 1, { at: t + 4.2, dur: 0.6, ease: ease.enter });
@@ -246,7 +248,7 @@ export function Render({ s }: { s: SceneState }) {
           <Tether x1={MAIN.x} y1={MAIN.y - 3} x2={INSET.x} y2={INSET_BOTTOM + 3} color={INK.distant} opacity={0.35} />
           <Tether x1={MAIN.x + 36} y1={MAIN.y - 3} x2={INSET.x + INSET_W - 5} y2={INSET_BOTTOM + 3} color={INK.distant} opacity={0.35} />
         </g>
-        <Txt x={INSET.x} y={INSET.y - 10} size={12} fill={INK.muted} opacity={clamp01(peel * 2 - 1) * (1 - win(b, 8, 8))}>
+        <Txt x={INSET.x} y={INSET.y - 10} size={14} fill={INK.muted} opacity={clamp01(peel * 2 - 1) * (1 - win(b, 8, 8))}>
           magnified
         </Txt>
         {peel > 0 &&
@@ -270,31 +272,37 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the rate: numerator slot, recorded reading, stricter reading */}
         <rect x={330} y={122} width={220} height={104} rx={8} fill="none" stroke={INK.muted} strokeDasharray="5 5" opacity={0.5 * on(b, 0) * (1 - s.get(scene.recEqU))} />
+        <Txt x={440} y={164} size={22} anchor="middle" fill={INK.muted} opacity={on(b, 0) * (1 - s.get(scene.recEqU))}>
+          ? / {fmt(SCOREABLE)}
+        </Txt>
         <g opacity={gone}>
-          <Txt x={440} y={164} size={22} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)}>
+          <Txt x={440} y={164} size={22} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.6, strict)}>
             {`${RECORDED} / ${fmt(SCOREABLE)} = ${pct(RECORDED, SCOREABLE)}%`}
           </Txt>
-          <Txt x={440} y={206} size={13} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)}>
+          <Txt x={440} y={206} size={13} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.6, strict)}>
             recorded reading
           </Txt>
-          <Txt x={350} y={258} size={12} mono fill={INK.claim} opacity={win(b, 3, 4) * clamp01(mark * 2)}>
+          <Txt x={350} y={258} size={13} mono fill={INK.claim} opacity={win(b, 3, 4) * clamp01(mark * 2)}>
             referent_on_screen: clear
           </Txt>
           <Txt x={680} y={164} size={22} anchor="middle" fill={INK.text} opacity={s.get(scene.strEqU)}>
             {`${STRICT} / ${fmt(SCOREABLE)} = ${pct(STRICT, SCOREABLE)}%`}
           </Txt>
           <Txt x={680} y={206} size={13} anchor="middle" fill={INK.text} opacity={s.get(scene.strEqU)}>
-            clear removed
+            left under the stricter reading
+          </Txt>
+          <Txt x={680} y={240} size={13} anchor="middle" fill={INK.muted} opacity={s.get(scene.strEqU)}>
+            {`${REMOVED} outlined = clear referents removed`}
           </Txt>
         </g>
 
         {/* the boundary the enriched cases cannot cross */}
         <g opacity={win(b, 6, 6)}>
           <line x1={MAIN.x} y1={404} x2={MAIN.x + MAIN_W} y2={404} stroke={INK.bad} strokeWidth={1.4 + join} strokeDasharray="6 5" opacity={0.5 + 0.5 * join} />
-          <Txt x={480} y={452} size={12.5} mono fill={INK.text}>
+          <Txt x={480} y={452} size={13} mono fill={INK.text}>
             both = proportional + enriched
           </Txt>
-          <Txt x={480} y={472} size={12} fill={INK.muted}>
+          <Txt x={480} y={472} size={13} fill={INK.muted}>
             a comparison set, not a population rate
           </Txt>
         </g>
@@ -308,7 +316,7 @@ export function Render({ s }: { s: SceneState }) {
                 return o > 0 ? <path key={c} d={d} fill={INK.distant} opacity={0.6 * o} /> : null;
               })}
           </g>
-          <Txt x={ENR.x} y={504} size={12} mono fill={INK.distant} opacity={clamp01(enrich * 3 - 2)}>
+          <Txt x={ENR.x} y={504} size={13} mono fill={INK.distant} opacity={clamp01(enrich * 3 - 2)}>
             enriched: 364 scoreable / 373 released
           </Txt>
 
@@ -320,14 +328,14 @@ export function Render({ s }: { s: SceneState }) {
             })}
           <g opacity={clamp01(abst * 3)}>
             <rect x={726} y={447} width={28} height={28} rx={5} fill="none" stroke={INK.muted} strokeDasharray="4 3" />
-            <Txt x={740} y={438} size={12} mono anchor="middle" fill={INK.muted}>
+            <Txt x={752} y={436} size={13} mono anchor="end" fill={INK.muted}>
               gold empty
             </Txt>
           </g>
-          <Txt x={ABS.x} y={504} size={12} mono fill={INK.text} opacity={clamp01(abst * 3 - 2)}>
+          <Txt x={ABS.x} y={504} size={13} mono fill={INK.text} opacity={clamp01(abst * 3 - 2)}>
             abstention: 434
           </Txt>
-          <Txt x={ABS.x + 372} y={504} size={12} anchor="end" fill={INK.muted} opacity={clamp01(abst * 3 - 2)}>
+          <Txt x={ABS.x + 372} y={504} size={13} anchor="end" fill={INK.muted} opacity={clamp01(abst * 3 - 2)}>
             controls, in neither sampled stratum
           </Txt>
         </g>
@@ -341,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={m}>
                   <line x1={backX(m)} y1={RULER.y - 5} x2={backX(m)} y2={RULER.y + 5} stroke={INK.distant} />
                   {m % 1000 === 0 && (
-                    <Txt x={backX(m)} y={RULER.y + 20} size={12} anchor="middle" fill={INK.muted}>
+                    <Txt x={backX(m)} y={RULER.y + 20} size={13} anchor="middle" fill={INK.muted}>
                       {m === 0 ? 'probe' : `−${fmt(m)}`}
                     </Txt>
                   )}
@@ -353,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
             <Txt x={RULER.x1 + 4} y={RULER.y - 36} size={14} anchor="end" weight={600} opacity={clamp01(ruler * 3 - 2)}>
               {`median furthest evidence: ${fmt(MEDIAN_DISTANCE)} messages`}
             </Txt>
-            <Txt x={RULER.x1 + 4} y={RULER.y + 44} size={12} anchor="end" fill={INK.muted} opacity={clamp01(ruler * 3 - 2)}>
+            <Txt x={RULER.x1 + 4} y={RULER.y + 44} size={13} anchor="end" fill={INK.muted} opacity={clamp01(ruler * 3 - 2)}>
               memory-bearing probes, recorded · Paper §6
             </Txt>
           </g>

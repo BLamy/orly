@@ -46,6 +46,9 @@ const PARAMS = [
 const PARAM_W = 270;
 const PARAM_Y = 132;
 
+// the app's own sign-in button — the test clicks it in beat 1, then it fades
+const SIGN = { x: 60, y: 220, w: 250, h: 46 } as const;
+
 // the emulator card the browser lands on (beat 3 only)
 const EMU = { x: 380, y: 252, w: 520, h: 88 } as const;
 
@@ -62,8 +65,9 @@ const USERS = [
 
 // the POST slot under the picker: the test's line of code shows here first,
 // then the posted choice replaces it
-const POST_Y = PICKER.y + PICKER.h + 36;
-const TESTCHIP = { x: PICKER.x + 24, y: POST_Y, w: PICKER.w - 48, h: 56 } as const;
+const CHIP_H = 52;
+const POST_Y = PICKER.y + PICKER.h + 40;
+const TESTCHIP = { x: PICKER.x + 24, y: POST_Y, w: PICKER.w - 48, h: CHIP_H } as const;
 
 // the Playwright cursor's glide: off-stage → hover over the octocat button
 const CURSOR_FROM = { x: 1250, y: 640 };
@@ -73,7 +77,7 @@ const CURSOR_TO = { x: PICKER.x + PICKER.w / 2 + 60, y: btnY(0) + BTN_H / 2 + 6 
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_BAR: CameraState = { x: 640, y: 150, k: 1.06 };
 const CAM_GATES: CameraState = { x: 320, y: 382, k: 1.5 };
-const CAM_PICKER: CameraState = { x: 940, y: 412, k: 1.4 };
+const CAM_PICKER: CameraState = { x: 940, y: 432, k: 1.35 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~80s, ten beats).
@@ -218,10 +222,13 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const teaseU = s.get(scene.teaseU);
 
-  const floorOp = 1 - 0.87 * dimU;
-  // context fades to a ghost once the gates take over, then again for the picker
-  const ghostGates = 1 - 0.88 * gate1U;
-  const ghostPicker = 1 - 0.88 * pickerU;
+  // the scene clears fully at the end, so the closing card sits on bare background
+  const floorOp = 1 - dimU;
+  // context clears once the gates take over, and again for the picker, so no cropped ghosts linger
+  const ghostGates = 1 - gate1U;
+  const ghostPicker = 1 - pickerU;
+  const ctxOp = ghostGates * ghostPicker;
+  const signOp = clamp01(1 - paramU * 2) * floorOp;
   const cx = lerp(CURSOR_FROM.x, CURSOR_TO.x, cursorU);
   const cy = lerp(CURSOR_FROM.y, CURSOR_TO.y, cursorU) - 40 * Math.sin(Math.PI * cursorU);
 
@@ -229,8 +236,16 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {/* the app's sign-in button, clicked in beat 1 */}
+        <g opacity={signOp}>
+          <rect x={SIGN.x} y={SIGN.y} width={SIGN.w} height={SIGN.h} rx={10} fill={colors.ACCENT} />
+          <text x={SIGN.x + SIGN.w / 2} y={SIGN.y + 29} textAnchor="middle" fill={colors.BG} fontSize={16} fontWeight={600}>
+            Sign in with GitHub
+          </text>
+        </g>
+
         {/* the authorize URL bar */}
-        <g opacity={barU * floorOp * ghostGates}>
+        <g opacity={barU * floorOp * ctxOp}>
           <rect x={BAR.x} y={BAR.y} width={BAR.w} height={BAR.h} rx={12} fill={colors.PANEL} stroke={arriveU > 0.4 ? colors.ACCENT : colors.GRID} strokeWidth={1.4} />
           <circle cx={BAR.x + 24} cy={BAR.y + 23} r={6} fill="none" stroke={colors.MUTED} strokeWidth={1.5} />
           <text x={BAR.x + 44} y={BAR.y + 29} fill={colors.TEXT} fontSize={15} fontFamily={MONO}>
@@ -242,7 +257,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* the param cars snapping on */}
-        <g opacity={floorOp * ghostGates}>
+        <g opacity={floorOp * ctxOp}>
           {PARAMS.map((p, i) => {
             const u = win(paramU, PARAMS.length, i, 1.6);
             if (u <= 0) return null;
@@ -250,10 +265,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={p.key} opacity={u}>
                 <rect x={x} y={PARAM_Y} width={PARAM_W} height={52} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-                <text x={x + 14} y={PARAM_Y + 21} fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+                <text x={x + 14} y={PARAM_Y + 21} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   {p.key}
                 </text>
-                <text x={x + 14} y={PARAM_Y + 41} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={x + 14} y={PARAM_Y + 41} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>
                   {p.val}
                 </text>
               </g>
@@ -268,7 +283,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={EMU.y + 38} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={600}>
             localhost:4001 — the emulator
           </text>
-          <text x={640} y={EMU.y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={EMU.y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             listening on its local port
           </text>
         </g>
@@ -276,13 +291,13 @@ export function Render({ s }: { s: SceneState }) {
         {/* gate one: known client */}
         <g opacity={Math.max(gate1U, 0) * floorOp * ghostPicker}>
           <rect x={GATE1.x} y={GATE1.y} width={GATE1.w} height={GATE1.h} rx={12} fill={colors.PANEL} stroke={gate1U > 0.8 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4} />
-          <text x={GATE1.x + 18} y={GATE1.y + 28} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={GATE1.x + 18} y={GATE1.y + 28} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             gate one — is the client registered?
           </text>
-          <text x={GATE1.x + 18} y={GATE1.y + 58} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+          <text x={GATE1.x + 18} y={GATE1.y + 58} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             client_id: emu_github_client_id
           </text>
-          <text x={GATE1.x + 18} y={GATE1.y + 82} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={GATE1.x + 18} y={GATE1.y + 82} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             seeded oauth_apps: emu_github_client_id
           </text>
           <text x={GATE1.x + 18} y={GATE1.y + 114} fill={gate1U > 0.8 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontWeight={700} opacity={clamp01(gate1U * 1.4 - 0.4)}>
@@ -293,13 +308,13 @@ export function Render({ s }: { s: SceneState }) {
         {/* gate two: registered return address */}
         <g opacity={Math.max(gate2U, 0) * floorOp * ghostPicker}>
           <rect x={GATE2.x} y={GATE2.y} width={GATE2.w} height={GATE2.h} rx={12} fill={colors.PANEL} stroke={gate2U > 0.8 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4} />
-          <text x={GATE2.x + 18} y={GATE2.y + 28} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={GATE2.x + 18} y={GATE2.y + 28} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             gate two — is the return address registered?
           </text>
-          <text x={GATE2.x + 18} y={GATE2.y + 58} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+          <text x={GATE2.x + 18} y={GATE2.y + 58} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             incoming: …/api/auth/callback/github
           </text>
-          <text x={GATE2.x + 18} y={GATE2.y + 82} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={GATE2.x + 18} y={GATE2.y + 82} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             registered: …/api/auth/callback/github
           </text>
           <text x={GATE2.x + 18} y={GATE2.y + 114} fill={gate2U > 0.8 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontWeight={700} opacity={clamp01(gate2U * 1.4 - 0.4)}>
@@ -313,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={600}>
             Sign in to GitHub
           </text>
-          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             Authorize Code App to access your account.
           </text>
           {USERS.map((u, i) => {
@@ -327,7 +342,7 @@ export function Render({ s }: { s: SceneState }) {
                   width={PICKER.w - 48}
                   height={BTN_H}
                   rx={12}
-                  fill={hot ? colors.BG : colors.BG}
+                  fill={colors.BG}
                   stroke={hot ? colors.WARM : colors.GRID}
                   strokeWidth={hot ? 2 : 1.2}
                 />
@@ -338,17 +353,17 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={PICKER.x + 94} y={btnY(i) + 32} fill={colors.TEXT} fontSize={15.5} fontFamily={MONO}>
                   {u.login}
                 </text>
-                <text x={PICKER.x + 94} y={btnY(i) + 52} fill={colors.MUTED} fontSize={12.5}>
+                <text x={PICKER.x + 94} y={btnY(i) + 52} fill={colors.MUTED} fontSize={14}>
                   {u.name}
                 </text>
-                <text x={PICKER.x + 94} y={btnY(i) + 70} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text x={PICKER.x + 94} y={btnY(i) + 70} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
                   {u.email}
                 </text>
               </g>
             );
           })}
           {/* the missing password field */}
-          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + PICKER.h + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5} opacity={noPassU}>
+          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + PICKER.h + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} opacity={noPassU}>
             no password field — identity is a choice, not a proof
           </text>
         </g>
@@ -371,21 +386,21 @@ export function Render({ s }: { s: SceneState }) {
         {/* the test's line of code — it gives way to the POST below */}
         <g opacity={clamp01(cursorU * 2) * floorOp * (1 - postU)}>
           <rect x={TESTCHIP.x} y={TESTCHIP.y} width={TESTCHIP.w} height={TESTCHIP.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 24} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 21} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             your Playwright test
           </text>
-          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 44} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 40} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             {"await page.getByText('octocat').click()"}
           </text>
         </g>
 
         {/* the choice posting back */}
         <g opacity={postU * floorOp}>
-          <rect x={PICKER.x + 24} y={POST_Y} width={PICKER.w - 48} height={56} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-          <text x={PICKER.x + 40} y={POST_Y + 24} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+          <rect x={PICKER.x + 24} y={POST_Y} width={PICKER.w - 48} height={CHIP_H} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+          <text x={PICKER.x + 40} y={POST_Y + 21} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
             POST /login/oauth/callback
           </text>
-          <text x={PICKER.x + 40} y={POST_Y + 44} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={PICKER.x + 40} y={POST_Y + 40} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             login=octocat · redirect_uri · scope · state · client_id
           </text>
         </g>

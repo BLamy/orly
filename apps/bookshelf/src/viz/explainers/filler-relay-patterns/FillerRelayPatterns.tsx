@@ -135,7 +135,9 @@ const HM_R = { x: 760, y: 190 };
 
 const TABLE_Y = 452;
 const CAM_MAPS: CameraState = { x: 640, y: 300, k: 1.15 };
-const CAM_TABLE: CameraState = { x: 640, y: 430, k: 1.2 };
+// The table framing keeps the heatmap headers (scene y ~146) below the screen-fixed
+// title block (screen y 54–84) and the table bottom above the caption pill (screen y ~630).
+const CAM_TABLE: CameraState = { x: 640, y: 366, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -278,7 +280,7 @@ function Heatmap({
       <text x={x} y={y - 44} fill={colors.TEXT} fontSize={17}>
         {title}
       </text>
-      <text x={x} y={y - 24} fill={colors.MUTED} fontSize={12}>
+      <text x={x} y={y - 24} fill={colors.MUTED} fontSize={13}>
         {sub}
       </text>
       {pic.map((row, i) =>
@@ -296,10 +298,10 @@ function Heatmap({
       )}
       {TOKS.map((t, i) => (
         <g key={i}>
-          <text x={x + i * CELL + CELL / 2 - 1} y={y - 6} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+          <text x={x + i * CELL + CELL / 2 - 1} y={y - 6} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
             {t}
           </text>
-          <text x={x - 10} y={y + i * CELL + 19} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+          <text x={x - 10} y={y + i * CELL + 19} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
             {t}
           </text>
         </g>
@@ -326,7 +328,8 @@ function Frame({ s }: { s: SceneState }) {
   const tableU = s.get(scene.tableU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the closing card gets the stage to itself: the old figure fades out fully behind it
+  const mainOp = 1 - closeU;
 
   const rows = [
     { label: 'clean run', relay: RELAY.ans, direct: DIRECT.ans, u: tableU },
@@ -359,7 +362,7 @@ function Frame({ s }: { s: SceneState }) {
             hiRelay={0}
           />
           {paperU > 0 && (
-            <text x={HM_L.x} y={HM_L.y + 6 * CELL + 34} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={paperU}>
+            <text x={HM_L.x} y={HM_L.y + 6 * CELL + 34} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={paperU}>
               paper, at scale: direct question→answer attention ~15.8% → 3–4% with fillers
             </text>
           )}
@@ -370,10 +373,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={220} y={TABLE_Y - 14} fill={colors.TEXT} fontSize={16}>
                 the two interventions, computed
               </text>
-              <text x={700} y={TABLE_Y + 16} fill={colors.ACCENT} fontSize={13} fontWeight={600}>
+              <text x={700} y={TABLE_Y + 16} fill={colors.ACCENT} fontSize={14} fontWeight={600}>
                 relay
               </text>
-              <text x={850} y={TABLE_Y + 16} fill={colors.MUTED} fontSize={13} fontWeight={600}>
+              <text x={850} y={TABLE_Y + 16} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                 direct
               </text>
               {rows.map((r, i) => {
@@ -395,7 +398,7 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {txU > 0 && (
-                <text x={220} y={TABLE_Y + 46 + 3 * 36} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={txU}>
+                <text x={220} y={TABLE_Y + 46 + 3 * 36} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={txU}>
                   paper, at scale: filler-only KV transplant lifts donor answer rank 96 → 11
                 </text>
               )}
@@ -416,7 +419,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Interventions, not vibes.
           </text>

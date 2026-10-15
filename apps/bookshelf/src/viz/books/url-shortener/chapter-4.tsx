@@ -308,6 +308,9 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {/* requests fly beneath the nodes and labels, so no dot ever sits on a word */}
+        <ParticleCloud state={s} compute={reqParticles} />
+
         {/* ---- client crowd ---- */}
         <g opacity={crowdU * panelDim}>
           <ServiceNode x={CROWD_X} y={310} kind="client" label="readers" sublabel="40 / s avg" u={crowdU} replicas={10} />
@@ -338,17 +341,16 @@ export function Render({ s }: { s: SceneState }) {
           />
           <ServiceNode x={LAYERS[0].x} y={310} kind="cdn" label="CDN" sublabel="the edge" u={cdnU} glow={cdnU * 0.7 * (1 - countsU)} />
         </g>
-        <ParticleCloud state={s} compute={reqParticles} />
 
-        {/* absorb shares */}
+        {/* absorb shares — they leave with the closing panel so no stray figures peek out below it */}
         {countsU > 0 && (
-          <g opacity={countsU * panelDim}>
+          <g opacity={countsU * panelDim * (1 - closeU)}>
             {LAYERS.map((l) => (
               <g key={l.label}>
-                <text x={l.x} y={392} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>
+                <text x={l.x} y={392} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={700}>
                   {l.share}
                 </text>
-                <text x={l.x} y={410} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={l.x} y={412} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                   absorbed here
                 </text>
               </g>
@@ -363,7 +365,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={228} y={454} fill={colors.TEXT} fontSize={14}>
               reads per link
             </text>
-            <text x={612} y={454} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={612} y={454} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={13} fontStyle="italic">
               a few links get almost everything
             </text>
             {BARS.map((b, i) => {
@@ -417,7 +419,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SHELF.x0} y={SHELF.y - 60} fill={colors.TEXT} fontSize={14}>
               the cache, as a linked list — front is safety
             </text>
-            <text x={SHELF.x0} y={SHELF.y - 42} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={SHELF.x0} y={SHELF.y - 42} fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily="monospace">
               {insU > 0.2 ? 'remove_from_tail() · append_to_front(node)' : hitU > 0.4 ? 'move_to_front(node)' : 'lookup = {query: node}'}
             </text>
             {['x7Rq2Lp', 'dSUUsvo', 'aB93kQz', 'M4nv0Yt', 'pE6sW1c', 'Zk82hFw'].map((link) => {
@@ -459,10 +461,10 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={shelfX(0)} y={SHELF.y + SHELF.h + 18} fill={colors.MUTED} fontSize={12}>
+            <text x={shelfX(0)} y={SHELF.y + SHELF.h + 20} fill={colors.TEXT} opacity={0.8} fontSize={13}>
               front — most recent
             </text>
-            <text x={shelfX(4) + SHELF.cell} y={SHELF.y + SHELF.h + 18} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={shelfX(4) + SHELF.cell} y={SHELF.y + SHELF.h + 20} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={13}>
               tail — next to go
             </text>
           </g>

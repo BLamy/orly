@@ -23,7 +23,6 @@ export function buildScene() {
   const fresh2U = tl.channel('second fresh adapter', 0);
   const merge3U = tl.channel('third merge', 0);
   const constantU = tl.channel('constant learner state', 0);
-  const ghostU = tl.channel('retained adapters', 0);
   const codeU = tl.channel('implementation handoff', 0);
   const memoryU = tl.channel('anchored memory survives', 0);
   const closeU = tl.channel('closing fold loop', 0);
@@ -64,8 +63,6 @@ export function buildScene() {
 
   tl.caption({ at: 42.4, dur: 5.5, text: 'Unlike methods whose retained adapters grow with the task count, this merged learner keeps one fixed-size active adapter.' });
   tl.tween(constantU, 1, { at: 42.9, dur: 1.3, ease: ease.enter });
-  tl.tween(ghostU, 1, { at: 43.4, dur: 1.0, ease: ease.enter });
-  tl.tween(ghostU, 0, { at: 47.6, dur: 0.8, ease: ease.move });
 
   tl.caption({ at: 48.4, dur: 5.5, text: 'The released loop makes the handoff explicit: merge and unload, save the merged checkpoint, then create the next adapter.' });
   tl.tween(codeU, 1, { at: 49.0, dur: 1.4, ease: ease.enter });
@@ -82,14 +79,14 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: 67.0, dur: 1.3, ease: ease.move });
   tl.hold(72.2, 1.0);
 
-  return { tl, cam, matrixU, sharedU, sharedP, factorU, multiplyU, merge1U, fresh1U, merge2U, fresh2U, merge3U, constantU, ghostU, codeU, memoryU, closeU };
+  return { tl, cam, matrixU, sharedU, sharedP, factorU, multiplyU, merge1U, fresh1U, merge2U, fresh2U, merge3U, constantU, codeU, memoryU, closeU };
 }
 
 const scene = buildScene();
 
 function WeightMatrix({ u, merges }: { u: number; merges: number[] }) {
   return <g opacity={u}>
-    <text x={MX + CELL * 4} y={MY - 24} textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>base model weights W</text>
+    <text x={MX + CELL * 4} y={MY - 24} textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>base model weights W</text>
     {Array.from({ length: 8 }, (_, row) => Array.from({ length: 8 }, (_, col) => {
       const idx = row * 8 + col;
       const reveal = clamp01(u * 64 - idx);
@@ -108,7 +105,7 @@ function Factors({ u, task }: { u: number; task: number }) {
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1={878 + i * 9} y1="238" x2={878 + i * 9} y2="418" stroke={color} strokeWidth="4" opacity={0.25 + i * 0.1} />)}
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1="990" y1={290 + i * 7} x2="1132" y2={290 + i * 7} stroke={color} strokeWidth="3" opacity={0.25 + i * 0.1} />)}
     <text x="1008" y="482" textAnchor="middle" fill={colors.TEXT} fontSize="22" fontStyle="italic">B<tspan baselineShift="sub" fontSize="15">t</tspan>A<tspan baselineShift="sub" fontSize="15">t</tspan> = ΔW<tspan baselineShift="sub" fontSize="15">t</tspan></text>
-    <text x="1008" y="512" textAnchor="middle" fill={color} fontSize="12">rank 32 · task {task + 1}</text>
+    <text x="1008" y="512" textAnchor="middle" fill={color} fontSize="14">rank 32 · task {task + 1}</text>
   </g>;
 }
 
@@ -134,8 +131,8 @@ export function Render({ s }: { s: SceneState }) {
         <text x="238" y="214" textAnchor="middle" fill={colors.NEGATIVE} fontSize="16" fontWeight="800">one shared adapter</text>
         <rect x="175" y="252" width="126" height="176" rx="22" fill="#1d1725" stroke={TASK_COLORS[Math.min(2, Math.floor(sharedP))]} strokeWidth="4" />
         {Array.from({ length: 8 }, (_, i) => <path key={i} d={`M194 ${276 + i * 18} C228 ${258 + ((i + Math.floor(sharedP)) % 4) * 32}, 250 ${312 + (i % 3) * 28}, 282 ${278 + i * 17}`} fill="none" stroke={TASK_COLORS[Math.min(2, Math.floor(sharedP))]} strokeWidth="4" opacity="0.65" />)}
-        <text x="238" y="468" textAnchor="middle" fill={colors.MUTED} fontSize="12">task one → task two → task three</text>
-        <text x="238" y="490" textAnchor="middle" fill={colors.NEGATIVE} fontSize="12">same low-rank coordinates</text>
+        <text x="238" y="468" textAnchor="middle" fill={colors.MUTED} fontSize="14">task one → task two → task three</text>
+        <text x="238" y="490" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">same low-rank coordinates</text>
       </g>
 
         <Factors u={factorU * (1 - Math.max(...merges) * 0.35)} task={task} />
@@ -150,18 +147,15 @@ export function Render({ s }: { s: SceneState }) {
         <text x="324" y="378" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">ACTIVE LEARNER STATE</text>
         {Array.from({ length: 8 }, (_, i) => <rect key={i} x={448 + i * 52} y="352" width="38" height="36" rx="8" fill={i < 4 ? colors.ACCENT : colors.SECONDARY} opacity="0.75" />)}
         <text x="962" y="378" textAnchor="middle" fill={colors.TEXT} fontSize="14">constant across tasks</text>
-        <g opacity={s.get(scene.ghostU)}>
-          <text x="640" y="252" textAnchor="middle" fill={colors.MUTED} fontSize="16">retained adapters grow with the task count</text>
-          {[0, 1, 2].map((i) => <g key={i} transform={`translate(${520 + i * 120} 268)`}>
-            <rect width="104" height="40" rx="12" fill="none" stroke={colors.MUTED} strokeWidth="2" strokeDasharray="6 6" />
-            <text x="52" y="25" textAnchor="middle" fill={colors.MUTED} fontSize="14">task {i + 1}</text>
-          </g>)}
-        </g>
       </g>
 
       <g opacity={s.get(scene.codeU)}>
-        <rect x="210" y="444" width="860" height="44" rx="16" fill="#151f31" stroke={colors.ACCENT} />
-        <text x="640" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>model.merge_and_unload() → get_peft_model(merged, lora_cfg)</text>
+        <rect x="176" y="444" width="928" height="44" rx="16" fill="#151f31" stroke={colors.ACCENT} />
+        <text x="350" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>model.merge_and_unload()</text>
+        <path d="M495 466 H515 M509 460 L515 466 L509 472" fill="none" stroke={colors.MUTED} strokeWidth="2.5" />
+        <text x="640" y="472" textAnchor="middle" fill={colors.TEXT} fontSize="14">save merged checkpoint</text>
+        <path d="M744 466 H764 M758 460 L764 466 L758 472" fill="none" stroke={colors.MUTED} strokeWidth="2.5" />
+        <text x="930" y="472" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>get_peft_model(merged, lora_cfg)</text>
       </g>
       <g opacity={s.get(scene.memoryU)} transform="translate(312 112)">
         <rect width="656" height="48" rx="18" fill="#2b2513" stroke={colors.POSITIVE} strokeWidth="2.5" />

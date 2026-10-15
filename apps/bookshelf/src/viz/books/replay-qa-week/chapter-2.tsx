@@ -127,8 +127,6 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, CAM_TAPE, { at: 20.4, dur: 1.6, ease: ease.move });
   tl.tween(tapeU, 1, { at: 21.0, dur: 1.6, ease: ease.draw });
-  tl.tween(listOp, 0.25, { at: 25.5, dur: 1.0, ease: ease.move }); // the tape takes focus
-  tl.tween(listOp, 0, { at: 29.8, dur: 1.0, ease: ease.move }); // the crash view is framed below the list
   tl.hold(26.2, 0.6);
 
   // — Beat 5 · scrub to the moment —
@@ -175,7 +173,7 @@ export function buildScene(): Scene {
     text: "When it says a page broke, you don't have to trust it. You can just look.",
   });
   tl.tween(cam, CAM_WIDE, { at: 53.9, dur: 1.8, ease: ease.move });
-  tl.tween(listOp, 0.12, { at: 54.4, dur: 1.4, ease: ease.move });
+  tl.tween(listOp, 0, { at: 54.4, dur: 1.4, ease: ease.move });
   tl.tween(stampU, 0, { at: 54.4, dur: 1.2, ease: ease.move }); // clear before the closing text
   tl.tween(closeU, 1, { at: 56.0, dur: 1.0, ease: ease.enter });
 
@@ -210,6 +208,9 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const playX = TAPE.x + 12 + scrub * (TAPE.w - 24);
+  // the list dims as the tape takes focus (tapeU) and is gone once the playhead
+  // has moved toward the crash (scrub), so no separate fade window is needed
+  const listFade = listOp * (1 - 0.75 * tapeU) * clamp01(1 - scrub / 0.4);
 
   return (
     <>
@@ -219,7 +220,7 @@ export function Render({ s }: { s: SceneState }) {
         {CARDS.map((c, i) => {
           const u = clamp01(listU * 2.2 - i * 0.6);
           const picked = i === 0 ? pickU : 0;
-          const op = i === 0 ? Math.max(listOp, 0.12) : listOp * (1 - 0.5 * pickU);
+          const op = i === 0 ? listFade : listFade * (1 - 0.5 * pickU);
           return u > 0 ? (
             <g key={i} opacity={u * op} transform={`translate(0 ${(1 - u) * 18})`}>
               <rect
@@ -239,13 +240,21 @@ export function Render({ s }: { s: SceneState }) {
               <text x={CARD.x + 50} y={c.y + 64} fill={colors.MUTED} fontSize={14}>
                 {c.sub}
               </text>
+              {i === 0 && picked > 0 && (
+                <g opacity={picked}>
+                  <rect x={CARD.x + CARD.w - 84} y={c.y + 14} width={68} height={26} rx={13} fill={c.sev} fillOpacity={0.18} />
+                  <text x={CARD.x + CARD.w - 50} y={c.y + 32} textAnchor="middle" fill={c.sev} fontSize={14} fontWeight={700}>
+                    worst
+                  </text>
+                </g>
+              )}
             </g>
           ) : null;
         })}
 
         {/* the steps panel — what the first card carries */}
         {stepsU > 0 && (
-          <g opacity={Math.max(listOp, 0.12)}>
+          <g opacity={listFade}>
             <rect x={520} y={110} width={330} height={200} rx={12} fill={colors.PANEL} stroke={colors.GRID} opacity={stepsU} />
             <text x={544} y={144} fill={colors.MUTED} fontSize={14} opacity={stepsU}>
               steps taken

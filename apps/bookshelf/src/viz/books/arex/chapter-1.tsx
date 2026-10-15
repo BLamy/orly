@@ -27,9 +27,13 @@ const PATH = [
 const CONSTRAINTS = [
   { label: 'time', x: 738, y: 314, rx: 125, ry: 94, color: colors.ACCENT },
   { label: 'place', x: 864, y: 314, rx: 125, ry: 94, color: colors.SECONDARY },
-  { label: 'source', x: 768, y: 400, rx: 125, ry: 94, color: colors.WARM },
-  { label: 'relation', x: 848, y: 400, rx: 125, ry: 94, color: colors.POSITIVE },
+  { label: 'source', x: 768, y: 400, rx: 125, ry: 94, color: colors.WARM, below: true },
+  { label: 'relation', x: 848, y: 400, rx: 125, ry: 94, color: colors.POSITIVE, below: true },
 ];
+
+// Labels sit above their ellipse, or below it when the ellipse sits inside the other lenses,
+// so no label is printed on top of another circle's outline.
+const labelY = (c: (typeof CONSTRAINTS)[number]) => (c.below ? c.y + c.ry + 22 : c.y - c.ry - 9);
 
 function pathPoint(p: number) {
   const q = clamp01(p) * (PATH.length - 1);
@@ -118,7 +122,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={1280} height={720} fill={colors.BG} />
       <text x={640} y={72} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>Discovery is the expensive side</text>
-      <text x={640} y={99} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>discovery ↔ constraint-wise verification</text>
+      <text x={640} y={99} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>discovery ↔ constraint-wise verification</text>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <ParticleCloud state={s} compute={compute} alpha={1} />
@@ -128,13 +132,14 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.label} opacity={u}>
                 <ellipse cx={c.x} cy={c.y} rx={c.rx} ry={c.ry} fill={c.color} fillOpacity={0.055} stroke={c.color} strokeWidth={2} strokeDasharray="7 7" />
-                <text x={c.x} y={c.y - c.ry - 9} textAnchor="middle" fill={c.color} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">{c.label}</text>
+                <text x={c.x} y={labelY(c)} textAnchor="middle" fill={c.color} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">{c.label}</text>
               </g>
             );
           })}
 
           {searchP > 0 && (
-            <g transform={`translate(${dot.x} ${dot.y})`}>
+            // the search candidate hands off to the provisional answer: it fades as that answer appears
+            <g transform={`translate(${dot.x} ${dot.y})`} opacity={1 - s.get(scene.candidateU)}>
               <circle r={25} fill={colors.WARM} opacity={0.12} />
               <circle r={8} fill={colors.WARM} />
               <text x={-22} y={22} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">candidate</text>
@@ -150,8 +155,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {checksU > 0 && (
-            <g transform="translate(1004 180)">
-              <rect width={205} height={300} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
+            <g transform="translate(1004 180)" opacity={1 - s.get(scene.dimU)}>
+              <rect width={205} height={282} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={102} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>constraint audit</text>
               {CONSTRAINTS.map((c, i) => {
                 const u = clamp01(checksU - i);
@@ -173,7 +178,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={235} y={245} width={810} height={182} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} />
           <text x={640} y={305} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={700}>Search where the audit points</text>
           <text x={640} y={351} textAnchor="middle" fill={colors.MUTED} fontSize={16}>preserve verified evidence · target unresolved constraints</text>
-          <text x={640} y={390} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>arXiv:2607.21461 · §1 discovery–verification asymmetry</text>
+          <text x={640} y={390} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>arXiv:2607.21461 · §1 discovery–verification asymmetry</text>
         </g>
       )}
     </>

@@ -4,7 +4,7 @@ import type { TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import type { SceneState } from '../../core';
 import { NumberLine, ParticleCloud, Vec } from '../../primitives';
-import { buildScene, computeParticles, PANEL, SCORE_ARROWS } from './scene';
+import { buildScene, computeParticles, GHOST_D, PANEL, SCORE_ARROWS } from './scene';
 
 /** Scene built once at module scope — the render below is pure. */
 const { tl, ch } = buildScene();
@@ -57,6 +57,18 @@ export function Render({ s }: { s: SceneState }) {
             strokeWidth={1.5}
           />
         </g>
+      )}
+
+      {/* The clean moons, faint, under the fog: the curve the noise erases. */}
+      {barU > 0 && (
+        <path
+          d={GHOST_D}
+          fill="none"
+          stroke="#5b6f8c"
+          strokeWidth={5}
+          strokeLinecap="round"
+          opacity={barU}
+        />
       )}
 
       {/* The cloud: 2200 points, each a closed form of σ. */}

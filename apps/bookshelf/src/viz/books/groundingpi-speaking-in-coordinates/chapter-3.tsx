@@ -136,6 +136,8 @@ function Txt({ x, y, children, size = 18, fill = INK.text, opacity = 1, anchor =
   );
 }
 const monoW = (text: string, size: number): number => text.length * size * 0.62;
+const RECT_LABEL = 'draw.rectangle · outline="red", width=3';
+const POINT_LABEL = 'draw.ellipse · (300, 425)';
 
 function Chip({ x, y, text, color, opacity = 1, size = 20 }: { x: number; y: number; text: string; color: string; opacity?: number; size?: number }) {
   if (opacity <= 0.003) return null;
@@ -225,9 +227,11 @@ interface Variant {
   coords: readonly number[] | null;
   stopAt: number; // cell index where the parse halts (cells.length = consumed everything)
 }
-const MAIN: Variant = { name: 'valid box', cells: [...phraseRow(PHRASE, 160), ...boxRow(RED_BOX)], lampCell: [0, 1, 2, 3, 7, 8], coords: RED_BOX, stopAt: 9 };
-const NONE: Variant = { name: 'valid negative', cells: [...phraseRow(ALT_PHRASE, 196), ...noneRow()], lampCell: [0, 1, 2, 3, 4, 5], coords: null, stopAt: 6 };
-const BAD: Variant = { name: 'malformed', cells: [...phraseRow(PHRASE, 160), ...boxRow(BAD_BOX)], lampCell: [0, 1, 2, 3, -1, -1], coords: BAD_BOX, stopAt: 6 };
+// the phrase cell is widened so the phrase row and the full box row end on the same right edge
+const PHRASE_W = 248;
+const MAIN: Variant = { name: 'valid box', cells: [...phraseRow(PHRASE, PHRASE_W), ...boxRow(RED_BOX)], lampCell: [0, 1, 2, 3, 7, 8], coords: RED_BOX, stopAt: 9 };
+const NONE: Variant = { name: 'valid negative', cells: [...phraseRow(ALT_PHRASE, PHRASE_W), ...noneRow()], lampCell: [0, 1, 2, 3, 4, 5], coords: null, stopAt: 6 };
+const BAD: Variant = { name: 'malformed', cells: [...phraseRow(PHRASE, PHRASE_W), ...boxRow(BAD_BOX)], lampCell: [0, 1, 2, 3, -1, -1], coords: BAD_BOX, stopAt: 6 };
 const VARIANTS = [MAIN, NONE, BAD] as const;
 if (MAIN.cells.length !== 9 || NONE.cells.length !== 6 || BAD.cells[6].bad !== true) throw new Error('tape variants drifted');
 const MAIN_COORD_CELLS = MAIN.cells.slice(4, 8);
@@ -556,23 +560,25 @@ export function Render({ s }: { s: SceneState }) {
         {rectU > 0.003 && (
           <>
             <rect x={tl.x} y={tl.y} width={br.x - tl.x} height={br.y - tl.y} fill="none" stroke="#ef4444" strokeWidth={3} strokeDasharray={`${perim}`} strokeDashoffset={(1 - rectU) * perim} />
-            <Txt x={tl.x} y={tl.y - 8} size={16} fill="#ef4444" mono opacity={clamp01((rectU - 0.8) / 0.2) * (1 - panelU)}>draw.rectangle · outline="red", width=3</Txt>
+            {/* a panel behind the label keeps the guide rays from running through the words */}
+            <rect x={tl.x - 6} y={tl.y - 24} width={monoW(RECT_LABEL, 16) + 12} height={20} rx={4} fill={INK.bg} opacity={clamp01((rectU - 0.8) / 0.2) * (1 - panelU)} />
+            <Txt x={tl.x} y={tl.y - 8} size={16} fill="#ef4444" mono opacity={clamp01((rectU - 0.8) / 0.2) * (1 - panelU)}>{RECT_LABEL}</Txt>
           </>
         )}
         {pointU > 0.003 && (
           <g opacity={pointU}>
             <circle cx={POINT_STAGE.x} cy={POINT_STAGE.y} r={5} fill="#ef4444" />
-            <Txt x={POINT_STAGE.x + 12} y={POINT_STAGE.y - 10} size={16} fill="#ef4444" mono>draw.ellipse · point mode (300, 425)</Txt>
+            <Chip x={POINT_STAGE.x + 12 + (monoW(POINT_LABEL, 16) + 28) / 2} y={POINT_STAGE.y - 14} text={POINT_LABEL} color="#ef4444" size={16} />
           </g>
         )}
-        {/* deliberate emptiness for None; refusal for invalid results */}
+        {/* deliberate emptiness for None; refusal for invalid results. The chips sit along the bottom edge so the car stays visible */}
         {noneImgU > 0.003 && (
           <g opacity={noneImgU}>
             <rect x={IMG.x + 4} y={IMG.y + 4} width={IMG.w - 8} height={IMG.h - 8} rx={5} fill="none" stroke={INK.yellow} strokeWidth={1.5} strokeDasharray="8 8" />
-            <Chip x={IMG.x + IMG.w / 2} y={IMG.y + IMG.h / 2} text="None · nothing drawn" color={INK.yellow} size={18} />
+            <Chip x={IMG.x + IMG.w / 2} y={IMG.y + IMG.h - 20} text="None · nothing drawn" color={INK.yellow} size={18} />
           </g>
         )}
-        <Chip x={IMG.x + IMG.w / 2} y={IMG.y + IMG.h / 2} text="visualize() raises · no rectangle" color={INK.bad} size={18} opacity={noDraw * (1 - rectU)} />
+        <Chip x={IMG.x + IMG.w / 2} y={IMG.y + IMG.h - 20} text="visualize() raises · no rectangle" color={INK.bad} size={18} opacity={noDraw * (1 - rectU)} />
 
         {/* ---- the response tape and its reading cursor ---------------------------- */}
         {VARIANTS.map((vv, i) => (
@@ -597,7 +603,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={name}>
                   <circle cx={LAMP_X0 + i * LAMP_STEP} cy={LAMP_Y} r={8} fill={lit || failed ? color : 'none'} stroke={color} strokeWidth={1.8} />
-                  <Txt x={LAMP_X0 + i * LAMP_STEP} y={LAMP_Y + 28} size={13} fill={lit ? INK.text : INK.muted} anchor="middle" mono>{name}</Txt>
+                  <Txt x={LAMP_X0 + i * LAMP_STEP} y={LAMP_Y + 28} size={14} fill={lit ? INK.text : INK.muted} anchor="middle" mono>{name}</Txt>
                 </g>
               );
             })}
@@ -661,9 +667,10 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- pixel formulas under the picture ---------------------------------------- */}
-        <MathLabel tex={'x_{px} = \\frac{q_x}{999}\\,(W-1)\\qquad y_{px} = \\frac{q_y}{999}\\,(H-1)'} x={IMG.x} y={452} fontSize={22} anchor="start" opacity={formU} />
-        <MathLabel tex={'W = 1000,\\ H = 600:\\quad \\frac{500}{999}\\cdot 999 = 500'} x={IMG.x} y={496} fontSize={22} anchor="start" opacity={formNumU} color={INK.coord} />
-        <MathLabel tex={`(${RED_BOX.join(',\\,')}) \\to ${PX_TEX}`} x={IMG.x} y={540} fontSize={22} anchor="start" opacity={formNumU} color={INK.coord} />
+        {/* sized so the longest line ends before the right-hand column (x = 620) */}
+        <MathLabel tex={'x_{px} = \\frac{q_x}{999}\\,(W-1)\\qquad y_{px} = \\frac{q_y}{999}\\,(H-1)'} x={IMG.x} y={452} fontSize={19} anchor="start" opacity={formU} />
+        <MathLabel tex={'W = 1000,\\ H = 600:\\quad \\frac{500}{999}\\cdot 999 = 500'} x={IMG.x} y={496} fontSize={19} anchor="start" opacity={formNumU} color={INK.coord} />
+        <MathLabel tex={`(${RED_BOX.join(',\\,')}) \\to ${PX_TEX}`} x={IMG.x} y={540} fontSize={17} anchor="start" opacity={formNumU} color={INK.coord} />
 
         {/* ---- the retrace ring ------------------------------------------------------- */}
         {ring && retraceU < 3 && (

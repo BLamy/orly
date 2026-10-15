@@ -9,7 +9,6 @@ import { scaleLinear, scaleLog } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -60,16 +59,25 @@ const RATIO_128K = KV_128K / SSM_BYTES; // 1024
 // ---------------------------------------------------------------------------
 
 const PLOT_X = scaleLog().base(2).domain([1024, 131072]).range([170, 700]);
-const PLOT_Y = scaleLog().base(2).domain([16 * MiB, 128 * GiB]).range([560, 150]);
+const PLOT_Y = scaleLog().base(2).domain([16 * MiB, 128 * GiB]).range([520, 170]);
 
-const BAR_X0 = 830;
-const BAR_W = 96;
-const BAR_GAP = 128;
-const BAR_BASE = 560;
-const BAR_SCALE = scaleLinear().domain([0, 70]).range([0, 380]); // GiB → px
+const BAR_X0 = 760;
+const BAR_W = 88;
+const BAR_GAP = 112;
+const BAR_BASE = 520;
+const BAR_SCALE = scaleLinear().domain([0, 70]).range([0, 330]); // GiB → px
 
-const CAM_PLOT: CameraState = { x: 430, y: 360, k: 1.25 };
-const CAM_BARS: CameraState = { x: 990, y: 360, k: 1.2 };
+// the camera frames sit inside the caption-safe band (y < 630 on the stage)
+const CAM_PLOT: CameraState = { x: 430, y: 360, k: 1.15 };
+const CAM_BARS: CameraState = { x: 972, y: 360, k: 1.15 };
+
+// a 32-layer stack stands in for the empty plot during the first two beats
+const STACK_X = 330;
+const STACK_W = 200;
+const STACK_TOP = 180;
+const STACK_PITCH = 10.5;
+const STACK_H = 8;
+const STACK_LAYERS = 32;
 
 const CONTEXTS = [4096, 32768, 131072];
 const CTX_LABELS = ['4k', '32k', '128k'];
@@ -228,13 +236,31 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* model spec chip */}
-          <g opacity={tokU}>
-            <text x={170} y={92} fill={colors.TEXT} fontSize={17}>
-              memory per conversation
+          {/* the layer stack: stands in for the plot until the curves draw in */}
+          <g opacity={tokU * (1 - plotU)}>
+            {Array.from({ length: STACK_LAYERS }, (_, i) => (
+              <rect
+                key={i}
+                x={STACK_X}
+                y={STACK_TOP + i * STACK_PITCH}
+                width={STACK_W}
+                height={STACK_H}
+                rx={2}
+                fill={colors.SECONDARY}
+                opacity={0.8}
+              />
+            ))}
+            <text x={STACK_X + STACK_W / 2} y={STACK_TOP - 12} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+              d_model 4096
             </text>
-            <text x={170} y={114} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
-              32 layers · d_model 4096 · fp16 · KV = 512 KiB / token
+            <text x={STACK_X + STACK_W + 16} y={STACK_TOP + 170} fill={colors.MUTED} fontSize={16}>
+              32 layers
+            </text>
+            <text x={STACK_X - 16} y={STACK_TOP + 150} textAnchor="end" fill={colors.NEGATIVE} fontSize={26} fontWeight={600}>
+              512 KiB
+            </text>
+            <text x={STACK_X - 16} y={STACK_TOP + 176} textAnchor="end" fill={colors.MUTED} fontSize={16}>
+              per token
             </text>
           </g>
 
@@ -247,7 +273,7 @@ function Frame({ s }: { s: SceneState }) {
               xTicks={3}
               yTicks={3}
               xLabel="context length (tokens)"
-              fontSize={10}
+              fontSize={14}
             />
             {plotU > 0 && (
               <>
@@ -291,7 +317,7 @@ function Frame({ s }: { s: SceneState }) {
                 />
                 <text
                   x={PLOT_X(Math.min(ssmT, 90000))}
-                  y={PLOT_Y(SSM_BYTES) + 24}
+                  y={PLOT_Y(SSM_BYTES) - 10}
                   textAnchor="end"
                   fill={colors.POSITIVE}
                   fontSize={14}
@@ -307,11 +333,14 @@ function Frame({ s }: { s: SceneState }) {
             <text x={200} y={214} fill={colors.POSITIVE} fontSize={14} opacity={ssmLineU}>
               SSM state
             </text>
+            <text x={200} y={236} fill={colors.MUTED} fontSize={14} opacity={ssmLineU}>
+              Mamba-2-style, set to this scale
+            </text>
           </g>
 
           {/* bars at the three contexts */}
           <g opacity={barsU}>
-            <text x={BAR_X0} y={130} fill={colors.TEXT} fontSize={16}>
+            <text x={BAR_X0} y={160} fill={colors.TEXT} fontSize={16}>
               KV cache by context — and the state
             </text>
             {CONTEXTS.map((T, i) => {
@@ -342,7 +371,7 @@ function Frame({ s }: { s: SceneState }) {
                     y={BAR_BASE + 20}
                     textAnchor="middle"
                     fill={colors.MUTED}
-                    fontSize={13}
+                    fontSize={14}
                   >
                     {CTX_LABELS[i]}
                   </text>
@@ -363,7 +392,7 @@ function Frame({ s }: { s: SceneState }) {
               y={BAR_BASE + 20}
               textAnchor="middle"
               fill={colors.POSITIVE}
-              fontSize={13}
+              fontSize={14}
             >
               state
             </text>
@@ -372,7 +401,7 @@ function Frame({ s }: { s: SceneState }) {
               y={BAR_BASE - 14}
               textAnchor="middle"
               fill={colors.POSITIVE}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
             >
               64 MiB
@@ -380,19 +409,19 @@ function Frame({ s }: { s: SceneState }) {
           </g>
           {ratioU > 0 && (
             <g opacity={ratioU}>
-              <text x={BAR_X0 + 170} y={250} textAnchor="middle" fill={colors.WARM} fontSize={30} fontWeight={700} fontFamily="monospace">
+              <text x={860} y={290} textAnchor="middle" fill={colors.WARM} fontSize={30} fontWeight={700} fontFamily="monospace">
                 {RATIO_128K.toFixed(0)}×
               </text>
-              <text x={BAR_X0 + 170} y={276} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={860} y={314} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 smaller at 128k context
               </text>
             </g>
           )}
 
-          {/* the trade, stated */}
+          {/* the trade, stated — kept above the caption band */}
           {tradeU > 0 && (
             <g opacity={tradeU}>
-              <text x={170} y={620} fill={colors.MUTED} fontSize={14}>
+              <text x={170} y={600} fill={colors.TEXT} fontSize={15}>
                 64 GiB buys exact recall of any token · 64 MiB buys a steerable summary — a price list, not a free lunch
               </text>
             </g>
@@ -400,19 +429,23 @@ function Frame({ s }: { s: SceneState }) {
         </Camera>
       </g>
 
+      {/* fixed header and spec chip: outside the camera so pans never cover them */}
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The long-context trade
         </text>
+        <text x={1240} y={44} textAnchor="end" fill={colors.SECONDARY} fontSize={20} fontFamily="monospace">
+          KV = 2 · L · d · T · 2 bytes
+        </text>
       </g>
-      <MathLabel
-        tex="\text{KV} = 2 \cdot L \cdot d \cdot T \cdot 2\,\text{bytes}"
-        x={760}
-        y={44}
-        fontSize={20}
-        color={colors.SECONDARY}
-        opacity={titleU * mainOp}
-      />
+      <g opacity={tokU * mainOp}>
+        <text x={40} y={84} fill={colors.TEXT} fontSize={17}>
+          memory per conversation
+        </text>
+        <text x={40} y={106} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+          32 layers · d_model 4096 · fp16 · KV = 512 KiB / token
+        </text>
+      </g>
 
       {closeU > 0 && (
         <g opacity={closeU}>

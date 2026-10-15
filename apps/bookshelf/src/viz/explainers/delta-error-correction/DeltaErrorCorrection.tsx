@@ -112,13 +112,24 @@ const matAt = (states: Mat[], u: number): Mat => {
 // ---------------------------------------------------------------------------
 
 const CELL = 13;
-const ACC_X = 210;
-const DELTA_X = 750;
-const GRID_Y = 200;
+const ACC_X = 140;
+const DELTA_X = 840;
+const GRID_Y = 236;
 const KEY_COLORS = [colors.ACCENT, colors.WARM, colors.SECONDARY, colors.TEAL];
 
-const CAM_ACC: CameraState = { x: 390, y: 330, k: 1.3 };
-const CAM_DELTA: CameraState = { x: 890, y: 330, k: 1.3 };
+// The two grids sit side by side; each camera frames one grid and keeps the
+// other one just out of view, so no grid is ever sliced at the stage edge.
+const CAM_ACC: CameraState = { x: 280, y: 330, k: 1.3 };
+const CAM_DELTA: CameraState = { x: 960, y: 330, k: 1.3 };
+
+// The write stream lives in screen space: it starts centred on the stage in
+// beat 1 and slides up to a header band once the grids arrive (driven by accU).
+const STREAM_CHIP_W = 84;
+const STREAM_CHIP_H = 44;
+const STREAM_GAP = 10;
+const STREAM_X0 = (1280 - (NW * STREAM_CHIP_W + (NW - 1) * STREAM_GAP)) / 2;
+const STREAM_TOP_START = 300;
+const STREAM_TOP_END = 112;
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -285,42 +296,49 @@ function Frame({ s }: { s: SceneState }) {
   const SA = matAt(ACC, accTok);
   const SD = matAt(DELTA, deltaTok);
   const gridW = D * CELL;
+  // Which pass the stream is on: the blind pass first, then the delta pass.
+  const tokNow = deltaU > 0 ? deltaTok : accTok;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* the write stream */}
-          <g opacity={streamU}>
-            {STREAM.map((w, t) => {
-              const consumedA = accTok >= t + 1;
-              return (
-                <g key={t} opacity={clamp01(streamU * NW - t)}>
-                  <rect
-                    x={210 + t * 44}
-                    y={110}
-                    width={36}
-                    height={20}
-                    rx={4}
-                    fill={KEY_COLORS[w.ki]}
-                    opacity={consumedA ? 0.25 : 0.85}
-                  />
-                  <text x={210 + t * 44 + 18} y={124} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={700}>
-                    k{w.ki + 1}
-                  </text>
-                </g>
-              );
-            })}
-            <text x={210} y={98} fill={colors.MUTED} fontSize={13}>
-              twelve writes — each key updated three times
-            </text>
-          </g>
+        {/* the write stream: centred in beat 1, then slides up to the header band */}
+        <g opacity={streamU}>
+          <text x={640} y={STREAM_TOP_START - (STREAM_TOP_START - STREAM_TOP_END) * accU - 16} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+            twelve writes — each key updated three times
+          </text>
+          {STREAM.map((w, t) => {
+            const top = STREAM_TOP_START - (STREAM_TOP_START - STREAM_TOP_END) * accU;
+            const x = STREAM_X0 + t * (STREAM_CHIP_W + STREAM_GAP);
+            const done = t < tokNow;
+            const active = tokNow < NW && t === Math.floor(tokNow) && tokNow > 0;
+            return (
+              <g key={t} opacity={clamp01(streamU * NW - t)}>
+                <rect
+                  x={x}
+                  y={top}
+                  width={STREAM_CHIP_W}
+                  height={STREAM_CHIP_H}
+                  rx={6}
+                  fill={KEY_COLORS[w.ki]}
+                  opacity={done ? 0.3 : 0.9}
+                  stroke={active ? colors.TEXT : 'none'}
+                  strokeWidth={2.5}
+                />
+                <text x={x + STREAM_CHIP_W / 2} y={top + STREAM_CHIP_H / 2 + 6} textAnchor="middle" fill={colors.BG} fontSize={18} fontWeight={700}>
+                  k{w.ki + 1}
+                </text>
+              </g>
+            );
+          })}
+        </g>
 
-          {/* accumulate matrix */}
-          <g opacity={accU}>
-            <text x={ACC_X} y={GRID_Y - 28} fill={colors.TEXT} fontSize={17}>
+        <Camera {...cam}>
+          {/* accumulate matrix: recedes as the camera pans onto the delta grid */}
+          <g opacity={accU * (1 - 0.9 * clamp01((cam.x - 700) / 200))}>
+            <text x={ACC_X} y={GRID_Y - 28} fill={colors.TEXT} fontSize={18}>
               blind accumulation
             </text>
             <StateGrid S={SA} x={ACC_X} y={GRID_Y} u={accU} />
@@ -331,7 +349,7 @@ function Frame({ s }: { s: SceneState }) {
                   <g key={ki}>
                     <rect x={ACC_X + ki * 54} y={GRID_Y + gridW + 34 - 0} width={40} height={10} rx={2} fill={KEY_COLORS[ki]} opacity={0.25} />
                     <rect x={ACC_X + ki * 54} y={GRID_Y + gridW + 34} width={40 * clamp01(r)} height={10} rx={2} fill={KEY_COLORS[ki]} />
-                    <text x={ACC_X + ki * 54 + 20} y={GRID_Y + gridW + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={ACC_X + ki * 54 + 20} y={GRID_Y + gridW + 62} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                       {r.toFixed(2)}
                     </text>
                   </g>
@@ -345,7 +363,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* delta matrix */}
           <g opacity={deltaU}>
-            <text x={DELTA_X} y={GRID_Y - 28} fill={colors.TEXT} fontSize={17}>
+            <text x={DELTA_X} y={GRID_Y - 28} fill={colors.TEXT} fontSize={18}>
               delta rule — write the error
             </text>
             <StateGrid S={SD} x={DELTA_X} y={GRID_Y} u={deltaU} />
@@ -356,7 +374,7 @@ function Frame({ s }: { s: SceneState }) {
                   <g key={ki}>
                     <rect x={DELTA_X + ki * 54} y={GRID_Y + gridW + 34} width={40} height={10} rx={2} fill={KEY_COLORS[ki]} opacity={0.25} />
                     <rect x={DELTA_X + ki * 54} y={GRID_Y + gridW + 34} width={40 * clamp01(r)} height={10} rx={2} fill={KEY_COLORS[ki]} />
-                    <text x={DELTA_X + ki * 54 + 20} y={GRID_Y + gridW + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={DELTA_X + ki * 54 + 20} y={GRID_Y + gridW + 62} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                       {r.toFixed(2)}
                     </text>
                   </g>
@@ -399,14 +417,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Read before you write.
           </text>
-          <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             Blind addition recalls the latest facts at 0.59.
           </text>
-          <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={372} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             Writing only the error recalls them at 0.89.
           </text>
         </g>

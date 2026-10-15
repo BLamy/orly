@@ -70,7 +70,6 @@ export function buildScene() {
     text: 'The two Replay recordings are the deep evidence — but you cannot glance at one. They are for interrogation, not for watching. So the loop also films itself.',
   });
   tl.tween(cam, CAM_FILMS, { at: t - 5.4, dur: 1.4, ease: ease.move });
-  tl.tween(filmU, 1, { at: t - 5.4, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.5);
 
   /* — beat 2 · playwright video: on — */
@@ -79,6 +78,7 @@ export function buildScene() {
     dur: 5.6,
     text: 'The Playwright config turns video on for every worker, at the same twelve eighty by seven twenty frame. Two browsers, two films, shot simultaneously.',
   });
+  tl.tween(filmU, 1, { at: t - 5.0, dur: 1.0, ease: ease.enter });
   tl.tween(playU, 0.5, { at: t - 3.6, dur: 3.2, ease: ease.linear });
   t = tl.hold(t, 0.5);
 
@@ -193,17 +193,28 @@ function FilmStrip({
         {isAda ? 'Ada Lovelace' : 'Linus Torvalds'} · room replay-…
       </text>
       {[0, 1, 2, 3].map((i) => {
-        if (i >= msgN) return null;
         const mine = (i % 2 === 0) === isAda; // Ada sends 0 and 2
+        const bx = 26 + (mine ? 0 : 26);
+        const by = 52 + i * 32;
+        const bw = (FILM_W - 100) * (0.5 + 0.12 * ((i * 5) % 4));
+        // not yet played: faint placeholder bubbles, so the recording reads as dense
+        if (i >= msgN) {
+          return (
+            <g key={`s${i}`} transform={`translate(${bx}, ${by})`}>
+              <rect width={FILM_W - 84} height={24} rx={6} fill={colors.MUTED} opacity={0.1} />
+              <rect x={8} y={9} width={bw} height={6} rx={3} fill={colors.MUTED} opacity={0.22} />
+            </g>
+          );
+        }
         return (
-          <g key={i} transform={`translate(${26 + (mine ? 0 : 26)}, ${52 + i * 32})`}>
+          <g key={i} transform={`translate(${bx}, ${by})`}>
             <rect width={FILM_W - 84} height={24} rx={6} fill={mine ? colors.ACCENT : colors.SECONDARY} opacity={0.16} />
-            <rect x={8} y={9} width={(FILM_W - 100) * (0.5 + 0.12 * ((i * 5) % 4))} height={6} rx={3} fill={mine ? colors.ACCENT : colors.SECONDARY} opacity={0.7} />
+            <rect x={8} y={9} width={bw} height={6} rx={3} fill={mine ? colors.ACCENT : colors.SECONDARY} opacity={0.7} />
           </g>
         );
       })}
-      {/* strip label */}
-      <text x={16} y={FILM_H + 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      {/* strip label: fades as the strips weld, the frame label names the file then */}
+      <text x={16} y={FILM_H + 18} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={1 - weld}>
         test-results/…/{isAda ? 'ada' : 'linus'}.webm · 1280×720
       </text>
       {/* per-strip play cursor before the weld */}
@@ -226,7 +237,7 @@ function WeldFrame({ weld, playhead, dim }: { weld: number; playhead: number; di
   return (
     <g opacity={1 - 0.85 * clamp01(dim)}>
       <rect x={x} y={y} width={width} height={height} rx={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-      <text x={x} y={y - 12} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+      <text x={x} y={y - 12} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
         recordings/replay-&lt;timestamp&gt;.mp4 — hstack=inputs=2
       </text>
       {p > 0.01 && (
@@ -248,7 +259,7 @@ function FfmpegNode({ u, dim }: { u: number; dim: number }) {
       <text x={-280} y={-8} fill={colors.WARM} fontSize={14} fontFamily={MONO} fontWeight={700}>
         ffmpeg — createSideBySideMp4
       </text>
-      <text x={-280} y={16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={-280} y={16} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
         [0:v]scale=1280:720[left];[1:v]…[right];[left][right]hstack=inputs=2[v]
       </text>
     </g>
@@ -267,7 +278,7 @@ function Audiences({ u, dim }: { u: number; dim: number }) {
         <text fill={colors.TEXT} fontSize={14} fontWeight={700}>
           for the critic
         </text>
-        <text y={18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text y={18} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           app.replay.io — interrogate any moment
         </text>
       </g>
@@ -285,7 +296,7 @@ function Audiences({ u, dim }: { u: number; dim: number }) {
         <text fill={colors.TEXT} fontSize={14} fontWeight={700}>
           for the human
         </text>
-        <text y={18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text y={18} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           one side-by-side film — press play
         </text>
         <g transform="translate(200, 44)">
@@ -301,7 +312,7 @@ function ClosingCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${120 + (1 - uu) * 12})`} opacity={uu}>
+    <g transform={`translate(640, ${96 + (1 - uu) * 12})`} opacity={uu}>
       <rect x={-330} y={-52} width={660} height={104} rx={14} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
       <text y={-10} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={700}>
         Proof you can query. Proof you can watch.

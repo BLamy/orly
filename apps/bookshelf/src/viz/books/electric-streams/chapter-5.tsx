@@ -37,12 +37,14 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout — the main tape, the fork rail below it, the layer cake above.
 // ---------------------------------------------------------------------------
 
-const TAPE = { x0: 250, y: 356, cellW: 62, cellH: 44 } as const;
+// cells are wide enough for the 14px mono labels ("alt fix"); the tape is
+// centred on the layer cake's axis (x 640)
+const TAPE = { x0: 380, y: 356, cellW: 74, cellH: 44 } as const;
 const cellX = (i: number): number => TAPE.x0 + i * TAPE.cellW;
 const MSGS = ['ask', 'plan', 'tool', 'logs', 'fix', 'test', 'pass', 'ship'] as const;
 const N = MSGS.length;
 const FORK_AT = 5; // fork offset: inherits cells 0..4
-const FORK_Y = 492;
+const FORK_Y = 530; // below the tape zone's bottom edge (y 442), chip included
 const FORK_OWN = ['alt fix', 'test', 'pass'] as const;
 
 // readers: [name, color, resting offset (cell units)]
@@ -66,7 +68,7 @@ const LAYER1_LABEL_Y = 270;
 const SERIES_Y = 36;
 
 const CAM_TAPE: CameraState = { x: 640, y: 360, k: 1.16 };
-const CAM_FORK: CameraState = { x: 640, y: 430, k: 1.24 };
+const CAM_FORK: CameraState = { x: 640, y: 452, k: 1.24 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -256,10 +258,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={u}>
                 <rect x={cellX(i) - TAPE.cellW / 2 + 3} y={TAPE.y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill={colors.PANEL} stroke={ordered ? colors.WARM : colors.ACCENT} strokeWidth={ordered ? 2 : 1.2} />
-                <text x={cellX(i)} y={TAPE.y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+                <text x={cellX(i)} y={TAPE.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {m}
                 </text>
-                <text x={cellX(i)} y={TAPE.y + TAPE.cellH / 2 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO} opacity={0.85}>
+                <text x={cellX(i)} y={TAPE.y + TAPE.cellH / 2 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {`…V0${i}`}
                 </text>
               </g>
@@ -268,10 +270,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* future A cell (divergence) */}
           <g opacity={divU * machineOp}>
             <rect x={cellX(N) - TAPE.cellW / 2 + 3} y={TAPE.y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-            <text x={cellX(N)} y={TAPE.y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+            <text x={cellX(N)} y={TAPE.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               tag
             </text>
-            <text x={cellX(N) + 52} y={TAPE.y - TAPE.cellH / 2 - 8} textAnchor="middle" fill={colors.WARM} fontSize={11.5}>
+            <text x={cellX(N) + 52} y={TAPE.y - TAPE.cellH / 2 - 8} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               future A
             </text>
           </g>
@@ -286,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={h.name} opacity={u}>
                 <path d={`M ${hx} ${TAPE.y - TAPE.cellH / 2 - 14} l 8 -13 l -16 0 Z`} fill={h.color} />
-                <text x={hx} y={TAPE.y - TAPE.cellH / 2 - 34} textAnchor="middle" fill={h.color} fontSize={11} fontFamily={MONO}>
+                <text x={hx} y={TAPE.y - TAPE.cellH / 2 - 34} textAnchor="middle" fill={h.color} fontSize={14} fontFamily={MONO}>
                   {h.name}
                 </text>
               </g>
@@ -294,9 +296,9 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {/* the latecomer sweeping from -1 */}
           {lateU > 0 && (
-            <g>
+            <g opacity={1 - clamp01(forkU * 3)}>
               <path d={`M ${cellX(lateU * 6.4) - TAPE.cellW / 2} ${TAPE.y + TAPE.cellH / 2 + 40} l 8 13 l -16 0 Z`} fill={colors.WARM} />
-              <text x={cellX(lateU * 6.4) - TAPE.cellW / 2} y={TAPE.y + TAPE.cellH / 2 + 72} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO} opacity={1 - clamp01(forkU * 3)}>
+              <text x={cellX(lateU * 6.4) - TAPE.cellW / 2} y={TAPE.y + TAPE.cellH / 2 + 80} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 {lateU < 0.15 ? 'offset=-1' : 'replaying…'}
               </text>
             </g>
@@ -316,11 +318,11 @@ export function Render({ s }: { s: SceneState }) {
           />
           {/* headers chip — above the inherited cells, inside the camera frame */}
           <g opacity={forkU}>
-            <rect x={140} y={FORK_Y - 78} width={300} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-            <text x={154} y={FORK_Y - 57} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+            <rect x={cellX(0) - TAPE.cellW / 2} y={FORK_Y - 78} width={340} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
+            <text x={cellX(0) - TAPE.cellW / 2 + 14} y={FORK_Y - 57} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               Stream-Forked-From: /v1/stream/chat
             </text>
-            <text x={154} y={FORK_Y - 37} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+            <text x={cellX(0) - TAPE.cellW / 2 + 14} y={FORK_Y - 37} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               Stream-Fork-Offset: 01JQXK5V05
             </text>
           </g>
@@ -329,15 +331,15 @@ export function Render({ s }: { s: SceneState }) {
           {MSGS.slice(0, FORK_AT).map((m, i) => {
             const hot = stitchCell > i + 0.5;
             return (
-              <g key={`g${i}`} opacity={forkU * 0.8}>
+              <g key={`g${i}`} opacity={forkU}>
                 <rect x={cellX(i) - TAPE.cellW / 2 + 3} y={FORK_Y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill="none" stroke={hot ? colors.WARM : colors.GRID} strokeWidth={hot ? 2 : 1.2} strokeDasharray="5 4" />
-                <text x={cellX(i)} y={FORK_Y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                <text x={cellX(i)} y={FORK_Y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                   {m}
                 </text>
               </g>
             );
           })}
-          <text x={cellX(2)} y={FORK_Y + TAPE.cellH / 2 + 28} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontStyle="italic" opacity={forkU}>
+          <text x={cellX(2)} y={FORK_Y + TAPE.cellH / 2 + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={forkU}>
             inherited — not copied
           </text>
           {FORK_OWN.map((m, i) => {
@@ -347,22 +349,23 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={`f${i}`} opacity={u}>
                 <rect x={cellX(FORK_AT + i) - TAPE.cellW / 2 + 3} y={FORK_Y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill={colors.PANEL} stroke={hot ? colors.WARM : colors.SECONDARY} strokeWidth={hot ? 2 : 1.4} />
-                <text x={cellX(FORK_AT + i)} y={FORK_Y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
+                <text x={cellX(FORK_AT + i)} y={FORK_Y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {m}
                 </text>
               </g>
             );
           })}
           {/* the seam */}
+          {/* the seam label sits right of the seam, clear of the dashed branch */}
           <g opacity={clamp01(stitchU * 2) * forkU}>
             <line x1={seamX} y1={FORK_Y - TAPE.cellH / 2 - 8} x2={seamX} y2={FORK_Y + TAPE.cellH / 2 + 8} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="3 3" />
-            <text x={seamX + 66} y={FORK_Y - TAPE.cellH / 2 - 14} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+            <text x={seamX + 10} y={FORK_Y - TAPE.cellH / 2 - 14} fill={colors.WARM} fontSize={14}>
               the seam — invisible to readers
             </text>
           </g>
           {/* future B label */}
           <g opacity={divU}>
-            <text x={cellX(FORK_AT + FORK_OWN.length) + 46} y={FORK_Y + 4} fill={colors.SECONDARY} fontSize={11.5}>
+            <text x={cellX(FORK_AT + FORK_OWN.length) + 46} y={FORK_Y + 5} fill={colors.SECONDARY} fontSize={14}>
               future B
             </text>
           </g>
@@ -405,10 +408,10 @@ export function Render({ s }: { s: SceneState }) {
           {RECAP.map(([n, w], i) => (
             <g key={n}>
               <rect x={316 + i * 132} y={330} width={120} height={54} rx={10} fill={colors.BG} stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM, colors.TEAL][i]} />
-              <text x={376 + i * 132} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={376 + i * 132} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {`ch ${n}`}
               </text>
-              <text x={376 + i * 132} y={372} textAnchor="middle" fill={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM, colors.TEAL][i]} fontSize={12.5} fontWeight={600}>
+              <text x={376 + i * 132} y={372} textAnchor="middle" fill={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE, colors.WARM, colors.TEAL][i]} fontSize={14} fontWeight={600}>
                 {w}
               </text>
             </g>

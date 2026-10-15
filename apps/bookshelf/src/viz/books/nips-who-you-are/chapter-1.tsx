@@ -179,6 +179,36 @@ function KeyChip({ u }: { u: number }) {
   );
 }
 
+// The key as 32 byte cells, shaded by each byte's value; it leaves before the event draws in.
+const KEY_BYTES = Array.from({ length: 32 }, (_, i) => parseInt(PUBKEY.slice(i * 2, i * 2 + 2), 16));
+function KeyBar({ u }: { u: number }) {
+  if (u <= 0) return null;
+  const x0 = 176;
+  const cell = 29;
+  return (
+    <g opacity={u}>
+      <text x={x0} y={262} fill={colors.MUTED} fontSize={16}>
+        32 bytes — one public key
+      </text>
+      {KEY_BYTES.map((b, i) => (
+        <rect
+          key={i}
+          x={x0 + i * cell}
+          y={286}
+          width={cell - 4}
+          height={56}
+          rx={4}
+          fill={colors.WARM}
+          opacity={0.3 + 0.7 * (b / 255)}
+        />
+      ))}
+      <text x={x0} y={378} fill={colors.WARM} fontSize={16} fontFamily="monospace">
+        {PUBKEY}
+      </text>
+    </g>
+  );
+}
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const keyU = s.get(scene.keyU);
@@ -201,16 +231,27 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <KeyChip u={keyU} />
+        <KeyBar u={keyU * (1 - clamp01(evtU))} />
 
         <Camera {...cam}>
           <JsonDoc
             layout={EVT_LAYOUT}
             reveal={evtU}
-            opacity={1 - 0.75 * clamp01(profU)}
+            opacity={1 - 0.4 * clamp01(profU)}
+            dim={0.45}
             focus={kindU > 0 && flyU <= 0 ? ['kind'] : flyU > 0 ? ['content'] : undefined}
             focusU={flyU > 0 ? clamp01(flyU * 2) * 0.7 : kindU}
             hidden={flyU > 0 ? ['content'] : undefined}
           />
+
+          {/* kind 0 is replaceable: the lower half names the rule as the event appears */}
+          {kindU > 0 && (
+            <g opacity={kindU}>
+              <rect x={90} y={430} width={380} height={52} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <text x={106} y={452} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">kind 0 · replaceable</text>
+              <text x={106} y={471} fill={colors.MUTED} fontSize={13}>one live profile per key; newest wins</text>
+            </g>
+          )}
 
           {/* the content string unfolds into the profile document */}
           <TokenFlight
@@ -225,12 +266,13 @@ function Frame({ s }: { s: SceneState }) {
           />
           {profU > 0 && (
             <g opacity={1 - swapU}>
-              <text x={PROF_X} y={PROF_Y - 14} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={profU}>
+              <text x={PROF_X} y={PROF_Y - 14} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={profU}>
                 content, parsed — profile v1
               </text>
               <JsonDoc
                 layout={PROF_LAYOUT}
                 reveal={profU}
+                dim={0.45}
                 focus={nip24U > 0 && deprU <= 0 ? NIP24_FIELDS : undefined}
                 focusU={nip24U > 0 && deprU <= 0 ? Math.min(nip24U, 0.85) : 0}
               />
@@ -248,13 +290,13 @@ function Frame({ s }: { s: SceneState }) {
                       "{d.name}"
                     </text>
                     <line x1={636} y1={y - 5} x2={640 + d.name.length * 9 + 18} y2={y - 5} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-                    <text x={840} y={y} fill={colors.MUTED} fontSize={13}>
+                    <text x={840} y={y} fill={colors.MUTED} fontSize={14}>
                       → use "{d.use}"
                     </text>
                   </g>
                 );
               })}
-              <text x={640} y={545} fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={545} fill={colors.MUTED} fontSize={13}>
                 deprecated by NIP-24
               </text>
             </g>
@@ -263,17 +305,31 @@ function Frame({ s }: { s: SceneState }) {
           {/* replaceable: v2 slides over v1 */}
           {swapU > 0 && (
             <g opacity={swapU} transform={`translate(${(1 - swapU) * 240}, 0)`}>
-              <rect x={PROF_X - 20} y={PROF_Y - 40} width={430} height={300} rx={12} fill={colors.BG} opacity={0.94} />
-              <rect x={PROF_X - 20} y={PROF_Y - 40} width={430} height={300} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.ACCENT} />
-              <text x={PROF_X} y={PROF_Y - 14} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+              <rect x={PROF_X - 20} y={PROF_Y - 40} width={430} height={230} rx={12} fill={colors.BG} opacity={0.94} />
+              <rect x={PROF_X - 20} y={PROF_Y - 40} width={430} height={230} rx={12} fill={colors.PANEL} opacity={0.5} stroke={colors.ACCENT} />
+              <text x={PROF_X} y={PROF_Y - 14} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 profile v2 — replaces v1 entirely
               </text>
               <text x={PROF_X} y={PROF_Y + 22} fill={colors.ACCENT} fontSize={15} fontFamily="monospace">"name": "bob"</text>
               <text x={PROF_X} y={PROF_Y + 52} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace">"display_name": "Bob ⚡"</text>
               <text x={PROF_X} y={PROF_Y + 82} fill={colors.POSITIVE} fontSize={15} fontFamily="monospace">"about": "relay operator now"</text>
-              <text x={PROF_X} y={PROF_Y + 118} fill={colors.MUTED} fontSize={12}>
+              <text x={PROF_X} y={PROF_Y + 118} fill={colors.MUTED} fontSize={13}>
                 kind 0 · created_at newer → relays drop the old one
               </text>
+            </g>
+          )}
+
+          {/* relays keep only the newest kind-0 event for this key */}
+          {swapU > 0.5 && (
+            <g opacity={clamp01((swapU - 0.5) * 2)}>
+              <text x={620} y={478} fill={colors.MUTED} fontSize={14} fontFamily="monospace">relay storage, kind 0 for this key</text>
+              <rect x={620} y={492} width={230} height={72} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+              <text x={636} y={522} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">v1 · older created_at</text>
+              <text x={636} y={546} fill={colors.NEGATIVE} fontSize={14}>dropped</text>
+              <text x={856} y={530} fill={colors.MUTED} fontSize={20}>→</text>
+              <rect x={880} y={492} width={240} height={72} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+              <text x={896} y={522} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">v2 · newer created_at</text>
+              <text x={896} y={546} fill={colors.POSITIVE} fontSize={14}>kept — the only one</text>
             </g>
           )}
         </Camera>
@@ -281,7 +337,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A profile is a signed, replaceable claim
           </text>

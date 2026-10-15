@@ -41,6 +41,8 @@ const R_CORE = 62; // the Hello Koa handler
 const X_EDGE = ONION.x - R_OUTER;
 const X_RING = ONION.x - (R_OUTER + R_INNER) / 2;
 const X_CORE = ONION.x;
+// the round-trip trace runs client → core, so its dash length is that span
+const TRACE_LEN = X_CORE - (CLIENT.x + 40);
 
 // Hello Koa — the exact program from Readme.md
 const HELLO_LINES = [
@@ -165,7 +167,6 @@ export function buildScene(): Scene {
     text: 'Now the descent. The context dives into the outermost ring — the logger from the readme. It notes the time, then calls await next, which passes the request one layer deeper.',
   });
   tl.tween(cam, CAM_CORE, { at: 35.2, dur: 1.8, ease: ease.move });
-  tl.tween(codeDim, 0, { at: 35.2, dur: 1.0, ease: ease.move }); // the source card leaves the frame
   tl.tween(descendU, 0.5, { at: 35.8, dur: 1.4, ease: ease.move });
   tl.tween(clockU, 1, { at: 37.4, dur: 22, ease: ease.linear }); // the clock runs until the log prints
   tl.tween(descendU, 1, { at: 39.4, dur: 1.4, ease: ease.move });
@@ -254,11 +255,11 @@ const scene = buildScene();
 
 function CodeChip({ x, y, text, u, color }: { x: number; y: number; text: string; u: number; color?: string }) {
   if (u <= 0) return null;
-  const w = text.length * 7.4 + 22;
+  const w = text.length * 8.4 + 22;
   return (
     <g opacity={u}>
-      <rect x={x - w / 2} y={y - 13} width={w} height={26} rx={6} fill={colors.PANEL} stroke={color ?? colors.GRID} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={color ?? colors.MUTED} fontSize={12} fontFamily="monospace">
+      <rect x={x - w / 2} y={y - 14} width={w} height={28} rx={6} fill={colors.PANEL} stroke={color ?? colors.GRID} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={color ?? colors.TEXT} fontSize={14} fontFamily="monospace">
         {text}
       </text>
     </g>
@@ -328,9 +329,10 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- Hello Koa source card ---- */}
-        <g opacity={codeU * codeDim * stageDim}>
+        {/* the source card fades out as the request descends (rides the descendU window) */}
+        <g opacity={codeU * codeDim * stageDim * (1 - descendU)}>
           <rect x={150} y={190} width={330} height={250} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={168} y={218} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={168} y={218} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             Hello Koa — the whole app
           </text>
           {HELLO_LINES.map((line, i) => (
@@ -342,8 +344,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- client ---- */}
         <g opacity={serverU * stageDim}>
-          <circle cx={CLIENT.x} cy={CLIENT.y + 140} r={26} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={CLIENT.x} y={CLIENT.y + 145} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <circle cx={CLIENT.x} cy={CLIENT.y + 140} r={32} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={CLIENT.x} y={CLIENT.y + 145} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             client
           </text>
         </g>
@@ -378,17 +380,18 @@ export function Render({ s }: { s: SceneState }) {
           {/* the core */}
           <circle cx={ONION.x} cy={ONION.y} r={R_CORE} fill={colors.WARM} opacity={0.1 + 0.25 * turnU} />
           <circle cx={ONION.x} cy={ONION.y} r={R_CORE} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={0.8} />
-          <text x={ONION.x} y={ONION.y - R_CORE - 12} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+          <text x={ONION.x} y={ONION.y - R_CORE - 12} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
             ctx.body = 'Hello Koa'
           </text>
-          <CodeChip x={ONION.x} y={ONION.y + R_OUTER + 28} text="const fn = this.compose(this.middleware)" u={composeU} />
+          <CodeChip x={ONION.x} y={ONION.y + R_OUTER + 14} text="const fn = this.compose(this.middleware)" u={composeU} />
         </g>
 
         {/* the logger's clock */}
         {clockU > 0 && descendU > 0.2 && (
           <g opacity={stageDim}>
-            <TimerArc cx={ONION.x - R_OUTER + 36} cy={ONION.y - 60} r={17} u={Math.min(clockU, 1)} color={colors.SECONDARY} />
-            <text x={ONION.x - R_OUTER + 36} y={ONION.y - 88} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">
+            {/* inside the ring's band, upper left, clear of the outer edge and the core */}
+            <TimerArc cx={ONION.x - 110} cy={ONION.y - 135} r={17} u={Math.min(clockU, 1)} color={colors.SECONDARY} />
+            <text x={ONION.x - 82} y={ONION.y - 130} textAnchor="start" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
               start = Date.now()
             </text>
           </g>
@@ -398,11 +401,11 @@ export function Render({ s }: { s: SceneState }) {
         {inFlight && (
           <g>
             <circle cx={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} cy={ONION.y - 12} r={9} fill={colors.ACCENT} />
-            <text x={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} y={ONION.y - 30} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+            <text x={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} y={ONION.y - 28} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               req
             </text>
             <circle cx={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} cy={ONION.y + 14} r={9} fill={colors.SECONDARY} />
-            <text x={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} y={ONION.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+            <text x={lerp(CLIENT.x + 40, X_EDGE - 60, travelU)} y={ONION.y + 42} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               res
             </text>
           </g>
@@ -415,20 +418,26 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {fuseU > 0.4 && (
-          <CodeChip x={X_EDGE - 90} y={ONION.y + 66} text="createContext(req, res)" u={clamp01(fuseU * 2 - 0.8) * stageDim} />
+          <CodeChip x={X_EDGE - 130} y={ONION.y + 66} text="createContext(req, res)" u={clamp01(fuseU * 2 - 0.8) * stageDim} />
         )}
         {stampU > 0 && stampU < 1.01 && fuseU > 0.9 && (
-          <CodeChip x={X_EDGE - 90} y={ONION.y - 62} text="res.statusCode = 404" u={stampU * stageDim} color={colors.NEGATIVE} />
+          <CodeChip
+            x={X_EDGE - 130}
+            y={ONION.y - 62}
+            text={bodyU > 0.5 ? 'res.statusCode = 200' : 'res.statusCode = 404'}
+            u={stampU * stageDim}
+            color={bodyU > 0.5 ? colors.POSITIVE : colors.NEGATIVE}
+          />
         )}
 
         {/* ---- the ctx chip on its journey ---- */}
-        <CtxChip x={pos.x} y={pos.y} u={ctxAlive * (exitU >= 1 ? 0.25 : 1)} status={status} statusU={stampU} />
+        <CtxChip x={pos.x} y={pos.y} u={ctxAlive * (exitU >= 1 ? 0 : 1)} status={status} statusU={stampU} />
 
         {/* the turnaround glow */}
         {turnU > 0 && (
           <g opacity={turnU}>
-            <circle cx={ONION.x} cy={ONION.y} r={R_CORE + 14} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={0.7} />
-            <text x={ONION.x} y={ONION.y + R_CORE + 30} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <circle cx={ONION.x} cy={ONION.y} r={R_CORE + 6} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={0.7} />
+            <text x={ONION.x} y={ONION.y + R_CORE + 30} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
               Promise.resolve()
             </text>
           </g>
@@ -446,10 +455,10 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* respond writes the body */}
         {respondU > 0 && (
-          <CodeChip x={X_EDGE - 100} y={ONION.y + 112} text="respond(ctx) → res.end(body)" u={respondU * stageDim} color={colors.POSITIVE} />
+          <CodeChip x={X_EDGE - 130} y={ONION.y + 112} text="respond(ctx) → res.end(body)" u={respondU * stageDim} color={colors.POSITIVE} />
         )}
         {exitU > 0 && exitU < 1 && (
-          <text x={pos.x} y={pos.y - 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+          <text x={pos.x} y={pos.y - 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
             'Hello Koa'
           </text>
         )}
@@ -462,21 +471,21 @@ export function Render({ s }: { s: SceneState }) {
               fill="none"
               stroke={colors.ACCENT}
               strokeWidth={2.5}
-              strokeDasharray="460"
-              strokeDashoffset={460 * (1 - clamp01(traceU * 1.6))}
+              strokeDasharray={TRACE_LEN}
+              strokeDashoffset={TRACE_LEN * (1 - clamp01(traceU * 1.6))}
             />
             <path
               d={`M ${X_CORE} ${ONION.y + 10} L ${CLIENT.x + 40} ${ONION.y + 10}`}
               fill="none"
               stroke={colors.POSITIVE}
               strokeWidth={2.5}
-              strokeDasharray="460"
-              strokeDashoffset={460 * (1 - clamp01(traceU * 1.6 - 0.5))}
+              strokeDasharray={TRACE_LEN}
+              strokeDashoffset={TRACE_LEN * (1 - clamp01(traceU * 1.6 - 0.5))}
             />
-            <text x={(CLIENT.x + X_CORE) / 2} y={ONION.y - 22} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
+            <text x={(CLIENT.x + X_CORE) / 2} y={ONION.y - 22} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
               downstream — actions
             </text>
-            <text x={(CLIENT.x + X_CORE) / 2} y={ONION.y + 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+            <text x={(CLIENT.x + X_CORE) / 2} y={ONION.y + 38} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               upstream — filters
             </text>
           </g>

@@ -28,7 +28,7 @@ const APPDATA = {
   tags: [['d', 'com.example.reader']],
   content: '{ "theme": "dark", "fontSize": 18 }',
 };
-const APPDATA_LAYOUT = layoutJson(APPDATA, { x: 120, y: 130, fontSize: 15, inlineArrayMax: 40 });
+const APPDATA_LAYOUT = layoutJson(APPDATA, { x: 60, y: 150, fontSize: 18, inlineArrayMax: 40 });
 
 // kind 27235 — HTTP auth
 const AUTH = {
@@ -41,19 +41,22 @@ const AUTH = {
   ],
   content: '',
 };
-const AUTH_LAYOUT = layoutJson(AUTH, { x: 100, y: 150, fontSize: 15, inlineArrayMax: 44 });
+const AUTH_LAYOUT = layoutJson(AUTH, { x: 60, y: 130, fontSize: 20, inlineArrayMax: 44 });
 
-const RELAY = { x: 560, y: 250 };
+const RELAY = { x: 700, y: 250 };
 const DEVICES = [
-  { x: 940, y: 150, label: 'laptop' },
-  { x: 940, y: 300, label: 'phone' },
+  { x: 1040, y: 150, label: 'laptop' },
+  { x: 1040, y: 300, label: 'phone' },
 ];
 
+// each check spotlights the JSON field it reads, in the same order
 const CHECKS = ['kind is 27235', 'timestamp fresh (<60s)', 'u tag = request url', 'method tag = POST'];
-const SERVER = { x: 760, y: 150, w: 360 };
+const CHECK_FIELDS = ['kind', 'created_at', 'tags[0]', 'tags[1]'];
+const SERVER = { x: 660, y: 120, w: 540 };
 
-const CAM_APPDATA: CameraState = { x: 420, y: 300, k: 1.15 };
-const CAM_AUTH: CameraState = { x: 640, y: 320, k: 1.05 };
+const CAM_APPDATA: CameraState = { x: 360, y: 290, k: 1.3 };
+const CAM_SYNC: CameraState = { x: 620, y: 300, k: 1.1 };
+const CAM_AUTH: CameraState = { x: 640, y: 290, k: 1 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -92,7 +95,7 @@ export function buildScene() {
     dur: 6.2,
     text: 'You sign it and hand it to a relay. Now every device you own reads the same event and wakes up configured. The relay became your personal, syncing database — and it never knew what the settings meant.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 14.1, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_SYNC, { at: 14.1, dur: 1.4, ease: ease.move });
   tl.tween(syncU, 1, { at: 15.0, dur: 2.4, ease: ease.linear });
   tl.tween(arriveU, 1, { at: 17.4, dur: 1.2, ease: ease.enter });
   tl.hold(20.1, 0.7);
@@ -175,23 +178,23 @@ export function Render({ s }: { s: SceneState }) {
           {/* NIP-78 app data + sync */}
           {dataU > 0 && (
             <g opacity={dataU}>
-              <JsonDoc layout={APPDATA_LAYOUT} reveal={1} focus={syncU > 0 ? ['tags[0]'] : undefined} focusU={clamp01(syncU * 2)} />
+              <JsonDoc layout={APPDATA_LAYOUT} reveal={1} focus={syncU > 0 ? ['tags[0]'] : undefined} focusU={clamp01(syncU * 2)} dim={0.45} />
               {syncU > 0 && (
                 <>
                   <circle cx={RELAY.x} cy={RELAY.y} r={30} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} opacity={clamp01(syncU * 3)} />
-                  <text x={RELAY.x} y={RELAY.y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={clamp01(syncU * 3)}>
+                  <text x={RELAY.x} y={RELAY.y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace" opacity={clamp01(syncU * 3)}>
                     relay
                   </text>
                   {DEVICES.map((d, i) => {
                     const u = clamp01(arriveU * 2 - i * 0.4);
                     return (
                       <g key={d.label}>
-                        <line x1={RELAY.x + 30} y1={RELAY.y} x2={d.x - 40} y2={d.y + 30} stroke={colors.GRID} strokeWidth={1.4} opacity={clamp01(syncU * 2) * 0.7} />
-                        <rect x={d.x - 40} y={d.y} width={120} height={60} rx={9} fill={colors.PANEL} stroke={u > 0.5 ? colors.POSITIVE : colors.GRID} opacity={0.4 + 0.6 * clamp01(syncU * 2)} />
-                        <text x={d.x + 20} y={d.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                        <line x1={RELAY.x + 30} y1={RELAY.y} x2={d.x - 60} y2={d.y + 30} stroke={colors.GRID} strokeWidth={1.4} opacity={clamp01(syncU * 2) * 0.7} />
+                        <rect x={d.x - 60} y={d.y} width={160} height={60} rx={9} fill={colors.PANEL} stroke={u > 0.5 ? colors.POSITIVE : colors.GRID} opacity={0.4 + 0.6 * clamp01(syncU * 2)} />
+                        <text x={d.x + 20} y={d.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
                           {d.label}
                         </text>
-                        <text x={d.x + 20} y={d.y + 47} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={u}>
+                        <text x={d.x + 20} y={d.y + 47} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={u}>
                           theme: dark · 18
                         </text>
                       </g>
@@ -205,25 +208,32 @@ export function Render({ s }: { s: SceneState }) {
           {/* NIP-98 HTTP auth */}
           {authU > 0 && (
             <g opacity={authU}>
-              <JsonDoc layout={AUTH_LAYOUT} reveal={1} hidden={headerU > 0 && headerU < 1 ? ['tags[0][1]'] : undefined} />
+              {/* the field the current check reads is spotlit; all of them clear once the server answers */}
+              <JsonDoc
+                layout={AUTH_LAYOUT}
+                reveal={1}
+                hidden={headerU > 0 && headerU < 1 ? ['tags[0][1]'] : undefined}
+                focus={headerU >= 1 && okU <= 0 ? [CHECK_FIELDS[Math.min(checkF, 3)]] : undefined}
+                dim={0.4}
+              />
 
               {/* the request + authorization header */}
               {headerU > 0 && (
                 <g opacity={clamp01(headerU * 1.5)}>
-                  <rect x={SERVER.x} y={SERVER.y} width={SERVER.w} height={70} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={SERVER.x + 16} y={SERVER.y + 27} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                  <rect x={SERVER.x} y={SERVER.y} width={SERVER.w} height={80} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={SERVER.x + 18} y={SERVER.y + 30} fill={colors.MUTED} fontSize={16} fontFamily="monospace">
                     POST /upload
                   </text>
-                  <text x={SERVER.x + 16} y={SERVER.y + 50} fill={colors.WARM} fontSize={13} fontFamily="monospace">
+                  <text x={SERVER.x + 18} y={SERVER.y + 60} fill={colors.WARM} fontSize={16} fontFamily="monospace">
                     Authorization: Nostr {'{event}'}
                   </text>
                   <TokenFlight
                     from={{ x: uAnchor.cx, y: uAnchor.cy + 5 }}
-                    to={{ x: SERVER.x + SERVER.w / 2, y: SERVER.y + 50 }}
+                    to={{ x: SERVER.x + SERVER.w / 2, y: SERVER.y + 60 }}
                     u={headerU}
                     text="signed 27235"
                     fill={colors.WARM}
-                    fontSize={13}
+                    fontSize={15}
                     lift={70}
                     fadeOut
                   />
@@ -233,13 +243,17 @@ export function Render({ s }: { s: SceneState }) {
               {/* four checks */}
               {headerU >= 1 && (
                 <g>
+                  <text x={SERVER.x} y={SERVER.y + 112} fill={colors.MUTED} fontSize={15} fontFamily="monospace">
+                    the server checks
+                  </text>
                   {CHECKS.map((c, i) => {
                     const passed = checkF >= i;
+                    const cy = SERVER.y + 140 + i * 38;
                     return (
-                      <g key={c} opacity={passed ? 1 : 0.3}>
-                        <circle cx={SERVER.x + 12} cy={SERVER.y + 104 + i * 30} r={7} fill="none" stroke={passed ? colors.POSITIVE : colors.GRID} strokeWidth={1.8} />
-                        {passed && <path d={`M${SERVER.x + 8} ${SERVER.y + 104 + i * 30} l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />}
-                        <text x={SERVER.x + 28} y={SERVER.y + 109 + i * 30} fill={passed ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily="monospace">
+                      <g key={c} opacity={passed ? 1 : 0.55}>
+                        <circle cx={SERVER.x + 14} cy={cy} r={8} fill="none" stroke={passed ? colors.POSITIVE : colors.MUTED} strokeWidth={1.8} />
+                        {passed && <path d={`M${SERVER.x + 10} ${cy} l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />}
+                        <text x={SERVER.x + 34} y={cy + 6} fill={passed ? colors.TEXT : colors.MUTED} fontSize={17} fontFamily="monospace">
                           {c}
                         </text>
                       </g>
@@ -249,8 +263,8 @@ export function Render({ s }: { s: SceneState }) {
               )}
               {okU > 0 && (
                 <g opacity={okU}>
-                  <rect x={SERVER.x} y={SERVER.y + 232} width={SERVER.w} height={38} rx={9} fill={colors.POSITIVE} opacity={0.16} />
-                  <text x={SERVER.x + SERVER.w / 2} y={SERVER.y + 257} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
+                  <rect x={SERVER.x} y={SERVER.y + 280} width={SERVER.w} height={44} rx={10} fill={colors.POSITIVE} opacity={0.16} />
+                  <text x={SERVER.x + SERVER.w / 2} y={SERVER.y + 309} textAnchor="middle" fill={colors.POSITIVE} fontSize={17} fontWeight={600}>
                     200 — authenticated, no password
                   </text>
                 </g>

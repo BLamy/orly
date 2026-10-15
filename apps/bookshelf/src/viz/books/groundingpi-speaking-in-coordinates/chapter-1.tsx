@@ -406,7 +406,8 @@ function Rulers({ u, tick, opacity }: { u: number; tick: number; opacity: number
       <line x1={IMG.x} y1={topY} x2={IMG.x + IMG.w * u} y2={topY} stroke={INK.muted} strokeWidth={1.5} />
       <line x1={leftX} y1={IMG.y} x2={leftX} y2={IMG.y + IMG.h * u} stroke={INK.muted} strokeWidth={1.5} />
       {RULER_TICKS.map((q) => {
-        const on = clamp01((u - q / GRID_MAX) * 8 + 0.2);
+        // at full draw every tick is on; without this the 999 tick (q / GRID_MAX = 1) stayed at 20% and read as a ghost
+        const on = u >= 0.999 ? 1 : clamp01((u - q / GRID_MAX) * 8 + 0.2);
         return (
           <g key={q} opacity={on}>
             <line x1={gx(q)} y1={topY - 8} x2={gx(q)} y2={topY} stroke={INK.muted} strokeWidth={1.5} />
@@ -573,7 +574,8 @@ export function Render({ s }: { s: SceneState }) {
         <Corner x={cornerBR.x} y={cornerBR.y} dir={-1} u={cornerU * machO} />
         {/* the yellow query sweeps the picture and finds nothing */}
         <Crosshair x={altX} y={gy(500)} u={altU * (1 - noneU) * 0.9} color={INK.yellow} dashed />
-        <Chip x={IMG.x + IMG.w / 2} y={IMG.y + IMG.h / 2} text="no yellow car · None" color={INK.yellow} opacity={altU * noneU} size={18} />
+        {/* sits in the empty sky above the red car so it never covers the subject */}
+        <Chip x={500} y={165} text="no yellow car · None" color={INK.yellow} opacity={altU * noneU} size={18} />
 
         {/* the crosshair ghost lifting into the first slot */}
         {liftU > 0.003 && liftU < 0.997 && (

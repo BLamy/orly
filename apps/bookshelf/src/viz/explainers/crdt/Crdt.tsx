@@ -1,5 +1,5 @@
 import { interpolateRgb } from 'd3';
-import { MathLabel, Player, colors } from '../../core';
+import { Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { MatrixGrid, NodeBadge, Packet } from '../../primitives';
 import overrides from './overrides.json';
@@ -41,6 +41,7 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
+const SERIF = 'Georgia, "Times New Roman", serif';
 
 /** Link tint: neutral while connected, rose while partitioned. */
 const linkTint = interpolateRgb(colors.MUTED, colors.NEGATIVE);
@@ -95,7 +96,7 @@ function GhostRow({ cx, y, vals, u }: { cx: number; y: number; vals: readonly [n
   const x0 = cx - GRID_W / 2;
   return (
     <g opacity={u}>
-      <text x={x0 - 12} y={y + CELL / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+      <text x={x0 - 12} y={y + CELL / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         in
       </text>
       {vals.map((v, j) => (
@@ -215,7 +216,7 @@ function ReplayStrip({ s }: { s: SceneState }) {
   if (u <= 0.002) return null;
   return (
     <g>
-      <rect x={0} y={0} width={1280} height={720} fill={colors.BG} opacity={0.86 * u} />
+      <rect x={0} y={0} width={1280} height={720} fill={colors.BG} opacity={0.94 * u} />
       <g opacity={u}>
         <text x={640} y={172} textAnchor="middle" fill={colors.MUTED} fontSize={14} letterSpacing="0.3em">
           SAME MERGE, THREE WAYS
@@ -293,7 +294,7 @@ function RegisterBox({
           <text x={-REG.w / 2 + 14} y={6} fill={colors.TEXT} fontSize={17} fontWeight={600}>
             {value}
           </text>
-          <text x={REG.w / 2 - 12} y={6} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={REG.w / 2 - 12} y={6} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             {tstamp}
           </text>
         </>
@@ -317,7 +318,7 @@ function RegisterBlock({ s }: { s: SceneState }) {
   return (
     <g opacity={u}>
       {[A, B].map((p, i) => (
-        <text key={i} x={p.x} y={p.y + REG.labelDy} textAnchor="middle" fill={colors.MUTED} fontSize={13} letterSpacing="0.22em">
+        <text key={i} x={p.x} y={p.y + REG.labelDy} textAnchor="middle" fill={colors.MUTED} fontSize={14} letterSpacing="0.22em">
           TITLE
         </text>
       ))}
@@ -331,7 +332,7 @@ function RegisterBlock({ s }: { s: SceneState }) {
         cx={A.x}
         cy={draftY}
         color={loserTint(clamp01(draftOut))}
-        u={draftA * (1 - 0.62 * draftOut)}
+        u={draftA * (1 - 0.85 * draftOut)}
         value="Draft"
         tstamp="t=10"
         dashed={draftOut > 0.02}
@@ -344,7 +345,7 @@ function RegisterBlock({ s }: { s: SceneState }) {
         cx={B.x}
         cy={B.y + REG.ghostDy}
         color={loserTint(clamp01(gOut))}
-        u={gIn * (1 - 0.68 * gOut)}
+        u={gIn * (1 - 0.85 * gOut)}
         value="Draft"
         tstamp="t=10"
         dashed
@@ -419,7 +420,15 @@ function renderFrame(s: SceneState) {
       <text x={640} y={62} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontWeight={600} letterSpacing="0.32em" opacity={s.get(scene.flavorL)}>
         LWW REGISTER
       </text>
-      <MathLabel tex="\operatorname{merge}(a,b)_i = \max(a_i,\, b_i)" x={640} y={128} fontSize={25} opacity={s.get(scene.texU)} />
+      <text x={640} y={128} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontFamily={SERIF} opacity={s.get(scene.texU)}>
+        merge(a, b)
+        <tspan dy={6} fontSize={17}>i</tspan>
+        <tspan dy={-6}> = max(a</tspan>
+        <tspan dy={6} fontSize={17}>i</tspan>
+        <tspan dy={-6}>, b</tspan>
+        <tspan dy={6} fontSize={17}>i</tspan>
+        <tspan dy={-6}>)</tspan>
+      </text>
     </g>
   );
 }

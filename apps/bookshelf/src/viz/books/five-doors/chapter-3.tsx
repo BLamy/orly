@@ -67,7 +67,7 @@ export function buildScene() {
   // BEAT 7 — bugs tagged + issue tracker
   tl.caption({ at: 39.8, dur: 6.8, text: 'Bugs found this way are tagged with the pull request number, and with issue filing on they land in Github, Linear, or Jira.' });
   tl.tween(bugU, 1, { at: 40.2, dur: 0.8, ease: ease.enter });
-  tl.tween(trackerU, 1, { at: 40.8, dur: 0.8, ease: ease.enter });
+  tl.tween(trackerU, 1, { at: 43.4, dur: 0.8, ease: ease.enter });
   tl.hold(46.8, 0.4);
 
   // BEAT 8 — loop closes per PR
@@ -96,36 +96,36 @@ export function Render({ s }: { s: SceneState }) {
   const tracker = s.get(scene.trackerU);
   const close = s.get(scene.close);
   const failed = run >= 0.66 ? 1 : 0;
-  const packetY = lerp(150, LANE_Y - 4, deploy);
+  const packetY = lerp(184, LANE_Y - 4, deploy);
   const packetX = lerp(GATE_X + 330, GATE_X + 130, deploy);
 
   return <Camera {...s.get(scene.cam)}>
-    <g opacity={1 - close * 0.9}>
+    <g opacity={1 - close}>
       <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850">Let Github open the door</text>
 
       {/* Nightly regret */}
       <g opacity={night} transform="translate(90 96)">
         <rect width="310" height="64" rx="14" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2" />
-        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">NIGHTLY · STAGING</text>
+        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="14" fontWeight="700" letterSpacing="1.5">NIGHTLY · STAGING</text>
         <text x="16" y="48" fill={colors.TEXT} fontSize="13">Bug found 02:14 · merged yesterday 16:40</text>
       </g>
 
       {/* GitHub App */}
       <g opacity={app} transform={`translate(880 ${96 + (1 - app) * 12})`}>
         <rect width="310" height="64" rx="14" fill="#13233a" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="16" y="24" fill={colors.SECONDARY} fontSize="12" fontWeight="700" letterSpacing="1.5">REPLAY QA GITHUB APP</text>
+        <text x="16" y="24" fill={colors.SECONDARY} fontSize="14" fontWeight="700" letterSpacing="1.5">REPLAY QA GITHUB APP</text>
         <text x="16" y="48" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>prTesting: events · fileIssues: on</text>
       </g>
 
       {/* PR lane */}
       <g opacity={pr}>
         <rect x="80" y={LANE_Y - 40} width="1120" height="80" rx="20" fill="#0d1727" stroke={colors.GRID} strokeWidth="2" />
-        <text x="100" y={LANE_Y - 52} fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">PULL REQUEST 128 · rework coupon flow</text>
+        <text x="100" y={LANE_Y - 52} fill={colors.MUTED} fontSize="14" fontWeight="700" letterSpacing="1">PULL REQUEST 128 · rework coupon flow</text>
         <line x1="100" y1={LANE_Y} x2="1180" y2={LANE_Y} stroke={colors.MUTED} strokeWidth="2" strokeDasharray="6 8" opacity="0.6" />
         {/* the gate */}
         <g transform={`translate(${GATE_X} ${LANE_Y})`}>
           <rect x="-6" y="-40" width="12" height={80 * (1 - gate)} fill={colors.WARM} rx="4" />
-          <text y="-50" textAnchor="middle" fill={gate > 0.5 ? colors.POSITIVE : colors.WARM} fontSize="13" fontWeight="700">{gate > 0.5 ? 'deployment detected' : 'Awaiting Deployment'}</text>
+          <text y="-50" textAnchor="middle" fill={gate > 0.5 ? colors.POSITIVE : colors.WARM} fontSize="14" fontWeight="700">{gate > 0.5 ? 'deployment detected' : 'Awaiting Deployment'}</text>
         </g>
         {/* the commit */}
         <g transform={`translate(${commitX} ${LANE_Y})`}>
@@ -133,13 +133,13 @@ export function Render({ s }: { s: SceneState }) {
           <text y="36" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>sha 9f3c2a1</text>
         </g>
         {/* check run pill */}
-        <g opacity={check} transform={`translate(${commitX - 92} ${LANE_Y + 52})`}>
-          <rect width="184" height="24" rx="12" fill={conclude > 0 ? (failed ? '#2a1218' : '#102a22') : '#1b2a44'} stroke={conclude > 0 ? (failed ? colors.NEGATIVE : colors.POSITIVE) : colors.MUTED} />
+        <g opacity={check} transform={`translate(${commitX - 100} ${LANE_Y + 52})`}>
+          <rect width="200" height="24" rx="12" fill={conclude > 0 ? (failed ? '#2a1218' : '#102a22') : '#1b2a44'} stroke={conclude > 0 ? (failed ? colors.NEGATIVE : colors.POSITIVE) : colors.MUTED} />
           <circle cx="14" cy="12" r="5" fill={conclude > 0 ? (failed ? colors.NEGATIVE : colors.POSITIVE) : colors.WARM} />
           <text x="26" y="16" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>Replay QA · {conclude > 0 ? (failed ? 'failure' : 'neutral') : 'in progress'}</text>
         </g>
         {/* parked marker */}
-        <g opacity={park * (1 - gate)} transform={`translate(${GATE_X - 60} ${LANE_Y - 92})`}>
+        <g opacity={park * (1 - gate)} transform={`translate(${GATE_X} ${LANE_Y - 92})`}>
           <rect x="-112" width="224" height="26" rx="13" fill="#2a2416" stroke={colors.WARM} />
           <text y="17" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>parked · waiting for deploy</text>
         </g>
@@ -147,34 +147,34 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* deployment_status packet */}
       <g opacity={deploy > 0 && deploy < 1 ? 1 : deploy >= 1 ? clamp01(1 - gate) : 0} transform={`translate(${packetX} ${packetY})`}>
-        <rect x="-96" y="-14" width="192" height="28" rx="14" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="11" fontFamily={colors.font.mono}>deployment_status: success</text>
+        <rect x="-108" y="-14" width="216" height="28" rx="14" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
+        <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>deployment_status: success</text>
       </g>
 
       {/* Preview environment + runs */}
       <g opacity={clamp01(gate)} transform="translate(880 392)">
         <rect width="310" height={64 + JOURNEYS.length * 30} rx="16" fill="#102033" stroke={colors.TEAL} strokeWidth="2.5" />
-        <text x="16" y="24" fill={colors.TEAL} fontSize="12" fontWeight="700" letterSpacing="1.5">PREVIEW · PR 128</text>
-        <text x="16" y="44" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>pr-128.preview.example.com</text>
+        <text x="16" y="24" fill={colors.TEAL} fontSize="14" fontWeight="700" letterSpacing="1.5">PREVIEW · PR 128</text>
+        <text x="16" y="44" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>pr-128.preview.example.com</text>
         {JOURNEYS.map((j, i) => {
           const u = clamp01(run * JOURNEYS.length - i);
           const bad = i === 1;
           return <g key={j} transform={`translate(16 ${64 + i * 30})`} opacity={0.3 + 0.7 * clamp01(run * JOURNEYS.length - i + 1)}>
             <circle cx="6" cy="8" r="6" fill={u >= 1 ? (bad ? colors.NEGATIVE : colors.POSITIVE) : u > 0 ? colors.WARM : '#2a3650'} />
-            <text x="20" y="12" fill={colors.TEXT} fontSize="13">{j}</text>
+            <text x="20" y="12" fill={colors.TEXT} fontSize="14">{j}</text>
           </g>;
         })}
       </g>
 
       {/* Sticky comment */}
       <g opacity={comment} transform={`translate(90 ${392 + (1 - comment) * 14})`}>
-        <rect width="380" height="150" rx="16" fill="#13233a" stroke={colors.GRID} strokeWidth="2" />
+        <rect width="380" height="154" rx="16" fill="#13233a" stroke={colors.GRID} strokeWidth="2" />
         <circle cx="26" cy="26" r="10" fill={colors.SECONDARY} />
-        <text x="44" y="30" fill={colors.TEXT} fontSize="12" fontWeight="700">replay-qa</text>
-        <text x="116" y="30" fill={colors.MUTED} fontSize="12">commented · edited</text>
-        <text x="20" y="60" fill={colors.TEXT} fontSize="12">2 journeys passed · 1 failed on 9f3c2a1</text>
-        <text x="20" y="82" fill={colors.NEGATIVE} fontSize="12">✕ Apply coupon — code rejected at step 3</text>
-        <text x="20" y="104" fill={colors.ACCENT} fontSize="12" textDecoration="underline">Watch the recording → · Full report →</text>
+        <text x="44" y="30" fill={colors.TEXT} fontSize="13" fontWeight="700">replay-qa</text>
+        <text x="122" y="30" fill={colors.MUTED} fontSize="13">commented · edited</text>
+        <text x="20" y="60" fill={colors.TEXT} fontSize="13">2 journeys passed · 1 failed on 9f3c2a1</text>
+        <text x="20" y="82" fill={colors.NEGATIVE} fontSize="13">✕ Apply coupon — code rejected at step 3</text>
+        <text x="20" y="104" fill={colors.ACCENT} fontSize="13" textDecoration="underline">Watch the recording → · Full report →</text>
         <rect x="20" y="117" width="124" height="22" rx="11" fill={conclude > 0 ? '#2a1218' : '#1b2a44'} stroke={colors.NEGATIVE} opacity={conclude} />
         <text x="82" y="132" textAnchor="middle" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" opacity={conclude}>check: failure</text>
       </g>
@@ -182,16 +182,16 @@ export function Render({ s }: { s: SceneState }) {
       {/* Bug tagged + issue tracker */}
       <g opacity={bug} transform={`translate(500 ${392 + (1 - bug) * 14})`}>
         <rect width="350" height="82" rx="14" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2.5" />
-        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">BUG · MEDIUM</text>
+        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="14" fontWeight="700" letterSpacing="1.5">BUG · MEDIUM</text>
         <rect x="266" y="10" width="72" height="22" rx="11" fill="#0f2a2a" stroke={colors.TEAL} />
-        <text x="302" y="25" textAnchor="middle" fill={colors.TEAL} fontSize="11" fontWeight="700">PR #128</text>
+        <text x="302" y="25" textAnchor="middle" fill={colors.TEAL} fontSize="12" fontWeight="700">PR #128</text>
         <text x="16" y="50" fill={colors.TEXT} fontSize="14" fontWeight="600">Coupon field rejects valid code</text>
         <text x="16" y="70" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>version 9f3c2a1 · preview</text>
       </g>
       <g opacity={tracker} transform={`translate(500 ${486 + (1 - tracker) * 10})`}>
         {[['Github issue', colors.TEXT], ['Linear', colors.SECONDARY], ['Jira', colors.ACCENT]].map(([name, c], i) => <g key={name} transform={`translate(${i * 118} 0)`}>
           <rect width="108" height="30" rx="15" fill="#13233a" stroke={c} strokeWidth={i === 0 ? 2.5 : 1.5} opacity={i === 0 ? 1 : 0.55} />
-          <text x="54" y="20" textAnchor="middle" fill={c} fontSize="12" fontWeight="600">{name}</text>
+          <text x="54" y="20" textAnchor="middle" fill={c} fontSize="13" fontWeight="600">{name}</text>
         </g>)}
       </g>
     </g>

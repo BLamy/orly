@@ -17,7 +17,7 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const SRC = { x: 70, y: 120, w: 480, h: 430 };
 const TGT = { x: 730, y: 120, w: 480, h: 430 };
-const WS = { x: 560, y: 140, w: 620, h: 360 };
+const WS = { x: 560, y: 140, w: 620, h: 330 };
 const VERDICT = { x: 340, y: 190, w: 600, h: 240 };
 
 const P1 = { x: 300, y: 445, label: '(0, 0, −1/4)', c: colors.ACCENT };
@@ -27,7 +27,7 @@ const Q = { x: 965, y: 330, label: '(−1/4, 0, 0)' };
 const MIRROR_X = 312; // the σ mirror inside the source panel
 
 const CAM_HOME: CameraState = CAMERA_HOME;
-const CAM_SRC: CameraState = { x: 350, y: 340, k: 1.12 };
+const CAM_SRC: CameraState = { x: 310, y: 400, k: 1.2 }; // fills the stage; the equivariance strip stays above the caption
 const CAM_WS: CameraState = { x: 640, y: 330, k: 1.1 };
 const CAM_BOTH: CameraState = { x: 640, y: 340, k: 1.0 };
 const CAM_TGT: CameraState = { x: 690, y: 340, k: 1.05 };
@@ -187,7 +187,10 @@ function SpacePanel({ u, title, x, w, dim }: { u: number; title: string; x: numb
   );
 }
 
-function SourcePoints({ n, mirror, dim }: { n: number; mirror: number; dim: number }) {
+/** The worksheet's running values, written beside P2 as each line is computed. */
+const READOUTS = ['u = −1/2', 'F1 = −1/4', 'F2 = 0', 'F3 = 0'];
+
+function SourcePoints({ n, mirror, ws, wsN, dim }: { n: number; mirror: number; ws: number; wsN: number; dim: number }) {
   if (n <= 0) return null;
   const a = 1 - 0.88 * clamp01(dim);
   const pts = [P1, P2, P3];
@@ -197,19 +200,28 @@ function SourcePoints({ n, mirror, dim }: { n: number; mirror: number; dim: numb
       {m > 0 && (
         <g opacity={m}>
           <line x1={MIRROR_X} y1={SRC.y + 40} x2={MIRROR_X} y2={P1.y - 24} stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 6" />
-          <text x={MIRROR_X} y={SRC.y + 26} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={mono}>
+          <text x={MIRROR_X} y={SRC.y + 26} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={mono}>
             σ : (x, y, z) ↦ (−x, −y, z)
           </text>
           <path
-            d={`M ${P2.x - 14} ${P2.y - 26} Q ${MIRROR_X} ${P2.y - 64} ${P3.x + 14} ${P3.y - 26}`}
+            d={`M ${P2.x - 14} ${P2.y + 4} Q ${MIRROR_X} ${P2.y + 10} ${P3.x + 14} ${P3.y + 4}`}
             fill="none"
             stroke={colors.WARM}
             strokeWidth={1.6}
-            strokeDasharray="120"
-            strokeDashoffset={120 * (1 - m)}
+            strokeDasharray="300"
+            strokeDashoffset={300 * (1 - m)}
           />
         </g>
       )}
+      {READOUTS.map((text, k) => {
+        const ru = clamp01(wsN - (k + 1)) * clamp01(ws);
+        if (ru <= 0) return null;
+        return (
+          <text key={k} x={P2.x} y={P2.y + 34 + k * 20} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={mono} opacity={ru}>
+            {text}
+          </text>
+        );
+      })}
       {pts.map((p, i) => {
         const u = clamp01(n - i);
         if (u <= 0) return null;
@@ -241,7 +253,7 @@ function TargetPoint({ u, hit, dim }: { u: number; hit: number; dim: number }) {
         {Q.label}
       </text>
       {h > 0.5 && (
-        <text x={Q.x + 60} y={Q.y + 5} textAnchor="start" fill={colors.NEGATIVE} fontSize={13} fontFamily={mono} opacity={(h - 0.5) * 2}>
+        <text x={Q.x + 60} y={Q.y + 5} textAnchor="start" fill={colors.NEGATIVE} fontSize={14} fontFamily={mono} opacity={(h - 0.5) * 2}>
           three arrivals, one address
         </text>
       )}
@@ -250,11 +262,12 @@ function TargetPoint({ u, hit, dim }: { u: number; hit: number; dim: number }) {
 }
 
 /** Ghost dots fly the beziers from each source point to the shared image. */
-function Flights({ u }: { u: number }) {
+function Flights({ u, dim }: { u: number; dim: number }) {
   const fu = clamp01(u);
   if (fu <= 0) return null;
+  const a = 1 - 0.88 * clamp01(dim);
   return (
-    <g>
+    <g opacity={a}>
       {FLIGHTS.map((f, i) => {
         const p = clamp01((fu - f.delay) / (1 - 0.32));
         if (p <= 0) return null;
@@ -307,10 +320,11 @@ function Worksheet({ u, n, dim }: { u: number; n: number; dim: number }) {
 }
 
 /** F ∘ σ = (F1, −F2, −F3): the mirror pairing, verified symbolically. */
-function EquivarianceCard({ u, dim }: { u: number; dim: number }) {
+function EquivarianceCard({ u, tgt, dim }: { u: number; tgt: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  // gives way to the target panel once the three trails start
+  const a = uu * (1 - 0.88 * clamp01(dim)) * (1 - clamp01(tgt));
   return (
     <g opacity={a} transform={`translate(${SRC.x + 40}, ${SRC.y + SRC.h + 12})`}>
       <rect width={400} height={44} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
@@ -351,10 +365,16 @@ function renderFrame(s: SceneState) {
     <>
       <SpacePanel u={s.get(scene.srcU)} title="source · ℂ³" x={SRC.x} w={SRC.w} dim={dim} />
       <SpacePanel u={s.get(scene.tgtU)} title="target · ℂ³" x={TGT.x} w={TGT.w} dim={dim} />
-      <SourcePoints n={s.get(scene.ptsN)} mirror={s.get(scene.mirrorU)} dim={dim} />
-      <Flights u={s.get(scene.flyU)} />
+      <SourcePoints
+        n={s.get(scene.ptsN)}
+        mirror={s.get(scene.mirrorU)}
+        ws={s.get(scene.wsU)}
+        wsN={s.get(scene.wsN)}
+        dim={dim}
+      />
+      <Flights u={s.get(scene.flyU)} dim={dim} />
       <TargetPoint u={s.get(scene.tgtU)} hit={s.get(scene.hitU)} dim={dim} />
-      <EquivarianceCard u={s.get(scene.eqU)} dim={dim} />
+      <EquivarianceCard u={s.get(scene.eqU)} tgt={s.get(scene.tgtU)} dim={dim} />
       <Worksheet u={s.get(scene.wsU)} n={s.get(scene.wsN)} dim={dim} />
       <VerdictCard u={s.get(scene.verdictU)} />
     </>

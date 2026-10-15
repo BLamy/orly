@@ -16,7 +16,6 @@
 // definition melts into the SAME handle, a different where clause forks a
 // second one.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -36,33 +35,42 @@ const win = (p: number, n: number, i: number, span: number): number =>
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 // ---------------------------------------------------------------------------
-// Layout — the Postgres table grid, the definition card, the shape strip.
+// Layout — the Postgres table grid on the left, the definition card, struct
+// and funnel stacked on the right. Everything sits on one 1280×720 stage at
+// k = 1 so no label is ever cut off and nothing sits under the caption band.
 // ---------------------------------------------------------------------------
 
-const TABLE = { x: 64, y: 118, w: 512, h: 436 } as const;
+const TABLE = { x: 52, y: 118, w: 500, h: 436 } as const;
 const ROW_H = 32;
 const ROW_Y0 = TABLE.y + 84;
 // column x-offsets inside the table panel (id, title, status, project_id, created_at)
 const COLS = [
-  { key: 'id', x: 84, w: 46 },
-  { key: 'title', x: 136, w: 178 },
-  { key: 'status', x: 320, w: 82 },
-  { key: 'project_id', x: 408, w: 86 },
-  { key: 'created_at', x: 500, w: 62 },
+  { key: 'id', dx: 20 },
+  { key: 'title', dx: 72 },
+  { key: 'status', dx: 246 },
+  { key: 'project_id', dx: 330 },
+  { key: 'created_at', dx: 420 },
 ] as const;
+// the sweep's predicate chip rides the line out into the gutter beside the table
+const CHIP = { x: TABLE.x + TABLE.w + 8, w: 96 } as const;
 
-const CARD = { x: 660, y: 96, w: 548, h: 168 } as const;
-const STRIP = { x: 700, y: 320, w: 400, rowH: 34 } as const;
-const STRUCT = { x: 648, y: 96, w: 560, h: 214 } as const;
-const FUNNEL = { cx: 928, y0: STRUCT.y + STRUCT.h + 16, y1: STRUCT.y + STRUCT.h + 92 } as const;
-const HANDLE = { x: 758, y: FUNNEL.y1 + 18, w: 340, h: 44 } as const;
-const HANDLE2 = { x: 758, y: HANDLE.y + 118, w: 340, h: 44 } as const;
+const CARD = { x: 672, y: 96, w: 548, h: 168 } as const;
+const STRIP = { x: 672, y: 320, w: 548, rowH: 34 } as const;
+const STRUCT = { x: 672, y: 96, w: 548, h: 214 } as const;
+const FUNNEL = { cx: 946, y0: STRUCT.y + STRUCT.h + 16, y1: STRUCT.y + STRUCT.h + 92 } as const;
+const HANDLE = { x: 776, y: FUNNEL.y1 + 18, w: 340, h: 44 } as const;
+const FORK = { x: 796, y: HANDLE.y + 64, w: 300, h: 56 } as const;
+const HANDLE2 = { x: 776, y: FORK.y + FORK.h + 36, w: 340, h: 44 } as const;
+// the duplicate definition starts under the handle label and melts into the handle
+const DUP = { x: 672, y: 496, w: 330, h: 92 } as const;
+const DUP_END = { x: HANDLE.x + HANDLE.w / 2 - 74, y: HANDLE.y + HANDLE.h / 2 - 21 } as const;
 
-// camera marks
-const CAM_TABLE: CameraState = { x: 380, y: 340, k: 1.22 };
-const CAM_CARD: CameraState = { x: 800, y: 300, k: 1.12 };
-const CAM_STRUCT: CameraState = { x: 900, y: 340, k: 1.16 };
-const CAM_WIDE: CameraState = CAMERA_HOME;
+// camera marks — the whole composition fits one stage, so every mark keeps
+// everything it shows inside the frame and above the caption band
+const CAM_TABLE: CameraState = { x: 302, y: 330, k: 1.06 };
+const CAM_WIDE: CameraState = { x: 627, y: 362, k: 1 };
+const CAM_CARD: CameraState = CAM_WIDE;
+const CAM_STRUCT: CameraState = CAM_WIDE;
 
 // ---------------------------------------------------------------------------
 // The rows. Four of ten match project_id = 'p1'; row 41 is the throughline.
@@ -155,7 +163,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'Hold the definition over the table like a stencil. The where clause decides row by row: project one stays lit, everything else goes dark.',
   });
-  tl.tween(cam, CAM_TABLE, { at: 21.6, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAM_WIDE, { at: 21.6, dur: 1.2, ease: ease.move });
   tl.tween(sweepU, 1, { at: 22.4, dur: 4.2, ease: ease.linear });
   tl.hold(27.8, 0.6);
 
@@ -279,9 +287,22 @@ export function Render({ s }: { s: SceneState }) {
   const dimAllU = s.get(scene.dimAllU);
   const closeU = s.get(scene.closeU);
 
+  // once the close starts, every piece of earlier content goes fully quiet
+  const quiet = 1 - dimAllU;
   const sweepY = ROW_Y0 - 10 + (ROWS.length * ROW_H + 14) * sweepU;
-  const tableOp = tableU * (1 - 0.85 * dimTableU) * (1 - 0.9 * dimAllU);
-  const stripOp = (1 - 0.88 * dimAllU);
+  const tableOp = tableU * (1 - 0.9 * dimTableU) * quiet;
+  const stripOp = (1 - structU) * quiet;
+  const sweeping = sweepU > 0.01 && sweepU < 0.999;
+  const handleX = HANDLE.x + HANDLE.w / 2;
+  const handle2X = HANDLE2.x + HANDLE2.w / 2;
+
+  // a row's fade: sweep dims the unmatched ones, the matched ones leave with the strip
+  const rowAlpha = (i: number): number => {
+    const passed = sweepY > rowY(i) + ROW_H / 2;
+    const dark = passed && !MATCH[i];
+    const gone = MATCH[i] ? extrU : 0;
+    return win(tableU, ROWS.length, i, 3) * (dark ? 0.22 : 1) * (1 - gone);
+  };
 
   return (
     <>
@@ -302,26 +323,22 @@ export function Render({ s }: { s: SceneState }) {
           <text x={TABLE.x + 18} y={TABLE.y + 30} fill={colors.TEXT} fontSize={15} fontWeight={600} fontFamily={MONO}>
             public.todos
           </text>
-          <text x={TABLE.x + TABLE.w - 16} y={TABLE.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+          <text x={TABLE.x + TABLE.w - 16} y={TABLE.y + 30} textAnchor="end" fill={colors.MUTED} fontSize={13}>
             every project, one table
           </text>
 
           {/* column headers */}
           {COLS.map((c) => (
-            <text key={c.key} x={TABLE.x + c.x - 64} y={TABLE.y + 62} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text key={c.key} x={TABLE.x + c.dx} y={TABLE.y + 62} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               {c.key}
             </text>
           ))}
 
-          {/* rows — light up / go dark as the stencil passes */}
+          {/* row panels — under the sweep line */}
           {ROWS.map((r, i) => {
-            const passed = sweepY > rowY(i) + ROW_H / 2;
-            const lit = passed && MATCH[i];
-            const dark = passed && !MATCH[i];
-            const rowOp = win(tableU, ROWS.length, i, 3) * (dark ? 0.22 : 1);
-            const gone = MATCH[i] ? extrU : 0; // matching rows leave with the strip
+            const lit = sweepY > rowY(i) + ROW_H / 2 && MATCH[i];
             return (
-              <g key={r.id} opacity={rowOp * (1 - gone)}>
+              <g key={r.id} opacity={rowAlpha(i)}>
                 <rect
                   x={TABLE.x + 14}
                   y={rowY(i)}
@@ -332,32 +349,53 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={lit ? colors.ACCENT : colors.GRID}
                   strokeWidth={lit ? 1.4 : 1}
                 />
-                <text x={TABLE.x + COLS[0].x - 64} y={rowY(i) + 18} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily={MONO}>
-                  {r.id}
-                </text>
-                <text x={TABLE.x + COLS[1].x - 64} y={rowY(i) + 18} fill={colors.TEXT} fontSize={12.5}>
-                  {r.title}
-                </text>
-                <text x={TABLE.x + COLS[2].x - 64} y={rowY(i) + 18} fill={STATUS_COLOR[r.status]} fontSize={12.5} fontFamily={MONO}>
-                  {r.status}
-                </text>
-                <text x={TABLE.x + COLS[3].x - 64} y={rowY(i) + 18} fill={r.project === 'p1' ? colors.ACCENT : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
-                  {r.project}
-                </text>
-                <text x={TABLE.x + COLS[4].x - 64} y={rowY(i) + 18} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={1 - 0.8 * shutterU}>
-                  {r.created}
-                </text>
               </g>
             );
           })}
 
-          {/* the stencil sweep line + predicate chip riding it */}
-          {sweepU > 0.01 && sweepU < 0.999 && (
+          {/* the stencil sweep line: under the row text so it never strikes a word */}
+          {sweeping && (
+            <line
+              x1={TABLE.x + 10}
+              x2={CHIP.x}
+              y1={sweepY}
+              y2={sweepY}
+              stroke={colors.ACCENT}
+              strokeWidth={2}
+              opacity={0.8}
+            />
+          )}
+
+          {/* row text */}
+          {ROWS.map((r, i) => (
+            <g key={`t${r.id}`} opacity={rowAlpha(i)}>
+              <text x={TABLE.x + COLS[0].dx} y={rowY(i) + 18} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={MONO}>
+                {r.id}
+              </text>
+              <text x={TABLE.x + COLS[1].dx} y={rowY(i) + 18} fill={colors.TEXT} fontSize={14}>
+                {r.title}
+              </text>
+              <text x={TABLE.x + COLS[2].dx} y={rowY(i) + 18} fill={STATUS_COLOR[r.status]} fontSize={14} fontFamily={MONO}>
+                {r.status}
+              </text>
+              <text x={TABLE.x + COLS[3].dx} y={rowY(i) + 18} fill={r.project === 'p1' ? colors.ACCENT : colors.MUTED} fontSize={14} fontFamily={MONO}>
+                {r.project}
+              </text>
+              <text x={TABLE.x + COLS[4].dx} y={rowY(i) + 18} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={1 - 0.8 * shutterU}>
+                {r.created}
+              </text>
+            </g>
+          ))}
+
+          {/* the predicate chip, riding the end of the sweep line in the gutter */}
+          {sweeping && (
             <g>
-              <line x1={TABLE.x + 10} x2={TABLE.x + TABLE.w - 10} y1={sweepY} y2={sweepY} stroke={colors.ACCENT} strokeWidth={2} opacity={0.9} />
-              <rect x={TABLE.x + TABLE.w - 196} y={sweepY - 26} width={186} height={22} rx={6} fill={colors.BG} stroke={colors.ACCENT} />
-              <text x={TABLE.x + TABLE.w - 103} y={sweepY - 11} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
-                {"project_id = 'p1' ?"}
+              <rect x={CHIP.x} y={sweepY - 22} width={CHIP.w} height={44} rx={8} fill={colors.BG} stroke={colors.ACCENT} />
+              <text x={CHIP.x + CHIP.w / 2} y={sweepY - 4} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                project_id
+              </text>
+              <text x={CHIP.x + CHIP.w / 2} y={sweepY + 14} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                {"= 'p1' ?"}
               </text>
             </g>
           )}
@@ -365,21 +403,21 @@ export function Render({ s }: { s: SceneState }) {
           {/* the created_at shutter */}
           <g opacity={shutterU}>
             <rect
-              x={TABLE.x + COLS[4].x - 70}
+              x={TABLE.x + COLS[4].dx - 8}
               y={TABLE.y + 46}
-              width={COLS[4].w + 12}
-              height={TABLE.h - 60}
+              width={80}
+              height={TABLE.h - 92}
               rx={8}
               fill="rgba(10,14,26,0.55)"
               stroke={colors.NEGATIVE}
               strokeDasharray="4 4"
             />
             <text
-              x={TABLE.x + COLS[4].x - 70 + (COLS[4].w + 12) / 2}
-              y={TABLE.y + TABLE.h - 22}
+              x={TABLE.x + COLS[4].dx + 32}
+              y={TABLE.y + TABLE.h - 20}
               textAnchor="middle"
               fill={colors.NEGATIVE}
-              fontSize={11}
+              fontSize={13}
             >
               not selected
             </text>
@@ -387,9 +425,9 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ the definition card */}
-        <g opacity={cardU * (1 - 0.9 * dimAllU)}>
+        <g opacity={cardU * quiet}>
           <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={CARD.x + 20} y={CARD.y + 30} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={CARD.x + 20} y={CARD.y + 30} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             the shape definition — three query parameters
           </text>
           {[
@@ -399,7 +437,7 @@ export function Render({ s }: { s: SceneState }) {
           ].map((chip, i) => (
             <g key={chip.label} opacity={win(cardU, 3, i, 1.6)}>
               <rect x={CARD.x + 20} y={CARD.y + 44 + i * 38} width={CARD.w - 40} height={30} rx={8} fill={colors.BG} stroke={chip.color} />
-              <text x={CARD.x + 34} y={CARD.y + 64 + i * 38} fill={chip.color} fontSize={13.5} fontFamily={MONO}>
+              <text x={CARD.x + 34} y={CARD.y + 64 + i * 38} fill={chip.color} fontSize={14} fontFamily={MONO}>
                 {chip.label}
               </text>
             </g>
@@ -407,28 +445,31 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ the extruded shape strip */}
-        <g opacity={clamp01(extrU * 2) * stripOp * (1 - 0.85 * structU)}>
+        <g opacity={clamp01(extrU * 2) * stripOp}>
           <text x={STRIP.x} y={STRIP.y - 16} fill={colors.TEXT} fontSize={14} fontWeight={600} opacity={clamp01((extrU - 0.6) * 3)}>
             the shape
           </text>
           {MATCH_IDX.map((ri, m) => {
             const r = ROWS[ri];
             const u = win(extrU, MATCH_IDX.length, m, 2.2);
-            const sx = TABLE.x + 14 + (STRIP.x - TABLE.x - 14) * u;
+            const row0 = TABLE.x + 14;
+            const row0W = TABLE.w - 28;
+            const sx = row0 + (STRIP.x - row0) * u;
+            const sw = row0W + (STRIP.w - row0W) * u;
             const sy = rowY(ri) + (stripY(m) - rowY(ri)) * u;
             return (
               <g key={r.id} opacity={u < 0.02 ? 0 : 1}>
-                <rect x={sx} y={sy} width={STRIP.w} height={STRIP.rowH - 6} rx={6} fill="rgba(56,189,248,0.10)" stroke={colors.ACCENT} strokeWidth={1.2} />
-                <text x={sx + 14} y={sy + 19} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+                <rect x={sx} y={sy} width={sw} height={STRIP.rowH - 6} rx={6} fill="rgba(56,189,248,0.10)" stroke={colors.ACCENT} strokeWidth={1.2} />
+                <text x={sx + 14} y={sy + 19} fill={r.id === 41 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {r.id}
                 </text>
-                <text x={sx + 52} y={sy + 19} fill={colors.TEXT} fontSize={12.5}>
+                <text x={sx + 56} y={sy + 19} fill={colors.TEXT} fontSize={14}>
                   {r.title}
                 </text>
-                <text x={sx + 230} y={sy + 19} fill={STATUS_COLOR[r.status]} fontSize={12.5} fontFamily={MONO}>
+                <text x={sx + 300} y={sy + 19} fill={STATUS_COLOR[r.status]} fontSize={14} fontFamily={MONO}>
                   {r.status}
                 </text>
-                <text x={sx + 310} y={sy + 19} fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+                <text x={sx + 420} y={sy + 19} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   {r.project}
                 </text>
               </g>
@@ -437,9 +478,9 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ the struct panel */}
-        <g opacity={structU * (1 - 0.9 * dimAllU)}>
+        <g opacity={structU * quiet}>
           <rect x={STRUCT.x} y={STRUCT.y} width={STRUCT.w} height={STRUCT.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={STRUCT.x + STRUCT.w - 18} y={STRUCT.y + 26} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={STRUCT.x + STRUCT.w - 18} y={STRUCT.y + 26} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             shapes/shape.ex
           </text>
           {[
@@ -465,14 +506,15 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ hash funnel + handle */}
-        <g opacity={clamp01(flowU * 3) * (1 - 0.9 * dimAllU)}>
+        <g opacity={clamp01(flowU * 3) * quiet}>
           <path
             d={`M ${FUNNEL.cx - 120} ${FUNNEL.y0} L ${FUNNEL.cx + 120} ${FUNNEL.y0} L ${FUNNEL.cx + 26} ${FUNNEL.y1} L ${FUNNEL.cx - 26} ${FUNNEL.y1} Z`}
             fill="none"
-            stroke={colors.GRID}
+            stroke={colors.MUTED}
+            strokeOpacity={0.6}
             strokeWidth={1.4}
           />
-          <text x={FUNNEL.cx + 136} y={FUNNEL.y0 + 40} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={FUNNEL.cx + 136} y={FUNNEL.y0 + 40} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             hash(definition)
           </text>
           {/* three field-dots pouring through the funnel */}
@@ -485,33 +527,33 @@ export function Render({ s }: { s: SceneState }) {
             ) : null;
           })}
         </g>
-        <g opacity={handleU * (1 - 0.9 * dimAllU)}>
+        <g opacity={handleU * quiet}>
           <rect x={HANDLE.x} y={HANDLE.y} width={HANDLE.w} height={HANDLE.h} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
-          <text x={HANDLE.x + HANDLE.w / 2} y={HANDLE.y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+          <text x={handleX} y={HANDLE.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             shape handle
           </text>
-          <text x={HANDLE.x + HANDLE.w / 2} y={HANDLE.y + 36} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+          <text x={handleX} y={HANDLE.y + 36} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
             {HANDLE_P1}
           </text>
         </g>
 
         {/* ------------------------------------------------ dedupe + fork */}
         {/* duplicate definition — same three chips, smaller, melting into the handle */}
-        <g opacity={dupU * (1 - dupMergeU) * (1 - 0.9 * dimAllU)}>
+        <g opacity={dupU * (1 - dupMergeU) * quiet}>
           {(() => {
-            const dx = 180 + (HANDLE.x + HANDLE.w / 2 - 180) * dupMergeU;
-            const dy = 150 + (HANDLE.y - 150) * dupMergeU;
+            const dx = DUP.x + (DUP_END.x - DUP.x) * dupMergeU;
+            const dy = DUP.y + (DUP_END.y - DUP.y) * dupMergeU;
             const k = 1 - 0.55 * dupMergeU;
             return (
               <g transform={`translate(${dx}, ${dy}) scale(${k})`}>
-                <rect width={330} height={92} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={16} y={24} fill={colors.MUTED} fontSize={11} fontStyle="italic">
+                <rect width={DUP.w} height={DUP.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={16} y={26} fill={colors.MUTED} fontSize={13} fontStyle="italic">
                   another client, same definition
                 </text>
-                <text x={16} y={48} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={16} y={52} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   table=todos
                 </text>
-                <text x={16} y={70} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+                <text x={16} y={76} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   {"where=project_id = 'p1'"}
                 </text>
               </g>
@@ -529,41 +571,41 @@ export function Render({ s }: { s: SceneState }) {
             fill="none"
             stroke={colors.WARM}
             strokeWidth={2}
-            opacity={(1 - (dupMergeU - 0.85) / 0.15) * (1 - 0.9 * dimAllU)}
+            opacity={(1 - (dupMergeU - 0.85) / 0.15) * quiet}
           />
         )}
-        <g opacity={clamp01(dupMergeU * 2 - 1) * (1 - 0.9 * dimAllU)}>
-          <text x={HANDLE.x + HANDLE.w / 2} y={HANDLE.y + HANDLE.h + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+        <g opacity={clamp01(dupMergeU * 2 - 1) * quiet * (1 - forkU)}>
+          <text x={handleX} y={HANDLE.y + HANDLE.h + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
             same definition → same shape, shared log
           </text>
         </g>
 
         {/* fork: a different where clause gets its own handle */}
-        <g opacity={forkU * (1 - 0.9 * dimAllU)}>
-          <rect x={220} y={HANDLE2.y - 40} width={300} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={236} y={HANDLE2.y - 16} fill={colors.MUTED} fontSize={11} fontStyle="italic">
+        <g opacity={forkU * quiet}>
+          <rect x={FORK.x} y={FORK.y} width={FORK.w} height={FORK.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={FORK.x + 16} y={FORK.y + 20} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             a different slice
           </text>
-          <text x={236} y={HANDLE2.y + 8} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+          <text x={FORK.x + 16} y={FORK.y + 42} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
             {"where=project_id = 'p2'"}
           </text>
-          <line x1={520} y1={HANDLE2.y - 8} x2={HANDLE2.x - 10} y2={HANDLE2.y + HANDLE2.h / 2} stroke={colors.GRID} strokeWidth={1.4} />
+          <line x1={handle2X} y1={FORK.y + FORK.h} x2={handle2X} y2={HANDLE2.y} stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={1.4} />
           <rect x={HANDLE2.x} y={HANDLE2.y} width={HANDLE2.w} height={HANDLE2.h} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.6} />
-          <text x={HANDLE2.x + HANDLE2.w / 2} y={HANDLE2.y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+          <text x={handle2X} y={HANDLE2.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             a different shape handle
           </text>
-          <text x={HANDLE2.x + HANDLE2.w / 2} y={HANDLE2.y + 36} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+          <text x={handle2X} y={HANDLE2.y + 36} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
             {HANDLE_P2}
           </text>
         </g>
 
         {/* ------------------------------------------------ the closing panel */}
         <g opacity={closeU}>
-          <rect x={280} y={250} width={720} height={150} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-          <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
+          <rect x={267} y={250} width={720} height={150} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text x={627} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
             A shape is a promise
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+          <text x={627} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             this slice of Postgres, kept up to date — table + where + columns → handle
           </text>
         </g>

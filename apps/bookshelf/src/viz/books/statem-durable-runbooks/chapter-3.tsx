@@ -147,8 +147,6 @@ export function buildScene(): Scene {
     text: 'A host stop hook uses the same record. Terminal or explicitly blocked runs may stop; unfinished runs return their phase and obligations to the agent.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 49.3, dur: 1.4, ease: ease.move });
-  tl.tween(curU, 0, { at: 49.3, dur: 1.0, ease: ease.move });
-  tl.tween(resumeU, 0, { at: 49.3, dur: 1.0, ease: ease.move });
   tl.tween(stopU, 1, { at: 49.8, dur: 1.4, ease: ease.enter });
   tl.hold(55.5, 0.6);
 
@@ -157,7 +155,6 @@ export function buildScene(): Scene {
     dur: 6.8,
     text: 'Recovery has a precise boundary. The runtime restores recorded control state, not work that was never saved and not arbitrary effects outside the runtime.',
   });
-  tl.tween(stopU, 0, { at: 56.2, dur: 0.8, ease: ease.move });
   tl.tween(scopeU, 1, { at: 56.5, dur: 1.2, ease: ease.enter });
   tl.hold(62.9, 0.6);
 
@@ -185,7 +182,7 @@ function RunbookStencil({ u, dim }: { u: number; dim: number }) {
           <text x={PHASE_X[i]} y={130} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>{phase}</text>
         </g>
       ))}
-      <text x={100} y={72} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">STATIC SPEC · SHARED AND VERSIONED</text>
+      <text x={100} y={72} fill={colors.MUTED} fontSize={13} letterSpacing="0.12em">STATIC SPEC · SHARED AND VERSIONED</text>
     </g>
   );
 }
@@ -194,14 +191,14 @@ function LedgerLane({ y, label, u, phase, active, historyU, dim }: { y: number; 
   if (u <= 0) return null;
   return (
     <g opacity={u * dim} transform={`translate(0 ${lerp(18, 0, u)})`}>
-      <text x={86} y={y + 6} fill={active ? colors.ACCENT : colors.MUTED} fontFamily={MONO} fontSize={13}>{label}</text>
+      <text x={86} y={y + 6} fill={active ? colors.ACCENT : colors.TEXT} fontFamily={MONO} fontSize={14}>{label}</text>
       <line x1={155} y1={y} x2={1050} y2={y} stroke={colors.GRID} strokeWidth={2} />
       {PHASES.map((phaseName, i) => {
         const reached = i <= Math.round(phase);
         const current = i === Math.round(phase);
         return (
           <g key={phaseName}>
-            <rect x={PHASE_X[i] - 46} y={y - 25} width={92} height={50} rx={10} fill={reached ? colors.PANEL : colors.BG} stroke={current ? colors.ACCENT : reached ? colors.POSITIVE : colors.GRID} strokeWidth={current ? 2.4 : 1.2} opacity={reached ? 1 : 0.35} />
+            <rect x={PHASE_X[i] - 46} y={y - 25} width={92} height={50} rx={10} fill={reached ? colors.PANEL : colors.BG} stroke={current ? colors.ACCENT : reached ? colors.POSITIVE : colors.GRID} strokeWidth={current ? 2.4 : 1.2} opacity={reached ? 1 : 0.5} />
             <text x={PHASE_X[i]} y={y + 5} textAnchor="middle" fill={current ? colors.ACCENT : reached ? colors.TEXT : colors.MUTED} fontFamily={MONO} fontSize={13}>{phaseName}</text>
             {reached && <text x={PHASE_X[i]} y={y + 42} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>{`entry-${i + 1}${active ? 'a' : 'b'}`}</text>}
           </g>
@@ -235,7 +232,7 @@ export function Render({ s }: { s: SceneState }) {
   const scopeU = s.get(scene.scopeU);
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
-  const dim = 1 - endDim * 0.9;
+  const dim = 1 - endDim;
 
   return (
     <>
@@ -255,7 +252,7 @@ export function Render({ s }: { s: SceneState }) {
 
         <g opacity={contextU * dim}>
           {CONTEXT_LINES.map((line, i) => <rect key={i} x={line.x} y={line.y} width={line.w} height={9} rx={3} fill={line.color} opacity={0.25 + (i % 3) * 0.14} />)}
-          <text x={100} y={488} fill={colors.MUTED} fontSize={12} letterSpacing="0.1em">TRANSIENT TERMINAL AND MODEL CONTEXT</text>
+          <text x={100} y={488} fill={colors.MUTED} fontSize={13} letterSpacing="0.1em">TRANSIENT TERMINAL AND MODEL CONTEXT</text>
         </g>
 
         {crashU > 0.05 && (
@@ -266,7 +263,7 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {resumeU > 0 && (
-          <g opacity={resumeU * dim} transform={`translate(0 ${lerp(12, 0, resumeU)})`}>
+          <g opacity={resumeU * dim * (1 - stopU) * (1 - scopeU)} transform={`translate(0 ${lerp(12, 0, resumeU)})`}>
             <rect x={700} y={462} width={490} height={84} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
             <text x={725} y={490} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>statem start runbook.yaml --run-id run-a7</text>
             <text x={725} y={514} fill={colors.TEXT} fontSize={13}>refresh spec identity · append resume event</text>
@@ -275,7 +272,7 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {curU > 0 && (
-          <g opacity={curU * dim}>
+          <g opacity={curU * dim * (1 - stopU) * (1 - scopeU)}>
             <rect x={90} y={462} width={490} height={84} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
             <text x={115} y={490} fill={colors.ACCENT} fontFamily={MONO} fontSize={14}>statem cur · statem history</text>
             <text x={115} y={514} fill={colors.TEXT} fontSize={13}>prompt · pending checks</text>
@@ -285,13 +282,13 @@ export function Render({ s }: { s: SceneState }) {
 
         {hookU > 0 && (
           <g opacity={hookU * dim}>
-            <path d="M 725 245 C 725 205, 985 205, 985 245" fill="none" stroke={colors.WARM} strokeWidth={3} strokeDasharray="7 6" />
-            <text x={855} y={197} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={13}>in_hook · reload progress.md</text>
+            <path d="M 725 232 C 725 190, 985 190, 985 232" fill="none" stroke={colors.WARM} strokeWidth={3} strokeDasharray="7 6" />
+            <text x={855} y={188} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={14}>in_hook · reload progress.md</text>
           </g>
         )}
 
         {stopU > 0 && (
-          <g opacity={stopU * dim}>
+          <g opacity={stopU * dim * (1 - scopeU)}>
             <rect x={400} y={486} width={470} height={108} rx={54} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
             <circle cx={454} cy={540} r={28} fill={colors.NEGATIVE} opacity={0.85} />
             <text x={454} y={546} textAnchor="middle" fill={colors.BG} fontWeight={800} fontSize={16}>STOP</text>

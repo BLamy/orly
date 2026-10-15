@@ -94,6 +94,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x="403" y="190" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>g(x,a)</text>
         <text x="403" y="380" textAnchor="middle" fill={colors.MUTED} fontSize="14">g = 1 if it runs</text>
         <g opacity={s.get(scene.rejectU)}><circle cx="403" cy="284" r="46" fill="#32141c" stroke={colors.NEGATIVE} strokeWidth="4" /><path d="M-16 -16 L16 16 M16 -16 L-16 16" transform="translate(403 284)" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" /></g>
+        <text x="403" y="412" textAnchor="middle" fill={colors.NEGATIVE} fontSize="15" fontWeight="800" opacity={s.get(scene.rejectU)}>no positive reward</text>
       </g>
 
       <g opacity={engine}>
@@ -119,21 +120,30 @@ export function Render({ s }: { s: SceneState }) {
         <text x="878" y="306" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">reward</text>
       </g>
 
-      <MathLabel tex={'r_{\\alpha,\\beta}=\\mathbb{I}\\{g=1\\}(\\alpha h+\\beta e)-\\lambda_c c'} x={640} y={102} fontSize={16} opacity={s.get(scene.formulaU)} />
-      <text x="1076" y="586" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono} opacity={s.get(scene.formulaU)}>h human · e engine · c cost · g gate</text>
+      <MathLabel tex={'r_{\\alpha,\\beta}=\\mathbb{I}\\{g=1\\}(\\alpha h+\\beta e)-\\lambda_c c'} x={640} y={106} fontSize={18} opacity={s.get(scene.formulaU)} />
+      <text x="1076" y="586" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono} opacity={s.get(scene.formulaU)}>h human · e engine · c cost · g gate</text>
+
+      <g opacity={compare * (1 - bars) * (1 - gen)}>
+        <rect x="68" y="446" width="380" height="44" rx="14" fill="#1a1426" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="88" y="474" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>engine only</text>
+        <text x="200" y="474" fill={colors.TEXT} fontSize="14">misses design intent</text>
+        <rect x="68" y="498" width="380" height="44" rx="14" fill="#1a1426" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="88" y="526" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>human only</text>
+        <text x="200" y="526" fill={colors.TEXT} fontSize="14">discards cheap local evidence</text>
+      </g>
 
       <g opacity={bars} transform={`translate(0 ${compare * 12})`}>
         <rect x="936" y="162" width="280" height="400" rx="28" fill="#0e1829" stroke={colors.GRID} strokeWidth="2" />
         <text x="1076" y="194" textAnchor="middle" fill={colors.TEXT} fontSize="15" fontWeight="760">UnitySceneBench primary mean</text>
-        <text x="1076" y="216" textAnchor="middle" fill={colors.MUTED} fontSize="13">eight seeds · train budget 720</text>
+        <text x="1076" y="216" textAnchor="middle" fill={colors.MUTED} fontSize="14">eight seeds · train budget 720</text>
         {METHODS.map((method, i) => {
           const u = clamp01(bars * 6 - i);
           const width = Math.max(0, (method.value - 0.44) * 1400 * u);
           return <g key={method.label} opacity={u}>
-            <text x="952" y={256 + i * 58} fill={colors.MUTED} fontSize="13">{method.label}</text>
+            <text x="952" y={256 + i * 58} fill={colors.MUTED} fontSize="14">{method.label}</text>
             <rect x="952" y={266 + i * 58} width="176" height="20" rx="10" fill={colors.GRID} opacity="0.55" />
             <rect x="952" y={266 + i * 58} width={width} height="20" rx="10" fill={method.color} opacity="0.85" />
-            <text x="1200" y={281 + i * 58} textAnchor="end" fill={method.color} fontSize="13" fontFamily={colors.font.mono}>{method.value.toFixed(4)}</text>
+            <text x="1200" y={281 + i * 58} textAnchor="end" fill={method.color} fontSize="14" fontFamily={colors.font.mono}>{method.value.toFixed(4)}</text>
           </g>;
         })}
       </g>

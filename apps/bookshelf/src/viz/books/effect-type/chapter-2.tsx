@@ -85,10 +85,10 @@ const STAMPS: Stamp[] = [
 // camera marks
 const CAM_CARD: CameraState = { x: 640, y: 340, k: 1.12 };
 // k 1.4 keeps the card, its chute labels and the signature readout (y ≈ 146)
-// inside the stage
-const CAM_A: CameraState = { x: 780, y: 290, k: 1.4 };
-const CAM_E: CameraState = { x: 780, y: 330, k: 1.4 };
-const CAM_R: CameraState = { x: 560, y: 330, k: 1.4 };
+// inside the stage; y 350 centres the card so its bottom edge clears the caption pill
+const CAM_A: CameraState = { x: 780, y: 350, k: 1.4 };
+const CAM_E: CameraState = { x: 780, y: 350, k: 1.4 };
+const CAM_R: CameraState = { x: 560, y: 350, k: 1.4 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -263,7 +263,7 @@ function Chute({ x, y, color, label, weld, u, dir = 1 }: {
           {[-20, 0, 20].map((dx) => (
             <circle key={dx} cx={x + dir * 28 + dx * 0.8} cy={y} r={2.4} fill={colors.MUTED} />
           ))}
-          <text x={x + dir * 28} y={y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={x + dir * 28} y={y - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             never
           </text>
         </g>
@@ -305,6 +305,8 @@ export function Render({ s }: { s: SceneState }) {
   // the plug is still sliding in); otherwise a faint ghost below the label
   // threshold, so "Database" never reads on unrelated beats.
   const socketOpen = stamp?.r ? stampU : idx === 4 ? 1 - plugU : rU * 0.3;
+  // once the plug is seated, the socket welds shut and R reads "never"
+  const neverU = clamp01((plugU - 0.5) * 2);
 
   return (
     <>
@@ -345,7 +347,7 @@ export function Render({ s }: { s: SceneState }) {
               fill={i === 0 && stamp ? colors.TEXT : colors.MUTED}
               fontSize={14}
               fontFamily="monospace"
-              opacity={stamp ? stampU : 0.7}
+              opacity={stamp ? stampU : 0.85}
             >
               {line}
             </text>
@@ -385,16 +387,27 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={R_PORT.x - 20} y={R_PORT.y + 3} width={10} height={8} fill={colors.SECONDARY} opacity={0.9} />
             </g>
             {socketOpen > 0.4 && plugU < 0.9 && (
-              <text x={R_PORT.x - 40} y={R_PORT.y + 5} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={socketOpen * (1 - plugU)}>
+              <text x={R_PORT.x - 40} y={R_PORT.y + 5} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={socketOpen * clamp01(1 - plugU * 2.5)}>
                 Database
               </text>
             )}
-            {/* the plug provided by provideService */}
-            {plugU > 0.01 && (
-              <g opacity={Math.min(1, plugU * 1.4)}>
-                <rect x={R_PORT.x - 30 - 90 * (1 - plugU) - 46} y={R_PORT.y - 14} width={46} height={28} rx={6} fill={colors.SECONDARY} opacity={0.85} />
-                <text x={R_PORT.x - 30 - 90 * (1 - plugU) - 23} y={R_PORT.y + 5} textAnchor="middle" fill={colors.BG} fontSize={13} fontFamily="monospace" fontWeight={700}>
+            {/* the plug provided by provideService slides in and seats in the socket */}
+            {plugU > 0.3 && (
+              <g opacity={clamp01((plugU - 0.3) * 2.5) * (1 - neverU)}>
+                <rect x={R_PORT.x - 30 - 90 * (1 - plugU)} y={R_PORT.y - 14} width={44} height={28} rx={6} fill={colors.SECONDARY} opacity={0.85} />
+                <text x={R_PORT.x - 8 - 90 * (1 - plugU)} y={R_PORT.y + 5} textAnchor="middle" fill={colors.BG} fontSize={14} fontFamily="monospace" fontWeight={700}>
                   db
+                </text>
+              </g>
+            )}
+            {neverU > 0.01 && (
+              <g opacity={neverU}>
+                <rect x={R_PORT.x - 30} y={R_PORT.y - 22} width={44} height={44} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.5} />
+                {[-12, 0, 12].map((dx) => (
+                  <circle key={dx} cx={R_PORT.x - 8 + dx} cy={R_PORT.y} r={2.4} fill={colors.MUTED} />
+                ))}
+                <text x={R_PORT.x - 8} y={R_PORT.y - 30} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                  never
                 </text>
               </g>
             )}
@@ -412,6 +425,8 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
+            {/* veil the faded diagram so no port or label peeks past the panel */}
+            <rect x={-2000} y={-2000} width={6000} height={6000} fill={colors.BG} opacity={0.94} />
             <rect x={310} y={240} width={660} height={170} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontFamily="monospace">
               {'Effect<'}

@@ -14,10 +14,10 @@ const WORK = Array.from({ length: 8 }, (_, i) => ({ id: `t${i + 1}`, color: AGEN
 const PUSH = { x: 660, y: 366, k: 1.04 };
 // Where each specialist's first item lands: on the card's hub-facing edge.
 const ARRIVE = [
-  { x: 840, y: 172 },
+  { x: 830, y: 172 },
   { x: 1008, y: 292 },
   { x: 943, y: 472 },
-  { x: 830, y: 470 },
+  { x: 830, y: 456 },
 ];
 // Second-wave items queue just outside the first item so the two beads never stack.
 const QUEUED = ARRIVE.map((p, i) => (i === 3 ? { x: p.x, y: p.y - 44 } : { x: p.x - 44, y: p.y }));
@@ -80,8 +80,8 @@ const scene = buildScene();
 
 function WorkBead({ x, y, label, color, opacity = 1 }: { x: number; y: number; label: string; color: string; opacity?: number }) {
   return <g opacity={opacity}>
-    <circle cx={x} cy={y} r="17" fill={color} />
-    <text x={x} y={y + 5} textAnchor="middle" fill="#08101e" fontSize="12" fontWeight="900">{label}</text>
+    <circle cx={x} cy={y} r="18" fill={color} />
+    <text x={x} y={y + 5} textAnchor="middle" fill="#08101e" fontSize="14" fontWeight="900">{label}</text>
   </g>;
 }
 
@@ -99,7 +99,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="800">Fan out through a finite gate</text>
 
       <g>
-        <text x="112" y="170" fill={colors.WARM} fontSize="15" fontWeight="700">board work items</text>
+        <text x="112" y="170" fill={colors.WARM} fontSize="15" fontWeight="700">coordinator · board work items</text>
         {WORK.map((item, i) => {
           const u = clamp01(workP - i);
           const lane = i % 4;
@@ -119,7 +119,7 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.precheckU)}>
         <circle cx="640" cy="326" r="128" fill="none" stroke={colors.WARM} strokeWidth="3" strokeDasharray="10 9" />
         <text x="640" y="161" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>SpawnGuard.pre_check()</text>
-        <text x="640" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="13">depth · reserved tokens</text>
+        <text x="640" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="14">depth · reserved tokens</text>
       </g>
 
       <g opacity={slotsU}>
@@ -131,7 +131,7 @@ export function Render({ s }: { s: SceneState }) {
           const y = 326 + Math.sin(angle) * 72;
           return <g key={a.name}>
             <circle cx={x} cy={y} r="20" fill={failure > 0 && i === 1 ? colors.NEGATIVE : a.color} opacity="0.95" />
-            <text x={x} y={y + 5} textAnchor="middle" fill="#07101d" fontSize="13" fontWeight="900">{failure > 0 && i === 1 ? '×' : i + 1}</text>
+            <text x={x} y={y + 5} textAnchor="middle" fill="#07101d" fontSize="14" fontWeight="900">{failure > 0 && i === 1 ? '×' : i + 1}</text>
           </g>;
         })}
         <text x="640" y="332" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontWeight="800">4 slots</text>
@@ -143,7 +143,7 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={agent.name} opacity={u} transform={`translate(${(1 - u) * 48} 0)`}>
           <rect x={agent.x - 74} y={agent.y - 34} width="148" height="68" rx="20" fill="#111827" stroke={failure > 0 && i === 1 ? colors.NEGATIVE : agent.color} strokeWidth="3" />
           <text x={agent.x} y={agent.y - 3} textAnchor="middle" fill={agent.color} fontSize="15" fontWeight="800">{agent.name}</text>
-          <text x={agent.x} y={agent.y + 21} textAnchor="middle" fill={colors.MUTED} fontSize="12">persistent session</text>
+          <text x={agent.x} y={agent.y + 21} textAnchor="middle" fill={colors.MUTED} fontSize="13">persistent session</text>
         </g>;
       })}
 
@@ -155,8 +155,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={release}>
-        <path d="M1026 300 C960 262 800 262 712 300" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, release * 340)} 360`} />
-        <text x="898" y="250" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>finally: release(job_id)</text>
+        <path d="M712 326 C800 384 960 384 1100 330" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, release * 520)} 560`} />
+        <text x="930" y="394" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>finally: release(job_id)</text>
       </g>
 
       <g opacity={clamp01(s.get(scene.capP))}>

@@ -288,13 +288,13 @@ function SegBar({
         const unexecuted = filled <= 0.001;
         // dissolve: unexecuted segments drift down + fade when interrupted
         const dy = unexecuted ? loseU * 26 : 0;
-        const op = unexecuted ? 1 - loseU * 0.9 : 1;
+        const op = unexecuted ? 1 - loseU : 1;
         const armored = seg.armored && armorU > 0.01;
         return (
           <g key={i} opacity={op} transform={`translate(0 ${dy})`}>
             <rect x={sx + 2} y={y - BAR_H / 2} width={seg.w - 4} height={BAR_H} rx={9} fill={colors.PANEL} stroke={armored ? colors.WARM : colors.GRID} strokeWidth={armored ? 2.4 : 1.2} />
             {filled > 0 && (
-              <rect x={sx + 2} y={y - BAR_H / 2} width={(seg.w - 4) * filled} height={BAR_H} rx={9} fill={color} opacity={0.3} />
+              <rect x={sx + 2} y={y - BAR_H / 2} width={(seg.w - 4) * filled} height={BAR_H} rx={9} fill={color} opacity={0.38} />
             )}
             {armored && (
               <g opacity={armorU}>
@@ -318,9 +318,6 @@ function SegBar({
           </g>
         );
       })}
-      {prog > 0.001 && prog < 0.999 && loseU < 0.5 && (
-        <circle cx={headX} cy={y} r={5.5} fill={color} />
-      )}
     </g>
   );
 }
@@ -392,6 +389,9 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={P_X0 + totalW(RACE_PRIMARY) * P_STOP + 12} y={P_Y - 40} fill={colors.NEGATIVE} fontSize={14} opacity={clamp01(loseU * 1.5)}>
                     interrupted
                   </text>
+                  <text x={P_X0} y={P_Y + BAR_H / 2 + 28} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={clamp01(loseU * 1.5)}>
+                    interrupt runs onInterrupt: release conn
+                  </text>
                 </g>
               )}
             </g>
@@ -404,7 +404,7 @@ export function Render({ s }: { s: SceneState }) {
                 {'Effect.timeout(call, "2 seconds")'}
               </text>
               <TimerArc cx={TIMER.cx} cy={TIMER.cy} r={TIMER.r} u={timerU} color={timerU >= 1 ? colors.NEGATIVE : colors.WARM} />
-              <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+              <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 the clock fiber
               </text>
               <SegBar segs={TIMEOUT_SEGS} x0={T_X0} y={T_Y} prog={tProgU} armorU={armorU} label="fiber · payment" color={colors.ACCENT} />
@@ -429,7 +429,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g>
                   <circle cx={sigX} cy={sigY} r={7 * pulse} fill={colors.NEGATIVE} opacity={0.95} />
                   {parkPulseU > 0.05 && enterU < 0.05 && (
-                    <text x={sigX} y={sigY - 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} opacity={clamp01(parkPulseU * 2)}>
+                    <text x={sigX} y={sigY - 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01(parkPulseU * 2)}>
                       interrupt · waiting
                     </text>
                   )}
@@ -452,10 +452,10 @@ export function Render({ s }: { s: SceneState }) {
                   {/* cleanup sits in its own lane under the commit, not on top of it */}
                   <rect x={armorEndX + 6} y={CLEAN_Y} width={128 * clamp01(cleanU * 1.3)} height={BAR_H} rx={9} fill={colors.POSITIVE} opacity={0.24} />
                   <rect x={armorEndX + 6} y={CLEAN_Y} width={128} height={BAR_H} rx={9} fill="none" stroke={colors.POSITIVE} strokeWidth={1.6} strokeDasharray="4 4" />
-                  <text x={armorEndX + 70} y={CLEAN_Y + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                  <text x={armorEndX + 70} y={CLEAN_Y + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                     onInterrupt
                   </text>
-                  <text x={armorEndX + 70} y={CLEAN_Y + 41} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+                  <text x={armorEndX + 70} y={CLEAN_Y + 41} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                     release conn
                   </text>
                   {cleanU > 0.9 && (
@@ -476,12 +476,12 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                   {/* armored bar with a restored window */}
                   <rect x={300} y={552} width={300} height={26} rx={6} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
-                  <rect x={396} y={552} width={98} height={26} rx={6} fill={colors.ACCENT} opacity={0.25} />
-                  <rect x={396} y={552} width={98} height={26} rx={6} fill="none" stroke={colors.ACCENT} strokeWidth={1.5} strokeDasharray="4 3" />
-                  <text x={445} y={569} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+                  <rect x={380} y={552} width={124} height={26} rx={6} fill={colors.ACCENT} opacity={0.25} />
+                  <rect x={380} y={552} width={124} height={26} rx={6} fill="none" stroke={colors.ACCENT} strokeWidth={1.5} strokeDasharray="4 3" />
+                  <text x={442} y={570} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                     restore(wait)
                   </text>
-                  <text x={620} y={569} fill={colors.MUTED} fontSize={13}>
+                  <text x={620} y={570} fill={colors.MUTED} fontSize={14}>
                     ← a cancellable window inside the armor
                   </text>
                 </g>

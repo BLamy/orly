@@ -11,6 +11,7 @@ import {
   SHIFT_VIS,
   SHIFT_WRONG_VIS,
   TRAIN_VIS,
+  W_BOTH,
   boundBoth,
   buildScene,
   px,
@@ -23,11 +24,18 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 
+/* the dashed boundary only spans the part of the line that sits inside the axes (sp in [-2.4, 2.4]) */
+const cAtSp = (sp: number): number => (-W_BOTH[2] * sp - W_BOTH[0]) / W_BOTH[1];
+const BOUND_DOMAIN: [number, number] = [
+  Math.max(-3.2, Math.min(cAtSp(2.4), cAtSp(-2.4))),
+  Math.min(3.2, Math.max(cAtSp(2.4), cAtSp(-2.4))),
+];
+
 function accChip(x: number, y: number, label: string, val: number, color: string, u: number, key: string) {
   return (
     <g key={key} opacity={u}>
       <rect x={x} y={y} width={230} height={54} rx={11} fill={colors.PANEL} fillOpacity={0.94} stroke={color} />
-      <text x={x + 16} y={y + 22} fill={colors.MUTED} fontSize={12}>
+      <text x={x + 16} y={y + 22} fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
       <text x={x + 16} y={y + 45} fill={color} fontSize={18} fontFamily="ui-monospace, Menlo, monospace">
@@ -52,12 +60,12 @@ function renderFrame(s: SceneState) {
   return (
     <Camera {...s.get(scene.cam)}>
       <Axes x={px} y={py} reveal={axU} grid xTicks={5} yTicks={5} xLabel="causal feature" yLabel="background feature" />
-      <g opacity={clamp01(axU * 2) * (1 - worldU)}>
+      <g opacity={clamp01(axU * 2) * (1 - worldU) * (1 - closeU)}>
         <text x={550} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
           training world · background agrees 90%
         </text>
       </g>
-      <g opacity={worldU}>
+      <g opacity={worldU * (1 - closeU)}>
         <text x={550} y={92} textAnchor="middle" fill={colors.WARM} fontSize={15}>
           deployed world · background agrees 10%
         </text>
@@ -80,29 +88,30 @@ function renderFrame(s: SceneState) {
       })}
 
       {/* the both-features boundary */}
-      <FunctionPlot x={px} y={py} f={boundBoth} domain={[-3.2, 3.2]} reveal={boundU} color={colors.TEXT} width={2.5} dash />
+      <FunctionPlot x={px} y={py} f={boundBoth} domain={BOUND_DOMAIN} reveal={boundU} color={colors.TEXT} width={2.5} dash />
       <g opacity={boundU}>
-        <text x={px(-3.0)} y={py(boundBoth(-3.0)) - 12} fill={colors.TEXT} fontSize={13}>
-          learned boundary — leans on the background
+        <text x={px(-1.6)} y={py(2.25)} fill={colors.TEXT} fontSize={14}>
+          learned boundary
         </text>
       </g>
 
-      {/* the causal-only boundary: vertical */}
+      {/* the causal-only boundary: vertical, kept below the y-axis label */}
       <g opacity={causalU}>
-        <line x1={px(CAUSAL_CUT)} y1={py(-2.3)} x2={px(CAUSAL_CUT)} y2={py(2.3)} stroke={colors.POSITIVE} strokeWidth={2.5} />
-        <text x={px(CAUSAL_CUT) + 10} y={py(2.15)} fill={colors.POSITIVE} fontSize={13}>
+        <line x1={px(CAUSAL_CUT)} y1={py(-2.3)} x2={px(CAUSAL_CUT)} y2={py(2.05)} stroke={colors.POSITIVE} strokeWidth={2.5} />
+        <text x={px(CAUSAL_CUT) + 10} y={py(1.9)} fill={colors.POSITIVE} fontSize={14}>
           causal-only boundary
         </text>
       </g>
 
-      {/* accuracy scoreboard */}
-      {accChip(980, 130, 'both features · training', ACC_BOTH_TRAIN, colors.TEXT, accTrainU, 'a')}
-      {accChip(980, 200, 'both features · deployed', ACC_BOTH_SHIFT, colors.NEGATIVE, accShiftU, 'b')}
-      {accChip(980, 290, 'causal only · training', ACC_CAUSAL_TRAIN, colors.MUTED, accCausalU, 'c')}
-      {accChip(980, 360, 'causal only · deployed', ACC_CAUSAL_SHIFT, colors.POSITIVE, accCausalU, 'd')}
+      {/* accuracy scoreboard, right column inside the stage */}
+      {accChip(990, 230, 'both features · training', ACC_BOTH_TRAIN, colors.TEXT, accTrainU, 'a')}
+      {accChip(990, 298, 'both features · deployed', ACC_BOTH_SHIFT, colors.NEGATIVE, accShiftU, 'b')}
+      {accChip(990, 378, 'causal only · training', ACC_CAUSAL_TRAIN, colors.TEXT, accCausalU, 'c')}
+      {accChip(990, 446, 'causal only · deployed', ACC_CAUSAL_SHIFT, colors.POSITIVE, accCausalU, 'd')}
 
       <g opacity={closeU}>
-        <text x={550} y={92} textAnchor="middle" fill={colors.TEXT} fontSize={17}>
+        <rect x={230} y={62} width={640} height={40} rx={10} fill={colors.PANEL} fillOpacity={0.94} />
+        <text x={550} y={89} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
           causal features survive interventions — shortcuts do not
         </text>
       </g>

@@ -69,7 +69,7 @@ export function buildScene() {
 
   tl.caption({ at: 51.6, dur: 6.1, text: 'Fine-grained hash blocks locate a reusable prefix, while sparse delta-state checkpoints mark the boundaries that can actually resume.' });
   tl.tween(prefixU, 1, { at: 52.1, dur: 1.6, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 385, k: 1.03 }, { at: 52.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 372, k: 1.03 }, { at: 52.4, dur: 1.3, ease: ease.move });
   tl.hold(57.7, 0.5);
 
   tl.caption({ at: 58.2, dur: 5.9, text: 'At token two thousand five hundred sixty, both caches restore together, and prefill resumes with no recompute before that point.' });
@@ -102,7 +102,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={750}>Persistent state for million-token agents</text>
-        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>partial rollout · external KV pool · AgentENV · KDA-aware prefix cache</text>
+        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>partial rollout · external KV pool · AgentENV · KDA-aware prefix cache</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -112,21 +112,29 @@ export function Render({ s }: { s: SceneState }) {
               const tool = i % 11 === 7;
               return <rect key={i} x={i * 16} y={0} width={12} height={tool ? 52 : 34} rx={3} fill={tool ? colors.WARM : colors.ACCENT} opacity={0.15 + 0.7 * u} />;
             })}
-            <text x={0} y={76} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>trajectory prefix</text>
-            <text x={1010} y={76} textAnchor="end" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>→ 1,048,576 tokens</text>
+            <text x={0} y={76} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>trajectory prefix</text>
+            <text x={1010} y={76} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>→ 1,048,576 tokens</text>
+            {tapeU > 0 && (
+              <g opacity={tapeU}>
+                <rect x={300} y={66} width={12} height={12} rx={3} fill={colors.ACCENT} opacity={0.85} />
+                <text x={320} y={76} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>model tokens</text>
+                <rect x={450} y={66} width={12} height={12} rx={3} fill={colors.WARM} opacity={0.85} />
+                <text x={470} y={76} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>tool result</text>
+              </g>
+            )}
             {s.get(scene.partialU) > 0 && (
               <g opacity={s.get(scene.partialU)}>
                 <line x1={700} x2={700} y1={-15} y2={64} stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="6 5" />
-                <text x={700} y={92} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>partial rollout boundary</text>
+                <text x={700} y={92} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>partial rollout boundary</text>
               </g>
             )}
           </g>
 
           {s.get(scene.gpuU) > 0 && (
-            <g opacity={s.get(scene.gpuU) * detailOpacity} transform="translate(135 275)">
+            <g opacity={s.get(scene.gpuU) * detailOpacity} transform="translate(135 280)">
               <rect width={300} height={130} rx={17} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-              <text x={150} y={34} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={700}>GPU KV CACHE</text>
-              <text x={150} y={63} textAnchor="middle" fill={colors.MUTED} fontSize={11}>active decoding blocks</text>
+              <text x={150} y={34} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700}>GPU KV CACHE</text>
+              <text x={150} y={63} textAnchor="middle" fill={colors.MUTED} fontSize={13}>active decoding blocks</text>
               <rect x={38} y={82} width={224} height={18} rx={9} fill={colors.ACCENT} opacity={0.35} />
             </g>
           )}
@@ -134,54 +142,54 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.poolU) > 0 && (
             <g opacity={s.get(scene.poolU) * detailOpacity} transform="translate(135 455)">
               <rect width={300} height={120} rx={17} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-              <text x={150} y={34} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontWeight={700}>EXTERNAL KV POOL</text>
-              <text x={150} y={62} textAnchor="middle" fill={colors.MUTED} fontSize={11}>CPU DRAM · write-back on eviction</text>
+              <text x={150} y={34} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>EXTERNAL KV POOL</text>
+              <text x={150} y={62} textAnchor="middle" fill={colors.MUTED} fontSize={13}>CPU DRAM · write-back on eviction</text>
               <rect x={38} y={80} width={224} height={18} rx={9} fill={colors.SECONDARY} opacity={0.35} />
             </g>
           )}
 
           {transferU > 0 && (
             <g opacity={detailOpacity}>
-              <path d="M285 405 L285 455" stroke={colors.WARM} strokeWidth={4} />
-              <circle cx={285} cy={405 + 50 * transferU} r={10} fill={colors.WARM} />
-              <text x={315} y={435} fill={colors.WARM} fontSize={11} fontFamily={MONO}>evict / prefetch</text>
+              <path d="M285 410 L285 455" stroke={colors.WARM} strokeWidth={4} />
+              <circle cx={285} cy={410 + 45 * transferU} r={10} fill={colors.WARM} />
+              <text x={315} y={438} fill={colors.WARM} fontSize={12} fontFamily={MONO}>evict / prefetch</text>
             </g>
           )}
 
           {alignedU > 0 && (
             <g opacity={alignedU * detailOpacity} transform="translate(500 280)">
-              <rect width={265} height={126} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} />
+              <rect width={265} height={130} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} />
               <rect x={28} y={32} width={90} height={22} rx={6} fill={colors.ACCENT} opacity={0.35} />
               <rect x={145} y={32} width={90} height={22} rx={6} fill={colors.SECONDARY} opacity={0.35} />
-              <text x={73} y={78} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>KDA state</text>
-              <text x={190} y={78} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>MLA KV</text>
+              <text x={73} y={78} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>KDA state</text>
+              <text x={190} y={78} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>MLA KV</text>
               <path d="M73 88 C100 108 165 108 190 88" fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={132} y={122} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>one lifecycle</text>
+              <text x={132} y={120} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>one lifecycle</text>
             </g>
           )}
 
           {s.get(scene.throttleU) > 0 && (
             <g opacity={s.get(scene.throttleU) * detailOpacity} transform="translate(500 455)">
               <rect width={265} height={120} rx={16} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={132} y={31} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>AUTO-THROTTLING</text>
+              <text x={132} y={31} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>AUTO-THROTTLING</text>
               {[0.25, 0.55, 0.82].map((v, i) => <rect key={i} x={28} y={50 + i * 18} width={205 * v} height={9} rx={4} fill={i === 2 ? colors.NEGATIVE : colors.WARM} opacity={0.65} />)}
-              <text x={238} y={114} textAnchor="end" fill={colors.MUTED} fontSize={12}>KV pressure ↑</text>
+              <text x={238} y={112} textAnchor="end" fill={colors.MUTED} fontSize={13}>KV pressure ↑</text>
             </g>
           )}
 
           {s.get(scene.sandboxU) > 0 && (
-            <g opacity={s.get(scene.sandboxU) * detailOpacity} transform="translate(850 270)">
+            <g opacity={s.get(scene.sandboxU) * detailOpacity} transform="translate(850 280)">
               <rect width={285} height={260} rx={22} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
               <text x={142} y={38} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={750}>AgentENV microVM</text>
               <rect x={42} y={66} width={201} height={108} rx={13} fill={colors.BG} stroke={colors.GRID} />
-              <text x={142} y={105} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>filesystem + memory</text>
-              <text x={142} y={132} textAnchor="middle" fill={colors.MUTED} fontSize={11}>dirty pages only</text>
+              <text x={142} y={105} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>filesystem + memory</text>
+              <text x={142} y={132} textAnchor="middle" fill={colors.MUTED} fontSize={13}>dirty pages only</text>
               {s.get(scene.pauseU) > 0 && (
                 <g opacity={s.get(scene.pauseU)}>
-                  <text x={76} y={213} textAnchor="middle" fill={colors.WARM} fontSize={11} fontWeight={700}>CHECKPOINT</text>
-                  <text x={76} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>133 ms</text>
-                  <text x={210} y={213} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontWeight={700}>RESUME</text>
-                  <text x={210} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>49 ms</text>
+                  <text x={76} y={213} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>CHECKPOINT</text>
+                  <text x={76} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>133 ms</text>
+                  <text x={210} y={213} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontWeight={700}>RESUME</text>
+                  <text x={210} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>49 ms</text>
                 </g>
               )}
             </g>
@@ -189,23 +197,23 @@ export function Render({ s }: { s: SceneState }) {
 
           {forkU > 0 && (
             <g opacity={forkU * detailOpacity}>
-              <path d="M1135 395 C1205 395 1205 515 1190 548" fill="none" stroke={colors.WARM} strokeWidth={3} />
-              <rect x={1040} y={548} width={190} height={70} rx={13} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={1135} y={577} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>FORK FOR JUDGING</text>
-              <text x={1135} y={600} textAnchor="middle" fill={colors.MUTED} fontSize={12}>original stays running</text>
+              <path d="M1135 410 C1205 410 1205 530 1190 560" fill="none" stroke={colors.WARM} strokeWidth={3} />
+              <rect x={1040} y={560} width={190} height={70} rx={13} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={1135} y={589} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>FORK FOR JUDGING</text>
+              <text x={1135} y={612} textAnchor="middle" fill={colors.MUTED} fontSize={13}>original stays running</text>
             </g>
           )}
 
           {prefixU > 0 && (
             <g opacity={prefixU} transform="translate(225 420)">
-              <text x={400} y={-24} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={700}>fine-grained hybrid prefix restore</text>
+              <text x={400} y={-24} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>fine-grained hybrid prefix restore</text>
               {BLOCKS.map((b) => <rect key={b} x={b * 67} y={0} width={61} height={34} rx={5} fill={b < 5 ? colors.SECONDARY : colors.PANEL} opacity={b < 5 ? 0.55 : 0.22} stroke={colors.GRID} />)}
               {BLOCKS.map((b) => <circle key={b} cx={b * 67 + 30} cy={58} r={b === 4 ? 9 : b % 3 === 2 ? 5 : 3} fill={b === 4 ? colors.WARM : colors.MUTED} opacity={0.8} />)}
-              <text x={400} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>12 × 512-token hash blocks inside one 6144-token physical block</text>
+              <text x={400} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>12 × 512-token hash blocks inside one 6144-token physical block</text>
               {restoreU > 0 && (
                 <g opacity={restoreU}>
                   <line x1={298} x2={298} y1={-16} y2={76} stroke={colors.WARM} strokeWidth={3} />
-                  <text x={298} y={116} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>B = 2560 · restore KDA + MLA</text>
+                  <text x={298} y={116} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>B = 2560 · restore KDA + MLA</text>
                 </g>
               )}
             </g>
@@ -214,11 +222,12 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
+          <rect x={205} y={235} width={870} height={194} rx={22} fill={colors.BG} />
           <rect x={205} y={235} width={870} height={194} rx={22} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={750}>Keep the right state alive</text>
           <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={16}>tokens · layers · experts · agent environments</text>
-          <text x={640} y={378} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>restore at B=2560 · zero recompute of [0, B)</text>
-          <text x={640} y={407} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>A million tokens deep, without rebuilding the past</text>
+          <text x={640} y={378} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>restore at B=2560 · zero recompute of [0, B)</text>
+          <text x={640} y={407} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>A million tokens deep, without rebuilding the past</text>
         </g>
       )}
     </>

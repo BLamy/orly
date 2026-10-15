@@ -98,8 +98,8 @@ export function snapAt(u: number): Snap {
 // ---------------------------------------------------------------------------
 
 export const GRP_X = 200;
-export const GRP_Y0 = 128;
-export const GRP_DY = 54;
+export const GRP_Y0 = 124;
+export const GRP_DY = 48;
 export const grpY = (i: number): number => GRP_Y0 + i * GRP_DY;
 
 export const ADV_X = 470; // advantage arrows origin
@@ -112,7 +112,7 @@ export const chX = (step: number): number => CH_X0 + (step / T_STEPS) * (CH_X1 -
 export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
 export const CAM_GROUP: CameraState = { x: 400, y: 330, k: 1.25 };
-export const CAM_CURVE: CameraState = { x: 930, y: 330, k: 1.15 };
+export const CAM_CURVE: CameraState = { x: 650, y: 330, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;

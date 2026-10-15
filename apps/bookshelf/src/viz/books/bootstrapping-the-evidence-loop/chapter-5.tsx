@@ -75,7 +75,7 @@ const ACTIVE_VALUES = ROWS.map((_, row) =>
 );
 
 const GATE = { x: 1035, y: 334, r: 72 };
-const PROOF = { x: 785, y: 205 };
+const PROOF = { x: 800, y: 205 };
 
 const CAM_TICKET: CameraState = { x: 500, y: 330, k: 1.18 };
 const CAM_EXPLORE: CameraState = { x: 530, y: 330, k: 1.08 };
@@ -85,17 +85,36 @@ const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.0 };
 
 // A single path wraps the persistent catalog. It is deliberately not a
 // network edge: this is exploration widening the known surface before its
-// discoveries settle into journey versions.
-const EXPLORATION_SPIRAL = [
-  'M 286 560',
-  'C 190 470 214 170 450 86',
-  'C 716 -8 870 146 802 366',
-  'C 744 554 486 604 312 476',
-  'C 188 384 250 190 438 148',
-  'C 620 108 742 224 690 378',
-  'C 652 490 490 506 388 420',
-].join(' ');
-const SPIRAL_LENGTH = 1940;
+// discoveries settle into journey versions. It is a squircle that spirals
+// inward: the outer turn clears the row labels on the left and the evidence
+// rail on the right, and the inner turn stays inside the matrix.
+const LOOP = { cx: 485, cy: 315, rx: 285, ry: 250 };
+const LOOP_TURNS = 1.85;
+const LOOP_INNER = 0.5;
+const signedCubeRoot = (v: number) => Math.sign(v) * Math.pow(Math.abs(v), 1 / 3);
+
+function spiralPoints(steps: number): Array<[number, number]> {
+  const pts: Array<[number, number]> = [];
+  for (let i = 0; i <= steps; i++) {
+    const u = i / steps;
+    const theta = (3 * Math.PI) / 4 + 2 * Math.PI * LOOP_TURNS * u;
+    const s = 1 - (1 - LOOP_INNER) * u;
+    pts.push([
+      LOOP.cx + LOOP.rx * s * signedCubeRoot(Math.cos(theta)),
+      LOOP.cy + LOOP.ry * s * signedCubeRoot(Math.sin(theta)),
+    ]);
+  }
+  return pts;
+}
+
+const SPIRAL_POINTS = spiralPoints(360);
+const EXPLORATION_SPIRAL = SPIRAL_POINTS.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+const SPIRAL_LENGTH = Math.ceil(
+  SPIRAL_POINTS.reduce(
+    (sum, [x, y], i) => (i === 0 ? 0 : sum + Math.hypot(x - SPIRAL_POINTS[i - 1][0], y - SPIRAL_POINTS[i - 1][1])),
+    0,
+  ),
+);
 
 /* -------------------------------------------------------------- timeline */
 export interface Scene {
@@ -206,7 +225,7 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'So the epic driver is explicit: list every standing journey, retrigger every one, pin them to the epic head, and wait. A future suite endpoint could make that one operation.',
   });
-  tl.tween(limitationU, 0.18, { at: 47.8, dur: 0.9, ease: ease.move });
+  tl.tween(limitationU, 0.5, { at: 47.8, dur: 0.9, ease: ease.move });
   tl.tween(enumerateU, 1, { at: 48.4, dur: 1.2, ease: ease.draw });
   tl.tween(headU, 1, { at: 49.2, dur: 0.7, ease: ease.pop });
   tl.tween(fanoutU, 1, { at: 50.0, dur: 4.2, ease: ease.linear });
@@ -387,10 +406,32 @@ export function Render({ s }: { s: SceneState }) {
           <g
             transform={`translate(${matrixCenterX} ${matrixCenterY}) scale(${matrixScale}) translate(${-matrixCenterX} ${-matrixCenterY})`}
           >
-            <text x={MATRIX.x - 120} y={60} fill={colors.TEXT} fontSize={22} fontWeight={750} opacity={matrixU}>
+            <text
+              x={MATRIX.x - 120}
+              y={60}
+              fill={colors.TEXT}
+              fontSize={22}
+              fontWeight={750}
+              opacity={matrixU}
+              stroke={colors.BG}
+              strokeWidth={5}
+              strokeLinejoin="round"
+              paintOrder="stroke"
+            >
               regression catalog
             </text>
-            <text x={MATRIX.x - 120} y={80} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={matrixU}>
+            <text
+              x={MATRIX.x - 120}
+              y={80}
+              fill={colors.MUTED}
+              fontSize={12.5}
+              fontFamily={MONO}
+              opacity={matrixU}
+              stroke={colors.BG}
+              strokeWidth={5}
+              strokeLinejoin="round"
+              paintOrder="stroke"
+            >
               named journey × exact code head
             </text>
 
@@ -401,7 +442,7 @@ export function Render({ s }: { s: SceneState }) {
               cell={MATRIX.cell}
               gap={MATRIX.gap}
               colLabels={COLS.slice(0, 4)}
-              labelSize={13}
+              labelSize={14}
               cellU={scaffoldU}
               fill={() => '#151c2d'}
               opacity={0.85}
@@ -427,8 +468,8 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g opacity={narrowU}>
                   <circle cx={p.x} cy={p.y} r={30 + 5 * narrowU} fill="none" stroke={colors.WARM} strokeWidth={2.5} />
-                  <path d={`M ${p.x + 28} ${p.y - 18} Q ${p.x + 78} ${p.y - 62} ${p.x + 128} ${p.y - 46}`} fill="none" stroke={colors.WARM} strokeWidth={1.7} />
-                  <text x={p.x + 134} y={p.y - 49} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <path d={`M ${p.x - 22} ${p.y - 22} L ${p.x - 32} ${p.y - 30}`} fill="none" stroke={colors.WARM} strokeWidth={1.7} />
+                  <text x={p.x - 36} y={p.y - 30} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     ticket claim
                   </text>
                 </g>
@@ -447,7 +488,8 @@ export function Render({ s }: { s: SceneState }) {
                   strokeDasharray={SPIRAL_LENGTH}
                   strokeDashoffset={SPIRAL_LENGTH * (1 - explorationU)}
                 />
-                <text x={318} y={552} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+                {/* The label sits in the band between the matrix and the loop's bottom, clear of both strokes. */}
+                <text x={485} y={552} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                   fresh exploration · same epic head
                 </text>
               </g>
@@ -464,7 +506,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={MATRIX.y + row * PITCH + MATRIX.cell / 2 + 13 / 3}
                   textAnchor="end"
                   fill={colors.MUTED}
-                  fontSize={13}
+                  fontSize={14}
                   opacity={u}
                   stroke={colors.BG}
                   strokeWidth={5}
@@ -490,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
                       y={MATRIX.y - 12 - (lines.length - 1 - i) * 14}
                       textAnchor="middle"
                       fill={color}
-                      fontSize={13}
+                      fontSize={14}
                       fontWeight={col === 5 ? 700 : 400}
                       stroke={colors.BG}
                       strokeWidth={5}
@@ -620,10 +662,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* The payoff names the compounding memory without replacing the matrix. */}
           {growU > 0 && (
             <g opacity={growU}>
-              <text x={640} y={586} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
+              <text x={640} y={596} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
                 six inherited journeys → eight standing journeys · refreshed versions · one verified epic head
               </text>
-              <text x={640} y={607} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={640} y={614} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 the next loop begins with more memory than this one inherited
               </text>
             </g>

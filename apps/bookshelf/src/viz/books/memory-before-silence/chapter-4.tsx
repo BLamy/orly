@@ -82,7 +82,10 @@ export function Render({ s }: { s: SceneState }) {
   const cartridge = s.get(scene.cartridgeU);
   const reply = s.get(scene.replyU);
   const recap = s.get(scene.recapU);
-  const pulseX = 236 + s.get(scene.parallelU) * 600;
+  // The pulse travels only along the straight rail ends, and is invisible before the rails start and after they reach the reply.
+  const parallel = s.get(scene.parallelU);
+  const pulseX = 430 + parallel * 410;
+  const pulseOpacity = clamp01(parallel * 8) * (1 - clamp01((parallel - 0.85) * 7));
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
@@ -90,38 +93,38 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={s.get(scene.queryU)}>
         <rect x="64" y="122" width="236" height="92" rx="24" fill="#12243a" stroke={colors.ACCENT} strokeWidth="3" />
-        <text x="182" y="154" textAnchor="middle" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>partial transcript</text>
+        <text x="182" y="154" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>partial transcript</text>
         <text x="182" y="184" textAnchor="middle" fill={colors.TEXT} fontSize="15">“the café yesterday…”</text>
       </g>
 
       <g opacity={fork}>
         <path d="M300 168 C360 168 356 270 430 270 H840" fill="none" stroke={colors.ACCENT} strokeWidth="6" strokeLinecap="round" />
         <path d="M300 168 C360 168 356 414 430 414 H840" fill="none" stroke={colors.SECONDARY} strokeWidth="6" strokeLinecap="round" />
-        <text x="454" y="248" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>LeftBrain.rank</text>
-        <text x="454" y="392" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>RightBrain.search</text>
-        <circle cx={pulseX} cy="270" r="12" fill={colors.ACCENT} />
-        <circle cx={pulseX} cy="414" r="12" fill={colors.SECONDARY} />
+        <text x="430" y="240" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>LeftBrain.rank</text>
+        <text x="430" y="392" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>RightBrain.search</text>
+        <circle cx={pulseX} cy="270" r="12" fill={colors.ACCENT} opacity={pulseOpacity} />
+        <circle cx={pulseX} cy="414" r="12" fill={colors.SECONDARY} opacity={pulseOpacity} />
       </g>
 
-      {LEFT.map((item, i) => <RailItem key={item} x={548 + i * 118}y={270} text={item} color={colors.ACCENT} u={clamp01(s.get(scene.leftP) - i)} />)}
+      {LEFT.map((item, i) => <RailItem key={item} x={530 + i * 118} y={270} text={item} color={colors.ACCENT} u={clamp01(s.get(scene.leftP) - i)} />)}
       {RIGHT.map((item, i) => <RailItem key={item} x={632 + i * 148} y={414} text={item} color={colors.SECONDARY} u={clamp01(s.get(scene.rightP) - i)} />)}
 
       <g opacity={merge}>
         <path d="M840 270 C900 270 890 334 934 334" fill="none" stroke={colors.ACCENT} strokeWidth="5" />
         <path d="M840 414 C900 414 890 352 934 352" fill="none" stroke={colors.SECONDARY} strokeWidth="5" />
         <rect x="924" y="232" width="286" height="236" rx="28" fill="#101a2d" stroke={colors.WARM} strokeWidth="3" />
-        <text x="1067" y="266" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>ReplyContextPrompt</text>
-        <text x="952" y="305" fill={colors.MUTED} fontSize="12">[Factual context]</text>
-        <rect x="952" y="320" width="224" height="13" rx="6" fill={colors.ACCENT} opacity="0.55" />
-        <text x="952" y="365" fill={colors.MUTED} fontSize="12">[Emotional context]</text>
-        <rect x="952" y="380" width="180" height="13" rx="6" fill={colors.SECONDARY} opacity="0.55" />
-        <text x="952" y="425" fill={colors.MUTED} fontSize="12">[Response directive]</text>
-        <rect x="952" y="440" width="200" height="13" rx="6" fill={colors.WARM} opacity="0.55" />
+        <text x="1067" y="266" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>ReplyContextPrompt</text>
+        <text x="952" y="305" fill={colors.TEXT} opacity="0.8" fontSize="13">[Factual context]</text>
+        <rect x="952" y="320" width="224" height="13" rx="6" fill={colors.ACCENT} opacity="0.7" />
+        <text x="952" y="365" fill={colors.TEXT} opacity="0.8" fontSize="13">[Emotional context]</text>
+        <rect x="952" y="380" width="180" height="13" rx="6" fill={colors.SECONDARY} opacity="0.7" />
+        <text x="952" y="425" fill={colors.TEXT} opacity="0.8" fontSize="13">[Response directive]</text>
+        <rect x="952" y="440" width="200" height="13" rx="6" fill={colors.WARM} opacity="0.7" />
       </g>
 
       <g>
         <rect x="330" y="512" width="510" height="92" rx="26" fill="#0e1b2c" stroke={colors.GRID} strokeWidth="2" />
-        <text x="360" y="540" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>top_k = 5</text>
+        <text x="360" y="540" fill={colors.TEXT} opacity="0.8" fontSize="13" fontFamily={colors.font.mono}>top_k = 5</text>
         {Array.from({ length: 5 }, (_, i) => {
           const u = clamp01(gateP - i);
           return <rect key={i} x={462 + i * 67} y={542 - (1 - u) * 22} width="48" height="42" rx="10" fill={i < 3 ? colors.ACCENT : colors.SECONDARY} opacity={0.18 + 0.82 * u} />;
@@ -131,34 +134,34 @@ export function Render({ s }: { s: SceneState }) {
           <text x="-88" y="-12" textAnchor="middle" fill={colors.POSITIVE} fontSize="26" fontWeight="850">91.2</text>
           <text x="0" y="-12" textAnchor="middle" fill={colors.WARM} fontSize="26" fontWeight="850">430</text>
           <text x="92" y="-12" textAnchor="middle" fill={colors.ACCENT} fontSize="26" fontWeight="850">134</text>
-          <text x="-88" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">LoCoMo</text>
-          <text x="0" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">tokens</text>
-          <text x="92" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">ms</text>
+          <text x="-88" y="18" textAnchor="middle" fill={colors.TEXT} opacity="0.8" fontSize="13">LoCoMo</text>
+          <text x="0" y="18" textAnchor="middle" fill={colors.TEXT} opacity="0.8" fontSize="13">tokens</text>
+          <text x="92" y="18" textAnchor="middle" fill={colors.TEXT} opacity="0.8" fontSize="13">ms</text>
         </g>
       </g>
 
-      <g opacity={cartridge} transform={`translate(${430 + cartridge * 120} 474)`}>
-        <rect x="-124" y="-34" width="248" height="68" rx="18" fill="#2a210d" stroke={colors.WARM} strokeWidth="3" />
-        <text y="-6" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>memory_engine override</text>
-        <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="12">replaceable lower layer</text>
+      <g opacity={cartridge} transform={`translate(${430 + cartridge * 120} 470)`}>
+        <rect x="-124" y="-30" width="248" height="60" rx="18" fill="#2a210d" stroke={colors.WARM} strokeWidth="3" />
+        <text y="-4" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>memory_engine override</text>
+        <text y="16" textAnchor="middle" fill={colors.TEXT} opacity="0.82" fontSize="13">replaceable lower layer</text>
       </g>
 
       <g opacity={reply}>
-        <path d="M840 558 C894 558 896 516 930 500" fill="none" stroke={colors.POSITIVE} strokeWidth="6" />
-        <circle cx={840 + 90 * reply} cy={558 - 58 * reply} r="12" fill={colors.POSITIVE} />
-        <rect x="936" y="468" width="266" height="72" rx="22" fill="#10251f" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="1069" y="497" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>Turn.memory_context</text>
-        <text x="1069" y="523" textAnchor="middle" fill={colors.TEXT} fontSize="14">speech model can answer</text>
+        <path d="M840 558 C888 558 890 524 936 524" fill="none" stroke={colors.POSITIVE} strokeWidth="6" />
+        <circle cx={840 + 96 * reply} cy={558 - 34 * reply} r="12" fill={colors.POSITIVE} />
+        <rect x="936" y="488" width="266" height="72" rx="22" fill="#10251f" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="1069" y="517" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>Turn.memory_context</text>
+        <text x="1069" y="543" textAnchor="middle" fill={colors.TEXT} fontSize="15">speech model can answer</text>
       </g>
 
       <g opacity={recap}>
         <path d={`M94 94 H${94 + 1092 * recap}`} stroke={colors.WARM} strokeWidth="5" strokeLinecap="round" />
-        {['speech', 'wager', 'funnel', 'affect', 'five'].map((label, i) => {
+        {['unfinished speech', 'early wager', 'factual funnel', 'affect graph', 'five memories'].map((label, i) => {
           const x = 120 + i * 250;
           const u = clamp01(recap * 5 - i);
           return <g key={label} opacity={u} transform={`translate(${x} 94)`}>
             <circle r="13" fill={i === 4 ? colors.POSITIVE : i === 3 ? colors.SECONDARY : colors.WARM} />
-            <text y="-22" textAnchor="middle" fill={colors.MUTED} fontSize="12">{label}</text>
+            <text y="-22" textAnchor="middle" fill={colors.TEXT} opacity="0.85" fontSize="14">{label}</text>
           </g>;
         })}
       </g>
@@ -173,9 +176,9 @@ export function Render({ s }: { s: SceneState }) {
       <g transform="translate(894 354)">
         {Array.from({ length: 5 }, (_, i) => <rect key={i} x={-70 + i * 30} y="-44" width="22" height="88" rx="7" fill={i < 3 ? colors.ACCENT : colors.SECONDARY} />)}
       </g>
-      <text x="420" y="466" textAnchor="middle" fill={colors.MUTED} fontSize="17">unfinished speech</text>
-      <text x="676" y="466" textAnchor="middle" fill={colors.WARM} fontSize="17">hidden retrieval</text>
-      <text x="894" y="466" textAnchor="middle" fill={colors.POSITIVE} fontSize="17">ready reply context</text>
+      <text x="420" y="466" textAnchor="middle" fill={colors.TEXT} opacity="0.85" fontSize="19">unfinished speech</text>
+      <text x="676" y="466" textAnchor="middle" fill={colors.WARM} fontSize="19">hidden retrieval</text>
+      <text x="894" y="466" textAnchor="middle" fill={colors.POSITIVE} fontSize="19">ready reply context</text>
     </g>
   </Camera>;
 }

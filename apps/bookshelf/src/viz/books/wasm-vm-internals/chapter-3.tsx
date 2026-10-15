@@ -313,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
   // The race owns the stage while it plays: the machine steps back so the two
   // bars are not drawn over the header and ribbon labels.
   const raceFocus = raceU * (1 - liveU);
-  const back = 1 - 0.9 * raceFocus;
+  const back = 1 - 0.97 * raceFocus;
   // The lower rows share one slot; the live sources and the portability fan-out
   // take over from them.
   const rowsFade = 1 - Math.max(liveU, portU);
@@ -326,7 +326,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the container, once collapsed ---- */}
           {collapseU > 0.15 && (
             <g opacity={clamp01(collapseU * 2 - 0.3)}>
-              <text x={RIBBON_X} y={RIBBON_Y - 58} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={RIBBON_X} y={RIBBON_Y - 58} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 WVMRESU1 · one tagged section per component
               </text>
             </g>
@@ -374,7 +374,8 @@ export function Render({ s }: { s: SceneState }) {
                       textAnchor={packed ? 'start' : 'middle'}
                       transform={packed ? `rotate(${below ? 42 : -42}, ${sx + w / 2}, ${ly})` : undefined}
                       fill={sec.color}
-                      fontSize={packed ? 12 : 14}
+                      fontSize={14}
+                      fontWeight={packed ? 600 : 700}
                       fontFamily="monospace"
                     >
                       {sec.name}
@@ -388,7 +389,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* zero-elision: the written form of RAM */}
           {elideU > 0 && (
             <g opacity={elideU}>
-              <text x={ramX} y={RIBBON_Y + RIBBON_H + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={ramX} y={RIBBON_Y + RIBBON_H + 30} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 zero runs → [kind 0][len] — no payload
               </text>
               {(() => {
@@ -423,10 +424,10 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={l.name} opacity={u}>
                     <rect x={RIBBON_X + 14 + i * 230} y={RIBBON_Y - 132} width={214} height={44} rx={7} fill={colors.BG} stroke={bad ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.6} />
-                    <text x={RIBBON_X + 26 + i * 230} y={RIBBON_Y - 114} fill={bad ? colors.NEGATIVE : colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+                    <text x={RIBBON_X + 26 + i * 230} y={RIBBON_Y - 114} fill={bad ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontFamily="monospace">
                       {l.name}
                     </text>
-                    <text x={RIBBON_X + 26 + i * 230} y={RIBBON_Y - 96} fill={colors.MUTED} fontSize={12}>
+                    <text x={RIBBON_X + 26 + i * 230} y={RIBBON_Y - 96} fill={colors.TEXT} fontSize={13}>
                       {l.what}
                     </text>
                   </g>
@@ -443,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- streaming into the browser store ---- */}
           {storeU > 0 && (
             <g opacity={storeU * rowsFade}>
-              <text x={RIBBON_X} y={STORE_Y} fill={colors.MUTED} fontSize={13}>
+              <text x={RIBBON_X} y={STORE_Y} fill={colors.TEXT} fontSize={14}>
                 streamed to IndexedDB in {CHUNK_MIB} MiB chunks — never a second whole copy
               </text>
               {Array.from({ length: 11 }, (_, k) => {
@@ -468,10 +469,10 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={d.key} opacity={u}>
                     <rect x={RIBBON_X + i * 250} y={ROW_Y} width={232} height={46} rx={8} fill={colors.PANEL} stroke={d.color} strokeWidth={i === 1 ? 2.2 : 1.3} />
-                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 22} fill={d.color} fontSize={13} fontFamily="monospace">
+                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 22} fill={d.color} fontSize={14} fontFamily="monospace">
                       {d.key}
                     </text>
-                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 39} fill={colors.MUTED} fontSize={12}>
+                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 39} fill={colors.TEXT} fontSize={13}>
                       {d.label}
                     </text>
                   </g>
@@ -513,10 +514,10 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={i} opacity={u}>
                     <line x1={640} y1={446} x2={x + 90} y2={514} stroke={colors.ACCENT} strokeWidth={1.4} strokeDasharray="5 5" opacity={0.6} />
                     <rect x={x} y={514} width={180} height={54} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-                    <text x={x + 90} y={538} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+                    <text x={x + 90} y={538} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                       another browser
                     </text>
-                    <text x={x + 90} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                    <text x={x + 90} y={556} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                       same pc, same RAM
                     </text>
                   </g>
@@ -537,7 +538,7 @@ export function Render({ s }: { s: SceneState }) {
 
             <rect x={250} y={214} width={780} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
             <rect x={252} y={216} width={776 * (RESTORE_SECONDS / BOOT_SECONDS) * clamp01(restoreBar)} height={40} rx={7} fill={colors.POSITIVE} />
-            <text x={266} y={242} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+            <text x={290} y={242} fill={colors.TEXT} fontSize={15} fontWeight={700}>
               restore — {RESTORE_SECONDS}s, no Linux boot at all
             </text>
           </g>

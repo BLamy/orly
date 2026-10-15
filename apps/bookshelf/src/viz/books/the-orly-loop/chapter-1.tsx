@@ -29,10 +29,12 @@ const FIELDS: Array<{ label: string; value: string }> = [
   { label: 'Model', value: 'Fable 5 (claude-fable-5)' },
 ];
 const FIELD_H = 62;
+/** Stranger token sits a full row below the owner's, so its build chip clears the token above. */
+const STRANGER_DY = 72;
 const fieldY = (i: number) => FORM.y + 64 + i * (FIELD_H + 8);
 
 /** Where the folded form lands: a traveling book-token. */
-const TOKEN = { w: 168, h: 44, y: 330 } as const;
+const TOKEN = { w: 168, h: 50, y: 330 } as const;
 const TOKEN_START = { x: FORM.x + FORM.w / 2, y: 320 };
 const TOKEN_WAIT_X = 700; // in front of the gate
 const TOKEN_DONE_X = 895; // parked in the Actions lane, clear of the panel edge
@@ -206,7 +208,7 @@ function Field({ i, u }: { i: number; u: number }) {
   const active = u > 0 && u < 1;
   return (
     <g>
-      <text x={FORM.x + 22} y={y + 14} fill={colors.MUTED} fontSize={12.5}>
+      <text x={FORM.x + 22} y={y + 14} fill={colors.MUTED} fontSize={14}>
         {f.label}
       </text>
       <rect
@@ -219,7 +221,7 @@ function Field({ i, u }: { i: number; u: number }) {
         stroke={active ? colors.ACCENT : colors.GRID}
         strokeWidth={active ? 1.6 : 1}
       />
-      <text x={FORM.x + 32} y={y + 42} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+      <text x={FORM.x + 32} y={y + 42} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
         {shown}
         {active ? '▏' : ''}
       </text>
@@ -235,14 +237,14 @@ function BookToken({ x, y, gray, label, labelU = 1, op = 1 }: { x: number; y: nu
   return (
     <g opacity={op}>
       <rect x={x - TOKEN.w / 2} y={y - TOKEN.h / 2} width={TOKEN.w} height={TOKEN.h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.5} />
-      <text x={x - TOKEN.w / 2 + 14} y={y + 5} fontSize={15}>📕</text>
-      <text x={x - TOKEN.w / 2 + 38} y={y + 5} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+      <text x={x - TOKEN.w / 2 + 14} y={y + 6} fontSize={17}>📕</text>
+      <text x={x - TOKEN.w / 2 + 40} y={y + 6} fill={colors.TEXT} fontSize={15} fontFamily={MONO}>
         {label}
       </text>
       {labelU > 0 && (
         <g opacity={clamp01(labelU)}>
-          <rect x={x + TOKEN.w / 2 - 66} y={y - TOKEN.h / 2 - 12} width={72} height={20} rx={10} fill={gray ? colors.WARM : colors.TEAL} opacity={0.92} />
-          <text x={x + TOKEN.w / 2 - 30} y={y - TOKEN.h / 2 + 2} textAnchor="middle" fill={colors.BG} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+          <rect x={x + TOKEN.w / 2 - 74} y={y - TOKEN.h / 2 - 12} width={80} height={22} rx={11} fill={gray ? colors.WARM : colors.TEAL} opacity={0.92} />
+          <text x={x + TOKEN.w / 2 - 34} y={y - TOKEN.h / 2 + 3} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily={MONO} fontWeight={700}>
             {gray ? 'build' : 'new-book'}
           </text>
         </g>
@@ -274,12 +276,13 @@ export function Render({ s }: { s: SceneState }) {
 
   const open = Math.max(gateOpen, gateOpen2);
   const armAngle = -78 * open; // degrees; 0 = barring the lane
-  const worldOp = 1 - 0.92 * dimU;
+  // the old form and pipeline fade fully away so the ring finale is drawn on a clean stage
+  const worldOp = 1 - dimU;
 
   // the stranger queues in the lane below the owner's token once through the gate
   const strangerFinalX = strangerX + strangerPass * (TOKEN_DONE_X - STRANGER_WAIT_X);
-  // the build chip falls from above onto the stranger token
-  const chipY = -40 + buildDrop * 74;
+  // the build chip falls from above and lands straddling the stranger token's top edge, like new-book
+  const chipY = -40 + buildDrop * (STRANGER_DY - TOKEN.h / 2 - 12 + 40);
 
   return (
     <>
@@ -296,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={FORM.x + 22} y={FORM.y + 34} fill={colors.TEXT} fontSize={17} fontWeight={700}>
                 📕 New book
               </text>
-              <text x={FORM.x + FORM.w - 22} y={FORM.y + 34} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={FORM.x + FORM.w - 22} y={FORM.y + 34} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 new-book.yml
               </text>
               {FIELDS.map((_, i) => (
@@ -318,19 +321,24 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* lane hint — drawn under the tokens so the dashes never cut a label */}
+          {gateU > 0 && (
+            <line x1={560} y1={TOKEN.y} x2={ACTIONS.x - 12} y2={TOKEN.y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="2 8" opacity={0.5 * gateU * (1 - dimU)} />
+          )}
+
           {/* ---- the owner's token ---- */}
           {foldU > 0.5 && <BookToken x={tokX} y={TOKEN.y} label="issue #78" labelU={(foldU - 0.5) * 2} />}
 
           {/* ---- the stranger's token + falling build label ---- */}
           {strangerX > -100 && (
             <g>
-              <BookToken x={strangerFinalX} y={TOKEN.y + 58} gray label="issue #79" labelU={0} />
+              <BookToken x={strangerFinalX} y={TOKEN.y + STRANGER_DY} gray label="issue #79" labelU={0} />
               <text
                 x={strangerFinalX}
-                y={TOKEN.y + 96}
+                y={TOKEN.y + STRANGER_DY + 42}
                 textAnchor="middle"
                 fill={colors.MUTED}
-                fontSize={12}
+                fontSize={14}
                 fontStyle="italic"
                 opacity={1 - strangerPass}
               >
@@ -338,8 +346,8 @@ export function Render({ s }: { s: SceneState }) {
               </text>
               {buildDrop > 0 && (
                 <g opacity={clamp01(buildDrop * 3)}>
-                  <rect x={strangerFinalX - 36} y={TOKEN.y + chipY} width={72} height={20} rx={10} fill={colors.WARM} />
-                  <text x={strangerFinalX} y={TOKEN.y + chipY + 14} textAnchor="middle" fill={colors.BG} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+                  <rect x={strangerFinalX + TOKEN.w / 2 - 74} y={TOKEN.y + chipY} width={80} height={22} rx={11} fill={colors.WARM} />
+                  <text x={strangerFinalX + TOKEN.w / 2 - 34} y={TOKEN.y + chipY + 15} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily={MONO} fontWeight={700}>
                     build
                   </text>
                 </g>
@@ -367,7 +375,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={GATE.x} y={GATE.top - 54} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 author_association: OWNER | MEMBER | COLLABORATOR
               </text>
-              <text x={GATE.x} y={GATE.bot + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+              <text x={GATE.x} y={GATE.bot + 62} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
                 the collaborator gate
               </text>
               {passFlash > 0 && <circle cx={GATE.x} cy={TOKEN.y} r={40} fill={colors.POSITIVE} opacity={0.25 * passFlash} />}
@@ -381,7 +389,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={ACTIONS.x + 20} y={ACTIONS.y + 30} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 Actions
               </text>
-              <text x={ACTIONS.x + 20} y={ACTIONS.y + 56} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={ACTIONS.x + 20} y={ACTIONS.y + 56} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 Book pipeline (issue → book)
               </text>
               {/* spinner: sweep angle is a pure function of runP */}
@@ -398,13 +406,13 @@ export function Render({ s }: { s: SceneState }) {
                   strokeLinecap="round"
                 />
               </g>
-              <text x={ACTIONS.x + 52} y={ACTIONS.y + 89} fill={colors.WARM} fontSize={12.5}>
+              <text x={ACTIONS.x + 52} y={ACTIONS.y + 89} fill={colors.WARM} fontSize={13}>
                 in progress
               </text>
-              <text x={ACTIONS.x + 20} y={ACTIONS.y + 118} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={ACTIONS.x + 20} y={ACTIONS.y + 118} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 concurrency: book-issue-78
               </text>
-              <text x={ACTIONS.x + 20} y={ACTIONS.y + 134} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={ACTIONS.x + 20} y={ACTIONS.y + 136} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 cancel-in-progress: true
               </text>
               {/* the ack comment */}
@@ -413,16 +421,16 @@ export function Render({ s }: { s: SceneState }) {
                   <rect x={ACTIONS.x + 16} y={ACTIONS.y + 158} width={ACTIONS.w - 32} height={128} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.4} />
                   <circle cx={ACTIONS.x + 40} cy={ACTIONS.y + 184} r={12} fill={colors.PANEL} stroke={colors.GRID} />
                   <text x={ACTIONS.x + 40} y={ACTIONS.y + 189} textAnchor="middle" fontSize={12}>🤖</text>
-                  <text x={ACTIONS.x + 60} y={ACTIONS.y + 182} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={ACTIONS.x + 60} y={ACTIONS.y + 182} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     github-actions · now
                   </text>
-                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 218} fill={colors.TEXT} fontSize={12.5}>
+                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 218} fill={colors.TEXT} fontSize={13}>
                     On it — generating in CI.
                   </text>
-                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 238} fill={colors.MUTED} fontSize={11.5}>
+                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 240} fill={colors.MUTED} fontSize={12}>
                     Track progress in the Actions tab.
                   </text>
-                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 266} fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>
+                  <text x={ACTIONS.x + 32} y={ACTIONS.y + 268} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                     ▸ issue #78 · comment
                   </text>
                 </g>
@@ -430,10 +438,6 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* lane hint */}
-          {gateU > 0 && (
-            <line x1={560} y1={TOKEN.y} x2={ACTIONS.x - 12} y2={TOKEN.y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="2 8" opacity={0.5 * gateU * (1 - dimU)} />
-          )}
         </g>
 
         {/* ---- the ring finale ---- */}

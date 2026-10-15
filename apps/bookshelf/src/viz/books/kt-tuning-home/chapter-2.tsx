@@ -66,7 +66,7 @@ const UNTOUCHED = [
 
 const RULE = { x: MODEL.x - 20, y: MODEL.y + MODEL.h + 16, w: MODEL.w + 40, h: 64 } as const;
 
-const LAUNCH = { x: 140, y: 540, w: 1000, h: 40 } as const;
+const LAUNCH = { x: 140, y: 530, w: 1000, h: 40 } as const;
 
 const CAM_DOC: CameraState = { x: 290, y: 300, k: 1.35 };
 const CAM_MODEL: CameraState = { x: 580, y: 292, k: 1.2 };
@@ -196,10 +196,11 @@ export function Render({ s }: { s: SceneState }) {
   const runU = s.get(scene.runU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
-  // engine swap: stock module slides up behind the stack and fades;
-  // the KT engine slides in from the right into the same experts slot
-  const stockY = EXPERT_Y - swapU * 84;
+  const dimAll = 1 - closeU * 0.9;
+  // engine swap: the stock module fades out in its slot first, then the KT
+  // engine slides in from the right into that same slot (no overlapping labels)
+  const stockFade = 1 - clamp01(swapU / 0.3);
+  const ktFade = clamp01((swapU - 0.25) / 0.45);
   const ktX = MODEL_CX + (1 - swapU) * 110;
 
   return (
@@ -224,6 +225,9 @@ export function Render({ s }: { s: SceneState }) {
             <text x={DOC.x + 16} y={DOC.y + 26} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={Math.min(1, docU * 3)}>
               train_lora/deepseek_v3_lora_sft_kt.yaml
             </text>
+            <text x={DOC.x + DOC.w - 16} y={DOC.y + 26} textAnchor="end" fill={colors.ACCENT} fontSize={12} opacity={Math.min(1, docU * 3)}>
+              LLaMA-Factory
+            </text>
             {YAML_LINES.map((ln, i) => {
               const u = clamp01(docU * YAML_LINES.length * 1.15 - i);
               const isKt = ln.k === 'kt';
@@ -231,7 +235,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={u}>
                   {glow > 0.3 && <rect x={DOC.x + 10} y={DOC.y + 40 + i * 30} width={DOC.w - 20} height={24} rx={5} fill={colors.WARM} opacity={0.14 * glow} stroke={colors.WARM} strokeWidth={1} />}
-                  <text x={DOC.x + 20} y={DOC.y + 57 + i * 30} fill={isKt && glow > 0.3 ? colors.WARM : ln.k === 'lora' ? colors.ACCENT : colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+                  <text x={DOC.x + 20} y={DOC.y + 57 + i * 30} fill={isKt && glow > 0.3 ? colors.WARM : ln.k === 'lora' ? colors.ACCENT : colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
                     {ln.t}
                   </text>
                 </g>
@@ -246,9 +250,9 @@ export function Render({ s }: { s: SceneState }) {
               the loaded model
             </text>
             {/* the stock experts module: drawn first so the stack covers it as it slides up */}
-            <g opacity={1 - swapU * 0.9}>
-              <rect x={ROW_X} y={stockY} width={ROW_W} height={ROW_H} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.1} strokeDasharray={swapU > 0.05 ? '6 4' : undefined} />
-              <text x={MODEL_CX} y={stockY + 23} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <g opacity={stockFade}>
+              <rect x={ROW_X} y={EXPERT_Y} width={ROW_W} height={ROW_H} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.1} strokeDasharray={swapU > 0.05 ? '6 4' : undefined} />
+              <text x={MODEL_CX} y={EXPERT_Y + 23} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                 mlp.experts — stock module
               </text>
             </g>
@@ -262,12 +266,12 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             ))}
             {/* the KT engine, sliding in */}
-            <g opacity={Math.min(1, swapU * 2)}>
-              <rect x={ktX - ROW_W / 2} y={EXPERT_Y} width={ROW_W} height={44} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-              <text x={ktX} y={EXPERT_Y + 19} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+            <g opacity={ktFade}>
+              <rect x={ktX - ROW_W / 2} y={EXPERT_Y} width={ROW_W} height={ROW_H} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              <text x={ktX} y={EXPERT_Y + 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
                 KTransformersExperts
               </text>
-              <text x={ktX} y={EXPERT_Y + 36} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={ktX} y={EXPERT_Y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 generate_op: KSFTExpertsCPU · out_device: cuda
               </text>
             </g>
@@ -276,10 +280,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* injection rule card */}
           <g opacity={ruleU}>
             <rect x={RULE.x} y={RULE.y} width={RULE.w} height={RULE.h} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={RULE.x + 16} y={RULE.y + 24} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={RULE.x + 16} y={RULE.y + 24} fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
               {'match: name: "^model\\.layers\\..*\\.mlp\\.experts$"'}
             </text>
-            <text x={RULE.x + 16} y={RULE.y + 46} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={RULE.x + 16} y={RULE.y + 46} fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
               replace: ktransformers.operators.experts.KTransformersExperts
             </text>
           </g>

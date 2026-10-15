@@ -182,7 +182,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Old content fades fully before the close panel, so no ghost sits behind it.
+  const mainOp = 1 - dimU;
   const walker = frontierPoint(slideU);
 
   return (
@@ -193,16 +194,21 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* axes */}
           {axesU > 0 && (
-            <g opacity={axesU * (1 - 0.8 * journeyU)}>
+            <g opacity={axesU * (1 - journeyU)}>
               <line x1={AX_X} y1={AX_Y} x2={AX_X} y2={AX_Y - AX_H * axesU} stroke={colors.GRID} strokeWidth={2} />
               <line x1={AX_X} y1={AX_Y} x2={AX_X + AX_W * axesU} y2={AX_Y} stroke={colors.GRID} strokeWidth={2} />
-              <text x={AX_X - 20} y={AX_Y - AX_H - 14} fill={colors.MUTED} fontSize={13}>
+              {/* ladder rungs on the one rail; they fade as the frontier is drawn */}
+              {[1, 2, 3, 4].map((n) => (
+                <line key={n} x1={AX_X} y1={AX_Y - (AX_H * n) / 5} x2={AX_X + 64 * axesU} y2={AX_Y - (AX_H * n) / 5}
+                  stroke={colors.GRID} strokeWidth={2} opacity={1 - curveU} />
+              ))}
+              <text x={AX_X - 20} y={AX_Y - AX_H - 14} fill={colors.MUTED} fontSize={14}>
                 parameters
               </text>
-              <text x={AX_X + AX_W - 40} y={AX_Y + 24} fill={colors.MUTED} fontSize={13}>
+              <text x={AX_X + AX_W - 40} y={AX_Y + 24} fill={colors.MUTED} fontSize={14}>
                 harnessed horizon
               </text>
-              <text x={AX_X + 180} y={AX_Y - AX_H + 6} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={AX_X + 180} y={AX_Y - AX_H + 6} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 iso-capability frontier — conceptual sketch; endpoints reported
               </text>
 
@@ -216,15 +222,18 @@ function Frame({ s }: { s: SceneState }) {
               {bigU > 0 && (
                 <g opacity={bigU}>
                   <circle cx={P_BIG.x} cy={P_BIG.y} r={10} fill={colors.NEGATIVE} />
-                  <text x={P_BIG.x + 18} y={P_BIG.y - 6} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+                  <text x={P_BIG.x + 18} y={P_BIG.y - 6} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                     ~1T weights, short runs
                   </text>
                 </g>
               )}
               {smallU > 0 && (
                 <g opacity={smallU}>
+                  {/* label sits above the curve, with a leader down to the point */}
+                  <line x1={P_SMALL.x - 44} y1={P_SMALL.y - 46} x2={P_SMALL.x - 8} y2={P_SMALL.y - 8}
+                    stroke={colors.POSITIVE} strokeWidth={1.5} opacity={0.6} />
                   <circle cx={P_SMALL.x} cy={P_SMALL.y} r={10} fill={colors.POSITIVE} />
-                  <text x={P_SMALL.x - 12} y={P_SMALL.y - 16} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                  <text x={P_SMALL.x - 48} y={P_SMALL.y - 50} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                     Agents-A1 · 35B, 45K-token runs
                   </text>
                 </g>
@@ -236,12 +245,12 @@ function Frame({ s }: { s: SceneState }) {
               {/* where the axis runs out */}
               {edgeU > 0 && (
                 <g opacity={edgeU}>
-                  <rect x={AX_X + AX_W * 0.82} y={AX_Y - AX_H} width={AX_W * 0.22} height={AX_H} fill={colors.NEGATIVE} opacity={0.07} />
+                  <rect x={AX_X + AX_W * 0.82} y={AX_Y - AX_H} width={AX_W * 0.18} height={AX_H} fill={colors.NEGATIVE} opacity={0.07} />
                   <line x1={AX_X + AX_W * 0.82} y1={AX_Y - AX_H} x2={AX_X + AX_W * 0.82} y2={AX_Y} stroke={colors.NEGATIVE} strokeDasharray="5 5" opacity={0.5} />
-                  <text x={AX_X + AX_W * 0.84} y={AX_Y - AX_H + 30} fill={colors.NEGATIVE} fontSize={12}>
+                  <text x={AX_X + AX_W * 0.84} y={AX_Y - AX_H + 30} fill={colors.NEGATIVE} fontSize={13}>
                     coherence
                   </text>
-                  <text x={AX_X + AX_W * 0.84} y={AX_Y - AX_H + 48} fill={colors.NEGATIVE} fontSize={12}>
+                  <text x={AX_X + AX_W * 0.84} y={AX_Y - AX_H + 48} fill={colors.NEGATIVE} fontSize={13}>
                     leaks here
                   </text>
                 </g>
@@ -257,11 +266,11 @@ function Frame({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={i} opacity={u}>
-                    <circle cx={370} cy={190 + i * 56} r={5} fill={colors.SECONDARY} />
+                    <circle cx={440} cy={262 + i * 56} r={5} fill={colors.SECONDARY} />
                     {i < JOURNEY.length - 1 && (
-                      <line x1={370} y1={196 + i * 56} x2={370} y2={240 + i * 56} stroke={colors.GRID} strokeWidth={1.5} />
+                      <line x1={440} y1={268 + i * 56} x2={440} y2={312 + i * 56} stroke={colors.GRID} strokeWidth={1.5} />
                     )}
-                    <text x={392} y={196 + i * 56} fill={colors.TEXT} fontSize={16}>
+                    <text x={462} y={268 + i * 56} fill={colors.TEXT} fontSize={16}>
                       {line}
                     </text>
                   </g>
@@ -294,7 +303,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             until coherence runs out, and the paper says where that is
           </text>
-          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             Scaling the Horizon · arXiv:2606.30616
           </text>
         </g>

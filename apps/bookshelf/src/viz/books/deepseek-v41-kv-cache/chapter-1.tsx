@@ -76,7 +76,7 @@ export const LIVE_WINDOW: [number, number] = [CHRONO[0].pos, CHRONO[W - 1].pos];
 // Layout. Captions own y ≥ 633; the machine lives in y = 170…510.
 // ---------------------------------------------------------------------------
 
-const RING = { x: 420, y: 330, r: 90 };
+const RING = { x: 330, y: 330, r: 120 };
 const SECTORS = 16;
 const TAPE_X0 = 170;
 const TAPE_DX = 32;
@@ -104,8 +104,8 @@ const ARC_PATH = (() => {
   return `M${a0.x},${a0.y} A${ARC_R},${ARC_R} 0 0 1 ${mid.x},${mid.y} A${ARC_R},${ARC_R} 0 0 1 ${a1.x},${a1.y}`;
 })();
 
-// expanded slots 8…23 (sectors 1 and 2)
-const DETAIL = { x: 228, y: 436, w: 24, h: 22, first: 8, n: 16 };
+// expanded slots 8…23 (sectors 1 and 2), on the open right side beside the ring
+const DETAIL = { x: 640, y: 400, w: 36, h: 34, first: 8, n: 16 };
 
 // global rail, stretched beyond the ring
 const RAIL = { x: 640, y: 318, w: 18, h: 24, dx: 20, n: 26 };
@@ -118,7 +118,7 @@ const COMB_GLOBAL = SPARSE_READS.map(
   (i) => `M${Q.x},${Q.y} C${Q.x},400 ${railCx(i)},410 ${railCx(i)},${RAIL.y + RAIL.h + 2}`,
 );
 
-const RULER = { x: 170, y: 500, dx: 24 };
+const RULER = { x: 170, y: 560, dx: 24 };
 const QUERY_STEPS = ['wq_a', 'q_norm', 'wq_b'];
 
 // ---------------------------------------------------------------------------
@@ -175,7 +175,7 @@ export function buildScene() {
   tl.hold(B(1) + 6.8, 1.2);
 
   // 2 — a query unfolds beside the same token
-  to(srcLbl, 0.15, B(2));
+  to(srcLbl, 0.5, B(2));
   to(queryO, 1, B(2) + 0.4);
   to(queryU, 1, B(2) + 0.6, 3.0, ease.draw);
   tl.hold(B(2) + 6.8, 1.2);
@@ -183,7 +183,7 @@ export function buildScene() {
   // 3 — the tape curls into the 128-slot ring
   to(queryO, 0, B(3));
   to(srcLbl, 0, B(3));
-  tl.tween(cam, { x: 420, y: 330, k: 1.35 }, { at: B(3), dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: B(3), dur: 1.2, ease: ease.move });
   to(curlU, 1, B(3) + 1.2, 1.4, ease.move);
   to(chipSlots, 1, B(3) + 2.0);
   to(winLbl, 1, B(3) + 2.8);
@@ -191,8 +191,8 @@ export function buildScene() {
   tl.hold(B(3) + 6.8, 1.2);
 
   // 4 — slot 15: position 15 is overwritten by 143
-  to(arcO, 0.15, B(4));
-  to(winLbl, 0.15, B(4));
+  to(arcO, 0.35, B(4));
+  to(winLbl, 0.75, B(4));
   to(detailO, 1, B(4) + 0.3);
   to(overU, 1, B(4) + 1.6, 1.0, ease.move);
   to(modLbl, 1, B(4) + 2.8);
@@ -208,7 +208,7 @@ export function buildScene() {
   tl.hold(B(5) + 6.8, 1.2);
 
   // 6 — one read comb: local window + selected global entries
-  tl.tween(cam, { x: 820, y: 330, k: 1.2 }, { at: B(6), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.05 }, { at: B(6), dur: 1.2, ease: ease.move });
   to(contrastLbl, 0, B(6));
   to(combQ, 1, B(6) + 1.2);
   to(combU, 1, B(6) + 1.8, 1.2, ease.draw);
@@ -243,7 +243,7 @@ export function buildScene() {
 
   // 10 — clean paired silhouette + takeaway
   to(roleLbl, 0, B(10));
-  to(railLbl, 0.15, B(10));
+  to(railLbl, 0.5, B(10));
   to(arcO, 0, B(10));
   to(chipTok, 0, B(10));
   to(chipSlots, 0, B(10));
@@ -341,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
             const hot = i === 1 ? g(scene.detailO) : 0;
             return (
               <g key={i} transform={`translate(${x},${y}) rotate(${sg.rot * curl})`}>
-                <rect x={-14} y={-8} width={28} height={16} rx={3} fill={ACCENT} fillOpacity={0.14 + 0.2 * hot}
+                <rect x={-15} y={-10} width={30} height={20} rx={3} fill={ACCENT} fillOpacity={0.14 + 0.2 * hot}
                   stroke={ACCENT} strokeOpacity={0.75} />
               </g>
             );
@@ -356,7 +356,7 @@ export function Render({ s }: { s: SceneState }) {
             <circle key={i} cx={RING.x + 16 * i * fanU} cy={RING.y - 12 * i * fanU} r={RING.r} fill="none"
               stroke={ACCENT} strokeOpacity={0.55 - 0.08 * i} strokeDasharray="5 4" opacity={clamp01(fanU * 2)} />
           ))}
-        <Code x={RING.x + 40} y={182} text="window_kv_cache — one per layer" o={g(scene.fanLbl)} color={ACCENT} anchor="middle" />
+        <Code x={RING.x} y={RING.y - RING.r - 60} text="window_kv_cache — one per layer" o={g(scene.fanLbl)} color={ACCENT} anchor="middle" />
 
         {/* chronological live window arc */}
         <g opacity={g(scene.arcO)}>
@@ -364,12 +364,12 @@ export function Render({ s }: { s: SceneState }) {
             strokeDasharray={1} strokeDashoffset={1 - g(scene.arcU)} opacity={g(scene.arcU) > 0 ? 1 : 0} />
         </g>
         <g opacity={g(scene.winLbl)}>
-          <Code x={RING.x} y={RING.y - 8} text="window_size = 128" color={ACCENT} anchor="middle" />
-          <Code x={RING.x} y={RING.y + 12} text="window_kv_cache" color={TEXT} size={12} anchor="middle" />
-          <Note x={RING.x} y={RING.y + 32} text={`live window [${LIVE_WINDOW[0]}, ${LIVE_WINDOW[1]}]`} color={TEXT} size={12} anchor="middle" />
+          <Code x={RING.x} y={RING.y - 8} text="window_size = 128" color={ACCENT} size={15} anchor="middle" />
+          <Code x={RING.x} y={RING.y + 12} text="window_kv_cache" color={TEXT} size={14} anchor="middle" />
+          <Note x={RING.x} y={RING.y + 32} text={`live window [${LIVE_WINDOW[0]}, ${LIVE_WINDOW[1]}]`} color={TEXT} size={14} anchor="middle" />
         </g>
 
-        {/* expanded slots 8…23 */}
+        {/* expanded slots 8…23, the local window's contents on the open right side */}
         {g(scene.detailO) > 0 && (
           <g opacity={g(scene.detailO)}>
             {Array.from({ length: DETAIL.n }, (_, k) => {
@@ -383,24 +383,26 @@ export function Render({ s }: { s: SceneState }) {
                     strokeWidth={isTok ? 1 + over : 1} />
                   {isTok ? (
                     <>
-                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={TEXT} opacity={1 - over} fontSize={11}
+                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 22} fill={TEXT} opacity={1 - over} fontSize={13}
                         fontFamily={font.mono} textAnchor="middle">{BEFORE[slot]}</text>
-                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={WARM} opacity={over} fontSize={11}
+                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 22} fill={WARM} opacity={over} fontSize={13}
                         fontFamily={font.mono} textAnchor="middle">{AFTER[slot]}</text>
                     </>
                   ) : (
-                    <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={TEXT} fontSize={11} fontFamily={font.mono}
+                    <text x={x + DETAIL.w / 2} y={DETAIL.y + 22} fill={TEXT} fontSize={13} fontFamily={font.mono}
                       textAnchor="middle">{AFTER[slot]}</text>
                   )}
                 </g>
               );
             })}
-            <Note x={DETAIL.x} y={DETAIL.y - 6} text="slots 8…23, position held" size={12} />
+            <Note x={DETAIL.x} y={DETAIL.y - 10} text="slots 8…23, position held" size={14} />
           </g>
         )}
         <g opacity={g(scene.modLbl)}>
-          <Code x={DETAIL.x + DETAIL.w * DETAIL.n + 12} y={DETAIL.y + 8} text="start_pos % win" color={WARM} size={12} />
-          <Code x={DETAIL.x + DETAIL.w * DETAIL.n + 12} y={DETAIL.y + 24} text={`${TOKEN} % ${W} = ${TOKEN_SLOT}`} color={MUTED} size={11} />
+          <Code x={DETAIL.x + DETAIL.w * (TOKEN_SLOT - DETAIL.first) + DETAIL.w / 2} y={DETAIL.y + DETAIL.h + 22}
+            text="start_pos % win" color={WARM} size={13} anchor="middle" />
+          <Code x={DETAIL.x + DETAIL.w * (TOKEN_SLOT - DETAIL.first) + DETAIL.w / 2} y={DETAIL.y + DETAIL.h + 40}
+            text={`${TOKEN} % ${W} = ${TOKEN_SLOT}`} color={MUTED} size={13} anchor="middle" />
         </g>
 
         {/* query construction (beat 2) */}
@@ -446,8 +448,8 @@ export function Render({ s }: { s: SceneState }) {
         <Note x={RAIL.x} y={RAIL.y - 12} text="global memory" o={g(scene.railLbl)} color={SECONDARY} size={14} />
         <Note x={RAIL.x + RAIL.dx * RAIL.n} y={RAIL.y - 12} text="shared across layers" o={g(scene.fanLbl)} color={SECONDARY} size={14} anchor="end" />
         <g opacity={g(scene.contrastLbl)}>
-          <Note x={RING.x} y={478} text="local: overwritten, fixed size" color={ACCENT} anchor="middle" />
-          <Note x={RAIL.x + (RAIL.dx * RAIL.n) / 2} y={372} text="global: retained beyond the window" color={SECONDARY} anchor="middle" />
+          <Note x={RING.x} y={RING.y + RING.r + 44} text="local: overwritten, fixed size" color={ACCENT} size={14} anchor="middle" />
+          <Note x={RAIL.x + (RAIL.dx * RAIL.n) / 2} y={372} text="global: retained beyond the window" color={SECONDARY} size={14} anchor="middle" />
         </g>
 
         {/* read comb (beat 6) */}
@@ -502,14 +504,14 @@ export function Render({ s }: { s: SceneState }) {
             fill="none" stroke={WARM} strokeWidth={2.5} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - provU} />
         )}
         <g opacity={g(scene.roleLbl)}>
-          <Note x={RING.x} y={478} text="nearby detail — its window slot" color={WARM} anchor="middle" />
-          <Note x={railCx(RAIL_PROV)} y={372} text="a contribution to longer-lived memory" color={WARM} anchor="end" />
+          <Note x={RING.x} y={RING.y + RING.r + 44} text="nearby detail — its window slot" color={WARM} size={14} anchor="middle" />
+          <Note x={railCx(RAIL_PROV) + 10} y={RAIL.y - 18} text="a contribution to longer-lived memory" color={WARM} size={14} anchor="end" />
         </g>
 
         {/* the throughline token */}
         <g opacity={g(scene.tokenO)}>
-          <circle cx={tok.x} cy={tok.y} r={11} fill={PANEL} stroke={WARM} strokeWidth={2.5} />
-          <text x={tok.x} y={tok.y + 3.5} fill={WARM} fontFamily={font.mono} fontSize={9} textAnchor="middle">{TOKEN}</text>
+          <circle cx={tok.x} cy={tok.y} r={15} fill={PANEL} stroke={WARM} strokeWidth={2.5} />
+          <text x={tok.x} y={tok.y + 4.5} fill={WARM} fontFamily={font.mono} fontSize={12} textAnchor="middle">{TOKEN}</text>
         </g>
       </Camera>
 

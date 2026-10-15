@@ -79,11 +79,11 @@ export const ICELL = 22;
 export const IGAP = 2;
 export const IPITCH = ICELL + IGAP;
 export const IMG = { x: 64, y: 190 } as const; // 12·24−2 = 286
-export const MAPL = { x: 452, y: 214 } as const; // 10·24−2 = 238
+export const MAPL = { x: 452, y: 190 } as const; // 10·24−2 = 238; top edge shared with the image
 export const PCELL = 44;
 export const PGAP = 4;
 export const PPITCH = PCELL + PGAP;
-export const POOL = { x: 828, y: 214 } as const; // 5·48−4 = 236
+export const POOL = { x: 828, y: 190 } as const; // 5·48−4 = 236; top edge shared with the image
 
 export const CAM_MAP: CameraState = { x: 560, y: 330, k: 1.18 };
 export const CAM_POOL: CameraState = { x: 830, y: 330, k: 1.22 };

@@ -87,14 +87,14 @@ export const CLOUD_IDX: number[] = Array.from({ length: 500 }, (_, i) => i * 8);
 
 export const CH_X0 = 680;
 export const CH_X1 = 1180;
-export const CH_Y0 = 500;
+export const CH_Y0 = 430;
 export const CH_H = 330;
 export const KL_MAX = klOf(1024);
 export const chX = (kl: number): number => CH_X0 + (kl / KL_MAX) * (CH_X1 - CH_X0);
 export const chY = (v: number): number => CH_Y0 - (v / 3.6) * CH_H;
 
 export const CAM_CLOUD: CameraState = { x: 380, y: 320, k: 1.25 };
-export const CAM_CURVES: CameraState = { x: 900, y: 320, k: 1.15 };
+export const CAM_CURVES: CameraState = { x: 930, y: 320, k: 1.15 };
 
 export interface Scene {
   tl: Timeline;
@@ -188,7 +188,7 @@ export function buildScene(): Scene {
 
   // — Beat 6 · close ———————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 50.4, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 51.0, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 51.0, dur: 1.1, ease: ease.move });
   tl.tween(mathU, 0, { at: 51.0, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 52.2, dur: 0.9, ease: ease.enter });
   tl.caption({

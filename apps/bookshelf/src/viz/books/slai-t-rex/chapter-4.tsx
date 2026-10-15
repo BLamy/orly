@@ -75,7 +75,7 @@ export function buildScene() {
 
   tl.caption({ at: 52.9, dur: 7.2, text: 'A structured example becomes training data, crosses the sharded machine, shares one shuffle, and finally meets a solver. The verdict closes the loop.' });
   tl.tween(recapU, 1, { at: 53.4, dur: 2.2, ease: ease.linear });
-  tl.tween(dimU, 1, { at: 53.4, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 1, { at: 56.0, dur: 1.0, ease: ease.move });
   tl.tween(endU, 1, { at: 56.8, dur: 0.8, ease: ease.enter });
   tl.hold(60.1, 1.0);
 
@@ -92,7 +92,7 @@ export function Render({ s }: { s: SceneState }) {
   const benchesU = s.get(scene.benchesU);
   const scoreU = s.get(scene.scoreU);
   const recapU = s.get(scene.recapU);
-  const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
+  const mainOpacity = (1 - 0.86 * s.get(scene.dimU)) * (1 - recapU);
   const p0 = { x: 1008, y: 220 };
   const p1 = { x: 920, y: 390 };
   const p2 = { x: 790, y: 465 };
@@ -110,11 +110,15 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={problemU * (1 - 0.55 * planeU)}>
               <rect x={90} y={155} width={390} height={270} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} />
               <text x={115} y={192} fill={colors.ACCENT} fontSize={14} fontWeight={700}>Capital budgeting problem</text>
-              <text x={115} y={228} fill={colors.TEXT} fontSize={12}>maximize net present value</text>
-              <text x={115} y={256} fill={colors.TEXT} fontSize={12}>subject to budget and risk limits</text>
-              <text x={115} y={284} fill={colors.TEXT} fontSize={12}>respect project dependencies</text>
-              <text x={115} y={327} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>BENCH4OPT_4</text>
-              <path d="M 480 292 C 530 292 545 292 585 292" fill="none" stroke={colors.GRID} strokeWidth={2} />
+              <text x={115} y={226} fill={colors.TEXT} fontSize={14}>maximize net present value</text>
+              <text x={115} y={252} fill={colors.TEXT} fontSize={14}>subject to budget and risk limits</text>
+              <text x={115} y={278} fill={colors.TEXT} fontSize={14}>respect project dependencies</text>
+              <line x1={115} y1={298} x2={455} y2={298} stroke={colors.GRID} strokeWidth={1} />
+              <text x={115} y={326} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>variables   x_i ∈ {'{0, 1}'}</text>
+              <text x={115} y={352} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>objective   max Σ NPV_i · x_i</text>
+              <text x={115} y={378} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>budget      Σ cost_i · x_i ≤ B</text>
+              <text x={115} y={410} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>BENCH4OPT_4</text>
+              <path d="M 480 292 L 510 292" fill="none" stroke={colors.GRID} strokeWidth={2} />
             </g>
           )}
 
@@ -127,7 +131,7 @@ export function Render({ s }: { s: SceneState }) {
                 'model.setObjective(...)',
                 'model.addConstr(...)',
                 'model.optimize()',
-              ].map((line, i) => <text key={line} x={532} y={208 + i * 38} fill={i === 4 ? colors.POSITIVE : colors.TEXT} fontSize={12} fontFamily={MONO}>{line}</text>)}
+              ].map((line, i) => <text key={line} x={532} y={208 + i * 38} fill={i === 4 ? colors.POSITIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>{line}</text>)}
             </g>
           )}
 
@@ -135,34 +139,36 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={planeU}>
               <line x1={770} y1={500} x2={1130} y2={500} stroke={colors.GRID} strokeWidth={2} />
               <line x1={770} y1={500} x2={770} y2={150} stroke={colors.GRID} strokeWidth={2} />
-              <text x={1138} y={504} fill={colors.MUTED} fontSize={12}>budget →</text>
-              <text x={750} y={165} fill={colors.MUTED} fontSize={12}>risk</text>
+              <text x={1138} y={504} fill={colors.MUTED} fontSize={14}>budget →</text>
+              <text x={750} y={165} fill={colors.MUTED} fontSize={14}>risk</text>
               <polygon points="790,465 835,250 1040,310 1080,465" fill={colors.POSITIVE} fillOpacity={0.13} stroke={colors.POSITIVE} strokeWidth={2} />
               {[0, 1, 2, 3].map((i) => (
                 <line key={i} x1={790} y1={460 - i * 42} x2={1080 - i * 28} y2={340 - i * 42} stroke={colors.WARM} strokeOpacity={0.16} />
               ))}
-              <text x={930} y={445} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>feasible region</text>
+              <text x={930} y={445} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>feasible region</text>
               {candidate > 0 && (
                 <g transform={`translate(${c.x} ${c.y})`}>
                   <circle r={12} fill={candidate < 1.5 ? colors.NEGATIVE : colors.POSITIVE} />
                   <circle r={24} fill="none" stroke={candidate < 1.5 ? colors.NEGATIVE : colors.POSITIVE} opacity={0.35} />
                 </g>
               )}
-              {s.get(scene.rejectU) > 0 && <text x={1008} y={188} textAnchor="middle" fill={colors.NEGATIVE} opacity={s.get(scene.rejectU)} fontSize={16} fontWeight={700}>infeasible ✕</text>}
-              {s.get(scene.validU) > 0 && <text x={920} y={350} textAnchor="middle" fill={colors.POSITIVE} opacity={s.get(scene.validU)} fontSize={16} fontWeight={700}>objective verified ✓</text>}
+              {s.get(scene.rejectU) > 0 && <text x={1008} y={176} textAnchor="middle" fill={colors.NEGATIVE} opacity={s.get(scene.rejectU)} fontSize={16} fontWeight={700}>infeasible ✕</text>}
+              {s.get(scene.rejectU) > 0 && <text x={1040} y={226} fill={colors.NEGATIVE} opacity={s.get(scene.rejectU)} fontSize={14} fontFamily={MONO}>status INFEASIBLE</text>}
+              {s.get(scene.validU) > 0 && <text x={920} y={336} textAnchor="middle" fill={colors.POSITIVE} opacity={s.get(scene.validU)} fontSize={16} fontWeight={700}>objective verified ✓</text>}
+              {s.get(scene.validU) > 0 && <text x={920} y={357} textAnchor="middle" fill={colors.POSITIVE} opacity={s.get(scene.validU)} fontSize={14} fontFamily={MONO}>status OPTIMAL</text>}
             </g>
           )}
 
           {benchesU > 0 && (
             <g opacity={benchesU}>
               {BENCHES.map((name, i) => {
-                const x = 155 + i * 250;
+                const x = 162.5 + i * 250;
                 const u = clamp01(benchesU * 5 - i);
                 return (
                   <g key={name} opacity={u}>
                     <rect x={x} y={512} width={205} height={58} rx={12} fill={colors.PANEL} stroke={i % 2 ? colors.SECONDARY : colors.ACCENT} />
-                    <text x={x + 102} y={537} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={700}>{name}</text>
-                    <text x={x + 102} y={557} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>solver gate</text>
+                    <text x={x + 102.5} y={536} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>{name}</text>
+                    <text x={x + 102.5} y={557} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>solver gate</text>
                   </g>
                 );
               })}
@@ -170,14 +176,14 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {s.get(scene.configU) > 0 && (
-            <text x={640} y={592} textAnchor="middle" fill={colors.MUTED} opacity={s.get(scene.configU)} fontSize={12} fontFamily={MONO}>SEED=42 · TEMPERATURE=0.6 · ACC_SAMPLES=1 · workers configurable</text>
+            <text x={640} y={592} textAnchor="middle" fill={colors.TEXT} opacity={s.get(scene.configU)} fontSize={13} fontFamily={MONO}>SEED=42 · TEMPERATURE=0.6 · ACC_SAMPLES=1 · workers configurable</text>
           )}
 
           {scoreU > 0 && (
             <g opacity={clamp01(scoreU * 2)}>
               <rect x={245} y={606} width={790} height={22} rx={11} fill={colors.PANEL} stroke={colors.GRID} />
               <rect x={245} y={606} width={790 * 0.7181 * scoreU} height={22} rx={11} fill={colors.POSITIVE} opacity={0.75} />
-              <text x={640} y={621} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontWeight={700}>reported average zero-shot Pass@1 · 71.81%</text>
+              <text x={640} y={621} textAnchor="middle" fill={colors.TEXT} stroke={colors.BG} strokeWidth={3} paintOrder="stroke" fontSize={14} fontWeight={700}>reported average zero-shot Pass@1 · 71.81%</text>
             </g>
           )}
         </g>
@@ -205,7 +211,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={700}>Plausible is not feasible</text>
           <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={16}>the solver checks constraints, execution, and objective value</text>
           <text x={640} y={378} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>71.81% average zero-shot Pass@1</text>
-          <text x={640} y={403} textAnchor="middle" fill={colors.MUTED} fontSize={12}>reported comparison: +3.98 points vs GPT-5.4-Mini · +11.27 vs base DeepSeek-V4-Flash</text>
+          <text x={640} y={403} textAnchor="middle" fill={colors.MUTED} fontSize={14}>reported comparison: +3.98 points vs GPT-5.4-Mini · +11.27 vs base DeepSeek-V4-Flash</text>
         </g>
       )}
     </>

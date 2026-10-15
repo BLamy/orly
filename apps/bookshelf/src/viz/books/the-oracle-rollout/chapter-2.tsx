@@ -90,6 +90,9 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">A perfect answer can move the wrong line</text>
+      <g opacity={s.get(scene.policyMeanU)}>
+        <text x="640" y="104" textAnchor="middle" fill={colors.SECONDARY} fontSize="18">advantage = reward − mean of the group</text>
+      </g>
       <g opacity={s.get(scene.axisU)}>
         <line x1="142" y1="320" x2="1138" y2="320" stroke={colors.GRID} strokeWidth="6" strokeLinecap="round" />
         {Array.from({ length: 11 }, (_, i) => <Tick key={i} value={i / 10} reveal={s.get(scene.axisU)} />)}
@@ -107,15 +110,15 @@ export function Render({ s }: { s: SceneState }) {
           <circle r={flipped ? 23 : 18 + boost * 5} fill={color} stroke="#07101d" strokeWidth="3" />
           <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">o{i + 1}</text>
           <text y="-34" textAnchor="middle" fill={color} fontSize="13" fontFamily={colors.font.mono}>r={value.toFixed(1)}</text>
-          {flipped && <text y="54" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13" fontWeight="800">sign flipped</text>}
+          {flipped && <text y="-58" x="-22" textAnchor="end" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">sign flipped</text>}
         </g>;
       })}
 
       <g opacity={s.get(scene.oracleU)} transform={`translate(${sx(ORACLE_REWARD)} 254) scale(${0.84 + s.get(scene.oracleU) * 0.16})`}>
         <circle r={22 + anchor * 8} fill={colors.WARM} stroke="#07101d" strokeWidth="3" />
         <text y="5" textAnchor="middle" fill="#171000" fontSize="12" fontWeight="900">GT</text>
-        <text y="-39" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>rgt=1.0</text>
-        <text y="54" textAnchor="middle" fill={colors.WARM} fontSize="13" fontWeight="800" opacity={anchor}>Agt=0.24</text>
+        <text y="-39" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>GT r=1.0</text>
+        <text y="56" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="800" opacity={anchor}>A(GT)=0.24</text>
       </g>
 
       <g opacity={s.get(scene.policyMeanU)}>

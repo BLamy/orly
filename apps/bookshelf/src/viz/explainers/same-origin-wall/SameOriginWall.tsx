@@ -155,61 +155,61 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const tableFade = 1 - 0.85 * clamp01(wallU * 2.5);
+  // the origin table is dropped once the wall replaces it, so nothing ghosts behind the boxes
+  const mainOp = 1 - dimU;
+  const tableFade = 1 - clamp01(wallU * 2.5);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.001 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* origin definition */}
-          {defU > 0 && (
+          {defU > 0 && tableFade > 0 && (
             <g opacity={defU * tableFade}>
-              <text x={200} y={180} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+              <text x={200} y={180} fill={colors.TEXT} fontSize={20} fontWeight={600}>
                 an origin =
               </text>
-              <text x={330} y={180} fill={colors.ACCENT} fontSize={16} fontFamily="monospace">
+              <text x={346} y={180} fill={colors.ACCENT} fontSize={20} fontFamily="monospace">
                 scheme
               </text>
-              <text x={430} y={180} fill={colors.MUTED} fontSize={16}> + </text>
-              <text x={460} y={180} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace">
+              <text x={480} y={180} fill={colors.MUTED} fontSize={20}> + </text>
+              <text x={516} y={180} fill={colors.SECONDARY} fontSize={20} fontFamily="monospace">
                 host
               </text>
-              <text x={530} y={180} fill={colors.MUTED} fontSize={16}> + </text>
-              <text x={560} y={180} fill={colors.WARM} fontSize={16} fontFamily="monospace">
+              <text x={610} y={180} fill={colors.MUTED} fontSize={20}> + </text>
+              <text x={646} y={180} fill={colors.WARM} fontSize={20} fontFamily="monospace">
                 port
+              </text>
+              <text x={200} y={212} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                base: {BASE}
               </text>
             </g>
           )}
 
           {/* origin comparison table */}
-          {tableU > 0 &&
+          {tableU > 0 && tableFade > 0 &&
             CASES.map((c, i) => {
               const u = clamp01(tableU * CASES.length - i);
               if (u <= 0) return null;
-              const y = 220 + i * 58;
+              const y = 228 + i * 58;
               return (
                 <g key={c.url} opacity={u * tableFade}>
                   <rect x={200} y={y} width={560} height={46} rx={8} fill={colors.PANEL} opacity={0.9} stroke={c.same ? colors.POSITIVE : colors.NEGATIVE} />
-                  <text x={218} y={y + 20} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                  <text x={218} y={y + 20} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                     {c.url}
                   </text>
-                  <text x={218} y={y + 38} fill={colors.MUTED} fontSize={11}>
+                  <text x={218} y={y + 38} fill={colors.MUTED} fontSize={12}>
                     {c.why}
                   </text>
-                  <text x={742} y={y + 28} textAnchor="end" fill={c.same ? colors.POSITIVE : colors.NEGATIVE} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
+                  <text x={742} y={y + 28} textAnchor="end" fill={c.same ? colors.POSITIVE : colors.NEGATIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
                     {c.same ? 'same origin' : 'CROSS origin'}
                   </text>
                 </g>
               );
             })}
-          {tableU > 0.1 && (
-            <text x={200} y={210} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={tableFade}>
-              base: {BASE}
-            </text>
-          )}
 
           {/* the wall diagram */}
           {wallU > 0 && (
@@ -218,19 +218,32 @@ function Frame({ s }: { s: SceneState }) {
               <text x={440} y={230} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700}>
                 your app
               </text>
-              <text x={440} y={252} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={440} y={252} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 app.example.com
               </text>
               <rect x={700} y={200} width={280} height={300} rx={14} fill={colors.PANEL} opacity={0.9} stroke={colors.SECONDARY} strokeWidth={1.5} />
               <text x={840} y={230} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
                 sandbox iframe
               </text>
-              <text x={840} y={252} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={840} y={252} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 sandbox.example.com
               </text>
+              {/* the iframe is alive on its side of the wall */}
+              {msgU > 0 && (
+                <g opacity={msgU}>
+                  <rect x={740} y={300} width={200} height={36} rx={18} fill={colors.POSITIVE} opacity={0.15} stroke={colors.POSITIVE} />
+                  <circle cx={762} cy={318} r={5} fill={colors.POSITIVE} />
+                  <text x={776} y={323} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+                    running
+                  </text>
+                  <rect x={740} y={362} width={200} height={10} rx={5} fill={colors.GRID} />
+                  <rect x={740} y={382} width={150} height={10} rx={5} fill={colors.GRID} />
+                  <rect x={740} y={402} width={176} height={10} rx={5} fill={colors.GRID} />
+                </g>
+              )}
               {/* the wall */}
               <line x1={640} y1={186} x2={640} y2={514} stroke={colors.NEGATIVE} strokeWidth={4} strokeDasharray="10 7" />
-              <text x={640} y={176} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700}>
+              <text x={640} y={176} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 same-origin wall
               </text>
 
@@ -241,7 +254,7 @@ function Frame({ s }: { s: SceneState }) {
                   if (u <= 0) return null;
                   return (
                     <g key={b} opacity={u}>
-                      <text x={320} y={288 + i * 34} fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+                      <text x={320} y={288 + i * 34} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                         {b}
                       </text>
                       <text x={600} y={288 + i * 34} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
@@ -256,7 +269,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g opacity={msgU}>
                   <line x1={580} y1={470} x2={700} y2={470} stroke={colors.POSITIVE} strokeWidth={3} />
                   <circle cx={640} cy={470} r={5} fill={colors.POSITIVE} />
-                  <text x={640} y={496} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily="monospace" fontWeight={700}>
+                  <text x={640} y={532} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
                     postMessage — the only pinhole
                   </text>
                 </g>
@@ -265,32 +278,35 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
-      {/* allowed note — screen space */}
-      {msgU > 0 && (
+      {/* allowed note — screen space, top right clear of the boxes */}
+      {msgU > 0 && mainOp > 0.001 && (
         <g opacity={msgU * mainOp}>
-          <rect x={880} y={120} width={360} height={120} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.POSITIVE} />
-          <text x={904} y={150} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+          <rect x={880} y={28} width={360} height={112} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.POSITIVE} />
+          <text x={904} y={58} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>
             what still crosses the wall
           </text>
           {ALLOWED.map((a, i) => (
-            <text key={a} x={904} y={182 + i * 26} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+            <text key={a} x={904} y={88 + i * 24} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
               • {a}
             </text>
           ))}
         </g>
       )}
 
-      <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
-          The browser’s own wall
-        </text>
-      </g>
+      {mainOp > 0.001 && (
+        <g opacity={titleU * mainOp}>
+          <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+            The browser’s own wall
+          </text>
+        </g>
+      )}
 
-      {/* close */}
+      {/* close: a solid panel over the cleared stage */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A live world, walled off, reachable through one pinhole.
           </text>

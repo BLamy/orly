@@ -51,11 +51,11 @@ const SPEED = [
 ] as const;
 const BENCH = { x: 790, y: 170, w: 320 } as const;
 
-// Camera centers are chosen so the whole ring (x 62..1150, y 68..592) stays
-// inside the frame and nothing sits under the caption pill (y > 630).
-const CAM_RING: CameraState = { x: 606, y: 345, k: 1.05 };
-const CAM_BENCH: CameraState = { x: 760, y: 300, k: 1.3 };
-const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.0 };
+// Camera centers are chosen so the whole ring plus the bench column (x 20..1150,
+// y 50..592) stays inside the frame and nothing sits under the caption pill (y > 630).
+const CAM_RING: CameraState = { x: 606, y: 350, k: 1.05 };
+const CAM_BENCH: CameraState = { x: 606, y: 350, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 606, y: 350, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -183,10 +183,17 @@ export function Render({ s }: { s: SceneState }) {
   const loopU = s.get(scene.loopU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.9;
-  // during the receipts the ring steps back: only the training rig stays put
-  // beside the bench; the other cards leave the frame until the loop beat
+  // the close fades the whole ring out so the recap panel stands alone
+  const dimAll = 1 - closeU;
+  // during the receipts the ring steps back: the training rig stays bright beside
+  // the bench, the other stations dim but stay on the ring until the loop beat
   const recede = speedU * (1 - loopU);
+  // the station the narration is naming: the latest one that has entered
+  let lit = -1;
+  st.forEach((v, k) => {
+    if (v > 0.5) lit = k;
+  });
+  const focus = recede > 0.5 ? 1 : lit;
   // the traveling pulse
   const pulseA = angleOf(0) + arcU * Math.PI * 2;
   const px = RING.cx + Math.cos(pulseA) * RING.r;
@@ -214,20 +221,30 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={RING.cx} cy={RING.cy} r={RING.r} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} opacity={loopU * 0.5} />
 
           {/* the pulse — under the cards so it never covers their text */}
-          {arcU > 0 && <circle cx={px} cy={py} r={8} fill={colors.WARM} opacity={0.95} />}
+          {arcU > 0 && recede < 0.5 && <circle cx={px} cy={py} r={8} fill={colors.WARM} opacity={0.95} />}
 
           {/* stations */}
           {STATIONS.map((stn, k) => {
             const p = stationPos(k);
-            const u = st[k] * (k === 1 ? 1 : 1 - recede);
+            const u = st[k] * (k === 1 ? 1 : 1 - recede * 0.75);
             if (u <= 0.01) return null;
+            const isLit = k === focus;
             return (
               <g key={stn.label} opacity={u}>
-                <rect x={p.x - 108} y={p.y - 32} width={216} height={64} rx={11} fill={colors.PANEL} stroke={stn.color} strokeWidth={1.5} />
+                <rect
+                  x={p.x - 124}
+                  y={p.y - 32}
+                  width={248}
+                  height={64}
+                  rx={11}
+                  fill={isLit ? colors.BG : colors.PANEL}
+                  stroke={stn.color}
+                  strokeWidth={isLit ? 3 : 1.5}
+                />
                 <text x={p.x} y={p.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {stn.label}
                 </text>
-                <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                   {stn.sub}
                 </text>
               </g>
@@ -240,7 +257,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               671B · step_time 203 s
             </text>
-            <text x={RING.cx} y={RING.cy + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={RING.cx} y={RING.cy + 16} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               → 40.35 token/s (measured)
             </text>
           </g>
@@ -254,11 +271,11 @@ export function Render({ s }: { s: SceneState }) {
               const w = (b.val / 560) * BENCH.w * speedU;
               return (
                 <g key={b.key}>
-                  <text x={BENCH.x} y={BENCH.y + 18 + i * 46} fill={colors.MUTED} fontSize={12}>
+                  <text x={BENCH.x} y={BENCH.y + 18 + i * 46} fill={colors.MUTED} fontSize={14}>
                     {b.key}
                   </text>
                   <rect x={BENCH.x} y={BENCH.y + 24 + i * 46} width={w} height={15} rx={5} fill={b.color} opacity={0.88} />
-                  <text x={BENCH.x + w + 8} y={BENCH.y + 37 + i * 46} fill={b.color} fontSize={13} fontFamily="ui-monospace, monospace">
+                  <text x={BENCH.x + w + 8} y={BENCH.y + 37 + i * 46} fill={b.color} fontSize={14} fontFamily="ui-monospace, monospace">
                     {b.val}
                   </text>
                 </g>
@@ -272,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* quality chip */}
           <g opacity={qualU}>
             <rect x={BENCH.x} y={BENCH.y + 186} width={BENCH.w} height={70} rx={11} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={BENCH.x + BENCH.w / 2} y={BENCH.y + 212} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            <text x={BENCH.x + BENCH.w / 2} y={BENCH.y + 212} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               AfriMed multiple choice · V3
             </text>
             <text x={BENCH.x + BENCH.w / 2} y={BENCH.y + 238} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily="ui-monospace, monospace">
@@ -295,14 +312,14 @@ export function Render({ s }: { s: SceneState }) {
           ].map(([no, head, sub, c], i) => (
             <g key={String(head)}>
               <rect x={282 + i * 182} y={262} width={170} height={124} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={367 + i * 182} y={288} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={367 + i * 182} y={288} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 {no}
               </text>
               <text x={367 + i * 182} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={367 + i * 182} y={334 + k * 17} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text key={k} x={367 + i * 182} y={334 + k * 18} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {line}
                 </text>
               ))}

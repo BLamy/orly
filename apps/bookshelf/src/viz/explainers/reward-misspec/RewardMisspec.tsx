@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -88,23 +88,36 @@ function Frame({ s }: { s: SceneState }) {
                   width={CELL - 6}
                   height={CELL - 6}
                   rx={8}
-                  fill={goal ? colors.PANEL : heatU > 0 ? colors.heat(v) : colors.BG}
-                  opacity={u * (goal ? 1 : heatU > 0 ? 0.26 + 0.74 * v : 1)}
-                  stroke={goal ? colors.WARM : colors.GRID}
+                  fill={goal ? colors.PANEL : heatU > 0 ? colors.heat(v) : '#18223a'}
+                  opacity={u * (goal ? 1 : heatU > 0 ? 0.45 + 0.55 * v : 1)}
+                  stroke={goal ? colors.WARM : '#33425c'}
                   strokeWidth={goal ? 2.5 : 1}
                 />
               );
             }),
           )}
           {/* labels */}
-          <text x={cellCX(START.c)} y={cellCY(START.r) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={gridU}>
-            start
+          <g opacity={gridU}>
+            <rect x={cellCX(START.c) - 24} y={cellCY(START.r) + 25} width={48} height={20} rx={6} fill="#0b1020" opacity={0.85} />
+            <text x={cellCX(START.c)} y={cellCY(START.r) + 40} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              start
+            </text>
+          </g>
+          {/* the robot the caption names, waiting on the start square until its walk begins */}
+          <text
+            x={cellCX(START.c)}
+            y={cellCY(START.r) + 10}
+            textAnchor="middle"
+            fontSize={30}
+            opacity={gridU * clamp01(1 - walk1 * 4) * (walk2 > 0 ? 0 : 1)}
+          >
+            🤖
           </text>
           <g opacity={gridU}>
             <text x={cellCX(GOAL.c)} y={cellCY(GOAL.r) + 8} textAnchor="middle" fontSize={26}>
               🏁
             </text>
-            <text x={cellCX(GOAL.c)} y={cellCY(GOAL.r) + 36} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+            <text x={cellCX(GOAL.c)} y={cellCY(GOAL.r) + 36} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               +10
             </text>
           </g>
@@ -120,9 +133,12 @@ function Frame({ s }: { s: SceneState }) {
               </text>
             )}
             {penU > 0 && (
-              <text x={cellCX(VASE.c)} y={cellCY(VASE.r) + 38} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={penU}>
-                −3
-              </text>
+              <g opacity={penU}>
+                <rect x={cellCX(VASE.c) - 18} y={cellCY(VASE.r) + 24} width={36} height={18} rx={5} fill="#0b1020" opacity={0.85} />
+                <text x={cellCX(VASE.c)} y={cellCY(VASE.r) + 38} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={650}>
+                  −3
+                </text>
+              </g>
             )}
           </g>
 
@@ -158,32 +174,22 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel
-        tex={penU > 0.5 ? 'r = -0.1 + 10\\,[\\text{goal}] - 3\\,[\\text{vase}]' : 'r = -0.1 + 10\\,[\\text{goal}]'}
-        x={985}
-        y={64}
-        fontSize={19}
-        color={colors.WARM}
-        opacity={s.get(scene.mathU)}
-      />
+      {/* screen-fixed formula, in the band above the grid */}
+      <text x={640} y={44} textAnchor="middle" fill={colors.WARM} fontSize={22} opacity={s.get(scene.mathU)}>
+        {penU > 0.5 ? 'r = −0.1 + 10 [goal] − 3 [vase]' : 'r = −0.1 + 10 [goal]'}
+      </text>
 
-      {/* clean ending card */}
+      {/* clean ending card: solid panel so nothing faded shows through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill="#0d1321" stroke="#33425c" />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Reward Misspecification
           </text>
-          <MathLabel
-            tex={'\\text{indifference} + \\text{optimization} = \\text{a broken vase}'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22}>
+            indifference + optimization = a broken vase
+          </text>
+          <text x={640} y={398} textAnchor="middle" fill="#b8c6da" fontSize={18}>
             every reward is a partial description — pressure flows into what was left out
           </text>
         </g>

@@ -29,15 +29,16 @@ export const H1_UNCHANGED: boolean = (() => {
   return true;
 })();
 
-// layout: three mini circuit cards + score bars
+// layout: three mini circuit cards + score bars (cards span x 90–1190, centred on the stage)
 export const CARDS = [
-  { x: 90, y: 120, w: 340, h: 250 },
-  { x: 470, y: 120, w: 340, h: 250 },
-  { x: 850, y: 120, w: 340, h: 250 },
+  { x: 90, y: 120, w: 340, h: 280 },
+  { x: 470, y: 120, w: 340, h: 280 },
+  { x: 850, y: 120, w: 340, h: 280 },
 ];
-export const BARS = { x: 250, y: 460, w: 560, rowH: 52, scale: 60 };
+export const BARS = { x: 460, y: 480, w: 560, rowH: 52, scale: 60 };
 
-export const CAM_CARDS: CameraState = { x: 400, y: 300, k: 1.15 };
+// frames all three cards (visible width 1164 at k 1.1), so the third card never leaves the stage
+export const CAM_CARDS: CameraState = { x: 640, y: 290, k: 1.1 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

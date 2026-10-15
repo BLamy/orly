@@ -92,6 +92,7 @@ const atBeta = (u: number) => FRONTIER[Math.round(Math.max(0, Math.min(1, u)) * 
 // beta = 1 (the clobber) and the best compromise (beta = 0.56, computed)
 const CLOBBER = atBeta(1); // A ≈ 0.504, B = 1.000
 const BEST_BETA = FRONTIER.reduce((b, p) => (Math.min(p.A, p.B) > Math.min(b.A, b.B) ? p : b));
+const BEST_CAP = ((BEST_BETA.A + BEST_BETA.B) / 2).toFixed(2); // one shared cap value for both recalls
 
 // hand-set channel-wise gates (labeled on screen as hand-tuned at toy scale)
 const ERASE_GATE: Vec8 = [1, 1, 1, 1, 0.4, 0.4, 0.4, 0.4];
@@ -110,16 +111,20 @@ const stateAtBeta = (u: number): Mat => coupledWrite(S_A, KEY_B, VAL_B, Math.max
 // ---------------------------------------------------------------------------
 
 const CELL = 26;
-const GRID = { x: 150, y: 190 };
+const GRID = { x: 150, y: 170 };
 const HEAT = 0.9;
 
-const PLOT_X = scaleLinear().domain([0, 1]).range([700, 1150]); // recall B
-const PLOT_Y = scaleLinear().domain([0, 1]).range([560, 200]); // recall A
+// Left column: state grid, then bars and gates stacked below it.
+// Right column: the frontier plot. Everything sits inside the 1280×720 stage.
+const PLOT_X = scaleLinear().domain([0, 1]).range([760, 1160]); // recall B
+const PLOT_Y = scaleLinear().domain([0, 1]).range([560, 230]); // recall A
 
 const BAR = { x: 150, w: 220, h: 20 };
 
-const CAM_GRID: CameraState = { x: 380, y: 330, k: 1.25 };
-const CAM_PLOT: CameraState = { x: 880, y: 370, k: 1.1 };
+// Both cameras frame the whole composition (left grid to right plot), so no
+// panel is cropped at a caption midpoint; the push-in is gentle on purpose.
+const CAM_GRID: CameraState = { x: 620, y: 360, k: 1.03 };
+const CAM_PLOT: CameraState = { x: 660, y: 360, k: 1.03 };
 
 interface Scene {
   tl: Timeline;
@@ -282,7 +287,8 @@ function Frame({ s }: { s: SceneState }) {
   const eq2U = s.get(scene.eq2U);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the chart fades to nothing under the closing panel (no ghost text behind it)
+  const mainOp = 1 - closeU;
 
   // state grid: coupled sweep while betaU animates; snaps to decoupled state when decU rises
   const Scur = decU > 0.5 ? S_DEC : stateAtBeta(betaU);
@@ -294,6 +300,7 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.02 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the state grid */}
@@ -343,20 +350,20 @@ function Frame({ s }: { s: SceneState }) {
           </g>
 
           {/* recall bars */}
-          <RecallBar y={452} label="recall of memory A" value={recA} color={recA > 0.9 ? colors.POSITIVE : colors.NEGATIVE} u={barsU * gridU} />
-          <RecallBar y={518} label="recall of memory B" value={recB} color={colors.WARM} u={barsU * gridU} />
+          <RecallBar y={430} label="recall of memory A" value={recA} color={recA > 0.9 ? colors.POSITIVE : colors.NEGATIVE} u={barsU * gridU} />
+          <RecallBar y={480} label="recall of memory B" value={recB} color={colors.WARM} u={barsU * gridU} />
 
           {/* gates */}
-          <GateStrip x={460} y={452} g={ERASE_GATE} label="erase gate, key side (hand-set at toy scale)" color={colors.NEGATIVE} u={gatesU} />
-          <GateStrip x={460} y={524} g={WRITE_GATE} label="write gate, value side (hand-set at toy scale)" color={colors.POSITIVE} u={gatesU} />
+          <GateStrip x={BAR.x} y={548} g={ERASE_GATE} label="erase gate, key side (hand-set at toy scale)" color={colors.NEGATIVE} u={gatesU} />
+          <GateStrip x={BAR.x} y={598} g={WRITE_GATE} label="write gate, value side (hand-set at toy scale)" color={colors.POSITIVE} u={gatesU} />
 
           {/* the trade-off frontier */}
           {frontU > 0 && (
             <g opacity={frontU}>
-              <text x={700} y={168} fill={colors.TEXT} fontSize={16}>
-                one scalar: recall A versus recall B, beta swept zero to one
+              <text x={PLOT_X(0)} y={GRID.y - 40} fill={colors.TEXT} fontSize={16}>
+                one scalar β, swept zero to one
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={frontU} xTicks={4} yTicks={4} xLabel="recall B" yLabel="recall A" fontSize={11} />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={frontU} xTicks={4} yTicks={4} xLabel="recall B" yLabel="recall A" fontSize={12} />
               {/* frontier as a polyline (parametric in beta) */}
               <path
                 d={FRONTIER.slice(0, Math.max(2, Math.round(frontDraw * N_BETA)))
@@ -369,11 +376,11 @@ function Frame({ s }: { s: SceneState }) {
               {frontDraw > 0.98 && (
                 <g>
                   <circle cx={PLOT_X(BEST_BETA.B)} cy={PLOT_Y(BEST_BETA.A)} r={5} fill={colors.SECONDARY} />
-                  <text x={PLOT_X(BEST_BETA.B) - 10} y={PLOT_Y(BEST_BETA.A) - 12} textAnchor="end" fill={colors.SECONDARY} fontSize={12}>
-                    best compromise · {BEST_BETA.A.toFixed(2)} / {BEST_BETA.B.toFixed(2)}
+                  <text x={PLOT_X(BEST_BETA.B) - 10} y={PLOT_Y(BEST_BETA.A) + 22} textAnchor="end" fill={colors.SECONDARY} fontSize={13}>
+                    best compromise · both ≈ {BEST_CAP}
                   </text>
                   <circle cx={PLOT_X(CLOBBER.B)} cy={PLOT_Y(CLOBBER.A)} r={5} fill={colors.NEGATIVE} />
-                  <text x={PLOT_X(CLOBBER.B) - 10} y={PLOT_Y(CLOBBER.A) + 20} textAnchor="end" fill={colors.NEGATIVE} fontSize={12}>
+                  <text x={PLOT_X(CLOBBER.B) - 10} y={PLOT_Y(CLOBBER.A) + 20} textAnchor="end" fill={colors.NEGATIVE} fontSize={13}>
                     full write · A clobbered to {CLOBBER.A.toFixed(2)}
                   </text>
                 </g>
@@ -382,7 +389,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g opacity={decU}>
                   <circle cx={PLOT_X(DEC.B)} cy={PLOT_Y(DEC.A)} r={7 * Math.min(1, decU)} fill={colors.POSITIVE} />
                   <circle cx={PLOT_X(DEC.B)} cy={PLOT_Y(DEC.A)} r={13} fill="none" stroke={colors.POSITIVE} strokeWidth={2} opacity={0.6} />
-                  <text x={PLOT_X(DEC.B) - 14} y={PLOT_Y(DEC.A) - 16} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
+                  <text x={PLOT_X(DEC.B) - 14} y={PLOT_Y(DEC.A) - 22} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
                     decoupled · {DEC.A.toFixed(2)} / {DEC.B.toFixed(2)}
                   </text>
                 </g>
@@ -391,6 +398,7 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
       <g opacity={titleU * mainOp}>
@@ -403,18 +411,18 @@ function Frame({ s }: { s: SceneState }) {
       </g>
       <MathLabel
         tex="S_t = \alpha_t (I - \beta_t k_t k_t^{\top}) S_{t-1} + \beta_t k_t v_t^{\top}"
-        x={640}
+        x={1240}
         y={70}
-        anchor="start"
+        anchor="end"
         fontSize={20}
         color={colors.SECONDARY}
         opacity={eqU * mainOp}
       />
       <MathLabel
         tex="S_t = (I - k_t (b_t \odot k_t)^{\top})\, D_t S_{t-1} + k_t (w_t \odot v_t)^{\top}"
-        x={620}
+        x={1240}
         y={70}
-        anchor="start"
+        anchor="end"
         fontSize={20}
         color={colors.POSITIVE}
         opacity={eq2U * mainOp}
@@ -422,12 +430,12 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Two gates beat one scalar.
           </text>
           <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            Coupled best compromise: 0.86 / 0.86 — decoupled: 0.95 / 1.00,
+            Coupled best compromise: about {BEST_CAP} each — decoupled: {DEC.A.toFixed(2)} / {DEC.B.toFixed(2)}
           </text>
           <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             computed here at toy scale, learned end to end in the paper.

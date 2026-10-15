@@ -48,14 +48,15 @@ const INK = {
 } as const;
 
 function Txt({
-  x, y, children, size = 16, fill = INK.text, opacity = 1, anchor = 'start', mono = false, weight = 400,
+  x, y, children, size = 16, fill = INK.text, opacity = 1, anchor = 'start', mono = false, weight = 400, halo,
 }: {
   x: number; y: number; children: ReactNode; size?: number; fill?: string; opacity?: number;
-  anchor?: 'start' | 'middle' | 'end'; mono?: boolean; weight?: number;
+  anchor?: 'start' | 'middle' | 'end'; mono?: boolean; weight?: number; halo?: string;
 }) {
   if (opacity <= 0.003) return null;
   return (
     <text x={x} y={y} fontSize={size} fill={fill} opacity={opacity} textAnchor={anchor} fontWeight={weight}
+      stroke={halo} strokeWidth={halo ? 6 : undefined} paintOrder={halo ? 'stroke' : undefined}
       fontFamily={mono ? colors.font.mono : colors.font.ui}>
       {children}
     </text>
@@ -402,10 +403,10 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* row labels */}
-          <Txt x={lerp(S_LOOSE[0].x, RULER.x0, ruler) - 14} y={ROW.student + 7} size={20} anchor="end" fill={INK.student} weight={600} opacity={clamp01(typeS * 3)}>
+          <Txt x={lerp(S_LOOSE[0].x, RULER.x0, ruler) - 14} y={ROW.student + 8} size={24} anchor="end" fill={INK.student} weight={600} opacity={clamp01(typeS * 3)}>
             student
           </Txt>
-          <Txt x={lerp(T_LOOSE[0].x, RULER.x0, ruler) - 14} y={ROW.teacher + 7} size={20} anchor="end" fill={INK.teacher} weight={600} opacity={clamp01(typeT * 3)}>
+          <Txt x={lerp(T_LOOSE[0].x, RULER.x0, ruler) - 14} y={ROW.teacher + 8} size={24} anchor="end" fill={INK.teacher} weight={600} opacity={clamp01(typeT * 3)}>
             teacher
           </Txt>
 
@@ -471,7 +472,7 @@ export function Render({ s }: { s: SceneState }) {
                   <g opacity={lu}>
                     <line x1={mid} y1={yTop} x2={mid} y2={lerp(yTop, yBot, lu)} stroke={INK.strict} strokeWidth={3} />
                     <circle cx={mid} cy={RULER.y} r={7} fill={INK.strict} />
-                    <Txt x={mid} y={GROUP_LABEL_Y} size={17} anchor="middle" fill={INK.strict} mono opacity={1 - c}>
+                    <Txt x={mid} y={GROUP_LABEL_Y} size={18} anchor="middle" fill={INK.strict} mono opacity={1 - c}>
                       {`(${g.t[0]}, ${g.s[0]})`}
                     </Txt>
                   </g>
@@ -479,7 +480,7 @@ export function Render({ s }: { s: SceneState }) {
                   <g opacity={lu}>
                     <rect x={x0 + 2} y={yTop} width={x1 - x0 - 4} height={yBot - yTop} fill="url(#ctk1-hatch)" />
                     <rect x={x0 + 2} y={yTop} width={x1 - x0 - 4} height={yBot - yTop} fill="none" stroke={INK.mismatch} strokeWidth={1.5} strokeDasharray="6 4" />
-                    <Txt x={mid} y={GROUP_LABEL_Y} size={17} anchor="middle" fill={INK.mismatch} mono opacity={1 - c}>
+                    <Txt x={mid} y={GROUP_LABEL_Y} size={18} anchor="middle" fill={INK.mismatch} mono opacity={1 - c}>
                       {`teacher ${g.t.length} : student ${g.s.length} — skipped`}
                     </Txt>
                   </g>
@@ -488,26 +489,27 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
 
-          {/* byte numerals sit above the group hatching so 3, 5, 7 stay legible */}
+          {/* sweep cursor (drawn under the numerals so a numeral is never struck through) */}
+          {sweeping > 0.003 && (
+            <g opacity={sweeping}>
+              <line x1={sweepX} y1={ROW.student - ROW.h / 2 - 14} x2={sweepX} y2={ROW.teacher + ROW.h / 2 + 14} stroke={INK.text} strokeWidth={2} />
+              <polygon points={`${sweepX - 7},${ROW.student - ROW.h / 2 - 26} ${sweepX + 7},${ROW.student - ROW.h / 2 - 26} ${sweepX},${ROW.student - ROW.h / 2 - 14}`} fill={INK.text} />
+              <Txt x={sweepX} y={ROW.student - ROW.h / 2 - 34} size={18} anchor="middle" fill={INK.muted} mono>
+                {`byte ${Math.round(sweep)}`}
+              </Txt>
+            </g>
+          )}
+
+          {/* byte numerals: odd ones above the ruler, even ones below, each with a dark halo so
+              boundary lines and hatching pass behind them; the group markers sit between them */}
           <g opacity={axis}>
             {Array.from({ length: TOTAL_BYTES + 1 }, (_, i) => (
-              <Txt key={i} x={bx(i)} y={RULER.y + (i % 2 === 0 ? 22 : -12)} size={16} anchor="middle" fill={INK.muted} mono
+              <Txt key={i} x={bx(i)} y={RULER.y + (i % 2 === 0 ? 28 : -16)} size={20} anchor="middle" fill={INK.muted} mono halo={INK.bg}
                 opacity={clamp01(axis * (TOTAL_BYTES + 3) - i - 1)}>
                 {String(i)}
               </Txt>
             ))}
           </g>
-
-          {/* sweep cursor */}
-          {sweeping > 0.003 && (
-            <g opacity={sweeping}>
-              <line x1={sweepX} y1={ROW.student - ROW.h / 2 - 14} x2={sweepX} y2={ROW.teacher + ROW.h / 2 + 14} stroke={INK.text} strokeWidth={2} />
-              <polygon points={`${sweepX - 7},${ROW.student - ROW.h / 2 - 26} ${sweepX + 7},${ROW.student - ROW.h / 2 - 26} ${sweepX},${ROW.student - ROW.h / 2 - 14}`} fill={INK.text} />
-              <Txt x={sweepX} y={ROW.student - ROW.h / 2 - 34} size={16} anchor="middle" fill={INK.muted} mono>
-                {`byte ${Math.round(sweep)}`}
-              </Txt>
-            </g>
-          )}
 
           {/* beat 6 — paired EOS outside the byte ruler */}
           <g opacity={eos * (1 - c * 0.7)}>
@@ -531,11 +533,11 @@ export function Render({ s }: { s: SceneState }) {
               <line key={i} x1={bx(i)} y1={SAMPLE2_Y - 5} x2={bx(i)} y2={SAMPLE2_Y + 5} stroke={colors.ink.axis} strokeWidth={1.4}
                 opacity={clamp01(sample2 * 10 - i)} />
             ))}
-            <Txt x={RULER.x0} y={SAMPLE2_Y - 12} size={16} mono fill={INK.muted}>0</Txt>
+            <Txt x={RULER.x0} y={SAMPLE2_Y - 14} size={18} mono fill={INK.muted}>0</Txt>
             <Txt x={RULER.x0 + 60} y={SAMPLE2_Y - 14} size={18} fill={INK.muted}>
               next sample · byte coordinate reset to 0 · aligned independently
             </Txt>
-            <Txt x={RULER.x0 + 540} y={SAMPLE2_Y + 6} size={16} mono fill={INK.muted}>align_byte_span_batch_1to1</Txt>
+            <Txt x={RULER.x0 + 540} y={SAMPLE2_Y + 8} size={18} mono fill={INK.muted}>align_byte_span_batch_1to1</Txt>
             <line x1={RULER.x0 - 30} y1={ROW.teacher + ROW.h / 2 + 8} x2={RULER.x0 - 30} y2={SAMPLE2_Y - 8} stroke={INK.muted} strokeWidth={1.2} strokeDasharray="3 5" />
           </g>
         </g>

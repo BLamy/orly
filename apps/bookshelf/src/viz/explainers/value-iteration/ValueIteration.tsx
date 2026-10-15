@@ -33,6 +33,14 @@ const MOTION = { file: 'src/viz/explainers/value-iteration/overrides.json', slug
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// Literal inks: light cells need dark marks, and walls/empty cells need an
+// outline that still reads on the dark stage.
+const INK = '#0d1321';
+const WALL_FILL = '#475569';
+const CELL_STROKE = '#334155';
+/** Values this high paint the heat cell light enough that white text washes out. */
+const LIGHT_CELL = 0.7;
+
 const ARROW = [
   [0, -1],
   [1, 0],
@@ -86,18 +94,18 @@ function Frame({ s }: { s: SceneState }) {
                     width={CELL - 6}
                     height={CELL - 6}
                     rx={8}
-                    fill={wall ? colors.GRID : goal ? colors.PANEL : colors.heat(v)}
+                    fill={wall ? WALL_FILL : goal ? colors.PANEL : colors.heat(v)}
                     opacity={wall ? 0.9 : goal ? 1 : 0.28 + 0.72 * v}
-                    stroke={goal ? colors.WARM : colors.GRID}
-                    strokeWidth={goal ? 2.5 : 1}
+                    stroke={goal ? colors.WARM : CELL_STROKE}
+                    strokeWidth={goal ? 2.5 : 1.5}
                   />
                   {!wall && !goal && showVals > 0 && v > 0.005 && (
                     <text
                       x={cellCX(c)}
                       y={cellCY(r) + 5}
                       textAnchor="middle"
-                      fill={colors.TEXT}
-                      fontSize={15}
+                      fill={v > LIGHT_CELL ? INK : colors.TEXT}
+                      fontSize={16}
                       opacity={showVals}
                     >
                       {v.toFixed(2)}
@@ -111,14 +119,14 @@ function Frame({ s }: { s: SceneState }) {
                         y1={cellCY(r) - ARROW[POLICY[r][c] as number][1] * 14}
                         x2={cellCX(c) + ARROW[POLICY[r][c] as number][0] * 14}
                         y2={cellCY(r) + ARROW[POLICY[r][c] as number][1] * 14}
-                        stroke={colors.TEXT}
+                        stroke={v > LIGHT_CELL ? INK : colors.TEXT}
                         strokeWidth={2.4}
                       />
                       <circle
                         cx={cellCX(c) + ARROW[POLICY[r][c] as number][0] * 14}
                         cy={cellCY(r) + ARROW[POLICY[r][c] as number][1] * 14}
                         r={3.4}
-                        fill={colors.TEXT}
+                        fill={v > LIGHT_CELL ? INK : colors.TEXT}
                       />
                     </g>
                   )}
@@ -155,15 +163,15 @@ function Frame({ s }: { s: SceneState }) {
       {/* screen-fixed math + sweep badge */}
       <MathLabel
         tex={"V(s) \\leftarrow \\max_a\\,[\\,r + \\gamma\\, V(s')\\,],\\quad \\gamma = " + GAMMA}
-        x={168}
+        x={640}
         y={80}
         fontSize={20}
         opacity={s.get(scene.valTexU)}
       />
       {s.get(scene.sweepBadgeU) > 0 && (
         <g opacity={s.get(scene.sweepBadgeU)}>
-          <rect x={48} y={120} width={196} height={40} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
-          <text x={66} y={146} fill={colors.TEXT} fontSize={15}>
+          <rect x={1036} y={120} width={196} height={40} rx={9} fill={colors.PANEL} opacity={0.94} stroke={CELL_STROKE} />
+          <text x={1054} y={146} fill={colors.TEXT} fontSize={16}>
             {`sweep ${sweepShown} / ${N_SWEEPS}`}
           </text>
         </g>
@@ -172,7 +180,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={250} y={220} width={780} height={220} rx={16} fill={colors.PANEL} stroke={CELL_STROKE} />
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Value of a State
           </text>

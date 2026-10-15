@@ -105,8 +105,10 @@ export const CH_H = 330;
 export const chX = (step: number): number => CH_X0 + (step / T_STEPS) * (CH_X1 - CH_X0);
 export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
-export const CAM_LOOP: CameraState = { x: 350, y: 300, k: 1.3 };
-export const CAM_CURVE: CameraState = { x: 920, y: 330, k: 1.15 };
+// Loop beat frames the machine and the policy bars together (y 116..585).
+export const CAM_LOOP: CameraState = { x: 343, y: 350, k: 1.1 };
+// Curve beat frames the bars and the curve together (x 97..1200, y 200..585).
+export const CAM_CURVE: CameraState = { x: 648, y: 392, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;

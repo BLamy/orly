@@ -100,17 +100,17 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
     <Camera {...s.get(scene.cam)}>
       {/* The project record, with its two single slots */}
-      <g opacity={projectU * (1 - 0.85 * closeU)}>
+      <g opacity={clamp01(projectU / 0.12) * (0.6 + 0.4 * projectU) * (1 - 0.9 * closeU)}>
         <rect x={100} y={80} width={470} height={230} rx={22} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
         <text x={130} y={122} fill={colors.TEXT} fontSize={23} fontWeight={750}>Project · Checkout App</text>
-        <text x={130} y={146} fill={colors.MUTED} fontSize={12} fontFamily={mono}>projects · one row</text>
+        <text x={130} y={146} fill={colors.MUTED} fontSize={13} fontFamily={mono}>projects · one row</text>
 
         <rect x={130} y={168} width={410} height={52} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
-        <text x={148} y={189} fill={colors.MUTED} fontSize={12} fontFamily={mono}>target_url</text>
+        <text x={148} y={189} fill={colors.MUTED} fontSize={13} fontFamily={mono}>target_url</text>
         <text x={148} y={209} fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>app.example.com</text>
 
         <rect x={130} y={232} width={410} height={52} rx={12} fill={colors.BG} stroke={instrU > 0.05 ? colors.NEGATIVE : colors.MUTED} strokeWidth={1.6} opacity={0.6 + 0.4 * Math.max(projectU, instrU)} />
-        <text x={148} y={253} fill={colors.MUTED} fontSize={12} fontFamily={mono}>test_instructions</text>
+        <text x={148} y={253} fill={colors.MUTED} fontSize={13} fontFamily={mono}>test_instructions</text>
         <text x={148} y={273} fill={colors.TEXT} fontSize={13}>“Sign in as demo user, then…”</text>
       </g>
 
@@ -120,25 +120,27 @@ export function Render({ s }: { s: SceneState }) {
         const approach = clamp01(rejectU * 3 - i * 0.85);
         // ease out toward the slot, then bounce back
         const travel = approach < 0.6 ? approach / 0.6 : 1 - (approach - 0.6) * 0.6;
-        const x = lerp(880, 585, travel);
+        const x = lerp(880, 612, travel);
         const y = 118 + i * 62;
         const bounced = approach >= 0.6;
-        return <g key={want.label} opacity={shown * clamp01((projectU - 0.12) / 0.88) * (1 - clamp01(s.get(scene.closeU) * 4))}>
+        // parked URLs fade out fully once the queue has left, so no ghost boxes linger
+        const present = clamp01((queueU - 0.1) * 5);
+        return <g key={want.label} opacity={shown * present * clamp01((projectU - 0.12) / 0.88) * (1 - clamp01(s.get(scene.closeU) * 4))}>
           <g transform={`translate(${x} ${y})`}>
             <rect width={250} height={40} rx={10} fill={colors.PANEL} stroke={want.color} strokeWidth={1.4} opacity={0.95} />
-            <text x={16} y={25} fill={want.color} fontSize={12.5} fontFamily={mono}>{want.label}</text>
+            <text x={16} y={25} fill={want.color} fontSize={14} fontFamily={mono}>{want.label}</text>
           </g>
-          {bounced && <text x={600} y={y + 26} fill={colors.NEGATIVE} fontSize={20} fontWeight={800} opacity={clamp01((approach - 0.6) * 4)}>✕</text>}
+          {bounced && <text x={x - 28} y={y + 27} fill={colors.NEGATIVE} fontSize={20} fontWeight={800} opacity={clamp01((approach - 0.6) * 4)}>✕</text>}
         </g>;
       })}
-      {rejectU > 0.85 && <text x={620} y={70} fill={colors.NEGATIVE} fontSize={13} fontFamily={mono} opacity={clamp01((rejectU - 0.85) * 6) * clamp01((projectU - 0.12) / 0.88) * (1 - closeU)}>one slot · last write wins</text>}
+      {rejectU > 0.85 && <text x={620} y={70} fill={colors.NEGATIVE} fontSize={14} fontFamily={mono} opacity={clamp01((rejectU - 0.85) * 6) * clamp01((queueU - 0.1) * 5) * clamp01((projectU - 0.12) / 0.88) * (1 - closeU)}>one slot · last write wins</text>}
 
       {/* Run history ledger */}
-      <g opacity={ledgerU * (1 - 0.85 * closeU)}>
+      <g opacity={ledgerU * (1 - 0.9 * closeU)}>
         <text x={110} y={372} fill={colors.TEXT} fontSize={20} fontWeight={750} opacity={1 - 0.9 * mysteryU}>Test run history</text>
-        <text x={340} y={395} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>url used</text>
-        <text x={700} y={395} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>source</text>
-        <text x={900} y={395} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>environment?</text>
+        <text x={340} y={395} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>url used</text>
+        <text x={700} y={395} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>source</text>
+        <text x={900} y={395} fill={colors.WARM} fontSize={13} fontWeight={700} fontFamily={mono}>environment?</text>
         {RUNS.map((run, i) => {
           const rowU = i === 0 ? ledgerU : clamp01(overrideU * 2 - (i - 1));
           return <g key={run.id} opacity={rowU} transform={`translate(0 ${(1 - rowU) * 14})`}>
@@ -152,7 +154,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           </g>;
         })}
-        <text x={400} y={372} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={mysteryU * (1 - closeU)}>a url carries no logins · no instructions · no environment</text>
+        <text x={400} y={372} fill={colors.NEGATIVE} fontSize={14} fontFamily={mono} opacity={mysteryU * (1 - closeU)}>a url carries no logins · no instructions · no environment</text>
       </g>
 
       {/* Override packet: a URL diving into run 419 */}

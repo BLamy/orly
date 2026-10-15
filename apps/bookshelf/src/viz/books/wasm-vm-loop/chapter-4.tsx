@@ -78,7 +78,6 @@ export interface Scene {
   railU: ChannelRef<number>;
   depU: ChannelRef<number>;
   verifiedU: ChannelRef<number>;
-  cardsU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
@@ -95,7 +94,6 @@ export function buildScene(): Scene {
   const railU = tl.channel('railU', 0);
   const depU = tl.channel('depU', 0);
   const verifiedU = tl.channel('verifiedU', 0);
-  const cardsU = tl.channel('cardsU', 0); // side cards step back once the loop is the subject
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -157,7 +155,6 @@ export function buildScene(): Scene {
     text: 'The lap repeats until the critic runs out of ways to break the claim. Verified is not the worker giving up on finding bugs — it is the attacker giving up on finding them.',
   });
   tl.tween(cam, CAM_RING, { at: 36.7, dur: 1.4, ease: ease.move });
-  tl.tween(cardsU, 1, { at: 36.2, dur: 1.0, ease: ease.move });
   tl.tween(lapU, 2.0, { at: 37.4, dur: 2.2, ease: ease.move });
   tl.tween(verifiedU, 1, { at: 40.0, dur: 0.7, ease: ease.pop });
   tl.hold(43.0, 0.5);
@@ -192,7 +189,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 60.7, dur: 0.9, ease: ease.enter });
   tl.hold(64.5, 1.2);
 
-  return { tl, cam, ringU, lapU, reportU, qU, qFlipU, evU, railU, depU, verifiedU, cardsU, dimU, closeU };
+  return { tl, cam, ringU, lapU, reportU, qU, qFlipU, evU, railU, depU, verifiedU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -218,12 +215,12 @@ export function Render({ s }: { s: SceneState }) {
   const railU = s.get(scene.railU);
   const depU = s.get(scene.depU);
   const verifiedU = s.get(scene.verifiedU);
-  const cardsU = s.get(scene.cardsU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
   const worldOp = 1 - 0.86 * dimU;
-  const cardOp = 1 - 0.88 * cardsU;
+  // side cards ride the camera out of frame on the move to the ring (36.7), and stay gone once the lap verifies
+  const cardOp = clamp01((cam.x - CAM_RING.x) / (CAM_EV.x - CAM_RING.x)) * (1 - clamp01(verifiedU));
   const tok = ringPos(lapU);
 
   return (
@@ -242,25 +239,32 @@ export function Render({ s }: { s: SceneState }) {
                 u={lapU}
                 reveal={ringU}
                 color={verifiedU > 0.3 ? colors.POSITIVE : colors.ACCENT}
-                labelSize={12.5}
+                labelSize={14}
               />
-              <text x={RING.cx} y={RING.cy - 14} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700} opacity={ringU}>
+              <text x={RING.cx} y={RING.cy - 14} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700} opacity={ringU}>
                 the proof loop
               </text>
-              <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={ringU}>
+              <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={ringU}>
                 refuted → in-progress → re-record
               </text>
+              {/* the verdict that sends the token back, pinned beside the adversarial stop; superseded once the lap verifies */}
+              <g opacity={ringU * (1 - verifiedU)} transform={`translate(${RING.cx - RING.r - 60} ${RING.cy + 30})`}>
+                <rect x={-36} y={-12} width={72} height={24} rx={6} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
+                <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+                  refuted
+                </text>
+              </g>
               {/* the report riding with the token */}
               {reportU > 0 && lapU < 2 && (
                 <g opacity={reportU} transform={`translate(${tok.x + 16} ${tok.y - 24})`}>
-                  <rect x={0} y={-12} width={108} height={24} rx={6} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
-                  <text x={54} y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+                  <rect x={0} y={-12} width={124} height={24} rx={6} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
+                  <text x={62} y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                     critic report
                   </text>
                 </g>
               )}
               {verifiedU > 0 && (
-                <g opacity={verifiedU} transform={`translate(${RING.cx} ${RING.cy + 40})`}>
+                <g opacity={verifiedU} transform={`translate(${RING.cx} ${RING.cy + 56})`}>
                   <rect x={-58} y={-15} width={116} height={30} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} />
                   <text y={5} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                     verified
@@ -271,7 +275,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- the queue file ---- */}
-          {qU > 0 && (
+          {qU > 0 && cardOp > 0 && (
             <g opacity={Math.min(1, qU * 2) * (evU > 0.4 ? 0.35 : 1) * cardOp}>
               <rect x={QFILE.x} y={QFILE.y} width={QFILE.w} height={QFILE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={QFILE.x + 16} y={QFILE.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={700}>
@@ -290,21 +294,21 @@ export function Render({ s }: { s: SceneState }) {
                       {flip ? '[!]' : r.mark} {r.id}
                     </text>
                     {flip && (
-                      <text x={QFILE.x + 150} y={QFILE.y + 64 + i * 32} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={qFlipU}>
+                      <text x={QFILE.x + 150} y={QFILE.y + 64 + i * 32} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={qFlipU}>
                         refuted — blocks dependents
                       </text>
                     )}
                   </g>
                 );
               })}
-              <text x={QFILE.x + 16} y={QFILE.y + QFILE.h - 16} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={qFlipU}>
+              <text x={QFILE.x + 16} y={QFILE.y + QFILE.h - 16} fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={qFlipU}>
                 one task in flight at a time
               </text>
             </g>
           )}
 
           {/* ---- the rework evidence dir ---- */}
-          {evU > 0 && (
+          {evU > 0 && cardOp > 0 && (
             <g opacity={Math.min(1, evU * 2) * cardOp}>
               <rect x={EVDIR.x} y={EVDIR.y} width={EVDIR.w} height={EVDIR.h} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
               <text x={EVDIR.x + 16} y={EVDIR.y + 28} fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={MONO}>
@@ -315,18 +319,18 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={f} opacity={u}>
-                    <text x={EVDIR.x + 30} y={EVDIR.y + 58 + i * 26} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+                    <text x={EVDIR.x + 30} y={EVDIR.y + 58 + i * 26} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                       {f}
                     </text>
                     {EV_TAGS[i] && (
-                      <text x={EVDIR.x + EVDIR.w - 16} y={EVDIR.y + 58 + i * 26} textAnchor="end" fill={EV_TAGS[i].color} fontSize={12} fontWeight={700} fontFamily={MONO}>
+                      <text x={EVDIR.x + EVDIR.w - 16} y={EVDIR.y + 58 + i * 26} textAnchor="end" fill={EV_TAGS[i].color} fontSize={14} fontWeight={700} fontFamily={MONO}>
                         {EV_TAGS[i].label}
                       </text>
                     )}
                   </g>
                 );
               })}
-              <text x={EVDIR.x + 16} y={EVDIR.y + EVDIR.h - 16} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(evU * 2 - 1)}>
+              <text x={EVDIR.x + 16} y={EVDIR.y + EVDIR.h - 16} fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={clamp01(evU * 2 - 1)}>
                 v1 and v3 runs — the loop, on disk
               </text>
             </g>
@@ -357,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={302} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
               every lap makes the next lap harder to fake
             </text>
-            <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               promoted tests · golden traces · fuzz seeds · make verify-*
             </text>
           </g>

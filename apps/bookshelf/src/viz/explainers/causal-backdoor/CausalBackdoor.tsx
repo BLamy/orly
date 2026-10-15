@@ -48,59 +48,65 @@ function renderFrame(s: SceneState) {
 
   return (
     <Camera {...s.get(scene.cam)}>
-      <Axes x={px} y={py} reveal={axU} grid xTicks={5} yTicks={5} xLabel="dose x" yLabel="outcome y" />
+      {/* the plot fades back to 0.15 under the closing line */}
+      <g opacity={1 - 0.85 * closeU}>
+        <Axes x={px} y={py} reveal={axU} grid xTicks={5} yTicks={5} xLabel="dose x" yLabel="outcome y" />
 
-      {CLOUD.map((p, i) => (
-        <circle
-          key={i}
-          cx={px(p.x)}
-          cy={py(p.y)}
-          r={3 * clamp01(cloudP * CLOUD.length - i)}
-          fill={colorU > 0.02 ? (p.z === 0 ? colors.ACCENT : colors.WARM) : colors.MUTED}
-          fillOpacity={0.6}
-        />
-      ))}
+        {CLOUD.map((p, i) => (
+          <circle
+            key={i}
+            cx={px(p.x)}
+            cy={py(p.y)}
+            r={3 * clamp01(cloudP * CLOUD.length - i)}
+            fill={colorU > 0.02 ? (p.z === 0 ? colors.ACCENT : colors.WARM) : colors.MUTED}
+            fillOpacity={0.6}
+          />
+        ))}
 
-      {fitLine(FIT_ALL, -1.2, 3.0, colors.NEGATIVE, naiveU, `naive: ${FIT_ALL.slope.toFixed(2)}`, 'all')}
-      {fitLine(FIT_Z0, -1.4, 1.4, colors.ACCENT, fit0U, `z = 0: ${FIT_Z0.slope.toFixed(2)}`, 'z0')}
-      {fitLine(FIT_Z1, 0.2, 3.0, colors.WARM, fit1U, `z = 1: ${FIT_Z1.slope.toFixed(2)}`, 'z1')}
+        {fitLine(FIT_ALL, -1.2, 3.0, colors.NEGATIVE, naiveU, `naive: ${FIT_ALL.slope.toFixed(2)}`, 'all')}
+        {fitLine(FIT_Z0, -1.4, 1.4, colors.ACCENT, fit0U, `z = 0: ${FIT_Z0.slope.toFixed(2)}`, 'z0')}
+        {fitLine(FIT_Z1, 0.2, 3.0, colors.WARM, fit1U, `z = 1: ${FIT_Z1.slope.toFixed(2)}`, 'z1')}
 
-      {/* the weighted-average scale */}
-      <g opacity={scaleU}>
-        <rect x={430} y={92} width={420} height={70} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
-        <text x={640} y={120} textAnchor="middle" fill={colors.POSITIVE} fontSize={16}>
-          adjusted effect = {ADJUSTED.toFixed(2)}
-        </text>
-        <text x={640} y={146} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
-          truth built into the machine: {TRUE_EFFECT.toFixed(2)} · naive: {FIT_ALL.slope.toFixed(2)}
-        </text>
+        {/* the weighted-average scale, parked in the empty top-left of the plot */}
+        <g opacity={scaleU}>
+          <rect x={130} y={100} width={270} height={64} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.GRID} />
+          <text x={146} y={126} fill={colors.POSITIVE} fontSize={16}>
+            adjusted effect = {ADJUSTED.toFixed(2)}
+          </text>
+          <text x={146} y={150} fill={colors.MUTED} fontSize={14}>
+            true effect {TRUE_EFFECT.toFixed(2)} · naive {FIT_ALL.slope.toFixed(2)}
+          </text>
+        </g>
       </g>
 
+      {/* the formula sits under the adjusted-effect panel, clear of the caption's own formula */}
       <MathLabel
         tex="P(y \mid \mathrm{do}(x)) = \sum_z P(y \mid x, z)\, P(z)"
-        x={640}
-        y={600}
-        fontSize={20}
+        x={134}
+        y={232}
+        anchor="start"
+        fontSize={14}
         color={colors.TEXT}
         opacity={mathU * (1 - closeU)}
       />
 
-      {/* the fine print */}
+      {/* the fine print, parked in the empty lower-right of the plot */}
       <g opacity={cautionU}>
-        <rect x={880} y={92} width={310} height={96} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.NEGATIVE} />
-        <text x={900} y={122} fill={colors.NEGATIVE} fontSize={14}>
+        <rect x={900} y={336} width={290} height={92} rx={12} fill={colors.PANEL} fillOpacity={0.94} stroke={colors.NEGATIVE} />
+        <text x={914} y={362} fill={colors.NEGATIVE} fontSize={14}>
           requires: every backdoor blocked
         </text>
-        <text x={900} y={148} fill={colors.MUTED} fontSize={13}>
+        <text x={914} y={386} fill={colors.MUTED} fontSize={14}>
           unmeasured confounder → silent bias
         </text>
-        <text x={900} y={172} fill={colors.MUTED} fontSize={13}>
+        <text x={914} y={410} fill={colors.MUTED} fontSize={14}>
           untestable from this data alone
         </text>
       </g>
 
       <g opacity={closeU}>
-        <text x={640} y={600} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+        <rect x={300} y={580} width={680} height={44} rx={12} fill={colors.PANEL} fillOpacity={0.96} stroke={colors.GRID} />
+        <text x={640} y={608} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
           measure the switch, freeze it, average it back — or randomize
         </text>
       </g>

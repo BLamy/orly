@@ -102,8 +102,10 @@ const HEAT_SCALE = 1.0;
 const PLOT_X = scaleLinear().domain([1, NP]).range([720, 1180]);
 const PLOT_Y = scaleLinear().domain([0.5, 1.02]).range([560, 330]);
 
+// The plot camera frames the grid and the crowding curve side by side, so the
+// matrix never leaves the stage while the curve draws in.
 const CAM_GRID: CameraState = { x: 400, y: 330, k: 1.25 };
-const CAM_PLOT: CameraState = { x: 930, y: 420, k: 1.25 };
+const CAM_PLOT: CameraState = { x: 682, y: 360, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -254,11 +256,8 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the fast-weight matrix */}
           <g opacity={gridU}>
-            <text x={GRID_X} y={GRID_Y - 34} fill={colors.TEXT} fontSize={19}>
-              fast weights
-            </text>
-            <text x={GRID_X} y={GRID_Y - 12} fill={colors.MUTED} fontSize={13}>
-              one matrix, rewritten every token
+            <text x={GRID_X} y={GRID_Y - 14} fill={colors.MUTED} fontSize={14}>
+              S: 16 × 16, rewritten every token
             </text>
             {S.map((row, i) =>
               row.map((v, j) => (
@@ -285,21 +284,21 @@ function Frame({ s }: { s: SceneState }) {
               strokeWidth={2}
               opacity={0.8}
             />
-            <text x={GRID_X + gridW / 2} y={GRID_Y + gridW + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={GRID_X + gridW / 2} y={GRID_Y + gridW + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               pairs written: {Math.round(Math.min(NP, writeTok))} of {NP}
             </text>
           </g>
 
           {/* probe readout */}
-          {probeU > 0 && (
-            <g opacity={probeU}>
+          {probeU > 0 && closeU < 1 && (
+            <g opacity={probeU * (1 - closeU)}>
               <text x={GRID_X + gridW + 46} y={GRID_Y + 30} fill={colors.TEXT} fontSize={15}>
                 read key one back
               </text>
               <text x={GRID_X + gridW + 46} y={GRID_Y + 60} fill={colors.POSITIVE} fontSize={22} fontFamily="monospace" fontWeight={700}>
                 {writeTok <= 3.5 ? PAIR1_AFTER_3.toFixed(2) : PAIR1_AFTER_12.toFixed(2)}
               </text>
-              <text x={GRID_X + gridW + 46} y={GRID_Y + 82} fill={colors.MUTED} fontSize={12}>
+              <text x={GRID_X + gridW + 46} y={GRID_Y + 82} fill={colors.MUTED} fontSize={14}>
                 cosine with the stored value
               </text>
             </g>
@@ -311,7 +310,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={720} y={300} fill={colors.TEXT} fontSize={16}>
                 average recall of everything stored
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={3} xLabel="pairs written" fontSize={11} />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={3} xLabel="pairs written" fontSize={14} />
               <FunctionPlot
                 x={PLOT_X}
                 y={PLOT_Y}
@@ -334,10 +333,10 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+        <text x={40} y={50} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Fast weights
         </text>
-        <text x={40} y={70} fill={colors.MUTED} fontSize={14}>
+        <text x={40} y={82} fill={colors.MUTED} fontSize={15}>
           a matrix as a key-value memory
         </text>
       </g>
@@ -360,14 +359,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
+          <rect x={240} y={110} width={800} height={170} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={640} y={176} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Memory as weights.
           </text>
-          <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={216} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             Outer-product writes, key reads — and blind addition
           </text>
-          <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={240} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             that crowds itself: recall 0.78 by pair twelve.
           </text>
         </g>

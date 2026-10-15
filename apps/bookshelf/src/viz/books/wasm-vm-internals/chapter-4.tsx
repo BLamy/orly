@@ -395,17 +395,17 @@ export function Render({ s }: { s: SceneState }) {
               <text x={620} y={228} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>
                 the machine
               </text>
-              <text x={620} y={258} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+              <text x={620} y={258} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 state and inputs in, next state out
               </text>
               <line x1={330} y1={241} x2={462} y2={241} stroke={colors.ACCENT} strokeWidth={2} />
               <polygon points="470,241 456,234 456,248" fill={colors.ACCENT} />
-              <text x={330} y={230} fill={colors.ACCENT} fontSize={13.5}>
+              <text x={330} y={230} fill={colors.ACCENT} fontSize={14}>
                 state at instruction n
               </text>
               <line x1={770} y1={241} x2={900} y2={241} stroke={colors.ACCENT} strokeWidth={2} />
               <polygon points="908,241 894,234 894,248" fill={colors.ACCENT} />
-              <text x={790} y={230} fill={colors.ACCENT} fontSize={13.5}>
+              <text x={790} y={230} fill={colors.ACCENT} fontSize={14}>
                 state at n plus one
               </text>
 
@@ -418,7 +418,7 @@ export function Render({ s }: { s: SceneState }) {
                   return (
                     <g key={n} opacity={u}>
                       <rect x={x} y={352} width={158} height={38} rx={7} fill={colors.BG} stroke={KIND_COLOR[i]} strokeWidth={1.6} />
-                      <text x={x + 79} y={376} textAnchor="middle" fill={KIND_COLOR[i]} fontSize={12.5}>
+                      <text x={x + 79} y={376} textAnchor="middle" fill={KIND_COLOR[i]} fontSize={13.5}>
                         {n}
                       </text>
                       <line x1={x + 79} y1={352} x2={620} y2={302} stroke={KIND_COLOR[i]} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.55} />
@@ -434,14 +434,14 @@ export function Render({ s }: { s: SceneState }) {
               {/* the fingerprint gate */}
               {fingerU > 0 && (
                 <g opacity={fingerU}>
-                  <rect x={430} y={452} width={380} height={74} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+                  <rect x={400} y={452} width={440} height={74} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
                   <text x={620} y={478} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                     one fingerprint per run
                   </text>
-                  <text x={620} y={500} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
-                    execution hash + memory digest + final state
+                  <text x={620} y={500} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                    a hash of every step, plus a digest of memory and the final state
                   </text>
-                  <text x={620} y={518} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+                  <text x={620} y={518} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
                     native and browser must agree — enforced in the build
                   </text>
                 </g>
@@ -449,21 +449,40 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* ================= the agent (drawn under the timeline labels) ================= */}
+          {agentU > 0 && (
+            <g opacity={agentU}>
+              <rect x={TL.x + 60} y={TL.y - 152} width={150} height={40} rx={8} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.6} />
+              <text x={TL.x + 135} y={TL.y - 127} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontWeight={700}>
+                the agent
+              </text>
+              {[0.09, 0.14, 0.21, 0.27].map((u, k) => (
+                <g key={k} opacity={clamp01(agentU * 3 - k * 0.5)}>
+                  <line x1={TL.x + 135 + k * 18} y1={TL.y - 112} x2={tlX(u)} y2={TL.y - 14} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="3 4" opacity={0.6} />
+                  <line x1={tlX(u)} y1={TL.y - 12} x2={tlX(u)} y2={TL.y + 12} stroke={colors.TEAL} strokeWidth={2.4} />
+                </g>
+              ))}
+              <text x={TL.x + 240} y={TL.y - 133} fill={colors.MUTED} fontSize={14}>
+                its keystrokes and requests are just more recorded inputs
+              </text>
+            </g>
+          )}
+
           {/* ================= the timeline ================= */}
           {tlU > 0 && (
-            <g opacity={tlU}>
+            <g opacity={tlU * (1 - clamp01(ledgerU))}>
               <line x1={TL.x} y1={TL.y} x2={TL.x + TL.w * tlU} y2={TL.y} stroke={colors.GRID} strokeWidth={3} />
-              <text x={TL.x} y={TL.y + 46} fill={colors.MUTED} fontSize={13}>
+              <text x={TL.x} y={TL.y + 46} fill={colors.MUTED} fontSize={14}>
                 instruction 0
               </text>
-              <text x={TL.x + TL.w} y={TL.y + 46} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={TL.x + TL.w} y={TL.y + 46} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 instruction 4,102,338,915
               </text>
               {/* billion-instruction ticks: the timebase is a place, so mark the places */}
               {[0.25, 0.5, 0.75].map((u, i) => (
                 <g key={u} opacity={clamp01(tlU * 2 - 0.6) * (1 - clamp01(headU * 2 - 0.4))}>
                   <line x1={tlX(u)} y1={TL.y + 4} x2={tlX(u)} y2={TL.y + 14} stroke={colors.MUTED} strokeWidth={1.2} />
-                  <text x={tlX(u)} y={TL.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={tlX(u)} y={TL.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {`${i + 1} billion`}
                   </text>
                 </g>
@@ -507,12 +526,15 @@ export function Render({ s }: { s: SceneState }) {
                   );
                 })}
               {keyU > 0.6 && (
-                <text x={TL.x} y={TL.y - 40} fill={colors.ACCENT} fontSize={13.5} opacity={clamp01(keyU * 2 - 1.2)}>
-                  keyframes — the whole machine
-                </text>
+                <g opacity={clamp01(keyU * 2 - 1.2)}>
+                  <rect x={TL.x - 6} y={TL.y - 54} width={392} height={22} rx={4} fill={colors.BG} />
+                  <text x={TL.x} y={TL.y - 40} fill={colors.ACCENT} fontSize={14}>
+                    keyframes — a full snapshot of the whole machine
+                  </text>
+                </g>
               )}
               {logU > 0.5 && (
-                <text x={TL.x + TL.w} y={TL.y - 40} textAnchor="end" fill={colors.POSITIVE} fontSize={13.5} opacity={clamp01(logU * 2 - 1)}>
+                <text x={TL.x + TL.w} y={TL.y - 40} textAnchor="end" fill={colors.POSITIVE} fontSize={14} opacity={clamp01(logU * 2 - 1)}>
                   the log — only what came in from outside
                 </text>
               )}
@@ -532,9 +554,18 @@ export function Render({ s }: { s: SceneState }) {
               {/* delta keyframes: hollow ones store only changed pages */}
               {deltaU > 0 && (
                 <g opacity={deltaU}>
-                  <text x={TL.x} y={TL.y + 122} fill={colors.MUTED} fontSize={13}>
+                  <text x={TL.x} y={TL.y + 122} fill={colors.MUTED} fontSize={14}>
                     hollow keyframes store only the pages that changed — the rest is shared
                   </text>
+                  {/* one plain gloss per term; hidden once the decision beat takes the space */}
+                  <g opacity={modeU > 0.05 ? 0 : 1}>
+                    <text x={TL.x} y={TL.y + 150} fill={colors.TEXT} fontSize={14}>
+                      dirty page map: the memory pages written since the last keyframe
+                    </text>
+                    <text x={TL.x} y={TL.y + 172} fill={colors.TEXT} fontSize={14}>
+                      content-addressed store: each page kept once, named by its hash
+                    </text>
+                  </g>
                 </g>
               )}
 
@@ -544,7 +575,7 @@ export function Render({ s }: { s: SceneState }) {
                   {seekU > 0.05 && (
                     <g opacity={clamp01(seekU * 2)}>
                       <line x1={tlX(key)} y1={TL.y - 40} x2={tlX(SEEK_TARGET)} y2={TL.y - 40} stroke={colors.WARM} strokeWidth={2.4} />
-                      <text x={tlX((key + SEEK_TARGET) / 2)} y={TL.y - 50} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+                      <text x={tlX((key + SEEK_TARGET) / 2)} y={TL.y - 58} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                         replay forward
                       </text>
                     </g>
@@ -555,7 +586,7 @@ export function Render({ s }: { s: SceneState }) {
                     fill={colors.TEXT}
                   />
                   {revU > 0.4 && (
-                    <text x={tlX(finalPos)} y={TL.y + 52} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700} opacity={revU}>
+                    <text x={tlX(finalPos)} y={TL.y + 52} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} opacity={revU}>
                       one instruction back
                     </text>
                   )}
@@ -579,7 +610,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={475 + i * 320} y={564} textAnchor="middle" fill={m.color} fontSize={15} fontWeight={700}>
                       {m.title}
                     </text>
-                    <text x={475 + i * 320} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                    <text x={475 + i * 320} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
                       {m.line}
                     </text>
                   </g>
@@ -623,49 +654,33 @@ export function Render({ s }: { s: SceneState }) {
           {streamU > 0 && (
             <g opacity={streamU}>
               <rect x={TL.x - 34} y={TL.y - 72} width={TL.w + 68} height={144} rx={16} fill="none" stroke={colors.TEAL} strokeWidth={1.8} strokeDasharray="10 7" />
+              <rect x={TL.x - 26} y={TL.y - 88} width={580} height={20} rx={4} fill={colors.BG} />
               <text x={TL.x - 20} y={TL.y - 84} fill={colors.TEAL} fontSize={14.5} fontWeight={700}>
                 the durable stream — append-only, replicated, the machine itself
               </text>
               <g opacity={clamp01(streamU * 2 - 1)}>
-                <rect x={TL.x + TL.w + 34 - 200} y={TL.y - 100} width={200} height={24} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-                <text x={TL.x + TL.w + 34 - 100} y={TL.y - 83} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontWeight={700}>
+                <rect x={TL.x + TL.w + 34 - 200} y={TL.y - 118} width={200} height={24} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+                <text x={TL.x + TL.w + 34 - 100} y={TL.y - 101} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontWeight={700}>
                   ⏸ suspended = stop appending
                 </text>
               </g>
             </g>
           )}
-          {agentU > 0 && (
-            <g opacity={agentU}>
-              <rect x={TL.x + 60} y={TL.y - 152} width={150} height={40} rx={8} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.6} />
-              <text x={TL.x + 135} y={TL.y - 127} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontWeight={700}>
-                the agent
-              </text>
-              {[0.09, 0.14, 0.21, 0.27].map((u, k) => (
-                <g key={k} opacity={clamp01(agentU * 3 - k * 0.5)}>
-                  <line x1={TL.x + 135 + k * 18} y1={TL.y - 112} x2={tlX(u)} y2={TL.y - 14} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="3 4" opacity={0.6} />
-                  <line x1={tlX(u)} y1={TL.y - 12} x2={tlX(u)} y2={TL.y + 12} stroke={colors.TEAL} strokeWidth={2.4} />
-                </g>
-              ))}
-              <text x={TL.x + 240} y={TL.y - 133} fill={colors.MUTED} fontSize={12.5}>
-                its keystrokes and requests are just more recorded inputs
-              </text>
-            </g>
-          )}
           {replU > 0 && (
             <g opacity={replU}>
               {['your laptop', 'teammate tab', 'home desktop'].map((n, k) => {
-                const x = 650 + k * 190;
+                const x = 790 + k * 150;
                 return (
                   <g key={n} opacity={clamp01(replU * 2 - k * 0.3)}>
-                    <line x1={tlX(0.25 + k * 0.25)} y1={TL.y + 74} x2={x + 70} y2={TL.y + 118} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.55} />
-                    <rect x={x} y={TL.y + 120} width={140} height={40} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-                    <text x={x + 70} y={TL.y + 145} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+                    <line x1={tlX(0.25 + k * 0.25)} y1={TL.y + 74} x2={x + 65} y2={TL.y + 118} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.55} />
+                    <rect x={x} y={TL.y + 120} width={130} height={40} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
+                    <text x={x + 65} y={TL.y + 145} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                       {n}
                     </text>
                   </g>
                 );
               })}
-              <text x={640} y={TL.y + 190} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+              <text x={TL.x} y={TL.y + 190} fill={colors.MUTED} fontSize={14}>
                 subscribed replicas on the tailnet — the filesystem rides the same content-addressed chunks
               </text>
             </g>
@@ -676,10 +691,10 @@ export function Render({ s }: { s: SceneState }) {
               <text x={640} y={136} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
                 whole-machine time travel
               </text>
-              <text x={640} y={160} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+              <text x={640} y={160} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
                 run-to instruction · reverse-step · watch memory
               </text>
-              <text x={640} y={182} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={182} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 kernel + filesystem + agent, one address space of moments
               </text>
             </g>

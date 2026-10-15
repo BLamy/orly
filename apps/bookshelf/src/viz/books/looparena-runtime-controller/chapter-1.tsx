@@ -116,7 +116,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x="0" y="54" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>main Worker turns</text>
       </g>
 
-      <path d="M250 305 Q330 222 430 170" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="8 7" opacity={s.get(scene.reporterFork)} />
+      <path d="M250 295 Q300 205 356 176" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="8 7" opacity={s.get(scene.reporterFork)} />
       <g opacity={s.get(scene.readOnlyU)} transform="translate(460 244)">
         <rect x="-96" y="-23" width="192" height="46" rx="12" fill="#221c35" stroke={colors.SECONDARY} />
         <text y="5" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>read-only workspace</text>
@@ -130,12 +130,12 @@ export function Render({ s }: { s: SceneState }) {
         <line x1="-72" y1="-12" x2="72" y2="12" stroke={colors.NEGATIVE} strokeWidth="5" />
       </g>
       {contract > 0 && <g opacity={contract}>
-        {['advance', 'verify', 'stop'].map((label, i) => <g key={label} transform={`translate(${650 + i * 110} 598)`}>
+        {['advance', 'verify', 'stop'].map((label, i) => <g key={label} transform={`translate(${650 + i * 110} 607)`}>
           <rect x="-48" y="-19" width="96" height="38" rx="19" fill={label === 'verify' && s.get(scene.verifyU) ? '#2b2415' : '#121c2c'} stroke={label === 'verify' ? colors.WARM : colors.MUTED} strokeWidth={label === 'verify' && s.get(scene.verifyU) ? 3 : 1.5} />
           <text y="5" textAnchor="middle" fill={label === 'verify' ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
         </g>)}
       </g>}
-      <path d="M665 530 Q430 590 267 385" fill="none" stroke={colors.WARM} strokeWidth="5" opacity={s.get(scene.returnU)} strokeDasharray="10 8" />
+      <path d="M665 530 Q470 600 356 362" fill="none" stroke={colors.WARM} strokeWidth="5" opacity={s.get(scene.returnU)} strokeDasharray="10 8" />
       <g opacity={s.get(scene.evaluatorU)} transform="translate(1120 528)">
         <rect x="-82" y="-35" width="164" height="70" rx="18" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="3" />
         <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="800">task evaluator</text>
@@ -146,6 +146,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="196" textAnchor="middle" fill={colors.TEXT} fontSize="38" fontWeight="850">the Controller is outside the coding loop</text>
       {STATIONS.slice(0, 5).map((item, i) => <g key={item.label} transform={`translate(${270 + i * 185} 320)`}>
         <circle r="34" fill="#101b2e" stroke={item.color} strokeWidth="3" />
+        <text y="7" textAnchor="middle" fill={item.color} fontSize="22" fontWeight="850">{i + 1}</text>
         <text y="62" textAnchor="middle" fill={item.color} fontSize="14" fontWeight="800">{item.label}</text>
         {i < 4 && <><line x1="38" y1="0" x2="122" y2="0" stroke={colors.MUTED} strokeWidth="4" /><polygon points="122,0 104,-10 104,10" fill={colors.MUTED} /></>}
       </g>)}

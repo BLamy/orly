@@ -270,7 +270,8 @@ export function Render({ s }: { s: SceneState }) {
   // machines: assembled → killed by the crash → relit by the resume
   const machineLit = (assembled: number): number =>
     assembled * (1 - 0.95 * crashU * (1 - resumeU));
-  const frameDim = 1 - 0.85 * endU;
+  // the closing lockup takes the stage: the map underneath fades out fully
+  const frameDim = (1 - 0.85 * endU) * (1 - 0.95 * closeU);
 
   return (
     <>
@@ -281,10 +282,10 @@ export function Render({ s }: { s: SceneState }) {
           {div1U > 0.01 && (
             <g>
               <line x1={CX - 560 * div1U} y1={CY} x2={CX + 560 * div1U} y2={CY} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="7 7" />
-              <text x={110} y={126} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div1U * 2 - 1)}>
+              <text x={222} y={214} textAnchor="end" fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={clamp01(div1U * 2 - 1)}>
                 all at once
               </text>
-              <text x={90} y={540} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div1U * 2 - 1)}>
+              <text x={222} y={488} textAnchor="end" fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={clamp01(div1U * 2 - 1)}>
                 one after another
               </text>
             </g>
@@ -292,10 +293,10 @@ export function Render({ s }: { s: SceneState }) {
           {div2U > 0.01 && (
             <g>
               <line x1={CX} y1={CY - 290 * div2U} x2={CX} y2={CY + 290 * div2U} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="7 7" />
-              <text x={CX - 24} y={68} textAnchor="end" fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div2U * 2 - 1)}>
+              <text x={CX - 24} y={68} textAnchor="end" fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={clamp01(div2U * 2 - 1)}>
                 a fixed set
               </text>
-              <text x={CX + 24} y={68} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div2U * 2 - 1)}>
+              <text x={CX + 24} y={68} fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={clamp01(div2U * 2 - 1)}>
                 decided by the input
               </text>
             </g>
@@ -334,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={q.y + 72}
                   textAnchor="middle"
                   fill={colors.TEXT}
-                  fontSize={12.5}
+                  fontSize={14}
                   fontStyle="italic"
                   opacity={win(phrasesU, 4, i, 1.8) * (1 - 0.8 * crashU * (1 - resumeU)) * (1 - resumeU)}
                 >
@@ -343,7 +344,7 @@ export function Render({ s }: { s: SceneState }) {
               )}
               {/* the resume receipt replaces the phrase on the same line */}
               {resumeU > 0.01 && (
-                <text x={q.x} y={q.y + 72} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={resumeU}>
+                <text x={q.x} y={q.y + 72} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={resumeU}>
                   {q.resume}
                 </text>
               )}
@@ -354,10 +355,12 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- the crash flash ---------------- */}
         {crashU > 0.01 && resumeU < 0.5 && (
           <g opacity={1 - resumeU * 2}>
+            {/* solid backing so the dividing lines never run through the words */}
+            <rect x={CX - 200} y={CY - 26} width={400} height={80} rx={12} fill={colors.BG} />
             <text x={CX} y={CY + 8} textAnchor="middle" fill={colors.NEGATIVE} fontSize={26} fontWeight={700} opacity={crashU}>
               ⚡ every process just died
             </text>
-            <text x={CX} y={CY + 36} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={crashU}>
+            <text x={CX} y={CY + 36} textAnchor="middle" fill={colors.TEXT} fontSize={15} opacity={crashU * 0.85}>
               the tapes did not
             </text>
           </g>
@@ -370,13 +373,13 @@ export function Render({ s }: { s: SceneState }) {
             <text x={CX} y={CY - 90} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
               two questions → four shapes
             </text>
-            <text x={CX} y={CY - 62} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
+            <text x={CX} y={CY - 62} textAnchor="middle" fill={colors.TEXT} fontSize={15} opacity={0.85}>
               all at once or one after another · fixed or decided by the input
             </text>
             {Q.map((q, i) => (
-              <text key={q.name} x={CX} y={CY - 10 + i * 36} textAnchor="middle" fontSize={13.5}>
+              <text key={q.name} x={CX} y={CY - 10 + i * 36} textAnchor="middle" fontSize={14.5}>
                 <tspan fill={q.color} fontWeight={600}>{q.name}</tspan>
-                <tspan fill={colors.MUTED}>{`  ·  ${TRADE[i]}`}</tspan>
+                <tspan fill={colors.TEXT} opacity={0.85}>{`  ·  ${TRADE[i]}`}</tspan>
               </text>
             ))}
           </g>

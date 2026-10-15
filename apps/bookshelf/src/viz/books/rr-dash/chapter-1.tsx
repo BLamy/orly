@@ -243,8 +243,9 @@ function computeMsgs(s: SceneState): ParticlePoint[] {
     const y0 = fileY(m.fi) + 14;
     const x1 = SIDECAR.x + 26;
     const y1 = rowY(m.ri) + 26 + m.jitter;
-    const mx = (x0 + x1) / 2;
-    const my = Math.min(y0, y1) - 34;
+    // Arc through the gap between the bundle and the sidecar, so the dots never cross the row labels.
+    const mx = BUNDLE.x + BUNDLE.w + 22;
+    const my = (y0 + y1) / 2;
     const a = 1 - uu;
     const pt = PTS[i];
     pt.x = a * a * x0 + 2 * a * uu * mx + uu * uu * x1;
@@ -266,7 +267,7 @@ function BundleDir({ u, filesU, blobU, dim }: { u: number; filesU: number; blobU
   return (
     <g transform={`translate(${BUNDLE.x}, ${BUNDLE.y + (1 - e) * 14})`} opacity={e * (1 - 0.85 * dim)}>
       <rect width={BUNDLE.w} height={BUNDLE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={18} y={28} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text x={18} y={28} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         recorder bundle · sample-cachesim-01/
       </text>
       {FILES.map((f, i) => {
@@ -291,11 +292,11 @@ function BundleDir({ u, filesU, blobU, dim }: { u: number; filesU: number; blobU
               strokeWidth={1.2}
               opacity={0.4 + 0.6 * focus}
             />
-            <text x={12} y={20} fill={focus > 0.4 ? colors.TEXT : colors.MUTED} fontSize={13.5} fontFamily={mono}>
+            <text x={12} y={20} fill={focus > 0.4 ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={mono}>
               {f.name}
             </text>
             {isBlob && (
-              <text x={BUNDLE.w - 48} y={20} textAnchor="end" fill={colors.WARM} fontSize={12.5} fontFamily={mono} opacity={0.9}>
+              <text x={BUNDLE.w - 48} y={20} textAnchor="end" fill={colors.WARM} fontSize={13.5} fontFamily={mono} opacity={0.9}>
                 214 MB
               </text>
             )}
@@ -313,7 +314,7 @@ function PromiseCard({ u }: { u: number }) {
   return (
     <g transform={`translate(470, ${170 + (1 - e) * 12})`} opacity={e}>
       <rect width={430} height={120} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={24} y={36} fill={colors.MUTED} fontSize={13}>
+      <text x={24} y={36} fill={colors.MUTED} fontSize={14}>
         the promise
       </text>
       <text x={24} y={66} fill={colors.TEXT} fontSize={15} fontWeight={600}>
@@ -347,10 +348,10 @@ function Sidecar({ u, uploadP, indexPop, dim }: { u: number; uploadP: number; in
         const isIndex = r.kind === 'index';
         return (
           <g key={r.path} transform={`translate(${SIDECAR.x + 18}, ${rowY(i)})`} opacity={ru}>
-            <text y={14} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+            <text y={14} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               {r.path}
               {(r.kind === 'linetrace' || r.kind === 'stacks') && (
-                <tspan fill={colors.MUTED} opacity={0.7}>
+                <tspan fill={colors.MUTED} opacity={0.85}>
                   {'  · chunks ≤1000'}
                 </tspan>
               )}
@@ -363,9 +364,9 @@ function Sidecar({ u, uploadP, indexPop, dim }: { u: number; uploadP: number; in
               );
             })}
             {isIndex && indexPop > 0 && (
-              <g transform={`translate(${SIDECAR.w - 200}, ${27 + (1 - clamp01(indexPop)) * 6})`} opacity={clamp01(indexPop)}>
-                <rect x={-8} y={-13} width={180} height={24} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-                <text y={3} fill={colors.WARM} fontSize={12.5} fontFamily={mono}>
+              <g transform={`translate(${SIDECAR.w - 222}, ${27 + (1 - clamp01(indexPop)) * 6})`} opacity={clamp01(indexPop)}>
+                <rect x={-8} y={-13} width={196} height={26} rx={13} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+                <text y={4} fill={colors.WARM} fontSize={14} fontFamily={mono}>
                   {'{ id, title, cmd, … }'}
                 </text>
               </g>
@@ -384,7 +385,8 @@ function BlobFlight({ u }: { u: number }) {
   const uu = ease.move(p);
   const x0 = BUNDLE.x + BUNDLE.w - 20;
   const y0 = fileY(7) + 14;
-  const x1 = BLOBS.x - 60;
+  // Lands in the gap just left of the blob node (its left edge is BLOBS.x - 84), never on top of it.
+  const x1 = BLOBS.x - 150;
   const y1 = BLOBS.y;
   const mx = (x0 + x1) / 2;
   const my = Math.max(y0, y1) + 80;
@@ -393,8 +395,8 @@ function BlobFlight({ u }: { u: number }) {
   const y = a * a * y0 + 2 * a * uu * my + uu * uu * y1;
   return (
     <g transform={`translate(${x}, ${y})`} opacity={Math.min(1, p * 5)}>
-      <rect x={-50} y={-13} width={100} height={26} rx={6} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-      <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={mono}>
+      <rect x={-65} y={-14} width={130} height={28} rx={6} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+      <text y={5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={mono}>
         trace.tar.zst
       </text>
     </g>
@@ -432,29 +434,33 @@ export function Render({ s }: { s: SceneState }) {
       {dim < 1 && <Sidecar u={s.get(scene.sidecarU)} uploadP={uploadP} indexPop={s.get(scene.indexPopU)} dim={dim} />}
       <ParticleCloud state={s} compute={computeMsgs} />
       <BlobFlight u={blobU} />
-      <g opacity={1 - 0.9 * dim}>
-        <ServiceNode
-          x={BLOBS.x}
-          y={BLOBS.y}
-          kind="storage"
-          label="./data/blobs/<id>/"
-          sublabel="trace.tar.zst"
-          u={clamp01(blobU * 2)}
-          glow={blobU > 0.9 ? 0.5 : 0}
-        />
-        <ServiceNode x={APP.x} y={APP.y} kind="server" label="Next.js :6100" sublabel="reads per request" u={appU} />
-        {appU > 0.1 && (
-          <Connection
-            from={{ x: APP.x - 70, y: APP.y }}
-            to={{ x: SIDECAR.x + SIDECAR.w, y: 240 }}
-            u={appU}
-            flow={s.get(scene.readFlow)}
-            label="@durable-streams/client"
-            color={colors.ACCENT}
-            arrow
+      {/* Once the stage is fully dimmed, the service nodes are gone too, so no ghosts sit behind the closing card. */}
+      {dim < 1 && (
+        <g opacity={1 - 0.9 * dim}>
+          <ServiceNode
+            x={BLOBS.x}
+            y={BLOBS.y}
+            kind="storage"
+            label="./data/blobs/<id>/"
+            sublabel="trace.tar.zst"
+            u={clamp01(blobU * 2)}
+            glow={blobU > 0.9 ? 0.5 : 0}
           />
-        )}
-      </g>
+          <ServiceNode x={APP.x} y={APP.y} kind="server" label="Next.js :6100" sublabel="reads per request" u={appU} />
+          {appU > 0.1 && (
+            <Connection
+              from={{ x: APP.x - 70, y: APP.y }}
+              to={{ x: SIDECAR.x + SIDECAR.w, y: 240 }}
+              u={appU}
+              flow={s.get(scene.readFlow)}
+              label="@durable-streams/client"
+              labelSize={14}
+              color={colors.ACCENT}
+              arrow
+            />
+          )}
+        </g>
+      )}
       <CloseCard u={s.get(scene.closeU)} />
     </Camera>
   );

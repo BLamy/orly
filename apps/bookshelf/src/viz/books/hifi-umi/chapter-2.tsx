@@ -120,6 +120,9 @@ export function Render({ s }: { s: SceneState }) {
   const head = HEAD_PATH[headIndex] ?? HEAD_PATH[0];
   const left = HAND_PATH[Math.min(HAND_PATH.length - 1, Math.floor(composeU * 72 + 24))];
   const right = HAND_PATH[Math.min(HAND_PATH.length - 1, Math.floor(composeU * 72 + 42))];
+  const videoOpacity = rawU * (1 - s.get(scene.headU));
+  const relativeLabelX = (left.x + right.x) / 2;
+  const relativeLabelY = (left.y + right.y) / 2 - 56;
 
   return (
     <>
@@ -137,20 +140,30 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* The hand and head layers step back while the paper figure is shown as an inset. */}
           <g opacity={1 - 0.7 * s.get(scene.figureU)}>
+            <polyline points={HAND_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.MUTED} strokeWidth={3} strokeDasharray="2 6" opacity={driftU * (1 - composeU) * 0.7} />
             <polyline points={lerpPoints(0)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="8 7" opacity={rawU * (0.35 + 0.5 * driftU) * (1 - 0.7 * composeU)} />
             <polyline points={tracePoints} fill="none" stroke={colors.ACCENT} strokeWidth={4} opacity={rawU} />
+
+            {/* Six synchronized camera tiles stand in for the videos the caption names. */}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <g key={i} opacity={videoOpacity}>
+                <rect x={170 + i * 160} y={502} width={150} height={56} rx={10} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1.5} />
+                <text x={245 + i * 160} y={536} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>video {i + 1}</text>
+              </g>
+            ))}
 
             {s.get(scene.headU) > 0 && (
               <g opacity={s.get(scene.headU)}>
                 <polyline points={HEAD_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray="6 5" />
+                <path d={`M${head.x - 25} ${head.y + 20} Q470 280 ${left.x} ${left.y}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={markersU} />
+                <path d={`M${head.x + 25} ${head.y + 20} Q760 280 ${right.x} ${right.y}`} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={markersU} />
                 <g transform={`translate(${head.x} ${head.y})`}>
                   <rect x={-34} y={-18} width={68} height={36} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
                   <circle cx={-15} cy={0} r={7} fill={colors.POSITIVE} />
                   <circle cx={15} cy={0} r={7} fill={colors.POSITIVE} />
-                  <text x={0} y={42} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>head stereo + IMU</text>
+                  <rect x={-84} y={27} width={168} height={24} rx={8} fill={colors.BG} opacity={0.9} />
+                  <text x={0} y={44} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>head stereo + IMU</text>
                 </g>
-                <path d={`M${head.x - 25} ${head.y + 20} Q470 280 ${left.x} ${left.y}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={markersU} />
-                <path d={`M${head.x + 25} ${head.y + 20} Q760 280 ${right.x} ${right.y}`} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={markersU} />
               </g>
             )}
 
@@ -162,7 +175,8 @@ export function Render({ s }: { s: SceneState }) {
                 <line x1={left.x} y1={left.y - 35} x2={right.x} y2={right.y - 35} stroke={colors.POSITIVE} strokeWidth={3} />
                 <circle cx={left.x} cy={left.y - 35} r={5} fill={colors.POSITIVE} />
                 <circle cx={right.x} cy={right.y - 35} r={5} fill={colors.POSITIVE} />
-                <text x={(left.x + right.x) / 2} y={(left.y + right.y) / 2 - 56} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>T_left⁻¹ · T_right · native</text>
+                <rect x={relativeLabelX - 128} y={relativeLabelY - 17} width={256} height={24} rx={8} fill={colors.BG} opacity={0.9} />
+                <text x={relativeLabelX} y={relativeLabelY} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>T_left⁻¹ · T_right · native</text>
               </g>
             )}
           </g>

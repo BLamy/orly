@@ -78,7 +78,7 @@ const scene = buildScene();
 function MemoryCard({ u, fade, x = 118, y = 112 }: { u: number; fade: number; x?: number; y?: number }) {
   return <g transform={`translate(${x} ${y}) scale(${0.86 + 0.14 * u})`} opacity={u}>
     <rect width="262" height="92" rx="24" fill="#151f31" stroke={colors.WARM} strokeWidth="3" />
-    <text x="22" y="32" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>Question: oHBvRP</text>
+    <text x="22" y="32" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>Question: oHBvRP</text>
     <text x="22" y="65" fill={colors.WARM} fontSize="18" fontWeight="800" fontFamily={colors.font.mono} opacity={fade}>Answer: OIvG</text>
   </g>;
 }
@@ -91,7 +91,7 @@ export function Render({ s }: { s: SceneState }) {
   const matrix = s.get(scene.matrixU);
   const diagonal = s.get(scene.diagonalU);
   const final = s.get(scene.finalU);
-  const memoryFade = Math.max(0.08, 1 - 0.82 * clamp01(overwrite));
+  const memoryFade = Math.max(0.2, 1 - 0.8 * clamp01(overwrite));
   const tapeFade = 1 - fold;
 
   return <Camera {...s.get(scene.cam)}>
@@ -105,29 +105,29 @@ export function Render({ s }: { s: SceneState }) {
           const old = task.i === 0;
           return <g key={task.i} opacity={u}>
             <rect x={task.x} y={270} width="7" height={old ? 44 : 28} rx="3.5" fill={old ? colors.WARM : colors.ACCENT} opacity={old ? memoryFade : 0.25 + 0.55 * u} />
-            {(task.i === 0 || task.i === 9 || task.i === 49 || task.i === 99) && <text x={task.x + 3.5} y="335" textAnchor="middle" fill={old ? colors.WARM : colors.MUTED} fontSize="12">{task.i + 1}</text>}
+            {(task.i === 0 || task.i === 9 || task.i === 49 || task.i === 99) && <text x={task.x + 3.5} y="337" textAnchor="middle" fill={old ? colors.WARM : colors.MUTED} fontSize="14">{task.i + 1}</text>}
           </g>;
         })}
         <g opacity={s.get(scene.noIdU)}>
           <rect x="432" y="158" width="416" height="70" rx="22" fill="#251823" stroke={colors.NEGATIVE} strokeWidth="2.5" />
           <text x="640" y="187" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">NO TASK IDENTIFIER AT INFERENCE</text>
-          <text x="640" y="211" textAnchor="middle" fill={colors.MUTED} fontSize="12">one question must identify one answer globally</text>
+          <text x="640" y="211" textAnchor="middle" fill={colors.MUTED} fontSize="14">one question must identify one answer globally</text>
         </g>
         <g>
           {DATASETS.map((d, i) => {
             const u = clamp01(s.get(scene.datasetsU) - i);
-            return <g key={d.label} transform={`translate(${152 + i * 360} 430)`} opacity={u}>
+            return <g key={d.label} transform={`translate(${124 + i * 360} 430)`} opacity={u}>
               <rect width="312" height="106" rx="26" fill="#101827" stroke={d.color} strokeWidth="2.5" />
               <circle cx="38" cy="53" r="19" fill={d.color} opacity="0.28" />
               <text x="72" y="44" fill={d.color} fontSize="17" fontWeight="800">{d.label}</text>
-              <text x="72" y="70" fill={colors.MUTED} fontSize="12">{d.detail}</text>
+              <text x="72" y="70" fill={colors.MUTED} fontSize="14">{d.detail}</text>
             </g>;
           })}
         </g>
       </g>
 
       <g opacity={matrix} transform={`translate(${fold * 135} ${fold * 8})`}>
-        <text x="368" y="116" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>evaluate.py → accuracy_matrix</text>
+        <text x="368" y="116" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>evaluate.py → accuracy_matrix</text>
         {Array.from({ length: 10 }, (_, row) => Array.from({ length: 10 }, (_, col) => {
           if (col > row) return null;
           const idx = row * 10 + col;
@@ -136,7 +136,7 @@ export function Render({ s }: { s: SceneState }) {
           const isFinal = row === 9;
           const x = 338 + col * 48;
           const y = 142 + row * 42;
-          const dim = isDiag ? 0.48 + 0.52 * diagonal : isFinal ? 0.24 + 0.76 * final : 0.22;
+          const dim = isDiag ? 0.48 + 0.52 * diagonal : isFinal ? 0.24 + 0.76 * final : 0.3;
           const color = isDiag ? colors.ACCENT : isFinal ? colors.WARM : colors.MUTED;
           return <rect key={`${row}-${col}`} x={x} y={y} width="38" height="32" rx="7" fill={color} opacity={u * dim} stroke={color} strokeWidth={isFinal && final > 0 ? 2.5 : 0.5} />;
         }))}
@@ -155,7 +155,7 @@ export function Render({ s }: { s: SceneState }) {
 
     <g opacity={close}>
       <rect x="180" y="122" width="920" height="444" rx="54" fill={colors.BG} stroke={colors.WARM} strokeWidth="4" />
-      <MemoryCard u={1} fade={0.16} x={509} y={146} />
+      <MemoryCard u={1} fade={0.15} x={509} y={146} />
       <text x="640" y="320" textAnchor="middle" fill={colors.TEXT} fontSize="46" fontWeight="880">one memory · one hundred updates</text>
       <path d="M286 400 H994" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
       {['data', 'function', 'weight', 'allocation'].map((label, i) => <g key={label} transform={`translate(${330 + i * 205} 400)`}>

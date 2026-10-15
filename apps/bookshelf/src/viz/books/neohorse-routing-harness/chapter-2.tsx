@@ -12,6 +12,16 @@ const DIMENSIONS = [
   ['error recovery', 'PASS', colors.POSITIVE],
   ['termination', 'NOT EVALUATED', colors.MUTED],
 ] as const;
+// One short trajectory walked through the gate: rows 0-4 are a closed fragment, rows 5-6 are not.
+const TRACE_ROWS = [
+  ['U', 'find the invoice'],
+  ['A', 'call #1 search'],
+  ['OBS', 'result #1'],
+  ['A', 'call #2 open'],
+  ['OBS', 'result #2'],
+  ['A', 'call #3 pay'],
+  ['END', 'second END, owner unclear'],
+] as const;
 const LENSES = [
   ['SCENE', ['task +', 'context'], colors.ACCENT],
   ['GOAL', ['acceptance', 'criteria'], colors.WARM],
@@ -38,15 +48,18 @@ export function buildScene() {
   // the layers that are not being discussed (a push crops labels off the 1280x720 frame).
   tl.caption({ at: 0.4, dur: 5.5, text: 'A recorded trajectory is rich, but rich is not the same as reliable supervision.' });
   tl.tween(rawU, 1, { at: 0.9, dur: 1.3, ease: ease.draw });
+  tl.tween(cam, CAMERA_HOME, { at: 2.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 6.2, dur: 5.5, text: 'Exact and near duplicates fall away first, and matching against evaluation items keeps the training side disjoint.' });
   tl.tween(dedupU, 1, { at: 6.8, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 9.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.0, dur: 5.5, text: 'Structural validation reconstructs requests, responses, tool calls, observations, terminal events, and their causal order.' });
   tl.tween(structuralU, 1, { at: 12.6, dur: 1.5, ease: ease.draw });
 
   tl.caption({ at: 17.8, dur: 5.5, text: 'Its reproducible rules check that every call closes with a result and every event belongs to an unambiguous branch.' });
   tl.tween(structuralU, 2, { at: 18.4, dur: 2.0, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 20.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 23.6, dur: 5.5, text: 'The gate separates complete traces, recoverable traces, and quarantined traces instead of pretending every record is whole.' });
   tl.tween(lanesU, 1, { at: 24.2, dur: 1.3, ease: ease.enter });
@@ -56,12 +69,14 @@ export function buildScene() {
 
   tl.caption({ at: 35.2, dur: 5.5, text: 'Structurally usable traces then face six separate judgments: goal, instructions, tools, evidence, recovery, and termination.' });
   tl.tween(semanticU, 1, { at: 35.8, dur: 2.8, ease: ease.draw });
+  tl.tween(cam, CAMERA_HOME, { at: 36.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 41.0, dur: 5.5, text: 'Missing evidence stays not evaluated. It never quietly turns into a passing verdict.' });
   tl.tween(evidenceU, 1, { at: 41.6, dur: 1.0, ease: ease.pop });
 
   tl.caption({ at: 46.8, dur: 5.5, text: 'Scene, goal, and outcome describe the subscene, while their source and confidence keep deterministic facts in charge.' });
   tl.tween(lensU, 1, { at: 47.4, dur: 1.4, ease: ease.enter });
+  tl.tween(cam, CAMERA_HOME, { at: 49.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 52.6, dur: 6.0, text: 'The result is a structured quality record with coverage preserved, not one convenient score that hides uncertainty.' });
   tl.tween(recordU, 1, { at: 53.2, dur: 1.0, ease: ease.pop });
@@ -78,7 +93,7 @@ function TraceStrip({ x, y, u, dim = 0 }: { x: number; y: number; u: number; dim
   return <g transform={`translate(${x} ${y})`} opacity={clamp01(u) * (1 - dim * 0.85)}>
     {cells.map((label, i) => <g key={`${label}-${i}`} transform={`translate(${i * 54} 0)`}>
       <rect width="46" height="40" rx="10" fill={label === 'OBS' ? '#13291f' : '#15243a'} stroke={label === 'CALL' ? colors.WARM : label === 'OBS' ? colors.POSITIVE : colors.ACCENT} />
-      <text x="23" y="25" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+      <text x="23" y="25" textAnchor="middle" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{label}</text>
     </g>)}
   </g>;
 }
@@ -96,6 +111,10 @@ export function Render({ s }: { s: SceneState }) {
   const structFocus = clamp01(structural) * (1 - 0.5 * clamp01(semantic));
   // The closing card needs the stack fully gone, so the old content clears before it lands.
   const stackFade = clamp01(1 - close / 0.5);
+  // The example trace fills the right column from the start, then gives way to the six judgments.
+  const cardOp = clamp01(s.get(scene.rawU)) * clamp01(1 - 4 * clamp01(semantic));
+  const beat = s.get(scene.recoverU);
+  const gate = s.get(scene.lanesU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={stackFade}>
       <text x="640" y="72" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">quality is a stack of evidence</text>
@@ -136,9 +155,29 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={lanes * (1 - 0.5 * clamp01(semantic))}>
         {[['COMPLETE', colors.POSITIVE, 494], ['RECOVERABLE', colors.WARM, 616], ['QUARANTINED', colors.NEGATIVE, 738]].map(([label, color, x], i) => <g key={String(label)} transform={`translate(${x} 510)`}>
           <rect x="-57" y="-22" width="114" height="44" rx="15" fill={colors.PANEL} stroke={String(color)} strokeWidth="2" />
-          <text y="5" textAnchor="middle" fill={String(color)} fontSize="12" fontFamily={colors.font.mono}>{String(label)}</text>
+          <text y="5" textAnchor="middle" fill={String(color)} fontSize="13" fontFamily={colors.font.mono}>{String(label)}</text>
           {i === 1 && <path d="M-50 35 H50" stroke={colors.WARM} strokeWidth={4} strokeDasharray="7 6" opacity={s.get(scene.recoverU)} />}
         </g>)}
+      </g>
+
+      <g opacity={cardOp}>
+        <rect x="812" y="132" width="348" height="348" rx="30" fill="#111a2b" stroke={colors.ACCENT} strokeWidth="3" />
+        <text x="986" y="166" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>one trace through the gate</text>
+        <rect x="828" y="180" width="318" height="146" rx="16" fill="#13291f" stroke={colors.POSITIVE} strokeWidth="2" opacity={beat} />
+        {TRACE_ROWS.map(([tag, desc], i) => {
+          const dropped = i >= 5;
+          const tagColor = tag === 'A' ? colors.ACCENT : tag === 'OBS' ? colors.POSITIVE : tag === 'U' ? colors.WARM : colors.MUTED;
+          return <g key={`${tag}-${i}`} transform={`translate(834 ${186 + i * 28})`} opacity={dropped ? 1 - 0.6 * beat : 1}>
+            <rect width="58" height="22" rx="8" fill="#15243a" stroke={tagColor} />
+            <text x="29" y="15" textAnchor="middle" fill={tagColor} fontSize="12" fontFamily={colors.font.mono}>{tag}</text>
+            <text x="72" y="15" fill={colors.TEXT} fontSize="13">{desc}</text>
+            <line x1="70" x2="250" y1="11" y2="11" stroke={colors.NEGATIVE} strokeWidth="2" opacity={dropped ? beat : 0} />
+          </g>;
+        })}
+        <text x="834" y="392" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono} opacity={beat}>kept: rows 1-5, a closed fragment</text>
+        <text x="834" y="414" fill={colors.NEGATIVE} fontSize="13" fontFamily={colors.font.mono} opacity={beat}>dropped: call #3 has no result</text>
+        <text x="834" y="436" fill={colors.NEGATIVE} fontSize="13" fontFamily={colors.font.mono} opacity={beat}>dropped: END has an unclear owner</text>
+        <text x="834" y="462" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono} opacity={gate}>verdict: RECOVERABLE</text>
       </g>
 
       <g opacity={clamp01(semantic)}>
@@ -147,7 +186,7 @@ export function Render({ s }: { s: SceneState }) {
         {DIMENSIONS.map(([label, verdict, color], i) => {
           const u = clamp01(semantic * 2.3 - i * 0.22);
           return <g key={label} transform={`translate(840 ${205 + i * 43})`} opacity={u}>
-            <text y="4" fill={colors.TEXT} fontSize="12">{label}</text>
+            <text y="4" fill={colors.TEXT} fontSize="13">{label}</text>
             <rect x="178" y="-14" width="112" height="28" rx="12" fill={verdict === 'PASS' ? '#143329' : verdict === 'WARN' ? '#312512' : '#202838'} stroke={color} />
             <text x="234" y="4" textAnchor="middle" fill={color} fontSize="12" fontFamily={colors.font.mono}>{verdict}</text>
           </g>;
@@ -156,7 +195,7 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="1010" y="398" width="128" height="44" rx="16" fill="none" stroke={colors.MUTED} strokeWidth="3" strokeDasharray="6 5" opacity={s.get(scene.evidenceU)} />
       </g>
 
-      <g opacity={s.get(scene.lensU)} transform="translate(868 524)">
+      <g opacity={s.get(scene.lensU)} transform="translate(868 530)">
         {LENSES.map(([name, desc, color], i) => <g key={name} transform={`translate(${i * 112} 0)`}>
           <circle r="40" fill={colors.PANEL} stroke={color} strokeWidth="3" />
           <text y="-8" textAnchor="middle" fill={color} fontSize="12" fontFamily={colors.font.mono}>{name}</text>

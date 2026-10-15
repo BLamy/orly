@@ -60,7 +60,7 @@ const INSET = { x: 936, y: 168, w: 300, h: 250 } as const;
 
 // Framings are chosen so every label stays on the 1280×720 stage and above the
 // caption band (y < 630). The inset and closing panel are screen-space overlays.
-const CAM_FRONT: CameraState = { x: 640, y: 556, k: 2.0 }; // the front pallet alone
+// The camera opens on CAM_WIDE: the original timing has no separate move for it.
 const CAM_WIDE: CameraState = { x: 737, y: 421, k: 1.35 }; // both wings, full depth
 const CAM_CUT: CameraState = { x: 615, y: 377, k: 1.4 }; // the measure and the cut line
 const CAM_JOINT: CameraState = { x: 640, y: 480, k: 1.3 }; // the screws at the joints
@@ -88,7 +88,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAM_FRONT, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_WIDE, cameraInterp);
   const frontU = tl.channel('frontU', 0);
   const wingU = tl.channel('wingU', 0);
   const measureU = tl.channel('measureU', 0);
@@ -119,7 +119,6 @@ export function buildScene(): Scene {
     dur: 6.75,
     text: 'The sides come from two more pallets, chosen to match the front exactly in height. Set them on edge as they are, though, and the bar is nearly four feet deep. Nobody has that much patio.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 7.2, dur: 1.5, ease: ease.move });
   tl.tween(wingU, 1, { at: 7.4, dur: 1.4, ease: ease.enter });
   tl.hold(13.3, 0.6);
 
@@ -462,6 +461,11 @@ export function Render({ s }: { s: SceneState }) {
               <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y - SIDE_CUT) - 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={clamp01(dimU * 2 - 1)}>
                 open at the back — the bartender stands here
               </text>
+              {/* the bartender, seen from above, standing in the U between the wings */}
+              <g opacity={clamp01(dimU * 1.5 - 0.2)}>
+                <ellipse cx={X(FRONT_LEN / 2)} cy={Y(12)} rx={7 * PX} ry={4.5 * PX} fill={colors.POSITIVE} fillOpacity={0.22} stroke={colors.POSITIVE} strokeWidth={1.5} />
+                <circle cx={X(FRONT_LEN / 2)} cy={Y(12) - 4.5 * PX} r={2.6 * PX} fill={colors.POSITIVE} fillOpacity={0.45} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              </g>
             </g>
           )}
         </g>
@@ -472,7 +476,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={insetU * dimAll}>
           <rect x={INSET.x - 34} y={INSET.y - 52} width={INSET.w} height={INSET.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={INSET.x + INSET.w / 2 - 34} y={INSET.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
-            the same bar, from the end
+            the front pallet, from the side
           </text>
           {(() => {
             const baseX = INSET.x + 66;

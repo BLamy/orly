@@ -43,12 +43,17 @@ const AI_W = 480;
 const T_NEEDED = 1418;
 const T_TYPICAL = 250; // "hundreds" — representative marker
 
-// throughput regime (right): comm vs compute bars
+// throughput regime (right): comm vs compute bars, drawn to one scale
+// so the ~9x ratio is visible: all-to-all is the full bar, compute is 1/9 of it
 const CT_X = 760;
 const CT_Y = 250;
+const CT_BAR_X = CT_X + 150;
+const CT_BAR_MAX = 300;
+const CT_RATIO = 9;
 
 const CAM_EXPERTS: CameraState = { x: EXP_X + (EXP_COLS * EXP_S) / 2, y: 330, k: 1.3 };
-const CAM_COMM: CameraState = { x: 940, y: 330, k: 1.25 };
+// wide enough that the expert grid, the intensity bar and the comm bars share one frame
+const CAM_COMM: CameraState = { x: 724, y: 330, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -175,6 +180,8 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {/* old content is dropped once the closing panel is fully in, so nothing shows through it */}
+      {closeU < 1 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* expert grid */}
@@ -218,10 +225,10 @@ function Frame({ s }: { s: SceneState }) {
               <rect x={AI_X} y={AI_Y} width={AI_W} height={20} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
               <rect x={AI_X} y={AI_Y} width={(T_TYPICAL / 1600) * AI_W * aiU} height={20} rx={5} fill={colors.NEGATIVE} opacity={0.7} />
               <line x1={AI_X + (T_NEEDED / 1600) * AI_W} y1={AI_Y - 8} x2={AI_X + (T_NEEDED / 1600) * AI_W} y2={AI_Y + 28} stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="4 3" />
-              <text x={AI_X + (T_NEEDED / 1600) * AI_W} y={AI_Y + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <text x={AI_X + (T_NEEDED / 1600) * AI_W} y={AI_Y + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 compute-bound at ≥ 1418
               </text>
-              <text x={AI_X + (T_TYPICAL / 1600) * AI_W + 8} y={AI_Y + 15} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+              <text x={AI_X + (T_TYPICAL / 1600) * AI_W + 8} y={AI_Y + 15} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 typical: a few hundred
               </text>
             </g>
@@ -233,20 +240,25 @@ function Frame({ s }: { s: SceneState }) {
               <text x={CT_X} y={CT_Y - 30} fill={colors.TEXT} fontSize={15}>
                 throughput regime · time per MoE layer
               </text>
-              <text x={CT_X} y={CT_Y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={CT_X} y={CT_Y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 paper's Qwen3-235B analysis — reported, replotted
               </text>
-              <text x={CT_X} y={CT_Y + 34} fill={colors.TEXT} fontSize={13}>
+              <text x={CT_X} y={CT_Y + 34} fill={colors.TEXT} fontSize={14}>
                 expert compute
               </text>
-              <rect x={CT_X + 150} y={CT_Y + 20} width={44 * ratioU + 4} height={18} rx={4} fill={colors.ACCENT} opacity={0.8} />
-              <text x={CT_X} y={CT_Y + 74} fill={colors.TEXT} fontSize={13}>
+              <rect x={CT_BAR_X} y={CT_Y + 20} width={(CT_BAR_MAX / CT_RATIO) * ratioU} height={18} rx={4} fill={colors.ACCENT} opacity={1} />
+              {ratioU > 0.8 && (
+                <text x={CT_BAR_X + (CT_BAR_MAX / CT_RATIO) + 10} y={CT_Y + 34} fill={colors.ACCENT} fontSize={14} fontFamily={MONO} opacity={ratioU}>
+                  1×
+                </text>
+              )}
+              <text x={CT_X} y={CT_Y + 74} fill={colors.TEXT} fontSize={14}>
                 all-to-all dispatch
               </text>
-              <rect x={CT_X + 150} y={CT_Y + 60} width={(44 * ratioU + 4) * 9} height={18} rx={4} fill={colors.NEGATIVE} opacity={0.8} />
+              <rect x={CT_BAR_X} y={CT_Y + 60} width={CT_BAR_MAX * ratioU} height={18} rx={4} fill={colors.NEGATIVE} opacity={0.8} />
               {ratioU > 0.8 && (
-                <text x={CT_X + 150 + 44 * 9 + 16} y={CT_Y + 74} fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO} opacity={ratioU}>
-                  ≈ 9x
+                <text x={CT_BAR_X + CT_BAR_MAX + 12} y={CT_Y + 74} fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO} opacity={ratioU}>
+                  ≈ 9×
                 </text>
               )}
             </g>
@@ -263,6 +275,7 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
       <g opacity={titleU * mainOp}>
@@ -276,7 +289,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Both bottlenecks are the hidden width
           </text>

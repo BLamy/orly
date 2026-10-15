@@ -216,6 +216,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'You can seed it with big portals that link outward, and keep it in a sorted set, so the most promising link is always sitting on top.',
   });
+  tl.tween(cam, CAM_MACHINE, { at: 16.2, dur: 1.4, ease: ease.move });
   tl.hold(22.5, 0.5);
 
   // — Beat 4 · pop —
@@ -234,6 +235,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'It fetches that page and reads two things out of it: the content itself, and every child link the page points to.',
   });
+  tl.tween(cam, CAM_MACHINE, { at: 29.2, dur: 1.4, ease: ease.move });
   tl.hold(35.5, 0.5);
 
   // — Beat 6 · children join —
@@ -245,6 +247,7 @@ export function buildScene(): Scene {
   tl.tween(kids0, 1, { at: 36.4, dur: 2.6, ease: ease.linear });
   tl.set(ladderK, 2, 39.0); // A0 — children slotted in by rank
   tl.tween(glow0, 1, { at: 39.0, dur: 0.3, ease: ease.enter });
+  tl.tween(cam, CAM_MACHINE, { at: 37.2, dur: 1.4, ease: ease.move });
   tl.tween(glow0, 0, { at: 41.2, dur: 1.2, ease: ease.move });
   tl.hold(42.0, 0.5);
 
@@ -254,6 +257,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Then the bookkeeping: the link comes off the to do list, and the page is stamped into a second table, crawled links, together with a signature of its content.',
   });
+  tl.tween(cam, CAM_MACHINE, { at: 42.7, dur: 1.4, ease: ease.move });
   tl.tween(ledgerU, 1, { at: 43.0, dur: 1.0, ease: ease.enter });
   tl.tween(stamp0, 1, { at: 44.2, dur: 1.2, ease: ease.move });
   tl.hold(49.5, 0.3);
@@ -270,6 +274,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And the loop repeats. Pop the next winner, fetch it, harvest the children, stamp the record.',
   });
+  tl.tween(cam, CAM_MACHINE, { at: 54.2, dur: 1.5, ease: ease.move });
   tl.tween(pop1, 1, { at: 55.0, dur: 1.4, ease: ease.move });
   tl.set(ladderK, 3, 56.4); // P1
   tl.tween(kids1, 1, { at: 56.6, dur: 1.8, ease: ease.linear });
@@ -283,6 +288,7 @@ export function buildScene(): Scene {
     dur: 5.0,
     text: 'From here the machine takes over. Watch the frontier churn as the graph lights up.',
   });
+  tl.tween(cam, CAM_MACHINE, { at: 60.7, dur: 1.6, ease: ease.move });
   tl.tween(montIdx, N_FETCH, { at: 61.5, dur: 10.5, ease: ease.linear });
 
   // — Beat 11 · no route was planned —
@@ -440,7 +446,7 @@ export function Render({ s }: { s: SceneState }) {
                   opacity={0.35 + 0.65 * Math.max(lit, p.pop * 0.6)}
                 />
                 {i < 2 && (
-                  <text x={p.x} y={p.y - r - 7} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={p.x} y={p.y - r - 7} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {p.label}
                   </text>
                 )}
@@ -484,7 +490,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={LAD.x + 200} y={LAD.y0 + LADDER_ROWS * LAD.rowH + 2} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={0.85}>
+          <text x={LAD.x + LAD.w} y={LAD.y0 + LADDER_ROWS * LAD.rowH + 14} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             extract_max_priority_page()
           </text>
         </g>
@@ -502,6 +508,14 @@ export function Render({ s }: { s: SceneState }) {
               stroke={colors.ACCENT}
               strokeWidth={1.5}
             />
+            <text
+              x={LAD.x + (NODES[fetch0.node].x - LAD.x) * pop0 + 14}
+              y={ladderRowY(0) + (NODES[fetch0.node].y - ladderRowY(0)) * pop0 + 24}
+              fill={colors.TEXT}
+              fontSize={14}
+            >
+              {NODES[fetch0.node].label}
+            </text>
           </g>
         )}
         {kids0 > 0 &&
@@ -536,14 +550,14 @@ export function Render({ s }: { s: SceneState }) {
             />
           ))}
         {(kids0 > 0.05 || kids1 > 0.05) && kids0 < 1 && (
-          <text x={LAD.x + 30} y={ladderRowY(1) - 14} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={Math.max(kids0 > 0 && kids0 < 1 ? 1 : 0, kids1 > 0 && kids1 < 1 ? 1 : 0)}>
+          <text x={LAD.x} y={LAD.y0 + LADDER_ROWS * LAD.rowH + 14} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={Math.max(kids0 > 0 && kids0 < 1 ? 1 : 0, kids1 > 0 && kids1 < 1 ? 1 : 0)}>
             add_link_to_crawl(url)
           </text>
         )}
 
         {/* ---- the ledger: crawled_links ---- */}
         <g opacity={ledgerU * dimAll}>
-          <text x={LED.x} y={LED.y0 - 12} fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+          <text x={LED.x} y={LED.y0 - 12} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
             crawled_links · url + signature
           </text>
           {Array.from({ length: Math.min(3, crawledN) }, (_, r) => {
@@ -553,7 +567,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={`${crawledN}-${r}`} opacity={u * (1 - r * 0.28)}>
                 <rect x={LED.x} y={y + (1 - u) * -16} width={LED.w} height={LED.rowH - 6} rx={7} fill={colors.PANEL} stroke={r === 0 && sigGlow > 0.02 ? colors.WARM : colors.GRID} strokeWidth={r === 0 && sigGlow > 0.02 ? 2 : 1} />
-                <text x={LED.x + 12} y={y + 19} fill={colors.TEXT} fontSize={13}>
+                <text x={LED.x + 12} y={y + 19} fill={colors.TEXT} fontSize={14}>
                   {NODES[f.node].label}
                 </text>
                 <Barcode x={LED.x + LED.w - 64} y={y + 7} bars={NODES[f.node].bars} opacity={0.55 + 0.45 * (r === 0 ? sigGlow : 0)} />
@@ -571,11 +585,11 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={statsU * dimAll}>
           <rect x={200} y={575} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={315} y={595} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
-            1,600 write requests / s
+            1,600 pages written / s
           </text>
           <rect x={450} y={575} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={565} y={595} textAnchor="middle" fill={colors.WARM} fontSize={14}>
-            4 billion links / month
+            4 billion fetches / month
           </text>
         </g>
 
@@ -589,12 +603,12 @@ export function Render({ s }: { s: SceneState }) {
           <text x={420} y={323} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             links_to_crawl
           </text>
-          <text x={420} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={420} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             ranked frontier
           </text>
           <line x1={510} y1={327} x2={560} y2={327} stroke={colors.MUTED} strokeWidth={1.5} />
           <rect x={560} y={294} width={160} height={66} rx={10} fill={colors.BG} stroke={colors.TEXT} strokeWidth={1.4} />
-          <text x={640} y={321} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <text x={640} y={321} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             Crawler Service
           </text>
           <text x={640} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
@@ -602,13 +616,13 @@ export function Render({ s }: { s: SceneState }) {
           </text>
           <line x1={720} y1={327} x2={770} y2={327} stroke={colors.MUTED} strokeWidth={1.5} />
           <rect x={770} y={300} width={180} height={54} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-          <text x={860} y={323} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+          <text x={860} y={323} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
             crawled_links
           </text>
-          <text x={860} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={860} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             url + signature
           </text>
-          <text x={640} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={640} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             pop the winner · fetch · feed the children back · stamp the record
           </text>
         </g>

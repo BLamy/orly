@@ -44,6 +44,8 @@ const SLOT_W = 120;
 const CONS_X = 1190;
 const CARD_W = 118;
 const CARD_H = 26;
+// a delivered copy fades out just short of the consumer box, so it never sits on its label
+const CONS_ENTRY_X = CONS_X - 56 - CARD_W / 2 - 8;
 
 // the order-event sequence, straight from the ai-docs OrderEvent union
 const EVENTS = [
@@ -81,8 +83,11 @@ const tickPos = (k: number): { x: number; y: number } => {
 
 // camera marks — the fan and the backpressure beat keep the publisher in frame
 // (the parked publish is the point), so the fan view is wide, not a push
-const CAM_HUB: CameraState = { x: 480, y: 330, k: 1.3 };
+// the opening frame is full-stage so the audience boxes on the right are in view
+const CAM_HUB: CameraState = { x: 640, y: 330, k: 1.0 };
 const CAM_FAN: CameraState = { x: 667, y: 330, k: 1.05 };
+// the billing-fiber push stays this close so the publisher's box is still in frame for the parked beat
+const CAM_S2: CameraState = { x: 663, y: 330, k: 1.09 };
 const CAM_S3: CameraState = { x: 667, y: 340, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -175,6 +180,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'Then the billing fiber stops keeping up. Its private queue backs up — one, two, three events deep, completely full — while everyone else reads on happily.',
   });
+  tl.tween(cam, CAM_S2, { at: 34.2, dur: 1.3, ease: ease.move });
   tl.tween(evs[3], 1, { at: 34.6, dur: 3.2, ease: ease.linear });
   tl.tween(evs[4], 1, { at: 36.6, dur: 3.2, ease: ease.linear });
 
@@ -284,13 +290,31 @@ function Card({ x, y, tag, color, a }: {
 // only ever holds its front cell, so drawing more would be empty boxes
 function QueueRack({ y, u, label, full, slots = 3 }: { y: number; u: number; label: string; full?: boolean; slots?: number }) {
   if (u <= 0) return null;
+  const cellsMid = (SLOT_XS[0] + SLOT_XS[slots - 1]) / 2;
   return (
     <g opacity={u}>
       {SLOT_XS.slice(0, slots).map((x, i) => (
-        <rect key={i} x={x - SLOT_W / 2} y={y - 15} width={SLOT_W} height={30} rx={6} fill="none" stroke={full ? colors.NEGATIVE : colors.GRID} strokeWidth={full ? 1.8 : 1} />
+        <rect key={i} x={x - SLOT_W / 2} y={y - 15} width={SLOT_W} height={30} rx={6} fill="none" stroke={full ? colors.NEGATIVE : colors.MUTED} strokeOpacity={full ? 1 : 0.55} strokeWidth={full ? 1.8 : 1} />
       ))}
-      <rect x={CONS_X - 56} y={y - 18} width={112} height={36} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-      <text x={CONS_X} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={cellsMid} y={y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+        private queue
+      </text>
+      <rect x={CONS_X - 56} y={y - 18} width={112} height={36} rx={9} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.6} />
+      <text x={CONS_X} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
+// the audience boxes are visible from the start (the caption names them), then
+// the full queue racks take over as each subscriber subscribes
+function Audience({ y, label, a }: { y: number; label: string; a: number }) {
+  if (a <= 0.01) return null;
+  return (
+    <g opacity={a}>
+      <rect x={CONS_X - 56} y={y - 18} width={112} height={36} rx={9} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.6} strokeDasharray="4 4" />
+      <text x={CONS_X} y={y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
     </g>
@@ -316,7 +340,7 @@ function copyPos(
     if (k === 2) {
       // the front card finally gets taken
       const w = clamp01(s2free / 0.5);
-      return { x: lerp(SLOT_XS[0], CONS_X, w), y: subY, a: 1 - w };
+      return { x: lerp(SLOT_XS[0], CONS_ENTRY_X, w), y: subY, a: 1 - w };
     }
     if (k === 3 || k === 4) slot = plan.slot - Math.round(clamp01((s2free - 0.3) / 0.4));
     if (k === 5) {
@@ -339,7 +363,7 @@ function copyPos(
   }
   if (!plan.taken || u < 0.88) return { x: slotP.x, y: slotP.y, a: 1 };
   const w = clamp01((u - 0.88) / 0.12);
-  return { x: lerp(slotP.x, CONS_X, w), y: slotP.y, a: 1 - w };
+  return { x: lerp(slotP.x, CONS_ENTRY_X, w), y: slotP.y, a: 1 - w };
 }
 
 export function Render({ s }: { s: SceneState }) {
@@ -372,15 +396,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* publisher */}
           <g opacity={pubU}>
             <rect x={PUB.x - 62} y={PUB.y - 22} width={124} height={44} rx={10} fill={colors.PANEL} stroke={parked ? colors.WARM : colors.GRID} strokeWidth={parked ? 2 : 1} />
-            <text x={PUB.x} y={PUB.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <text x={PUB.x} y={PUB.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               publisher
             </text>
-            <text x={PUB.x} y={PUB.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={PUB.x} y={PUB.y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               PubSub.publish
             </text>
             {parked && (
-              <text x={PUB.x} y={PUB.y - 32} textAnchor="middle" fill={colors.WARM} fontSize={12}>
-                ⏸ parked — hub is full
+              <text x={PUB.x} y={PUB.y - 32} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+                parked — hub is full
               </text>
             )}
           </g>
@@ -394,14 +418,14 @@ export function Render({ s }: { s: SceneState }) {
             <text x={HUB.x} y={HUB.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               capacity: 256
             </text>
-            <text x={HUB.x} y={HUB.y + RING_R + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={HUB.x} y={HUB.y + RING_R + 30} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               {'PubSub.bounded(256)'}
             </text>
           </g>
           <g opacity={ringU}>
             <circle cx={HUB.x} cy={HUB.y} r={RING_R} fill="none" stroke={colors.SECONDARY} strokeWidth={1.2} strokeDasharray="4 7" opacity={0.7} />
             {/* the ring is our own buffer in this example, not a PubSub option */}
-            <text x={HUB.x} y={HUB.y - RING_R - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
+            <text x={HUB.x} y={HUB.y - RING_R - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               replay ring · last 50, kept by the app
             </text>
             {/* ticks stick to the ring as events pass the hub */}
@@ -416,18 +440,21 @@ export function Render({ s }: { s: SceneState }) {
           {altU > 0 && (
             <g opacity={altU}>
               <rect x={HUB.x - 140} y={HUB.y - RING_R - 64} width={280} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-              <text x={HUB.x} y={HUB.y - RING_R - 44} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={HUB.x} y={HUB.y - RING_R - 44} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 PubSub.dropping · PubSub.sliding
               </text>
             </g>
           )}
 
-          {/* subscribers */}
+          {/* audiences, then subscribers */}
+          {SUBS.map((sub, i) => (
+            <Audience key={sub.key} y={sub.y} label={sub.label} a={hubU * (1 - subU[i]) * 0.7} />
+          ))}
           <QueueRack y={SUBS[0].y} u={subU[0]} label={SUBS[0].label} slots={1} />
           <QueueRack y={SUBS[1].y} u={subU[1]} label={SUBS[1].label} full={s2full} />
           <QueueRack y={SUBS[2].y} u={subU[2]} label={SUBS[2].label} />
           {subU[2] > 0 && replayU <= 0.02 && (
-            <text x={SLOT_XS[1]} y={SUBS[2].y + 36} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={subU[2]}>
+            <text x={SLOT_XS[1]} y={SUBS[2].y + 36} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={subU[2]}>
               subscribed late — queue empty
             </text>
           )}
@@ -475,8 +502,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* a subscription is a stream */}
           {streamU > 0 && (
             <g opacity={streamU}>
-              <rect x={SLOT_XS[2] - 60} y={SUBS[0].y - 62} width={330} height={28} rx={7} fill={colors.BG} stroke={colors.ACCENT} />
-              <text x={SLOT_XS[2] + 105} y={SUBS[0].y - 44} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+              <rect x={SLOT_XS[2] - 60} y={SUBS[0].y - 74} width={330} height={28} rx={7} fill={colors.BG} stroke={colors.ACCENT} />
+              <text x={SLOT_XS[2] + 105} y={SUBS[0].y - 56} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
                 Stream.fromPubSub(pubsub)
               </text>
             </g>
@@ -489,13 +516,13 @@ export function Render({ s }: { s: SceneState }) {
               <text x={116} y={456} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 class OrderEvents
               </text>
-              <text x={116} y={480} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={116} y={480} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 publish(event)
               </text>
-              <text x={116} y={500} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={116} y={500} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 publishAll(events)
               </text>
-              <text x={116} y={520} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={116} y={520} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 subscribe: Stream&lt;OrderEvent&gt;
               </text>
             </g>

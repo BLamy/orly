@@ -15,13 +15,13 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const TAPE = { x: 80, y: 130, w: 590, h: 330, rowH: 46 };
-const SUM = { right: 1190, y: 210, rowH: 52 };
-const DEF = { x: 730, y: 420 };
+const SUM = { right: 1190, y: 210, rowH: 52, charW: 17 };
 const NOTE = { x: 300, y: 330, w: 680, h: 160 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_TAPE: CameraState = { x: 420, y: 300, k: 1.1 };
-const CAM_SUM: CameraState = { x: 900, y: 300, k: 1.14 };
+// wide enough that the log and the addition share the stage during the arithmetic
+const CAM_SUM: CameraState = { x: 640, y: 330, k: 1.04 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.96 };
 
 type LineKind = 'cmd' | 'ctx' | 'quiet' | 'fault';
@@ -156,14 +156,14 @@ const scene = buildScene();
 function LogTape({ u, n, hlCtx, hlCrash, dim }: { u: number; n: number; hlCtx: number; hlCrash: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.85 * clamp01(dim));
+  const a = uu * (1 - 0.9 * clamp01(dim));
   const { x, y, w, h, rowH } = TAPE;
   const kindColor = (k: LineKind) =>
     k === 'cmd' ? colors.TEXT : k === 'ctx' ? colors.ACCENT : k === 'fault' ? colors.NEGATIVE : colors.MUTED;
   return (
     <g opacity={a}>
       <rect x={x} y={y} width={w} height={h * uu} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={x + 18} y={y - 12} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x + 18} y={y - 12} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         operator.log — processId 362
       </text>
       {LINES.map((line, i) => {
@@ -200,14 +200,13 @@ function LogTape({ u, n, hlCtx, hlCrash, dim }: { u: number; n: number; hlCtx: n
 function HexSum({ add, sumN, match, dim }: { add: number; sumN: number; match: number; dim: number }) {
   const au = clamp01(add);
   if (au <= 0) return null;
-  const a = 1 - 0.85 * clamp01(dim);
+  const a = 1 - 0.9 * clamp01(dim);
   const m = clamp01(match);
-  const { right, y, rowH } = SUM;
-  const charW = 21;
+  const { right, y, rowH, charW } = SUM;
   const renderRow = (row: (typeof SUM_ROWS)[number], i: number, revealN: number | null) => {
     const ry = y + i * rowH + (i === 2 ? 26 : 0);
     const chars = row.text.split('');
-    const baseColor = row.tone === 'ctx' ? colors.ACCENT : row.tone === 'off' ? colors.WARM : colors.NEGATIVE;
+    const baseColor = row.tone === 'ctx' ? colors.ACCENT : row.tone === 'off' ? colors.WARM : colors.TEXT;
     const color = row.tone === 'sum' && m > 0.5 ? colors.POSITIVE : baseColor;
     return (
       <g key={i}>
@@ -230,7 +229,7 @@ function HexSum({ add, sumN, match, dim }: { add: number; sumN: number; match: n
             </text>
           );
         })}
-        <text x={right - row.text.length * charW - 18} y={ry - 1} textAnchor="end" fill={colors.MUTED} fontSize={12.5} opacity={revealN === null ? au : clamp01(revealN - 2)}>
+        <text x={right - row.text.length * charW - 18} y={ry - 1} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={revealN === null ? au : clamp01(revealN - 2)}>
           {row.label}
         </text>
       </g>
@@ -263,18 +262,22 @@ function HexSum({ add, sumN, match, dim }: { add: number; sumN: number; match: n
   );
 }
 
-/** The eliminated suspect: the isolate's default context lives elsewhere. */
+/** The eliminated suspect: the isolate's default context, set under the addition on the same right edge. */
 function DefaultContextLine({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const { x, y } = DEF;
+  const { right, y, rowH, charW } = SUM;
+  const ry = y + 2 * rowH + 126;
   return (
-    <g transform={`translate(${x}, ${y + 90 + (1 - uu) * 8})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
-      <text fill={colors.MUTED} fontSize={13.5} fontFamily={mono}>
-        default context: ctx=101800211755
+    <g transform={`translate(0, ${(1 - uu) * 8})`} opacity={uu * (1 - 0.9 * clamp01(dim))}>
+      <text x={right - 14 * charW - 18} y={ry} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+        default context
       </text>
-      <text x={356} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
-        ✗ not a match
+      <text x={right} y={ry} textAnchor="end" fill={colors.MUTED} fontSize={22} fontWeight={700} fontFamily={mono}>
+        0x101800211755
+      </text>
+      <text x={right} y={ry + 28} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
+        ✗ not a match — a different address
       </text>
     </g>
   );
@@ -291,7 +294,7 @@ function ClosingNote({ u }: { u: number }) {
       <text x={w / 2} y={52} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         Victim identified: the slot context from command 12
       </text>
-      <text x={w / 2} y={90} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+      <text x={w / 2} y={90} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
         An address — but no name, no owner, no lifecycle.
       </text>
       <text x={w / 2} y={128} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700} fontFamily={mono}>

@@ -34,16 +34,17 @@ export function buildScene() {
 
   tl.caption({ at: 12.4, dur: 5.6, text: 'On anchor groups, the code compares calibrated predictions with real scores after centering each group.' });
   tl.tween(residualU, 1, { at: 12.9, dur: 1.5, ease: ease.move });
-  tl.tween(cam, { x: 700, y: 326, k: 1.2 }, { at: 14.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 700, y: 326, k: 1.1 }, { at: 14.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.4, dur: 5.6, text: 'That normalized disagreement enters an exponential running estimate with a half-life of sixty-four observations.' });
   tl.tween(memoryU, 1, { at: 19.0, dur: 2.0, ease: ease.linear });
 
   tl.caption({ at: 24.4, dur: 5.6, text: 'After thirty-two warmup observations, the estimate sets how much extra weight trusted anchor advantages receive.' });
-  tl.tween(weightU, 1, { at: 25.0, dur: 1.5, ease: ease.move });
+  // Warmup ends at the baseline weight of one; the next beat raises it from there.
+  tl.tween(weightU, 0, { at: 25.0, dur: 1.5, ease: ease.move });
 
   tl.caption({ at: 30.4, dur: 5.6, text: 'More disagreement raises the anchor weight from one toward its target of two, with a hard ceiling at four.' });
-  tl.tween(weightU, 1.75, { at: 31.0, dur: 2.0, ease: ease.move });
+  tl.tween(weightU, 1, { at: 31.0, dur: 2.0, ease: ease.move });
 
   tl.caption({ at: 36.4, dur: 5.6, text: 'The two gradient streams then combine by inverse variance, so the fused update is steadier than either stream alone.' });
   tl.tween(fuseU, 1, { at: 37.0, dur: 1.5, ease: ease.pop });
@@ -89,26 +90,29 @@ export function Render({ s }: { s: SceneState }) {
   const order = s.get(scene.orderU);
   const results = s.get(scene.resultsU);
   const retrace = s.get(scene.retraceU);
-  const orderAlpha = clamp01(order * 6);
-  const introFade = 1 - orderAlpha;
-  const orderFade = 1 - clamp01(results * 3);
-  const resultsFade = 1 - clamp01(retrace * 2);
+  // Each scene hands off in turn: the outgoing layer clears before the incoming one builds, so no two are ghosted together.
+  const orderAlpha = clamp01((order - 0.12) * 4);
+  const introFade = 1 - clamp01(order * 8);
+  const orderFade = 1 - clamp01(results * 4);
+  const resultsFade = 1 - clamp01(retrace * 4);
   const retraceFade = 1 - clamp01(close * 3);
   return <Camera {...s.get(scene.cam)}>
-    <g opacity={1 - close}>
+    <g opacity={1 - clamp01(close * 2)}>
       <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">let reliability set the weight</text>
       <g opacity={streams * introFade}>
         <rect x="70" y="105" width="525" height="310" rx="32" fill="#15152a" stroke={colors.SECONDARY} strokeWidth="2" />
         <text x="332" y="137" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>abundant world-model gradients</text>
         {WM_ANGLES.map((a, i) => <Arrow key={i} x={118 + (i % 4) * 116} y={205 + Math.floor(i / 4) * 82} angle={a * jitter} len={58} color={colors.SECONDARY} opacity={clamp01(streams * 2 - i / 10)} />)}
-        <rect x="70" y="438" width="525" height="106" rx="32" fill="#281f11" stroke={colors.WARM} strokeWidth="2" />
-        <text x="332" y="470" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>scarce anchor gradients</text>
-        {[0, 1, 2].map((i) => <Arrow key={i} x={170 + i * 150} y={520} angle={8 - i * 5} len={74 + weight * 15} color={colors.WARM} width={4} />)}
+        <rect x="70" y="430" width="525" height="90" rx="32" fill="#281f11" stroke={colors.WARM} strokeWidth="2" />
+        <text x="332" y="461" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>scarce anchor gradients</text>
+        {[0, 1, 2].map((i) => <Arrow key={i} x={170 + i * 150} y={498} angle={8 - i * 5} len={74 + weight * 15} color={colors.WARM} width={4} />)}
       </g>
 
       <g opacity={streams * introFade}>
-        <rect x="650" y="105" width="560" height="459" rx="32" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
+        <rect x="650" y="105" width="560" height="418" rx="32" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
         <text x="930" y="137" textAnchor="middle" fill={colors.MUTED} fontSize="14">one anchor group audits the prediction</text>
+        <text x="676" y="160" fill={colors.SECONDARY} fontSize="14" opacity={residual}>calibrated prediction</text>
+        <text x="1184" y="160" textAnchor="end" fill={colors.WARM} fontSize="14" opacity={residual}>real score</text>
         {[0.18, 0.43, 0.61, 0.78, 0.55, 0.34, 0.70, 0.49].map((v, i) => {
           const measured = clamp01(v + [0.08, -0.11, 0.05, -0.06][i % 4]);
           return <g key={i} transform={`translate(${700 + i * 58} 290)`}>
@@ -119,25 +123,29 @@ export function Render({ s }: { s: SceneState }) {
         })}
         <text x="930" y="318" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" opacity={residual}>normalized within-group disagreement</text>
         <g opacity={memory}>
-          <g transform="translate(0 25)">
+          <g transform="translate(0 10)">
             <path d="M710 360 C770 325 820 388 875 345 S980 315 1040 350 S1120 375 1165 330" fill="none" stroke={colors.ACCENT} strokeWidth="4" />
             <path d="M710 390 C790 372 880 370 955 354 S1080 348 1165 342" fill="none" stroke={colors.POSITIVE} strokeWidth="5" />
           </g>
-          <text x="930" y="452" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>EWMA · half_life: 64 · warmup: 32</text>
+          <text x="930" y="438" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>EWMA · half_life: 64 · warmup: 32</text>
+          <text x="730" y="418" fill={colors.ACCENT} fontSize="14">disagreement</text>
+          <text x="1130" y="418" textAnchor="end" fill={colors.POSITIVE} fontSize="14">running estimate</text>
         </g>
-        <g opacity={clamp01(weight)}>
-          <path d="M730 490 H1130" stroke="#202c40" strokeWidth="18" strokeLinecap="round" />
-          <path d="M730 490 H1130" stroke={colors.WARM} strokeWidth="18" strokeLinecap="round" strokeDasharray={`${400 * clamp01(weight / 2)} 400`} />
-          <circle cx={730 + 400 * clamp01(weight / 2)} cy="490" r="17" fill={colors.WARM} />
-          <text x="930" y="526" textAnchor="middle" fill={colors.WARM} fontSize="16" fontFamily={colors.font.mono}>anchor weight {Math.min(4, 1 + weight).toFixed(2)} · cap 4</text>
+        <g opacity={clamp01(memory)}>
+          <path d="M730 466 H1130" stroke="#202c40" strokeWidth="18" strokeLinecap="round" />
+          <path d="M730 466 H1130" stroke={colors.WARM} strokeWidth="18" strokeLinecap="round" strokeDasharray={`${400 * clamp01(weight / 3)} 400`} />
+          <circle cx={730 + 400 * clamp01(weight / 3)} cy="466" r="17" fill={colors.WARM} />
+          <text x="730" y="494" textAnchor="middle" fill={colors.MUTED} fontSize="14">1</text>
+          <text x="1130" y="494" textAnchor="middle" fill={colors.MUTED} fontSize="14">4</text>
+          <text x="930" y="504" textAnchor="middle" fill={colors.WARM} fontSize="16" fontFamily={colors.font.mono}>anchor weight {Math.min(4, 1 + weight).toFixed(2)} · cap 4</text>
         </g>
-        <text x="930" y="184" textAnchor="middle" fill={colors.TEXT} fontSize="24" fontStyle="italic" opacity={clamp01(weight)}>w = clip(1 + c s², 1, 4)</text>
+        <text x="930" y="184" textAnchor="middle" fill={colors.TEXT} fontSize="24" fontStyle="italic" opacity={clamp01(memory)}>w = clip(1 + c s², 1, 4)</text>
       </g>
 
       <g opacity={fuse * introFade}>
-        <rect x="455" y="556" width="370" height="40" rx="20" fill="#12291f" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="470" y="581" fill={colors.POSITIVE} fontSize="15">steadier fused policy update</text>
-        <Arrow x={690} y={576} angle={0} len={120} color={colors.POSITIVE} width={7} />
+        <rect x="455" y="530" width="370" height="40" rx="20" fill="#12291f" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="470" y="555" fill={colors.POSITIVE} fontSize="15">steadier fused policy update</text>
+        <Arrow x={690} y={550} angle={0} len={120} color={colors.POSITIVE} width={7} />
       </g>
 
       <g opacity={orderAlpha * orderFade}>
@@ -149,7 +157,7 @@ export function Render({ s }: { s: SceneState }) {
           return <g key={label} transform={`translate(${x} 340)`} opacity={u}>
             <circle r="54" fill={i < 2 ? '#2c2111' : i < 5 ? '#251d34' : '#12291f'} stroke={i < 2 ? colors.WARM : i < 5 ? colors.SECONDARY : colors.POSITIVE} strokeWidth="3" />
             <text y="-3" textAnchor="middle" fill={colors.TEXT} fontSize="16" fontWeight="750">{label.split(' ')[0]}</text>
-            <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="13">{label.split(' ').slice(1).join(' ')}</text>
+            <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="14">{label.split(' ').slice(1).join(' ')}</text>
             {i < 5 && <path d="M58 0 H132" stroke={colors.MUTED} strokeWidth="4" />}
           </g>;
         })}
@@ -167,23 +175,25 @@ export function Render({ s }: { s: SceneState }) {
         {[{ label: 'MLE-Dojo', a: 18.8, b: 21.6, y: 270 }, { label: 'DSBench', a: 31.2, b: 32.8, y: 370 }].map((r) => <g key={r.label}>
           <text x="660" y={r.y} fill={colors.TEXT} fontSize="16">{r.label}</text>
           <line x1="780" y1={r.y - 5} x2="1130" y2={r.y - 5} stroke={colors.GRID} strokeWidth="12" strokeLinecap="round" />
-          <circle cx={780 + r.a * 9} cy={r.y - 5} r="12" fill={colors.NEGATIVE} />
-          <circle cx={780 + r.b * 9} cy={r.y - 5} r="14" fill={colors.POSITIVE} />
+          <line x1={780 + r.a * 8.75} y1={r.y - 5} x2={780 + r.b * 8.75} y2={r.y - 5} stroke={colors.POSITIVE} strokeWidth="4" />
+          <circle cx={780 + r.a * 8.75} cy={r.y - 5} r="7" fill={colors.NEGATIVE} />
+          <circle cx={780 + r.b * 8.75} cy={r.y - 5} r="7" fill={colors.POSITIVE} />
           <text x="780" y={r.y + 30} fill={colors.TEXT} fontSize="15">{r.a} → {r.b}</text>
         </g>)}
         <text x="640" y="520" textAnchor="middle" fill={colors.POSITIVE} fontSize="20">3.4× less compute while both held-out averages rise</text>
       </g>
 
       <g opacity={retrace * retraceFade}>
+        <ellipse cx="640" cy="340" rx="215" ry="170" fill="none" stroke={colors.GRID} strokeWidth="2" strokeDasharray="6 8" />
         {['generate', 'imagine', 'anchor', 'calibrate', 'weight', 'update'].map((label, i) => {
           const a = (Math.PI * 2 * i) / 6 - Math.PI / 2;
           const x = 640 + Math.cos(a) * 215;
           const y = 340 + Math.sin(a) * 170;
-          return <g key={label} opacity={clamp01(retrace * 6 - i)}><circle cx={x} cy={y} r="38" fill={colors.BG} stroke={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.WARM, colors.ACCENT][i]} strokeWidth="3" /><text x={x} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize="13">{label}</text></g>;
+          return <g key={label} opacity={clamp01(retrace * 6 - i)}><circle cx={x} cy={y} r="42" fill={colors.BG} stroke={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.WARM, colors.ACCENT][i]} strokeWidth="3" /><text x={x} y={y + 5} textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text></g>;
         })}
       </g>
     </g>
-    <g opacity={close}>
+    <g opacity={clamp01((close - 0.5) * 2)}>
       <rect x="190" y="110" width="900" height="470" rx="52" fill={colors.BG} stroke={colors.ACCENT} strokeWidth="4" />
       <text x="640" y="196" textAnchor="middle" fill={colors.TEXT} fontSize="44" fontWeight="850">The Imagined Experiment</text>
       <text x="640" y="232" textAnchor="middle" fill={colors.ACCENT} fontSize="20">World Model Reinforcement Learning</text>

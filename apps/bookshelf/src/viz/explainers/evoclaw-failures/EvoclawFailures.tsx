@@ -54,7 +54,8 @@ const COSTS = [
   { label: 'learn-from-run workflow', mult: 3.9 }, // ~1/0.26
 ];
 
-const CAM_MODES: CameraState = { x: 420, y: 320, k: 1.25 };
+// y 346 keeps all three cards between the title block and the caption pill
+const CAM_MODES: CameraState = { x: 420, y: 346, k: 1.25 };
 const CAM_COST: CameraState = { x: 880, y: 380, k: 1.25 };
 
 interface Scene {
@@ -158,7 +159,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing card gets the stage to itself: old content fades out fully
+  const mainOp = 1 - dimU;
 
   return (
     <>
@@ -170,17 +172,18 @@ function Frame({ s }: { s: SceneState }) {
           {MODES3.map((m, i) => {
             const u = clamp01(modesU * MODES3.length - i);
             if (u <= 0) return null;
+            // the cards leave as the camera moves to the bill, so they never sit under the title
             const y = 150 + i * 140;
             return (
-              <g key={m.name} opacity={u}>
+              <g key={m.name} opacity={u * (1 - costU)}>
                 <rect x={130} y={y} width={560} height={118} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} />
                 <text x={154} y={y + 32} fill={colors.NEGATIVE} fontSize={16} fontWeight={600}>
                   {i + 1} · {m.name}
                 </text>
-                <text x={154} y={y + 62} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+                <text x={154} y={y + 62} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {m.detail}
                 </text>
-                <text x={154} y={y + 90} fill={colors.MUTED} fontSize={13}>
+                <text x={154} y={y + 90} fill={colors.MUTED} fontSize={14}>
                   {m.sub}
                 </text>
               </g>
@@ -193,7 +196,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={760} y={220} fill={colors.TEXT} fontSize={16}>
                 the token bill · reported ratios
               </text>
-              <text x={760} y={240} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={760} y={240} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 efficiency 0.21–0.40 → 2.5–5x baseline tokens
               </text>
               {COSTS.map((c, i) => {
@@ -201,12 +204,12 @@ function Frame({ s }: { s: SceneState }) {
                 const y = 268 + i * 58;
                 return (
                   <g key={c.label}>
-                    <text x={760} y={y + 12} fill={colors.TEXT} fontSize={13}>
+                    <text x={760} y={y + 12} fill={colors.TEXT} fontSize={14}>
                       {c.label}
                     </text>
                     <rect x={760} y={y + 20} width={Math.max(w, 3)} height={16} rx={4}
                       fill={i === 0 ? colors.MUTED : colors.WARM} opacity={0.75} />
-                    <text x={770 + w} y={y + 33} fill={i === 0 ? colors.MUTED : colors.WARM} fontSize={12} fontFamily={MONO} opacity={fillU}>
+                    <text x={770 + w} y={y + 33} fill={i === 0 ? colors.MUTED : colors.WARM} fontSize={14} fontFamily={MONO} opacity={fillU}>
                       {c.mult.toFixed(1)}x
                     </text>
                   </g>
@@ -214,11 +217,11 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {breakU > 0 && (
                 <g opacity={breakU}>
-                  <rect x={760} y={452} width={430} height={78} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-                  <text x={780} y={482} fill={colors.WARM} fontSize={14} fontWeight={600}>
+                  <rect x={760} y={452} width={460} height={78} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+                  <text x={780} y={482} fill={colors.WARM} fontSize={16} fontWeight={600}>
                     break-even (reported)
                   </text>
-                  <text x={780} y={508} fill={colors.TEXT} fontSize={13}>
+                  <text x={780} y={508} fill={colors.TEXT} fontSize={14}>
                     tokens and cost: never · wall-clock: 9–14 repeats
                   </text>
                 </g>

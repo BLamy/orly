@@ -25,6 +25,9 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 const MOTION = { file: 'src/viz/explainers/durable-design/overrides.json', slug: 'durable-design' };
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+// checklist column: right edge 40px inside the 1280 stage, clear of the chart's end labels
+const CARD_X = 860;
+const CARD_W = 380;
 
 function gapPath(vals: number[], u: number): string {
   const n = vals.length;
@@ -61,26 +64,27 @@ function Frame({ s }: { s: SceneState }) {
             <line x1={X0} y1={Y0} x2={X1} y2={Y0} stroke={colors.GRID} />
             <line x1={X0} y1={Y0} x2={X0} y2={gyp(15)} stroke={colors.GRID} />
             {[0, 5, 10, 15].map((gp) => (
-              <text key={gp} x={X0 - 12} y={gyp(gp) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text key={gp} x={X0 - 12} y={gyp(gp) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 {gp}
               </text>
             ))}
-            <text x={X0 - 12} y={gyp(15) - 20} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+            <text x={X0 - 12} y={gyp(15) - 20} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               gap (pts)
             </text>
-            <text x={X1} y={Y0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+            <text x={X1} y={Y0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               frontier ability → (same +0.5 model pair · 300 seeded items)
             </text>
           </g>
           <path d={gapPath(FIXED_GAPS, fixU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
           {fixU > 0.95 && (
-            <text x={gxp(ABILITIES.length - 1) + 8} y={gyp(FIXED_GAPS[FIXED_GAPS.length - 1]) + 5} fill={colors.NEGATIVE} fontSize={13.5}>
+            <text x={gxp(ABILITIES.length - 1) + 8} y={gyp(FIXED_GAPS[FIXED_GAPS.length - 1]) + 5} fill={colors.NEGATIVE} fontSize={14}>
               {`frozen pool → ${FIXED_GAPS[FIXED_GAPS.length - 1].toFixed(1)}`}
             </text>
           )}
           <path d={gapPath(REFRESH_GAPS, refU)} fill="none" stroke={colors.POSITIVE} strokeWidth={3.5} />
           {refU > 0.95 && (
-            <text x={gxp(ABILITIES.length - 1) + 8} y={gyp(REFRESH_GAPS[REFRESH_GAPS.length - 1]) + 5} fill={colors.POSITIVE} fontSize={13.5}>
+            // sits above its flat line, so it never runs into the checklist column
+            <text x={X1} y={gyp(REFRESH_GAPS[REFRESH_GAPS.length - 1]) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={14}>
               {`refreshed pool → ${REFRESH_GAPS[REFRESH_GAPS.length - 1].toFixed(1)}`}
             </text>
           )}
@@ -92,13 +96,13 @@ function Frame({ s }: { s: SceneState }) {
             const y = 130 + i * 82;
             return (
               <g key={c.rule} opacity={u} transform={`translate(${20 * (1 - u)}, 0)`}>
-                <rect x={760} y={y} width={452} height={68} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-                <circle cx={786} cy={y + 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-                <path d={`M${781},${y + 34} l4,4 l7,-8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-                <text x={808} y={y + 28} fill={colors.TEXT} fontSize={14.5} fontWeight={600}>
+                <rect x={CARD_X} y={y} width={CARD_W} height={68} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+                <circle cx={CARD_X + 26} cy={y + 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+                <path d={`M${CARD_X + 21},${y + 34} l4,4 l7,-8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+                <text x={CARD_X + 48} y={y + 28} fill={colors.TEXT} fontSize={14.5} fontWeight={600}>
                   {c.rule}
                 </text>
-                <text x={808} y={y + 52} fill={colors.MUTED} fontSize={12.5}>
+                <text x={CARD_X + 48} y={y + 52} fill={colors.TEXT} opacity={0.75} fontSize={13.5}>
                   {c.example}
                 </text>
               </g>

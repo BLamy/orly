@@ -62,6 +62,15 @@ const CAM_MANDATE = camAt(2, 0);
 const CAM_CHAIN = camAt(2, 1);
 const CAM_CLOSE = camAt(1, 1);
 
+// A room fades as the camera leaves it, so a finished beat never sits dimly
+// beside the one on screen. Fully visible when the camera is centred on it,
+// gone once the camera is 900 world units away (the next room is 1600 away).
+const roomFade = (cam: CameraState, c: number, r: number): number =>
+  clamp01(1 - Math.max(
+    Math.abs(cam.x - (c * ROOM_DX + STAGE_W / 2)),
+    Math.abs(cam.y - (r * ROOM_DY + STAGE_H / 2)),
+  ) / 900);
+
 const FIG = '/generated/ssrn-aei/figures';
 
 // ---------------------------------------------------------------------------
@@ -82,9 +91,10 @@ const { signals, actions } = (() => {
 // sanity: signals = SSUUUUUUUSUUUUUU, actions = all S.
 const LATER_U = signals.slice(2).filter((x) => x === 'U').length; // 13
 
-const REV_X0 = 180;
-const REV_Y = 300; // verdicts sit at REV_Y-56, the reframe line at REV_Y+204
-const REV_DX = 62;
+const REV_X0 = 212;
+const REV_Y = 300; // verdict tags sit above the row, the reframe below it
+const REV_DX = 68;
+const LAST_X = REV_X0 + (N_REV - 1) * REV_DX;
 
 // premature coherence: two-peaked belief density snapping to a spike.
 const belief = (x: number, snap: number) => {
@@ -261,7 +271,7 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         {/* ---------- ROOM (0,0) — §6.1 frame lock-in ---------- */}
-        <g transform={roomAt(0, 0)} opacity={frameU}>
+        <g transform={roomAt(0, 0)} opacity={frameU * roomFade(cam, 0, 0)}>
           <RoomHeader title="6.1 — frame lock-in" sub="SSRN 6325939 §6.1 · Goffman 1974" />
           <rect x={FRAME.x} y={FRAME.y} width={FRAME.w} height={FRAME.h} rx={10}
             fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="8 6" />
@@ -277,7 +287,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={600} y={FRAME.y + 8} textAnchor="middle" fill={colors.WARM} fontSize={14}>
             the answer
           </text>
-          <text x={600} y={FRAME.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={600} y={FRAME.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             outside
           </text>
           <Figure
@@ -290,7 +300,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,0) — §6.5 premature coherence ---------- */}
-        <g transform={roomAt(1, 0)} opacity={beliefU}>
+        <g transform={roomAt(1, 0)} opacity={beliefU * roomFade(cam, 1, 0)}>
           <RoomHeader title="6.5 — premature coherence" sub="SSRN 6325939 §6.5 · Kühberger 1998" />
           <line x1={BEL.x} y1={BEL.y + BEL.h} x2={BEL.x + BEL.w} y2={BEL.y + BEL.h}
             stroke={colors.GRID} strokeWidth={1.5} />
@@ -307,7 +317,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,0) — §6.2 contradictory mandate collapse ---------- */}
-        <g transform={roomAt(2, 0)} opacity={mandateU}>
+        <g transform={roomAt(2, 0)} opacity={mandateU * roomFade(cam, 2, 0)}>
           <RoomHeader title="6.2 — contradictory mandate collapse" sub="SSRN 6325939 §6.2 · Majka & El-Mhamdi 2025" />
           <rect x={200} y={190} width={340} height={90} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={370} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
@@ -335,7 +345,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (2,1) — §6.3 authority laundering ---------- */}
-        <g transform={roomAt(2, 1)} opacity={chainU}>
+        <g transform={roomAt(2, 1)} opacity={chainU * roomFade(cam, 2, 1)}>
           <RoomHeader
             title="6.3 — authority laundering"
             sub="illustrative cascade (Bikhchandani et al. 1992) · accuracy 0.7 · truth: UNSAFE"
@@ -347,6 +357,9 @@ function Frame({ s }: { s: SceneState }) {
             const su = clamp01(sigU * N_REV - i);
             const au = clamp01(actU * N_REV - i);
             const act = actions[i];
+            // A private 'unsafe' that the public record outvotes is buried: once
+            // its reviewer signs 'safe', the signal dims and is struck through.
+            const buried = sig === 'U' && act === 'S' ? au : 0;
             return (
               <g key={i} opacity={u}>
                 {i > 0 && (
@@ -356,25 +369,29 @@ function Frame({ s }: { s: SceneState }) {
                 <circle cx={x} cy={REV_Y} r={16} fill={colors.PANEL}
                   stroke={au > 0.5 ? (act === 'S' ? colors.NEGATIVE : colors.POSITIVE) : colors.GRID}
                   strokeWidth={2} />
-                <text x={x} y={REV_Y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={11}
+                <text x={x} y={REV_Y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}
                   fontFamily="monospace">
                   {i + 1}
                 </text>
                 {su > 0 && (
                   <g opacity={su}>
-                    <rect x={x - 13} y={REV_Y + 30} width={26} height={20} rx={4}
-                      fill={sig === 'U' ? colors.POSITIVE : colors.NEGATIVE} opacity={0.22} />
-                    <text x={x} y={REV_Y + 44} textAnchor="middle" fontSize={10} fontWeight={600}
-                      fill={sig === 'U' ? colors.POSITIVE : colors.NEGATIVE}>
-                      {sig === 'U' ? 'unsafe' : 'safe'}
-                    </text>
+                    <g opacity={1 - 0.55 * buried}>
+                      <rect x={x - 32} y={REV_Y + 30} width={64} height={24} rx={4}
+                        fill={sig === 'U' ? colors.POSITIVE : colors.NEGATIVE} opacity={0.22} />
+                      <text x={x} y={REV_Y + 47} textAnchor="middle" fontSize={14} fontWeight={600}
+                        fill={sig === 'U' ? colors.POSITIVE : colors.NEGATIVE}>
+                        {sig === 'U' ? 'unsafe' : 'safe'}
+                      </text>
+                    </g>
+                    <line x1={x - 28} y1={REV_Y + 42} x2={x + 28} y2={REV_Y + 42}
+                      stroke={colors.MUTED} strokeWidth={2} opacity={buried} />
                   </g>
                 )}
                 {au > 0 && (
                   <g opacity={au}>
-                    <rect x={x - 13} y={REV_Y - 56} width={26} height={20} rx={4}
+                    <rect x={x - 32} y={REV_Y - 58} width={64} height={24} rx={4}
                       fill={act === 'S' ? colors.NEGATIVE : colors.POSITIVE} opacity={0.3} />
-                    <text x={x} y={REV_Y - 42} textAnchor="middle" fontSize={10} fontWeight={700}
+                    <text x={x} y={REV_Y - 41} textAnchor="middle" fontSize={14} fontWeight={700}
                       fill={act === 'S' ? colors.NEGATIVE : colors.POSITIVE}>
                       {act === 'S' ? 'SAFE' : 'UNSAFE'}
                     </text>
@@ -383,10 +400,10 @@ function Frame({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={REV_X0 - 26} y={REV_Y - 42} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+          <text x={REV_X0 - 40} y={REV_Y - 41} textAnchor="end" fill={colors.MUTED} fontSize={14}>
             public verdict →
           </text>
-          <text x={REV_X0 - 26} y={REV_Y + 44} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+          <text x={REV_X0 - 40} y={REV_Y + 47} textAnchor="end" fill={colors.MUTED} fontSize={14}>
             private signal →
           </text>
           {tallyU > 0 && (
@@ -399,12 +416,19 @@ function Frame({ s }: { s: SceneState }) {
               </text>
             </g>
           )}
+          {tallyU > 0 && (
+            <text x={REV_X0 - 20} y={REV_Y + 150} fill={colors.MUTED} fontSize={14} opacity={tallyU}>
+              green = matches the truth (unsafe) · red = wrong · struck through = buried by the record
+            </text>
+          )}
           {reframeU > 0 && (
             <g opacity={reframeU}>
-              <text x={900} y={REV_Y + 176} textAnchor="middle" fill={colors.WARM} fontSize={17}>
+              <line x1={LAST_X} y1={REV_Y + 58} x2={LAST_X} y2={REV_Y + 160}
+                stroke={colors.WARM} strokeWidth={1.5} />
+              <text x={LAST_X + 10} y={REV_Y + 176} textAnchor="end" fill={colors.WARM} fontSize={17}>
                 enormous institutional weight
               </text>
-              <text x={900} y={REV_Y + 204} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+              <text x={LAST_X + 10} y={REV_Y + 204} textAnchor="end" fill={colors.MUTED} fontSize={15}>
                 almost no information
               </text>
             </g>
@@ -412,7 +436,7 @@ function Frame({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------- ROOM (1,1) — the close, on an empty stage ---------- */}
-        <g transform={roomAt(1, 1)} opacity={closeU}>
+        <g transform={roomAt(1, 1)} opacity={closeU * roomFade(cam, 1, 1)}>
           <rect x={190} y={220} width={900} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Coherent from the inside, unsound from above

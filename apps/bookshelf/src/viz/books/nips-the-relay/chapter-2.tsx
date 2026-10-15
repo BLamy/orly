@@ -170,8 +170,8 @@ function Frame({ label, u, dir, y, color }: { label: string; u: number; dir: 1 |
   const x = from + (to - from) * clamp01(u);
   return (
     <g opacity={Math.min(1, u * 4)}>
-      <rect x={x - 146} y={y - 15} width={292} height={26} rx={7} fill={colors.PANEL} stroke={color} opacity={0.95} />
-      <text x={x} y={y + 3} textAnchor="middle" fill={color} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+      <rect x={x - 165} y={y - 15} width={330} height={26} rx={7} fill={colors.PANEL} stroke={color} opacity={0.95} />
+      <text x={x} y={y + 3} textAnchor="middle" fill={color} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
         {label}
       </text>
     </g>
@@ -208,6 +208,10 @@ export function Render({ s }: { s: SceneState }) {
               <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="you" u={nodesU} />
               <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay.example" sublabel="auth-gated" u={nodesU} />
               <line x1={CLIENT.x + 90} y1={WIRE_Y} x2={RELAY.x - 90} y2={WIRE_Y} stroke={colors.GRID} strokeWidth={1.5} opacity={nodesU * 0.7} />
+              {/* the private rooms the caption names; fades out before the first refusal lands on the relay side */}
+              <text x={RELAY.x + 90} y={158} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={nodesU * Math.max(0, 1 - denyU * 2)}>
+                private rooms · dms, paid shelves
+              </text>
             </g>
           )}
 
@@ -240,10 +244,10 @@ export function Render({ s }: { s: SceneState }) {
               <line x1={620} y1={330} x2={980} y2={330} stroke={colors.GRID} strokeWidth={1.5} />
               <rect x={740} y={318} width={120} height={24} rx={6} fill={colors.WARM} opacity={0.18} />
               <line x1={800} y1={316} x2={800} y2={344} stroke={colors.WARM} strokeWidth={2} />
-              <text x={800} y={306} textAnchor="middle" fill={colors.WARM} fontSize={12}>now</text>
-              <text x={740} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={12}>−10 min</text>
-              <text x={860} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={12}>+10 min</text>
-              <text x={800} y={388} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={800} y={304} textAnchor="middle" fill={colors.WARM} fontSize={14}>now</text>
+              <text x={740} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={14}>−10 min</text>
+              <text x={860} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={14}>+10 min</text>
+              <text x={800} y={390} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 created_at must land in the window
               </text>
             </g>
@@ -256,7 +260,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={c}>
                   <circle cx={930} cy={210 + i * 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
                   <path d={`M${924} ${210 + i * 34} l4 4 l7 -8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
-                  <text x={950} y={215 + i * 34} fill={colors.TEXT} fontSize={13}>{c}</text>
+                  <text x={950} y={215 + i * 34} fill={colors.TEXT} fontSize={14}>{c}</text>
                 </g>
               ))}
             </g>
@@ -265,10 +269,10 @@ export function Render({ s }: { s: SceneState }) {
           {restrictU > 0 && (
             <g opacity={restrictU}>
               <rect x={620} y={352} width={470} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={640} y={376} fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={640} y={376} fill={colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                 ["CLOSED", "vip", "restricted: not a member"]
               </text>
-              <text x={640} y={398} fill={colors.MUTED} fontSize={13}>
+              <text x={640} y={398} fill={colors.MUTED} fontSize={14}>
                 authenticated ≠ authorized
               </text>
             </g>
@@ -285,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={347} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             challenge → signed kind 22242 → the connection itself is authenticated
           </text>
-          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-42 · "auth-required: " / "restricted: "
           </text>
         </g>

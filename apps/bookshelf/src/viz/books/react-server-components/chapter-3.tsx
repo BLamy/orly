@@ -66,22 +66,24 @@ const G2: Traveler[] = [
 const PROMISE: Traveler = { label: 'a promise', out: '"$@8"', note: 'row 8 follows later', dock: 5 };
 const REF: Traveler = { label: 'Counter', out: '"$L2"', note: '+ 2:I[…] import row', dock: 6 };
 
+// Error text is React's exact message; only the line breaks are set here.
 const EH_ERR = ['Event handlers cannot be passed to', 'Client Component props.'];
 const FN_ERR = [
-  'Functions cannot be passed directly to Client',
-  'Components unless you explicitly expose it by',
-  'marking it with "use server".',
+  'Functions cannot be passed directly to',
+  'Client Components unless you explicitly',
+  'expose it by marking it with "use server".',
 ];
 const CLS_ERR = [
-  'Only plain objects, and a few built-ins, can be',
-  'passed to Client Components from Server',
-  'Components. Classes or null prototypes are',
-  'not supported.',
+  'Only plain objects, and a few built-ins,',
+  'can be passed to Client Components from',
+  'Server Components. Classes or null',
+  'prototypes are not supported.',
 ];
 const CALL_ERR = [
-  'Attempted to call Counter() from the server',
-  "but Counter is on the client. It's not possible",
-  'to invoke a client function from the server.',
+  'Attempted to call Counter() from the',
+  'server but Counter is on the client.',
+  "It's not possible to invoke a client",
+  'function from the server.',
 ];
 
 // camera marks
@@ -275,15 +277,15 @@ function Chip({ x, y, text, color, mono = true, opacity = 1 }: { x: number; y: n
 
 function ErrCard({ x, y, lines, u, title }: { x: number; y: number; lines: string[]; u: number; title: string }) {
   if (u <= 0) return null;
-  const h = 34 + lines.length * 17;
+  const h = 54 + (lines.length - 1) * 19;
   return (
     <g opacity={u} transform={`translate(${x},${y + 8 * (1 - u)})`}>
-      <rect x={-190} y={0} width={380} height={h} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-      <text x={-174} y={20} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} fontWeight={700}>
+      <rect x={-196} y={0} width={392} height={h} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+      <text x={-180} y={22} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
         {title}
       </text>
       {lines.map((l, i) => (
-        <text key={i} x={-174} y={40 + i * 17} fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={0.92}>
+        <text key={i} x={-180} y={44 + i * 19} fill={colors.TEXT} fontSize={14} fontFamily={MONO} opacity={0.92}>
           {l}
         </text>
       ))}
@@ -352,18 +354,18 @@ export function Render({ s }: { s: SceneState }) {
             <text x={BELT_X1 - 4} y={BELT_Y + 44} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontWeight={650}>
               CLIENT
             </text>
-            <text x={BELT_X1 - 4} y={BELT_Y + 74} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={BELT_X1 - 4} y={BELT_Y + 74} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               the wire carries text only
             </text>
 
             {/* the gate: two posts + scanner */}
             <rect x={GATE_X - 30} y={BELT_Y - 118} width={14} height={148} rx={5} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
             <rect x={GATE_X + 16} y={BELT_Y - 118} width={14} height={148} rx={5} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-            <rect x={GATE_X - 30} y={BELT_Y - 140} width={60} height={24} rx={6} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={GATE_X} y={BELT_Y - 123} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+            <rect x={GATE_X - 36} y={BELT_Y - 140} width={72} height={24} rx={6} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+            <text x={GATE_X} y={BELT_Y - 123} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               the gate
             </text>
-            <text x={GATE_X} y={BELT_Y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={GATE_X} y={BELT_Y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               renderModelDestructive — ReactFlightServer.js
             </text>
             {/* scan beam */}
@@ -372,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* boarded dock list */}
           <g opacity={gateU * (1 - 0.6 * clamp01(proxyU * 2))}>
-            <text x={DOCK.x + 120} y={DOCK.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={DOCK.x + 120} y={DOCK.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               boarded — as written on the tape
             </text>
             {docked.map(
@@ -389,7 +391,7 @@ export function Render({ s }: { s: SceneState }) {
                       {trav.out}
                     </text>
                     {trav.note && (
-                      <text x={DOCK.x + 250} y={DOCK.y + trav.dock * DOCK.dy + 5} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                      <text x={DOCK.x + 250} y={DOCK.y + trav.dock * DOCK.dy + 5} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                         {trav.note}
                       </text>
                     )}
@@ -414,31 +416,31 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* error cards above the gate */}
           {/* stacked in the clear left column, above the bounce path and clear of the dock */}
-          <ErrCard x={230} y={84} lines={EH_ERR} u={fn1U > 0.5 ? clamp01((fn1U - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
-          <ErrCard x={230} y={160} lines={FN_ERR} u={fn2U > 0.5 ? clamp01((fn2U - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
-          <ErrCard x={230} y={253} lines={CLS_ERR} u={clsU > 0.5 ? clamp01((clsU - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
+          <ErrCard x={236} y={64} lines={EH_ERR} u={fn1U > 0.5 ? clamp01((fn1U - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
+          <ErrCard x={236} y={147} lines={FN_ERR} u={fn2U > 0.5 ? clamp01((fn2U - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
+          <ErrCard x={236} y={249} lines={CLS_ERR} u={clsU > 0.5 ? clamp01((clsU - 0.5) / 0.2) * (1 - clamp01(proxyU * 4)) : 0} title="Error" />
 
           {/* the recursive rule */}
           {recurU > 0.02 && (
             <g opacity={recurU * (1 - clamp01(proxyU * 3))}>
-              <text x={300} y={520} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+              <text x={300} y={520} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 {'["$","$L2",null,{ …every value in here walks the belt too }]'}
               </text>
-              <path d={`M 330 528 C 260 580, 140 520, ${BELT_X0 + 40} ${BELT_Y + 34}`} fill="none" stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.8} />
+              <path d={`M 320 530 C 290 500, 250 480, 250 ${BELT_Y + 26}`} fill="none" stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.8} />
             </g>
           )}
 
           {/* the sealed proxy panel */}
           {proxyU > 0.02 && (
             <g opacity={proxyU}>
-              <rect x={60} y={116} width={480} height={196} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-              <text x={82} y={144} fill={colors.TEXT} fontSize={14} fontFamily={MONO} fontWeight={650}>
+              <rect x={60} y={84} width={480} height={172} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <text x={82} y={112} fill={colors.TEXT} fontSize={14} fontFamily={MONO} fontWeight={650}>
                 Counter.js
               </text>
-              <text x={186} y={144} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              <text x={186} y={112} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 'use client'
               </text>
-              <text x={82} y={170} fill={colors.MUTED} fontSize={12}>
+              <text x={82} y={138} fill={colors.MUTED} fontSize={13}>
                 imported on the server → never executed, replaced by a proxy:
               </text>
               {[
@@ -446,14 +448,14 @@ export function Render({ s }: { s: SceneState }) {
                 '$$id:     "./src/Counter.js#Counter"',
                 '$$async:  false',
               ].map((l, i) => (
-                <text key={i} x={98} y={196 + i * 19} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                <text key={i} x={98} y={164 + i * 19} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   {l}
                 </text>
               ))}
-              <text x={82} y={272} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={82} y={240} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 registerClientReference — ReactFlightWebpackReferences.js
               </text>
-              <ErrCard x={340} y={326} lines={CALL_ERR} u={clamp01((proxyU - 0.5) / 0.5)} title="Error — if you call it here" />
+              <ErrCard x={340} y={268} lines={CALL_ERR} u={clamp01((proxyU - 0.5) / 0.5)} title="Error — if you call it here" />
             </g>
           )}
         </g>
@@ -461,7 +463,6 @@ export function Render({ s }: { s: SceneState }) {
         {/* the law */}
         {lawU > 0.02 && (
           <g opacity={lawU}>
-            <rect x={300} y={196} width={680} height={240} rx={16} fill={colors.BG} />
             <rect x={300} y={196} width={680} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
             <text x={640} y={252} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={700}>
               The law of the boundary

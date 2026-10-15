@@ -119,7 +119,6 @@ export function buildScene() {
   const bolt1U = tl.channel('bolt1U', 0); // pessimist wake bolt
   const bolt2U = tl.channel('bolt2U', 0); // optimist wake bolt
   const bolt3U = tl.channel('bolt3U', 0); // pragmatist wake bolt
-  const defU = tl.channel('defU', 0); // one-line definition of "wake" under the manager
   const q2U = tl.channel('q2U', 0); // second question card
   const ghostU = tl.channel('ghostU', 0); // duplicate ghost: 0..1 in, 1..2 out
   const guardChipU = tl.channel('guardChipU', 0); // children.get / observe chips
@@ -190,8 +189,6 @@ export function buildScene() {
   tl.tween(bolt1U, 1, { at: 36.2, dur: 1.6, ease: ease.linear });
   tl.tween(mgrLit, 1, { at: 37.8, dur: 0.3, ease: ease.pop });
   tl.tween(mgrLit, 0.12, { at: 39.6, dur: 0.8, ease: ease.move });
-  tl.tween(defU, 1, { at: 36.4, dur: 0.6, ease: ease.enter });
-  tl.tween(defU, 0, { at: 41.0, dur: 0.6, ease: ease.enter });
   tl.hold(42.2, 0.4);
 
   // — beat 7 · the rhythm —
@@ -256,7 +253,6 @@ export function buildScene() {
     bolt1U,
     bolt2U,
     bolt3U,
-    defU,
     q2U,
     ghostU,
     guardChipU,
@@ -331,7 +327,7 @@ function Capsule({
         {label}
       </text>
       {sub && (
-        <text x={x} y={y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text x={x} y={y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
           {sub}
         </text>
       )}
@@ -355,12 +351,12 @@ function Chip({
   anchor?: 'middle' | 'start';
 }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.4 + 24;
+  const w = text.length * 8.2 + 24;
   const x0 = anchor === 'middle' ? x - w / 2 : x;
   return (
     <g opacity={u}>
-      <rect x={x0} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={12.5} fontFamily={MONO}>
+      <rect x={x0} y={y - 16} width={w} height={30} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
+      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -379,7 +375,6 @@ export function Render({ s }: { s: SceneState }) {
   const darkLblU = s.get(scene.darkLblU);
   const thinkT = s.get(scene.thinkT);
   const boltU = [s.get(scene.bolt2U), s.get(scene.bolt1U), s.get(scene.bolt3U)]; // per ROLE index
-  const defU = s.get(scene.defU);
   const q2U = s.get(scene.q2U);
   const ghostU = s.get(scene.ghostU);
   const guardChipU = s.get(scene.guardChipU);
@@ -387,6 +382,8 @@ export function Render({ s }: { s: SceneState }) {
   const braidU = s.get(scene.braidU);
   const synthU = s.get(scene.synthU);
   const endU = s.get(scene.endU);
+  // the definition of "wake" appears with the first wake bolt and stays put
+  const defU = s.get(scene.bolt1U) * (1 - 0.85 * endU) * (1 - synthU);
 
   // rows shown on the tape: spawns while rowsU runs, outputs as bolts land
   const outLanded = [s.get(scene.bolt1U), s.get(scene.bolt2U), s.get(scene.bolt3U)];
@@ -466,6 +463,27 @@ export function Render({ s }: { s: SceneState }) {
             })}
         </g>
 
+        {/* ---------------- worker slots: the trio the question will fan out to ---------------- */}
+        {ROLES.map((r, i) => {
+          const slot = qU * (1 - win(fanU, 3, i, 1.8)) * (1 - 0.85 * endU) * 0.5;
+          if (slot <= 0.01) return null;
+          return (
+            <rect
+              key={`slot-${r.id}`}
+              x={WX - 75}
+              y={r.y - 32}
+              width={150}
+              height={64}
+              rx={14}
+              fill="none"
+              stroke={r.color}
+              strokeOpacity={slot}
+              strokeWidth={1.4}
+              strokeDasharray="5 5"
+            />
+          );
+        })}
+
         {/* ---------------- workers ---------------- */}
         {ROLES.map((r, i) => {
           const u = win(fanU, 3, i, 1.8);
@@ -493,7 +511,7 @@ export function Render({ s }: { s: SceneState }) {
                   );
                 })}
               {done && (
-                <text x={WX + 62} y={r.y - 24} textAnchor="end" fontSize={13} fill={r.color}>
+                <text x={WX + 62} y={r.y - 22} textAnchor="end" fontSize={16} fill={r.color}>
                   ✓
                 </text>
               )}
@@ -516,7 +534,7 @@ export function Render({ s }: { s: SceneState }) {
               strokeWidth={1.6}
               strokeDasharray="5 5"
             />
-            <text x={WX + 170} y={ROLES[0].y + 52} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+            <text x={WX + 170} y={ROLES[0].y + 54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
               duplicate?
             </text>
           </g>
@@ -525,28 +543,28 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- manager + question ---------------- */}
         {qU > 0.01 && (
           <g opacity={qU * (1 - 0.85 * endU) * (1 - 0.7 * synthU)} transform={`translate(${-160 + 160 * qU} 0)`}>
-            <rect x={68} y={MGR.y - 26} width={128} height={52} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.8} />
-            <text x={132} y={MGR.y - 4} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+            <rect x={56} y={MGR.y - 28} width={148} height={56} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.8} />
+            <text x={130} y={MGR.y - 5} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               {qText}
             </text>
-            <text x={132} y={MGR.y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={130} y={MGR.y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               initialMessage
             </text>
           </g>
         )}
         <Capsule x={MGR.x} y={MGR.y} w={MGR_W} h={MGR_H} lit={mgrLit} color={colors.SECONDARY} label="manager" sub="manager-worker" />
         {defU > 0.01 && (
-          <text x={MGR.x} y={MGR.y + 104} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO} opacity={defU}>
+          <text x={MGR.x} y={MGR.y + 106} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO} opacity={defU}>
             wake = a child&apos;s finish re-runs the manager
           </text>
         )}
         {darkLblU > 0.01 && (
           <text
             x={MGR.x}
-            y={MGR.y + 66}
+            y={MGR.y + 68}
             textAnchor="middle"
-            fill={colors.MUTED}
-            fontSize={13}
+            fill={colors.TEXT}
+            fontSize={14}
             fontStyle="italic"
             opacity={darkLblU}
           >
@@ -557,11 +575,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* synthesis card */}
         {synthU > 0.01 && (
           <g opacity={synthU}>
-            <rect x={MGR.x - 86} y={MGR.y + 62} width={172} height={58} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-            <text x={MGR.x} y={MGR.y + 86} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
+            <rect x={MGR.x - 104} y={MGR.y + 62} width={208} height={60} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
+            <text x={MGR.x} y={MGR.y + 86} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={600}>
               one answer
             </text>
-            <text x={MGR.x} y={MGR.y + 106} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={MGR.x} y={MGR.y + 106} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               three perspectives, braided
             </text>
           </g>
@@ -576,7 +594,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- the stream tape ---------------- */}
         {tapeU > 0.01 && (
           <g>
-            <text x={TAPE_X0} y={TAPE_Y - 14} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={tapeU}>
+            <text x={TAPE_X0} y={TAPE_Y - 14} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={tapeU}>
               the manager&apos;s stream — append only
             </text>
             <line
@@ -594,11 +612,11 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={u} transform={`translate(0 ${8 * (1 - u)})`}>
                   <rect x={x} y={TAPE_Y} width={CELL_W - 8} height={CELL_H} rx={8} fill={colors.PANEL} stroke={c.color} strokeOpacity={0.55} />
-                  <text x={x + (CELL_W - 8) / 2} y={TAPE_Y + 22} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                  <text x={x + (CELL_W - 8) / 2} y={TAPE_Y + 23} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                     {c.action}
                   </text>
-                  <circle cx={x + (CELL_W - 8) / 2 - 38} cy={TAPE_Y + 39} r={3.5} fill={c.color} />
-                  <text x={x + (CELL_W - 8) / 2 + 4} y={TAPE_Y + 43} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <circle cx={x + 16} cy={TAPE_Y + 41} r={3.5} fill={c.color} />
+                  <text x={x + 26} y={TAPE_Y + 45} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {c.key}
                   </text>
                 </g>

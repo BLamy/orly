@@ -16,7 +16,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -69,7 +68,7 @@ const JIT_BINS = loadBins(JIT_TIMES);
 
 // layouts
 const SOLO_Y = 430; // single-client axis (phase A)
-const STAIR_BASE = SOLO_Y - 26;
+const STAIR_BASE = SOLO_Y - 8; // bars rest just above the axis
 const STAIR_H = (d: number) => d * 0.27; // 27, 54, 108, 216
 const HERD_Y0 = 158; // herd rows (phase B)
 const HERD_Y1 = 428;
@@ -246,11 +245,12 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
 
   const soloOp = axisU * (1 - soloOutU);
-  const herdOp = herdU > 0.001 ? 1 - herdOutU * 0.88 : 0;
-  const stageDim = 1 - recapU * 0.86;
+  // the herd leaves fully in phase C so no faded dots sit behind the budget
+  const herdOp = herdU > 0.001 ? 1 - herdOutU : 0;
+  const stageDim = 1 - recapU * 0.9;
 
-  // phase C: our request on the solo axis (returns after the herd dims)
-  const OUR_TIMES = [0, 110, 290]; // fail, fail, success (jittered flavor)
+  // phase C: our request on the solo axis, one attempt per ghost ring
+  const OUR_TIMES = SYNC_TIMES.slice(0, 3); // fail, fail, success
   const CAP_X = tx(SYNC_TIMES[4]) + 46; // budget wall just past attempt 5
 
   return (
@@ -262,25 +262,32 @@ export function Render({ s }: { s: SceneState }) {
           {soloOp > 0.01 && (
             <g opacity={soloOp}>
               <line x1={AXIS_X0 - 30} y1={SOLO_Y} x2={AXIS_X1 + 30} y2={SOLO_Y} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={1062} y={SOLO_Y - 12} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={1075} y={SOLO_Y - 12} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 time →
               </text>
               <text x={AXIS_X0} y={128} fill={colors.TEXT} fontSize={16.5} fontFamily={MONO}>
                 {'Effect.retry(call, { schedule: Schedule.exponential("100 millis") })'}
               </text>
               {stepLblU > 0.01 && (
-                <text x={AXIS_X0} y={158} fill={colors.MUTED} fontSize={13.5} opacity={stepLblU} fontFamily={MONO}>
+                <text x={AXIS_X0} y={158} fill={colors.MUTED} fontSize={14} opacity={stepLblU} fontFamily={MONO}>
                   step(error) → wait(delay) | stop
                 </text>
               )}
-              {/* attempts */}
+              {/* the call that just failed, shown before any retry */}
+              <g opacity={axisU}>
+                <rect x={AXIS_X0} y={178} width={236} height={30} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+                <text x={AXIS_X0 + 14} y={198} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
+                  request failed
+                </text>
+              </g>
+              {/* attempts; labels alternate rows so the close ones do not collide */}
               {SYNC_TIMES.map((t, i) => {
                 const u = win(pulseU, SYNC_TIMES.length, i, 1.4);
                 if (u <= 0) return null;
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={tx(t)} cy={SOLO_Y} r={7} fill={colors.NEGATIVE} />
-                    <text x={tx(t)} y={SOLO_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                    <text x={tx(t)} y={SOLO_Y + (i % 2 === 0 ? 26 : 44)} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       attempt {i + 1}
                     </text>
                   </g>
@@ -297,23 +304,19 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={i} opacity={0.9}>
                     <rect x={x0 + 6} y={STAIR_BASE - h} width={x1 - x0 - 12} height={h} rx={5} fill={colors.ACCENT} opacity={0.28} />
                     <rect x={x0 + 6} y={STAIR_BASE - h} width={x1 - x0 - 12} height={h} rx={5} fill="none" stroke={colors.ACCENT} strokeWidth={1.4} />
-                    <text x={(x0 + x1) / 2} y={STAIR_BASE - h - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO} opacity={u}>
+                    <text x={(x0 + x1) / 2} y={STAIR_BASE - h - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO} opacity={u}>
                       {d}ms
                     </text>
                   </g>
                 );
               })}
-              {mathU > 0.01 && (
-                <MathLabel
-                  tex={'\\text{delay}_n = 100\\,\\text{ms}\\cdot 2^{\\,n-1}'}
-                  x={190}
-                  y={226}
-                  anchor="start"
-                  fontSize={21}
-                  color={colors.TEXT}
-                  opacity={mathU}
-                />
-              )}
+              {/* the formula as plain SVG text: it stays left of the 800ms bar */}
+              <text x={190} y={250} fill={colors.TEXT} fontSize={20} fontFamily={MONO} opacity={mathU}>
+                delay
+                <tspan dy={5} fontSize={14}>n</tspan>
+                <tspan dy={-5}> = 100 ms · 2</tspan>
+                <tspan dy={-9} fontSize={14}>n−1</tspan>
+              </text>
             </g>
           )}
 
@@ -335,7 +338,7 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              <text x={AXIS_X0 - 14} y={(HERD_Y0 + HERD_Y1) / 2} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+              <text x={AXIS_X0 - 14} y={(HERD_Y0 + HERD_Y1) / 2} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 24 clients
               </text>
 
@@ -343,7 +346,7 @@ export function Render({ s }: { s: SceneState }) {
               {histU > 0.01 && (
                 <g opacity={histU}>
                   <line x1={AXIS_X0} y1={HIST_BASE} x2={AXIS_X1} y2={HIST_BASE} stroke={colors.GRID} strokeWidth={1.2} />
-                  <text x={AXIS_X0 - 14} y={HIST_BASE - 30} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+                  <text x={AXIS_X0 - 14} y={HIST_BASE - 30} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                     load
                   </text>
                   {SYNC_BINS.map((sc, b) => {
@@ -371,11 +374,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* jittered chip */}
               {jitLblU > 0.01 && (
                 <g opacity={jitLblU}>
-                  <rect x={860} y={108} width={300} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} />
-                  <text x={1010} y={128} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
+                  <rect x={860} y={96} width={300} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} />
+                  <text x={1010} y={116} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
                     .pipe(Schedule.jittered)
                   </text>
-                  <text x={1010} y={145} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={1010} y={133} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     delay × random(0.8 … 1.2)
                   </text>
                 </g>
@@ -396,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
               ))}
               {/* the budget wall */}
               <line x1={CAP_X} y1={SOLO_Y - 96} x2={CAP_X} y2={SOLO_Y + 44} stroke={colors.NEGATIVE} strokeWidth={3} />
-              <text x={CAP_X + 12} y={SOLO_Y - 74} fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO}>
+              <text x={CAP_X - 12} y={SOLO_Y - 74} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                 budget spent → error surfaces
               </text>
             </g>
@@ -410,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={tx(t)} cy={SOLO_Y} r={9} fill={ok ? colors.POSITIVE : colors.NEGATIVE} />
-                    <text x={tx(t)} y={SOLO_Y - 20} textAnchor="middle" fill={ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={12.5}>
+                    <text x={tx(t)} y={SOLO_Y - 20} textAnchor="middle" fill={ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={14}>
                       {ok ? 'success' : 'fail'}
                     </text>
                   </g>

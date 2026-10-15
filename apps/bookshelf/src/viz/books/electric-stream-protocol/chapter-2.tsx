@@ -23,9 +23,14 @@ import {
 const PAPER = '#f7f7f3';
 const INK = '#2b2c2a';
 const MUTED = '#858780';
+// Darker than MUTED so annotations stay legible on the paper background.
+const NOTE = '#5c5e57';
 const BLUE = '#5b86e5';
+const INK_BLUE = '#2f5bb8';
 const GREEN = '#45a56f';
+const INK_GREEN = '#2e7d52';
 const CORAL = '#ef775d';
+const INK_CORAL = '#c4482a';
 const VIOLET = '#7d83cc';
 const AMBER = '#d19b42';
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
@@ -157,7 +162,7 @@ export function Render({ s }: { s: SceneState }) {
           footer="projections can be rebuilt · the stream cannot be rewritten"
           u={frameU}
         >
-          <circle cx={1172} cy={78} r={4} fill={BLUE} opacity={0.28 + protocolPulse * 0.62} />
+          <circle cx={336} cy={74} r={4} fill={BLUE} opacity={0.28 + protocolPulse * 0.62} />
           <ArchitectureEdge from={{ x: DOOR.x + 92, y: DOOR.y }} to={{ x: VALIDATOR.x - 92, y: VALIDATOR.y }} tone="coral" label="dispatch" flow={eventU} u={eventU} />
           <ArchitectureEdge from={{ x: VALIDATOR.x + 92, y: VALIDATOR.y }} to={{ x: STREAM.x - 142, y: STREAM.y }} tone="amber" label="accept" flow={appendU} u={validateU} />
           <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PROJECTION.x - 94, y: PROJECTION.y }} via={[{ x: 912, y: STREAM.y }, { x: 936, y: PROJECTION.y }]} tone="green" label="reduce" flow={fanU} u={fanU} />
@@ -167,26 +172,26 @@ export function Render({ s }: { s: SceneState }) {
           <ArchitectureCard x={DOOR.x} y={DOOR.y} w={184} h={72} label="dispatch" meta="user intent" badge="WRITE" tone="coral" u={eventU} status="ready" />
           <ArchitectureCard x={VALIDATOR.x} y={VALIDATOR.y} w={184} h={72} label="validator" meta={changeU > 0.45 ? 'schema · accepted' : 'schema · checked'} badge="GATE" tone="amber" u={validateU} status="ready" />
           <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={124} label="durable stream" meta="append-only · offset-addressed" badge="0042" tone="blue" u={appendU} status="ready">
-            <text x={-124} y={40} fill={MUTED} fontSize={11} fontFamily={MONO}>event: message.created</text>
-            <text x={-124} y={58} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>sha-256: 7a19…</text>
+            <text x={-124} y={36} fill={NOTE} fontSize={12} fontFamily={MONO}>event: message.created</text>
+            <text x={-124} y={52} fill={INK_BLUE} fontSize={12.5} fontWeight={800} fontFamily={MONO}>sha-256: 7a19…</text>
           </ArchitectureCard>
           <ArchitectureCard x={PROJECTION.x} y={PROJECTION.y} w={188} h={72} label="current UI" meta="materialized view" badge="VIEW" tone="green" u={projectionU} status="ready" />
           <ArchitectureCard x={AUDIT.x} y={AUDIT.y} w={188} h={72} label="audit trail" meta="human-readable log" badge="LOG" tone="violet" u={auditU} status="ready" />
           <ArchitectureCard x={REPLAY.x} y={REPLAY.y} w={188} h={72} label="replay" meta="same log · same state" badge="PROVE" tone="blue" u={replayU} status={digestU > 0.5 ? 'ready' : undefined} />
 
           <ArchitectureGrid x={430} y={500} columns={6} rows={1} cells={eventCells} cellW={80} cellH={42} gap={6} u={appendU} dim={closeU * 0.4} />
-          <text x={685} y={568} textAnchor="middle" fill={MUTED} fontSize={11} fontFamily={MONO}>append-only history · evt-42 is not a UI snapshot</text>
+          <text x={685} y={568} textAnchor="middle" fill={NOTE} fontSize={12} fontFamily={MONO}>append-only history · evt-42 is not a UI snapshot</text>
 
           {digestU > 0.02 && (
             <g opacity={digestU}>
-              <rect x={920} y={560} width={280} height={42} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.5} />
-              <text x={PROJECTION.x} y={586} textAnchor="middle" fill={GREEN} fontSize={12} fontWeight={800} fontFamily={MONO}>digest A = digest B · 7a19…</text>
+              <rect x={920} y={558} width={280} height={42} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.5} />
+              <text x={PROJECTION.x} y={584} textAnchor="middle" fill={INK_GREEN} fontSize={13} fontWeight={800} fontFamily={MONO}>digest A = digest B · 7a19…</text>
             </g>
           )}
           {changeU > 0.02 && (
             <g opacity={changeU}>
               <circle cx={PROJECTION.x - 80} cy={142} r={6} fill={CORAL} />
-              <text x={PROJECTION.x - 68} y={146} fill={CORAL} fontSize={11.5} fontWeight={800} fontFamily={MONO}>projection may change</text>
+              <text x={PROJECTION.x - 68} y={146} fill={INK_CORAL} fontSize={12.5} fontWeight={800} fontFamily={MONO}>projection may change</text>
             </g>
           )}
           {closeU > 0.02 && (

@@ -14,7 +14,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -229,7 +228,6 @@ export function buildScene(): Scene {
   });
   tl.tween(dupU, 0, { at: 68.3, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_PLATE, { at: 68.5, dur: 1.6, ease: ease.move });
-  tl.tween(machineDim, 0, { at: 68.5, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 69.6, dur: 0.9, ease: ease.enter });
   tl.hold(73.0, 1.5);
 
@@ -293,7 +291,8 @@ export function Render({ s }: { s: SceneState }) {
   const divStep = s.get(scene.divStep);
   const keepU = s.get(scene.keepU);
   const plateFill = s.get(scene.plateFill);
-  const machineDim = s.get(scene.machineDim);
+  // the machine clears as the closing card arrives (no timing of its own)
+  const machineDim = s.get(scene.machineDim) * (1 - s.get(scene.closeU));
   const spaceU = s.get(scene.spaceU);
   const dupU = s.get(scene.dupU);
   const closeU = s.get(scene.closeU);
@@ -315,8 +314,12 @@ export function Render({ s }: { s: SceneState }) {
         <ParticleCloud state={s} compute={spaceParticles} />
         {spaceU > 0.4 && (
           <g opacity={clamp01(spaceU * 2 - 1) * (1 - closeU)}>
-            <MathLabel tex={'62^7 \\approx 3.5 \\times 10^{12}'} x={900} y={200} fontSize={30} color={colors.TEXT} />
-            <text x={330} y={510} textAnchor="middle" fill={colors.WARM} fontSize={13} opacity={s.get(scene.needU)}>
+            <text x={640} y={204} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontFamily="serif">
+              62<tspan baselineShift="super" fontSize={20}>7</tspan>
+              {' ≈ 3.5 × 10'}
+              <tspan baselineShift="super" fontSize={20}>12</tspan>
+            </text>
+            <text x={330} y={544} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={s.get(scene.needU)}>
               360 M needed — barely a speck
             </text>
           </g>
@@ -347,7 +350,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={640} y={PLATE.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={PLATE.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             seven characters, unique, url-safe
           </text>
         </g>
@@ -355,11 +358,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the rejected counter ---- */}
         {counterU > 0 && counterDim > 0 && (
           <g opacity={counterU * counterDim}>
-            <rect x={460} y={220} width={360} height={70} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+            <rect x={430} y={220} width={420} height={70} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
             <text x={640} y={258} textAnchor="middle" fill={colors.NEGATIVE} fontSize={26} fontFamily="monospace">
               {counterVal}
             </text>
-            <text x={640} y={280} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={640} y={280} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               sequential → guessable · one owner → bottleneck
             </text>
           </g>
@@ -375,23 +378,23 @@ export function Render({ s }: { s: SceneState }) {
           <text x={270} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             t {TS}
           </text>
-          <text x={398} y={272} fill={colors.MUTED} fontSize={16}>
+          <text x={398} y={268} fill={colors.MUTED} fontSize={16}>
             →
           </text>
-          <text x={434} y={252} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={434} y={236} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             md5(ip_address + timestamp)
           </text>
         </g>
         <g opacity={hashU * machineDim}>
-          {hashU > 0 && (
+          {hashU > 0.05 && (
             <>
-              <rect x={432} y={262} width={498 * hashU} height={38} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
-              <text x={444} y={287} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace" opacity={hashU}>
+              <rect x={432} y={243} width={498 * hashU} height={38} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
+              <text x={444} y={268} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace" opacity={hashU}>
                 {MD5_HEX.slice(0, Math.max(1, Math.round(32 * hashU)))}
               </text>
             </>
           )}
-          <text x={932} y={252} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(hashU * 2 - 1)}>
+          <text x={932} y={236} textAnchor="end" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(hashU * 2 - 1)}>
             128 bits, uniformly distributed
           </text>
         </g>
@@ -420,28 +423,28 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {stripU > 0.9 && (
             <g opacity={clamp01(stripU * 4 - 3.4)}>
-              <text x={glyphX(4)} y={STRIP.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
+              <text x={glyphX(4)} y={STRIP.y + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
                 0–9
               </text>
-              <text x={glyphX(22)} y={STRIP.y + 24} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
+              <text x={glyphX(22)} y={STRIP.y + 26} textAnchor="middle" fill={colors.TEAL} fontSize={14}>
                 a–z
               </text>
-              <text x={glyphX(48)} y={STRIP.y + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
+              <text x={glyphX(48)} y={STRIP.y + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                 A–Z
               </text>
             </g>
           )}
-          {/* base 64's rejected extras */}
+          {/* base 64's rejected extras, set in a row with their label */}
           {b64U > 0 && (
             <g opacity={b64U}>
-              <text x={1096} y={STRIP.y + 42 + 18 * b64U} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily="monospace">
+              <text x={1040} y={STRIP.y + 66} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
+                base 64 extras need escaping →
+              </text>
+              <text x={1062} y={STRIP.y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily="monospace">
                 +
               </text>
-              <text x={1126} y={STRIP.y + 42 + 26 * b64U} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily="monospace">
+              <text x={1088} y={STRIP.y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily="monospace">
                 /
-              </text>
-              <text x={1030} y={STRIP.y + 46} textAnchor="end" fill={colors.NEGATIVE} fontSize={12}>
-                base 64 extras — need escaping →
               </text>
             </g>
           )}
@@ -458,7 +461,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={862} y={576} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily="monospace">
               ÷ 62
             </text>
-            <text x={952} y={568} fill={colors.MUTED} fontSize={12}>
+            <text x={952} y={568} fill={colors.MUTED} fontSize={14}>
               remainder {cur.rem}
             </text>
             <text x={952} y={586} fill={colors.WARM} fontSize={14} fontFamily="monospace">
@@ -480,8 +483,8 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {running && (
-          <text x={640} y={604} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={machineDim}>
-            base_encode(num, base=62) — O(k), k = 7
+          <text x={640} y={604} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={machineDim}>
+            base_encode(num, base=62) — one step per symbol
           </text>
         )}
 
@@ -514,7 +517,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {keepU > 0 && (
-            <text x={tapeX(0)} y={TAPE.y - 12} fill={colors.ACCENT} fontSize={12} opacity={keepU}>
+            <text x={tapeX(0)} y={TAPE.y - 12} fill={colors.ACCENT} fontSize={14} opacity={keepU}>
               keep the first 7
             </text>
           )}
@@ -532,7 +535,7 @@ export function Render({ s }: { s: SceneState }) {
                 {dupU >= 0.2 && dupU < 0.42 && (
                   <circle cx={850 - 420 * clamp01((dupU - 0.22) / 0.2)} cy={560} r={7} fill={colors.NEGATIVE} />
                 )}
-                <text x={640} y={528} textAnchor="middle" fill={dupU > 0.2 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="monospace">
+                <text x={640} y={528} textAnchor="middle" fill={dupU > 0.2 ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily="monospace">
                   {dupU > 0.2 ? 'taken — mint again' : 'is it unique?'}
                 </text>
               </>
@@ -541,7 +544,7 @@ export function Render({ s }: { s: SceneState }) {
             {dupU >= 0.5 && (
               <>
                 <circle cx={430 + 420 * clamp01((dupU - 0.5) / 0.25)} cy={560} r={7} fill={colors.WARM} opacity={dupU < 0.75 ? 1 : 0} />
-                <text x={640} y={528} textAnchor="middle" fill={dupU > 0.8 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily="monospace">
+                <text x={640} y={528} textAnchor="middle" fill={dupU > 0.8 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily="monospace">
                   {dupU > 0.8 ? 'unique ✓' : 'check the new name'}
                 </text>
               </>

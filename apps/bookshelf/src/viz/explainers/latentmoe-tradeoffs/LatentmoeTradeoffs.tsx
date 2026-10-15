@@ -43,7 +43,8 @@ const JOURNEY = [
   'ch4 · wins every row at matched cost; 350B headroom at 1T',
 ];
 
-const CAM_CAVEATS: CameraState = { x: 420, y: 330, k: 1.25 };
+// Frames the whole caveat stack (y 150–562) clear of the caption pill.
+const CAM_CAVEATS: CameraState = { x: 420, y: 356, k: 1.15 };
 
 interface Scene {
   tl: Timeline;
@@ -148,7 +149,7 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
 
   return (
     <>
@@ -162,36 +163,39 @@ function Frame({ s }: { s: SceneState }) {
             if (u <= 0) return null;
             const y = 150 + i * 108;
             return (
-              <g key={c.head} opacity={u * (1 - 0.8 * journeyU)}>
+              <g key={c.head} opacity={u * (1 - journeyU)}>
                 <rect x={140} y={y} width={560} height={88} rx={12} fill={colors.PANEL} stroke={c.c} />
                 <text x={164} y={y + 32} fill={c.c} fontSize={15} fontWeight={600}>
                   {c.head}
                 </text>
-                <text x={164} y={y + 62} fill={colors.TEXT} fontSize={13}>
+                <text x={164} y={y + 62} fill={colors.TEXT} fontSize={14}>
                   {c.body}
                 </text>
               </g>
             );
           })}
           {cavU > 0.2 && (
-            <text x={140} y={132} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={cavU * (1 - 0.8 * journeyU)}>
+            <text x={140} y={132} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={cavU * (1 - journeyU)}>
               reported limitations — the paper's own list
             </text>
           )}
 
-          {/* recap */}
+          {/* recap: its own column on the right, clear of the caveat cards */}
           {journeyU > 0 && (
             <g opacity={journeyU}>
+              <text x={764} y={132} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                the book, in four stops
+              </text>
               {JOURNEY.map((line, i) => {
                 const u = clamp01(journeyU * JOURNEY.length - i);
                 if (u <= 0) return null;
                 return (
                   <g key={i} opacity={u}>
-                    <circle cx={300} cy={170 + i * 56} r={5} fill={colors.SECONDARY} />
+                    <circle cx={764} cy={170 + i * 56} r={5} fill={colors.SECONDARY} />
                     {i < JOURNEY.length - 1 && (
-                      <line x1={300} y1={176 + i * 56} x2={300} y2={220 + i * 56} stroke={colors.GRID} strokeWidth={1.5} />
+                      <line x1={764} y1={176 + i * 56} x2={764} y2={220 + i * 56} stroke={colors.GRID} strokeWidth={1.5} />
                     )}
-                    <text x={322} y={176 + i * 56} fill={colors.TEXT} fontSize={16}>
+                    <text x={784} y={176 + i * 56} fill={colors.TEXT} fontSize={15}>
                       {line}
                     </text>
                   </g>
@@ -247,7 +251,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             edge — and bill accuracy in FLOPs and parameters, like the fleet does
           </text>
-          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             LatentMoE · arXiv:2601.18089
           </text>
         </g>

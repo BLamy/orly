@@ -21,10 +21,10 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const TAPE_X = 200;
 const TAPE_W = 900;
 const TAPE_H = 40;
-const OLD = { x: TAPE_X, y: 268, w: TAPE_W, h: TAPE_H };
-const NEW = { x: TAPE_X, y: 428, w: TAPE_W, h: TAPE_H };
-const BUG = { x: 200, y: 84, w: 470, h: 96 };
-const GHOST = { x: 730, y: 92, w: 370, h: 80 };
+const OLD = { x: TAPE_X, y: 288, w: TAPE_W, h: TAPE_H };
+const NEW = { x: TAPE_X, y: 448, w: TAPE_W, h: TAPE_H };
+const BUG = { x: 200, y: 112, w: 470, h: 104 };
+const GHOST = { x: 730, y: 112, w: 370, h: 96 };
 
 /** The moment where Tuesday's run fell over (fraction along the tape). */
 const CRASH_U = 0.72;
@@ -61,7 +61,7 @@ const SHARED_U = [0.06, 0.2, 0.34, 0.5, 0.64, CRASH_U];
 // Tight enough to dive on the crash, wide enough that the bug card, the tape
 // starts and the "order placed" end all stay on the stage.
 const CAM_TAPES: CameraState = { x: 650, y: 360, k: 1.06 };
-const CAM_MOMENT: CameraState = { x: 620, y: 335, k: 1.45 };
+const CAM_MOMENT: CameraState = { x: 620, y: 330, k: 1.45 };
 const CAM_CLOSE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
@@ -377,7 +377,7 @@ function Walker({ u }: { u: number }) {
       <circle cx={wx} cy={cy} r={8} fill={colors.WARM} opacity={0.25} />
       <circle cx={wx} cy={cy} r={4} fill={colors.WARM} />
       {/* sits above the tape title's row, so the two never meet */}
-      <Chip x={wx} y={NEW.y - 30} text="recording" color={colors.WARM} font={mono} />
+      <Chip x={wx} y={NEW.y - 36} text="recording" color={colors.WARM} font={mono} />
     </g>
   );
 }
@@ -391,25 +391,25 @@ function BugCard({ u, ship, done, fade }: { u: number; ship: number; done: numbe
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (0.15 + 0.85 * clamp01(fade))}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={d > 0.5 ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1.5} />
-      <text x={18} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={18} y={28} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         your bug list
       </text>
-      <text x={18} y={52} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+      <text x={18} y={55} fill={colors.TEXT} fontSize={16} fontWeight={700}>
         Checkout errors when you pay
       </text>
       {/* the claim chip: your word first, then the proven green */}
       {clamp01(ship) > 0 && d < 0.999 && (
         <g opacity={clamp01(ship) * (1 - d)} transform={`scale(${0.92 + 0.08 * clamp01(ship)})`}>
-          <rect x={18} y={60} width={164} height={26} rx={13} fill={colors.WARM} opacity={0.18} />
-          <text x={100} y={78} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>
+          <rect x={18} y={66} width={216} height={28} rx={14} fill={colors.WARM} opacity={0.18} />
+          <text x={126} y={85} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily={mono}>
             fix shipped, unproven
           </text>
         </g>
       )}
       {d > 0 && (
         <g opacity={d} transform={`scale(${0.92 + 0.08 * d})`}>
-          <rect x={18} y={60} width={184} height={26} rx={13} fill={colors.POSITIVE} opacity={0.2} />
-          <text x={110} y={78} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+          <rect x={18} y={66} width={216} height={28} rx={14} fill={colors.POSITIVE} opacity={0.2} />
+          <text x={126} y={85} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
             fixed, new movie agrees
           </text>
         </g>
@@ -426,13 +426,13 @@ function ReopenGhost({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 8})`} opacity={uu * 0.9}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="6 5" />
-      <text x={16} y={26} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={16} y={28} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
         if it still breaks
       </text>
-      <text x={16} y={48} fill={colors.TEXT} fontSize={14}>
+      <text x={16} y={52} fill={colors.TEXT} fontSize={15}>
         the bug reopens on your list
       </text>
-      <text x={16} y={67} fill={colors.MUTED} fontSize={12}>
+      <text x={16} y={75} fill={colors.MUTED} fontSize={14}>
         with a fresh movie of the break
       </text>
     </g>

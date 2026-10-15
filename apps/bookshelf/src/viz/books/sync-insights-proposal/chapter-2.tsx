@@ -76,8 +76,10 @@ const FRONTIER_X1 = ZONE.x + ZONE.w + 30;
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_SYNC: CameraState = { x: 620, y: 396, k: 1.3 };
-const CAM_OPS: CameraState = { x: 620, y: 380, k: 1.5 };
+// The sync row spans x 80..1160, so k ≤ 1.1 keeps every node on the stage.
+const CAM_SYNC: CameraState = { x: 620, y: 380, k: 1.1 };
+// Operator beats: the zone plus its write and view ends stay whole on the stage.
+const CAM_OPS: CameraState = { x: 620, y: 360, k: 1.15 };
 const CAM_BOTH: CameraState = { x: 640, y: 290, k: 1.12 };
 
 // ---------------------------------------------------------------------------
@@ -280,7 +282,7 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const dim = 1 - endDim * 0.88;
-  const reactOp = reactU * (1 - reactDim * 0.85); // echo fades to 0.15
+  const reactOp = reactU * (1 - reactDim * 0.7); // echo fades to 0.3, still legible
 
   return (
     <>
@@ -289,7 +291,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dim}>
           {/* React echo pipeline (the one he already instrumented) */}
           <g opacity={reactOp}>
-            <text x={REACT_NODES[0].x - RW / 2} y={REACT_Y - 46} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={REACT_NODES[0].x - RW / 2} y={REACT_Y - 46} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               React — already instrumented
             </text>
             {REACT_NODES.map((n, i) => (
@@ -307,16 +309,24 @@ export function Render({ s }: { s: SceneState }) {
             ))}
           </g>
 
-          {/* the operator zone — labels crossfade Zero ↔ Electric */}
+          {/* the operator zone — labels crossfade Zero ↔ Electric (right-aligned, clear of the rungs) */}
           <Zone x={ZONE.x} y={ZONE.y} w={ZONE.w} h={ZONE.h} u={zoneU} color={colors.ACCENT} />
           <g opacity={zoneU * (1 - engineU)}>
-            <text x={ZONE.x + 12} y={ZONE.y - 10} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+            <text x={ZONE.x + ZONE.w - 12} y={ZONE.y - 10} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
               Zero · ZQL → IVM pipeline
             </text>
           </g>
           <g opacity={zoneU * engineU}>
-            <text x={ZONE.x + 12} y={ZONE.y - 10} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+            <text x={ZONE.x + ZONE.w - 12} y={ZONE.y - 10} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
               Electric · WAL → shapes
+            </text>
+          </g>
+
+          {/* the frontier sweep sits under the nodes so it never cuts through their labels */}
+          <g opacity={frontierU * tripleU}>
+            <line x1={frontierX} y1={ZONE.y - 34} x2={frontierX} y2={ZONE.y + ZONE.h + 12} stroke={colors.WARM} strokeWidth={2} strokeDasharray="7 5" opacity={0.8} />
+            <text x={frontierX} y={ZONE.y + ZONE.h + 30} textAnchor="middle" fill={colors.WARM} fontSize={14} fontStyle="italic">
+              frontier
             </text>
           </g>
 
@@ -367,13 +377,6 @@ export function Render({ s }: { s: SceneState }) {
               (data, time, ±1)
             </text>
           </g>
-          <g opacity={frontierU * tripleU}>
-            <line x1={frontierX} y1={ZONE.y - 34} x2={frontierX} y2={ZONE.y + ZONE.h + 12} stroke={colors.WARM} strokeWidth={2} strokeDasharray="7 5" opacity={0.8} />
-            <text x={frontierX} y={ZONE.y + ZONE.h + 30} textAnchor="middle" fill={colors.WARM} fontSize={12} fontStyle="italic">
-              frontier
-            </text>
-          </g>
-
           {/* rungs: React stage ↔ sync stage, the same graph one layer down */}
           {RUNGS.map((r, i) => {
             const u = clamp01(rungU * 4.5 - i);
@@ -392,11 +395,12 @@ export function Render({ s }: { s: SceneState }) {
               />
             );
           })}
+          {/* sits in the gap between the two rows, clear of the rungs */}
           <g opacity={clamp01(rungU * 2 - 1)}>
-            <text x={54} y={272} fill={colors.POSITIVE} fontSize={13} fontStyle="italic">
+            <text x={556} y={272} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontStyle="italic">
               same graph,
             </text>
-            <text x={54} y={292} fill={colors.POSITIVE} fontSize={13} fontStyle="italic">
+            <text x={556} y={294} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontStyle="italic">
               one layer down
             </text>
           </g>
@@ -404,15 +408,16 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the close: computed causality, discarded */}
         <g opacity={endU}>
-          <rect x={210} y={252} width={860} height={180} rx={16} fill={colors.BG} opacity={0.92} />
-          <rect x={210} y={252} width={860} height={180} rx={16} fill="none" stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
+          {/* solid panel: the faded diagram never shows through the closing text */}
+          <rect x={200} y={236} width={880} height={264} rx={16} fill={colors.BG} />
+          <rect x={200} y={236} width={880} height={264} rx={16} fill="none" stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
             the engines already compute the causality
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16}>
+          <text x={640} y={358} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16}>
             — and then they throw it away
           </text>
-          <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             ZQL · IVM · WAL · shapes · frontiers — none of it recorded
           </text>
         </g>

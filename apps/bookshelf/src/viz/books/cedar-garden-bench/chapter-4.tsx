@@ -35,6 +35,7 @@ const SEC_H = 300;
 const BORE_D = (3 / 8) * MAG; // 3/8 in dowel + countersink
 const BORE_DEEP = 0.5 * MAG; // 1/2 in deep
 const BORE_Y = SEC_Y + SEC_H / 2;
+const BORE_LABEL_Y = BORE_Y + BORE_D / 2 + 40; // clear of the sanders' path along the face
 
 // ---------------------------------------------------------------------------
 // Stage B — the outer face of the bench, and where the marks go.
@@ -69,7 +70,7 @@ const CAM_SECTION: CameraState = { x: 470, y: 292, k: 1.24 };
 const CAM_BORE: CameraState = { x: 452, y: 300, k: 1.42 };
 const CAM_FACE: CameraState = { x: 640, y: 400, k: 1.06 };
 const CAM_MARK: CameraState = { x: 530, y: 420, k: 1.5 };
-const CAM_FINAL: CameraState = { x: 640, y: 380, k: 0.95 };
+const CAM_FINAL: CameraState = { x: 640, y: 380, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -267,6 +268,10 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {/* the stock */}
           <rect x={FACE_X} y={SEC_Y} width={430} height={SEC_H} fill={CEDAR} stroke="#3a2515" strokeWidth={1.4} />
+          {/* the screw the plug will hide, drawn faint until the bore is cut */}
+          {secU > 0 && boreU < 1 && (
+            <rect x={FACE_X + 2} y={BORE_Y - 6} width={190} height={12} rx={3} fill="none" stroke={colors.MUTED} strokeDasharray="4 4" opacity={0.6 * secU * (1 - boreU)} />
+          )}
           {/* the countersink bore */}
           {boreU > 0 && (
             <rect x={FACE_X} y={BORE_Y - BORE_D / 2} width={boreDepth} height={BORE_D} fill={colors.BG} stroke={colors.GRID} />
@@ -315,9 +320,9 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {boreU > 0.6 && (
             <g opacity={clamp01(boreU * 2 - 1.2) * (1 - dowelU * 0.7)}>
-              <line x1={FACE_X} y1={BORE_Y + BORE_D / 2 + 16} x2={FACE_X + BORE_DEEP} y2={BORE_Y + BORE_D / 2 + 16} stroke={colors.POSITIVE} strokeWidth={2.4} />
-              <rect x={FACE_X + BORE_DEEP / 2 - 96} y={BORE_Y + BORE_D / 2 + 20} width={192} height={26} rx={5} fill={colors.BG} opacity={0.9} />
-              <text x={FACE_X + BORE_DEEP / 2} y={BORE_Y + BORE_D / 2 + 38} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+              <path d={`M ${FACE_X + BORE_DEEP / 2} ${BORE_Y + BORE_D / 2 + 4} V ${BORE_LABEL_Y + 10} H ${FACE_X + 36}`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.4} />
+              <rect x={FACE_X + 36} y={BORE_LABEL_Y - 4} width={200} height={28} rx={5} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
+              <text x={FACE_X + 46} y={BORE_LABEL_Y + 15} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 ⅜ in wide · ½ in deep
               </text>
             </g>
@@ -373,9 +378,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* the 1-3/4 derivation on the top length */}
           {halfU > 0 && (
             <g opacity={halfU}>
-              <line x1={FX(6)} y1={FY(LEG_H + STOCK_W)} x2={FX(6)} y2={FY(LEG_H + STOCK_W) + STOCK_W * FPX * halfU} stroke={colors.ACCENT} strokeWidth={2.4} />
-              <rect x={FX(7) - 5} y={FY(LEG_H + HALF) - 13} width={58} height={24} rx={5} fill={colors.BG} opacity={0.9} />
-              <text x={FX(7)} y={FY(LEG_H + HALF) + 5} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
+              <line x1={FX(0)} y1={FY(LEG_H + STOCK_W) - 8} x2={FX(HALF)} y2={FY(LEG_H + STOCK_W) - 8} stroke={colors.ACCENT} strokeWidth={2.4} />
+              <text x={FX(HALF / 2)} y={FY(LEG_H + STOCK_W) - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700}>
                 1¾ in
               </text>
               <text x={FX(BENCH_L / 2)} y={FY(LEG_H + STOCK_W) - 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={700} opacity={clamp01(halfU * 2 - 1)}>
@@ -394,11 +398,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={314} y={252} width={652} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
+            <rect x={314} y={240} width={652} height={240} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <text x={640} y={340} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               ⅜ in sockets · glued dowels · flush cut · two sanders
             </text>
-            <text x={640} y={350} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
+            <text x={640} y={384} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
               the fasteners became the pattern
             </text>
           </g>

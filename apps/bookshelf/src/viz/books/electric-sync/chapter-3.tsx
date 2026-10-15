@@ -41,9 +41,10 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const PG = { x: 1080, y: 150 } as const;
 const CONVEY_Y = 232;
-const ST_A = { x: 760, y: CONVEY_Y - 40, w: 200, h: 84 } as const; // ReplicationClient
-const ST_B = { x: 500, y: CONVEY_Y - 40, w: 190, h: 84 } as const; // MessageConverter
-const SIEVE = { x: 210, y: CONVEY_Y - 44, w: 220, h: 96 } as const; // ShapeLogCollector
+const ST_A = { x: 730, y: CONVEY_Y - 40, w: 230, h: 84 } as const; // ReplicationClient
+const ST_B = { x: 490, y: CONVEY_Y - 40, w: 200, h: 84 } as const; // MessageConverter
+const SIEVE = { x: 120, y: CONVEY_Y - 44, w: 260, h: 96 } as const; // ShapeLogCollector
+const GLYPH_Y = 312; // the lower track: glyphs and the capsule ride beneath the stations
 
 const LANES = [
   { y: 420, handle: '90233815-…', label: "todos · project_id = 'p2'", ours: false },
@@ -71,24 +72,24 @@ function along(pts: { x: number; y: number }[], u: number): { x: number; y: numb
 
 // envelope: out of Postgres, along the conveyor, into station A
 const ENV_PATH = [
-  { x: PG.x - 60, y: PG.y + 40 },
-  { x: PG.x - 110, y: CONVEY_Y },
-  { x: ST_A.x + ST_A.w + 24, y: CONVEY_Y },
+  { x: PG.x - 60, y: PG.y + 64 },
+  { x: PG.x - 60, y: CONVEY_Y },
+  { x: ST_A.x + ST_A.w + 34, y: CONVEY_Y },
 ];
-// glyphs: station A → station B
+// glyphs: station A → station B, along the lower track
 const GLYPH_PATH = [
-  { x: ST_A.x - 14, y: CONVEY_Y },
-  { x: ST_B.x + ST_B.w + 16, y: CONVEY_Y },
+  { x: ST_A.x + ST_A.w / 2, y: GLYPH_Y },
+  { x: ST_B.x + ST_B.w / 2, y: GLYPH_Y },
 ];
-// capsule: station B → sieve
+// capsule: forms under station B, rides the lower track into the sieve's mouth
 const CAP_PATH = [
-  { x: ST_B.x - 14, y: CONVEY_Y },
-  { x: SIEVE.x + SIEVE.w + 16, y: CONVEY_Y },
+  { x: ST_B.x + ST_B.w / 2, y: GLYPH_Y },
+  { x: SIEVE.x + SIEVE.w / 2, y: GLYPH_Y },
 ];
 
 // the fan: sieve bottom → each lane's gate
 const SIEVE_OUT = { x: SIEVE.x + SIEVE.w / 2, y: SIEVE.y + SIEVE.h + 4 };
-const gatePos = (li: number) => ({ x: TAPE_X0 - 34, y: LANES[li].y + TAPE_H / 2 });
+const gatePos = (li: number) => ({ x: TAPE_X0 - 40, y: LANES[li].y + TAPE_H / 2 });
 
 // snapshot state of OUR tape (from chapter two)
 const SNAP_SEGS = ['0_0', '0_1', '0_2', '0_3'] as const;
@@ -96,9 +97,9 @@ const NEW_SEG_I = 4;
 
 // camera marks
 const CAM_PG: CameraState = { x: 980, y: 220, k: 1.25 };
-const CAM_LINE: CameraState = { x: 640, y: 250, k: 1.1 };
-const CAM_SIEVE: CameraState = { x: 380, y: 360, k: 1.28 };
-const CAM_TAPE: CameraState = { x: 660, y: 440, k: 1.22 };
+const CAM_LINE: CameraState = { x: 660, y: 250, k: 1.1 };
+const CAM_SIEVE: CameraState = { x: 600, y: 330, k: 1.12 };
+const CAM_TAPE: CameraState = { x: 640, y: 420, k: 1.12 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -283,7 +284,7 @@ function Station({
       <text x={box.x + box.w / 2} y={box.y + 26} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600} fontFamily={MONO}>
         {title}
       </text>
-      <text x={box.x + box.w / 2} y={box.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={box.x + box.w / 2} y={box.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         {file}
       </text>
     </g>
@@ -329,20 +330,21 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={pgU}>
           <ServiceNode x={PG.x} y={PG.y} kind="db" label="Postgres" sublabel="public.todos" u={pgU} glow={writeU * (1 - envU)} />
         </g>
-        <g opacity={writeU}>
-          <rect x={PG.x - 260} y={PG.y - 116} width={420} height={30} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-          <text x={PG.x - 50} y={PG.y - 96} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+        {/* the UPDATE chip retires once the envelope has left Postgres, so it does not linger off-frame */}
+        <g opacity={writeU * (1 - clamp01((envU - 0.1) / 0.3))}>
+          <rect x={PG.x - 212} y={PG.y - 116} width={344} height={30} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+          <text x={PG.x - 40} y={PG.y - 96} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             {"UPDATE todos SET status='done' WHERE id=41"}
           </text>
-          <line x1={PG.x - 50} y1={PG.y - 84} x2={PG.x - 10} y2={PG.y - 40} stroke={colors.WARM} strokeWidth={1.3} opacity={0.7} />
+          <line x1={PG.x - 40} y1={PG.y - 84} x2={PG.x - 20} y2={PG.y - 40} stroke={colors.WARM} strokeWidth={1.3} opacity={0.7} />
         </g>
-        {/* the WAL spool bar under Postgres */}
+        {/* the WAL spool bar under Postgres, clear of the envelope's path and the stations */}
         <g opacity={walU * pgU}>
-          <rect x={PG.x - 130} y={PG.y + 52} width={220} height={16} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <rect key={i} x={PG.x - 126 + i * 36} y={PG.y + 55} width={28} height={10} rx={3} fill="rgba(251,191,36,0.25)" stroke={colors.WARM} strokeWidth={0.8} opacity={walU} />
+          <rect x={PG.x - 26} y={PG.y + 52} width={164} height={16} rx={5} fill={colors.PANEL} stroke={colors.GRID} />
+          {[0, 1, 2, 3, 4].map((i) => (
+            <rect key={i} x={PG.x - 22 + i * 32} y={PG.y + 55} width={24} height={10} rx={3} fill="rgba(251,191,36,0.25)" stroke={colors.WARM} strokeWidth={0.8} opacity={walU} />
           ))}
-          <text x={PG.x - 130} y={PG.y + 86} fill={colors.MUTED} fontSize={11}>
+          <text x={PG.x - 26} y={PG.y + 86} fill={colors.MUTED} fontSize={12}>
             write-ahead log
           </text>
         </g>
@@ -355,11 +357,11 @@ export function Render({ s }: { s: SceneState }) {
           <text x={SIEVE.x + SIEVE.w / 2} y={SIEVE.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600} fontFamily={MONO}>
             ShapeLogCollector
           </text>
-          <text x={SIEVE.x + SIEVE.w / 2} y={SIEVE.y + 48} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <text x={SIEVE.x + SIEVE.w / 2} y={SIEVE.y + 48} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             shape_log_collector.ex
           </text>
-          <text x={SIEVE.x + SIEVE.w / 2} y={SIEVE.y + 72} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5}>
-            where-clause index · every shape at once
+          <text x={SIEVE.x + SIEVE.w / 2} y={SIEVE.y + 72} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+            where-clause index · all shapes
           </text>
         </g>
 
@@ -368,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <rect x={envPos.x - 26} y={envPos.y - 15} width={52} height={30} rx={5} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
             <path d={`M ${envPos.x - 26} ${envPos.y - 15} L ${envPos.x} ${envPos.y + 2} L ${envPos.x + 26} ${envPos.y - 15}`} fill="none" stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={envPos.x} y={envPos.y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+            <text x={envPos.x} y={envPos.y + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               binary
             </text>
           </g>
@@ -378,9 +380,9 @@ export function Render({ s }: { s: SceneState }) {
         {decodeU > 0.02 && capU < 0.98 && (
           <g>
             {GLYPHS.map((gl, i) => {
-              const spread = decodeU * (i - 1) * 34;
-              const start = { x: ST_A.x + ST_A.w / 2 + spread, y: CONVEY_Y + decodeU * 0 };
-              const end = { x: ST_B.x + ST_B.w / 2 + (i - 1) * 30, y: CONVEY_Y };
+              const spread = decodeU * (i - 1) * 60;
+              const start = { x: ST_A.x + ST_A.w / 2 + spread, y: GLYPH_Y };
+              const end = { x: ST_B.x + ST_B.w / 2 + (i - 1) * 60, y: GLYPH_Y };
               const p = {
                 x: start.x + (end.x - start.x) * glyphU,
                 y: start.y + (end.y - start.y) * glyphU,
@@ -388,7 +390,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={gl.label} opacity={(1 - capU) * clamp01(decodeU * 2)}>
                   <rect x={p.x - 26} y={p.y - 12} width={52} height={24} rx={6} fill={colors.BG} stroke={gl.color} strokeWidth={1.2} />
-                  <text x={p.x} y={p.y + 4} textAnchor="middle" fill={gl.color} fontSize={10} fontFamily={MONO}>
+                  <text x={p.x} y={p.y + 4} textAnchor="middle" fill={gl.color} fontSize={12} fontFamily={MONO}>
                     {gl.label}
                   </text>
                 </g>
@@ -397,14 +399,14 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
-        {/* the Transaction capsule */}
+        {/* the Transaction capsule: docks into the sieve and is absorbed on arrival */}
         {capU > 0.02 && (
-          <g opacity={capU} transform={`translate(${capPos.x}, ${capPos.y})`}>
-            <rect x={-58} y={-20} width={116} height={40} rx={18} fill="rgba(251,191,36,0.12)" stroke={colors.WARM} strokeWidth={1.6} />
-            <text x={0} y={-3} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+          <g opacity={capU * (1 - clamp01((capMoveU - 0.8) / 0.2))} transform={`translate(${capPos.x}, ${capPos.y})`}>
+            <rect x={-85} y={-20} width={170} height={40} rx={18} fill="rgba(251,191,36,0.12)" stroke={colors.WARM} strokeWidth={1.6} />
+            <text x={0} y={-3} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               Transaction
             </text>
-            <text x={0} y={12} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={0} y={12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               xid=771 · id=41→done
             </text>
           </g>
@@ -418,11 +420,11 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={lane.handle} opacity={laneU}>
               {/* label chip */}
-              <rect x={LANE_X0} y={lane.y - 4} width={262} height={TAPE_H + 8} rx={8} fill={colors.PANEL} stroke={pass && verdict > 0.5 ? colors.ACCENT : colors.GRID} />
-              <text x={LANE_X0 + 12} y={lane.y + 11} fill={pass ? colors.ACCENT : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <rect x={LANE_X0} y={lane.y - 6} width={212} height={TAPE_H + 12} rx={8} fill={colors.PANEL} stroke={pass && verdict > 0.5 ? colors.ACCENT : colors.GRID} />
+              <text x={LANE_X0 + 12} y={lane.y + 12} fill={pass ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {lane.handle}
               </text>
-              <text x={LANE_X0 + 12} y={lane.y + 24} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+              <text x={LANE_X0 + 12} y={lane.y + 26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {lane.label}
               </text>
               {/* the tape */}
@@ -442,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
                   {SNAP_SEGS.map((off, i) => (
                     <g key={off}>
                       <rect x={segX(i)} y={lane.y + 3} width={SEG_W} height={TAPE_H - 6} rx={4} fill="rgba(56,189,248,0.18)" stroke={colors.ACCENT} strokeWidth={0.9} />
-                      <text x={segX(i) + SEG_W / 2} y={lane.y + TAPE_H + 14} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                      <text x={segX(i) + SEG_W / 2} y={lane.y + TAPE_H + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                         {off}
                       </text>
                     </g>
@@ -451,10 +453,10 @@ export function Render({ s }: { s: SceneState }) {
                   {appendU > 0.02 && (
                     <g opacity={clamp01(appendU * 1.6)}>
                       <rect x={segX(NEW_SEG_I)} y={lane.y + 3} width={SEG_W * appendU} height={TAPE_H - 6} rx={4} fill="rgba(251,191,36,0.22)" stroke={colors.WARM} strokeWidth={1.2} />
-                      <text x={segX(NEW_SEG_I) + SEG_W / 2} y={lane.y - 8} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily={MONO} opacity={clamp01((appendU - 0.5) * 3)}>
+                      <text x={segX(NEW_SEG_I)} y={lane.y - 24} fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={clamp01((appendU - 0.5) * 3)}>
                         id=41 → done
                       </text>
-                      <text x={segX(NEW_SEG_I) + SEG_W / 2} y={lane.y + TAPE_H + 14} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily={MONO} opacity={clamp01((appendU - 0.7) * 4)}>
+                      <text x={segX(NEW_SEG_I) + SEG_W / 2} y={lane.y + TAPE_H + 16} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={clamp01((appendU - 0.7) * 4)}>
                         1837_0
                       </text>
                     </g>
@@ -462,7 +464,7 @@ export function Render({ s }: { s: SceneState }) {
                   {/* the client's playhead — still at the end of the snapshot */}
                   <g opacity={clamp01(lanesU * 2 - 0.5)}>
                     <path d={`M ${phX - 6} ${lane.y - 14} L ${phX + 6} ${lane.y - 14} L ${phX} ${lane.y - 3} Z`} fill={colors.WARM} />
-                    <text x={phX} y={lane.y - 20} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily={MONO}>
+                    <text x={phX - 10} y={lane.y - 4} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                       client offset
                     </text>
                   </g>
@@ -497,7 +499,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ------------------------------------------------ the ack arc back to Postgres */}
         <g opacity={clamp01(ackU * 2)}>
           <path
-            d={`M ${SIEVE.x + SIEVE.w / 2} ${SIEVE.y - 10} C ${SIEVE.x + 260} ${SIEVE.y - 92}, ${PG.x - 320} ${PG.y - 60}, ${PG.x - 66} ${PG.y + 6}`}
+            d={`M ${SIEVE.x + SIEVE.w / 2} ${SIEVE.y - 10} C 300 110, 900 100, ${PG.x - 96} ${PG.y}`}
             fill="none"
             stroke={colors.POSITIVE}
             strokeWidth={1.4}
@@ -505,7 +507,9 @@ export function Render({ s }: { s: SceneState }) {
             strokeDashoffset={40 * (1 - ackU)}
             opacity={0.85}
           />
-          <text x={(SIEVE.x + PG.x) / 2 - 40} y={SIEVE.y - 74} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
+          {/* label sits on a solid patch over the arc's midpoint, so the line does not run through the words */}
+          <rect x={476} y={109} width={256} height={22} rx={6} fill={colors.BG} />
+          <text x={604} y={124} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
             FlushTracker · ack flushed offset
           </text>
         </g>

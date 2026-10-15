@@ -115,12 +115,12 @@ export function Render({ s }: { s: SceneState }) {
       <text x="330" y="140" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontWeight="700" opacity={clamp01(s.get(scene.wheelU)) * (1 - clamp01(s.get(scene.capsulesP)))}>K = 5 baseline trajectories</text>
 
       <g opacity={s.get(scene.diagnoseU)}>
-        <circle cx="520" cy="258" r="64" fill="#211a38" stroke={colors.SECONDARY} strokeWidth="4" />
-        <circle cx="520" cy="258" r="34" fill="none" stroke={colors.SECONDARY} strokeWidth="6" />
-        <path d="M560 306 L610 356" stroke={colors.SECONDARY} strokeWidth="10" strokeLinecap="round" />
-        <rect x="430" y="356" width="260" height="82" rx="20" fill="#211a38" stroke={colors.SECONDARY} />
-        <text x="560" y="386" textAnchor="middle" fill={colors.SECONDARY} fontSize="16" fontWeight="700">DIAGNOSE</text>
-        <text x="560" y="415" textAnchor="middle" fill={colors.TEXT} fontSize="15">repetitive action loop</text>
+        <circle cx="524" cy="258" r="56" fill="#211a38" stroke={colors.SECONDARY} strokeWidth="4" />
+        <circle cx="524" cy="258" r="30" fill="none" stroke={colors.SECONDARY} strokeWidth="6" />
+        <path d="M564 298 L600 356" stroke={colors.SECONDARY} strokeWidth="10" strokeLinecap="round" />
+        <rect x="480" y="356" width="240" height="82" rx="20" fill="#211a38" stroke={colors.SECONDARY} />
+        <text x="600" y="386" textAnchor="middle" fill={colors.SECONDARY} fontSize="16" fontWeight="700">DIAGNOSE</text>
+        <text x="600" y="415" textAnchor="middle" fill={colors.TEXT} fontSize="15">repetitive action loop</text>
       </g>
 
       <g opacity={s.get(scene.codeU)}>
@@ -155,8 +155,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.aggregateU) * (1 - decisionStage)}>
-        <path d="M928 295 H676" fill="none" stroke={colors.TEAL} strokeWidth="4" strokeLinecap="round" />
-        <path d="M690 285 L674 295 L690 305" fill="none" stroke={colors.TEAL} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        {[0, 1, 2, 3, 4].map((i) => <path key={i} d={`M930 ${178 + i * 78} L676 307`} fill="none" stroke={colors.TEAL} strokeWidth="3" strokeLinecap="round" opacity="0.7" />)}
+        <path d="M690 297 L674 307 L690 317" fill="none" stroke={colors.TEAL} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
       </g>
 
       <g opacity={s.get(scene.aggregateU)}>
@@ -178,7 +178,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={d.x} y="416" textAnchor="middle" fill={colors.MUTED} fontSize="14">{d.sub}</text>
           </g>;
         })}
-        <path d="M640 330 C735 290 735 238 640 214" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.cycleU) * 360)} 380`} />
+        <path d="M640 330 C735 290 735 238 640 214" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.cycleU) * 360)} 380`} opacity={s.get(scene.cycleU)} />
         <text x="752" y="282" fill={colors.WARM} fontSize="14" fontWeight="700" opacity={s.get(scene.cycleU)}>back to writing</text>
       </g>
 

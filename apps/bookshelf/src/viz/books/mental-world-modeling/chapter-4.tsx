@@ -17,6 +17,11 @@ const ABLATION_LABELS = ['full', '−mental', '−physical', 'decoupled', '', ''
 const ORACLES = [90.7, 91.4, 92.4, 93.5, 94.2, 97.0, 98.5];
 const ORACLE_LABELS = ['S6', 'action', 'observation', 'state', 'transition', 'all gold', 'human'];
 
+// Ladder and oracle views use seven bars spread across the canvas. The ablation view has four,
+// so those four spread out too instead of bunching on the left.
+const LADDER_X = (i: number) => 190 + i * 150;
+const ABLATION_X = (i: number) => (i < 4 ? 250 + i * 260 : LADDER_X(i));
+
 export function buildScene() {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
@@ -43,29 +48,29 @@ export function buildScene() {
   tl.caption({ at: 14.8, dur: 6.2, text: 'Direct answering averages sixty three point three. The full Mentis pipeline reaches eighty seven point nine.' });
   tl.set(focus, 1, 15.2);
   tl.set(focus, 6, 17.8);
-  tl.tween(cam, { x: 700, y: 362, k: 1.05 }, { at: 16.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 360, k: 1.03 }, { at: 16.0, dur: 1.3, ease: ease.move });
   tl.hold(21.0, 0.7);
 
   tl.caption({ at: 21.7, dur: 6.1, text: 'Remove the mental channel and the average falls by twelve point one, to seventy five point eight.' });
   tl.tween(mode, 1, { at: 22.2, dur: 1.5, ease: ease.move });
   tl.set(focus, 1, 23.8);
-  tl.tween(cam, { x: 560, y: 382, k: 1.06 }, { at: 22.5, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1 }, { at: 22.5, dur: 1.3, ease: ease.move });
   tl.hold(27.8, 0.7);
 
   tl.caption({ at: 28.5, dur: 6.0, text: 'Remove the physical channel and it falls farther, to seventy one point four.' });
   tl.set(focus, 2, 29.0);
-  tl.tween(cam, { x: 620, y: 390, k: 1.06 }, { at: 29.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1 }, { at: 29.1, dur: 1.3, ease: ease.move });
   tl.hold(34.5, 0.7);
 
   tl.caption({ at: 35.2, dur: 6.1, text: 'Predict the two transitions independently and the score drops to eighty one point five. Their coupling is doing measurable work.' });
   tl.set(focus, 3, 35.7);
-  tl.tween(cam, { x: 680, y: 372, k: 1.06 }, { at: 35.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1 }, { at: 35.8, dur: 1.3, ease: ease.move });
   tl.hold(41.3, 0.7);
 
   tl.caption({ at: 42.0, dur: 6.4, text: 'Oracle substitutions locate the largest single recoverable gain in transition simulation: three point five F one points.' });
   tl.tween(mode, 2, { at: 42.5, dur: 1.5, ease: ease.move });
   tl.set(focus, 4, 44.1);
-  tl.tween(cam, { x: 760, y: 346, k: 1.04 }, { at: 42.9, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 690, y: 360, k: 1.03 }, { at: 42.9, dur: 1.3, ease: ease.move });
   tl.hold(48.4, 0.7);
 
   tl.caption({ at: 49.1, dur: 6.4, text: 'The strongest predictive run reaches ninety point seven, while the human reference is ninety eight point five.' });
@@ -103,6 +108,12 @@ function presenceOf(i: number, mode: number): number {
   return mode <= 1 ? lerp(1, ablationHas, clamp01(mode)) : lerp(ablationHas, 1, clamp01(mode - 1));
 }
 
+// Bars glide between the ladder layout and the ablation layout along with their values.
+function xOf(i: number, mode: number): number {
+  if (mode <= 1) return lerp(LADDER_X(i), ABLATION_X(i), clamp01(mode));
+  return lerp(ABLATION_X(i), LADDER_X(i), clamp01(mode - 1));
+}
+
 export function Render({ s }: { s: SceneState }) {
   const datasetU = s.get(scene.datasetU);
   const barsU = s.get(scene.barsU);
@@ -111,16 +122,16 @@ export function Render({ s }: { s: SceneState }) {
   const [labelA, labelB, labelU] = labelsAt(mode);
   const focus = Math.round(s.get(scene.focus));
   const dim = 1 - 0.9 * s.get(scene.dimU);
-  const baseY = 570;
-  const x0 = 310;
-  const step = 126;
-  const maxH = 390;
+  const baseY = 556;
+  const maxH = 350;
+  const axisL = 130;
+  const axisR = 1150;
 
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={800}>Measure the structure, then find its limit</text>
-      <text x={640} y={74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>final-action F1 · Menti-Bench</text>
+      <text x={640} y={74} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>final-action F1 (points) · Menti-Bench</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim}>
@@ -144,18 +155,19 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         <g opacity={barsU}>
-          <line x1={x0 - 66} y1={baseY} x2={x0 + step * 6 + 70} y2={baseY} stroke={colors.GRID} strokeWidth={2} />
+          <line x1={axisL} y1={baseY} x2={axisR} y2={baseY} stroke={colors.GRID} strokeWidth={2} />
           {[40, 60, 80, 100].map((tick) => {
             const y = baseY - (tick / 100) * maxH;
             return <g key={tick}>
-              <line x1={x0 - 66} y1={y} x2={x0 + step * 6 + 70} y2={y} stroke={colors.GRID} strokeWidth={1} opacity={0.32} />
-              <text x={x0 - 80} y={y + 5} textAnchor="end" fill={colors.MUTED} fontSize={11}>{tick}</text>
+              <line x1={axisL} y1={y} x2={axisR} y2={y} stroke={colors.GRID} strokeWidth={1} opacity={0.32} />
+              <text x={120} y={y + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>{tick}</text>
             </g>;
           })}
+          <text transform={`translate(94 ${baseY - maxH / 2}) rotate(-90)`} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>F1 points</text>
           {values.map((value, i) => {
             const reveal = clamp01(barsU * values.length - i);
             const h = (value / 100) * maxH * reveal;
-            const x = x0 + i * step;
+            const x = xOf(i, mode);
             const isFocus = i === focus;
             const color = mode < 0.5 ? (i === 6 ? colors.POSITIVE : colors.ACCENT) : mode < 1.5 ? (i === 0 ? colors.POSITIVE : colors.NEGATIVE) : (i === 4 ? colors.WARM : i === 6 ? colors.POSITIVE : colors.ACCENT);
             const labelAOpacity = labelA[i] ? 1 - labelU : 0;
@@ -163,29 +175,32 @@ export function Render({ s }: { s: SceneState }) {
             return <g key={i} opacity={presenceOf(i, mode)}>
               {isFocus && <rect x={x - 48} y={baseY - h - 28} width={96} height={h + 54} rx={16} fill={color} opacity={0.09} />}
               <rect x={x - 32} y={baseY - h} width={64} height={h} rx={9} fill={color} opacity={isFocus ? 1 : 0.66} />
-              <text x={x} y={baseY - h - 12} textAnchor="middle" fill={isFocus ? color : colors.TEXT} fontSize={isFocus ? 18 : 14} fontWeight={800}>{value.toFixed(1)}</text>
+              <text x={x} y={baseY - h - 12} textAnchor="middle" fill={isFocus ? color : colors.TEXT} fontSize={isFocus ? 18 : 14} fontWeight={800} opacity={reveal}>{value.toFixed(1)}</text>
               <text x={x} y={baseY + 26} textAnchor="middle" fill={isFocus ? color : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={labelAOpacity}>{labelA[i]}</text>
               <text x={x} y={baseY + 26} textAnchor="middle" fill={isFocus ? color : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={labelBOpacity}>{labelB[i]}</text>
             </g>;
           })}
 
           <g opacity={s.get(scene.gapU)}>
-            <path d={`M${x0 - 32} ${baseY - (90.7 / 100) * maxH} H${x0 + step * 6 + 32}`} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 7" />
+            <path d={`M${LADDER_X(0) - 32} ${baseY - (90.7 / 100) * maxH} H${LADDER_X(6) + 32}`} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 7" />
           </g>
         </g>
 
-        <g opacity={s.get(scene.limitU)} transform="translate(280 592)">
-          <text x={360} y={0} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>prompt sensitivity · schema failures · error propagation · one-step options</text>
+        <g opacity={s.get(scene.limitU)}>
+          <text x={640} y={618} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>prompt sensitivity · schema failures · error propagation · one-step options</text>
         </g>
       </g>
     </Camera>
     <g opacity={dim}>
+      {mode < 0.8 && <g opacity={clamp01(1 - mode * 2.5)}>
+        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>necessity ladder: S0 is options only, S6 is full mental world modeling</text>
+      </g>}
       {mode > 0.8 && mode < 1.55 && <g opacity={clamp01(1 - Math.abs(mode - 1) * 2.5)}>
-        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ablation cost vs full</text>
+        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ablation: remove one channel, measure the drop vs full</text>
         <text x={640} y={138} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16}>mental −12.1 · physical −16.5 · decoupled −6.4</text>
       </g>}
       {mode > 1.55 && <g opacity={clamp01((mode - 1.55) * 3)}>
-        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>oracle gain over predictive S6</text>
+        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>oracle substitution: swap in the correct answer for one stage to see its ceiling</text>
         <text x={640} y={138} textAnchor="middle" fill={colors.WARM} fontSize={16}>transition +3.5 · state +2.8 · observation +1.7 · action +0.7</text>
       </g>}
       <g opacity={s.get(scene.gapU)}>
@@ -193,6 +208,7 @@ export function Render({ s }: { s: SceneState }) {
       </g>
     </g>
     <g opacity={s.get(scene.endU)}>
+      <rect width={1280} height={720} fill={colors.BG} opacity={0.88} />
       <rect x={172} y={226} width={936} height={220} rx={26} fill={colors.BG} />
       <rect x={172} y={226} width={936} height={220} rx={26} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
       <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={850}>The structure works. The transition still leaks.</text>

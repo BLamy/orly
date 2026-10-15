@@ -95,11 +95,11 @@ export const ROW_NEAR = 10;
 // ---------------------------------------------------------------------------
 
 export const CAM_TOKENS: CameraState = { x: 640, y: 300, k: 1.18 };
-export const CAM_GRID_L: CameraState = { x: 330, y: 350, k: 1.22 };
-export const CAM_GRID_R: CameraState = { x: 470, y: 350, k: 1.22 };
-export const CAM_WAVES: CameraState = { x: 900, y: 340, k: 1.05 };
-export const CAM_ROWS: CameraState = { x: 620, y: 350, k: 1.0 };
-export const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.96 };
+export const CAM_GRID_L: CameraState = { x: 280, y: 336, k: 1.2 };
+export const CAM_GRID_R: CameraState = { x: 310, y: 336, k: 1.2 };
+export const CAM_WAVES: CameraState = { x: 648, y: 320, k: 1.08 };
+export const CAM_ROWS: CameraState = { x: 640, y: 320, k: 1.1 };
+export const CAM_WIDE: CameraState = { x: 640, y: 320, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;

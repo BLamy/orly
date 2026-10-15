@@ -86,10 +86,10 @@ const TALLY: { kind: Cut['kind']; n: number }[] = [
 // Once the bench is on screen every shot keeps all seven boards in frame, so
 // no row is cropped at the top or pushed under the caption pill.
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 0.94 };
-const CAM_FIRST: CameraState = { x: 520, y: 350, k: 1.3 };
+const CAM_FIRST: CameraState = { x: 560, y: 350, k: 1.3 };
 const CAM_STOP: CameraState = { x: 520, y: 350, k: 1.3 };
 const CAM_LAST: CameraState = { x: 520, y: 350, k: 1.3 };
-const CAM_TALLY: CameraState = { x: 640, y: 380, k: 1.0 };
+const CAM_TALLY: CameraState = { x: 680, y: 380, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;
@@ -220,7 +220,7 @@ function BoardRow({ i, u, cutU, trimU }: { i: number; u: number; cutU: number; t
   return (
     <g opacity={u}>
       {/* the uncut board behind */}
-      <rect x={X0} y={y} width={BOARD_IN * PXI} height={BAR_H} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} opacity={0.35} />
+      <rect x={X0} y={y} width={BOARD_IN * PXI} height={BAR_H} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} opacity={0.55} />
       {/* the trimmed end */}
       {trimU > 0 && (
         // drawn at 4px minimum: a true 1/8 in is under 1px at this scale
@@ -236,7 +236,7 @@ function BoardRow({ i, u, cutU, trimU }: { i: number; u: number; cutU: number; t
           <g key={k} opacity={cu}>
             <rect x={x} y={y} width={c.len * PXI} height={BAR_H} rx={2} fill={CEDAR_LIT} stroke={KIND_COLOR[c.kind]} strokeWidth={1.8} />
             {c.len > 10 && (
-              <text x={x + (c.len * PXI) / 2} y={y + BAR_H / 2 + 5} textAnchor="middle" fill="#2a1a0d" fontSize={13} fontWeight={700}>
+              <text x={x + (c.len * PXI) / 2} y={y + BAR_H / 2 + 5} textAnchor="middle" fill="#2a1a0d" fontSize={14} fontWeight={700}>
                 {KIND_LABEL[c.kind]}
               </text>
             )}
@@ -245,7 +245,7 @@ function BoardRow({ i, u, cutU, trimU }: { i: number; u: number; cutU: number; t
       })}
       {/* the offcut ledger */}
       {cutU > 0.9 && (
-        <text x={X0 + BOARD_IN * PXI + 16} y={y + BAR_H / 2 + 5} fill={colors.MUTED} fontSize={14}>
+        <text x={X0 + BOARD_IN * PXI + 22} y={y + BAR_H / 2 + 5} fill={colors.TEXT} fontSize={14}>
           {(BOARD_IN - used(row) - TRIM).toFixed(1)} in left
         </text>
       )}
@@ -295,10 +295,10 @@ export function Render({ s }: { s: SceneState }) {
               <text x={X0 - 110} y={ROW_Y(2) + BAR_H - 4} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 stop block
               </text>
-              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 16} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 16} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                 set once,
               </text>
-              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 32} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 32} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                 cut five
               </text>
             </g>
@@ -306,7 +306,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the trim, named once it appears */}
           {trimU > 0 && (
-            <text x={X0} y={ROW_Y(0) - 10} fill={colors.NEGATIVE} fontSize={13} fontWeight={600} opacity={trimU}>
+            <text x={X0} y={ROW_Y(0) - 10} fill={colors.NEGATIVE} fontSize={14} fontWeight={600} opacity={trimU}>
               ⅛ in trimmed off one end
             </text>
           )}
@@ -314,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the tally */}
           {tallyU > 0 && (
             <g opacity={tallyU}>
-              <rect x={300} y={558} width={690} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={300} y={558} width={880} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               {TALLY.map((t, i) => {
                 const u = clamp01(tallyU * 4 - i * 0.7);
                 if (u <= 0) return null;
@@ -336,10 +336,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the waste ledger */}
           {wasteU > 0 && (
             <g opacity={wasteU}>
-              <text x={990} y={588} fill={colors.MUTED} fontSize={14}>
+              <text x={1010} y={588} fill={colors.TEXT} fontSize={14}>
                 28 parts
               </text>
-              <text x={990} y={608} fill={colors.WARM} fontSize={14} fontWeight={700}>
+              <text x={1010} y={608} fill={colors.WARM} fontSize={14} fontWeight={700}>
                 {totalLeft.toFixed(0)} in of short ends
               </text>
             </g>

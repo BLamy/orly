@@ -228,7 +228,7 @@ export function Render({ s }: { s: SceneState }) {
           {ledgerU > 0 && (
             <g>
               <text x={LEDGER.x} y={LEDGER.y - 50} fill={colors.MUTED} fontSize={14} opacity={ledgerU}>the rework budget</text>
-              <text x={LEDGER.x + 180} y={LEDGER.y - 50} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={ledgerU}>
+              <text x={LEDGER.x + 180} y={LEDGER.y - 50} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={ledgerU}>
                 roundSize: 3 · maxAttempts: 10
               </text>
               {Array.from({ length: 10 }, (_, i) => {
@@ -245,9 +245,9 @@ export function Render({ s }: { s: SceneState }) {
                         <line x1={4.5} y1={-4.5} x2={-4.5} y2={4.5} />
                       </g>
                     ) : (
-                      <text y={4} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>{i + 1}</text>
+                      <text y={4} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>{i + 1}</text>
                     )}
-                    {isCap && <text y={33} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>cap</text>}
+                    {isCap && <text y={33} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>cap</text>}
                   </g>
                 );
               })}
@@ -257,20 +257,20 @@ export function Render({ s }: { s: SceneState }) {
                 const open = gi === 0 ? ruleU : 0;
                 return (
                   <g key={gi} transform={`translate(${gx} ${LEDGER.y})`} opacity={ledgerU}>
-                    <path d="M 0 -13 L 11 0 L 0 13 L -11 0 Z" fill={open > 0.5 ? colors.POSITIVE : lit > 0.3 ? colors.WARM : colors.PANEL} stroke={lit > 0.3 ? (open > 0.5 ? colors.POSITIVE : colors.WARM) : colors.GRID} strokeWidth={1.6} opacity={0.9} />
-                    <text y={-24} textAnchor="middle" fill={lit > 0.3 ? colors.WARM : colors.MUTED} fontSize={11} fontFamily={MONO}>
+                    <path d="M 0 -13 L 11 0 L 0 13 L -11 0 Z" fill={open > 0.5 ? colors.POSITIVE : lit > 0.3 ? colors.WARM : colors.PANEL} stroke={lit > 0.3 ? (open > 0.5 ? colors.POSITIVE : colors.WARM) : colors.MUTED} strokeWidth={1.6} opacity={0.9} />
+                    <text y={-24} textAnchor="middle" fill={lit > 0.3 ? colors.WARM : colors.MUTED} fontSize={13} fontFamily={MONO}>
                       judge @ {(gi + 1) * 3}
                     </text>
                   </g>
                 );
               })}
               {gateU > 0 && (
-                <text x={gate1X} y={LEDGER.y + 42} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={gateU * (1 - ruleU)}>
+                <text x={gate1X} y={LEDGER.y + 42} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={gateU * (1 - ruleU)}>
                   retries % roundSize === 0
                 </text>
               )}
               {ruleU > 0 && (
-                <text x={gate1X} y={LEDGER.y + 42} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={ruleU}>
+                <text x={gate1X} y={LEDGER.y + 42} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={ruleU}>
                   progressing: true — round two granted
                 </text>
               )}
@@ -282,16 +282,32 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={judgeU * (1 - 0.8 * deskFade)}>
               <rect x={DESK.x} y={DESK.y} width={DESK.w} height={DESK.h} rx={14} fill={colors.PANEL} stroke={haltU > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
               <text x={DESK.x + 20} y={DESK.y + 32} fill={colors.TEXT} fontSize={16} fontWeight={700}>the progress judge</text>
-              <text x={DESK.x + 20} y={DESK.y + 54} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={DESK.x + 20} y={DESK.y + 54} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 agent · label progress-judge:taskId
               </text>
-              <text x={DESK.x + 20} y={DESK.y + 72} fill={colors.MUTED} fontSize={11.5}>
+              <text x={DESK.x + 20} y={DESK.y + 72} fill={colors.MUTED} fontSize={13}>
                 neither the builder nor the refuting critic
               </text>
+              {/* the three seats: shown while the judge is seated, cleared before the docket fills */}
+              {docsU < 0.25 && (
+                <g opacity={1 - clamp01(docsU * 4)}>
+                  {[
+                    { name: 'the builder', note: 'defends its work', stroke: colors.GRID, ink: colors.MUTED },
+                    { name: 'the critic', note: 'just refuted it', stroke: colors.NEGATIVE, ink: colors.NEGATIVE },
+                    { name: 'the judge', note: 'the third party', stroke: colors.ACCENT, ink: colors.ACCENT },
+                  ].map((seat, i) => (
+                    <g key={seat.name} transform={`translate(${DESK.x + 20} ${DESK.y + 108 + i * 50})`} opacity={clamp01(judgeU * 2 - i * 0.3)}>
+                      <rect width={DESK.w - 40} height={38} rx={9} fill={colors.BG} stroke={seat.stroke} strokeWidth={1.3} />
+                      <text x={14} y={24} fill={seat.ink} fontSize={14} fontWeight={700}>{seat.name}</text>
+                      <text x={DESK.w - 54} y={24} textAnchor="end" fill={colors.MUTED} fontSize={13}>{seat.note}</text>
+                    </g>
+                  ))}
+                </g>
+              )}
               {/* the docket: verdicts, oldest first */}
               {docsU > 0 && (
                 <g>
-                  <text x={DESK.x + 20} y={DESK.y + 104} fill={colors.MUTED} fontSize={11.5} opacity={Math.min(1, docsU)}>
+                  <text x={DESK.x + 20} y={DESK.y + 104} fill={colors.MUTED} fontSize={13} opacity={Math.min(1, docsU)}>
                     successive verdicts, oldest first
                   </text>
                   {[0, 1, 2].map((i) => {
@@ -301,8 +317,8 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={i} opacity={u} transform={`translate(${DESK.x + 20 + (1 - u) * 60} ${y})`}>
                         <rect width={DESK.w - 40} height={38} rx={8} fill={colors.BG} stroke={colors.GRID} />
-                        <text x={12} y={16} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>--- attempt {i + 1} ---</text>
-                        <text x={12} y={31} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>refuted · findings + citations</text>
+                        <text x={12} y={16} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>--- attempt {i + 1} ---</text>
+                        <text x={12} y={31} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>refuted · findings + citations</text>
                       </g>
                     );
                   })}
@@ -311,8 +327,8 @@ export function Render({ s }: { s: SceneState }) {
               {questionU > 0 && (
                 <g opacity={questionU}>
                   <rect x={DESK.x + 20} y={DESK.y + 262} width={DESK.w - 40} height={40} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-                  <text x={DESK.x + 36} y={DESK.y + 279} fill={colors.ACCENT} fontSize={13} fontWeight={700}>Rule ONLY on convergence.</text>
-                  <text x={DESK.x + 36} y={DESK.y + 295} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>Do not fix anything.</text>
+                  <text x={DESK.x + 36} y={DESK.y + 279} fill={colors.ACCENT} fontSize={14} fontWeight={700}>Rule ONLY on convergence.</text>
+                  <text x={DESK.x + 36} y={DESK.y + 295} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>Do not fix anything.</text>
                 </g>
               )}
             </g>
@@ -325,20 +341,20 @@ export function Render({ s }: { s: SceneState }) {
               {/* converging: finding sets shrink, hue shifts to shallower ground */}
               {convBarsU > 0 && (
                 <g opacity={Math.min(1, convBarsU * 2)}>
-                  <text x={READ.x + 24} y={READ.y + 34} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>progressing</text>
-                  <text x={READ.x + 24} y={READ.y + 54} fill={colors.MUTED} fontSize={11.5}>findings shrinking, or shifting to new, shallower ground</text>
+                  <text x={READ.x + 24} y={READ.y + 34} fill={colors.POSITIVE} fontSize={16} fontWeight={700}>progressing</text>
+                  <text x={READ.x + 24} y={READ.y + 54} fill={colors.MUTED} fontSize={13}>findings shrinking, or shifting to new, shallower ground</text>
                   {CONV_BARS.map((n, i) => {
                     const u = clamp01(convBarsU * 3.5 - i);
                     const w = n * 40 * u;
                     return (
                       <g key={i} transform={`translate(${READ.x + 24} ${READ.y + 72 + i * 26})`}>
-                        <text x={-2} y={13} fill={colors.MUTED} fontSize={11} fontFamily={MONO} textAnchor="end" opacity={u}>{i + 1}</text>
+                        <text x={-2} y={13} fill={colors.MUTED} fontSize={13} fontFamily={MONO} textAnchor="end" opacity={u}>{i + 1}</text>
                         <rect x={8} width={w} height={16} rx={5} fill={colors.POSITIVE} opacity={0.35 + 0.25 * (i / 2)} />
-                        <text x={16 + w} y={13} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={u}>{findings(n)}</text>
+                        <text x={16 + w} y={13} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={u}>{findings(n)}</text>
                       </g>
                     );
                   })}
-                  <text x={READ.x + 24} y={READ.y + 160} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={clamp01(convBarsU * 2 - 1)}>
+                  <text x={READ.x + 24} y={READ.y + 160} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={clamp01(convBarsU * 2 - 1)}>
                     → shrinking toward zero
                   </text>
                 </g>
@@ -346,16 +362,16 @@ export function Render({ s }: { s: SceneState }) {
               {/* circling: same class, cosmetic changes, growing scope */}
               {circBarsU > 0 && (
                 <g opacity={Math.min(1, circBarsU * 2)}>
-                  <text x={READ.x + 24} y={READ.y + 196} fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>circling</text>
-                  <text x={READ.x + 24} y={READ.y + 216} fill={colors.MUTED} fontSize={11.5}>same class of failure, cosmetic changes, growing scope</text>
+                  <text x={READ.x + 24} y={READ.y + 196} fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>circling</text>
+                  <text x={READ.x + 24} y={READ.y + 216} fill={colors.MUTED} fontSize={13}>same class of failure, cosmetic changes, growing scope</text>
                   {CIRC_BARS.map((n, i) => {
                     const u = clamp01(circBarsU * 3.5 - i);
                     const w = n * 40 * u;
                     return (
                       <g key={i} transform={`translate(${READ.x + 24} ${READ.y + 232 + i * 26})`}>
-                        <text x={-2} y={13} fill={colors.MUTED} fontSize={11} fontFamily={MONO} textAnchor="end" opacity={u}>{i + 1}</text>
+                        <text x={-2} y={13} fill={colors.MUTED} fontSize={13} fontFamily={MONO} textAnchor="end" opacity={u}>{i + 1}</text>
                         <rect x={8} width={w} height={16} rx={5} fill={colors.NEGATIVE} opacity={0.4} />
-                        <text x={16 + w} y={13} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={u}>
+                        <text x={16 + w} y={13} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={u}>
                           {i === 2 ? `${n} findings — wider` : `${n} findings — same class`}
                         </text>
                       </g>
@@ -367,9 +383,9 @@ export function Render({ s }: { s: SceneState }) {
               {schemaU > 0 && (
                 <g opacity={schemaU} transform={`translate(${READ.x + 330} ${READ.y + 84})`}>
                   <rect width={224} height={78} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.4} />
-                  <text x={14} y={22} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>PROGRESS_SCHEMA</text>
-                  <text x={14} y={44} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>{'{ progressing: boolean,'}</text>
-                  <text x={14} y={62} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>{'  reason: string }'}</text>
+                  <text x={14} y={22} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>PROGRESS_SCHEMA</text>
+                  <text x={14} y={44} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>{'{ progressing: boolean,'}</text>
+                  <text x={14} y={62} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>{'  reason: string }'}</text>
                 </g>
               )}
             </g>
@@ -379,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
           {haltU > 0 && (
             <g opacity={haltU} transform={`translate(640 588)`}>
               <rect x={-330} y={-22} width={660} height={40} rx={20} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-              <text y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+              <text y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                 !judgment?.progressing → flipInvalid — no third option
               </text>
             </g>

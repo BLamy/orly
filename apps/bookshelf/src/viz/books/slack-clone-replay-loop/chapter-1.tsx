@@ -7,10 +7,11 @@
 // README.md ("pnpm record:replay"), and the emulate submodule (BLamy/emulate)
 // that keeps the whole loop on loopback — no real network services.
 //
-// Machine: the hermetic stage assembling itself. The command chip fires, the
-// emulator and app nodes rise inside a sealed boundary, env wires connect
-// them, a health probe round-trips until READY — and the centerpiece beat is
-// a packet aimed at the real internet hitting the wall and bouncing back.
+// Machine: the local stage assembling itself. The command chip fires, the
+// emulator and app nodes rise inside a loopback boundary (services bind
+// 127.0.0.1 and the env wires point at them), a health probe round-trips until
+// READY — and the centerpiece beat is a packet aimed at the real internet that
+// turns back to 127.0.0.1 instead of leaving.
 import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Connection, RequestFlow, ServiceNode, Zone } from '../../primitives';
@@ -46,7 +47,6 @@ export function buildScene() {
   const wireU = tl.channel('wireU', 0); // env-var wires
   const healthU = tl.channel('healthU', 0); // 0..3 = three /api/health round trips
   const escapeU = tl.channel('escapeU', 0); // 0..1 the bounce-off-the-wall packet
-  const outU = tl.channel('outU', 0); // the outside world fades in with the wall
   const wallFlash = tl.channel('wallFlash', 0);
   const readyU = tl.channel('readyU', 0);
   const dimU = tl.channel('dimU', 0);
@@ -60,7 +60,6 @@ export function buildScene() {
     text: 'In the last two books, the doctrine: a claim is cheap, a recording is evidence. This book is one full loop actually running, around a real app — a Slack style chat for two users.',
   });
   tl.tween(cam, CAM_CMD, { at: t - 5.6, dur: 1.4, ease: ease.move });
-  tl.tween(appU, 0.35, { at: t - 5.2, dur: 1.2, ease: ease.enter }); // faint preview of the app
   t = tl.hold(t, 0.5);
 
   /* — beat 2 · one command — */
@@ -110,7 +109,6 @@ export function buildScene() {
   });
   tl.tween(cam, CAM_WALL, { at: t - 5.2, dur: 1.6, ease: ease.move });
   tl.tween(wallU, 1, { at: t - 4.6, dur: 1.4, ease: ease.draw });
-  tl.tween(outU, 1, { at: t - 4.0, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.4);
 
   /* — beat 7 · the bounce — */
@@ -144,7 +142,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: t - 4.6, dur: 0.7, ease: ease.enter });
   tl.hold(t, 1.0);
 
-  return { tl, cam, cmdU, wallU, outU, emuU, appU, wireU, healthU, escapeU, wallFlash, readyU, dimU, closeU };
+  return { tl, cam, cmdU, wallU, emuU, appU, wireU, healthU, escapeU, wallFlash, readyU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -164,7 +162,7 @@ function CommandChip({ u, dim }: { u: number; dim: number }) {
   );
 }
 
-/** The packet that tries to leave — out toward the internet, off the wall, back. */
+/** The packet that tries to leave — out toward the internet, then turns back to 127.0.0.1. */
 function EscapePacket({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0 || uu >= 1) return null;
@@ -174,14 +172,33 @@ function EscapePacket({ u }: { u: number }) {
   // out for the first half, reflected for the second
   const leg = uu < 0.5 ? uu / 0.5 : 1 - (uu - 0.5) / 0.5;
   const x = x0 + (xw - 6 - x0) * leg;
-  const col = uu < 0.5 ? colors.WARM : colors.NEGATIVE;
+  const out = uu < 0.5;
+  const col = out ? colors.WARM : colors.TEAL;
   return (
     <g>
       <circle cx={x} cy={y0} r={6} fill={col} />
-      <text x={x} y={y0 - 14} textAnchor="middle" fill={col} fontSize={12} fontFamily={MONO}>
-        {uu < 0.5 ? 'to the real internet?' : 'refused'}
+      <text x={xw - 12} y={y0 + 56} textAnchor="end" fill={col} fontSize={13} fontFamily={MONO}>
+        {out ? 'to the real internet?' : 'addressed to 127.0.0.1: back here'}
       </text>
     </g>
+  );
+}
+
+/** What actually keeps the loop local: the bind address and the env wiring, nothing more. */
+function WallNote({ u, dim }: { u: number; dim: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  return (
+    <text
+      x={WALL.x + 16}
+      y={WALL.y + WALL.h - 14}
+      fill={colors.MUTED}
+      fontSize={12}
+      fontFamily={MONO}
+      opacity={uu * (1 - 0.85 * dim)}
+    >
+      services bind 127.0.0.1 · env vars point here
+    </text>
   );
 }
 
@@ -220,12 +237,12 @@ function ClosingCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${562 + (1 - uu) * 12})`} opacity={uu}>
-      <rect x={-330} y={-58} width={660} height={116} rx={14} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-      <text y={-14} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={700}>
-        A sealed world holds still.
+    <g transform={`translate(640, ${596 + (1 - uu) * 12})`} opacity={uu}>
+      <rect x={-330} y={-28} width={660} height={60} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+      <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+        A local world holds still.
       </text>
-      <text y={22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
         emulate start --service durable-streams,auth0 · src/server.mjs · 127.0.0.1
       </text>
     </g>
@@ -243,18 +260,19 @@ function renderFrame(s: SceneState) {
   const wallFlash = clamp01(s.get(scene.wallFlash));
   return (
     <>
-      <Outside u={s.get(scene.outU)} dim={dim} />
+      <Outside u={s.get(scene.wallU)} dim={dim} />
       <Zone
         x={WALL.x}
         y={WALL.y}
         w={WALL.w}
         h={WALL.h}
-        label="hermetic — everything on 127.0.0.1"
+        label="loopback — everything on 127.0.0.1"
         kind="group"
         u={s.get(scene.wallU)}
-        color={wallFlash > 0 ? colors.NEGATIVE : undefined}
+        color={wallFlash > 0 ? colors.TEAL : undefined}
         dim={0.7 * dim}
       />
+      <WallNote u={s.get(scene.wallU)} dim={dim} />
       <CommandChip u={s.get(scene.cmdU)} dim={dim} />
 
       {/* env wires, beneath the nodes */}

@@ -52,10 +52,23 @@ const LOOP_LINES = [
 ] as const;
 const LOOP_CX = 320;
 const LOOP_CY = 368;
-const LOOP_R = 185;
+const LOOP_R = 200;
 const loopPos = (i: number) => {
   const a = -Math.PI / 2 + (i * 2 * Math.PI) / LOOP_LINES.length;
   return { x: LOOP_CX + LOOP_R * Math.cos(a), y: LOOP_CY + LOOP_R * Math.sin(a) };
+};
+// a small arrowhead sitting on the ring, halfway between node i and node i+1,
+// pointing along the direction of travel
+const loopArrow = (i: number) => {
+  const m = -Math.PI / 2 + ((i + 0.5) * 2 * Math.PI) / LOOP_LINES.length;
+  const cx = LOOP_CX + LOOP_R * Math.cos(m);
+  const cy = LOOP_CY + LOOP_R * Math.sin(m);
+  const tx = -Math.sin(m);
+  const ty = Math.cos(m);
+  const nx = Math.cos(m);
+  const ny = Math.sin(m);
+  const pt = (u: number, v: number) => `${(cx + u).toFixed(1)} ${(cy + v).toFixed(1)}`;
+  return `M ${pt(tx * 10, ty * 10)} L ${pt(-tx * 6 + nx * 6, -ty * 6 + ny * 6)} L ${pt(-tx * 6 - nx * 6, -ty * 6 - ny * 6)} Z`;
 };
 
 const GAUGE_X = 560;
@@ -63,7 +76,7 @@ const GAUGE_W = 570;
 const gaugeY = (i: number) => 134 + i * 88;
 
 const CAM_GAUGES: CameraState = { x: 845, y: 360, k: 1.1 };
-const CAM_LOOP: CameraState = { x: 430, y: 360, k: 1.22 };
+const CAM_LOOP: CameraState = { x: LOOP_CX, y: LOOP_CY, k: 1.22 };
 
 export interface Scene {
   tl: Timeline;
@@ -238,7 +251,7 @@ function Gauge({
         {p.right}
       </text>
       {/* the pair's named failure mode surfaces once it tips */}
-      <text x={GAUGE_X} y={y + 28} fill={tipped ? colors.NEGATIVE : colors.MUTED} fontSize={12} fontFamily={MONO} opacity={tipped ? 0.95 : 0.45}>
+      <text x={GAUGE_X} y={y + 28} fill={tipped ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={tipped ? 0.95 : 0.8}>
         {tipped ? `→ ${p.failure}` : p.failure}
       </text>
     </g>
@@ -253,8 +266,9 @@ export function Render({ s }: { s: SceneState }) {
   const loopU = s.get(scene.loopU);
   const spinU = s.get(scene.spinU);
   const figU = s.get(scene.figU);
-  const dim = 1 - 0.88 * s.get(scene.dimU);
   const close = s.get(scene.closeU);
+  // the scene fades back as the closing panel arrives, so no ghost content shows behind it
+  const dim = (1 - 0.88 * s.get(scene.dimU)) * (1 - 0.9 * close);
   // the gauges fade out as the loop draws in, and again when the paper's figure arrives
   const gaugesOpacity = gaugesU * (1 - figU) * (1 - loopU);
 
@@ -268,7 +282,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x={640} y={44} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={800} opacity={dim}>
         Five forces, one balance
       </text>
-      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={dim}>
+      <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={dim}>
         the force-balance model · maintenance on the left, correction on the right
       </text>
       <Camera {...s.get(scene.cam)}>
@@ -292,16 +306,13 @@ export function Render({ s }: { s: SceneState }) {
           {loopU > 0 && (
             <g opacity={loopU * (1 - figU * 0.35)}>
               <circle cx={LOOP_CX} cy={LOOP_CY} r={LOOP_R} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={0.55} strokeDasharray="3 7" />
+              {/* the travelling spark sits under the node boxes, so it never covers a label */}
+              {spinU > 0 && spinU < 1 && <circle cx={spark.x} cy={spark.y} r={7} fill={colors.WARM} />}
               {LOOP_LINES.map(([top, bottom], i) => {
                 const p = loopPos(i);
-                const n = loopPos((i + 1) % LOOP_LINES.length);
-                const mid = { x: (p.x + n.x) / 2, y: (p.y + n.y) / 2 };
-                // arrowhead midway along each arc chord
-                const dx = n.x - p.x;
-                const dy = n.y - p.y;
-                const len = Math.hypot(dx, dy) || 1;
                 return (
                   <g key={top} opacity={clamp01(loopU * 5 - i)}>
+                    <path d={loopArrow(i)} fill={colors.WARM} opacity={0.9} />
                     <rect x={p.x - 95} y={p.y - 25} width={190} height={50} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
                     <text x={p.x} y={p.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {top}
@@ -309,19 +320,13 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {bottom}
                     </text>
-                    <path
-                      d={`M ${mid.x - (dx / len) * 8} ${mid.y - (dy / len) * 8} l ${(dx / len) * 14 - (dy / len) * 5} ${(dy / len) * 14 + (dx / len) * 5} l ${-(dx / len) * 14 - (dy / len) * 5} ${-(dy / len) * 14 + (dx / len) * 5}`}
-                      fill={colors.WARM}
-                      opacity={0.8}
-                    />
                   </g>
                 );
               })}
-              {spinU > 0 && spinU < 1 && <circle cx={spark.x} cy={spark.y} r={7} fill={colors.WARM} />}
               <text x={LOOP_CX} y={LOOP_CY - 8} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 self-reinforcing
               </text>
-              <text x={LOOP_CX} y={LOOP_CY + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={LOOP_CX} y={LOOP_CY + 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 each turn makes the next cheaper
               </text>
             </g>

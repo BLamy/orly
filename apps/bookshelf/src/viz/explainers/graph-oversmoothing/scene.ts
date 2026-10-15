@@ -118,9 +118,11 @@ export function sepAt(d: number): number {
 export const fx: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([120, 620]);
 export const fy: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([560, 120]);
 export const cx: ScaleLinear<number, number> = scaleLinear().domain([0, DEPTH]).range([760, 1180]);
-export const cy: ScaleLinear<number, number> = scaleLinear().domain([0, 1]).range([520, 200]);
+// headroom above 1.0 so the curve's start clears the "separation" axis label
+export const cy: ScaleLinear<number, number> = scaleLinear().domain([0, 1.15]).range([520, 200]);
 
-export const CAM_PLANE: CameraState = { x: 400, y: 340, k: 1.2 };
+// framed so the feature axes and their ticks stay above the caption pill
+export const CAM_PLANE: CameraState = { x: 400, y: 368, k: 1.15 };
 
 export interface Scene {
   tl: Timeline;

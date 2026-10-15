@@ -56,6 +56,22 @@ function Cross({ p, opacity }: { p: Pt; opacity: number }) {
   );
 }
 
+/** Where a ray from badge centre `a` toward `b` leaves the badge (plus a small gap). */
+const edgeOf = (a: Pt, b: Pt): Pt => {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const hw = BADGE_W / 2 + 8;
+  const hh = BADGE_H / 2 + 8;
+  const t = Math.min(
+    dx === 0 ? Infinity : hw / Math.abs(dx),
+    dy === 0 ? Infinity : hh / Math.abs(dy),
+  );
+  return { x: a.x + dx * t, y: a.y + dy * t };
+};
+
+/** A packet's path runs badge edge to badge edge, so no dot sits on a server label. */
+const link = (a: Pt, b: Pt) => ({ from: edgeOf(a, b), to: edgeOf(b, a) });
+
 /** Pure frame render — exported for the book player (see src/viz/scenes.ts). */
 export function Render({ s }: { s: SceneState }) {
   // Election-timer remaining: a pure derivation of the shared clocks.
@@ -131,9 +147,9 @@ export function Render({ s }: { s: SceneState }) {
                 height={CELL}
                 rx={3.5}
                 fill="none"
-                stroke={colors.GRID}
+                stroke={colors.MUTED}
                 strokeWidth={1.5}
-                opacity={su * (1 - 0.4 * dims[i])}
+                opacity={su * (1 - 0.4 * dims[i]) * 0.6}
               />
             ))}
             {/* log entries (2 used in this drama) */}
@@ -185,47 +201,51 @@ export function Render({ s }: { s: SceneState }) {
       {PEERS1.map((i, k) => (
         <g key={`p1-${i}`}>
           <Packet
-            from={S3}
-            to={SERVERS[i]}
+            {...link(S3, SERVERS[i])}
             u={s.get(sc.rv[k])}
             color={colors.WARM}
             r={6}
             label={i === 1 ? 'vote for me?' : undefined}
           />
           <Packet
-            from={SERVERS[i]}
-            to={S3}
+            {...link(SERVERS[i], S3)}
             u={s.get(sc.vt[k])}
             color={colors.POSITIVE}
             r={5.5}
             label={i === 0 ? 'aye' : i === 4 ? 'aye (late)' : undefined}
           />
-          <Packet from={S3} to={SERVERS[i]} u={s.get(sc.hb[k])} color={colors.ACCENT} r={4} />
+          <Packet {...link(S3, SERVERS[i])} u={s.get(sc.hb[k])} color={colors.ACCENT} r={4} />
           <Packet
-            from={S3}
-            to={SERVERS[i]}
+            {...link(S3, SERVERS[i])}
             u={s.get(sc.ae[k])}
             color={colors.ACCENT}
             r={6}
             label={i === 3 ? 'append x=5' : undefined}
           />
-          <Packet from={SERVERS[i]} to={S3} u={s.get(sc.ack[k])} color={colors.POSITIVE} r={4.5} />
+          <Packet {...link(SERVERS[i], S3)} u={s.get(sc.ack[k])} color={colors.POSITIVE} r={4.5} />
         </g>
       ))}
 
       {/* ---- packets: client writes ---- */}
-      <Packet from={CLIENT} to={S3} u={s.get(sc.cw1)} color={colors.SECONDARY} r={7} label="set x=5" />
-      <Packet from={CLIENT} to={S3} u={s.get(sc.cw2)} color={colors.SECONDARY} r={7} label="set x=7" />
-      <Packet from={CLIENT} to={S4} u={s.get(sc.cw3)} color={colors.SECONDARY} r={7} label="set x=8" />
+      <Packet {...link(CLIENT, S3)} u={s.get(sc.cw1)} color={colors.SECONDARY} r={7} label="set x=5" />
+      <Packet {...link(CLIENT, S3)} u={s.get(sc.cw2)} color={colors.SECONDARY} r={7} label="set x=7" />
+      <Packet {...link(CLIENT, S4)} u={s.get(sc.cw3)} color={colors.SECONDARY} r={7} label="set x=8" />
 
       {/* ---- packets: blocked at the wall ---- */}
       {BLOCKED1.map((i, k) => (
-        <Packet key={`b1-${i}`} from={S3} to={WALL1[k]} u={s.get(sc.bp[k])} color={colors.WARM} r={5} />
+        <Packet
+          key={`b1-${i}`}
+          from={edgeOf(S3, WALL1[k])}
+          to={WALL1[k]}
+          u={s.get(sc.bp[k])}
+          color={colors.WARM}
+          r={5}
+        />
       ))}
       {BLOCKED2.map((i, k) => (
         <Packet
           key={`b2-${i}`}
-          from={S4}
+          from={edgeOf(S4, WALL2[k])}
           to={WALL2[k]}
           u={s.get(sc.bp2[k])}
           color={colors.WARM}
@@ -238,23 +258,21 @@ export function Render({ s }: { s: SceneState }) {
       {PEERS2.map((i, k) => (
         <g key={`p2-${i}`}>
           <Packet
-            from={S4}
-            to={SERVERS[i]}
+            {...link(S4, SERVERS[i])}
             u={s.get(sc.rv2[k])}
             color={colors.WARM}
             r={6}
             label={k === 0 ? 'vote for me?' : undefined}
           />
-          <Packet from={SERVERS[i]} to={S4} u={s.get(sc.vt2[k])} color={colors.POSITIVE} r={5.5} />
+          <Packet {...link(SERVERS[i], S4)} u={s.get(sc.vt2[k])} color={colors.POSITIVE} r={5.5} />
           <Packet
-            from={S4}
-            to={SERVERS[i]}
+            {...link(S4, SERVERS[i])}
             u={s.get(sc.ae2[k])}
             color={colors.ACCENT}
             r={6}
             label={k === 0 ? 'append x=8' : undefined}
           />
-          <Packet from={SERVERS[i]} to={S4} u={s.get(sc.ack2[k])} color={colors.POSITIVE} r={4.5} />
+          <Packet {...link(SERVERS[i], S4)} u={s.get(sc.ack2[k])} color={colors.POSITIVE} r={4.5} />
         </g>
       ))}
 
@@ -262,18 +280,16 @@ export function Render({ s }: { s: SceneState }) {
       {HB2.map((i, k) => (
         <Packet
           key={`h2-${i}`}
-          from={S4}
-          to={SERVERS[i]}
+          {...link(S4, SERVERS[i])}
           u={s.get(sc.hb2[k])}
           color={colors.ACCENT}
           r={4}
           label={i === 2 ? 'term 3' : undefined}
         />
       ))}
-      <Packet from={S4} to={SERVERS[0]} u={s.get(sc.aem[0])} color={colors.ACCENT} r={6} />
+      <Packet {...link(S4, SERVERS[0])} u={s.get(sc.aem[0])} color={colors.ACCENT} r={6} />
       <Packet
-        from={S4}
-        to={S3}
+        {...link(S4, S3)}
         u={s.get(sc.aem[1])}
         color={colors.ACCENT}
         r={6}

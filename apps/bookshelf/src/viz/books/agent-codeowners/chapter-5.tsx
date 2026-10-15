@@ -96,63 +96,64 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       {/* the one stable required check */}
       <g opacity={pillU * dim}>
-        <rect x={440} y={90} width={400} height={54} rx={27} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
-        <text x={640} y={124} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily={mono} fontWeight={700}>Agent Code Review · required check</text>
+        <text x={640} y={86} textAnchor="middle" fill={colors.MUTED} fontSize={16} fontFamily={mono}>branch ruleset · required to merge</text>
+        <rect x={380} y={100} width={520} height={64} rx={32} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
+        <text x={640} y={139} textAnchor="middle" fill={colors.POSITIVE} fontSize={18} fontFamily={mono} fontWeight={700}>Agent Code Review · required check</text>
       </g>
 
       {/* it never impersonates a human review state */}
       {impersonateU > 0 && <g opacity={impersonateU * dim}>
-        <rect x={400} y={160} width={480} height={40} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} opacity={0.7} />
-        <text x={640} y={185} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={mono}>✕ approve / request changes — never submitted</text>
+        <rect x={380} y={184} width={520} height={44} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} opacity={0.7} />
+        <text x={640} y={211} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontFamily={mono}>✕ approve / request changes — never submitted</text>
       </g>}
 
       {/* agent roster feeding the one check */}
       <g opacity={rosterU * dim}>
         {AGENTS_NOW.map((a, i) => {
           const u = clamp01(rosterU * 5 - i * 0.7);
-          return <g key={a.name} opacity={u} transform={`translate(${220 + i * 290} 230)`}>
-            <rect width={260} height={44} rx={12} fill={colors.BG} stroke={a.color} strokeWidth={1.6} />
-            <text x={130} y={28} textAnchor="middle" fill={a.color} fontSize={14} fontFamily={mono}>{a.name}</text>
+          return <g key={a.name} opacity={u} transform={`translate(${150 + i * 340} 262)`}>
+            <rect width={300} height={52} rx={12} fill={colors.BG} stroke={a.color} strokeWidth={1.6} />
+            <text x={150} y={32} textAnchor="middle" fill={a.color} fontSize={16} fontFamily={mono}>{a.name}</text>
           </g>;
         })}
-        {laterU > 0 && <g opacity={laterU} transform="translate(150 288)">
-          <rect width={980} height={44} rx={12} fill={colors.BG} stroke={AGENT_LATER.color} strokeWidth={1.6} strokeDasharray="5 4" />
-          <text x={490} y={28} textAnchor="middle" fill={AGENT_LATER.color} fontSize={14} fontFamily={mono}>{AGENT_LATER.name} · joins the roster · the branch ruleset never changes</text>
+        {laterU > 0 && <g opacity={laterU} transform="translate(150 326)">
+          <rect width={980} height={52} rx={12} fill={colors.BG} stroke={AGENT_LATER.color} strokeWidth={1.6} strokeDasharray="5 4" />
+          <text x={490} y={32} textAnchor="middle" fill={AGENT_LATER.color} fontSize={16} fontFamily={mono}>{AGENT_LATER.name} · joins the roster · the branch ruleset never changes</text>
         </g>}
       </g>
 
       {/* two additive gates */}
       <g opacity={gatesU * dim}>
-        <g transform="translate(200 340)">
-          <rect width={360} height={70} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-          <text x={180} y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono} fontWeight={700}>Human CODEOWNER approval</text>
-          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>unchanged · same as today</text>
+        <g transform="translate(170 400)">
+          <rect width={420} height={90} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
+          <text x={210} y={38} textAnchor="middle" fill={colors.ACCENT} fontSize={18} fontFamily={mono} fontWeight={700}>Human CODEOWNER approval</text>
+          <text x={210} y={66} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={mono}>unchanged · same as today</text>
         </g>
-        <g transform="translate(720 340)">
-          <rect width={360} height={70} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-          <text x={180} y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={mono} fontWeight={700}>Agent Code Review status check</text>
-          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>additive · not a substitute</text>
+        <g transform="translate(690 400)">
+          <rect width={420} height={90} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
+          <text x={210} y={38} textAnchor="middle" fill={colors.POSITIVE} fontSize={18} fontFamily={mono} fontWeight={700}>Agent Code Review status check</text>
+          <text x={210} y={66} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={mono}>additive · not a substitute</text>
         </g>
-        <text x={640} y={382} textAnchor="middle" fill={colors.WARM} fontSize={20} fontWeight={800}>+</text>
+        <text x={640} y={456} textAnchor="middle" fill={colors.WARM} fontSize={26} fontWeight={800}>+</text>
       </g>
 
       {/* no stuck "changes requested" state */}
       {stuckU > 0 && <g opacity={stuckU * dim}>
-        <rect x={720} y={430} width={360} height={44} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.5} strokeDasharray="4 5" />
-        <text x={900} y={456} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>✕ no stuck review to manually dismiss</text>
+        <rect x={690} y={506} width={420} height={44} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.5} strokeDasharray="4 5" />
+        <text x={900} y={533} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontFamily={mono}>✕ no stuck review to manually dismiss</text>
       </g>}
 
       {/* merge gate */}
-      {mergeU > 0 && <g opacity={mergeU * dim} transform="translate(490 500)">
-        <rect width={300} height={54} rx={27} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
-        <text x={150} y={34} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily={mono} fontWeight={700}>merge allowed</text>
+      {mergeU > 0 && <g opacity={mergeU * dim} transform="translate(490 566)">
+        <rect width={300} height={50} rx={25} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
+        <text x={150} y={32} textAnchor="middle" fill={colors.POSITIVE} fontSize={18} fontFamily={mono} fontWeight={700}>merge allowed</text>
       </g>}
 
       {closeU > 0 && <g opacity={closeU}>
-        <rect x={215} y={260} width={850} height={200} rx={26} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
-        <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={800}>one check, additive, growable</text>
-        <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={mono}>human approval + agent code review, both required</text>
-        <text x={640} y={406} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>new agents join the roster · the ruleset never changes</text>
+        <rect x={215} y={250} width={850} height={220} rx={26} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
+        <text x={640} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>one check, additive, growable</text>
+        <text x={640} y={366} textAnchor="middle" fill={colors.MUTED} fontSize={17} fontFamily={mono}>human approval + agent code review, both required</text>
+        <text x={640} y={404} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontFamily={mono}>new agents join the roster · the ruleset never changes</text>
       </g>}
     </Camera>
   </>;

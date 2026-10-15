@@ -41,15 +41,18 @@ const LEFT_CHIPS = ['ctx.path', 'ctx.query', 'ctx.method', 'ctx.ip'] as const;
 const RIGHT_CHIPS = ['ctx.body', 'ctx.status', 'ctx.set', 'ctx.redirect'] as const;
 const CHIP_Y0 = 396;
 const CHIP_DY = 46;
+// the two-request miniature and the shared 'hello' bar sit on this row
+const MINI_Y = 602;
 
 // cross-wires drawn during the mesh beat: [x1, y1, x2, y2, label]
+// each end lands on a card edge, not under the card
 const WIRES: ReadonlyArray<readonly [number, number, number, number, string]> = [
-  [COLS.context - 60, INST_Y + 26, COLS.request + 60, RAW_Y - 20, 'ctx.req'],
-  [COLS.context + 60, INST_Y + 26, COLS.response - 60, RAW_Y - 20, 'ctx.res'],
-  [COLS.request, INST_Y + 28, COLS.request, RAW_Y - 24, 'request.req'],
-  [COLS.response, INST_Y + 28, COLS.response, RAW_Y - 24, 'response.res'],
-  [COLS.request + 88, INST_Y - 8, COLS.context - 66, INST_Y - 8, 'request.ctx'],
-  [COLS.context + 66, INST_Y + 8, COLS.response - 88, INST_Y + 8, 'response.request'],
+  [COLS.context - 60, INST_Y + 26, COLS.request + 60, RAW_Y - 27, 'ctx.req'],
+  [COLS.context + 60, INST_Y + 26, COLS.response - 60, RAW_Y - 27, 'ctx.res'],
+  [COLS.request, INST_Y + 28, COLS.request, RAW_Y - 27, 'request.req'],
+  [COLS.response, INST_Y + 28, COLS.response, RAW_Y - 27, 'response.res'],
+  [COLS.request + 88, INST_Y - 8, COLS.context - 88, INST_Y - 8, 'request.ctx'],
+  [COLS.context + 88, INST_Y + 8, COLS.response - 88, INST_Y + 8, 'response.request'],
 ] as const;
 
 // camera marks
@@ -262,7 +265,7 @@ function Card({ x, y, w = 176, h = 54, label, sub, color, u, mono = true }: {
         {label}
       </text>
       {sub && (
-        <text x={0} y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+        <text x={0} y={16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
           {sub}
         </text>
       )}
@@ -326,14 +329,14 @@ export function Render({ s }: { s: SceneState }) {
           color={colors.MUTED}
           u={rawInU * stageDim * meshDim}
         />
-
-        {/* ---- prototypes ---- */}
-        <g opacity={protosU * stageDim}>
-          <rect x={COLS.context - 190} y={200 - 13} width={380} height={22} rx={6} fill={colors.BG} />
-          <text x={COLS.context} y={200 + 4} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
-            held by the app since boot — one set, shared by every request
+        {/* the header leaves with the wiring, so it never sits under the switchboard */}
+        <g opacity={rawInU * stageDim * clamp01((meshDim - 0.15) / 0.85)}>
+          <text x={640} y={420} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+            {"Node's raw pair, one per request"}
           </text>
         </g>
+
+        {/* ---- prototypes ---- */}
         <Card x={COLS.request} y={PROTO_Y} label="this.request" color={colors.SECONDARY} u={protosU * stageDim} />
         <Card x={COLS.context} y={PROTO_Y} label="this.context" color={colors.ACCENT} u={protosU * stageDim} />
         <Card x={COLS.response} y={PROTO_Y} label="this.response" color={colors.TEAL} u={protosU * stageDim} />
@@ -353,6 +356,14 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
 
+        {/* the caption sits on top of the stamp lines, so it gets its own panel */}
+        <g opacity={protosU * stageDim}>
+          <rect x={COLS.context - 190} y={200 - 13} width={380} height={22} rx={6} fill={colors.BG} />
+          <text x={COLS.context} y={200 + 4} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+            held by the app since boot — one set, shared by every request
+          </text>
+        </g>
+
         {/* ---- the cross-wiring mesh ---- */}
         {WIRES.map(([x1, y1, x2, y2, label], i) => {
           const u = clamp01(meshU - i);
@@ -360,7 +371,9 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={label} opacity={u * meshDim * stageDim}>
               <line x1={x1} y1={y1} x2={lerp(x1, x2, u)} y2={lerp(y1, y2, u)} stroke={colors.TEXT} strokeWidth={1.4} opacity={0.55} />
-              <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 7} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={u}>
+              {/* a solid chip behind each wire label, so the line never runs through the word */}
+              <rect x={(x1 + x2) / 2 - label.length * 4 - 5} y={(y1 + y2) / 2 - 20} width={label.length * 8 + 10} height={18} rx={4} fill={colors.BG} />
+              <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 7} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace" opacity={Math.min(1, u + 0.2)}>
                 {label}
               </text>
             </g>
@@ -371,7 +384,7 @@ export function Render({ s }: { s: SceneState }) {
         {stateU > 0 && (
           <g opacity={stateU * stageDim} transform={`translate(${COLS.context}, ${INST_Y + 62})`}>
             <rect x={-108} y={-16} width={216} height={32} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               state: {'{}'} · originalUrl
             </text>
           </g>
@@ -387,7 +400,7 @@ export function Render({ s }: { s: SceneState }) {
             <g key={label} opacity={u * stageDim}>
               <path d={chipWire(cx - 52, cy, COLS.request + 30, INST_Y + 24)} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} opacity={0.25 + 0.6 * glowL} />
               <rect x={cx - 60} y={cy - 14} width={120} height={28} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-              <text x={cx} y={cy + 4.5} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="monospace">
+              <text x={cx} y={cy + 5} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 {label}
               </text>
             </g>
@@ -402,14 +415,14 @@ export function Render({ s }: { s: SceneState }) {
             <g key={label} opacity={u * stageDim}>
               <path d={chipWire(cx + 52, cy, COLS.response - 30, INST_Y + 24)} fill="none" stroke={colors.TEAL} strokeWidth={1.6} opacity={0.25 + 0.6 * glowR} />
               <rect x={cx - 60} y={cy - 14} width={120} height={28} rx={7} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.2} />
-              <text x={cx} y={cy + 4.5} textAnchor="middle" fill={colors.TEAL} fontSize={12.5} fontFamily="monospace">
+              <text x={cx} y={cy + 5} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontFamily="monospace">
                 {label}
               </text>
             </g>
           );
         })}
         {(chipsL > 0 || chipsR > 0) && (
-          <text x={COLS.context} y={CHIP_Y0 + 3 * CHIP_DY + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.max(clamp01(chipsL), clamp01(chipsR)) * stageDim}>
+          <text x={COLS.context} y={CHIP_Y0 + 3 * CHIP_DY + 36} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={Math.max(clamp01(chipsL), clamp01(chipsR)) * stageDim}>
             delegate(proto, 'request') · delegate(proto, 'response')
           </text>
         )}
@@ -424,9 +437,9 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {statusU > 0 && (
-          <g opacity={statusU * stageDim} transform={`translate(${COLS.response}, ${INST_Y + 44})`}>
-            <rect x={-72} y={-15} width={144} height={30} rx={7} fill={colors.POSITIVE} opacity={0.18} />
-            <text x={0} y={5} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace" fontWeight={700}>
+          <g opacity={statusU * stageDim} transform={`translate(${COLS.response}, ${INST_Y - 46})`}>
+            <rect x={-88} y={-15} width={176} height={30} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
+            <text x={0} y={5} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
               status: 404 → 200
             </text>
           </g>
@@ -438,14 +451,14 @@ export function Render({ s }: { s: SceneState }) {
             {[0, 1].map((k) => {
               const bx = k === 0 ? 250 : 1030;
               return (
-                <g key={k} transform={`translate(${bx}, ${588})`}>
+                <g key={k} transform={`translate(${bx}, ${MINI_Y})`}>
                   <rect x={-100} y={-26} width={200} height={52} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
                   <circle cx={-60} cy={0} r={9} fill="none" stroke={colors.ACCENT} strokeWidth={1.6} />
                   <circle cx={0} cy={0} r={9} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} />
                   <circle cx={60} cy={0} r={9} fill="none" stroke={colors.TEAL} strokeWidth={1.6} />
                   <line x1={-51} y1={0} x2={-9} y2={0} stroke={colors.GRID} strokeWidth={1.4} />
                   <line x1={9} y1={0} x2={51} y2={0} stroke={colors.GRID} strokeWidth={1.4} />
-                  <text x={0} y={-36} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={0} y={-36} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     request {k + 1} — its own web
                   </text>
                 </g>
@@ -456,11 +469,11 @@ export function Render({ s }: { s: SceneState }) {
         {msgU > 0 && (
           <g opacity={msgU * stageDim}>
             {/* one decoration, carried down to both webs */}
-            <line x1={COLS.context - 150} y1={588} x2={250 + 100} y2={588} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="4 4" />
-            <line x1={COLS.context + 150} y1={588} x2={1030 - 100} y2={588} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="4 4" />
-            <g transform={`translate(${COLS.context}, ${588})`}>
+            <line x1={COLS.context - 150} y1={MINI_Y} x2={250 + 100} y2={MINI_Y} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="4 4" />
+            <line x1={COLS.context + 150} y1={MINI_Y} x2={1030 - 100} y2={MINI_Y} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="4 4" />
+            <g transform={`translate(${COLS.context}, ${MINI_Y})`}>
               <rect x={-150} y={-16} width={300} height={32} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-              <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 app.request.message = 'hello' → both
               </text>
             </g>

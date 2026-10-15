@@ -73,11 +73,11 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">the public prediction route</text>
       <g opacity={s.get(scene.inputU)}>
         <rect x="78" y="144" width="270" height="80" rx="25" fill="#101827" stroke={colors.ACCENT} strokeWidth="3" />
-        <text x="213" y="176" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>x_train · y_train</text>
-        <text x="213" y="202" textAnchor="middle" fill={colors.MUTED} fontSize="12">support rows</text>
+        <text x="213" y="176" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>x_train · y_train</text>
+        <text x="213" y="202" textAnchor="middle" fill={colors.MUTED} fontSize="14">support rows</text>
         <rect x="78" y="498" width="270" height="80" rx="25" fill="#2b2513" stroke={colors.WARM} strokeWidth="3" />
-        <text x="213" y="530" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>x_test</text>
-        <text x="213" y="556" textAnchor="middle" fill={colors.MUTED} fontSize="12">aligned query rows</text>
+        <text x="213" y="530" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>x_test</text>
+        <text x="213" y="556" textAnchor="middle" fill={colors.MUTED} fontSize="14">aligned query rows</text>
       </g>
       <g opacity={s.get(scene.routeU)}>
         <rect x="74" y="298" width="280" height="90" rx="27" fill="#171d2c" stroke={colors.SECONDARY} strokeWidth="3" />
@@ -96,29 +96,33 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={model}>
         <circle cx="960" cy="322" r="80" fill="#112333" stroke={colors.POSITIVE} strokeWidth="4" />
         <text x="960" y="304" textAnchor="middle" fill={colors.POSITIVE} fontSize="20" fontWeight="850">LimiX-2</text>
-        <text x="960" y="330" textAnchor="middle" fill={colors.MUTED} fontSize="12">400M checkpoint</text>
-        <text x="960" y="350" textAnchor="middle" fill={colors.MUTED} fontSize="12">FeaturesTransformer</text>
+        <text x="960" y="330" textAnchor="middle" fill={colors.MUTED} fontSize="13">400M checkpoint</text>
+        <text x="960" y="350" textAnchor="middle" fill={colors.MUTED} fontSize="13">FeaturesTransformer</text>
+      </g>
+      <g opacity={model * clamp01(recap * 3)}>
+        <rect x="880" y="420" width="160" height="30" rx="15" fill="#112333" stroke={colors.POSITIVE} strokeWidth="2" />
+        <text x="960" y="440" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">weights frozen</text>
       </g>
       <g opacity={clamp01(heads * 3)}>
-        {[{ y: 166, c: colors.ACCENT, l: 'classification head' }, { y: 322, c: colors.SECONDARY, l: 'regression head' }, { y: 478, c: colors.POSITIVE, l: 'feature decoder' }].map((h, i) => <g key={h.l} opacity={clamp01(heads * 3 - i)}>
-          <path d={`M1040 322 C1065 322 1062 ${h.y} 1086 ${h.y}`} fill="none" stroke={h.c} strokeWidth="3" />
-          <rect x="1086" y={h.y - 36} width="164" height="72" rx="22" fill="#101827" stroke={h.c} strokeWidth="3" />
-          <text x="1168" y={h.y + 5} textAnchor="middle" fill={h.c} fontSize="12">{h.l}</text>
+        {[{ y: 180, c: colors.ACCENT, l: 'classification head' }, { y: 330, c: colors.SECONDARY, l: 'regression head' }, { y: 490, c: colors.POSITIVE, l: 'feature decoder' }].map((h, i) => <g key={h.l} opacity={clamp01(heads * 3 - i)}>
+          <path d={`M1040 322 C1058 322 1058 ${h.y} 1074 ${h.y}`} fill="none" stroke={h.c} strokeWidth="3" />
+          <rect x="1074" y={h.y - 40} width="184" height="80" rx="22" fill="#101827" stroke={h.c} strokeWidth="3" />
+          <text x="1166" y={h.y + 6} textAnchor="middle" fill={h.c} fontSize="16" fontWeight="650">{h.l}</text>
         </g>)}
       </g>
       <g opacity={s.get(scene.regU)}>
-        {Array.from({ length: 25 }, (_, i) => <rect key={i} x={1088 + i * 6} y={392 - Math.sin(i / 24 * Math.PI) * 26} width="4" height={Math.sin(i / 24 * Math.PI) * 26} fill={colors.SECONDARY} opacity="0.8" />)}
-        <MathLabel tex={'\\hat y=\\sum_{i=1}^{5000} p_i c_i'} x={1158} y={424} fontSize={14} opacity={1} boxWidth={260} />
+        {Array.from({ length: 25 }, (_, i) => <rect key={i} x={1080 + i * 6} y={404 - Math.sin(i / 24 * Math.PI) * 20} width="4" height={Math.sin(i / 24 * Math.PI) * 20} fill={colors.SECONDARY} opacity="0.8" />)}
+        <MathLabel tex={'\\hat y=\\sum_{i=1}^{5000} p_i c_i'} x={1074} y={430} fontSize={12} opacity={1} anchor="start" boxWidth={204} />
       </g>
       <g opacity={s.get(scene.outputU)}>
-        <text x="1168" y="114" textAnchor="middle" fill={colors.ACCENT} fontSize="13">probability rows sum to 1</text>
-        <text x="1168" y="536" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">imputed feature matrix</text>
+        <text x="1166" y="130" textAnchor="middle" fill={colors.ACCENT} fontSize="14">probability rows sum to 1</text>
+        <text x="1166" y="554" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">imputed feature matrix</text>
       </g>
       <g opacity={recap}>
-        <path d="M420 548 C480 520 540 500 620 508 C700 516 740 560 820 548 C890 537 950 500 1020 508" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="12 9" />
-        {['cell identity', 'two axes', 'mask', 'answer'].map((label, i) => <g key={label} transform={`translate(${420 + i * 200} ${i % 2 ? 508 : 548})`} opacity={clamp01(recap * 5 - i)}>
+        <path d="M420 560 C480 532 540 512 620 520 C700 528 740 572 820 560 C890 549 950 512 1020 520" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="12 9" />
+        {['cell identity', 'two axes', 'mask', 'answer'].map((label, i) => <g key={label} transform={`translate(${420 + i * 200} ${i % 2 ? 520 : 560})`} opacity={clamp01(recap * 5 - i)}>
           <circle r="22" fill="#2b2513" stroke={colors.WARM} strokeWidth="3" />
-          <text y="43" textAnchor="middle" fill={colors.WARM} fontSize="13">{label}</text>
+          <text y="43" textAnchor="middle" fill={colors.WARM} fontSize="14">{label}</text>
         </g>)}
       </g>
     </g>
@@ -127,7 +131,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="206" textAnchor="middle" fill={colors.TEXT} fontSize="49" fontWeight="880">model the mechanism first</text>
       {['classification', 'regression', 'imputation'].map((label, i) => <g key={label} transform={`translate(${342 + i * 298} 372)`}>
         <circle r="78" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{label}</text>
+        <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="17">{label}</text>
       </g>)}
       <text x="640" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="16">one pretrained conditional model · three public routes</text>
     </g>

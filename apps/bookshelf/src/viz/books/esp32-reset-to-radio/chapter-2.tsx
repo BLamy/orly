@@ -10,6 +10,8 @@ const TASKS = [
   { label: 'wifi', color: colors.SECONDARY, core: 1 },
   { label: 'event', color: colors.WARM, core: 0 },
   { label: 'timer', color: colors.POSITIVE, core: 1 },
+  { label: 'idle', color: colors.MUTED, core: 0 },
+  { label: 'driver', color: colors.TEAL, core: 1 },
 ];
 
 export function buildScene() {
@@ -55,8 +57,9 @@ export function Render({ s }: { s: SceneState }) {
   const main = 1 - s.get(scene.dimU), tick = Math.floor(s.get(scene.ticks));
   const shift = s.get(scene.preemptU), block = s.get(scene.blockU);
   return <><rect width={1280} height={720} fill={colors.BG} /><g opacity={main}><text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>The scheduler loom</text><text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>ready → running → blocked → ready</text></g><Camera {...s.get(scene.cam)}><g opacity={main}>
-    <CoreRail y={255} label="CPU 0" u={s.get(scene.core0U)} ticks={tick}><Task x={360 - 60 * shift} y={255 - 105 * block} label="main" color={colors.ACCENT} u={s.get(scene.mainU)} /><Task x={670 + 60 * shift} y={255} label="event" color={colors.WARM} u={s.get(scene.schedulerU)} /></CoreRail>
+    <CoreRail y={255} label="CPU 0" u={s.get(scene.core0U)} ticks={tick}><g opacity={1 - s.get(scene.releaseU)}><rect x={425} y={233} width={170} height={44} rx={12} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={2} /><text x={510} y={260} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={14}>shared init</text></g><Task x={360 - 60 * shift} y={255 - 105 * block} label="main" color={colors.ACCENT} u={s.get(scene.mainU)} /><Task x={670 + 60 * shift} y={255} label="event" color={colors.WARM} u={s.get(scene.schedulerU)} /></CoreRail>
     <CoreRail y={455} label="CPU 1" u={s.get(scene.core1U)} ticks={tick}><Task x={520 - 10 * shift} y={455 - 200 * shift} label="wifi" color={colors.SECONDARY} u={s.get(scene.schedulerU)} /><Task x={810} y={455} label="timer" color={colors.POSITIVE} u={s.get(scene.ecosystemU)} /></CoreRail>
+    <text x={340} y={530} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={14} opacity={clamp01(s.get(scene.core1U) * 4) * (1 - s.get(scene.releaseU))}>waiting at the gate</text>
     {s.get(scene.releaseU) > 0 && <g opacity={s.get(scene.releaseU)}><path d="M410 303 C410 350 540 350 540 407" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeDasharray="8 6" /><text x={492} y={332} textAnchor="start" fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>call_start_cpu1</text></g>}
     {block > 0 && <g opacity={block}><rect x={385} y={121} width={180} height={58} rx={14} fill={colors.PANEL} stroke={colors.MUTED} /><text x={475} y={156} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>BLOCKED: queue</text></g>}
     {s.get(scene.appU) > 0 && <g opacity={s.get(scene.appU)}><rect x={640} y={112} width={230} height={66} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} /><text x={755} y={151} textAnchor="middle" fill={colors.ACCENT} fontFamily={MONO} fontSize={15}>app_main()</text></g>}

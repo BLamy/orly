@@ -74,7 +74,7 @@ for (let k = 3; k < N_STEPS; k++) {
 /** The Kalman gain at the beat-4 update, for the on-screen formula. */
 export const K2 = PRED[2].var / (PRED[2].var + R);
 
-export const BASE_Y = 560; // the hallway number line
+export const BASE_Y = 540; // the hallway number line
 export const T_TOTAL = 69.8;
 
 export function buildScene() {
@@ -155,7 +155,7 @@ export function buildScene() {
     text: "A ping arrives — its own Gaussian: the sensor's story, with the sensor's doubt.",
   });
   tl.tween(measU, 1, { at: 36.6, dur: 1.0, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 430, k: 1.22 }, { at: 41.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 527, y: 400, k: 1.1 }, { at: 41.6, dur: 1.3, ease: ease.move });
   tl.caption({
     at: 42.0,
     dur: 6.0,

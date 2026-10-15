@@ -52,7 +52,6 @@ export function buildScene() {
   tl.tween(cam, { x: 600, y: 330, k: 1.1 }, { at: 36.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 40.4, dur: 6.4, text: 'As context fills, the cheap compaction tier evicts old tool bodies but preserves protected fan-in reports.' });
-  tl.tween(cam, CAMERA_HOME, { at: 40.8, dur: 1.2, ease: ease.move });
   tl.tween(contextU, 1, { at: 41.1, dur: 1.0, ease: ease.enter });
   tl.tween(compactU, 1, { at: 42.3, dur: 2.0, ease: ease.move });
 
@@ -100,30 +99,30 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx="118" cy={report.y} r="34" fill="#111827" stroke={report.color} strokeWidth="3" />
           <circle cx="118" cy={report.y} r={8 + done * 12} fill={report.color} opacity={0.3 + 0.7 * done} />
           <text x="166" y={report.y - 12} fill={report.color} fontSize="14" fontWeight="700">{report.name}</text>
-          <text x="166" y={report.y + 24} fill={colors.MUTED} fontSize="12">{done > 0.8 ? 'report ready' : 'running'}</text>
+          <text x="166" y={report.y + 24} fill={colors.MUTED} fontSize="14">{done > 0.8 ? 'report ready' : 'running'}</text>
           <path d={reportPath(report.y, i)} fill="none" stroke={report.color} strokeWidth={6 + (i === 0 ? s.get(scene.firstU) * 4 : 0)} strokeLinecap="round" strokeDasharray={`${Math.max(1, pathU * 520)} 540`} opacity={0.25 + 0.75 * pathU} />
           {partial && <g opacity={s.get(scene.partialU)}>
-            <rect x="432" y={0.11 * report.y + 0.89 * rowY(i) - 15} width="124" height="30" rx="15" fill="#301822" stroke={colors.NEGATIVE} />
-            <text x="494" y={0.11 * report.y + 0.89 * rowY(i) + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize="12">partial evidence</text>
+            <rect x="424" y={0.11 * report.y + 0.89 * rowY(i) - 15} width="140" height="30" rx="15" fill="#301822" stroke={colors.NEGATIVE} />
+            <text x="494" y={0.11 * report.y + 0.89 * rowY(i) + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">partial evidence</text>
           </g>}
         </g>;
       })}
 
       <g opacity={s.get(scene.drainU)}>
         <path d="M238 126 H526" stroke={colors.ACCENT} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.drainU) * 290)} 300`} />
-        <text x="382" y="112" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>non-blocking drain</text>
+        <text x="382" y="112" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>non-blocking drain: take what is ready</text>
       </g>
 
       <g>
         <rect x="590" y="188" width="238" height="284" rx="30" fill="#0d1526" stroke={colors.SECONDARY} strokeWidth="4" />
         <text x="709" y="224" textAnchor="middle" fill={colors.SECONDARY} fontSize="16" fontFamily={colors.font.mono}>collect_reports()</text>
-        <text x="709" y="252" textAnchor="middle" fill={colors.MUTED} fontSize="13">FIRST_COMPLETED</text>
+        <text x="709" y="252" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>FIRST_COMPLETED</text>
         {REPORTS.map((report, i) => {
           const u = clamp01(faninP - i);
           return <g key={report.name} opacity={u} transform={`translate(0 ${(1 - u) * 26})`}>
             <rect x="620" y={274 + i * 42} width="178" height="30" rx="15" fill={report.color} opacity="0.2" />
             <circle cx="638" cy={289 + i * 42} r="7" fill={report.color} />
-            <text x="654" y={294 + i * 42} fill={colors.TEXT} fontSize="12">report {i + 1}</text>
+            <text x="654" y={294 + i * 42} fill={colors.TEXT} fontSize="14">report {i + 1}</text>
           </g>;
         })}
       </g>
@@ -137,26 +136,27 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.contextU)}>
         <rect x="876" y="132" width="314" height="400" rx="28" fill="#0d1526" stroke={colors.GRID} strokeWidth="3" />
         <text x="1033" y="166" textAnchor="middle" fill={colors.MUTED} fontSize="15">trajectory context</text>
+        <text x="1033" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="13">compaction evicts old tool bodies</text>
         {Array.from({ length: 8 }, (_, i) => {
           const protectedBand = i === 2 || i === 5;
           const h = compact > 0 && !protectedBand ? 8 : 28;
           const y = 192 + i * 40;
           return <g key={i}>
             <rect x="906" y={y} width={protectedBand ? 252 : 214 - i * 9} height={h} rx={h / 2} fill={protectedBand ? colors.POSITIVE : colors.ACCENT} opacity={protectedBand ? 0.72 : 0.14 + i * 0.025} />
-            {protectedBand && <text x="1032" y={y + 19} textAnchor="middle" fill="#07140f" fontSize="12" fontWeight="800">protected fan-in report</text>}
+            {protectedBand && <text x="1032" y={y + 19} textAnchor="middle" fill="#07140f" fontSize="14" fontWeight="800">protected fan-in report</text>}
           </g>;
         })}
-        <text x="1033" y="514" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>PROTECTED_FANIN_TOOLS</text>
+        <text x="1033" y="514" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>PROTECTED_FANIN_TOOLS</text>
       </g>
 
       <g opacity={s.get(scene.deadlineU)}>
-        <path d="M636 556 A76 76 0 0 1 788 556" fill="none" stroke={colors.NEGATIVE} strokeWidth="7" strokeDasharray={`${Math.max(1, s.get(scene.deadlineU) * 240)} 250`} />
-        <text x="712" y="588" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">soft deadline · clamp waits</text>
+        <path d="M642 544 A70 70 0 0 1 782 544" fill="none" stroke={colors.NEGATIVE} strokeWidth="7" strokeDasharray={`${Math.max(1, s.get(scene.deadlineU) * 220)} 230`} />
+        <text x="712" y="568" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">soft deadline · clamp waits</text>
       </g>
 
       <g opacity={s.get(scene.consolidateU)}>
         <rect x="830" y="548" width="190" height="46" rx="23" fill="#0c2a22" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="925" y="576" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontWeight="800">bounded finalization</text>
+        <text x="925" y="576" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">bounded finalization</text>
       </g>
     </g>
 

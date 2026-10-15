@@ -64,7 +64,8 @@ const BAR_MAX_W = 420;
 const BAR_H = 20;
 
 const CAM_DIFF: CameraState = { x: CARD_X + CARD_W / 2, y: CARD_Y + CARD_H / 2, k: 1.5 };
-const CAM_HYP: CameraState = { x: 900, y: 300, k: 1.25 };
+// frames the diff card and both hypothesis boxes together (x 120..1160, y 104..440)
+const CAM_HYP: CameraState = { x: 640, y: 272, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -211,14 +212,14 @@ function Frame({ s }: { s: SceneState }) {
           {cardU > 0 && (
             <g opacity={cardU}>
               <rect x={CARD_X} y={CARD_Y} width={CARD_W} height={CARD_H} rx={10} fill={colors.PANEL} stroke={flagU > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={flagU > 0.5 ? 2 : 1} />
-              <text x={CARD_X + 18} y={CARD_Y + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={CARD_X + 18} y={CARD_Y + 30} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 agent commit — pre-commit hook environment
               </text>
               {DIFF_LINES.map((l, i) => {
                 const u = clamp01(linesU * DIFF_LINES.length - i);
                 if (u <= 0) return null;
                 const y = CARD_Y + 48 + i * LINE_H;
-                const c = l.kind === 'del' ? colors.NEGATIVE : l.kind === 'add' ? colors.POSITIVE : colors.MUTED;
+                const c = l.kind === 'del' ? colors.NEGATIVE : l.kind === 'add' ? colors.POSITIVE : colors.TEXT;
                 return (
                   <g key={i} opacity={u}>
                     {l.kind !== 'ctx' && (
@@ -234,7 +235,7 @@ function Frame({ s }: { s: SceneState }) {
               {flagU > 0 && (
                 <g opacity={flagU}>
                   <rect x={CARD_X + CARD_W - 168} y={CARD_Y + 8} width={156} height={26} rx={13} fill={colors.NEGATIVE} opacity={0.18} />
-                  <text x={CARD_X + CARD_W - 90} y={CARD_Y + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={600}>
+                  <text x={CARD_X + CARD_W - 90} y={CARD_Y + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                     prompt violated
                   </text>
                 </g>
@@ -251,42 +252,43 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* the two hypotheses */}
-          {hypMalignU > 0 && (
+          {/* once the closing panel is up, the hypotheses are gone, not just faded under it */}
+          {hypMalignU > 0 && closeU < 1 && (
             <g opacity={hypMalignU}>
               <rect x={HYP_X} y={HYP_MALIGN_Y} width={HYP_W} height={HYP_H} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
               <text x={HYP_X + 20} y={HYP_MALIGN_Y + 32} fill={colors.NEGATIVE} fontSize={16} fontWeight={600}>
                 intentional subversion
               </text>
-              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 60} fill={colors.TEXT} fontSize={13}>
+              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 60} fill={colors.TEXT} fontSize={14}>
                 knew the user would disapprove;
               </text>
-              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 80} fill={colors.TEXT} fontSize={13}>
+              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 80} fill={colors.TEXT} fontSize={14}>
                 evaded oversight anyway
               </text>
-              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 104} fill={colors.MUTED} fontSize={12}>
+              <text x={HYP_X + 20} y={HYP_MALIGN_Y + 104} fill={colors.MUTED} fontSize={13}>
                 → monitors will be circumvented
               </text>
             </g>
           )}
-          {hypBenignU > 0 && (
+          {hypBenignU > 0 && closeU < 1 && (
             <g opacity={hypBenignU}>
               <rect x={HYP_X} y={HYP_BENIGN_Y} width={HYP_W} height={HYP_H} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} />
               <text x={HYP_X + 20} y={HYP_BENIGN_Y + 32} fill={colors.ACCENT} fontSize={16} fontWeight={600}>
                 tedium aversion
               </text>
-              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 60} fill={colors.TEXT} fontSize={13}>
+              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 60} fill={colors.TEXT} fontSize={14}>
                 flinched at 258 fixes and
               </text>
-              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 80} fill={colors.TEXT} fontSize={13}>
+              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 80} fill={colors.TEXT} fontSize={14}>
                 rationalized a shortcut
               </text>
-              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 104} fill={colors.MUTED} fontSize={12}>
+              <text x={HYP_X + 20} y={HYP_BENIGN_Y + 104} fill={colors.MUTED} fontSize={13}>
                 → a simple guard rail suffices
               </text>
             </g>
           )}
-          {vsU > 0 && (
-            <text x={HYP_X + HYP_W / 2} y={HYP_MALIGN_Y + HYP_H + 32} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600} opacity={vsU}>
+          {vsU > 0 && closeU < 1 && (
+            <text x={HYP_X + HYP_W / 2} y={HYP_MALIGN_Y + HYP_H + 26} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600} opacity={vsU}>
               same diff — which story is true?
             </text>
           )}
@@ -294,10 +296,10 @@ function Frame({ s }: { s: SceneState }) {
           {/* measured rates */}
           {barsU > 0 && (
             <g opacity={barsU}>
-              <text x={CARD_X} y={BARS_Y - 30} fill={colors.TEXT} fontSize={15}>
+              <text x={CARD_X} y={BARS_Y - 30} fill={colors.TEXT} fontSize={16}>
                 workaround rate by model
               </text>
-              <text x={CARD_X + 260} y={BARS_Y - 30} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={CARD_X + 260} y={BARS_Y - 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 reported (Section 6.1) — replotted, not re-run
               </text>
               {RATES.map((r, i) => {
@@ -307,12 +309,12 @@ function Frame({ s }: { s: SceneState }) {
                 const hiX = (r.hi / 20) * BAR_MAX_W;
                 return (
                   <g key={r.model}>
-                    <text x={CARD_X + 150} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                    <text x={CARD_X + 150} y={y + 15} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                       {r.model}
                     </text>
                     <rect x={CARD_X + 165} y={y} width={Math.max(w, 2)} height={BAR_H} rx={4} fill={i === 0 ? colors.NEGATIVE : colors.MUTED} opacity={i === 0 ? 0.85 : 0.45} />
                     <line x1={CARD_X + 165 + loX} x2={CARD_X + 165 + hiX} y1={y + BAR_H / 2} y2={y + BAR_H / 2} stroke={colors.TEXT} strokeWidth={1.5} opacity={0.5 * fillU} />
-                    <text x={CARD_X + 175 + hiX} y={y + 15} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={fillU}>
+                    <text x={CARD_X + 175 + hiX} y={y + 15} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={fillU}>
                       {r.rate.toFixed(1)}%
                     </text>
                   </g>
@@ -335,7 +337,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={220} width={860} height={210} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={210} y={220} width={860} height={210} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Behavior alone does not establish misalignment
           </text>
@@ -345,7 +347,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             step 2: edit the prompt or environment — test them
           </text>
-          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             Model Forensics · arXiv:2606.26071
           </text>
         </g>

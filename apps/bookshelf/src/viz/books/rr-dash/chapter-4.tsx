@@ -28,14 +28,16 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const SRC = { x: 250, y: 82, w: 560, h: 330 };
 const FILES = { x: 70, y: 82, w: 160, h: 330 };
-const STRIP = { x: 250, y: 470, w: 930, h: 24 };
+const STRIP = { x: 250, y: 438, w: 930, h: 24 };
 const POPOVER = { x: 840, y: 150 };
-const FLAME = { x: 860, y: 300, w: 320, h: 130 };
+const FLAME = { x: 860, y: 262, w: 320, h: 130 };
+const EVENTS_Y = 484; // clears the timeline's labels and the caption pill
+const ANALYST_Y = 424;
 
 // Each camera keeps every label on the 1280×720 stage: visible half-width is 640/k.
 const CAM_OPEN: CameraState = { x: 530, y: 250, k: 1.15 }; // the source file, framed from the start
 const CAM_GUTTER: CameraState = { x: 530, y: 250, k: 1.35 }; // the source pane, pushed in on the gutter
-const CAM_POP: CameraState = { x: 625, y: 260, k: 1.15 }; // source line 41 + its popover
+const CAM_POP: CameraState = { x: 625, y: 260, k: 1.1 }; // source line 41 + its popover, file list still in frame
 const CAM_STRIP: CameraState = { x: 640, y: 350, k: 1.1 }; // the execution timeline
 const CAM_FLAME: CameraState = { x: 640, y: 340, k: 1.1 }; // the flame drawer
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
@@ -328,7 +330,7 @@ function EventsPanel({ u, dim }: { u: number; dim: number }) {
     ['exit', 'process exited with status 101'],
   ];
   return (
-    <g transform={`translate(${SRC.x}, ${512 + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
+    <g transform={`translate(${SRC.x}, ${EVENTS_Y + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
       <rect width={930} height={92} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
       <text x={14} y={20} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         EVENTS · syscalls | stdout | signals | exit
@@ -369,7 +371,7 @@ function FlameDrawer({ u, dim }: { u: number; dim: number }) {
             <rect width={w} height={rowH} rx={4} fill={col} opacity={0.4} />
             <rect width={w} height={rowH} rx={4} fill="none" stroke={col} strokeWidth={1.2} />
             {w > 70 && (
-              <text x={8} y={15} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+              <text x={8} y={15} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
                 {r.label}
               </text>
             )}
@@ -390,24 +392,24 @@ function AnalystChip({ u, dim }: { u: number; dim: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
   return (
-    <g transform={`translate(${FILES.x}, ${440 + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
+    <g transform={`translate(${FILES.x}, ${ANALYST_Y + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
       <rect width={160} height={170} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-      <text x={14} y={24} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+      <text x={14} y={24} fill={colors.SECONDARY} fontSize={13} fontFamily={mono} fontWeight={700}>
         AI analyst
       </text>
       <text x={14} y={48} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         trace-mcp · tools
       </text>
-      <text x={14} y={78} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+      <text x={14} y={78} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
         "the hot line is
       </text>
-      <text x={14} y={96} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+      <text x={14} y={96} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
         thirty six —
       </text>
-      <text x={14} y={114} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+      <text x={14} y={114} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
         reopen:
       </text>
-      <text x={14} y={134} fill={colors.WARM} fontSize={12} fontFamily={mono}>
+      <text x={14} y={134} fill={colors.WARM} fontSize={13} fontFamily={mono}>
         rr replay -g 2101
       </text>
       <text x={14} y={156} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
@@ -422,24 +424,27 @@ function RecapCard({ u }: { u: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
   const steps = ['trace.tar.zst', 'streams', 'fold', 'devtools face', 'rr replay -g'];
+  // five boxes of 134 with 32 gaps (798 wide) sit inside an 840 card
+  const BOX_W = 134;
+  const STEP = 166;
   return (
     <g transform={`translate(640, ${300 + (1 - e) * 10})`} opacity={e}>
-      <rect x={-390} y={-70} width={780} height={140} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+      <rect x={-420} y={-70} width={840} height={140} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
       <text y={-30} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         evidence, made interrogable
       </text>
       {steps.map((label, i) => {
         const su = clamp01(e * (steps.length + 1) - i);
-        const x = -330 + i * 165;
+        const x = -399 + i * STEP;
         return (
           <g key={label} opacity={su}>
-            <rect x={x} y={-2} width={130} height={32} rx={8} fill={colors.ACCENT} opacity={0.12} />
-            <rect x={x} y={-2} width={130} height={32} rx={8} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={x + 65} y={18} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+            <rect x={x} y={-2} width={BOX_W} height={32} rx={8} fill={colors.ACCENT} opacity={0.12} />
+            <rect x={x} y={-2} width={BOX_W} height={32} rx={8} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} />
+            <text x={x + BOX_W / 2} y={18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>
               {label}
             </text>
             {i < steps.length - 1 && (
-              <text x={x + 148} y={18} fill={colors.MUTED} fontSize={13}>
+              <text x={x + BOX_W + 16} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 →
               </text>
             )}

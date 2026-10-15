@@ -17,7 +17,7 @@ const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const ENGINE = { x: 880, y: 200, w: 330, h: 300 };
+const ENGINE = { x: 880, y: 200, w: 330, h: 340 };
 const THREAD_BUBBLE = { x: 905, y: 300, w: 280, h: 110 };
 const WINDOWS = [
   { x: 90, y: 130, label: 'editor extension', sub: 'codex_vscode' },
@@ -26,15 +26,18 @@ const WINDOWS = [
 ];
 const WIN_W = 260;
 const WIN_H = 110;
-const TIMER = { cx: 1045, cy: 355, r: 34 };
-const RECAP = { x: 210, y: 150, w: 560, rowH: 52 };
-const GENTS = { x: 250, y: 430, w: 480, h: 74 };
+// the clock sits in the engine's lower half, under the thread bubble
+const TIMER = { cx: 1045, cy: 468, r: 28 };
+const RECAP = { x: 250, y: 150, w: 620, rowH: 52 };
+const GENTS = { x: 380, y: 440, w: 460, h: 74 };
+const CLOSE = { x: 260, y: 530, w: 600, h: 74 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 0.98 };
 const CAM_ENGINE: CameraState = { x: 950, y: 350, k: 1.16 };
-const CAM_WINDOWS: CameraState = { x: 400, y: 350, k: 1.06 };
-const CAM_TIMER: CameraState = { x: 1000, y: 355, k: 1.3 };
+// wide enough to keep the windows and the engine both on stage
+const CAM_WINDOWS: CameraState = { x: 650, y: 350, k: 1.04 };
+const CAM_TIMER: CameraState = { x: 1000, y: 370, k: 1.3 };
 const CAM_RECAP: CameraState = { x: 560, y: 330, k: 1.06 };
 
 const RECAP_ROWS = [
@@ -168,7 +171,7 @@ export function buildScene() {
     dur: 5.8,
     text: 'The official extension is just one face on this engine. The wire is documented, typed, and waiting — bring your own window.',
   });
-  tl.tween(dimU, 0.3, { at: t - 2.4, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 2.4, dur: 1.2, ease: ease.move });
   tl.hold(t, 1.0);
 
   return {
@@ -187,17 +190,17 @@ function ClientWindow({ x, y, label, sub, u, gone, filter, dim }: {
   const e = clamp01(u) * (1 - clamp01(gone));
   if (e <= 0) return null;
   return (
-    <g transform={`translate(${x - (1 - e) * 20}, ${y})`} opacity={e * (1 - 0.75 * clamp01(dim))}>
+    <g transform={`translate(${x - (1 - e) * 20}, ${y})`} opacity={e * (1 - 0.9 * clamp01(dim))}>
       <rect width={WIN_W} height={WIN_H} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <circle cx={16} cy={16} r={4} fill={colors.NEGATIVE} opacity={0.7} />
       <circle cx={30} cy={16} r={4} fill={colors.WARM} opacity={0.7} />
       <circle cx={44} cy={16} r={4} fill={colors.POSITIVE} opacity={0.7} />
-      <text x={16} y={48} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>{label}</text>
-      <text x={16} y={68} fill={colors.MUTED} fontSize={11} fontFamily={mono}>{sub}</text>
+      <text x={16} y={48} fill={colors.TEXT} fontSize={14} fontWeight={700}>{label}</text>
+      <text x={16} y={68} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{sub}</text>
       {clamp01(filter) > 0 && (
         <g opacity={clamp01(filter)}>
           <rect x={12} y={78} width={WIN_W - 24} height={22} rx={6} fill={colors.NEGATIVE} opacity={0.14} />
-          <text x={20} y={93} fill={colors.NEGATIVE} fontSize={10} fontFamily={mono}>
+          <text x={20} y={93} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>
             optOut: item/agentMessage/delta
           </text>
         </g>
@@ -258,7 +261,7 @@ function renderFrame(s: SceneState) {
               y2={ENGINE.y + ENGINE.h / 2}
               stroke={colors.GRID}
               strokeWidth={2.5}
-              opacity={wiresU * resAlive * (1 - 0.7 * dim)}
+              opacity={wiresU * resAlive * (1 - 0.9 * dim)}
             />
           );
         })}
@@ -280,30 +283,38 @@ function renderFrame(s: SceneState) {
 
       {/* the engine */}
       {engineU > 0 && (
-        <g transform={`translate(${ENGINE.x}, ${ENGINE.y})`} opacity={engineU * (1 - 0.45 * dim)}>
+        <g transform={`translate(${ENGINE.x}, ${ENGINE.y})`} opacity={engineU * (1 - 0.85 * dim)}>
           <rect width={ENGINE.w} height={ENGINE.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
           <text x={18} y={30} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>codex app-server</text>
-          <text x={18} y={52} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>one engine · every window</text>
-          {/* the loaded thread */}
+          <text x={18} y={52} fill={colors.MUTED} fontSize={12} fontFamily={mono}>one engine · every window</text>
+          {/* the loaded thread; on disk while unloaded, then resumed from the rollout */}
           <g transform={`translate(${THREAD_BUBBLE.x - ENGINE.x}, ${THREAD_BUBBLE.y - ENGINE.y})`}>
             <rect
               width={THREAD_BUBBLE.w}
               height={THREAD_BUBBLE.h}
               rx={10}
               fill={colors.BG}
-              stroke={unloadU > 0.5 ? colors.GRID : colors.SECONDARY}
+              stroke={unloadU > 0.5 && resumeU <= 0.5 ? colors.MUTED : colors.SECONDARY}
               strokeWidth={1.5}
-              strokeDasharray={unloadU > 0.5 ? '5 4' : undefined}
-              opacity={1 - 0.45 * unloadU}
+              strokeDasharray={unloadU > 0.5 && resumeU <= 0.5 ? '5 4' : undefined}
+              opacity={1 - 0.3 * unloadU}
             />
-            <text x={14} y={24} fill={unloadU > 0.5 ? colors.MUTED : colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono} opacity={1 - 0.3 * unloadU}>
-              {unloadU > 0.5 ? 'thread — on disk (rollout)' : 'thread thr_0aa4 — loaded'}
+            <text x={14} y={24} fill={unloadU > 0.5 && resumeU <= 0.5 ? colors.MUTED : colors.SECONDARY} fontSize={13} fontWeight={700} fontFamily={mono}>
+              {unloadU > 0.5 && resumeU <= 0.5
+                ? 'thread — on disk (rollout)'
+                : resumeU > 0.5
+                  ? 'thread thr_0aa4 — resumed'
+                  : 'thread thr_0aa4 — loaded'}
             </text>
-            <text x={14} y={46} fill={colors.MUTED} fontSize={10.5} fontFamily={mono} opacity={1 - 0.5 * unloadU}>
-              {unloadU > 0.5 ? 'thread/closed emitted' : 'subscribers stream turn events'}
+            <text x={14} y={46} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+              {unloadU > 0.5 && resumeU <= 0.5
+                ? 'thread/closed emitted'
+                : resumeU > 0.5
+                  ? 'history restored from rollout'
+                  : 'subscribers stream turn events'}
             </text>
-            {unloadU <= 0.5 && (
-              <text x={14} y={THREAD_BUBBLE.h - 14} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+            {unloadU <= 0.5 && resumeU <= 0 && (
+              <text x={14} y={THREAD_BUBBLE.h - 14} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                 THREAD_UNLOADING_DELAY: 30 * 60
               </text>
             )}
@@ -320,10 +331,10 @@ function renderFrame(s: SceneState) {
       ))}
 
       {/* the 30-minute clock */}
-      {timerOn > 0 && unloadU < 0.6 && (
+      {timerOn > 0 && unloadU < 0.6 && resumeU <= 0 && (
         <g opacity={timerOn * (1 - 0.5 * dim)}>
           <TimerArc cx={TIMER.cx} cy={TIMER.cy} r={TIMER.r} u={timerU} color={colors.WARM} />
-          <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 22} fill={colors.WARM} fontSize={11.5} fontFamily={mono} textAnchor="middle">
+          <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 22} fill={colors.WARM} fontSize={13} fontFamily={mono} textAnchor="middle">
             {timerU >= 1 ? 'idle 30:00 → unload' : 'no subscribers · no activity'}
           </text>
         </g>
@@ -338,8 +349,8 @@ function renderFrame(s: SceneState) {
             return (
               <g key={i} transform={`translate(${RECAP.x}, ${RECAP.y + i * RECAP.rowH + (1 - ru) * 10})`} opacity={ru}>
                 <rect width={RECAP.w} height={RECAP.rowH - 10} rx={9} fill={colors.PANEL} stroke={row.color} strokeWidth={1.5} />
-                <text x={16} y={26} fill={colors.TEXT} fontSize={13} fontWeight={600}>{row.head}</text>
-                <text x={RECAP.w - 16} y={26} fill={row.color} fontSize={11} fontFamily={mono} textAnchor="end">{row.tail}</text>
+                <text x={16} y={26} fill={colors.TEXT} fontSize={14} fontWeight={600}>{row.head}</text>
+                <text x={RECAP.w - 16} y={26} fill={row.color} fontSize={12} fontFamily={mono} textAnchor="end">{row.tail}</text>
               </g>
             );
           })}
@@ -348,13 +359,26 @@ function renderFrame(s: SceneState) {
 
       {/* generate-ts chip */}
       {genU > 0 && (
-        <g transform={`translate(${GENTS.x}, ${GENTS.y + (1 - genU) * 10})`} opacity={genU * (1 - 0.7 * finalDim)}>
+        <g transform={`translate(${GENTS.x}, ${GENTS.y + (1 - genU) * 10})`} opacity={genU * (1 - 0.9 * finalDim)}>
           <rect width={GENTS.w} height={GENTS.h} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.5} />
-          <text x={18} y={30} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+          <text x={18} y={30} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
             codex app-server generate-ts
           </text>
-          <text x={18} y={54} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+          <text x={18} y={54} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
             typed bindings for the exact build you run against
+          </text>
+        </g>
+      )}
+
+      {/* closing panel: solid, so the last words read over the faded scene */}
+      {finalDim > 0 && (
+        <g transform={`translate(${CLOSE.x}, ${CLOSE.y})`} opacity={finalDim}>
+          <rect width={CLOSE.w} height={CLOSE.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text x={22} y={32} fill={colors.TEXT} fontSize={16} fontWeight={700}>
+            the wire is documented, typed, and waiting
+          </text>
+          <text x={22} y={57} fill={colors.ACCENT} fontSize={14} fontFamily={mono}>
+            bring your own window
           </text>
         </g>
       )}

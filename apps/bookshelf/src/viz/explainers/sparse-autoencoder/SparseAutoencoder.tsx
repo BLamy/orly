@@ -42,7 +42,7 @@ function Frame({ s }: { s: SceneState }) {
               cy={PAN.cy - p[1] * SC}
               r={3 * clamp01(cloudU * 1.6 - i / 700)}
               fill={colors.MUTED}
-              opacity={0.5}
+              opacity={0.7}
             />
           ))}
 
@@ -59,7 +59,7 @@ function Frame({ s }: { s: SceneState }) {
                   strokeWidth={1.8}
                   strokeDasharray="5 6"
                 />
-                <text x={PAN.cx + d[0] * SC * 1.62} y={PAN.cy - d[1] * SC * 1.62 + 5} textAnchor="middle" fill={FCOLORS[j]} fontSize={13}>
+                <text x={PAN.cx + d[0] * SC * 1.62} y={PAN.cy - d[1] * SC * 1.62 + 5} textAnchor="middle" fill={FCOLORS[j]} fontSize={14}>
                   {`true ${j + 1}`}
                 </text>
               </g>
@@ -87,11 +87,6 @@ function Frame({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-          {saeU > 0 && (
-            <text x={PAN.cx} y={PAN.cy + PAN.r + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} opacity={saeU}>
-              white: the dictionary (decoder directions) · dashed: the planted truth
-            </text>
-          )}
 
           {/* match table */}
           {tableU > 0 && (
@@ -108,7 +103,7 @@ function Frame({ s }: { s: SceneState }) {
                   </text>
                 </g>
               ))}
-              <text x={TABLE.x + 20} y={TABLE.y + 212} fill={colors.MUTED} fontSize={13}>
+              <text x={TABLE.x + 20} y={TABLE.y + 212} fill={colors.MUTED} fontSize={14}>
                 {`${SAE.alive} of ${H} slots alive — the rest died`}
               </text>
             </g>
@@ -116,10 +111,19 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
+      {/* key for the decoder columns: fixed to the stage, clear of the caption pill */}
+      {saeU > 0 && (
+        <g opacity={saeU * dimU}>
+          <text x={1240} y={48} textAnchor="end" fill={colors.MUTED} fontSize={15}>
+            white: the dictionary (decoder directions) · dashed: the planted truth
+          </text>
+        </g>
+      )}
+
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={228} width={800} height={196} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Sparse Autoencoders
           </text>

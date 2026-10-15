@@ -113,7 +113,7 @@ function RankCard({ x, y, label, color, u, scale = 1 }: { x: number; y: number; 
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(${x} ${y}) scale(${(0.82 + uu * 0.18) * scale})`}>
     <rect x={-38} y={-18} width={76} height={36} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.8} />
-    <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label}</text>
+    <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label}</text>
   </g>;
 }
 
@@ -138,10 +138,10 @@ export function Render({ s }: { s: SceneState }) {
         {SIGNALS.map((sig, lane) => {
           const y = LANE_Y0 + lane * LANE_GAP;
           const reveal = laneReveal[lane];
-          return <g key={sig.key} opacity={reveal}>
-            <path d={`M368 118 C430 118 420 ${y} 482 ${y}`} fill="none" stroke={sig.color} strokeWidth={2.5} strokeDasharray="8 7" strokeDashoffset={(1 - splitU) * 80} />
-            <text x={505} y={y + 5} fill={sig.color} fontSize={12} fontWeight={750} fontFamily={MONO}>{sig.key}</text>
-            <line x1={585} y1={y} x2={1040} y2={y} stroke={sig.color} opacity={0.24} />
+          return <g key={sig.key}>
+            <path d={`M368 118 C430 118 420 ${y} 482 ${y}`} fill="none" stroke={sig.color} strokeWidth={2.5} strokeDasharray="8 7" strokeDashoffset={(1 - splitU) * 80} opacity={Math.max(reveal, splitU)} />
+            <text x={505} y={y + 5} fill={sig.color} fontSize={14} fontWeight={750} fontFamily={MONO} opacity={reveal + (1 - reveal) * splitU * 0.5}>{sig.key}</text>
+            <line x1={585} y1={y} x2={1040} y2={y} stroke={sig.color} opacity={0.24 * reveal} />
             {RANKS[lane].map((claim, rank) => {
               const originalX = 630 + rank * LANE_PITCH;
               const finalRank = FINAL_ORDER.indexOf(claim);
@@ -158,30 +158,36 @@ export function Render({ s }: { s: SceneState }) {
             const shiftedRank = rerankU > 0.5 && rank < 2 ? 1 - rank : rank;
             const x = 650 + shiftedRank * RRF_PITCH;
             const capped = CAPPED_RANK[rank];
-            return <g key={claim} opacity={capped ? 1 - 0.7 * diversityU : 1}>
-              <RankCard x={x} y={RRF_Y} label={CLAIMS[claim]} color={rank === 0 ? colors.WARM : colors.ACCENT} u={braidU} />
-              <text x={x} y={586} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={diversityU}>{DOI_OF[claim]}{capped ? ' cap' : ''}</text>
+            return <g key={claim}>
+              <g opacity={capped ? 1 - 0.7 * diversityU : 1}>
+                <RankCard x={x} y={RRF_Y} label={CLAIMS[claim]} color={rank === 0 ? colors.WARM : colors.ACCENT} u={braidU} />
+              </g>
+              {capped && <line x1={x - 36} y1={RRF_Y + 16} x2={x + 36} y2={RRF_Y - 16} stroke={colors.NEGATIVE} strokeWidth={2.5} opacity={diversityU} />}
+              <text x={x} y={586} textAnchor="middle" fill={capped ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={diversityU}>{DOI_OF[claim]}{capped ? ' cap' : ''}</text>
             </g>;
           })}
-          <text x={1120} y={553} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>RRF</text>
+          <text x={1120} y={553} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>RRF</text>
+          <text x={1120} y={586} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={diversityU}>max 1 per paper</text>
         </g>}
         <text x={850} y={118} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontFamily={MONO} opacity={formulaU}>score(d) = Σ 1 / (60 + rᵢ(d))</text>
-        {formulaU > 0 && <text x={850} y={146} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={formulaU}>k = 60 keeps one lane's top hit from dominating</text>}
-        {rerankU > 0 && <g opacity={rerankU}>
-          <ellipse cx={700} cy={RRF_Y} rx={112} ry={48} fill="none" stroke={colors.SECONDARY} strokeWidth={3} />
-          <text x={700} y={494} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>cross_encoder_rerank · slower, reads each pair</text>
+        {formulaU > 0 && <text x={850} y={146} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={formulaU}>k = 60 keeps one lane's top hit from dominating</text>}
+        {rerankU > 0 && <g opacity={rerankU * (1 - 0.6 * diversityU)}>
+          <rect x={604} y={524} width={188} height={52} rx={12} fill="none" stroke={colors.SECONDARY} strokeWidth={2.5} strokeDasharray="6 5" />
+          <text x={604} y={508} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>cross_encoder_rerank · reads query + each pair</text>
         </g>}
         {s.get(scene.tetherU) > 0 && <g opacity={s.get(scene.tetherU)}>
-          <path d="M624 586 C590 588 548 594 512 597" fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
-          <text x={496} y={601} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>source_doi + verbatim_quote</text>
+          <path d="M606 594 C580 596 548 598 512 600" fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
+          <text x={496} y={604} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>source_doi + verbatim_quote</text>
         </g>}
       </g>
     </Camera>
     {s.get(scene.endU) > 0 && <g opacity={s.get(scene.endU)}>
-      <rect x={170} y={224} width={940} height={222} rx={28} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
-      <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={820}>Recall broadly, rank together</text>
-      <text x={640} y={350} textAnchor="middle" fill={colors.WARM} fontSize={21}>FTS5 + vector + tree + paper + author</text>
-      <text x={640} y={397} textAnchor="middle" fill={colors.MUTED} fontSize={14}>five votes · one ranking · every source still attached</text>
+      <rect x={170} y={208} width={940} height={250} rx={28} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
+      <text x={640} y={280} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={820}>Recall broadly, rank together</text>
+      <text x={640} y={330} textAnchor="middle" fill={colors.WARM} fontSize={21}>FTS5 + vector + tree + paper + author</text>
+      <text x={640} y={370} textAnchor="middle" fill={colors.MUTED} fontSize={14}>five votes · one ranking · every source still attached</text>
+      <rect x={390} y={394} width={500} height={42} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
+      <text x={640} y={420} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>C7A2 · source_doi 10.a · verbatim_quote</text>
     </g>}
   </>;
 }

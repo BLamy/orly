@@ -42,8 +42,9 @@ const XV = { x: 650, y: 440, w: 550, h: 170 };
 const XV_CX = XV.x + XV.w / 2;
 const XV_CY = XV.y + XV.h / 2 + 8;
 const XV_SCALE = 58;
-const LADDER = { x: 70, y: 110, w: 500, rowH: 46, gap: 10 };
-const RECAP = { x: 78, y: 560, w: 250, h: 52, gap: 16 };
+const LADDER = { x: 340, y: 110, w: 600, rowH: 46, gap: 10 };
+const PAD = { x: 340, y: 240, rowH: 40, gap: 12 };
+const RECAP = { x: 116, y: 300, w: 250, h: 110, gap: 16 };
 const PROV = { x: 340, y: 200, w: 600, h: 240 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
@@ -51,7 +52,7 @@ const CAM_SHEETS: CameraState = { x: 360, y: 280, k: 1.1 };
 // framed so the faded left column (sheet labels from x = 70) stays on the stage
 const CAM_SPL: CameraState = { x: 635, y: 300, k: 1.0 };
 const CAM_XV: CameraState = { x: 635, y: 352, k: 0.98 };
-const CAM_LADDER: CameraState = { x: 320, y: 217, k: 1.06 };
+const CAM_LADDER: CameraState = { x: 640, y: 315, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.96 };
 
 const FALLS: [string, string][] = [
@@ -158,9 +159,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'The damage list. Keller’s conjecture: false in dimension three, and false in every higher dimension — just pad the map with coordinates it never touches.',
   });
-  tl.tween(leftOff, 1, { at: t - 6.0, dur: 0.8, ease: ease.move });
-  tl.tween(splU, 0, { at: t - 6.0, dur: 0.8, ease: ease.move }); // the drive and honest-coordinate panels leave for the ladder
-  tl.tween(xvU, 0, { at: t - 6.0, dur: 0.8, ease: ease.move });
+  tl.tween(leftOff, 1, { at: t - 6.0, dur: 0.8, ease: ease.move }); // also clears the drive and honest-coordinate panels for the ladder
   tl.tween(cam, CAM_LADDER, { at: t - 5.8, dur: 1.4, ease: ease.move });
   tl.tween(ladderN, 1, { at: t - 4.4, dur: 0.7, ease: ease.move });
   t = tl.hold(t, 0.4);
@@ -189,7 +188,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'The whole disproof, one more time: a determinant that collapses to minus two. Three points with one image. Two surfaces crushed onto one plane. And an escape hatch at infinity.',
   });
-  tl.tween(dimU, 0.85, { at: t - 6.6, dur: 1.0, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 6.6, dur: 1.0, ease: ease.move }); // the ladder clears fully for the recap
   tl.tween(cam, CAM_WIDE, { at: t - 6.6, dur: 1.5, ease: ease.move });
   tl.tween(recapN, 4, { at: t - 5.6, dur: 3.2, ease: ease.move });
   t = tl.hold(t, 0.5);
@@ -201,7 +200,6 @@ export function buildScene() {
     text: 'It was announced on the day of the World Cup final, in a post short enough to fit in a caption, and every claim in it checks by hand. Some eras end with a treatise. This one ended with a tweet.',
   });
   tl.tween(provU, 1, { at: t - 6.2, dur: 1.0, ease: ease.enter });
-  tl.tween(dimU, 1, { at: t - 6.2, dur: 1.0, ease: ease.move }); // clear the faded ladder under the closing card
   tl.hold(t, 1.2);
 
   return { tl, cam, sheetsU, topoU, splU, driveT, xvU, survU, deltaU, leftDim, leftOff, ladderN, dimU, recapN, provU };
@@ -215,7 +213,7 @@ const scene = buildScene();
 function SheetStack({ u, off, ldim, dim }: { u: number; off: number; ldim: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.9 * clamp01(dim)) * (1 - clamp01(off)) * (1 - 0.85 * clamp01(ldim));
+  const a = uu * (1 - 0.9 * clamp01(dim)) * (1 - clamp01(off)) * (1 - 0.6 * clamp01(ldim));
   if (a <= 0.01) return null;
   const { x, w } = SHEETS;
   const sheetY = [130, 188, 246];
@@ -236,14 +234,14 @@ function SheetStack({ u, off, ldim, dim }: { u: number; off: number; ldim: numbe
               strokeDasharray={String(w * 1.2)}
               strokeDashoffset={w * 1.2 * (1 - d)}
             />
-            <text x={x + w + 10} y={sy + 2} fill={sheetC[i]} fontSize={12} fontFamily={mono}>
+            <text x={x + w + 10} y={sy + 2} fill={sheetC[i]} fontSize={13} fontFamily={mono}>
               sheet {i + 1}
             </text>
           </g>
         );
       })}
       <line x1={x} y1={baseY} x2={x + w} y2={baseY} stroke={colors.MUTED} strokeWidth={2} />
-      <text x={x} y={baseY + 22} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={x} y={baseY + 22} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         the target space ℂ³ — every loop shrinks to a point
       </text>
       {[0.28, 0.55, 0.8].map((f) => (
@@ -257,12 +255,14 @@ function SheetStack({ u, off, ldim, dim }: { u: number; off: number; ldim: numbe
 function TopologyCard({ u, off, ldim, dim }: { u: number; off: number; ldim: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.9 * clamp01(dim)) * (1 - clamp01(off)) * (1 - 0.85 * clamp01(ldim));
+  const a = uu * (1 - 0.9 * clamp01(dim)) * (1 - clamp01(off)) * (1 - 0.6 * clamp01(ldim));
   if (a <= 0.01) return null;
   return (
     <g opacity={a} transform={`translate(${TOPO.x}, ${TOPO.y + (1 - uu) * 10})`}>
       <rect width={TOPO.w} height={TOPO.h} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'\\pi_1(\\mathbb{C}^3) = 1'} x={22} y={28} fontSize={17} color={colors.WARM} opacity={a} />
+      <text x={22} y={40} fill={colors.WARM} fontSize={17} fontWeight={700} fontFamily={mono}>
+        π₁(ℂ³) = 1
+      </text>
       <text x={190} y={40} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>
         proper étale + simply connected base
       </text>
@@ -277,10 +277,10 @@ function TopologyCard({ u, off, ldim, dim }: { u: number; off: number; ldim: num
 }
 
 /** The s-plane drive: the root pair spirals into s = 0 as Δ → 0. */
-function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number; dim: number }) {
+function EscapeDrive({ u, tau, dlt, dim, off }: { u: number; tau: number; dlt: number; dim: number; off: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - 0.88 * clamp01(dim)) * (1 - clamp01(off));
   const tt = clamp01(tau);
   const [ta, tb, tc] = segPath(tt);
   const D = delta(ta, tb, tc);
@@ -302,14 +302,14 @@ function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number
   return (
     <g opacity={a}>
       <rect x={SPL.x} y={SPL.y} width={SPL.w} height={SPL.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.8} />
-      <text x={SPL.x + 18} y={SPL.y + 26} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={SPL.x + 18} y={SPL.y + 26} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>
         the s plane · s = 0 stands for x = ∞
       </text>
       <line x1={SPL.x + 24} y1={SP_CY} x2={SPL.x + SPL.w - 24} y2={SP_CY} stroke={colors.GRID} strokeWidth={1} />
       <line x1={SP_CX} y1={SPL.y + 40} x2={SP_CX} y2={SPL.y + SPL.h - 16} stroke={colors.GRID} strokeWidth={1} />
       {/* the doorway to infinity */}
       <circle cx={SP_CX} cy={SP_CY} r={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} strokeDasharray="3 4" />
-      <text x={SP_CX + 14} y={SP_CY - 10} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={0.85}>
+      <text x={SP_CX + 14} y={SP_CY - 10} fill={colors.NEGATIVE} fontSize={13} fontFamily={mono} opacity={0.85}>
         x = ∞
       </text>
       {roots.map((r, i) => (
@@ -327,23 +327,23 @@ function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number
       {/* the escape surface card */}
       {dlt > 0 && (
         <g opacity={clamp01(dlt)}>
-          <rect x={SPL.x + 290} y={SPL.y + 40} width={250} height={128} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-          <text x={SPL.x + 304} y={SPL.y + 64} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
+          <rect x={SPL.x + 290} y={SPL.y + 10} width={250} height={128} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+          <text x={SPL.x + 304} y={SPL.y + 32} fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
             Δ = 0 — the escape surface
           </text>
           <MathLabel anchor="start"
             tex={'\\Delta = b^2\\!-\\!16a+18abc-27a^2c^2-b^3c'}
             x={SPL.x + 304}
-            y={SPL.y + 92}
+            y={SPL.y + 56}
             fontSize={13}
             color={colors.NEGATIVE}
             opacity={clamp01(dlt) * a}
             boxWidth={230}
           />
-          <text x={SPL.x + 304} y={SPL.y + 128} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+          <text x={SPL.x + 304} y={SPL.y + 96} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
             proper: sheets cannot leave
           </text>
-          <text x={SPL.x + 304} y={SPL.y + 146} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+          <text x={SPL.x + 304} y={SPL.y + 116} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
             through infinity
           </text>
         </g>
@@ -353,10 +353,10 @@ function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number
 }
 
 /** Honest coordinates: x = 1/s. Two dots leave the window; one stays. */
-function HonestView({ u, tau, surv, dim }: { u: number; tau: number; surv: number; dim: number }) {
+function HonestView({ u, tau, surv, dim, off }: { u: number; tau: number; surv: number; dim: number; off: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - 0.88 * clamp01(dim)) * (1 - clamp01(off));
   const tt = clamp01(tau);
   const roots = rootsAt(SEG_ROOTS, tt);
   const xs = roots.map(invC);
@@ -370,7 +370,7 @@ function HonestView({ u, tau, surv, dim }: { u: number; tau: number; surv: numbe
         <rect x={XV.x} y={XV.y} width={XV.w} height={XV.h} rx={14} />
       </clipPath>
       <rect x={XV.x} y={XV.y} width={XV.w} height={XV.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.8} />
-      <text x={XV.x + 18} y={XV.y + 24} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={XV.x + 18} y={XV.y + 24} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>
         honest coordinates · the three preimages, x = 1/s
       </text>
       <g clipPath="url(#jc5-xclip)">
@@ -408,13 +408,50 @@ function HonestView({ u, tau, surv, dim }: { u: number; tau: number; surv: numbe
   );
 }
 
+/** Padding: the same counterexample, with identity coordinates added on. */
+function PadDiagram({ n, dim }: { n: number; dim: number }) {
+  // shown on the damage-list beat, then gives way to the Smale/Dixmier rows
+  const a = clamp01(n) * clamp01(2 - n) * (1 - clamp01(dim));
+  if (a <= 0.01) return null;
+  const rows: [string, string, string][] = [
+    ['n = 3', '(x, y, z)', '(F₁, F₂, F₃)'],
+    ['n = 4', '(x, y, z, w)', '(F₁, F₂, F₃, w)'],
+    ['n ≥ 5', '(x, y, z, w, v, …)', '(F₁, F₂, F₃, w, v, …)'],
+  ];
+  return (
+    <g opacity={a} transform={`translate(${PAD.x}, ${PAD.y})`}>
+      <text x={0} y={18} fill={colors.MUTED} fontSize={14} fontWeight={700} fontFamily={mono}>
+        pad with identity coordinates
+      </text>
+      {rows.map(([label, src, dst], i) => (
+        <g key={label} transform={`translate(0, ${34 + i * (PAD.rowH + PAD.gap)})`}>
+          <text x={16} y={PAD.rowH / 2 + 5} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+            {label}
+          </text>
+          <rect x={96} y={0} width={200} height={PAD.rowH} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={196} y={PAD.rowH / 2 + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+            {src}
+          </text>
+          <text x={335} y={PAD.rowH / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+            → F →
+          </text>
+          <rect x={370} y={0} width={200} height={PAD.rowH} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+          <text x={470} y={PAD.rowH / 2 + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+            {dst}
+          </text>
+        </g>
+      ))}
+    </g>
+  );
+}
+
 /** What falls, what survives. */
 function Aftermath({ n, dim }: { n: number; dim: number }) {
   if (n <= 0) return null;
   const a = 1 - clamp01(dim);
   return (
     <g opacity={a}>
-      <text x={LADDER.x} y={LADDER.y - 18} fill={colors.MUTED} fontSize={12.5} fontWeight={700} fontFamily={mono}>
+      <text x={LADDER.x} y={LADDER.y - 18} fill={colors.MUTED} fontSize={14} fontWeight={700} fontFamily={mono}>
         aftermath
       </text>
       {FALLS.map(([kind, line], i) => {
@@ -426,24 +463,29 @@ function Aftermath({ n, dim }: { n: number; dim: number }) {
         return (
           <g key={i} transform={`translate(${LADDER.x}, ${ry + (1 - u) * 8})`} opacity={u}>
             <rect width={LADDER.w} height={LADDER.rowH} rx={9} fill={colors.PANEL} stroke={c} strokeWidth={1.5} />
-            <text x={16} y={LADDER.rowH / 2 + 4.5} fill={c} fontSize={12} fontWeight={800} fontFamily={mono}>
+            <text x={16} y={LADDER.rowH / 2 + 5} fill={c} fontSize={14} fontWeight={800} fontFamily={mono}>
               {open ? 'OPEN' : 'FALLS'}
             </text>
-            <text x={86} y={LADDER.rowH / 2 + 4.5} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+            <text x={86} y={LADDER.rowH / 2 + 5} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
               {line}
             </text>
           </g>
         );
       })}
+      <PadDiagram n={n} dim={dim} />
     </g>
   );
 }
 
-/** The four-step recap strip. */
-function RecapStrip({ n }: { n: number }) {
+/** The four-step recap strip. Fades out as the closing card rises. */
+function RecapStrip({ n, prov }: { n: number; prov: number }) {
   if (n <= 0) return null;
+  const a = 1 - clamp01(prov);
   return (
-    <g>
+    <g opacity={a}>
+      <text x={RECAP.x} y={RECAP.y - 16} fill={colors.MUTED} fontSize={14} fontWeight={700} fontFamily={mono} opacity={clamp01(n)}>
+        the whole disproof, one more time
+      </text>
       {RECAPS.map((label, i) => {
         const u = clamp01(n - i);
         if (u <= 0) return null;
@@ -451,10 +493,10 @@ function RecapStrip({ n }: { n: number }) {
         return (
           <g key={i} transform={`translate(${rx}, ${RECAP.y + (1 - u) * 8})`} opacity={u}>
             <rect width={RECAP.w} height={RECAP.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={14} y={22} fill={colors.ACCENT} fontSize={12} fontWeight={700} fontFamily={mono}>
+            <text x={14} y={30} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
               step {i + 1}
             </text>
-            <text x={14} y={40} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+            <text x={14} y={82} fill={colors.TEXT} fontSize={17} fontFamily={mono}>
               {label}
             </text>
           </g>
@@ -499,10 +541,10 @@ function renderFrame(s: SceneState) {
     <>
       <SheetStack u={s.get(scene.sheetsU)} off={off} ldim={s.get(scene.leftDim)} dim={dim} />
       <TopologyCard u={s.get(scene.topoU)} off={off} ldim={s.get(scene.leftDim)} dim={dim} />
-      <EscapeDrive u={s.get(scene.splU)} tau={s.get(scene.driveT)} dlt={s.get(scene.deltaU)} dim={dim} />
-      <HonestView u={s.get(scene.xvU)} tau={s.get(scene.driveT)} surv={s.get(scene.survU)} dim={dim} />
+      <EscapeDrive u={s.get(scene.splU)} tau={s.get(scene.driveT)} dlt={s.get(scene.deltaU)} dim={dim} off={off} />
+      <HonestView u={s.get(scene.xvU)} tau={s.get(scene.driveT)} surv={s.get(scene.survU)} dim={dim} off={off} />
       <Aftermath n={s.get(scene.ladderN)} dim={dim} />
-      <RecapStrip n={s.get(scene.recapN)} />
+      <RecapStrip n={s.get(scene.recapN)} prov={s.get(scene.provU)} />
       <Provenance u={s.get(scene.provU)} />
     </>
   );

@@ -251,11 +251,11 @@ const scene = buildScene();
 
 function Chip({ x, y, text, color, u }: { x: number; y: number; text: string; color: string; u: number }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.4 + 24;
+  const w = text.length * 8.4 + 24;
   return (
     <g opacity={u}>
       <rect x={x - w / 2} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={12.5} fontFamily={MONO}>
+      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -313,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={st} opacity={u}>
                   <circle cx={STOP_X[i]} cy={RAIL_Y} r={7} fill={passed ? colors.POSITIVE : colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-                  <text x={STOP_X[i]} y={RAIL_Y + 28} textAnchor="middle" fill={passed ? colors.POSITIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+                  <text x={STOP_X[i]} y={RAIL_Y + 30} textAnchor="middle" fill={passed ? colors.POSITIVE : colors.TEXT} fillOpacity={passed ? 1 : 0.7} fontSize={14} fontFamily={MONO}>
                     {st}
                   </text>
                   {passed && i > 0 && i < 4 && (
@@ -336,10 +336,10 @@ export function Render({ s }: { s: SceneState }) {
               strokeWidth={2}
               transform={`rotate(45 ${tokenX} ${RAIL_Y})`}
             />
-            {/* the stray re-wake pulse: the token holds its stop */}
+            {/* the stray re-wake pulse: the guard reads stage_2's status and holds */}
             {rewakeU > 0.01 && rewakeU < 1 && (
               <circle
-                cx={tokenX}
+                cx={STOP_X[2]}
                 cy={RAIL_Y}
                 r={12 + 16 * rewakeU}
                 fill="none"
@@ -348,7 +348,7 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={1 - rewakeU}
               />
             )}
-            <text x={STOP_X[0] - 62} y={RAIL_Y + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={railU}>
+            <text x={STOP_X[0] - 62} y={RAIL_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={railU}>
               status
             </text>
           </g>
@@ -374,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PARENT.x} y={PARENT.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={0.45 + 0.55 * parentLit}>
             pipeline
           </text>
-          <text x={PARENT.x} y={PARENT.y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={PARENT.x} y={PARENT.y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             run_stage
           </text>
         </g>
@@ -395,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
               strokeOpacity={0.8}
             />
             <rect x={PC.x - 76} y={PC.y - 134} width={152} height={30} rx={9} fill={colors.BG} stroke={STAGE_META[activeWorker].color} strokeOpacity={0.8} />
-            <text x={PC.x} y={PC.y - 114} textAnchor="middle" fill={STAGE_META[activeWorker].color} fontSize={13.5}>
+            <text x={PC.x} y={PC.y - 114} textAnchor="middle" fill={STAGE_META[activeWorker].color} fontSize={14}>
               {STAGE_META[activeWorker].role}
             </text>
           </g>
@@ -447,14 +447,15 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             </g>
           )}
-          <text x={PC.x} y={PC.y + 96} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={payloadU}>
-            {morphIdx < 0.5 ? 'the raw input' : morphIdx < 1.5 ? 'cleaned' : morphIdx < 2.5 ? 'analyzed' : 'the report'}
-          </text>
         </g>
+        {/* the form's name sits outside the dimmed group so it stays legible at the close */}
+        <text x={PC.x} y={PC.y + 112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={payloadU * (1 - endU) + endU}>
+          {morphIdx < 0.5 ? 'the raw input' : morphIdx < 1.5 ? 'cleaned' : morphIdx < 2.5 ? 'analyzed' : 'the report'}
+        </text>
 
         {/* ---------------- all-at-once ghosts (the refused move) ------------ */}
         {ghostU > 0.01 && ghostU < 1.99 && (
-          <g opacity={ghostU <= 1 ? ghostU * 0.8 : (2 - ghostU) * 0.8}>
+          <g opacity={ghostU <= 1 ? ghostU : 2 - ghostU}>
             {[0, 1, 2].map((i) => (
               <rect
                 key={i}
@@ -469,7 +470,7 @@ export function Render({ s }: { s: SceneState }) {
                 strokeDasharray="6 5"
               />
             ))}
-            <text x={1089} y={188} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+            <text x={1089} y={188} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
               all three at once?
             </text>
             <g transform="translate(1089 340)">
@@ -481,8 +482,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---------------- chips ---------------- */}
         <Chip x={640} y={528} text={'ctx.spawn("worker", `${parentId}-stage-1`)'} color={colors.ACCENT} u={idChipU} />
-        <Chip x={430} y={250} text={'initialMessage: previous stage output'} color={colors.SECONDARY} u={handChipU} />
-        <Chip x={905} y={186} text={'stage two already ran — no restart'} color={colors.POSITIVE} u={holdChipU} />
+        <Chip x={500} y={226} text={'initialMessage: previous stage output'} color={colors.SECONDARY} u={handChipU} />
+        {holdChipU > 0.01 && (
+          <line x1={STOP_X[2]} y1={RAIL_Y + 36} x2={STOP_X[2]} y2={171} stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="4 4" opacity={holdChipU} />
+        )}
+        <Chip x={640} y={186} text={'guard: status ≥ stage_2 → skip, no restart'} color={colors.POSITIVE} u={holdChipU} />
 
         {/* ---------------- the stream tape ---------------- */}
         {rows > 0.05 && (

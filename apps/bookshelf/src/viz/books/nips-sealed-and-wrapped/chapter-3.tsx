@@ -65,8 +65,8 @@ const CUTS = [
   { from: 32, to: 44, label: 'nonce · 12', color: colors.SECONDARY },
   { from: 44, to: 76, label: 'hmac_key · 32', color: colors.WARM },
 ];
-const STREAM_Y = 360;
-const PAY = { x: 90, y: 480, h: 46 };
+const STREAM_Y = 376;
+const PAY = { x: 90, y: 492, h: 46 };
 const PAY_CELLS = [
   { label: '0x02', w: 60, color: colors.MUTED, note: 'version' },
   { label: b64ish(NONCE, 8), w: 140, color: colors.SECONDARY, note: 'nonce · 32' },
@@ -231,7 +231,7 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
   const streamN = 34;
   const contentAnchor = LAYOUT.anchor('content');
   // the inputs scroll out of the camera once padding starts: fade them to a ghost
@@ -244,17 +244,20 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* inputs */}
-          {inU > 0 && (
+          {inU > 0 && padU < 1 && (
             <g opacity={inOp}>
               <rect x={CONV.x} y={CONV.y} width={CONV.w} height={CONV.h} rx={9} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={CONV.x + CONV.w / 2} y={CONV.y + 25} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              <text x={CONV.x + CONV.w / 2} y={CONV.y + 25} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 conversation_key
               </text>
               <rect x={NONCE_BOX.x} y={NONCE_BOX.y} width={NONCE_BOX.w} height={NONCE_BOX.h} rx={9} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={NONCE_BOX.x + NONCE_BOX.w / 2} y={NONCE_BOX.y + 25} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <text x={NONCE_BOX.x + NONCE_BOX.w / 2} y={NONCE_BOX.y + 25} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 nonce (fresh, 32 B)
               </text>
-              <text x={640} y={145} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={NONCE_BOX.x + NONCE_BOX.w / 2} y={NONCE_BOX.y + 60} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} opacity={1 - ribbonU}>
+                new for every message
+              </text>
+              <text x={640} y={145} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 → hkdf_expand(conversation_key, nonce, 76)
               </text>
             </g>
@@ -279,7 +282,7 @@ function Frame({ s }: { s: SceneState }) {
                   return seg.color;
                 }}
               />
-              <text x={RIB.x} y={RIB.y - 10} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={ribbonU}>
+              <text x={RIB.x} y={RIB.y - 10} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={ribbonU}>
                 76 real bytes: {shortHex(hex(RIBBON), 12, 6)}
               </text>
               {/* cut markers + labels */}
@@ -292,7 +295,7 @@ function Frame({ s }: { s: SceneState }) {
                   return (
                     <g key={c.label} opacity={u}>
                       <line x1={x1} y1={RIB.y - 6} x2={x1} y2={RIB.y + RIB.h + 6} stroke={colors.TEXT} strokeWidth={i < 2 ? 1.5 : 0} />
-                      <text x={(x0 + x1) / 2} y={RIB.y + RIB.h + 22} textAnchor="middle" fill={c.color} fontSize={12} fontFamily="monospace">
+                      <text x={(x0 + x1) / 2} y={RIB.y + RIB.h + 22} textAnchor="middle" fill={c.color} fontSize={14} fontFamily="monospace">
                         {c.label}
                       </text>
                     </g>
@@ -304,7 +307,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* pad + stream */}
           {padU > 0 && (
             <g opacity={padU}>
-              <text x={90} y={STREAM_Y - 46} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={90} y={STREAM_Y - 46} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 2-byte length + padding → {PADDED_LEN + 2} bytes
               </text>
               <text x={90} y={STREAM_Y - 18} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
@@ -326,7 +329,7 @@ function Frame({ s }: { s: SceneState }) {
                       stroke={done >= 1 ? colors.ACCENT : colors.GRID}
                       opacity={done >= 1 ? 0.85 : 0.8}
                     />
-                    <text x={x + cw / 2 - 1.5} y={STREAM_Y + 20} textAnchor="middle" fontSize={12} fontFamily="monospace"
+                    <text x={x + cw / 2 - 1.5} y={STREAM_Y + 20} textAnchor="middle" fontSize={14} fontFamily="monospace"
                       fill={done >= 1 ? colors.BG : colors.TEXT}>
                       {done >= 1 ? B64[CIPHER_BYTES[i] % 64] : plain}
                     </text>
@@ -335,8 +338,8 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {streamU > 0 && streamU < 1 && (
                 <g>
-                  <circle cx={90 + clamp01(streamU) * streamN * 24} cy={STREAM_Y - 8} r={6} fill={colors.SECONDARY} />
-                  <text x={90 + clamp01(streamU) * streamN * 24 + 12} y={STREAM_Y - 4} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+                  <circle cx={90 + clamp01(streamU) * streamN * 24} cy={STREAM_Y + 38} r={6} fill={colors.SECONDARY} />
+                  <text x={90 + clamp01(streamU) * streamN * 24 + 12} y={STREAM_Y + 42} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                     keystream
                   </text>
                 </g>
@@ -347,8 +350,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* mac */}
           {macU > 0 && (
             <g opacity={macU}>
-              <path d={`M120,${STREAM_Y + 40} h700`} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="4 4" fill="none" />
-              <text x={120} y={STREAM_Y + 62} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <path d={`M120,${STREAM_Y + 54} h700`} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="4 4" fill="none" />
+              <text x={120} y={STREAM_Y + 74} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 mac = hmac_sha256(hmac_key, nonce ‖ ciphertext) = {shortHex(hex(MAC), 8, 4)}
               </text>
             </g>
@@ -364,10 +367,10 @@ function Frame({ s }: { s: SceneState }) {
                   const cell = (
                     <g key={c.label + i} opacity={Math.max(0.001, u)}>
                       <rect x={px} y={PAY.y} width={c.w} height={PAY.h} rx={7} fill={colors.PANEL} stroke={c.color} opacity={0.5 + 0.5 * u} />
-                      <text x={px + c.w / 2} y={PAY.y + 20} textAnchor="middle" fill={c.color} fontSize={12} fontFamily="monospace">
+                      <text x={px + c.w / 2} y={PAY.y + 20} textAnchor="middle" fill={c.color} fontSize={14} fontFamily="monospace">
                         {c.label}
                       </text>
-                      <text x={px + c.w / 2} y={PAY.y + 37} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                      <text x={px + c.w / 2} y={PAY.y + 37} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                         {c.note}
                       </text>
                     </g>
@@ -376,7 +379,7 @@ function Frame({ s }: { s: SceneState }) {
                   return cell;
                 });
               })()}
-              <text x={PAY.x} y={PAY.y - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={payU}>
+              <text x={PAY.x} y={PAY.y - 12} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={payU}>
                 payload = version ‖ nonce ‖ ciphertext ‖ mac (min 99 bytes)
               </text>
             </g>
@@ -384,7 +387,7 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* base64 + event */}
           {b64U > 0 && (
-            <text x={PAY.x} y={PAY.y + 68} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={b64U}>
+            <text x={PAY.x} y={PAY.y + 68} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={b64U}>
               base64 → "{PAYLOAD_B64}"
             </text>
           )}
@@ -395,7 +398,7 @@ function Frame({ s }: { s: SceneState }) {
             u={flyU}
             text={PAYLOAD_B64.slice(0, 14) + '…'}
             fill={colors.POSITIVE}
-            fontSize={11}
+            fontSize={12}
             lift={60}
             holdAtEnd={false}
           />
@@ -404,14 +407,14 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A fresh set of keys for every message
           </text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             expand · cut · pad · stream · authenticate · assemble
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-44 v2 · 0x02 ‖ nonce ‖ ciphertext ‖ mac · base64
           </text>
         </g>

@@ -55,7 +55,7 @@ const METERS = [
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_RECEIPT: CameraState = { x: 245, y: 294, k: 1.6 }; // centred on the receipt, fills the stage
+const CAM_RECEIPT: CameraState = { x: 330, y: 300, k: 1.35 };
 const CAM_PLOT: CameraState = { x: 760, y: 360, k: 1.14 };
 const CAM_CROSS: CameraState = { x: 800, y: 425, k: 1.2 }; // keeps both axis labels and the crossing on stage
 
@@ -116,7 +116,7 @@ export function buildScene() {
   });
   tl.tween(cam, CAM_PLOT, { at: 19.8, dur: 1.4, ease: ease.move });
   tl.tween(readU, 0, { at: 19.8, dur: 0.5, ease: ease.enter });
-  tl.tween(receiptU, 0, { at: 19.8, dur: 1.0, ease: ease.move }); // the plot is the subject now
+  tl.tween(receiptU, 0.12, { at: 19.8, dur: 1.0, ease: ease.move }); // the plot is the subject now
   tl.tween(axesU, 1, { at: 20.2, dur: 1.2, ease: ease.draw });
   tl.tween(lineNoU, 1, { at: 21.6, dur: 1.8, ease: ease.draw });
 
@@ -156,7 +156,6 @@ export function buildScene() {
     text: 'The only losing move is a prefix nobody reuses. Cache a one-off prompt and the quarter premium buys you nothing.',
   });
   tl.tween(cam, CAM_WIDE, { at: 46.0, dur: 1.3, ease: ease.move });
-  tl.tween(crossU, 0, { at: 46.0, dur: 0.8, ease: ease.enter });
   tl.tween(receiptU, 1, { at: 46.2, dur: 0.8, ease: ease.enter });
   tl.tween(failU, 1, { at: 46.6, dur: 0.8, ease: ease.enter });
 
@@ -213,7 +212,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const ruleU = s.get(scene.ruleU);
 
-  const machineOp = 1 - dimU; // fully clear the stage for the closing card
+  const machineOp = 1 - 0.88 * dimU;
 
   // the plot's animated window: 8 requests → 100 requests
   const xMax = lerp(8, 100, zoomU);
@@ -242,7 +241,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text fill={m.color} fontSize={12.5} fontFamily={MONO}>
                   {m.label}
                 </text>
-                <text y={20} fill={colors.MUTED} fontSize={12}>
+                <text y={20} fill={colors.MUTED} fontSize={11.5}>
                   {m.note}
                 </text>
                 <text x={RECEIPT.w - 44} y={8} textAnchor="end" fill={m.color} fontSize={16} fontFamily={MONO} fontWeight={700}>
@@ -251,7 +250,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={RECEIPT.x + 18} y={RECEIPT.y + RECEIPT.h - 14} fill={colors.MUTED} fontSize={12}>
+          <text x={RECEIPT.x + 18} y={RECEIPT.y + RECEIPT.h - 14} fill={colors.MUTED} fontSize={11.5}>
             total input = the sum of all three
           </text>
         </g>
@@ -305,27 +304,24 @@ export function Render({ s }: { s: SceneState }) {
             written once, never reused
           </text>
           <rect x={FAIL.x + 18} y={FAIL.y + 44} width={200} height={20} rx={5} fill={colors.MUTED} opacity={0.5} />
-          <text x={FAIL.x + 224} y={FAIL.y + 59} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={FAIL.x + 224} y={FAIL.y + 59} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
             1.00 uncached
           </text>
           <rect x={FAIL.x + 18} y={FAIL.y + 72} width={250} height={20} rx={5} fill={colors.WARM} opacity={0.7} />
           <rect x={FAIL.x + 218} y={FAIL.y + 72} width={50} height={20} rx={5} fill={colors.NEGATIVE} opacity={0.9} />
-          <text x={FAIL.x + 274} y={FAIL.y + 87} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+          <text x={FAIL.x + 274} y={FAIL.y + 87} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
             1.25 — wasted
           </text>
         </g>
 
         {/* closing rule */}
         <g opacity={ruleU}>
-          <rect x={300} y={240} width={680} height={190} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={600}>
+          <rect x={300} y={250} width={680} height={150} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={600}>
             Reused once, the write has paid for itself.
           </text>
-          <text x={640} y={338} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             writes × 1.25 · reads × 0.10 · crossover before request two
-          </text>
-          <text x={640} y={380} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
-            mark what repeats: tools · system prompt · growing history
           </text>
         </g>
       </Camera>

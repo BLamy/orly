@@ -4,6 +4,7 @@ import overrides from './overrides.json';
 import {
   BAR_BASE,
   BEST_I,
+  BEST_Q,
   FRAMES,
   N,
   N_PAIRS,
@@ -68,6 +69,18 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
+          {/* what the first frames show: one prompt, many answers */}
+          <text
+            x={(barX(0) + barX(N - 1)) / 2}
+            y={190}
+            textAnchor="middle"
+            fill={colors.MUTED}
+            fontSize={14}
+            opacity={Math.max(0, respU * (1 - compU))}
+          >
+            one prompt, eight candidate answers
+          </text>
+
           {/* the eight candidate responses (labels) */}
           {respU > 0 &&
             Array.from({ length: N }, (_, i) => {
@@ -87,11 +100,11 @@ function Frame({ s }: { s: SceneState }) {
                     stroke={inComp ? (win ? colors.POSITIVE : colors.NEGATIVE) : colors.GRID}
                     strokeWidth={inComp ? 2.6 : 1.2}
                   />
-                  <text x={barX(i)} y={137} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={barX(i)} y={137} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {`answer ${String.fromCharCode(65 + i)}`}
                   </text>
                   {inComp && (
-                    <text x={barX(i)} y={100} textAnchor="middle" fill={win ? colors.POSITIVE : colors.NEGATIVE} fontSize={13}>
+                    <text x={barX(i)} y={100} textAnchor="middle" fill={win ? colors.POSITIVE : colors.NEGATIVE} fontSize={14}>
                       {win ? 'preferred' : 'rejected'}
                     </text>
                   )}
@@ -149,20 +162,30 @@ function Frame({ s }: { s: SceneState }) {
               </g>
             );
           })}
+          {/* legend: one row above the bars, each entry fades in with its series */}
           {rmU > 0 && (
-            <text x={barX(0) - 44} y={BAR_BASE - 130} fill={colors.WARM} fontSize={13} opacity={rmU}>
-              reward
-            </text>
+            <g opacity={rmU}>
+              <rect x={170} y={206} width={12} height={12} rx={3} fill={colors.WARM} />
+              <text x={188} y={217} fill={colors.WARM} fontSize={14}>
+                reward (a proxy for people)
+              </text>
+            </g>
           )}
           {polU > 0 && (
-            <text x={barX(N - 1) + 30} y={BAR_BASE - 130} fill={colors.ACCENT} fontSize={13} opacity={polU} textAnchor="end">
-              policy odds
-            </text>
+            <g opacity={polU}>
+              <rect x={440} y={206} width={12} height={12} rx={3} fill={colors.ACCENT} />
+              <text x={458} y={217} fill={colors.ACCENT} fontSize={14}>
+                policy odds (the model&apos;s own answer odds)
+              </text>
+            </g>
           )}
           {truthU > 0 && (
-            <text x={barX(0) - 44} y={BAR_BASE - 156} fill={colors.POSITIVE} fontSize={13} opacity={truthU}>
-              true quality
-            </text>
+            <g opacity={truthU}>
+              <line x1={780} y1={212} x2={792} y2={212} stroke={colors.POSITIVE} strokeWidth={2.4} strokeDasharray="5 4" />
+              <text x={800} y={217} fill={colors.POSITIVE} fontSize={14}>
+                true quality (hidden until now)
+              </text>
+            </g>
           )}
 
           {/* the accuracy + quality curves */}
@@ -171,13 +194,14 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={accX(0)} y1={accY(0)} x2={accX(0)} y2={qY(QUALITY[BEST_I])} stroke={colors.GRID} strokeWidth={1.2} />
               <path d={accPath(prog)} fill="none" stroke={colors.POSITIVE} strokeWidth={2.4} />
               <path d={qPath(prog)} fill="none" stroke={colors.ACCENT} strokeWidth={2.4} />
-              <text x={accX(N_PAIRS / 2)} y={accY(0) + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={accX(N_PAIRS / 2)} y={accY(0) + 20} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 comparisons seen
               </text>
-              <text x={accX(N_PAIRS) - 4} y={accY(fr.acc) - 8} textAnchor="end" fill={colors.POSITIVE} fontSize={13}>
+              {/* readouts sit in the empty top-left corner of each chart, clear of the curves */}
+              <text x={accX(0) + 8} y={accY(1) - 6} textAnchor="start" fill={colors.POSITIVE} fontSize={14}>
                 {`judge accuracy ${(fr.acc * 100).toFixed(0)}%`}
               </text>
-              <text x={accX(N_PAIRS) - 4} y={qY(fr.avgQ) - 8} textAnchor="end" fill={colors.ACCENT} fontSize={13}>
+              <text x={accX(0) + 8} y={qY(BEST_Q + 0.1) + 14} textAnchor="start" fill={colors.ACCENT} fontSize={14}>
                 {`avg quality ${fr.avgQ.toFixed(2)}`}
               </text>
             </g>
@@ -186,11 +210,11 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed math + badge */}
-      <MathLabel tex={'P(a \\succ b) = \\sigma\\big(r(a) - r(b)\\big)'} x={1010} y={64} fontSize={20} opacity={s.get(scene.texU) * dimU} />
+      <MathLabel tex={'P(a \\succ b) = \\sigma\\big(r(a) - r(b)\\big)'} x={1040} y={58} fontSize={20} opacity={s.get(scene.texU) * dimU} />
       {badgeU > 0 && (
         <g opacity={badgeU * dimU}>
-          <rect x={48} y={584} width={280} height={38} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
-          <text x={66} y={609} fill={colors.TEXT} fontSize={15}>
+          <rect x={330} y={18} width={280} height={34} rx={9} fill={colors.PANEL} opacity={0.88} stroke={colors.GRID} />
+          <text x={348} y={40} fill={colors.TEXT} fontSize={15}>
             {`human comparisons: ${compShown} / ${N_PAIRS}`}
           </text>
         </g>
@@ -199,7 +223,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={232} rx={16} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={232} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Learning from Human Feedback
           </text>

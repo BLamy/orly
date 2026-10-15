@@ -169,18 +169,18 @@ export function buildScene() {
   // 1 — four paper-reported F1 bars rise on a fixed 0…1 axis
   to(axesU, 1, 0.6, 1.4, ease.draw);
   tl.tween(vals, F1, { at: 1.8, dur: 1.6, ease: ease.move });
-  tl.tween(emph, [1, 0.35, 0.35, 1], { at: 5.0, dur: 0.8, ease: ease.enter });
+  tl.tween(emph, [1, 0.5, 0.5, 1], { at: 5.0, dur: 0.8, ease: ease.enter });
   tl.hold(B(1) + DUR, 1.2);
 
   // 2 — the SAME bars morph into the ablation table; the combined bar does not move
   tl.tween(emph, [1, 1, 1, 1], { at: B(2), dur: 0.6, ease: ease.enter });
   to(ablU, 1, B(2) + 0.4, 1.0);
   tl.tween(vals, ABLATION_F1, { at: B(2) + 0.6, dur: 1.5, ease: ease.move });
-  tl.tween(emph, [1, 0.35, 0.35, 0.35], { at: B(2) + 5.0, dur: 0.8, ease: ease.enter });
+  tl.tween(emph, [0.5, 0.5, 0.5, 1], { at: B(2) + 5.0, dur: 0.8, ease: ease.enter });
   tl.hold(B(2) + DUR, 1.2);
 
   // 3 — keep the combined bar; a separate small metric: false-positive rate 0.09
-  tl.tween(emph, [0.15, 0.15, 0.15, 1], { at: B(3), dur: 0.8, ease: ease.enter });
+  tl.tween(emph, [0.5, 0.5, 0.5, 1], { at: B(3), dur: 0.8, ease: ease.enter });
   look({ x: 700, y: 315, k: 1.15 }, B(3));
   to(fpO, 1, B(3) + 1.6);
   to(fpU, 1, B(3) + 2.2, 1.2, ease.move);
@@ -194,15 +194,15 @@ export function buildScene() {
   to(costU, 1, B(4) + 0.6, 1.5, ease.move);
   to(axisMax, 4.5, B(4) + 0.6, 1.5, ease.move);
   tl.tween(vals, REL_COST, { at: B(4) + 0.6, dur: 1.5, ease: ease.move });
-  tl.tween(emph, [0.35, 0.35, 1, 1], { at: B(4) + 4.6, dur: 0.8, ease: ease.enter });
+  tl.tween(emph, [0.5, 0.5, 1, 1], { at: B(4) + 4.6, dur: 0.8, ease: ease.enter });
   tl.hold(B(4) + DUR, 1.2);
 
   // 5 — two comparisons, one at a time: vs always-RAG, then vs the baseline
   look({ x: 680, y: 315, k: 1.15 }, B(5));
-  tl.tween(emph, [0.15, 0.15, 1, 1], { at: B(5), dur: 0.6, ease: ease.enter });
+  tl.tween(emph, [0.5, 0.5, 1, 1], { at: B(5), dur: 0.6, ease: ease.enter });
   to(cmpA, 1, B(5) + 0.8, 1.0, ease.draw);
   to(cmpA, 0.15, B(5) + 4.4, 0.6);
-  tl.tween(emph, [1, 0.15, 0.15, 1], { at: B(5) + 4.4, dur: 0.8, ease: ease.enter });
+  tl.tween(emph, [1, 0.5, 0.5, 1], { at: B(5) + 4.4, dur: 0.8, ease: ease.enter });
   to(cmpB, 1, B(5) + 5.0, 1.0, ease.draw);
   tl.hold(B(5) + DUR, 1.2);
 
@@ -352,7 +352,7 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={SIDE_X} y={312} width={260 * FALSE_POSITIVE * g(scene.fpU)} height={8} rx={4} fill={NEGATIVE} />
               <Label x={SIDE_X} y={338} text="0" size={12} />
               <Label x={SIDE_X + 260} y={338} text="1" size={12} anchor="end" />
-              <Label x={SIDE_X} y={366} text="proposed method · nonzero" size={12} color={TEXT} />
+              <Label x={SIDE_X} y={366} text="proposed method · nonzero" size={14} color={TEXT} />
               <Tag x={SIDE_X} y={396} text="Paper-reported" size={12} />
             </g>
 
@@ -378,17 +378,17 @@ export function Render({ s }: { s: SceneState }) {
           <Note x={BLOCK_X[0]} y={196} text={`${N_TRAIN} confidence-training examples`} size={18} weight={600} />
           <Tag x={BLOCK_X[2] + 6 * PITCH} y={196} text="Paper-reported" anchor="end" size={12} />
           {GROUPS.map((grp, b) => (
-            <Label key={grp.name} x={BLOCK_X[b]} y={BLOCK_Y + 6 * PITCH + 20} text={`${grp.n} ${grp.name}`} size={12} color={grp.color} />
+            <Label key={grp.name} x={BLOCK_X[b]} y={BLOCK_Y + 6 * PITCH + 20} text={`${grp.n} ${grp.name}`} size={14} color={grp.color} />
           ))}
           <Label x={BLOCK_X[0]} y={BLOCK_Y + 6 * PITCH + 44} text="local model: SmolLM2-360M-Instruct · training set, not the evaluation sample"
-            size={12} color={TEXT} />
+            size={14} color={TEXT} />
         </g>
 
         {/* beat 7 — named benchmarks, blank fields */}
         {tableU > 0 ? (
           <g opacity={g(scene.tableO)}>
             {MISSING.map((m, c) => (
-              <Label key={m} x={TABLE.cols[c]} y={TABLE.y} text={m} anchor="middle" size={12} o={seg(tableU, 0, 0.15)} />
+              <Label key={m} x={TABLE.cols[c]} y={TABLE.y} text={m} anchor="middle" size={14} o={seg(tableU, 0, 0.15)} />
             ))}
             {BENCHMARKS.map((name, r) => {
               const y = TABLE.y + 34 + r * TABLE.rowH;
@@ -398,7 +398,7 @@ export function Render({ s }: { s: SceneState }) {
                   {TABLE.cols.map((cx, c) => (
                     <g key={c} opacity={seg(tableU, r * 0.25 + 0.1 + c * 0.08, r * 0.25 + 0.3 + c * 0.08)}>
                       <rect x={cx - 66} y={y - 13} width={132} height={26} rx={5} fill="none" stroke={MUTED} strokeOpacity={0.7} strokeDasharray="4 4" />
-                      <Label x={cx} y={y + 4} text="— not reported" anchor="middle" size={12} />
+                      <Label x={cx} y={y + 4} text="— not reported" anchor="middle" size={14} />
                     </g>
                   ))}
                 </g>
@@ -412,7 +412,7 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <rect x={SCOPE.x} y={SCOPE.y} width={SCOPE.w} height={SCOPE.h} rx={14} fill="none" stroke={TEXT} strokeWidth={1.6}
               strokeDasharray="8 6" opacity={0.9 * clamp01(scopeU)} />
-            <Label x={SCOPE.x + 16} y={SCOPE.y + 26} text="what the paper tested: one 360M model · 72 training examples" size={12}
+            <Label x={SCOPE.x + 16} y={SCOPE.y + 26} text="what the paper tested: one 360M model · 72 training examples" size={14}
               color={TEXT} o={seg(scopeU, 0.6, 1)} />
             {LIMITS.map((lim, i) => {
               const u = seg(limitsU, i / 3, (i + 0.6) / 3) * clamp01(scopeU);
@@ -432,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
         {recapO > 0 ? (
           <g opacity={recapO}>
             <ActivationRibbon {...RIB} lit={g(scene.recapLit)} color={ACCENT} />
-            <Label x={RIB.x} y={RIB.y + RIB.h + 26} text="the question's internal signals" size={12} />
+            <Label x={RIB.x} y={RIB.y + RIB.h + 26} text="the question's internal signals" size={14} />
             {[0, 1, 2].map((i) => {
               const gy = GLYPH.y + i * 86 + 32;
               const u = seg(g(scene.glyphU), i / 3, (i + 1) / 3);
@@ -447,9 +447,9 @@ export function Render({ s }: { s: SceneState }) {
             })}
             <InstrumentGlyphs x={GLYPH.x} y={GLYPH.y} u={g(scene.glyphU)} />
             <RouteRail geom={RAIL} reveal={g(scene.railU)} trackU={seg(g(scene.railU), 0.4, 1)} score={score} beadO={g(scene.beadO)}
-              whisper={1} size={12} stationLabels beadLabel={`C = ${score.toFixed(2)}`} />
+              whisper={1} size={14} stationLabels beadLabel={`C = ${score.toFixed(2)}`} />
             <Tag x={RAIL.x + RAIL.w} y={RAIL.y - 52} text="Illustrative score" anchor="end" size={12} o={g(scene.beadO)} />
-            <Label x={RAIL.x + RAIL.w} y={RAIL.y + RAIL.trackH + 50} text="lower confidence → more help" anchor="end" size={12}
+            <Label x={RAIL.x + RAIL.w} y={RAIL.y + RAIL.trackH + 50} text="lower confidence → more help" anchor="end" size={14}
               color={TEXT} o={g(scene.beadO)} />
             {pktU >= 0 ? (() => {
               const p = RAIL.tracks[routeIndex(score)].point(clamp01(pktU));

@@ -45,10 +45,13 @@ const DOWN = [
 // Layout.
 // ---------------------------------------------------------------------------
 
+// Plot band: taller than before so the two loss plots read at home framing.
+const PLOT_TOP = 200;
+const PLOT_BOT = 560;
 const SM_X = scaleLinear().domain([0.6, 7.4]).range([140, 560]);
-const SM_Y = scaleLinear().domain([2.74, 2.88]).range([560, 300]);
+const SM_Y = scaleLinear().domain([2.74, 2.88]).range([PLOT_BOT, PLOT_TOP]);
 const MD_X = scaleLinear().domain([0.6, 7.4]).range([700, 1120]);
-const MD_Y = scaleLinear().domain([2.51, 2.64]).range([560, 300]);
+const MD_Y = scaleLinear().domain([2.51, 2.64]).range([PLOT_BOT, PLOT_TOP]);
 
 const BAR_X = 340;
 const BAR_Y = 250;
@@ -56,7 +59,8 @@ const BAR_W = 600;
 const BAR_SCALE = scaleLinear().domain([50, 56]).range([0, BAR_W]);
 
 const CAM_SMALL: CameraState = { x: 380, y: 400, k: 1.25 };
-const CAM_R1: CameraState = { x: 300, y: 500, k: 1.7 };
+// A gentle push-in: both R=1 callouts stay on stage, the title row stays clear.
+const CAM_R1: CameraState = { x: 640, y: 380, k: 1.1 };
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
@@ -204,6 +208,7 @@ function seriesPath(
 function LossPlot({
   xs,
   ys,
+  yDomain,
   base,
   dl,
   baseTok,
@@ -214,6 +219,7 @@ function LossPlot({
 }: {
   xs: (v: number) => number;
   ys: (v: number) => number;
+  yDomain: [number, number];
   base: number[];
   dl: number[];
   baseTok: number;
@@ -222,19 +228,21 @@ function LossPlot({
   label: string;
   gapText: string;
 }) {
+  // Legend sits in the empty lower-left corner, where every curve is still high.
+  const legendX = xs(0.8);
   return (
     <g>
-      <text x={xs(0.6)} y={272} fill={colors.TEXT} fontSize={16}>
+      <text x={xs(0.6)} y={PLOT_TOP - 30} fill={colors.TEXT} fontSize={16}>
         {label}
       </text>
       <Axes
         x={scaleLinear().domain([0.6, 7.4]).range([xs(0.6), xs(7.4)])}
-        y={scaleLinear().domain([ys === SM_Y ? 2.74 : 2.51, ys === SM_Y ? 2.88 : 2.64]).range([560, 300])}
+        y={scaleLinear().domain(yDomain).range([PLOT_BOT, PLOT_TOP])}
         reveal={1}
         xTicks={4}
         yTicks={3}
         xLabel="loop count R"
-        fontSize={10}
+        fontSize={12}
       />
       <path d={seriesPath(xs, ys, base, baseTok)} fill="none" stroke={colors.MUTED} strokeWidth={2.4} />
       {base.map((v, i) => (
@@ -245,18 +253,20 @@ function LossPlot({
         <circle key={`d${i}`} cx={xs(RS[i])} cy={ys(v)} r={3.5} fill={colors.POSITIVE} opacity={clamp01(dlTok - i)} />
       ))}
       {baseTok >= 4 && (
-        <>
-          <text x={xs(7.2)} y={ys(base[3]) - 10} textAnchor="end" fill={colors.MUTED} fontSize={11}>
+        <g>
+          <line x1={legendX} y1={PLOT_BOT - 48} x2={legendX + 18} y2={PLOT_BOT - 48} stroke={colors.MUTED} strokeWidth={2.4} />
+          <text x={legendX + 26} y={PLOT_BOT - 43} fill={colors.MUTED} fontSize={13}>
             baseline
           </text>
-          <text x={xs(7.2)} y={ys(dl[3]) + 20} textAnchor="end" fill={colors.POSITIVE} fontSize={11}>
+          <line x1={legendX} y1={PLOT_BOT - 24} x2={legendX + 18} y2={PLOT_BOT - 24} stroke={colors.POSITIVE} strokeWidth={2.6} />
+          <text x={legendX + 26} y={PLOT_BOT - 19} fill={colors.POSITIVE} fontSize={13}>
             DeepLoop
           </text>
-        </>
+        </g>
       )}
       <g opacity={gapU}>
         <line x1={xs(7)} y1={ys(base[3])} x2={xs(7)} y2={ys(dl[3])} stroke={colors.WARM} strokeWidth={2} />
-        <text x={xs(7) + 8} y={(ys(base[3]) + ys(dl[3])) / 2 + 4} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+        <text x={xs(7) + 8} y={(ys(base[3]) + ys(dl[3])) / 2 + 4} fill={colors.WARM} fontSize={13} fontFamily="monospace">
           {gapText}
         </text>
       </g>
@@ -278,7 +288,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Faded-back content sits at 0.1 so the closing text never reads over ghosts.
+  const mainOp = 1 - 0.9 * dimU;
 
   return (
     <>
@@ -286,10 +297,11 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <g opacity={axesU * (1 - 0.85 * lossDimU)}>
+          <g opacity={axesU * (1 - 0.9 * lossDimU)}>
             <LossPlot
               xs={SM_X}
               ys={SM_Y}
+              yDomain={[2.74, 2.88]}
               base={SMALL_BASE}
               dl={SMALL_DL}
               baseTok={baseTok}
@@ -301,6 +313,7 @@ function Frame({ s }: { s: SceneState }) {
             <LossPlot
               xs={MD_X}
               ys={MD_Y}
+              yDomain={[2.51, 2.64]}
               base={MED_BASE}
               dl={MED_DL}
               baseTok={baseTok}
@@ -309,11 +322,15 @@ function Frame({ s }: { s: SceneState }) {
               label="GPT-2 Medium — validation loss"
               gapText="−0.0278"
             />
-            {/* R=1 neutrality callout */}
+            {/* R=1 neutrality callouts, one per plot */}
             <g opacity={r1U}>
               <circle cx={SM_X(1)} cy={SM_Y(SMALL_BASE[0])} r={16} fill="none" stroke={colors.WARM} strokeWidth={2} />
-              <text x={SM_X(1) + 24} y={SM_Y(SMALL_BASE[0]) - 14} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={SM_X(1) + 24} y={SM_Y(SMALL_BASE[0]) - 14} fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 R=1: +0.0004 — indistinguishable
+              </text>
+              <circle cx={MD_X(1)} cy={MD_Y(MED_BASE[0])} r={16} fill="none" stroke={colors.WARM} strokeWidth={2} />
+              <text x={MD_X(1) + 24} y={MD_Y(MED_BASE[0]) - 14} fill={colors.WARM} fontSize={13} fontFamily="monospace">
+                R=1: +0.0011 — indistinguishable
               </text>
             </g>
           </g>
@@ -338,7 +355,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* downstream bars */}
       <g opacity={downU * mainOp}>
-        <rect x={BAR_X - 60} y={BAR_Y - 70} width={BAR_W + 180} height={280} rx={14} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+        <rect x={BAR_X - 60} y={BAR_Y - 70} width={BAR_W + 180} height={280} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
         <text x={BAR_X - 30} y={BAR_Y - 34} fill={colors.TEXT} fontSize={17}>
           downstream, 8-task average — GPT-2 Medium, R = 7 (reported)
         </text>
@@ -362,7 +379,7 @@ function Frame({ s }: { s: SceneState }) {
           );
         })}
         {downTok >= 1.9 && (
-          <text x={BAR_X - 30} y={BAR_Y + 194} fill={colors.MUTED} fontSize={12}>
+          <text x={BAR_X - 30} y={BAR_Y + 194} fill={colors.MUTED} fontSize={13}>
             wins 7 of 8 tasks in both settings
           </text>
         )}
@@ -371,7 +388,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={240} width={800} height={170} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={240} width={800} height={170} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Free where it is idle, paid where it loops.
           </text>

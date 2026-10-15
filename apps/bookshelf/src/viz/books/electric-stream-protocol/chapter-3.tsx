@@ -147,7 +147,6 @@ export function Render({ s }: { s: SceneState }) {
   const restoreU = s.get(scene.restoreU);
   const closeU = s.get(scene.closeU);
   const phases = ['prepare', 'broadcast', 'commit', 'catch up'];
-  const protocolPulse = 0.5 + 0.5 * Math.sin(s.t * 2.4);
 
   return (
     <>
@@ -160,13 +159,12 @@ export function Render({ s }: { s: SceneState }) {
           h={580}
           label="convergence / one ordered event"
           rightLabel={`offset 0043 · quorum ${Math.round(quorum * 4)}/5`}
-          footer="connected clients converge · offline clients replay the suffix"
+          footer="example scenario: 5 clients, 1 offline · connected clients converge, offline clients replay the suffix"
           u={frameU}
         >
-          <circle cx={1172} cy={66} r={4} fill={GREEN} opacity={0.28 + protocolPulse * 0.62} />
           <g opacity={castU}>
             <rect x={390} y={96} width={270} height={34} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.4} />
-            <text x={525} y={118} textAnchor="middle" fill={GREEN} fontSize={13} fontWeight={800} fontFamily={MONO}>QUORUM · {Math.round(quorum * 4)}/5</text>
+            <text x={525} y={118} textAnchor="middle" fill={GREEN} fontSize={13} fontWeight={800} fontFamily={MONO}>EXAMPLE QUORUM · {Math.round(quorum * 4)}/5</text>
             <rect x={675} y={96} width={135} height={34} rx={8} fill={PAPER} stroke={MUTED} strokeWidth={1.2} />
             <text x={742} y={118} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800} fontFamily={MONO}>TX #43</text>
             <rect x={825} y={96} width={160} height={34} rx={8} fill={PAPER} stroke={CORAL} strokeWidth={1.4} />
@@ -186,7 +184,7 @@ export function Render({ s }: { s: SceneState }) {
                 label={index === 4 && catchupU > 0.35 ? 'replay suffix' : index === 4 && offlineU > 0.45 ? 'offline' : 'commit'}
                 flow={index === 4 ? catchupU : broadcastU}
                 u={broadcastU > 0.02 ? broadcastU : prepareU}
-                dim={index === 4 ? offlineU * 0.5 : 0}
+                dim={index === 4 ? offlineU * 0.25 : 0}
               />
             );
           })}
@@ -210,7 +208,7 @@ export function Render({ s }: { s: SceneState }) {
               u={castU}
               status={statusForParticipant(index, offlineU, catchupU)}
               dashed={index === 4 && offlineU > 0.45}
-              dim={index === 4 ? offlineU * 0.55 : 0}
+              dim={index === 4 ? offlineU * 0.25 : 0}
             />
           ))}
 

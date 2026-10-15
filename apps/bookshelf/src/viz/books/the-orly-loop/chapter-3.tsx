@@ -34,10 +34,10 @@ const GOOD_TEXT = 'Then registering the slot fires again.';
 const CODE_SLOT = { x: 1000, y: 212, w: 200, h: 46 } as const;
 
 // ---- the waveform, precomputed at module scope ----------------------------
-const WAVE = { x: 170, y: 470, w: 940, bars: 220, amp: 64 } as const;
-/** Cue pins ride from just under the panel header down onto the waveform, so they never sit on the title. */
-const PIN_TOP = 412;
-const PIN_Y = 428;
+const WAVE = { x: 170, y: 486, w: 940, bars: 220, amp: 52 } as const;
+/** Cue pins sit in their own row above the waveform, so their labels never sit on a bar. */
+const PIN_TOP = 404;
+const PIN_Y = 420;
 /** Paragraph-break silences between the three spoken lines. */
 const GAPS: Array<[number, number]> = [
   [68, 78],
@@ -321,7 +321,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- the gauntlet ---- */}
-          <g opacity={1 - 0.75 * railDim}>
+          <g opacity={1 - 0.6 * railDim}>
             <GauntletRail
               x={RAIL.x}
               y={RAIL.y}
@@ -335,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
             />
             {/* sweep pulse over the gate labels */}
             {sweep > 0 && sweep < 1 && (
-              <circle cx={RAIL.x + RAIL.w * sweep} cy={RAIL.y} r={16} fill={colors.ACCENT} opacity={0.18} />
+              <circle cx={RAIL.x + RAIL.w * sweep} cy={RAIL.y} r={16} fill="none" stroke={colors.ACCENT} strokeWidth={2} opacity={0.7} />
             )}
             {railU > 0.9 && (
               <text x={640} y={RAIL.y - 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={(railU - 0.9) * 10 * (1 - railDim)}>
@@ -351,12 +351,14 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
           </g>
+        </g>
 
-          {/* ---- the waveform ---- */}
+          {/* ---- the waveform: stays bright through the trim, fades only as the ring closes over it ---- */}
+          <g opacity={1 - 0.88 * clamp01(ringU)}>
           {joinU > 0 && (
             <g opacity={joinU}>
-              <rect x={WAVE.x - 30} y={368} width={WAVE.w + 60} height={228} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={WAVE.x} y={394} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+              <rect x={WAVE.x - 30} y={364} width={WAVE.w + 60} height={260} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={WAVE.x} y={388} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
                 one chapter, one recording
               </text>
               {/* bars */}
@@ -432,7 +434,7 @@ export function Render({ s }: { s: SceneState }) {
               {/* the manifest chip: cues become data */}
               {chipU > 0 && (
                 <g opacity={chipU}>
-                  <rect x={640 - 190} y={WAVE.y + WAVE.amp + 44} width={380} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+                  <rect x={640 - 170} y={WAVE.y + WAVE.amp + 44} width={340} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
                   <text x={640} y={WAVE.y + WAVE.amp + 64} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                     manifest.json · cues: [0.00, 6.31, 12.85]
                   </text>
@@ -455,9 +457,12 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- ring finale ---- */}
         <ProgressRing ringU={ringU} lit={3} litU={litU} />
         {litU > 0 && (
-          <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.MUTED} fontSize={16} fontStyle="italic" opacity={litU}>
-            the book can speak
-          </text>
+          <g opacity={litU}>
+            <rect x={RING.cx - 110} y={RING.cy - 14} width={220} height={34} rx={10} fill={colors.BG} stroke={colors.GRID} />
+            <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontStyle="italic">
+              the book can speak
+            </text>
+          </g>
         )}
       </Camera>
     </>

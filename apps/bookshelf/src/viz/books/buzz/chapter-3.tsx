@@ -28,6 +28,16 @@ const ROW_H = 74;
 const THREAD_X = 360;
 const THREAD_W = 560;
 
+// the four fragments the first caption names, scattered around the branch
+const FRAGMENTS = [
+  { x: 150, y: 170, kind: 'chat', text: 'the idea forms · a thread', color: colors.WARM },
+  { x: 830, y: 170, kind: 'pull request', text: 'the change · code host', color: colors.SECONDARY },
+  { x: 150, y: 400, kind: 'build & test', text: 'the CI run · separate system', color: colors.ACCENT },
+  { x: 830, y: 400, kind: 'review', text: 'the review · somewhere else', color: colors.POSITIVE },
+];
+const FRAG_W = 300;
+const FRAG_H = 62;
+
 const CAM_SCATTER: CameraState = { x: 640, y: 250, k: 1.05 };
 const CAM_THREAD: CameraState = { x: 640, y: 360, k: 1.02 };
 
@@ -133,11 +143,27 @@ export function Render({ s }: { s: SceneState }) {
               <text x={640} y={116} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={600} fontFamily="monospace">
                 # auth-refresh
               </text>
-              <text x={640} y={136} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={tagU}>
+              <text x={640} y={136} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={tagU}>
                 h = {CH}
               </text>
             </g>
           )}
+
+          {/* the four fragments from the first caption; they fold away as the branch becomes a channel */}
+          {headOp > 0 && FRAGMENTS.map((f, i) => (
+            <g key={`frag-${i}`} opacity={headOp} transform={`translate(0, ${(1 - branchU) * 8})`}>
+              <rect x={f.x} y={f.y} width={FRAG_W} height={FRAG_H} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={f.x} y={f.y} width={5} height={FRAG_H} rx={2} fill={f.color} />
+              <text x={f.x + 20} y={f.y + 26} fill={f.color} fontSize={14} fontWeight={600} fontFamily="monospace">{f.kind}</text>
+              <text x={f.x + 20} y={f.y + 47} fill={colors.TEXT} fontSize={15}>{f.text}</text>
+            </g>
+          ))}
+
+          {/* empty slots the rows will fill: one place, waiting for the thread */}
+          {chanOp > 0 && THREAD.map((r, i) => (
+            <rect key={`slot-${i}`} x={THREAD_X} y={ROW_Y0 + i * ROW_H} width={THREAD_W} height={ROW_H - 12} rx={9}
+              fill="none" stroke={colors.GRID} strokeDasharray="4 5" opacity={becomeU * (1 - rowsU) * 0.8} />
+          ))}
 
           {/* the unified thread */}
           {THREAD.map((r, i) => {
@@ -148,12 +174,12 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i} opacity={u} transform={`translate(0, ${(1 - u) * 10})`}>
                 <rect x={THREAD_X} y={y} width={THREAD_W} height={ROW_H - 12} rx={9} fill={colors.PANEL} stroke={tagU > 0 ? r.color : colors.GRID} strokeOpacity={tagU > 0 ? 0.5 : 1} />
                 <rect x={THREAD_X} y={y} width={5} height={ROW_H - 12} rx={2} fill={r.color} />
-                <text x={THREAD_X + 20} y={y + 26} fill={r.color} fontSize={12} fontWeight={600} fontFamily="monospace">{r.kind}</text>
-                <text x={THREAD_X + 20} y={y + 47} fill={colors.TEXT} fontSize={13}>{r.text}</text>
-                <text x={THREAD_X + THREAD_W - 16} y={y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">{r.who}</text>
+                <text x={THREAD_X + 20} y={y + 26} fill={r.color} fontSize={14} fontWeight={600} fontFamily="monospace">{r.kind}</text>
+                <text x={THREAD_X + 20} y={y + 47} fill={colors.TEXT} fontSize={15}>{r.text}</text>
+                <text x={THREAD_X + THREAD_W - 16} y={y + 26} textAnchor="end" fill={colors.TEXT} fillOpacity={0.75} fontSize={14} fontFamily="monospace">{r.who}</text>
                 {/* the shared h tag chip */}
                 {tagU > 0 && (
-                  <text x={THREAD_X + THREAD_W - 16} y={y + 47} textAnchor="end" fill={r.color} fontSize={12} fontFamily="monospace" opacity={tagU}>
+                  <text x={THREAD_X + THREAD_W - 16} y={y + 47} textAnchor="end" fill={r.color} fontSize={13} fontFamily="monospace" opacity={tagU}>
                     ["h", …4a1c]
                   </text>
                 )}
@@ -167,7 +193,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
           {searchU > 0 && (
-            <text x={640} y={ROW_Y0 + THREAD.length * ROW_H + 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} opacity={searchU} fontFamily="monospace">
+            <text x={640} y={ROW_Y0 + THREAD.length * ROW_H + 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} opacity={searchU} fontFamily="monospace">
               one thread · one search
             </text>
           )}
@@ -179,7 +205,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
           <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={600}>A feature branch is a channel</text>
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={16}>conversation, patch, CI, review, and merge — one signed thread</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">one context · the h tag names the channel · git hosting: coming</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">one context · the h tag names the channel · git hosting: coming</text>
         </g>
       )}
     </>

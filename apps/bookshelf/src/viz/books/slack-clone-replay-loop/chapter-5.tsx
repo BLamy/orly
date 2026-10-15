@@ -132,7 +132,7 @@ function EvidenceCards({ u, dim }: { u: number; dim: number }) {
   const { x, y, w, rowH } = EVIDENCE;
   return (
     <g opacity={1 - 0.85 * clamp01(dim)}>
-      <text x={x} y={y - 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={x} y={y - 18} fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>
         what survives the run
       </text>
       {EVIDENCE_CARDS.map((c, i) => {
@@ -142,10 +142,10 @@ function EvidenceCards({ u, dim }: { u: number; dim: number }) {
           <g key={c.title} transform={`translate(${x}, ${y + i * rowH + (1 - cu) * 10})`} opacity={cu}>
             <rect width={w} height={rowH - 16} rx={11} fill={colors.PANEL} stroke={c.color} strokeWidth={1.6} />
             <circle cx={22} cy={(rowH - 16) / 2} r={5} fill={c.color} />
-            <text x={40} y={28} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+            <text x={40} y={28} fill={colors.TEXT} fontSize={14} fontWeight={700}>
               {c.title}
             </text>
-            <text x={40} y={48} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={40} y={48} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               {c.sub}
             </text>
           </g>
@@ -161,7 +161,7 @@ function FinallyBlock({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   return (
     <g opacity={1 - 0.85 * clamp01(dim)}>
-      <g transform={`translate(${RING.cx}, ${640 - 62 + (1 - uu) * 10})`} opacity={uu}>
+      <g transform={`translate(${RING.cx}, ${598 + (1 - uu) * 10})`} opacity={uu}>
         <rect x={-230} y={-26} width={460} height={44} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
         <text y={2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
           finally &#123; stop(app) · stop(emulator) &#125;
@@ -197,10 +197,10 @@ function ClosingCard({ u }: { u: number }) {
       <text y={-24} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>
         The world is disposable. The evidence is not.
       </text>
-      <text y={10} textAnchor="middle" fill={colors.MUTED} fontSize={14.5} fontFamily={MONO}>
+      <text y={10} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
         pnpm record:replay → 2 recordings · 1 film · latest.json
       </text>
-      <text y={40} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+      <text y={40} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         Same loop as the wasm-vm and electric-forest books — with a real app inside.
       </text>
     </g>
@@ -210,31 +210,35 @@ function ClosingCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 function renderFrame(s: SceneState) {
   const dim = clamp01(s.get(scene.dimU));
+  // The closing card gets the stage to itself: the faded world is gone by the time it lands.
+  const worldFade = 1 - clamp01(s.get(scene.closeU));
   return (
     <>
-      <LoopRing
-        cx={RING.cx}
-        cy={RING.cy}
-        r={RING.r}
-        stops={STOPS}
-        u={s.get(scene.orbitU)}
-        reveal={s.get(scene.ringU)}
-        dim={dim}
-        labelSize={14}
-      />
-      <text
-        x={RING.cx}
-        y={RING.cy + 6}
-        textAnchor="middle"
-        fill={colors.MUTED}
-        fontSize={13}
-        fontFamily={MONO}
-        opacity={clamp01(s.get(scene.ringU)) * (1 - 0.85 * dim)}
-      >
-        pnpm record:replay
-      </text>
-      <EvidenceCards u={s.get(scene.evidenceU)} dim={dim} />
-      <FinallyBlock u={s.get(scene.finallyU)} dim={dim} />
+      <g opacity={worldFade}>
+        <LoopRing
+          cx={RING.cx}
+          cy={RING.cy}
+          r={RING.r}
+          stops={STOPS}
+          u={s.get(scene.orbitU)}
+          reveal={s.get(scene.ringU)}
+          dim={dim}
+          labelSize={14}
+        />
+        <text
+          x={RING.cx}
+          y={RING.cy + 6}
+          textAnchor="middle"
+          fill={colors.MUTED}
+          fontSize={14}
+          fontFamily={MONO}
+          opacity={clamp01(s.get(scene.ringU)) * (1 - 0.85 * dim)}
+        >
+          pnpm record:replay
+        </text>
+        <EvidenceCards u={s.get(scene.evidenceU)} dim={dim} />
+        <FinallyBlock u={s.get(scene.finallyU)} dim={dim} />
+      </g>
       <ClosingCard u={s.get(scene.closeU)} />
     </>
   );

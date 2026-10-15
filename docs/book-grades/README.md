@@ -181,3 +181,29 @@ Claude Haiku 5.5 reworked the visuals of 460 book chapters (one agent per chapte
 Regraded on the same rubric ([2026-10-14-haiku.json](2026-10-14-haiku.json)): **visual 6.60 → 6.78**, book mean 7.13 → 7.13
 (78 books up, 57 down, 19 flat); the non-visual dimensions moved by ±0.05, which is the graders' noise, since only the
 pictures changed. Still 0 books pass. The Grades tab shows each book's change against the 2026-10-13 run.
+
+## 2026-10-15 — round 2 visual polish, regraded on identical inputs
+
+Two runs share one grader and one set of inputs, so the deltas compare like with like:
+[2026-10-15-a-base-haiku.json](2026-10-15-a-base-haiku.json) (before) and
+[2026-10-15-b-polish2-haiku.json](2026-10-15-b-polish2-haiku.json) (after). Both grade the eight dimensions from the
+captions with authored times, the scene headers and every chapter's contact sheet (all frames), not from three preview
+frames, so these scores sit on a different scale from the 2026-10-13 and 2026-10-14 runs above.
+
+What changed: a Haiku 5.5 agent per chapter (487 book chapters) and per shared explainer (223 scenes under
+`apps/bookshelf/src/viz/explainers/`, which 46 books re-export) fixed overlap, clipped and off-stage labels, low-contrast
+text and cluttered frames. Layout problems 6,473 -> 773 across 712 chapters, with no page errors.
+
+Timing: captions, holds and every `at`/`dur`/`delay`/`start`/`end` expression match the commit before the first
+polish pass (f6a1c262^) in all 1,091 scene files. The first polish pass had moved visual timing in 124 files; those were
+restored to their original timing. Five of them now carry 73 layout problems that the original timing does not let us
+remove, and those chapters are the known trade-off.
+
+| dimension | before | after |
+|---|---|---|
+| visual | 6.10 | 6.41 (up on 77 books, down on 24) |
+| all other dimensions | | within ±0.10 (grader noise: their text did not change) |
+| mean of means | 6.86 | 6.92 |
+
+Still 0 books pass (the bar is every dimension >= 8 and mean >= 8.5). Visual is still the weakest dimension, and the grader
+sees still frames only, so motion, sound and narration quality stay unjudged.

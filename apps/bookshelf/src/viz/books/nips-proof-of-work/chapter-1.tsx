@@ -58,6 +58,8 @@ const SPEC_BITS = hexToBits(SPEC_ID);
 const GRID = { x: 812, y: 132, cell: 15, gap: 3 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
 
+// centre of the first hex digit column; four columns, 120 apart, centred on x=640
+const TRAP_X0 = 460;
 const CAM_JSON: CameraState = { x: 330, y: 300, k: 1.28 };
 const CAM_GRID: CameraState = { x: 940, y: 300, k: 1.15 };
 const CAM_TRAP: CameraState = { x: 640, y: 372, k: 1.2 };
@@ -66,7 +68,6 @@ interface Scene {
   tl: Timeline;
   cam: ChannelRef<CameraState>;
   jsonU: ChannelRef<number>;
-  jsonOutU: ChannelRef<number>;
   gridU: ChannelRef<number>;
   settleU: ChannelRef<number>;
   countU: ChannelRef<number>;
@@ -83,7 +84,6 @@ export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const jsonU = tl.channel('jsonU', 0);
-  const jsonOutU = tl.channel('jsonOutU', 0);
   const gridU = tl.channel('gridU', 0);
   const settleU = tl.channel('settleU', 0);
   const countU = tl.channel('countU', 0);
@@ -112,7 +112,6 @@ export function buildScene(): Scene {
     text: 'Here is this event’s actual digest. A hash is a fair coin flipped two hundred fifty six times — every bit is heads or tails with no memory and no mercy.',
   });
   tl.tween(cam, CAM_GRID, { at: 7.4, dur: 1.5, ease: ease.move });
-  tl.tween(jsonOutU, 1, { at: 7.4, dur: 0.9, ease: ease.move });
   tl.tween(gridU, 1, { at: 7.8, dur: 1.4, ease: ease.draw });
   tl.tween(settleU, 1, { at: 8.8, dur: 2.6, ease: ease.linear });
   tl.hold(13.0, 0.7);
@@ -170,7 +169,7 @@ export function buildScene(): Scene {
   tl.hold(47.7, 1.2);
 
   return {
-    tl, cam, jsonU, jsonOutU, gridU, settleU, countU, trapU, trapBitsU,
+    tl, cam, jsonU, gridU, settleU, countU, trapU, trapBitsU,
     specU, specRunU, oddsU, dimU, closeU,
   };
 }
@@ -180,7 +179,6 @@ const scene = buildScene();
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const jsonU = s.get(scene.jsonU);
-  const jsonOutU = s.get(scene.jsonOutU);
   const gridU = s.get(scene.gridU);
   const settleU = s.get(scene.settleU);
   const countU = s.get(scene.countU);
@@ -192,7 +190,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.92 * dimU;
+  const mainOp = 1 - dimU;
   const showingSpec = specU > 0;
   const bits = showingSpec ? SPEC_BITS : PLAIN_BITS;
   const diff = showingSpec ? SPEC_DIFF : PLAIN_DIFF;
@@ -201,15 +199,15 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <Camera {...cam}>
         <g opacity={mainOp}>
-          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={(1 - 0.7 * clamp01(trapU + specU)) * (1 - jsonOutU)} />
+          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={(1 - 0.7 * clamp01(trapU + specU)) * (1 - clamp01(gridU))} />
 
           {/* the digest grid — crossfades from the plain id to the spec id */}
           {gridU > 0 && (
-            <g>
-              <text x={GRID.x} y={GRID.y - 46} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={gridU}>
+            <g opacity={1 - clamp01(trapU)}>
+              <text x={GRID.x} y={GRID.y - 46} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={gridU}>
                 {showingSpec ? 'NIP-13 example id — difficulty 36' : 'SHA-256(serialization)'}
               </text>
-              <text x={GRID.x} y={GRID.y - 24} fill={showingSpec ? colors.WARM : colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 24} fill={showingSpec ? colors.WARM : colors.ACCENT} fontSize={14} fontFamily="monospace" opacity={gridU}>
                 {shortHex(showingSpec ? SPEC_ID : PLAIN_ID, 14, 6)}
               </text>
               <BitField
@@ -233,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               )}
               {oddsU > 0 && showingSpec && (
-                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 56} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={oddsU}>
+                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 56} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={oddsU}>
                   odds per hash ≈ 1 / 2³⁶ ≈ 1 / 69,000,000,000
                 </text>
               )}
@@ -243,12 +241,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* the hex trap: 002f unfolds into bits */}
           {trapU > 0 && (
             <g opacity={trapU}>
-              <text x={250} y={330} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+              <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
                 count bits, not hex digits
               </text>
               {HEX_TRAP.split('').map((c, i) => (
                 <g key={i}>
-                  <text x={290 + i * 120} y={382} textAnchor="middle" fill={colors.SECONDARY} fontSize={26} fontFamily="monospace">
+                  <text x={TRAP_X0 + i * 120} y={382} textAnchor="middle" fill={colors.SECONDARY} fontSize={26} fontFamily="monospace">
                     {c}
                   </text>
                   {TRAP_BITS.slice(i * 4, i * 4 + 4).map((b, j) => {
@@ -259,7 +257,7 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={j} opacity={u}>
                         <rect
-                          x={290 + i * 120 - 52 + j * 26}
+                          x={TRAP_X0 + i * 120 - 52 + j * 26}
                           y={404}
                           width={22}
                           height={22}
@@ -269,7 +267,7 @@ export function Render({ s }: { s: SceneState }) {
                           strokeWidth={1.6}
                           opacity={b ? 0.9 : 0.4}
                         />
-                        <text x={290 + i * 120 - 41 + j * 26} y={420} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                        <text x={TRAP_X0 + i * 120 - 41 + j * 26} y={420} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                           {b}
                         </text>
                       </g>
@@ -296,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             impossible to fake, free to verify — difficulty = the length of the silence
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-13 · difficulty = leading zero bits of the NIP-01 id
           </text>
         </g>

@@ -172,13 +172,24 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* password */}
+          {/* the raw secret is struck out: it must never sit on disk in the clear */}
+          {pwU > 0 && (
+            <g opacity={pwU * (1 - clamp01(scryptU * 4))}>
+              <rect x={140} y={96} width={230} height={34} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeOpacity={0.6} />
+              <text x={255} y={119} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={0.8}>
+                raw nsec → disk
+              </text>
+              <line x1={150} y1={113} x2={360} y2={113} stroke={colors.NEGATIVE} strokeWidth={2} />
+            </g>
+          )}
+
           {pwU > 0 && (
             <g opacity={pwU}>
               <rect x={140} y={150} width={170} height={38} rx={8} fill={colors.PANEL} stroke={colors.MUTED} />
-              <text x={225} y={174} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={225} y={174} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 password "nostr"
               </text>
-              <text x={225} y={206} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={225} y={206} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 NFKC-normalized
               </text>
             </g>
@@ -187,25 +198,25 @@ export function Render({ s }: { s: SceneState }) {
           {/* scrypt grind arrow */}
           {scryptU > 0 && (
             <g opacity={scryptU}>
-              <text x={370} y={168} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+              <text x={370} y={168} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 scrypt(log_n={LOG_N}, r=8, p=1)
               </text>
               <rect x={355} y={178} width={110 * clamp01(scryptU)} height={5} rx={2} fill={colors.WARM} opacity={0.8} />
-              <text x={355} y={202} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+              <text x={355} y={202} fill={colors.MUTED} fontSize={14} fontStyle="italic">
                 (grind — illustrative)
               </text>
             </g>
           )}
 
-          {/* derived key bits — recede once the byte strip takes the stage */}
+          {/* derived key bits — gone once the byte strip takes the stage, so nothing ghosts behind it */}
           {keyU > 0 && (
-            <g opacity={keyU * (1 - 0.92 * clamp01(stripU * 4))}>
-              <text x={GRID.x} y={GRID.y - 14} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+            <g opacity={keyU * (1 - clamp01(stripU * 8))}>
+              <text x={GRID.x} y={GRID.y - 14} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 derived 32-byte key
               </text>
               <BitField bits={DERIVED_BITS} x={GRID.x} y={GRID.y} cell={GRID.cell} gap={GRID.gap} reveal={keyU} settle={keyU} onColor={colors.WARM} seed={9} />
               {sealU > 0 && stripU < 0.15 && (
-                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={sealU * (1 - clamp01(stripU * 6))}>
+                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={sealU * (1 - clamp01(stripU * 6))}>
                   → seals nsec (XChaCha20-Poly1305)
                 </text>
               )}
@@ -215,7 +226,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the 91-byte payload strip */}
           {stripU > 0 && (
             <g opacity={stripU}>
-              <text x={STRIP.x} y={STRIP.y - 68} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={STRIP.x} y={STRIP.y - 54} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 91-byte payload
               </text>
               {FIELDS.map((f, i) => {
@@ -225,32 +236,35 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(stripU * FIELDS.length - i);
                 if (u <= 0) return null;
                 const narrow = w < 44;
-                // stagger adjacent narrow labels so ver/log_n don't collide
-                const lift = i % 2 === 0 ? 16 : 34;
+                // narrow (1-byte) fields share one row above the strip; each label
+                // leans away from its neighbour (ver left, log_n right, sec centred)
+                // so the leaders and labels never meet
+                const edge = x + w / 2;
+                const side = i === 0 ? 'end' : i === 1 ? 'start' : 'middle';
+                const labelX = side === 'end' ? edge - 6 : side === 'start' ? edge + 6 : edge;
                 return (
                   <g key={f.label} opacity={u}>
                     <rect x={x} y={STRIP.y} width={Math.max(w - 3, 2)} height={STRIP.h} rx={5} fill={colors.PANEL} stroke={f.color} strokeWidth={1.4} />
                     {narrow ? (
-                      // narrow (1-byte) fields: leader up to a label above the strip
                       <>
-                        <line x1={x + w / 2} y1={STRIP.y - 4} x2={x + w / 2} y2={STRIP.y - lift} stroke={f.color} strokeWidth={1} opacity={0.7} />
-                        <text x={x + w / 2} y={STRIP.y - lift - 5} textAnchor="middle" fill={f.color} fontSize={11} fontFamily="monospace">
-                          {f.label}
+                        <line x1={edge} y1={STRIP.y - 4} x2={edge} y2={STRIP.y - 24} stroke={f.color} strokeWidth={1} opacity={0.7} />
+                        <text x={labelX} y={STRIP.y - 28} textAnchor={side} fill={f.color} fontSize={14} fontFamily="monospace">
+                          {f.label} {f.bytes}B
                         </text>
                       </>
                     ) : (
                       <>
-                        <text x={x + w / 2} y={STRIP.y + 22} textAnchor="middle" fill={f.color} fontSize={12} fontFamily="monospace">
+                        <text x={edge} y={STRIP.y + 22} textAnchor="middle" fill={f.color} fontSize={14} fontFamily="monospace">
                           {f.label}
                         </text>
-                        <text x={x + w / 2} y={STRIP.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                        <text x={edge} y={STRIP.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                           {f.note}
+                        </text>
+                        <text x={edge} y={STRIP.y + STRIP.h + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                          {f.bytes}B
                         </text>
                       </>
                     )}
-                    <text x={x + w / 2} y={STRIP.y + STRIP.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-                      {f.bytes}B
-                    </text>
                   </g>
                 );
               })}
@@ -261,10 +275,10 @@ export function Render({ s }: { s: SceneState }) {
           {encodeU > 0 && (
             <g opacity={encodeU}>
               <rect x={140} y={430} width={1000} height={60} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={160} y={456} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+              <text x={160} y={456} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 {NCRYPTSEC.slice(0, 74)}
               </text>
-              <text x={160} y={478} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+              <text x={160} y={478} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 {NCRYPTSEC.slice(74)}
               </text>
             </g>
@@ -273,7 +287,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* cost curve */}
           {costU > 0 && (
             <g opacity={costU}>
-              <text x={640} y={548} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={640} y={548} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 each guess = one full scrypt run — brute force gets expensive
               </text>
             </g>
@@ -290,7 +304,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             scrypt → XChaCha20-Poly1305 → 91 bytes → ncryptsec
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-49 · encrypted private key export
           </text>
         </g>

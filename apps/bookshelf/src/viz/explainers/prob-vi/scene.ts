@@ -95,10 +95,12 @@ export function klAt(t: number): number {
 export const px: ScaleLinear<number, number> = scaleLinear().domain([-3, 3]).range([120, 800]);
 export const py: ScaleLinear<number, number> = scaleLinear().domain([-2.6, 2.8]).range([620, 105]);
 export const kx: ScaleLinear<number, number> = scaleLinear().domain([0, N_ITERS]).range([880, 1200]);
-export const ky: ScaleLinear<number, number> = scaleLinear().domain([0, 2.6]).range([540, 240]);
+// top of the KL axis sits above the first step's KL (≈ 3.58), so the curve starts inside the chart
+export const ky: ScaleLinear<number, number> = scaleLinear().domain([0, 3.7]).range([540, 260]);
 
 export const CAM_PLANE: CameraState = { x: 460, y: 360, k: 1.15 };
-export const CAM_SMALL: CameraState = { x: px(MODES[1].x), y: py(MODES[1].y), k: 1.4 };
+// zoom just enough to frame the small island while keeping the KL chart on stage
+export const CAM_SMALL: CameraState = { x: 648, y: py(MODES[1].y), k: 1.1 };
 
 export interface Scene {
   tl: Timeline;

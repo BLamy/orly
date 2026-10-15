@@ -79,9 +79,9 @@ const leafX = (i: number) => LEAF_X0 + i * (LEAF_W + LEAF_GAP);
 const FOLDED = 8; // the oldest 8 leaves fold under one snapshot
 
 // The tree (x 96..652) and the cost plot (x 700..1196) sit side by side, so one
-// wide frame holds both without cropping either. Only the opening list gets its
-// own push-in, since it is the only beat where the plot is not yet on stage.
-const CAM_LIST: CameraState = { x: 380, y: 380, k: 1.2 };
+// wide frame holds both without cropping either. Any push-in crops one of them,
+// so the camera stops hold this frame; only the opening list gets its own push-in.
+const CAM_LIST: CameraState = { x: 380, y: 300, k: 1.2 };
 const CAM_OVERVIEW: CameraState = { x: 646, y: 372, k: 1.12 };
 const LEAF_Y = 430;
 
@@ -145,7 +145,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'The fix hides in something we already know. Old entries in the manifest never change again, and an immutable prefix can be lifted out into a file of its own.',
   });
-  tl.tween(prefixU, 1, { at: 14.8, dur: 1.0, ease: ease.enter });
+  tl.tween(prefixU, 1, { at: 14.6, dur: 1.4, ease: ease.enter });
   tl.hold(21.0, 0.6);
 
   // BEAT 4 — the fold.
@@ -163,6 +163,7 @@ export function buildScene(): Scene {
     dur: 6.4,
     text: 'Notice the ordering. The snapshot is written first, off the hot path, and adopted later. The append that finally uses it pays no extra round trip at all.',
   });
+  tl.tween(cam, CAM_OVERVIEW, { at: 28.9, dur: 1.4, ease: ease.move });
   tl.tween(rolledU, 1, { at: 29.4, dur: 3.0, ease: ease.linear });
   tl.hold(35.1, 0.6);
 
@@ -181,6 +182,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'Do that repeatedly and the log becomes a shallow tree. A root that is rewritten constantly, two levels of interior nodes that are written once, and the fragments themselves as leaves.',
   });
+  tl.tween(cam, CAM_OVERVIEW, { at: 43.0, dur: 1.4, ease: ease.move });
   tl.tween(depthU, 1, { at: 43.4, dur: 1.8, ease: ease.draw });
   tl.hold(49.4, 0.6);
 
@@ -208,6 +210,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'Now kill the writer mid-flight, right after a fragment lands and before the manifest is updated. The fragment is real, it is durable, and absolutely nothing points at it.',
   });
+  tl.tween(cam, CAM_OVERVIEW, { at: 64.4, dur: 1.4, ease: ease.move });
   tl.tween(orphanU, 1, { at: 64.9, dur: 1.0, ease: ease.enter });
   tl.hold(70.8, 0.6);
 
@@ -247,10 +250,10 @@ function CostPlot({ plotU, naiveU, rolledU }: { plotU: number; naiveU: number; r
     <g opacity={axisU}>
       <line x1={PLOT_X0} y1={PLOT_Y0} x2={lerp(PLOT_X0, PLOT_X1, axisU)} y2={PLOT_Y0} stroke={colors.GRID} strokeWidth={1.4} />
       <line x1={PLOT_X0} y1={PLOT_Y0} x2={PLOT_X0} y2={lerp(PLOT_Y0, PLOT_Y1, axisU)} stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={PLOT_X0} y={PLOT_Y1 - 42} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">
+      <text x={PLOT_X0} y={PLOT_Y1 - 42} fill={colors.MUTED} fontSize={13} letterSpacing="0.11em">
         BYTES PER MANIFEST WRITE
       </text>
-      <text x={PLOT_X1} y={PLOT_Y0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+      <text x={PLOT_X1} y={PLOT_Y0 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
         manifest writes
       </text>
       {naiveU > 0.01 && (
@@ -287,7 +290,7 @@ function Tree({ listU, foldU, depthU, prefixU, setsumU }: { listU: number; foldU
         <g opacity={clamp01(listU / 3)}>
           <rect x={LEAF_X0} y={rootY - 44} width={556} height={58} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
           <text x={LEAF_X0 + 16} y={rootY - 8} fill={colors.ACCENT} fontFamily={MONO} fontSize={15}>manifest/MANIFEST</text>
-          <text x={LEAF_X0 + 540} y={rootY - 8} textAnchor="end" fill={colors.MUTED} fontSize={12}>rewritten every append</text>
+          <text x={LEAF_X0 + 540} y={rootY - 8} textAnchor="end" fill={colors.MUTED} fontSize={13}>rewritten every append</text>
         </g>
       )}
 
@@ -314,13 +317,14 @@ function Tree({ listU, foldU, depthU, prefixU, setsumU }: { listU: number; foldU
       {/* the immutable prefix, bracketed before it folds away */}
       {prefixU > 0.02 && foldU < 0.98 && (
         <g opacity={clamp01(prefixU) * (1 - clamp01(foldU))}>
+          {/* hugs the flat leaf row, which sits at snapY until the fold */}
           <path
-            d={`M ${leafX(0)} ${leafY - 10} V ${leafY - 2} H ${prefixRight} V ${leafY - 10}`}
+            d={`M ${leafX(0)} ${snapY + 62} V ${snapY + 70} H ${prefixRight} V ${snapY + 62}`}
             fill="none"
             stroke={colors.SECONDARY}
             strokeWidth={1.4}
           />
-          <text x={leafX(0)} y={leafY - 18} fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>
+          <text x={leafX(0)} y={snapY + 92} fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>
             immutable prefix · never rewritten
           </text>
         </g>
@@ -336,7 +340,7 @@ function Tree({ listU, foldU, depthU, prefixU, setsumU }: { listU: number; foldU
         return (
           <g key={i} opacity={born * (1 - folded * 0.45)}>
             <rect x={leafX(i)} y={y} width={w} height={54} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={leafX(i) + w / 2} y={y + 33} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>
+            <text x={leafX(i) + w / 2} y={y + 33} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={13}>
               {String(i).padStart(2, '0')}
             </text>
           </g>
@@ -375,7 +379,7 @@ function Tree({ listU, foldU, depthU, prefixU, setsumU }: { listU: number; foldU
         </g>
       )}
       {depthU > 1.05 && (
-        <text x={LEAF_X0} y={leafY + 116} fill={colors.MUTED} fontSize={13} opacity={clamp01(depthU - 1.05)}>
+        <text x={LEAF_X0} y={leafY + 116} fill={colors.TEXT} fontSize={14} opacity={0.85 * clamp01(depthU - 1.05)}>
           the tail lives in the root · the past lives one hop deeper
         </text>
       )}
@@ -389,7 +393,7 @@ function Orphan({ u, recover, depth }: { u: number; recover: number; depth: numb
   // the fragment itself: a dashed leaf in the next slot, with no edge into the tree
   const leafTop = LEAF_Y + depth * 26;
   const boxX = 700;
-  const boxY = 500;
+  const boxY = 512;
   const boxMid = boxY + 52;
   const slotX = leafX(LEAF_N);
   return (
@@ -403,9 +407,9 @@ function Orphan({ u, recover, depth }: { u: number; recover: number; depth: numb
         opacity={0.6}
       />
       <rect x={boxX} y={boxY} width={352} height={104} rx={12} fill={colors.BG} stroke={tone} strokeWidth={1.5} />
-      <text x={boxX + 22} y={boxY + 26} fill={colors.WARM} fontFamily={MONO} fontSize={13}>orphaned fragment</text>
-      <text x={boxX + 22} y={boxY + 54} fill={colors.MUTED} fontSize={13}>durable, and referenced by nothing</text>
-      <text x={boxX + 22} y={boxY + 86} fill={recover > 0.4 ? colors.POSITIVE : colors.MUTED} fontSize={13} opacity={0.3 + 0.7 * clamp01(recover)}>
+      <text x={boxX + 22} y={boxY + 26} fill={colors.WARM} fontFamily={MONO} fontSize={14}>orphaned fragment</text>
+      <text x={boxX + 22} y={boxY + 54} fill={colors.TEXT} fontSize={14}>durable, and referenced by nothing</text>
+      <text x={boxX + 22} y={boxY + 86} fill={recover > 0.4 ? colors.POSITIVE : colors.MUTED} fontSize={14} opacity={0.55 + 0.45 * clamp01(recover)}>
         zero-action recovery
       </text>
     </g>

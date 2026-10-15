@@ -381,13 +381,14 @@ export function Render({ s }: { s: SceneState }) {
             })}
             {/* write head at the growing edge */}
             <g opacity={tapeU}>
+              {/* the head hands over to the offset=now sentinel, so the two triangles never stack */}
               <path
                 d={`M${liveEdge} ${TAPE_Y - CELL_H / 2 - 20} l -8 -12 l 16 0 z`}
                 fill={colors.ACCENT}
-                opacity={1 - sentU * 0.8}
+                opacity={1 - sentU}
               />
               {/* label sits beside the head, so the offset=now sentinel can own the space above the tail */}
-              <text x={liveEdge - 14} y={TAPE_Y - CELL_H / 2 - 16} textAnchor="end" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+              <text x={liveEdge - 14} y={TAPE_Y - CELL_H / 2 - 16} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 append
               </text>
             </g>
@@ -399,7 +400,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={label} opacity={u * (1 - quietU * 0.55)}>
                   <line x1={x} y1={TAPE_Y + CELL_H / 2 + 8} x2={x} y2={TAPE_Y + CELL_H / 2 + 16} stroke={colors.MUTED} strokeWidth={1.5} />
-                  <text x={x} y={TAPE_Y + CELL_H / 2 + 32} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={x} y={TAPE_Y + CELL_H / 2 + 32} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     {label}
                   </text>
                 </g>
@@ -420,7 +421,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={TAPE_Y + CELL_H / 2 + 76}
                   textAnchor="middle"
                   fill={deadU > 0.3 ? colors.MUTED : colors.POSITIVE}
-                  fontSize={12.5}
+                  fontSize={14}
                   fontWeight={600}
                 >
                   {deadU > 0.3 ? 'reader (gone)' : 'reader'}
@@ -428,10 +429,11 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             {/* Stream-Next-Offset bookmark chip rides with the cursor */}
+            {/* the saved bookmark stays readable after the reader dies: it is the state that survives */}
             {bookU > 0.01 && (
-              <g opacity={bookU * cursorOp * (1 - quietU * 0.85)}>
-                <rect x={Math.min(cursorX, 950) - 118} y={TAPE_Y - CELL_H / 2 - 74} width={236} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-                <text x={Math.min(cursorX, 950)} y={TAPE_Y - CELL_H / 2 - 54} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <g opacity={bookU * cursorOn * (1 - deadU * 0.35) * (1 - quietU * 0.85)}>
+                <rect x={Math.min(cursorX, 900) - 134} y={TAPE_Y - CELL_H / 2 - 74} width={268} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
+                <text x={Math.min(cursorX, 900)} y={TAPE_Y - CELL_H / 2 - 54} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                   Stream-Next-Offset: 01JQXK5V00
                 </text>
               </g>
@@ -445,10 +447,10 @@ export function Render({ s }: { s: SceneState }) {
                 ].map((g0) => (
                   <g key={g0.label}>
                     <path d={`M${g0.x} ${TAPE_Y - CELL_H / 2 - 16} l -8 -13 l 16 0 z`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
-                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 40} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 40} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
                       {g0.label}
                     </text>
-                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 58} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 58} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
                       {g0.sub}
                     </text>
                   </g>
@@ -496,7 +498,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={gh.x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontWeight={600}>
                     {gh.label}
                   </text>
-                  <text x={gh.x} y={y - 78} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={gh.x} y={y - 78} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     {gh.chip}
                   </text>
                   {/* each ghost is fed by the tape */}

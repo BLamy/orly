@@ -37,7 +37,6 @@ const STATES = ['building', 'complete', 'paused', 'invalid_loop'];
 // Each frame is framed to the boxes it shows, clear of the caption band (y > 630).
 const CAM_MACHINE: CameraState = { x: 350, y: 250, k: 1.5 };
 const CAM_SEEN: CameraState = { x: 350, y: 356, k: 1.3 };
-const CAM_LEDGER: CameraState = { x: 505, y: 370, k: 1.3 };
 const CAM_STATE: CameraState = { x: 920, y: 380, k: 1.25 };
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.0 };
 
@@ -110,7 +109,6 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'If the identical fingerprint ever appears twice, the case is already closed. Two refutations with the exact same finding set are a proof, not an opinion: the rework changed nothing that mattered.',
   });
-  tl.tween(cam, CAM_LEDGER, { at: 23.0, dur: 1.4, ease: ease.move });
   tl.tween(matchU, 1, { at: 23.1, dur: 1.6, ease: ease.move });
   tl.hold(29.8, 0.6);
 
@@ -120,6 +118,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'So thrash skips the court entirely. No judge is convened, no next attempt is granted — the loop flips straight to invalid, immediately.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 30.6, dur: 1.4, ease: ease.move });
   tl.tween(skipU, 1, { at: 31.2, dur: 1.2, ease: ease.enter });
   tl.hold(36.9, 0.6);
 
@@ -202,8 +201,9 @@ export function Render({ s }: { s: SceneState }) {
 
   // Old content fades to 0.08 under the closing panel, so the panel reads alone.
   const worldOp = 1 - 0.92 * endDim;
-  // The ledger (machine + seenReports) dims while the project-state flip is framed.
-  const ledgerOp = 1 - 0.88 * stateU;
+  // The ledger (machine + seenReports) clears while the project-state flip is framed,
+  // so no ghosted panel or cut-off label sits at the edge of the frame.
+  const ledgerOp = 1 - stateU;
 
   return (
     <>
@@ -218,6 +218,8 @@ export function Render({ s }: { s: SceneState }) {
               <text x={MACHINE.x + 20} y={MACHINE.y + 54} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 findings.map(f =&gt; kind + ':' + citation)
               </text>
+              {/* the empty slot the sorted key will fill */}
+              <rect x={MACHINE.x + 20} y={MACHINE.y + 150} width={MACHINE.w - 40} height={34} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 4" opacity={0.7} />
               {/* finding chips, unsorted */}
               {CHIPS.map((c, i) => {
                 const u = clamp01(machineU * 4 - 1 - i);
@@ -255,11 +257,11 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={Math.min(1, seenU * 2) * ledgerOp}>
               <rect x={SEEN.x} y={SEEN.y} width={SEEN.w} height={SEEN.h} rx={14} fill={colors.PANEL} stroke={matchU > 0.6 ? colors.NEGATIVE : colors.GRID} strokeWidth={matchU > 0.6 ? 2 : 1.5} />
               <text x={SEEN.x + 20} y={SEEN.y + 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>seenReports</text>
-              <text x={SEEN.x + 150} y={SEEN.y + 30} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>every fingerprint this task has produced</text>
+              <text x={SEEN.x + 150} y={SEEN.y + 30} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>every fingerprint this task has produced</text>
               {[KEY_1, KEY_2].map((k, i) => (
                 <g key={i} opacity={clamp01(seenU * 2 - i * 0.5)}>
                   <rect x={SEEN.x + 20} y={SEEN.y + 44 + i * 34} width={SEEN.w - 40} height={26} rx={7} fill={colors.BG} stroke={i === 0 && matchU > 0.6 ? colors.NEGATIVE : colors.GRID} strokeWidth={i === 0 && matchU > 0.6 ? 1.8 : 1} />
-                  <text x={SEEN.x + 32} y={SEEN.y + 62 + i * 34} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>{k}</text>
+                  <text x={SEEN.x + 32} y={SEEN.y + 62 + i * 34} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{k}</text>
                 </g>
               ))}
               {/* the duplicate arriving */}
@@ -267,7 +269,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g opacity={Math.min(1, matchU * 1.6)}>
                   <g transform={`translate(${SEEN.x + 20} ${SEEN.y + 118 - (1 - Math.min(1, matchU * 1.4)) * 26})`}>
                     <rect width={SEEN.w - 40} height={26} rx={7} fill={colors.NEGATIVE} opacity={0.14} stroke={colors.NEGATIVE} strokeWidth={1.8} />
-                    <text x={12} y={18} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>{KEY_1}</text>
+                    <text x={12} y={18} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>{KEY_1}</text>
                   </g>
                   {matchU > 0.6 && (
                     <text x={SEEN.x + SEEN.w - 26} y={SEEN.y + 158} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontWeight={700} opacity={(matchU - 0.6) * 2.5}>
@@ -286,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={JUDGE.x + 18} y={JUDGE.y + 32} fill={colors.MUTED} fontSize={14} fontWeight={700} opacity={0.6}>the progress judge</text>
               <line x1={JUDGE.x + 16} y1={JUDGE.y + 60} x2={JUDGE.x + JUDGE.w - 16} y2={JUDGE.y + 60} stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.7} />
               <text x={JUDGE.x + 18} y={JUDGE.y + 88} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>not consulted</text>
-              <text x={JUDGE.x + 18} y={JUDGE.y + 106} fill={colors.MUTED} fontSize={11.5}>thrash is a proof — no ruling needed</text>
+              <text x={JUDGE.x + 18} y={JUDGE.y + 106} fill={colors.MUTED} fontSize={12}>thrash is a proof — no ruling needed</text>
             </g>
           )}
 
@@ -313,7 +315,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={st} transform={`translate(${STATE.x + 18 + i * 124} ${STATE.y + 40})`}>
                     <rect width={114} height={30} rx={8} fill={active ? color : 'none'} opacity={active ? 0.16 : 1} stroke={active ? color : colors.GRID} strokeWidth={active ? 1.8 : 1} />
-                    <text x={57} y={20} textAnchor="middle" fill={active ? colors.TEXT : colors.MUTED} fontSize={11.5} fontFamily={MONO} fontWeight={active ? 700 : 400}>
+                    <text x={57} y={20} textAnchor="middle" fill={active ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={MONO} fontWeight={active ? 700 : 400}>
                       {st}
                     </text>
                   </g>
@@ -321,13 +323,13 @@ export function Render({ s }: { s: SceneState }) {
               })}
               {flipU > 0.5 && (
                 <g opacity={flipU}>
-                  <text x={STATE.x + 18} y={STATE.y + 102} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+                  <text x={STATE.x + 18} y={STATE.y + 102} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                     statusReason: "refuted twice with the identical finding set —
                   </text>
-                  <text x={STATE.x + 18} y={STATE.y + 118} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+                  <text x={STATE.x + 18} y={STATE.y + 118} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                     rework is not converging"
                   </text>
-                  <text x={STATE.x + 18} y={STATE.y + 142} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={STATE.x + 18} y={STATE.y + 142} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     git commit — "loop: invalid_loop — …" · the stop is in the history
                   </text>
                 </g>
@@ -340,16 +342,17 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* ---- the human ---- */}
-          {humanU > 0 && (
-            <g opacity={humanU} transform={`translate(640 ${614 - (1 - humanU) * 10})`}>
-              <rect x={-250} y={-22} width={500} height={38} rx={19} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-              <text y={3} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
-                wait for a human — only a human resumes the loop
-              </text>
-            </g>
-          )}
         </g>
+
+        {/* ---- the human: sits outside the faded world so it reads over the closing frame ---- */}
+        {humanU > 0 && (
+          <g opacity={humanU} transform={`translate(640 ${588 - (1 - humanU) * 10})`}>
+            <rect x={-250} y={-22} width={500} height={38} rx={19} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+            <text y={3} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+              wait for a human — only a human resumes the loop
+            </text>
+          </g>
+        )}
 
         {/* ---- closing panel ---- */}
         {endU > 0 && (

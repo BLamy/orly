@@ -41,6 +41,11 @@ const ST_BF16 = { x: 990, y: 170 } as const;
 const ST_INT8 = { x: 990, y: 330 } as const;
 const ST_W = 230;
 
+// the bit ladder above the belt: one weight drawn as a row of bit cells
+const BIT_X0 = ST_RELEASE.x - ST_W / 2;
+const BIT_STEP = 24;
+const BIT_W = 20;
+
 // the decoder is a four-field boarding pass: one column per field
 const DECODER = { x: 200, y: 430, w: 880, h: 150 } as const;
 const DEC_COL0 = DECODER.x + 24 + 104;
@@ -72,7 +77,6 @@ export interface Scene {
   decU: ChannelRef<number>; // decoder card
   decK: ChannelRef<number>; // decoder sweep 0..4
   closeU: ChannelRef<number>;
-  focusU: ChannelRef<number>; // decoder focus: the belt steps back while the filename is read
 }
 
 export function buildScene(): Scene {
@@ -88,7 +92,6 @@ export function buildScene(): Scene {
   const decU = tl.channel('decU', 0);
   const decK = tl.channel('decK', 0);
   const closeU = tl.channel('closeU', 0);
-  const focusU = tl.channel('focusU', 0);
 
   // — Beat 1 · the crate arrives —
   tl.caption({
@@ -146,7 +149,6 @@ export function buildScene(): Scene {
     text: 'Which branch you get is written in the rule filename, and the naming is a little language. Read one like a boarding pass: model, purpose, backend, and how many cards.',
   });
   tl.tween(cam, CAM_DEC, { at: 32.7, dur: 1.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 32.7, dur: 1.0, ease: ease.move });
   tl.tween(decU, 1, { at: 33.5, dur: 0.9, ease: ease.enter });
   tl.tween(decK, 4, { at: 34.6, dur: 3.4, ease: ease.linear });
   tl.hold(39.5, 0.5);
@@ -158,7 +160,6 @@ export function buildScene(): Scene {
     text: 'That is the whole preparation ritual: cast the release weights up to sixteen bit once, pick a backend, and let the loader do the shrinking on the way in.',
   });
   tl.tween(cam, CAM_WIDE, { at: 40.2, dur: 1.4, ease: ease.move });
-  tl.tween(focusU, 0, { at: 40.2, dur: 1.2, ease: ease.move });
   tl.hold(46.0, 0.5);
 
   // — Beat 8 · close —
@@ -170,7 +171,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 47.3, dur: 1.3, ease: ease.move });
   tl.hold(52.5, 1.4);
 
-  return { tl, cam, beltU, crateU, gateU, castU, forkU, pickK, onlineU, decU, decK, closeU, focusU };
+  return { tl, cam, beltU, crateU, gateU, castU, forkU, pickK, onlineU, decU, decK, closeU };
 }
 
 const scene = buildScene();
@@ -188,8 +189,7 @@ function Station({ x, y, label, sub, color, u }: { x: number; y: number; label: 
         {label}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
-
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -209,10 +209,11 @@ export function Render({ s }: { s: SceneState }) {
   const decU = s.get(scene.decU);
   const decK = s.get(scene.decK);
   const closeU = s.get(scene.closeU);
-  const focusU = s.get(scene.focusU);
 
   const dimAll = 1 - closeU * 0.86;
-  const beltDim = 1 - focusU * 0.7;
+  // the belt steps back while the camera sits on the decoder: the camera's own move drives it
+  const decFocus = clamp01((cam.y - CAM_WIDE.y) / (CAM_DEC.y - CAM_WIDE.y));
+  const beltDim = 1 - decFocus * 0.7;
   // the crate's x position: enters → gate (pauses) → through cast
   const crateX = ST_RELEASE.x + (ST_CAST.x - 90 - ST_RELEASE.x) * crateU + (ST_FORK.x - ST_CAST.x + 20) * castU;
   const crateColor = castU > 0.55 ? colors.ACCENT : colors.SECONDARY;
@@ -236,10 +237,37 @@ export function Render({ s }: { s: SceneState }) {
             <Station x={ST_BF16.x} y={ST_BF16.y} label="AMXBF16" sub="full fidelity · 16-bit tiles" color={forkU > 0 && pickK < 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
             <Station x={ST_INT8.x} y={ST_INT8.y} label="AMXInt8" sub="faster int math · online quant" color={forkU > 0 && pickK >= 0.5 ? colors.POSITIVE : colors.MUTED} u={forkU} />
 
-            {/* the BF16-required gate */}
+            {/* the bit ladder: the same weight counted in bits, 8 becomes 16 at the cast */}
+            <g opacity={beltU}>
+              <text x={BIT_X0} y={140} fill={colors.MUTED} fontSize={14}>
+                {castU > 0.55 ? 'one weight · 16 bits · BF16' : 'one weight · 8 bits · FP8'}
+              </text>
+              {Array.from({ length: 16 }, (_, i) => (
+                <rect
+                  key={i}
+                  x={BIT_X0 + i * BIT_STEP}
+                  y={148}
+                  width={BIT_W}
+                  height={18}
+                  rx={3}
+                  fill={i < 8 ? colors.SECONDARY : colors.ACCENT}
+                  opacity={i < 8 ? 0.85 : 0.1 + castU * 0.75}
+                />
+              ))}
+            </g>
+            <g opacity={onlineU}>
+              <text x={BIT_X0 + 17 * BIT_STEP} y={140} fill={colors.MUTED} fontSize={14}>
+                in memory only · AMXInt8 · 8 bits
+              </text>
+              {Array.from({ length: 8 }, (_, i) => (
+                <rect key={i} x={BIT_X0 + (17 + i) * BIT_STEP} y={148} width={BIT_W} height={18} rx={3} fill={colors.WARM} opacity={0.85} />
+              ))}
+            </g>
+
+            {/* the BF16-required gate: it is passed once the cast runs */}
             <g opacity={gateU}>
               <line x1={(ST_RELEASE.x + ST_CAST.x) / 2} y1={BELT_Y - 60} x2={(ST_RELEASE.x + ST_CAST.x) / 2} y2={BELT_Y + 60} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeDasharray="8 5" opacity={1 - castU} />
-              <text x={(ST_RELEASE.x + ST_CAST.x) / 2} y={BELT_Y - 72} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={1 - castU * 0.5}>
+              <text x={(ST_RELEASE.x + ST_CAST.x) / 2} y={BELT_Y - 72} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={1 - castU}>
                 SFT requires BF16
               </text>
             </g>
@@ -264,7 +292,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the decoder card: four fields, one column each */}
           <g opacity={decU}>
             <rect x={DECODER.x} y={DECODER.y} width={DECODER.w} height={DECODER.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-            <text x={DECODER.x + 24} y={DECODER.y + 28} fill={colors.MUTED} fontSize={12}>
+            <text x={DECODER.x + 24} y={DECODER.y + 28} fill={colors.MUTED} fontSize={13}>
               kt_optimize_rule, decoded:
             </text>
             {RULE_PARTS.map((p, i) => {
@@ -273,7 +301,7 @@ export function Render({ s }: { s: SceneState }) {
               const w = p.txt.length * DEC_CHAR_W;
               return (
                 <g key={i}>
-                  <text x={cx} y={DECODER.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={cx} y={DECODER.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     {p.field}
                   </text>
                   <text x={cx} y={DECODER.y + 92} textAnchor="middle" fill={on > 0.5 ? colors.WARM : colors.TEXT} fontSize={17} fontFamily="ui-monospace, monospace">
@@ -281,7 +309,7 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                   <g opacity={on}>
                     <line x1={cx - w / 2} y1={DECODER.y + 102} x2={cx + w / 2} y2={DECODER.y + 102} stroke={colors.WARM} strokeWidth={1.6} />
-                    <text x={cx} y={DECODER.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                    <text x={cx} y={DECODER.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                       {p.gloss}
                     </text>
                   </g>

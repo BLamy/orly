@@ -104,13 +104,13 @@ export const MACS = [
 export const CELL = 46;
 export const GAP = 5;
 export const PITCH = CELL + GAP;
-export const IMG = { x: 90, y: 150 }; // 8×8 → spans x 90..493, y 150..553
-export const OUT = { x: 880, y: 200 }; // 6×6 → spans x 880..1181, y 200..501
+export const IMG = { x: 90, y: 120 }; // 8×8 → spans x 90..493, y 120..523
+export const OUT = { x: 880, y: 170 }; // 6×6 → spans x 880..1181, y 170..471
 export const KCELL = 48;
 export const KGAP = 5;
 export const KPITCH = KCELL + KGAP;
 export const KER = { x: 563, y: 40 }; // 3×3 → spans x 563..717, y 40..194
-export const MAC_Y = 556; // multiply-accumulate line, under both grids (clear of the caption lower-third)
+export const MAC_Y = 584; // multiply-accumulate line, under both grids (clear of the image and the caption lower-third)
 
 export const T_TOTAL = 63.4;
 

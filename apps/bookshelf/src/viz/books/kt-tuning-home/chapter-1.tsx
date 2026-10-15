@@ -46,6 +46,12 @@ const RAM = { x: 760, y: 452, w: 410, h: 88 } as const;
 
 // Both framings keep the tower's base label and the 14B note above the caption band.
 const CAM_TOWER: CameraState = { x: 500, y: 370, k: 1.2 };
+// Full-height slab outlines, drawn as dashed ghosts until each slab grows into them.
+const GHOSTS = SLABS.reduce<{ y: number; h: number }[]>((acc, sl) => {
+  const prev = acc.length ? acc[acc.length - 1].y : TOWER.base;
+  const h = gb2px(sl.gb);
+  return [...acc, { y: prev - h, h }];
+}, []);
 const CAM_RIG: CameraState = { x: 740, y: 378, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
@@ -179,7 +185,8 @@ export function Render({ s }: { s: SceneState }) {
   const liteU = s.get(scene.liteU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  // fade the old picture to 0.08 so the closing panel sits on nearly clean ground
+  const dimAll = 1 - closeU * 0.92;
 
   // stacked slabs bottom-up
   let yCursor = TOWER.base;
@@ -197,95 +204,101 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the tower ---- */}
           <g opacity={towerU}>
             <line x1={TOWER.x - 40} y1={TOWER.base} x2={TOWER.x + TOWER.w + 60} y2={TOWER.base} stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={TOWER.x + TOWER.w / 2} y={TOWER.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={TOWER.x + TOWER.w / 2} y={TOWER.base + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               full FP16 fine-tune · DeepSeek-V3 671B
             </text>
           </g>
+          {/* ghosts: the slabs still to come, so the tower's full height is visible from the start */}
+          <g opacity={towerU}>
+            {GHOSTS.map((g, i) => (
+              <rect key={i} x={TOWER.x} y={g.y} width={TOWER.w} height={Math.max(0, g.h - 2)} rx={7} fill="none" stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="5 4" opacity={0.7 * (1 - slab[i])} />
+            ))}
+          </g>
           {slabRects.map((sl) => (
             <g key={sl.key}>
-              <rect x={TOWER.x} y={sl.y} width={TOWER.w} height={Math.max(0, sl.h - 2)} rx={7} fill={sl.color} opacity={0.7 * (1 - freezeU * (sl.key === 'weights (FP16)' ? 0 : 0.55))} />
+              <rect x={TOWER.x} y={sl.y} width={TOWER.w} height={Math.max(0, sl.h - 2)} rx={7} fill={sl.color} opacity={0.92 * (1 - freezeU * (sl.key === 'weights (FP16)' ? 0 : 0.55))} />
               {sl.h > 26 && (
-                <text x={TOWER.x + TOWER.w / 2} y={sl.y + sl.h / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={600} opacity={0.9}>
+                <text x={TOWER.x + TOWER.w / 2} y={sl.y + sl.h / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={13} fontWeight={600}>
                   {sl.key}
                 </text>
               )}
             </g>
           ))}
           {slab[2] >= 1 && (
-            <text x={TOWER.x + TOWER.w / 2} y={TOWER.base - TOWER.hMax - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} fontFamily="ui-monospace, monospace">
+            <text x={TOWER.x + TOWER.w / 2} y={TOWER.base - TOWER.hMax - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace">
               ~1400 GB theoretical
             </text>
           )}
-          {/* veto stamp */}
-          <g opacity={vetoU} transform="rotate(-9 565 300)">
-            <rect x={455} y={276} width={220} height={46} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2.2} />
-            <text x={565} y={306} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
+          {/* veto stamp: sits in the clear space right of the tower, never on a slab */}
+          <g opacity={vetoU} transform="rotate(-9 622 262)">
+            <rect x={512} y={239} width={220} height={46} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2.2} />
+            <text x={622} y={268} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
               “Too Huge to run”
             </text>
           </g>
           {/* frozen overlay + LoRA sliver */}
           <g opacity={freezeU}>
-            <text x={TOWER.x + TOWER.w + 16} y={TOWER.base - 60} fill={colors.ACCENT} fontSize={11}>
+            <text x={TOWER.x + TOWER.w + 16} y={TOWER.base - 60} fill={colors.ACCENT} fontSize={13}>
               base weights frozen
             </text>
           </g>
           <g opacity={loraU}>
             <rect x={TOWER.x + TOWER.w + 14} y={TOWER.base - 40} width={26} height={40} rx={5} fill={colors.WARM} opacity={0.9} />
-            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 22} fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 22} fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
               LoRA adapters · lora_rank: 8
             </text>
-            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 6} fill={colors.MUTED} fontSize={11}>
+            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 6} fill={colors.MUTED} fontSize={12.5}>
               the only trainable state
             </text>
           </g>
 
           {/* ---- the rig ---- */}
           <g opacity={rigU}>
-            <text x={RAM.x + RAM.w / 2} y={CARD.y - 30} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            <text x={RAM.x + RAM.w / 2} y={CARD.y - 30} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               the home rig
             </text>
             {CARDS.map((k) => (
               <g key={k}>
                 <rect x={CARD.x + k * (CARD.w + CARD.gap)} y={CARD.y} width={CARD.w} height={CARD.h} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5}>
+                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
                   RTX 4090
                 </text>
-                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   24 GB
                 </text>
               </g>
             ))}
             <rect x={RAM.x} y={RAM.y} width={RAM.w} height={RAM.h} rx={11} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={RAM.x + RAM.w / 2} y={RAM.y + 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
               CPU RAM · ~1.2–1.3 TB for 671B
             </text>
-            <text x={RAM.x + RAM.w / 2} y={RAM.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               layered MoE offload (frozen experts)
             </text>
           </g>
           {/* split flows */}
           <g opacity={splitU}>
-            <text x={RAM.x + RAM.w / 2} y={CARD.y + CARD.h + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5}>
+            <text x={RAM.x + RAM.w / 2} y={CARD.y + CARD.h + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
               ↑ attention + adapters on the cards
             </text>
-            <text x={RAM.x + RAM.w / 2} y={RAM.y - 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5}>
+            <text x={RAM.x + RAM.w / 2} y={RAM.y - 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
               ↓ mixture layers stream through system memory
             </text>
           </g>
           {/* measured chip */}
           <g opacity={meterU}>
-            <rect x={RAM.x + 40} y={CARD.y + 96} width={330} height={54} rx={11} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={RAM.x + 205} y={CARD.y + 119} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+            <rect x={RAM.x + 25} y={CARD.y + 104} width={360} height={56} rx={11} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
+            <text x={RAM.x + 205} y={CARD.y + 127} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               70 GB measured peak (all cards)
             </text>
-            <text x={RAM.x + 205} y={CARD.y + 139} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={RAM.x + 205} y={CARD.y + 147} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               vs 1400 GB theoretical — 20× less video memory
             </text>
           </g>
           {/* 14B note */}
           <g opacity={liteU}>
-            <rect x={RAM.x + 40} y={RAM.y + RAM.h + 14} width={330} height={32} rx={9} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.1} />
-            <text x={RAM.x + 205} y={RAM.y + RAM.h + 35} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <rect x={RAM.x + 15} y={RAM.y + RAM.h + 14} width={380} height={34} rx={9} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.1} />
+            <text x={RAM.x + 205} y={RAM.y + RAM.h + 36} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               DeepSeek-V2-Lite 14B: 6.08 GB (KT) vs 32.12 GB (HF)
             </text>
           </g>
@@ -297,13 +310,13 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             freeze the giant · train the sliver · split the memory
           </text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             LoRA holds the pen; the heterogeneous split holds the model
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             next: one YAML flag hands the whole engine to K Transformers
           </text>
-          <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             finetuning_type: lora · lora_rank: 8 · 2–4 × RTX 4090
           </text>
         </g>

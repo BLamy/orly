@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -73,13 +73,13 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
-          {/* the gate demo (whisper once the chart takes over) */}
-          <g opacity={Math.max(0.1, gateU - 0.9 * axU)}>
-            <rect x={GATE_X - 40} y={GATE_Y0 - 36} width={190} height={330} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={GATE_X + 55} y={GATE_Y0 - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={640}>
+          {/* the gate demo (eases back once the chart takes over, but stays legible) */}
+          <g opacity={Math.max(0.7, gateU - 0.3 * axU)}>
+            <rect x={GATE_X - 40} y={GATE_Y0 - 36} width={230} height={330} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+            <text x={GATE_X + 75} y={GATE_Y0 - 12} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={640}>
               the filter
             </text>
-            <text x={GATE_X + 55} y={GATE_Y0 + 8} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={GATE_X + 75} y={GATE_Y0 + 8} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               accept ∝ plausibility in reality
             </text>
             {GATE_DEMO.map((c, i) => {
@@ -87,10 +87,10 @@ function Frame({ s }: { s: SceneState }) {
               if (u <= 0) return null;
               return (
                 <g key={i} opacity={u}>
-                  <text x={GATE_X - 18} y={GATE_Y0 + 40 + i * 28} fill={colors.MUTED} fontSize={12}>
+                  <text x={GATE_X - 18} y={GATE_Y0 + 40 + i * 28} fill={colors.TEXT} fillOpacity={0.8} fontSize={13}>
                     {`x = ${c.x >= 0 ? '+' : ''}${c.x.toFixed(2)}`}
                   </text>
-                  <text x={GATE_X + 128} y={GATE_Y0 + 40 + i * 28} textAnchor="end" fill={c.acc ? colors.POSITIVE : colors.NEGATIVE} fontSize={12.5} fontWeight={640}>
+                  <text x={GATE_X + 176} y={GATE_Y0 + 40 + i * 28} textAnchor="end" fill={c.acc ? colors.POSITIVE : colors.NEGATIVE} fontSize={13} fontWeight={640}>
                     {c.acc ? 'accepted' : 'rejected'}
                   </text>
                 </g>
@@ -107,18 +107,20 @@ function Frame({ s }: { s: SceneState }) {
                 generation →
               </text>
               <line x1={CH_X0 - 8} y1={chY(1)} x2={chX(GENS) + 10} y2={chY(1)} stroke={colors.ACCENT} strokeDasharray="4 5" opacity={0.5} />
-              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 1.0
               </text>
-              <text x={CH_X0} y={chY(1.1) - 8} fill={colors.MUTED} fontSize={12.5}>
+              <text x={CH_X0} y={chY(1.1) - 8} fill={colors.MUTED} fontSize={13}>
                 spread vs generation · same seed, with and without the filter
               </text>
+              {/* the collapse the caption describes, previewed as a faint ghost */}
+              <path d={runPath(RAW, GENS)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="4 5" opacity={0.16} />
             </g>
           )}
           {rawGen > 0 && (
-            <g opacity={0.55}>
+            <g opacity={0.8}>
               <path d={runPath(RAW, rawGen)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} />
-              <text x={chX(Math.min(rawGen, GENS)) - 8} y={chY(rawNow.sd) + 20} textAnchor="end" fill={colors.NEGATIVE} fontSize={12.5}>
+              <text x={chX(Math.min(rawGen, GENS)) - 8} y={chY(rawNow.sd) + 20} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">
                 {`unfiltered: ${rawNow.sd.toFixed(2)}`}
               </text>
             </g>
@@ -127,7 +129,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={runPath(FILT, filtGen)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
               <circle cx={chX(Math.min(filtGen, GENS))} cy={chY(filtNow.sd)} r={5} fill={colors.POSITIVE} />
-              <text x={chX(Math.min(filtGen, GENS)) - 8} y={chY(filtNow.sd) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={13}>
+              <text x={chX(Math.min(filtGen, GENS)) - 8} y={chY(filtNow.sd) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontWeight={640} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">
                 {`filtered: ${filtNow.sd.toFixed(2)}`}
               </text>
             </g>
@@ -140,10 +142,10 @@ function Frame({ s }: { s: SceneState }) {
               <path d={curvePath(0, 1)} fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="6 5" opacity={0.5} />
               <path d={curvePath(RAW_FINAL.mu, RAW_FINAL.sd)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} opacity={0.8} />
               <path d={curvePath(FILT_FINAL.mu, FILT_FINAL.sd)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
-              <text x={dx(RAW_FINAL.mu)} y={dy(gauss(RAW_FINAL.mu, RAW_FINAL.mu, RAW_FINAL.sd)) - 10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
+              <text x={dx(RAW_FINAL.mu)} y={dy(gauss(RAW_FINAL.mu, RAW_FINAL.mu, RAW_FINAL.sd)) - 10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                 unfiltered · gen 30
               </text>
-              <text x={dx(-2.2)} y={dy(0.32)} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
+              <text x={dx(-2.2)} y={dy(0.32)} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
                 filtered · gen 30
               </text>
             </g>
@@ -159,21 +161,19 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* clean ending card */}
+      {/* clean ending card: solid panel, so nothing faded shows through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             What Filtering Saves
           </text>
-          <MathLabel
-            tex={`\\text{unfiltered}: \\sigma \\to ${RAW_FINAL.sd.toFixed(2)} \\qquad \\text{filtered}: \\sigma \\to ${FILT_FINAL.sd.toFixed(2)}\\ (\\min ${FILT_MIN.toFixed(2)})`}
-            x={640}
-            y={340}
-            fontSize={19}
-            color={colors.TEXT}
-            opacity={endU}
-          />
+          <text x={385} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontWeight={600}>
+            {`unfiltered: σ → ${RAW_FINAL.sd.toFixed(2)}`}
+          </text>
+          <text x={870} y={340} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontWeight={600}>
+            {`filtered: σ → ${FILT_FINAL.sd.toFixed(2)} (min ${FILT_MIN.toFixed(2)})`}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             synthetic data fails when nothing separates good samples from bad
           </text>

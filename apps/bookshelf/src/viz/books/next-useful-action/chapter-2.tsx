@@ -29,7 +29,6 @@ import {
   ProfilePage,
   ProposedTag,
   ROLE,
-  SuggestHalo,
   TASK_TEXT,
   captionPlan,
   controlRect,
@@ -284,7 +283,7 @@ export function buildScene() {
   tl.tween(strip2U, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(gaugeU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(cam, CAM_TRAY, { at: b + 0.2, dur: 1.3, ease: ease.move });
-  tl.tween(formP, F_WRONG, { at: b + 0.4, dur: 1.8, ease: ease.linear });
+  tl.tween(formP, F_WRONG, { at: b + 0.3, dur: 0.7, ease: ease.linear });
   tl.tween(wrongU, 1, { at: b + 0.8, dur: 0.6, ease: ease.enter });
   tl.tween(wrongBadgeU, 1, { at: b + 3.2, dur: 0.5, ease: ease.pop });
   tl.tween(wrongU, 0.4, { at: b + 6.0, dur: 0.6, ease: ease.move });
@@ -295,6 +294,7 @@ export function buildScene() {
   tl.tween(wrongU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(wrongBadgeU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(rightU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(tetherU, 1, { at: b + 0.3, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_HOME, { at: b + 0.2, dur: 1.3, ease: ease.move });
   tl.tween(unsureU, 1, { at: b + 0.5, dur: 0.7, ease: ease.enter });
   tl.tween(formP, F_UNSURE, { at: b + 1.4, dur: 1.8, ease: ease.linear });
@@ -384,6 +384,34 @@ function MarkPill({ id, text, color, u, side }: { id: ControlId; text: string; c
       <text x={x + w / 2} y={y + 13} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
         {text}
       </text>
+    </g>
+  );
+}
+
+/** The predicted-target halo, open at the top so it never crosses the page's own field label. */
+function OpenHalo({ rect, u, phase, label }: { rect: { x: number; y: number; w: number; h: number }; u: number; phase: number; label: string }) {
+  const o = clamp01(u);
+  if (o <= 0.002) return null;
+  const pad = 12;
+  const R = 16;
+  const X0 = rect.x - pad;
+  const X1 = rect.x + rect.w + pad;
+  const Y0 = rect.y - pad;
+  const Y1 = rect.y + rect.h + pad;
+  const d = `M${X0} ${Y0} V${Y1 - R} Q${X0} ${Y1} ${X0 + R} ${Y1} H${X1 - R} Q${X1} ${Y1} ${X1} ${Y1 - R} V${Y0}`;
+  const w = label.length * 7.2 + 26;
+  const breathe = 0.5 + 0.5 * Math.sin(phase * Math.PI * 2);
+  return (
+    <g opacity={o}>
+      <rect x={X0} y={Y0} width={X1 - X0} height={Y1 - Y0} rx={R} fill={ROLE.MODEL} opacity={0.05 + 0.06 * breathe} />
+      <path d={d} fill="none" stroke={ROLE.MODEL} strokeWidth={2.4} strokeDasharray="9 7" strokeDashoffset={-phase * 32} />
+      <g transform={`translate(${X1 - w} ${Y0 - 22})`}>
+        <rect width={w} height={18} rx={9} fill="#1a1333" stroke={ROLE.MODEL} strokeWidth={1} />
+        <circle cx={12} cy={9} r={4} fill="none" stroke={ROLE.MODEL} strokeWidth={1.5} strokeDasharray="2.5 2" />
+        <text x={21} y={13} fill={ROLE.MODEL} fontSize={12} fontFamily={MONO}>
+          {label}
+        </text>
+      </g>
     </g>
   );
 }
@@ -567,10 +595,10 @@ export function Render({ s }: { s: SceneState }) {
         })}
       </g>
       <g opacity={s.get(scene.poolLblU) * (formP < 2.5 ? 1 : 0.4)}>
-        <text x={POOL.x + 12} y={438} textAnchor="middle" fill={ROLE.MODEL} fontSize={10} fontFamily={MONO}>
+        <text x={POOL.x + 12} y={438} textAnchor="middle" fill={ROLE.MODEL} fontSize={12} fontFamily={MONO}>
           model
         </text>
-        <text x={POOL.x + 12} y={450} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+        <text x={POOL.x + 12} y={452} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           budget
         </text>
       </g>
@@ -619,7 +647,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* beat 5 — a ribbon of text to validate, versus one id */}
       {(stripU > 0.002 || strip2U > 0.002) && (
         <g>
-          <text x={STRIP.x} y={STRIP.y1 - 9} fill={colors.MUTED} fontSize={11.5} opacity={clamp01(stripU * 4)}>
+          <text x={STRIP.x} y={STRIP.y1 - 9} fill={colors.MUTED} fontSize={12.5} opacity={clamp01(stripU * 4)}>
             generated instruction — many output pieces, then parse and validate free text
           </text>
           {Array.from({ length: STRIP.n }, (_, i) => {
@@ -628,8 +656,8 @@ export function Render({ s }: { s: SceneState }) {
             return <rect key={i} x={stripX(i)} y={STRIP.y1} width={STRIP.cell} height={20} rx={4} fill={ROLE.MODEL} opacity={0.75 * u} />;
           })}
           <g opacity={clamp01(stripU * STRIP.n - STRIP.n + 1)}>
-            <rect x={stripX(STRIP.n) + 4} y={STRIP.y1 - 1} width={40} height={22} rx={5} fill="#1a1405" stroke={ROLE.PENDING} strokeDasharray="4 3" />
-            <text x={stripX(STRIP.n) + 24} y={STRIP.y1 + 14} textAnchor="middle" fill={ROLE.PENDING} fontSize={10} fontFamily={MONO}>
+            <rect x={stripX(STRIP.n) + 4} y={STRIP.y1 - 1} width={48} height={22} rx={5} fill="#1a1405" stroke={ROLE.PENDING} strokeDasharray="4 3" />
+            <text x={stripX(STRIP.n) + 28} y={STRIP.y1 + 14} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               parse?
             </text>
           </g>
@@ -640,17 +668,17 @@ export function Render({ s }: { s: SceneState }) {
             return <rect key={i} x={lerp(stripX(i), STRIP.x, u)} y={lerp(STRIP.y1, STRIP.y2, u)} width={STRIP.cell} height={20} rx={4} fill={ROLE.MODEL} opacity={0.35 * (1 - u)} />;
           })}
           <g opacity={clamp01(strip2U * 2 - 1)}>
-            <text x={STRIP.x} y={STRIP.y2 - 9} fill={colors.MUTED} fontSize={11.5}>
+            <text x={STRIP.x} y={STRIP.y2 - 9} fill={colors.MUTED} fontSize={12.5}>
               menu choice — one id, checked against the inventory
             </text>
             <rect x={STRIP.x} y={STRIP.y2} width={44} height={20} rx={4} fill={ROLE.MODEL} />
-            <text x={STRIP.x + 22} y={STRIP.y2 + 14} textAnchor="middle" fill="#0a0e1a" fontSize={11} fontFamily={MONO} fontWeight={700}>
+            <text x={STRIP.x + 22} y={STRIP.y2 + 14} textAnchor="middle" fill="#0a0e1a" fontSize={12} fontFamily={MONO} fontWeight={700}>
               c2
             </text>
-            <text x={STRIP.x + 56} y={STRIP.y2 + 14} fill={ROLE.CHECKED} fontSize={10.5} fontFamily={MONO}>
+            <text x={STRIP.x + 56} y={STRIP.y2 + 14} fill={ROLE.CHECKED} fontSize={12} fontFamily={MONO}>
               ✓ id exists in observation v12
             </text>
-            <text x={STRIP.x + 300} y={STRIP.y2 + 14} fill={ROLE.PENDING} fontSize={10} fontFamily={MONO}>
+            <text x={STRIP.x + 300} y={STRIP.y2 + 14} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               unscaled · not measured
             </text>
           </g>
@@ -663,7 +691,7 @@ export function Render({ s }: { s: SceneState }) {
               <text y={-58} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontWeight={650}>
                 whole experience faster?
               </text>
-              <text y={18} textAnchor="middle" fill={ROLE.PENDING} fontSize={10} fontFamily={MONO}>
+              <text y={18} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
                 empty gauge · must be measured
               </text>
             </g>
@@ -672,12 +700,12 @@ export function Render({ s }: { s: SceneState }) {
       )}
 
       {/* beat 8 — the short path lands on the page; the escape route leaves the fast path */}
-      <SuggestHalo rect={nameRect} u={s.get(scene.haloU)} phase={phase} label="chosen · still to be checked" />
+      <OpenHalo rect={nameRect} u={s.get(scene.haloU)} phase={phase} label="chosen · to check" />
       {escapeU > 0.002 && (
         <g>
           <path d={`M${TILE.x + TILE.w + 8} ${rowY(UNSURE_ROW) + 34}H1236`} fill="none" stroke={ROLE.PENDING} strokeWidth={2.4} pathLength={1} strokeDasharray={`${escapeU} 1`} />
           <path d="M1246 439l-12 -7v14Z" fill={ROLE.PENDING} opacity={clamp01(escapeU * 5 - 4)} />
-          <text x={1236} y={rowY(UNSURE_ROW) + 54} textAnchor="end" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO} opacity={clamp01(escapeU * 2 - 0.8)}>
+          <text x={1236} y={rowY(UNSURE_ROW) + 54} textAnchor="end" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO} opacity={clamp01(escapeU * 2 - 0.8)}>
             escape route → slower path · ask · fall back
           </text>
         </g>
@@ -691,7 +719,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={534} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             A valid answer is not yet a correct one.
           </text>
-          <ProposedTag x={846} y={484} u={1} text="PRODUCT HYPOTHESIS" />
+          <ProposedTag x={640 - (18 + 7 * 18) / 2} y={458} u={1} text="PRODUCT HYPOTHESIS" />
         </g>
       )}
     </Camera>

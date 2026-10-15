@@ -57,8 +57,8 @@ export const FINAL_INFLATION = FIXED_SCORES[GENS - 1] - ROLLING_SCORES[GENS - 1]
 // —— Stage mapping ————————————————————————————————————————————————————
 export const X0 = 150;
 export const X1 = 1130;
-export const Y0 = 560;
-export const Y1 = 130;
+export const Y0 = 500;
+export const Y1 = 120;
 export const YEAR_MIN = 2023.6;
 export const YEAR_MAX = 2026.5;
 export const sx = (year: number): number => X0 + ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (X1 - X0);
@@ -66,8 +66,9 @@ export const sy = (score: number): number => Y0 + (score / 100) * (Y1 - Y0);
 // sim mapping (generations along x)
 export const gx = (gi: number): number => X0 + (gi / (GENS - 1)) * (X1 - X0);
 
-export const CAM_LAUNCH: CameraState = { x: 380, y: 430, k: 1.3 };
-export const CAM_VERIFIED: CameraState = { x: 640, y: 330, k: 1.15 };
+// Framed so the whole chart (labels included) stays on stage at every caption midpoint.
+export const CAM_LAUNCH: CameraState = { x: 560, y: 340, k: 1.1 };
+export const CAM_VERIFIED: CameraState = { x: 605, y: 360, k: 1.15 };
 
 export interface Scene {
   tl: Timeline;

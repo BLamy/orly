@@ -76,37 +76,38 @@ export function Render({ s }: { s: SceneState }) {
         <line x1="140" y1="325" x2="1140" y2="325" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
         {TASKS.map((task, i) => {
           const u = clamp01(s.get(scene.tasksU) - i);
-          return <g key={i} opacity={u} transform={`translate(${task.x} 325) scale(${0.75 + u * 0.25})`}><circle r="11" fill={task.source === 'SCBench' ? colors.ACCENT : colors.SECONDARY} /><text y="29" textAnchor="middle" fill={colors.MUTED} fontSize="12">{i + 1}</text></g>;
+          return <g key={i} opacity={u} transform={`translate(${task.x} 325) scale(${0.75 + u * 0.25})`}><circle r="11" fill={task.source === 'SCBench' ? colors.ACCENT : colors.SECONDARY} /><text y="29" textAnchor="middle" fill={colors.MUTED} fontSize="14">{i + 1}</text></g>;
         })}
-        <text x="155" y="376" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>11 SCBench</text>
-        <text x="860" y="376" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>16 BeyondSWE</text>
+        <text x="155" y="376" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>11 SCBench</text>
+        <text x="860" y="376" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>16 BeyondSWE</text>
 
+        <text x="640" y="206" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontWeight="800" opacity={s.get(scene.fullU) * (1 - 0.2 * slice)}>TYPE III · one full task</text>
         <g opacity={s.get(scene.fullU) * fullLayerOpacity}>
-          <rect x="132" y="244" width="1018" height="162" rx="34" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
-          <text x="640" y="205" textAnchor="middle" fill={colors.POSITIVE} fontSize="17" fontWeight="800">TYPE III · one full task</text>
-          <text x="640" y="394" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.fullStatsU)}>original state through stop · 139.81–288.90 Worker turns · 8.60–13.46 control cycles</text>
+          <rect x="132" y="222" width="1018" height="190" rx="34" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
+          <text x="640" y="398" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono} opacity={s.get(scene.fullStatsU) * (1 - slice)}>original state through stop · 139.81–288.90 Worker turns · 8.60–13.46 control cycles</text>
         </g>
         <g opacity={sliceLayerOpacity}>
-          <rect x={330 + slice * 70} y="262" width={540 - slice * 130} height="126" rx="28" fill="#2b2415" fillOpacity="0.22" stroke={colors.WARM} strokeWidth="5" />
-          <text x="560" y="238" textAnchor="middle" fill={colors.WARM} fontSize="17" fontWeight="800">TYPE II · one task slice</text>
-          <text x="560" y="425" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.sliceStatsU)}>prepared workspace through stage · 51.38–80.12 Worker turns · cumulative stage checks</text>
+          <rect x={330 + slice * 59} y="260" width={540 - slice * 144} height="106" rx="28" fill="#2b2415" fillOpacity="0.22" stroke={colors.WARM} strokeWidth="5" />
+          <text x="560" y="248" textAnchor="middle" fill={colors.WARM} fontSize="17" fontWeight="800">TYPE II · one task slice</text>
+          <text x="560" y="398" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono} opacity={s.get(scene.sliceStatsU)}>prepared workspace through stage · 51.38–80.12 Worker turns · cumulative stage checks</text>
         </g>
-        <g transform="translate(888 122)" opacity={s.get(scene.savingU)}>
+        <g transform="translate(250 136)" opacity={s.get(scene.savingU)}>
           <circle r="76" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" />
           <text y="-4" textAnchor="middle" fill={colors.POSITIVE} fontSize="28" fontWeight="900">−64.4%</text>
-          <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="12">mean estimated cost</text>
+          <text y="24" textAnchor="middle" fill={colors.TEXT} fontSize="14">mean estimated cost</text>
         </g>
         <g opacity={freeze}>
-          <line x1="760" y1="246" x2="760" y2="404" stroke={colors.NEGATIVE} strokeWidth="6" />
-          <circle cx="760" cy="325" r="24" fill={colors.NEGATIVE} fillOpacity="0.25" stroke={colors.NEGATIVE} strokeWidth="3" />
-          <text x="760" y="216" textAnchor="middle" fill={colors.NEGATIVE} fontSize="16" fontWeight="800">TYPE I · frozen control point</text>
+          <line x1="749" y1="242" x2="749" y2="376" stroke={colors.NEGATIVE} strokeWidth="6" />
+          <circle cx="749" cy="325" r="24" fill={colors.NEGATIVE} fillOpacity="0.25" stroke={colors.NEGATIVE} strokeWidth="3" />
+          <text x="761" y="248" textAnchor="start" fill={colors.NEGATIVE} fontSize="16" fontWeight="800">TYPE I · frozen control point</text>
         </g>
         {['advance', 'verify', 'recover', 'stop'].map((label, i) => {
           const u = clamp01(s.get(scene.candidatesU) - i);
           const x = 565 + i * 130;
           const win = i === 1 && s.get(scene.winnerU) > 0;
-          return <g key={label} transform={`translate(${x} 470)`} opacity={u}><rect x="-55" y="-25" width="110" height="50" rx="16" fill={win ? '#102a22' : '#141d2f'} stroke={win ? colors.POSITIVE : colors.MUTED} strokeWidth={win ? 4 : 2} /><text y="5" textAnchor="middle" fill={win ? colors.POSITIVE : colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>{replay > 0 && <g><circle cx="-18" cy="40" r="6" fill={replay >= 0.8 ? colors.POSITIVE : colors.MUTED} /><circle cx="18" cy="40" r="6" fill={replay >= 1.8 ? colors.POSITIVE : colors.MUTED} /></g>}</g>;
+          return <g key={label} transform={`translate(${x} 490)`} opacity={u}><rect x="-55" y="-25" width="110" height="50" rx="16" fill={win ? '#102a22' : '#141d2f'} stroke={win ? colors.POSITIVE : colors.MUTED} strokeWidth={win ? 4 : 2} /><text y="5" textAnchor="middle" fill={win ? colors.POSITIVE : colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{label}</text>{replay > 0 && <g><circle cx="-18" cy="40" r="6" fill={replay >= 0.8 ? colors.POSITIVE : colors.MUTED} /><circle cx="18" cy="40" r="6" fill={replay >= 1.8 ? colors.POSITIVE : colors.MUTED} /></g>}</g>;
         })}
+        <text x="492" y="534" textAnchor="end" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono} opacity={clamp01(replay)}>two matched schedules</text>
       </g>
     </g>
     <g opacity={close}>

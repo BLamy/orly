@@ -64,8 +64,8 @@ export function Render({ s }: { s: SceneState }) {
         <line x1={150} y1={290} x2={1130} y2={290} stroke={colors.GRID} strokeWidth={2} />
         {vals.map((v, i) => (
           <g key={i} opacity={p} transform={`translate(${sx(v)},290)`}>
-            <circle r={16} fill={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE][i]} />
-            <text y={-28} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={mono}>{['a', 'b', 'c', 'd'][i]}</text>
+            <circle r={14} fill={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE][i]} />
+            <text y={-26} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>{['a', 'b', 'c', 'd'][i]}</text>
           </g>
         ))}
         <MathLabel tex={'\\chi(a,b;c,d)=\\frac{(a+c)(b+d)}{(a+d)(b+c)}'} x={640} y={360} opacity={s.get(scene.meterU)} />
@@ -78,9 +78,10 @@ export function Render({ s }: { s: SceneState }) {
         <Chip x={765} y={440} text="affine" color={colors.WARM} width={100} />
         <Chip x={1010} y={440} text="χ unchanged" opacity={s.get(scene.affineU)} color={colors.POSITIVE} width={150} />
       </g>
+      <text x={640} y={476} textAnchor="middle" opacity={s.get(scene.affineU)} fill={colors.TEXT} fontFamily={mono} fontSize={14}>Möbius transformations · fractional-linear maps</text>
       <g opacity={s.get(scene.tripletU)}>
-        <text x={150} y={500} fill={colors.NEGATIVE} fontFamily={mono} fontSize={12}>2 or 3 points · no invariant</text>
-        <text x={960} y={500} fill={colors.POSITIVE} fontFamily={mono} fontSize={12}>4 points · one cross-ratio</text>
+        <text x={150} y={500} fill={colors.NEGATIVE} fontFamily={mono} fontSize={14}>2 or 3 points · no invariant</text>
+        <text x={960} y={500} fill={colors.POSITIVE} fontFamily={mono} fontSize={14}>4 points · one cross-ratio</text>
       </g>
       <g opacity={s.get(scene.roundsU)}>
         {['round 1 · one χ', 'round 2 · four χ', 'round 3 · mixed'].map((x, i) => (

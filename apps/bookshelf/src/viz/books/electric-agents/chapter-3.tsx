@@ -46,7 +46,7 @@ const SOURCES = [
 
 const SRC = { x: 218, y0: 118, dy: 52 } as const;
 const RING = { x: 840, y: 290, r: 74 } as const;
-const TAPE = { y: 520, x0: 150, x1: 1130 } as const;
+const TAPE = { y: 548, x0: 150, x1: 1130 } as const;
 const SLOT = (i: number): number => 330 + i * 62;
 
 // camera marks — one medium shot holds the producer column, the ring, the
@@ -114,7 +114,6 @@ export function buildScene(): Scene {
     dur: 5.2,
     text: 'So how does it ever act? Wakes. A wake is one invocation of the entity handler, triggered by something outside it.',
   });
-  tl.tween(noteU, 1, { at: 8.8, dur: 0.8, ease: ease.enter });
 
   // — Beat 3 · the seven producers —
   tl.caption({
@@ -122,7 +121,6 @@ export function buildScene(): Scene {
     dur: 8,
     text: 'Seven things can produce one: a message, a child finishing, an observed entity changing, shared state changing, a schedule firing, a webhook, or a Postgres row arriving through sync.',
   });
-  tl.tween(noteU, 0, { at: 14.0, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_WIDE, { at: 14.2, dur: 1.4, ease: ease.move });
   tl.tween(srcU, 1, { at: 14.6, dur: 3.6, ease: ease.move });
   tl.hold(22.2, 0.5);
@@ -151,6 +149,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Then the handler runs. It receives a wake event describing exactly what happened: the source stream, the type, the range of new offsets, and how many events arrived.',
   });
+  tl.tween(noteU, 1, { at: 36.6, dur: 1.5, ease: ease.enter });
   tl.tween(handU, 1, { at: 37.0, dur: 0.9, ease: ease.enter });
   tl.tween(cardU, 1, { at: 38.2, dur: 0.9, ease: ease.enter });
   tl.hold(43.4, 0.5);
@@ -172,6 +171,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: "While it slept, three more messages arrived. They don't spawn three handlers. The runtime coalesces them into a single wake covering a contiguous range of offsets.",
   });
+  tl.tween(noteU, 0, { at: 50.8, dur: 1.5, ease: ease.move });
   tl.tween(burstU, 1, { at: 51.4, dur: 2.6, ease: ease.linear });
   tl.tween(coalU, 1, { at: 54.4, dur: 1.2, ease: ease.draw });
   tl.tween(card2U, 1, { at: 55.6, dur: 0.9, ease: ease.enter });
@@ -230,16 +230,16 @@ function WakeCard({ x, y, u, count, range }: { x: number; y: number; u: number; 
   ];
   return (
     <g opacity={u}>
-      <rect x={x} y={y} width={240} height={124} rx={10} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.3} />
-      <text x={x + 14} y={y + 24} fill={colors.TEAL} fontSize={15} fontFamily={mono} fontWeight={700}>
+      <rect x={x} y={y} width={240} height={136} rx={10} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.3} />
+      <text x={x + 14} y={y + 26} fill={colors.TEAL} fontSize={16} fontFamily={mono} fontWeight={700}>
         WakeEvent
       </text>
       {rows.map(([k, v], i) => (
         <g key={k}>
-          <text x={x + 14} y={y + 48 + i * 20} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+          <text x={x + 14} y={y + 52 + i * 22} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
             {k}
           </text>
-          <text x={x + 226} y={y + 48 + i * 20} textAnchor="end" fill={i === 3 && count > 1 ? colors.WARM : colors.TEXT} fontSize={13} fontFamily={mono}>
+          <text x={x + 226} y={y + 52 + i * 22} textAnchor="end" fill={i === 3 && count > 1 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={mono}>
             {v}
           </text>
         </g>
@@ -292,14 +292,14 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={label} opacity={u * dimU * (0.4 + 0.6 * (i === 0 ? 1 : 0.7))}>
               <rect x={SRC.x - 118} y={y - 15} width={252} height={30} rx={15} fill={colors.PANEL} stroke={i === 0 ? colors.POSITIVE : colors.GRID} strokeWidth={i === 0 ? 1.3 : 1} />
-              <text x={SRC.x + 8} y={y + 5} textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize={13.5}>
+              <text x={SRC.x + 8} y={y + 5} textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize={14}>
                 {label}
               </text>
             </g>
           );
         })}
         {srcU > 0.9 && (
-          <text x={SRC.x + 8} y={SRC.y0 + 6 * SRC.dy + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={(srcU - 0.9) * 10 * dimU}>
+          <text x={SRC.x + 8} y={SRC.y0 + 6 * SRC.dy + 42} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={(srcU - 0.9) * 10 * dimU}>
             every one of them ends as a wake
           </text>
         )}
@@ -334,7 +334,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the tape ---- */}
         <g opacity={dimU}>
           <line x1={TAPE.x0} y1={TAPE.y} x2={TAPE.x0 + (TAPE.x1 - TAPE.x0) * tapeU} y2={TAPE.y} stroke={colors.GRID} strokeWidth={2} />
-          <text x={TAPE.x0} y={TAPE.y - 20} fill={colors.MUTED} fontSize={13.5} opacity={tapeU}>
+          <text x={TAPE.x0} y={TAPE.y - 20} fill={colors.MUTED} fontSize={14} opacity={tapeU}>
             the entity&apos;s stream
           </text>
 
@@ -342,7 +342,7 @@ export function Render({ s }: { s: SceneState }) {
           {wtick1U > 0 && (
             <g opacity={wtick1U}>
               <rect x={SLOT(0) - 9} y={TAPE.y - 13} width={18} height={26} rx={3} fill={colors.TEAL} />
-              <text x={SLOT(0)} y={TAPE.y + 34} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={mono}>
+              <text x={SLOT(0)} y={TAPE.y + 34} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontFamily={mono}>
                 wake
               </text>
               <circle cx={SLOT(0)} cy={TAPE.y} r={22 * (1 - wtick1U)} fill="none" stroke={colors.TEAL} strokeWidth={2} opacity={1 - wtick1U} />
@@ -357,12 +357,12 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i} opacity={u}>
                 <rect x={SLOT(1 + i) - 9} y={TAPE.y - 13 - 20 * (1 - u)} width={18} height={26} rx={3} fill={t === 'run' ? colors.SECONDARY : colors.ACCENT} />
                 {i === 0 && (
-                  <text x={SLOT(1)} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+                  <text x={SLOT(1)} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
                     run
                   </text>
                 )}
                 {i === 1 && (
-                  <text x={(SLOT(2) + SLOT(3)) / 2} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={u}>
+                  <text x={(SLOT(2) + SLOT(3)) / 2} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono} opacity={u}>
                     text_delta × 2
                   </text>
                 )}
@@ -413,12 +413,19 @@ export function Render({ s }: { s: SceneState }) {
         {dedupU > 0 && (
           <g opacity={dedupU * dimU}>
             <rect x={905} y={365} width={218} height={78} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={919} y={387} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
+            <text x={919} y={387} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               status — primary key
             </text>
             <rect x={919} y={398} width={190} height={24} rx={5} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1} />
-            <text x={929} y={414} fill={colors.TEXT} fontSize={13} fontFamily={mono}>
+            <text x={929} y={414} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
               key current · replied
+            </text>
+            {/* what a key cannot dedup: the side effect runs again */}
+            <text x={905} y={508} fill={colors.WARM} fontSize={14}>
+              no key: a web search or email
+            </text>
+            <text x={905} y={528} fill={colors.WARM} fontSize={14}>
+              runs again on redelivery
             </text>
             {/* the duplicate write bounces */}
             {dedupU > 0.45 && (
@@ -432,7 +439,7 @@ export function Render({ s }: { s: SceneState }) {
                   fill={colors.NEGATIVE}
                   opacity={0.5 * (1 - clamp01((dedupU - 0.7) / 0.3))}
                 />
-                <text x={1014} y={462} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+                <text x={1014} y={462} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                   same key — dedup
                 </text>
               </g>
@@ -444,6 +451,8 @@ export function Render({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
+          {/* solid backdrop: no faded tape or ring shows around the panel */}
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.94} />
           <rect x={330} y={258} width={620} height={140} rx={16} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.5} />
           <text x={640} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>
             event → wake persisted → handler → sleep

@@ -46,7 +46,7 @@ const BRICKS = 14;
 const messyX = (k: number): number => CX - 420 + ((k * 137) % 840);
 const neatX = (k: number): number => CX - 420 + k * 60;
 
-const SCHED = { x: 1000, y: 180, w: 230 } as const;
+const SCHED = { x: 990, y: 180, w: 270 } as const;
 
 const CAM_PYR: CameraState = { x: 560, y: 350, k: 1.22 };
 // frames L2 → DRAM so the "touched once" stamp and the floors below L2 stay in view
@@ -181,7 +181,8 @@ export function Render({ s }: { s: SceneState }) {
   const modeU = s.get(scene.modeU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  // the closing panel sits over a near-invisible ghost of the whole scene
+  const dimAll = 1 - closeU * 0.92;
   // the climbing work window: DRAM → L3 → L2 → tiles
   const climbTier = climbU * 3; // 0..3
 
@@ -199,7 +200,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={CX - t.w / 2 + 16} y={t.y + 26} fill={t.color} fontSize={14} fontFamily="ui-monospace, monospace">
                   {t.key}
                 </text>
-                <text x={CX - t.w / 2 + 16} y={t.y + 48} fill={colors.MUTED} fontSize={12.5}>
+                <text x={CX - t.w / 2 + 16} y={t.y + 48} fill={colors.MUTED} fontSize={14}>
                   {t.sub}
                 </text>
               </g>
@@ -218,12 +219,12 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {/* layout annotations: DRAM header row, right side, clear of the bricks */}
           <g opacity={sortU}>
-            <text x={CX + 450} y={TIERS[0].y + 26} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={CX + 432} y={TIERS[0].y + 26} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               tile-aligned · 64-byte starts
             </text>
           </g>
           <g opacity={brickU * (1 - sortU)}>
-            <text x={CX + 450} y={TIERS[0].y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={CX + 432} y={TIERS[0].y + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
               file order (as loaded)
             </text>
           </g>
@@ -238,7 +239,7 @@ export function Render({ s }: { s: SceneState }) {
                 const f = ti - lo;
                 const y = TIERS[lo].y * (1 - f) + TIERS[hi].y * f;
                 return (
-                  <rect x={CX - 20} y={y + 10} width={140} height={TIER_H - 20} rx={9} fill="none" stroke={colors.TEXT} strokeWidth={2} strokeDasharray="7 5" opacity={0.9} />
+                  <rect x={CX + 10} y={y + 10} width={130} height={TIER_H - 20} rx={9} fill="none" stroke={colors.TEXT} strokeWidth={2} strokeDasharray="7 5" opacity={0.9} />
                 );
               })()}
             </g>
@@ -262,10 +263,10 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               dynamic scheduler
             </text>
-            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 50} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 50} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               Gate + Up fused
             </text>
-            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               all experts → 2 tasks / layer
             </text>
             {/* two thread bars: one finishes, steals from the other */}
@@ -276,14 +277,14 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={th}>
                   <rect x={SCHED.x + 20} y={SCHED.y + 100 + th * 44} width={SCHED.w - 40} height={14} rx={5} fill={colors.BG} stroke={colors.GRID} />
                   <rect x={SCHED.x + 20} y={SCHED.y + 100 + th * 44} width={(SCHED.w - 40) * full * done} height={14} rx={5} fill={colors.SECONDARY} opacity={0.85} />
-                  <text x={SCHED.x + 20} y={SCHED.y + 94 + th * 44} fill={colors.MUTED} fontSize={12}>
+                  <text x={SCHED.x + 20} y={SCHED.y + 94 + th * 44} fill={colors.MUTED} fontSize={13}>
                     thread {th + 1}
                   </text>
                 </g>
               );
             })}
             <g opacity={clamp01(stealU * 2 - 1)}>
-              <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 206} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+              <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 206} textAnchor="middle" fill={colors.WARM} fontSize={13}>
                 idle thread steals sub-tasks
               </text>
             </g>
@@ -291,11 +292,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* mode needle */}
           <g opacity={modeU > 0 ? 1 : 0}>
-            <rect x={120} y={116} width={430} height={66} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={Math.min(1, modeU * 4)} />
-            <text x={150} y={140} fill={colors.POSITIVE} fontSize={14} opacity={1 - modeU * 0.6}>
+            <rect x={120} y={116} width={470} height={66} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={Math.min(1, modeU * 4)} />
+            <text x={150} y={140} fill={colors.POSITIVE} fontSize={14} opacity={1 - modeU * 0.4}>
               AMX · prefill (more than 4 tokens/expert on average)
             </text>
-            <text x={150} y={166} fill={colors.ACCENT} fontSize={14} opacity={0.4 + modeU * 0.6}>
+            <text x={150} y={166} fill={colors.ACCENT} fontSize={14} opacity={0.6 + modeU * 0.4}>
               AVX-512 · decode (1 token)
             </text>
             <circle cx={134} cy={134 + modeU * 26} r={4.5} fill={colors.WARM} opacity={Math.min(1, modeU * 4)} />
@@ -308,13 +309,13 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             the tiles get fed, not just built
           </text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={326} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
             tile-aligned bricks · in-cache blocks · fused tasks · work stealing
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
             and the honest switch: tiles for prefill, vectors for decode
           </text>
-          <text x={640} y={394} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={394} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             scripts/convert_cpu_weights.py --quant-method int8
           </text>
         </g>

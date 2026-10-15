@@ -55,7 +55,7 @@ const STATES: number[][] = [
 // The whole machine fits the 1280-wide stage at one shared framing (CAM_FRAME),
 // so no camera move ever pushes a car or label off the edge. `lift` is how far
 // a car arcs over (or under) its neighbour while it changes slots.
-const LIST = { x0: 292, y: 300, slotW: 228, w: 210, h: 74, lift: 40 } as const;
+const LIST = { x0: 292, y: 300, slotW: 228, w: 210, h: 74, lift: 56 } as const;
 const slotX = (i: number): number => LIST.x0 + i * LIST.slotW;
 
 // hash table rows, fixed vertical order (by fake bucket)
@@ -122,6 +122,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'A query about the world cup arrives. The hash table jumps straight to its node, no walking the list, and the results come back immediately.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 15.2, dur: 1.3, ease: ease.move });
   tl.tween(jump1, 1, { at: 16.4, dur: 1.6, ease: ease.linear });
   tl.hold(21.5, 0.5);
 
@@ -131,6 +132,7 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'But the get does one more thing. The node it touched rides to the front of the list. Being used is what keeps an entry alive.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 22.2, dur: 1.3, ease: ease.move });
   tl.tween(stateF, 1, { at: 23.2, dur: 1.6, ease: ease.move });
   tl.tween(jump1, 0, { at: 24.8, dur: 0.8, ease: ease.move });
   tl.hold(28.0, 0.5);
@@ -141,6 +143,7 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'Now a brand new query, best coffee in San Francisco. The hash table has no entry for it. The get returns nothing, a miss.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 28.7, dur: 1.3, ease: ease.move });
   tl.tween(missU, 1, { at: 30.0, dur: 0.7, ease: ease.pop });
   tl.tween(missU, 0, { at: 32.4, dur: 0.9, ease: ease.move });
   tl.hold(34.0, 0.5);
@@ -151,6 +154,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The backend computes the answer, and the cache stores it. But the cache is at its maximum size. Before anything goes in, something must go.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 35.0, dur: 1.4, ease: ease.move });
   tl.hold(41.0, 0.3);
 
   tl.caption({
@@ -167,6 +171,7 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'Then the new entry is appended at the head, and the hash table learns its key. The freshest answer in the cache is the one that just cost us a trip to the backend.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 48.0, dur: 1.4, ease: ease.move });
   tl.tween(insertU, 1, { at: 48.8, dur: 1.4, ease: ease.move });
   tl.tween(stateF, 2, { at: 48.8, dur: 1.4, ease: ease.move });
   tl.hold(54.0, 0.5);
@@ -177,6 +182,7 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'One more hit, and you can feel the rhythm. Weather in New York gets asked again, and rides to the front. Hot queries circulate near the head. Cold ones drift off the end.',
   });
+  tl.tween(cam, CAM_FRAME, { at: 54.7, dur: 1.4, ease: ease.move });
   tl.tween(jump2, 1, { at: 55.6, dur: 1.0, ease: ease.linear });
   tl.tween(stateF, 3, { at: 56.8, dur: 1.5, ease: ease.move });
   tl.tween(jump2, 0, { at: 58.5, dur: 0.8, ease: ease.move });
@@ -244,7 +250,8 @@ export function Render({ s }: { s: SceneState }) {
   const heatU = s.get(scene.heatU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  // the closing frame ghosts the old machine away so no card peeks past the panel
+  const dimAll = 1 - closeU * 0.96;
   // which queries currently live in the lookup table
   const inTable = (q: number): boolean => {
     if (q === 4) return evictU < 0.6;
@@ -302,7 +309,7 @@ export function Render({ s }: { s: SceneState }) {
             const flash = (q === hl1 ? jump1 : 0) + (q === hl2 ? jump2 : 0) + (isMissRow ? missU : 0);
             const y = TBL.y0 + r * TBL.rowH;
             return (
-              <g key={q} opacity={present ? 1 : 0.35}>
+              <g key={q} opacity={present ? 1 : 0.55}>
                 <rect
                   x={TBL.x}
                   y={y}
@@ -314,9 +321,9 @@ export function Render({ s }: { s: SceneState }) {
                   strokeWidth={flash > 0.05 ? 2 : 1.1}
                 />
                 <text x={TBL.x + 12} y={y + 20} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
-                  {present ? QUERIES[q] : isMissRow && missU > 0.05 ? QUERIES[q] : '—'}
+                  {present ? QUERIES[q] : isMissRow && missU > 0.05 ? QUERIES[q] : q === 4 ? 'evicted' : 'no entry yet'}
                 </text>
-                <text x={TBL.x + 12} y={y + 37} fill={isMissRow ? colors.NEGATIVE : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={TBL.x + 12} y={y + 37} fill={isMissRow ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                   {present ? '→ node' : isMissRow && missU > 0.05 ? '→ None (miss)' : ''}
                 </text>
               </g>
@@ -346,15 +353,15 @@ export function Render({ s }: { s: SceneState }) {
           <text x={slotX(0)} y={LIST.y - 66} fill={colors.TEXT} fontSize={18}>
             the doubly linked list
           </text>
-          <text x={slotX(0)} y={LIST.y - 46} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
+          <text x={slotX(0)} y={LIST.y - 46} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             MAX_SIZE = 4 · head ⇄ … ⇄ tail
           </text>
-          {/* heat gradient labels */}
+          {/* heat gradient labels, below the arc a swapping car can dip to */}
           <g opacity={heatU}>
-            <text x={slotX(0)} y={LIST.y + LIST.h + 34} fill={colors.POSITIVE} fontSize={14}>
+            <text x={slotX(0)} y={LIST.y + LIST.h + 86} fill={colors.POSITIVE} fontSize={14}>
               head — recently used
             </text>
-            <text x={slotX(3) + LIST.w} y={LIST.y + LIST.h + 34} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
+            <text x={slotX(3) + LIST.w} y={LIST.y + LIST.h + 86} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
               tail — next to go
             </text>
           </g>
@@ -388,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={n.x + 16} y={n.y + 30} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                 {QUERIES[n.q]}
               </text>
-              <text x={n.x + 16} y={n.y + 54} fill={colors.MUTED} fontSize={12.5}>
+              <text x={n.x + 16} y={n.y + 54} fill={colors.MUTED} fontSize={13}>
                 results · title + snippet
               </text>
             </g>
@@ -429,7 +436,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={613} y={348} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily="ui-monospace, monospace">
             move_to_front · append_to_front · remove_from_tail · O(1) each
           </text>
-          <text x={613} y={402} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+          <text x={613} y={402} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontStyle="italic">
             touch it and it lives — ignore it and it drifts to the tail
           </text>
         </g>

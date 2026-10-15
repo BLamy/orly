@@ -72,7 +72,7 @@ export function buildScene() {
     dur: 6.2,
     text: 'A conventional app treats the request as the moment of truth. Once the response leaves the server, the connection has done its job and disappears.',
   });
-  tl.tween(cam, { x: 615, y: 360, k: 1.08 }, { at: 7.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 370, k: 1.04 }, { at: 7.4, dur: 1.3, ease: ease.move });
   tl.tween(wireU, 0.25, { at: 8.0, dur: 1.2, ease: ease.move });
 
   tl.caption({
@@ -82,7 +82,7 @@ export function buildScene() {
   });
   tl.tween(cam, CAMERA_HOME, { at: 14.4, dur: 1.2, ease: ease.move });
   tl.tween(wireU, 1, { at: 15.2, dur: 0.8, ease: ease.enter });
-  tl.tween(appendU, 0.55, { at: 16.0, dur: 3.5, ease: ease.linear });
+  tl.tween(appendU, 1, { at: 16.0, dur: 3.5, ease: ease.enter });
 
   tl.caption({
     at: 21.4,
@@ -113,7 +113,7 @@ export function buildScene() {
     dur: 6.6,
     text: 'When the reader returns, it presents its last offset. The stream replays only the missing suffix, then lets the reader catch the live edge. No duplicate mutation and no second request to reconstruct the past.',
   });
-  tl.tween(cam, { x: 645, y: 370, k: 1.1 }, { at: 43.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 362, k: 1.04 }, { at: 43.4, dur: 1.2, ease: ease.move });
   tl.tween(offlineU, 0, { at: 44.3, dur: 0.7, ease: ease.move });
   tl.tween(resumeU, 1, { at: 45.0, dur: 2.6, ease: ease.move });
 
@@ -136,8 +136,8 @@ function OffsetBadge({ x, y, label, u, tone = BLUE }: { x: number; y: number; la
   if (reveal <= 0.01) return null;
   return (
     <g opacity={reveal}>
-      <rect x={x - 96} y={y - 15} width={192} height={30} rx={8} fill={PAPER} stroke={tone} />
-      <text x={x} y={y + 5} textAnchor="middle" fill={tone} fontSize={12} fontWeight={800} fontFamily={MONO}>
+      <rect x={x - 108} y={y - 15} width={216} height={30} rx={8} fill={PAPER} stroke={tone} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={tone} fontSize={13} fontWeight={800} fontFamily={MONO}>
         {label}
       </text>
     </g>
@@ -158,6 +158,8 @@ export function Render({ s }: { s: SceneState }) {
   const streamOpacity = 1 - closeU * 0.35;
   const readerBStatus = offlineU > 0.45 ? 'offline' : resumeU > 0.45 ? 'ready' : undefined;
   const protocolPulse = 0.5 + 0.5 * Math.sin(s.t * 2.4);
+  // Until the stream is written to, its slot shows a dashed placeholder.
+  const slotU = frameU * (1 - clamp01(appendU * 3));
 
   return (
     <>
@@ -216,6 +218,14 @@ export function Render({ s }: { s: SceneState }) {
             u={eventU}
             status={eventU > 0.5 ? 'ready' : undefined}
           />
+          {slotU > 0.01 && (
+            <g opacity={slotU}>
+              <rect x={STREAM.x - 143} y={STREAM.y - 66} width={286} height={132} rx={12} fill="none" stroke={MUTED} strokeWidth={1.5} strokeDasharray="6 6" />
+              <text x={STREAM.x} y={STREAM.y + 6} textAnchor="middle" fill={MUTED} fontSize={14} fontWeight={700} fontFamily={MONO}>
+                where does it become real?
+              </text>
+            </g>
+          )}
           <ArchitectureCard
             x={STREAM.x}
             y={STREAM.y}
@@ -228,10 +238,10 @@ export function Render({ s }: { s: SceneState }) {
             u={appendU}
             status="ready"
           >
-            <text x={-125} y={40} fill={MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={-125} y={40} fill={MUTED} fontSize={14} fontFamily={MONO}>
               /streams/project-main
             </text>
-            <text x={-125} y={61} fill={BLUE} fontSize={12} fontWeight={800} fontFamily={MONO}>
+            <text x={-125} y={61} fill={BLUE} fontSize={14} fontWeight={800} fontFamily={MONO}>
               offset → next offset
             </text>
           </ArchitectureCard>
@@ -258,7 +268,7 @@ export function Render({ s }: { s: SceneState }) {
             tone={offlineU > 0.45 ? 'pink' : 'green'}
             u={readerU}
             status={readerBStatus}
-            dim={offlineU * 0.45}
+            dim={offlineU * 0.2}
             dashed={offlineU > 0.45}
           />
 
@@ -279,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
           {resumeU > 0.02 && (
             <g opacity={resumeU}>
               <circle cx={880} cy={420} r={26 + 12 * (1 - resumeU)} fill="none" stroke={GREEN} strokeWidth={2} opacity={1 - resumeU} />
-              <text x={900} y={590} textAnchor="middle" fill={GREEN} fontSize={12} fontWeight={800} fontFamily={MONO}>
+              <text x={900} y={590} textAnchor="middle" fill={GREEN} fontSize={14} fontWeight={800} fontFamily={MONO}>
                 replay the gap
               </text>
             </g>

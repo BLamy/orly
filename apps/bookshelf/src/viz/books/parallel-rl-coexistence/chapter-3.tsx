@@ -4,7 +4,7 @@
 // Theorem 4.5, plus src/parallel_rl/score_function_stats.py and
 // configs/paper_defaults.yaml. The sixteen-vector bouquet is a deterministic
 // schematic of the configured sixteen rollouts; aggregate labels use paper data.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Vec } from '../../primitives';
 
@@ -105,26 +105,29 @@ function Bouquet({ cx, cy, u, residual, color, opacity = 1 }: { cx: number; cy: 
 export function Render({ s }: { s: SceneState }) {
   const residual = clamp01(s.get(scene.residualU));
   const sep = clamp01(s.get(scene.separateU));
-  const dim = 1 - 0.9 * s.get(scene.dimU);
+  // Old content fades to 0.15 or below once the closing panel arrives, so no faded labels show around it.
+  const dim = (1 - 0.9 * s.get(scene.dimU)) * (1 - 0.85 * s.get(scene.endU));
   const mathX = lerp(430, 350, sep);
   const scienceX = lerp(430, 700, sep);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={850}>Advantage leaves only the residual</text>
-      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>score_function_stats.py · num_rollouts: 16</text>
+      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>score_function_stats.py · num_rollouts: 16</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim}>
         <g opacity={s.get(scene.promptU)}>
-          <rect x={90} y={286} width={154} height={112} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={167} y={328} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>one prompt group</text>
-          <text x={167} y={362} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={800}>16 rollouts</text>
+          <rect x={30} y={270} width={200} height={150} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
+          <text x={130} y={302} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>one prompt group</text>
+          <text x={130} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={800}>16 rollouts</text>
+          <text x={130} y={364} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>grade each answer</text>
+          <text x={130} y={384} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>against the class average</text>
         </g>
         <Bouquet cx={mathX} cy={350} u={s.get(scene.rolloutsU)} residual={residual} color={colors.ACCENT} />
         <text x={mathX} y={508} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontFamily={MONO}>math score vectors</text>
         <Vec x1={mathX} y1={350} x2={mathX + lerp(MEAN_X, 0, residual)} y2={350 + lerp(MEAN_Y, 0, residual)} grow={s.get(scene.meanU)} color={colors.WARM} width={5} />
-        <text x={mathX + MEAN_X} y={232} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={s.get(scene.meanU) * (1 - residual)}>group mean</text>
+        <text x={mathX + MEAN_X} y={232} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={s.get(scene.meanU) * (1 - residual)}>group mean = class average</text>
         <g opacity={s.get(scene.secondTaskU)}>
           <Bouquet cx={scienceX} cy={350} u={1} residual={residual} color={colors.SECONDARY} opacity={0.9} />
           <text x={scienceX} y={508} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily={MONO}>science score vectors</text>
@@ -132,17 +135,17 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={s.get(scene.boundsU)}>
           <rect x={790} y={160} width={400} height={238} rx={22} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={990} y={198} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={800}>interference upper bounds</text>
-          <MathLabel tex={'|I_{SFT}(i,j)| \\le M_i M_j'} x={990} y={252} fontSize={20} color={colors.NEGATIVE} boxWidth={380} />
-          <MathLabel tex={'|I_{RL}(i,j)| \\le V_i V_j'} x={990} y={326} fontSize={20} color={colors.POSITIVE} boxWidth={380} />
-          <text x={990} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>absolute norm vs. within-group variance</text>
+          <text x={990} y={252} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily={MONO}>|I<tspan baselineShift="sub" fontSize={14}>SFT</tspan>(i,j)| ≤ M<tspan baselineShift="sub" fontSize={14}>i</tspan> M<tspan baselineShift="sub" fontSize={14}>j</tspan></text>
+          <text x={990} y={326} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontFamily={MONO}>|I<tspan baselineShift="sub" fontSize={14}>RL</tspan>(i,j)| ≤ V<tspan baselineShift="sub" fontSize={14}>i</tspan> V<tspan baselineShift="sub" fontSize={14}>j</tspan></text>
+          <text x={990} y={372} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO} opacity={0.85}>absolute norm vs. within-group variance</text>
         </g>
         <g opacity={s.get(scene.normU)}>
-          <rect x={805} y={432} width={168} height={112} rx={18} fill={colors.NEGATIVE} opacity={0.13} />
-          <text x={889} y={468} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>SFT ‖S‖₂</text>
-          <text x={889} y={516} textAnchor="middle" fill={colors.NEGATIVE} fontSize={34} fontFamily={MONO}>≈ 7.1</text>
-          <rect x={991} y={432} width={168} height={112} rx={18} fill={colors.POSITIVE} opacity={0.13} />
-          <text x={1075} y={468} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>RL ‖δS‖₂</text>
-          <text x={1075} y={516} textAnchor="middle" fill={colors.POSITIVE} fontSize={34} fontFamily={MONO}>≈ 10⁻²</text>
+          <rect x={810} y={432} width={170} height={112} rx={18} fill={colors.NEGATIVE} opacity={0.13} />
+          <text x={895} y={468} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>SFT ‖S‖₂</text>
+          <text x={895} y={516} textAnchor="middle" fill={colors.NEGATIVE} fontSize={34} fontFamily={MONO}>≈ 7.1</text>
+          <rect x={1000} y={432} width={170} height={112} rx={18} fill={colors.POSITIVE} opacity={0.13} />
+          <text x={1085} y={468} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>RL ‖δS‖₂</text>
+          <text x={1085} y={516} textAnchor="middle" fill={colors.POSITIVE} fontSize={34} fontFamily={MONO}>≈ 10⁻²</text>
         </g>
         <g opacity={s.get(scene.warningU)}>
           <rect x={790} y={572} width={400} height={48} rx={14} fill={colors.WARM} opacity={0.14} />

@@ -203,7 +203,8 @@ export const PANEL_W = 386;
 export const PANEL_H = 512;
 
 // camera keyframes
-export const CAM_SLICE: CameraState = { x: xScale(X0), y: yScale(0.55), k: 1.55 };
+// the slice camera sits a little higher so the x-axis labels clear the caption pill
+export const CAM_SLICE: CameraState = { x: xScale(X0), y: yScale(0), k: 1.15 };
 export const CAM_WIDE: CameraState = { ...CAMERA_HOME };
 
 export { STAGE_H, STAGE_W };

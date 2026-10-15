@@ -42,6 +42,11 @@ import type { PagePlacement, Rect } from './shared/profile-page';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
+// the re-sort's rows cross each other, so the swap itself is short and eased; the window stays long
+const swapEase = (u: number): number => {
+  const t = clamp01((u - 0.4) / 0.25);
+  return t * t * (3 - 2 * t);
+};
 
 /* ------------------------------------------------------------- narration */
 const CAPTIONS = [
@@ -62,7 +67,7 @@ const END = PLAN.end + 1.0;
 const P_CENTER: PagePlacement = { x: 438, y: 122, scale: 0.72 };
 const P_LEFT: PagePlacement = { x: 118, y: 122, scale: 0.72 };
 const P_RIGHT: PagePlacement = { x: 758, y: 122, scale: 0.72 };
-const P_TOWER: PagePlacement = { x: 500, y: 60, scale: 0.5 };
+const P_TOWER: PagePlacement = { x: 494, y: 52, scale: 0.52 };
 const LENS_L: Rect = { x: 40, y: 60, w: 560, h: 474 };
 const LENS_R: Rect = { x: 680, y: 60, w: 560, h: 474 };
 const BARS_Y = 458;
@@ -153,8 +158,6 @@ export function buildScene() {
   const towerU = tl.channel('towerU', 0);
   const linksU = tl.channel('linksU', 0);
   const strataU = tl.channel('strataU', 0);
-  const exU = tl.channel('exU', 0);
-  const stepU = tl.channel('stepU', 0);
   const evidLU = tl.channel('evidLU', 0);
   const evidRU = tl.channel('evidRU', 0);
   const neqU = tl.channel('neqU', 0);
@@ -185,16 +188,14 @@ export function buildScene() {
   tl.tween(haloU, 1, { at: b + 4.8, dur: 0.7, ease: ease.enter });
   tl.tween(goalU, 1, { at: b + 7.0, dur: 0.6, ease: ease.pop });
 
-  /* — beat 3 · the agent lens: a stated task re-sorts the same ranking —
-     the chip and bars settle first, then the re-sort finishes early in the
-     caption, so the rows are never mid-swap when the caption is read */
+  /* — beat 3 · the agent lens: a stated task re-sorts the same ranking — */
   b = AT[2];
   tl.tween(cam, CAM_RIGHT, { at: b + 0.2, dur: 1.5, ease: ease.move });
-  tl.tween(rBarsU, 1, { at: b + 0.2, dur: 0.8, ease: ease.enter });
-  tl.tween(taskU, 1, { at: b + 0.6, dur: 0.7, ease: ease.enter });
-  tl.tween(condU, 1, { at: b + 1.6, dur: 1.6, ease: ease.move });
-  tl.tween(bracketU, 1, { at: b + 3.4, dur: 0.6, ease: ease.pop });
-  tl.tween(flagU, 1, { at: b + 4.2, dur: 0.6, ease: ease.pop });
+  tl.tween(rBarsU, 1, { at: b + 1.0, dur: 1.0, ease: ease.enter });
+  tl.tween(taskU, 1, { at: b + 3.2, dur: 0.7, ease: ease.enter });
+  tl.tween(condU, 1, { at: b + 4.4, dur: 2.0, ease: ease.move });
+  tl.tween(bracketU, 1, { at: b + 6.2, dur: 0.6, ease: ease.pop });
+  tl.tween(flagU, 1, { at: b + 7.4, dur: 0.6, ease: ease.pop });
 
   /* — beat 4 · rejoin over a shared foundation; each card gets one worked example — */
   b = AT[3];
@@ -205,15 +206,12 @@ export function buildScene() {
   tl.tween(towerU, 1, { at: b + 0.7, dur: 1.8, ease: ease.move });
   tl.tween(linksU, 1, { at: b + 2.4, dur: 1.2, ease: ease.draw });
   tl.tween(strataU, 4, { at: b + 3.0, dur: 5.4, ease: ease.linear });
-  tl.tween(exU, 1, { at: b + 2.6, dur: 1.0, ease: ease.enter });
-  tl.tween(stepU, 3, { at: b + 3.4, dur: 1.6, ease: ease.linear });
 
   /* — beat 5 · different evidence of success; the examples make way for empty instruments — */
   b = AT[4];
   tl.tween(cam, CAM_TOP, { at: b + 0.2, dur: 1.4, ease: ease.move });
-  tl.tween(exU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
-  tl.tween(evidLU, 1, { at: b + 1.2, dur: 1.0, ease: ease.enter });
-  tl.tween(evidRU, 1, { at: b + 2.6, dur: 1.0, ease: ease.enter });
+  tl.tween(evidLU, 1, { at: b + 3.0, dur: 1.0, ease: ease.enter });
+  tl.tween(evidRU, 1, { at: b + 7.0, dur: 1.0, ease: ease.enter });
   tl.tween(neqU, 1, { at: b + 1.2, dur: 0.6, ease: ease.pop });
 
   /* — beat 6 · current work is the bottom tier — */
@@ -244,7 +242,7 @@ export function buildScene() {
 
   return {
     tl, cam, phase, pageU, splitU, frameU, syncU, overlayU, histU, lBarsU, haloU, goalU, rBarsU, taskU, condU, bracketU,
-    flagU, towerU, linksU, strataU, exU, stepU, evidLU, evidRU, neqU, foundU, hereU, destU, climbU, riserU, dimU, openU, insideU,
+    flagU, towerU, linksU, strataU, evidLU, evidRU, neqU, foundU, hereU, destU, climbU, riserU, dimU, openU, insideU,
   };
 }
 
@@ -261,7 +259,7 @@ function RankBars({ x, y, u, mix, title, color, flag }: { x: number; y: number; 
       <text x={0} y={-8} fill={color} fontSize={12} fontFamily={MONO}>
         {title}
       </text>
-      <text x={BAR.dx + 262} y={-8} textAnchor="end" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+      <text x={BAR.dx + 262} y={-8} textAnchor="end" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
         illustrative · not measured
       </text>
       {TARGETS.map((name, i) => {
@@ -275,7 +273,7 @@ function RankBars({ x, y, u, mix, title, color, flag }: { x: number; y: number; 
             </text>
             <rect x={BAR.dx} y={2} width={barW(v) * o} height={11} rx={3} fill={color} opacity={top ? 0.95 : 0.45} />
             {i === 0 && flag > 0.002 && (
-              <text x={BAR.dx + barW(v) + 8} y={11} fill={ROLE.INVALID} fontSize={11.5} fontFamily={MONO} opacity={flag}>
+              <text x={BAR.dx + barW(v) + 8} y={11} fill={ROLE.INVALID} fontSize={12} fontFamily={MONO} opacity={flag}>
                 ✕ most common ≠ advances the task
               </text>
             )}
@@ -299,7 +297,7 @@ function ChosenBrackets({ rect, u }: { rect: Rect; u: number }) {
   return (
     <g opacity={o}>
       <path d={`M${x0} ${y0 + c}V${y0}H${x0 + c}M${x1 - c} ${y0}H${x1}V${y0 + c}M${x1} ${y1 - c}V${y1}H${x1 - c}M${x0 + c} ${y1}H${x0}V${y1 - c}`} fill="none" stroke={ROLE.OBSERVE} strokeWidth={2.6} />
-      <text x={x1} y={y0 - 6} textAnchor="end" fill={ROLE.OBSERVE} fontSize={11.5} fontFamily={MONO}>
+      <text x={x1} y={y0 - 6} textAnchor="end" fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO}>
         chosen target · still to be checked
       </text>
     </g>
@@ -337,11 +335,13 @@ export function Render({ s }: { s: SceneState }) {
   const climbU = s.get(scene.climbU);
   const openU = s.get(scene.openU);
   const insideU = s.get(scene.insideU);
-  const exU = s.get(scene.exU);
-  const stepU = s.get(scene.stepU);
   const evidLU = s.get(scene.evidLU);
   const evidRU = s.get(scene.evidRU);
   const syncU = s.get(scene.syncU);
+  // beat 4 examples: they appear with the links and make way as the beat-5 instruments arrive
+  const exU = s.get(scene.linksU) * clamp01(1 - evidLU * 4);
+  // beat 4 checklist ticks run on the layer ramp (strataU 0→4 maps to 0→3 ticks)
+  const stepU = s.get(scene.strataU) * 0.75;
 
   const base = mixPlace(P_CENTER, P_TOWER, towerU);
   const placeL = mixPlace(base, P_LEFT, splitU);
@@ -378,14 +378,14 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           );
         })}
-        <text x={STRATA.x} y={STRATA.y0 - 8} fill={colors.MUTED} fontSize={12} fontFamily={MONO} letterSpacing={1} opacity={clamp01(strataU)}>
+        <text x={STRATA.x + STRATA.w / 2} y={STRATA.y0 - 5} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} letterSpacing={1} opacity={clamp01(strataU)}>
           SHARED BY BOTH EXPERIENCES
         </text>
         {destU > 0.002 && (
           <g opacity={destU}>
             <path d={`M${STRATA.x - 18} ${STRATA.y0 + 4 * STRATA.step - 8}V${CARD_L.y + CARD_L.h + 6}`} fill="none" stroke={ROLE.PENDING} strokeWidth={1.8} strokeDasharray="6 4" />
-            <text transform={`translate(${STRATA.x - 28} ${STRATA.y0 + 150}) rotate(-90)`} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO} letterSpacing={1}>
-              DESTINATION · PROPOSED · E7–E13
+            <text transform={`translate(${STRATA.x - 28} ${STRATA.y0 + 4 * STRATA.step - 8}) rotate(-90)`} fill={ROLE.PENDING} fontSize={11} fontFamily={MONO} letterSpacing={0.5}>
+              DESTINATION · PROPOSED
             </text>
           </g>
         )}
@@ -428,7 +428,7 @@ export function Render({ s }: { s: SceneState }) {
             <RankBars x={LENS_L.x + 70} y={BARS_Y} u={s.get(scene.lBarsU)} mix={0} title="likely next · from history" color={ROLE.MODEL} flag={0} />
             <g opacity={s.get(scene.goalU)}>
               <rect x={LENS_L.x + 280} y={LENS_L.y + CHIP_DY} width={270} height={24} rx={12} fill="#1a1405" stroke={ROLE.PENDING} strokeDasharray="5 3" />
-              <text x={LENS_L.x + 415} y={LENS_L.y + CHIP_DY + 16} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+              <text x={LENS_L.x + 415} y={LENS_L.y + CHIP_DY + 16} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
                 ? goal: unknown — and stays unknown
               </text>
             </g>
@@ -437,14 +437,14 @@ export function Render({ s }: { s: SceneState }) {
               x={LENS_R.x + 70}
               y={BARS_Y}
               u={s.get(scene.rBarsU)}
-              mix={s.get(scene.condU)}
+              mix={swapEase(s.get(scene.condU))}
               title={s.get(scene.condU) < 0.5 ? 'most common next click' : 'advances the stated task'}
               color={ROLE.OBSERVE}
               flag={s.get(scene.flagU)}
             />
             <g opacity={s.get(scene.taskU)} transform={`translate(0 ${(1 - s.get(scene.taskU)) * -8})`}>
               <rect x={LENS_R.x + 240} y={LENS_R.y + CHIP_DY} width={300} height={24} rx={12} fill="#171335" stroke={ROLE.MODEL} />
-              <text x={LENS_R.x + 390} y={LENS_R.y + CHIP_DY + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+              <text x={LENS_R.x + 390} y={LENS_R.y + CHIP_DY + 16} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                 task: “{TASK_TEXT}”
               </text>
             </g>
@@ -607,10 +607,10 @@ export function Render({ s }: { s: SceneState }) {
                 ))}
               </g>
             ))}
-            <text x={FOUND.x + 300} y={FOUND.y + 12} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+            <text x={FOUND.x + 300} y={FOUND.y + 12} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               schematic
             </text>
-            <text x={FOUND.x + 300} y={FOUND.y + 76} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+            <text x={FOUND.x + 300} y={FOUND.y + 76} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               next book: how a decision is produced
             </text>
           </g>
@@ -626,7 +626,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={x + shown / 2} y={FOUND.y + 38} textAnchor="middle" fill={colors.TEXT} fontSize={lerp(17, 12, openU)} fontWeight={700}>
                   {side < 0 ? 'Qwen2.5 1.5B' : 'decision engine'}
                 </text>
-                <text x={x + shown / 2} y={FOUND.y + 60} textAnchor="middle" fill={colors.MUTED} fontSize={lerp(12, 11, openU)} fontFamily={MONO}>
+                <text x={x + shown / 2} y={FOUND.y + 60} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {side < 0 ? 'the model' : 'constrained choices'}
                 </text>
               </g>
@@ -635,7 +635,7 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.hereU) > 0.002 && (
             <g opacity={s.get(scene.hereU)} transform={`translate(${FOUND.x - 150} ${FOUND.y + 28})`}>
               <rect width={128} height={28} rx={14} fill="#082f49" stroke={ROLE.OBSERVE} />
-              <text x={64} y={18.5} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO}>
+              <text x={64} y={18.5} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12.5} fontFamily={MONO}>
                 we start here ▶
               </text>
             </g>

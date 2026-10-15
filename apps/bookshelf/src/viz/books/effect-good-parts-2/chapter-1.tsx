@@ -31,15 +31,16 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout — the live signature chip (top) and the two-rail railway (below).
 // ---------------------------------------------------------------------------
 
-const SIG = { x: 240, y: 84, w: 800, h: 66 } as const;
+// the signature box is centred on x = 640 and sits one tag-row below the top edge
+const SIG = { x: 300, y: 112, w: 680, h: 66 } as const;
 const SIG_CY = SIG.y + SIG.h / 2;
 
 // chips inside the signature: Effect< [number], [ParseError][ReservedPortError], [never] >
-const CHIP_A = { x: 366, w: 96 } as const;
-const CHIP_E1 = { x: 486, w: 100 } as const; // ParseError
-const CHIP_E2 = { x: 594, w: 142 } as const; // ReservedPortError
-const CHIP_EN = { x: 486, w: 250 } as const; // never (spans the E slot once both are caught)
-const CHIP_R = { x: 764, w: 76 } as const; // never (dim — later chapters)
+const CHIP_A = { x: 426, w: 96 } as const;
+const CHIP_E1 = { x: 546, w: 100 } as const; // ParseError
+const CHIP_E2 = { x: 654, w: 156 } as const; // ReservedPortError
+const CHIP_EN = { x: 546, w: 264 } as const; // never (spans the E slot once both are caught)
+const CHIP_R = { x: 840, w: 76 } as const; // never (dim — later chapters)
 
 const RAIL_X0 = 120;
 const RAIL_X1 = 1160;
@@ -48,12 +49,12 @@ const RAIL_ERR = 530; // error rail y
 
 const CARD = { x: 390, y: 252, w: 500, h: 96 } as const; // the plain-function card
 
-const DEF1 = { x: 300, y: 196, w: 290, h: 118 } as const; // ParseError card
-const DEF2 = { x: 690, y: 196, w: 290, h: 118 } as const; // ReservedPortError card
+const DEF1 = { x: 300, y: 232, w: 290, h: 118 } as const; // ParseError card
+const DEF2 = { x: 690, y: 232, w: 290, h: 118 } as const; // ReservedPortError card
 
 const ST_LOAD = { cx: 330, w: 168, h: 54 } as const; // loadPort station on the rail
-const ST_CATCH = { cx: 760, w: 268, h: 62 } as const; // catchTag station under the rail
-const SWITCH_X = 470; // where the run diverges to the error rail
+const ST_CATCH = { cx: 760, w: 300, h: 62 } as const; // catchTag station under the rail
+const SWITCH_X = 520; // where the run diverges to the error rail (clears the loadPort card)
 const TERM_X = 1092; // terminal socket on the success rail
 
 // exception bolt — a zigzag that escapes the frame (beat 2)
@@ -217,7 +218,7 @@ function Chip({
   opacity,
   cy = SIG_CY,
   h = 30,
-  fs = 13,
+  fs = 14,
 }: {
   x: number;
   w: number;
@@ -257,12 +258,12 @@ function DefCard({
   return (
     <g opacity={u * (1 - 0.9 * dim)} transform={`translate(0 ${rise})`}>
       <rect x={box.x} y={box.y} width={box.w} height={box.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-      <rect x={box.x + 16} y={box.y + 14} width={12 + tag.length * 7.6} height={24} rx={6} fill={colors.NEGATIVE} opacity={0.16} />
-      <text x={box.x + 22} y={box.y + 31} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} fontWeight={600}>
+      <rect x={box.x + 16} y={box.y + 14} width={16 + tag.length * 8.4} height={26} rx={6} fill={colors.NEGATIVE} opacity={0.2} />
+      <text x={box.x + 24} y={box.y + 32} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={600}>
         {tag}
       </text>
       {fields.map((f, i) => (
-        <text key={f} x={box.x + 22} y={box.y + 58 + i * 20} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+        <text key={f} x={box.x + 22} y={box.y + 60 + i * 22} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
           {f}
         </text>
       ))}
@@ -333,7 +334,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={CARD.y + 42} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontFamily={MONO}>
               function loadPort(input: string): number
             </text>
-            <text x={640} y={CARD.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={640} y={CARD.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               …and not a word about how it fails
             </text>
           </g>
@@ -353,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
               strokeDasharray={1}
               strokeDashoffset={1 - clamp01(boltU)}
             />
-            <text x={BOLT_PTS[5][0] + 10} y={BOLT_PTS[5][1] - 6} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={clamp01(boltU * 2 - 1.2)}>
+            <text x={BOLT_PTS[5][0] + 10} y={BOLT_PTS[5][1] - 6} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={clamp01(boltU * 2 - 1.2)}>
               throw
             </text>
           </g>
@@ -363,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
         {sigU > 0.01 && (
           <g opacity={sigU}>
             <rect x={SIG.x} y={SIG.y} width={SIG.w} height={SIG.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={280} y={SIG_CY + 6} fill={colors.TEXT} fontSize={19} fontFamily={MONO}>
+            <text x={340} y={SIG_CY + 7} fill={colors.TEXT} fontSize={20} fontFamily={MONO}>
               Effect&lt;
             </text>
             <Chip x={CHIP_A.x} w={CHIP_A.w} label="number" color={colors.POSITIVE} opacity={1} />
@@ -372,7 +373,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             {/* E slot: two tags → never */}
             <Chip x={CHIP_E1.x} w={CHIP_E1.w} label="ParseError" color={colors.NEGATIVE} opacity={(1 - neverU) * clamp01(sigU * 2 - 0.4)} />
-            <Chip x={CHIP_E2.x} w={CHIP_E2.w} label="ReservedPortError" color={colors.NEGATIVE} opacity={(1 - neverU) * clamp01(sigU * 2 - 0.8)} fs={12} />
+            <Chip x={CHIP_E2.x} w={CHIP_E2.w} label="ReservedPortError" color={colors.NEGATIVE} opacity={(1 - neverU) * clamp01(sigU * 2 - 0.8)} />
             {(1 - neverU) > 0.02 && (
               <text x={CHIP_E1.x + CHIP_E1.w + 4} y={SIG_CY + 5} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={1 - neverU}>
                 |
@@ -382,23 +383,23 @@ export function Render({ s }: { s: SceneState }) {
             <text x={CHIP_E2.x + CHIP_E2.w + 8} y={SIG_CY + 6} fill={colors.MUTED} fontSize={16} fontFamily={MONO}>
               ,
             </text>
-            <Chip x={CHIP_R.x} w={CHIP_R.w} label="never" color={colors.ACCENT} opacity={0.38} />
+            <Chip x={CHIP_R.x} w={CHIP_R.w} label="never" color={colors.ACCENT} opacity={0.6} />
             <text x={CHIP_R.x + CHIP_R.w + 10} y={SIG_CY + 6} fill={colors.TEXT} fontSize={19} fontFamily={MONO}>
               &gt;
             </text>
             {/* slot legend */}
-            <text x={CHIP_A.x + CHIP_A.w / 2} y={SIG.y + SIG.h + 18} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+            <text x={CHIP_A.x + CHIP_A.w / 2} y={SIG.y + SIG.h + 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               A · success
             </text>
-            <text x={(CHIP_E1.x + CHIP_E2.x + CHIP_E2.w) / 2} y={SIG.y + SIG.h + 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5}>
+            <text x={(CHIP_E1.x + CHIP_E2.x + CHIP_E2.w) / 2} y={SIG.y + SIG.h + 20} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
               E · error
             </text>
-            <text x={CHIP_R.x + CHIP_R.w / 2} y={SIG.y + SIG.h + 18} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} opacity={0.55}>
+            <text x={CHIP_R.x + CHIP_R.w / 2} y={SIG.y + SIG.h + 20} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={0.8}>
               R · requirements
             </text>
             {/* teaser: an error wrapping a deeper reason */}
             {teaseU > 0.01 && (
-              <g opacity={teaseU} transform={`translate(${SIG.x + SIG.w + 26} ${SIG_CY})`}>
+              <g opacity={teaseU} transform={`translate(${SIG.x + SIG.w + 50} ${SIG_CY})`}>
                 <circle r={30 + 4 * Math.sin(Math.PI * clamp01(teaseU))} fill={colors.NEGATIVE} opacity={0.12} />
                 <rect x={-26} y={-15} width={52} height={30} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
                 <rect x={-13} y={-7} width={26} height={14} rx={5} fill={colors.NEGATIVE} opacity={0.55} />
@@ -412,19 +413,19 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             {/* success rail */}
             <line x1={RAIL_X0} y1={RAIL_OK} x2={RAIL_X0 + (RAIL_X1 - RAIL_X0) * railsU} y2={RAIL_OK} stroke={colors.POSITIVE} strokeWidth={2.5} opacity={0.8} />
-            <text x={RAIL_X0} y={RAIL_OK - 14} fill={colors.POSITIVE} fontSize={13} opacity={railsU}>
+            <text x={RAIL_X0} y={RAIL_OK - 14} fill={colors.POSITIVE} fontSize={14} opacity={railsU}>
               success
             </text>
-            <text x={RAIL_X0} y={RAIL_OK + 32} fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO} opacity={railsU * 0.85}>
+            <text x={RAIL_X0} y={RAIL_OK + 34} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={railsU * 0.9}>
               A → number
             </text>
             {/* error rail */}
             <g opacity={1 - 0.92 * errDim}>
               <line x1={RAIL_X0} y1={RAIL_ERR} x2={RAIL_X0 + (RAIL_X1 - RAIL_X0) * railsU} y2={RAIL_ERR} stroke={colors.NEGATIVE} strokeWidth={2.5} opacity={0.7} />
-              <text x={RAIL_X0} y={RAIL_ERR - 14} fill={colors.NEGATIVE} fontSize={13} opacity={railsU}>
+              <text x={RAIL_X0} y={RAIL_ERR - 14} fill={colors.NEGATIVE} fontSize={14} opacity={railsU}>
                 error
               </text>
-              <text x={RAIL_X0 + 62} y={RAIL_ERR - 14} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} opacity={railsU * 0.85}>
+              <text x={RAIL_X0 + 62} y={RAIL_ERR - 14} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={railsU * 0.9}>
                 E → ParseError | ReservedPortError
               </text>
               {/* the switch */}
@@ -455,15 +456,15 @@ export function Render({ s }: { s: SceneState }) {
         {stationU > 0.01 && (
           <g opacity={stationU * (1 - 0.9 * errDim)}>
             <rect x={ST_CATCH.cx - ST_CATCH.w / 2} y={RAIL_ERR + 24} width={ST_CATCH.w} height={ST_CATCH.h} rx={11} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={ST_CATCH.cx} y={RAIL_ERR + 48} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>
+            <text x={ST_CATCH.cx} y={RAIL_ERR + 48} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               Effect.catchTag
             </text>
             {/* the key plate: one tag → the array form */}
             <g>
-              <text x={ST_CATCH.cx} y={RAIL_ERR + 70} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO} opacity={1 - keyU}>
+              <text x={ST_CATCH.cx} y={RAIL_ERR + 71} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={1 - keyU}>
                 &quot;ReservedPortError&quot;
               </text>
-              <text x={ST_CATCH.cx} y={RAIL_ERR + 70} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={keyU}>
+              <text x={ST_CATCH.cx} y={RAIL_ERR + 71} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={keyU}>
                 [&quot;ParseError&quot;, &quot;ReservedPortError&quot;]
               </text>
             </g>
@@ -491,7 +492,7 @@ export function Render({ s }: { s: SceneState }) {
             {!asError ? (
               <g>
                 <circle cx={px} cy={py} r={9} fill={colors.POSITIVE} stroke={colors.BG} strokeWidth={1.5} />
-                <text x={px} y={py - 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text x={px} y={py - 16} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   &quot;80&quot;
                 </text>
               </g>
@@ -509,10 +510,10 @@ export function Render({ s }: { s: SceneState }) {
                 />
                 {!morphed ? (
                   <g>
-                    <text x={px} y={py - 2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
+                    <text x={px} y={py - 2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                       ReservedPortError
                     </text>
-                    <text x={px} y={py + 13} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={px} y={py + 14} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                       port: 80
                     </text>
                   </g>
@@ -526,7 +527,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {cruiseU >= 0.995 && (
-          <text x={TERM_X} y={RAIL_OK - 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+          <text x={TERM_X} y={RAIL_OK - 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
             3000
           </text>
         )}

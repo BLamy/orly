@@ -33,8 +33,8 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const N = 84;
 const rand = mulberry32(0x3a17);
 const RAIN = Array.from({ length: N }, (_, i) => ({
-  x: 150 + (i % 14) * 62 + rand() * 14,
-  y: 96 + Math.floor(i / 14) * 22 + rand() * 8,
+  x: 215 + (i % 14) * 62 + rand() * 14,
+  y: 250 + Math.floor(i / 14) * 22 + rand() * 8,
 }));
 
 // Formation B — everything crammed into one mutable object.
@@ -45,15 +45,16 @@ const BLOB = Array.from({ length: N }, (_, i) => ({
 
 // Formation C — six immutable fragments, 14 records each.
 const FRAG_COUNT = 6;
-const FRAG_W = 168;
-const FRAG_X = Array.from({ length: FRAG_COUNT }, (_, f) => 116 + f * (FRAG_W + 16));
+const FRAG_W = 176;
+// Centred on x=640 so the row lines up with the manifest card above it.
+const FRAG_X = Array.from({ length: FRAG_COUNT }, (_, f) => 72 + f * (FRAG_W + 16));
 const FRAG_Y = 396;
 const TILES = Array.from({ length: N }, (_, i) => {
   const f = Math.floor(i / 14);
   const k = i % 14;
   return {
     f,
-    x: FRAG_X[f] + 22 + (k % 7) * 20,
+    x: FRAG_X[f] + 22 + (k % 7) * 22,
     y: FRAG_Y + 42 + Math.floor(k / 7) * 22,
   };
 });
@@ -69,7 +70,10 @@ const CAM_BLOB: CameraState = { x: 620, y: 330, k: 1.28 };
 const CAM_SPLIT: CameraState = { x: 640, y: 360, k: 0.75 };
 // The mid-chapter preview lands here while the six fragments are on screen;
 // keep their labels inside the 1300px player stage beside the chapter rail.
-const CAM_FRAG: CameraState = { x: 560, y: 430, k: 0.95 };
+const CAM_FRAG: CameraState = { x: 640, y: 430, k: 0.9 };
+
+// The one atomic primitive: a larger tile, clear of the manifest card's corner.
+const CHIP = { x: 796, y: 96, w: 296, h: 92 };
 
 interface Scene {
   tl: Timeline;
@@ -153,7 +157,7 @@ export function buildScene(): Scene {
   tl.tween(cam, CAM_SPLIT, { at: 29.6, dur: 1.5, ease: ease.move });
   tl.tween(blobU, 0, { at: 30.2, dur: 1.2, ease: ease.move });
   tl.tween(stompU, 0, { at: 30.2, dur: 0.8, ease: ease.move });
-  tl.tween(etagU, 0.25, { at: 30.4, dur: 0.8, ease: ease.move });
+  tl.tween(etagU, 0.55, { at: 30.4, dur: 0.8, ease: ease.move });
   tl.tween(tileU, 1, { at: 30.6, dur: 2.2, ease: ease.move });
   tl.hold(36.0, 0.7);
 
@@ -246,7 +250,7 @@ function Records({
             height={8}
             rx={2}
             fill={fill}
-            opacity={born * (0.42 + 0.5 * tileU) * (1 - gone * 0.95)}
+            opacity={born * (0.6 + 0.4 * tileU) * (1 - gone * 0.95)}
           />
         );
       })}
@@ -266,16 +270,16 @@ function MutableObject({ u, stomp, loss }: { u: number; stomp: number; loss: num
         height={128}
         rx={12}
         fill={colors.PANEL}
-        stroke={loss > 0.4 ? colors.NEGATIVE : colors.GRID}
+        stroke={loss > 0.4 ? colors.NEGATIVE : colors.MUTED}
         strokeWidth={1.6}
       />
-      <text x={640 + shove} y={268} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>
+      <text x={640 + shove} y={268} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>
         one mutable object
       </text>
       {stomp > 0.05 && (
         <g opacity={clamp01(stomp * 1.6)}>
-          <text x={400} y={252} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={13}>writer A</text>
-          <text x={880} y={252} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>writer B</text>
+          <text x={400} y={252} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={14}>writer A</text>
+          <text x={880} y={252} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>writer B</text>
           <line x1={430} y1={262} x2={545} y2={300} stroke={colors.WARM} strokeWidth={1.4} opacity={0.8} />
           <line x1={850} y1={262} x2={738} y2={300} stroke={colors.SECONDARY} strokeWidth={1.4} opacity={0.8} />
         </g>
@@ -293,9 +297,9 @@ function EtagChip({ u }: { u: number }) {
   if (u <= 0.01) return null;
   return (
     <g opacity={u}>
-      <rect x={836} y={128} width={266} height={72} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-      <text x={856} y={154} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">THE ONE ATOMIC PRIMITIVE</text>
-      <text x={856} y={182} fill={colors.POSITIVE} fontFamily={MONO} fontSize={16}>If-Match: ETag</text>
+      <rect x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.6} />
+      <text x={CHIP.x + 20} y={CHIP.y + 32} fill={colors.TEXT} fontSize={13} letterSpacing="0.11em">THE ONE ATOMIC PRIMITIVE</text>
+      <text x={CHIP.x + 20} y={CHIP.y + 67} fill={colors.POSITIVE} fontFamily={MONO} fontSize={24} fontWeight={700}>If-Match: ETag</text>
     </g>
   );
 }
@@ -310,21 +314,21 @@ function Fragments({ u, pathU }: { u: number; pathU: number }) {
         return (
           <g key={f} opacity={fu}>
             <rect x={x} y={FRAG_Y} width={FRAG_W} height={116} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-            <text x={x + 14} y={FRAG_Y + 24} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>
+            <text x={x + 14} y={FRAG_Y + 24} fill={colors.TEXT} fontFamily={MONO} fontSize={14}>
               {`FragmentSeqNo=${String(f).padStart(4, '0')}`}
             </text>
-            <text x={x + 14} y={FRAG_Y + 108} fill={colors.POSITIVE} fontFamily={MONO} fontSize={12} opacity={0.85}>
+            <text x={x + 14} y={FRAG_Y + 108} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14} opacity={0.9}>
               immutable
             </text>
           </g>
         );
       })}
       {/* Below the row, not above it: the manifest links fan in from above and would cross this label. */}
-      <text x={116} y={FRAG_Y + 134} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={u}>
+      <text x={FRAG_X[0]} y={FRAG_Y + 134} fill={colors.MUTED} fontSize={13} letterSpacing="0.12em" opacity={u}>
         FRAGMENTS · WRITTEN ONCE
       </text>
       {pathU > 0.02 && (
-        <text x={116} y={FRAG_Y + 156} fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={pathU * 0.9}>
+        <text x={FRAG_X[0]} y={FRAG_Y + 156} fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={pathU * 0.9}>
           log/Bucket=0000000000000000/FragmentSeqNo=0000000000000001.parquet
         </text>
       )}
@@ -337,11 +341,11 @@ function ManifestCard({ u, linkU, pathU }: { u: number; linkU: number; pathU: nu
   return (
     <g opacity={u}>
       <rect x={392} y={196} width={496} height={122} rx={14} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.8} />
-      <text x={414} y={224} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">THE AUTHORITY RECORD</text>
-      <text x={414} y={256} fill={colors.ACCENT} fontFamily={MONO} fontSize={17}>Manifest</text>
-      <text x={414} y={284} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>fragments · snapshots · setsum</text>
+      <text x={414} y={224} fill={colors.MUTED} fontSize={13} letterSpacing="0.11em">THE AUTHORITY RECORD</text>
+      <text x={414} y={256} fill={colors.ACCENT} fontFamily={MONO} fontSize={18}>Manifest</text>
+      <text x={414} y={284} fill={colors.TEXT} fontFamily={MONO} fontSize={14}>fragments · snapshots · setsum</text>
       {pathU > 0.02 && (
-        <text x={414} y={306} fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={pathU}>
+        <text x={414} y={306} fill={colors.MUTED} fontFamily={MONO} fontSize={13} opacity={pathU}>
           manifest/MANIFEST
         </text>
       )}
@@ -362,9 +366,12 @@ function ManifestCard({ u, linkU, pathU }: { u: number; linkU: number; pathU: nu
         );
       })}
       {linkU > 1.05 && (
-        <g opacity={clamp01(linkU - 1.05)}>
-          <text x={1096} y={252} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>LogReader</text>
-          <text x={186} y={252} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={14}>LogWriter</text>
+        <g opacity={clamp01((linkU - 1.05) * 2)}>
+          {/* The writer appends into the manifest, the reader follows it: the arrows say so. */}
+          <line x1={236} y1={252} x2={388} y2={257} stroke={colors.WARM} strokeWidth={1.4} />
+          <line x1={1044} y1={252} x2={896} y2={257} stroke={colors.SECONDARY} strokeWidth={1.4} />
+          <text x={186} y={257} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={14}>LogWriter</text>
+          <text x={1096} y={257} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={14}>LogReader</text>
         </g>
       )}
     </g>
@@ -408,7 +415,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={392} textAnchor="middle" fill={colors.POSITIVE} fontSize={18}>
               one manifest · advanced by one conditional write
             </text>
-            <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>
+            <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>
               rust/wal3
             </text>
           </g>

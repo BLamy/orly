@@ -248,7 +248,7 @@ export function Render({ s }: { s: SceneState }) {
   const stairU = s.get(scene.stairU);
   const closeU = s.get(scene.closeU);
 
-  const riverOp = 1 - 0.88 * riverDim;
+  const riverOp = 1 - riverDim; // river leaves fully for the lattice and the close
   const kf = stairU * 7; // staircase progress over the 4×4 lattice
 
   return (
@@ -263,14 +263,24 @@ export function Render({ s }: { s: SceneState }) {
               {[0, 1, 2, 3, 4, 5, 6].map((t) => (
                 <g key={t} opacity={axisU}>
                   <line x1={tx(t)} y1={AXIS_Y - 5} x2={tx(t)} y2={AXIS_Y + 5} stroke={colors.GRID} strokeWidth={2} />
-                  <text x={tx(t)} y={AXIS_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                  <text x={tx(t)} y={AXIS_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     t={t}
                   </text>
                 </g>
               ))}
-              <text x={1128} y={AXIS_Y + 26} textAnchor="start" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={axisU}>
+              <text x={1128} y={AXIS_Y + 26} textAnchor="start" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={axisU}>
                 time
               </text>
+            </g>
+          )}
+
+          {/* legend: the two states a point can be in */}
+          {axisU > 0.01 && (
+            <g opacity={axisU} fontSize={14}>
+              <circle cx={1222} cy={96} r={7} fill={colors.WARM} />
+              <text x={1206} y={101} textAnchor="end" fill={colors.TEXT}>molten</text>
+              <circle cx={1222} cy={122} r={7} fill={colors.POSITIVE} />
+              <text x={1206} y={127} textAnchor="end" fill={colors.TEXT}>committed</text>
             </g>
           )}
 
@@ -284,11 +294,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* the questioned output */}
           {outQU > 0.01 && (
             <g opacity={outQU * (1 - clamp01((front - 3) * 2))}>
-              <rect x={tx(3) - 76} y={AXIS_Y - 152} width={152} height={32} rx={8} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-              <text x={tx(3)} y={AXIS_Y - 131} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+              <rect x={tx(3) - 88} y={AXIS_Y - 152} width={170} height={32} rx={8} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+              <text x={tx(3)} y={AXIS_Y - 131} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 (out, t=3, +1) ?
               </text>
-              <text x={tx(3) + 92} y={AXIS_Y - 128} fill={colors.NEGATIVE} fontSize={18} fontWeight={700}>
+              <text x={tx(3) + 100} y={AXIS_Y - 128} fill={colors.NEGATIVE} fontSize={18} fontWeight={700}>
                 ?
               </text>
             </g>
@@ -301,13 +311,13 @@ export function Render({ s }: { s: SceneState }) {
               <text x={INPUT.x} y={INPUT.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
                 input handle
               </text>
-              <text x={INPUT.x} y={INPUT.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={INPUT.x} y={INPUT.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 InputHandle
               </text>
               {promiseU > 0.01 && (
                 <g opacity={promiseU}>
                   <rect x={INPUT.x - 84} y={INPUT.y + 40} width={168} height={32} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-                  <text x={INPUT.x} y={INPUT.y + 61} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+                  <text x={INPUT.x} y={INPUT.y + 61} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                     advance_to(4)
                   </text>
                   <path d={`M${INPUT.x + 86} ${INPUT.y + 56} C ${tx(1)} ${INPUT.y + 80}, ${tx(1.4)} ${AXIS_Y - 130}, ${tx(front < 4 ? front : 4)} ${AXIS_Y - 110}`} fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.6 * frontU} />
@@ -321,7 +331,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={frontU}>
               <rect x={tx(front) - 130} y={AXIS_Y - 190} width={130} height={220} fill="url(#dd4-settled)" opacity={0.5} />
               <line x1={tx(front)} y1={AXIS_Y - 190} x2={tx(front)} y2={AXIS_Y + 30} stroke={colors.WARM} strokeWidth={3} />
-              <text x={tx(front)} y={AXIS_Y - 200} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
+              <text x={tx(front)} y={AXIS_Y + 60} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
                 frontier
               </text>
             </g>
@@ -339,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i}>
                     <rect x={PEN.x - 80} y={PEN.y + i * 34} width={160} height={26} rx={7} fill={colors.BG} stroke={done > 0.5 ? colors.POSITIVE : colors.WARM} strokeWidth={1.4} />
-                    <text x={PEN.x - 6} y={PEN.y + 17 + i * 34} textAnchor="middle" fill={done > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+                    <text x={PEN.x - 6} y={PEN.y + 17 + i * 34} textAnchor="middle" fill={done > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={14} fontFamily={MONO}>
                       {h.label}
                     </text>
                     {done > 0.5 && (
@@ -358,11 +368,11 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={probeU * (1 - riverDim)}>
               <rect x={438} y={480} width={520} height={104} rx={11} fill={colors.PANEL} stroke={colors.GRID} />
               {PROBE_CODE.map((line, i) => (
-                <text key={i} x={458} y={504 + i * 19} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily={MONO}>
+                <text key={i} x={458} y={504 + i * 19} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {line}
                 </text>
               ))}
-              <text x={938} y={504} textAnchor="end" fill={front >= 4 ? colors.POSITIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
+              <text x={938} y={504} textAnchor="end" fill={front >= 4 ? colors.POSITIVE : colors.WARM} fontSize={14} fontFamily={MONO}>
                 {front >= 4 ? 'less_than → false · done ✓' : 'less_than → true · stepping…'}
               </text>
             </g>
@@ -391,7 +401,7 @@ export function Render({ s }: { s: SceneState }) {
                       fill={done > 0.5 ? colors.POSITIVE : colors.WARM}
                       opacity={0.3 + 0.55 * done + 0.3 * onFront}
                     />
-                    <text x={latX(r)} y={latY(i) + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.75}>
+                    <text x={latX(r)} y={latY(i) + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       ({r},{i})
                     </text>
                   </g>
@@ -418,16 +428,16 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={0.9}
               />
             )}
-            <text x={latX(0) - 24} y={latY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={latX(0) - 24} y={latY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               settled
             </text>
-            <text x={latX(LAT.n - 1) + 14} y={latY(LAT.n - 1) + 52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={latX(LAT.n - 1) + 26} y={latY(LAT.n - 1) + 4} textAnchor="start" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               still molten
             </text>
-            <text x={latX(1.5)} y={latY(LAT.n - 1) + 88} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={latX(1.5)} y={latY(LAT.n - 1) + 88} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               frontier = Antichain of incomparable times
             </text>
-            <text x={latX(1.5)} y={latY(LAT.n - 1) + 112} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.85}>
+            <text x={latX(1.5)} y={latY(LAT.n - 1) + 112} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               partial order: (r,i) ≤ (r′,i′) iff r ≤ r′ and i ≤ i′
             </text>
           </g>

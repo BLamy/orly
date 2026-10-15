@@ -102,9 +102,22 @@ export const errX: ScaleLinear<number, number> = scaleLinear().domain([1, MAX_K]
 export const errY: ScaleLinear<number, number> = scaleLinear().domain([0, FITS[0].err * 1.05]).range([560, 200]);
 
 export const PROMPT_Y = 70;
-export const promptX = (i: number): number => 130 + i * 118;
+// 9 example chips + the query chip must end inside the 1280-wide stage
+export const promptX = (i: number): number => 130 + i * 110;
 
-export const CAM_PLANE: CameraState = { x: 440, y: 360, k: 1.2 };
+// Plane framed between the prompt strip (bottom ~88) and the caption band (top ~630)
+export const CAM_PLANE: CameraState = { x: 520, y: 360, k: 1 };
+
+/**
+ * x-span over which y = a x + b stays inside the plotted window (x in [-3, 3], y in [-5, 5]),
+ * so a line never runs past the axes into the caption.
+ */
+export function planeSpan(a: number, b: number): [number, number] {
+  if (Math.abs(a) < 1e-9) return [-3, 3];
+  const x1 = (-5 - b) / a;
+  const x2 = (5 - b) / a;
+  return [Math.max(-3, Math.min(x1, x2)), Math.min(3, Math.max(x1, x2))];
+}
 
 // ---------------------------------------------------------------------------
 // The timeline

@@ -47,9 +47,10 @@ const buckleAt = (x: number, amt: number): number => {
 };
 
 const CAM_WIDE: CameraState = { x: 620, y: 320, k: 1.05 };
-const CAM_EDGE: CameraState = { x: 470, y: 300, k: 1.7 };
+const CAM_EDGE: CameraState = { x: 600, y: 300, k: 1.5 };
 const CAM_BUCKLE: CameraState = { x: 620, y: 268, k: 1.3 };
 const CAM_SQUEEZE: CameraState = { x: 620, y: 292, k: 1.5 };
+const CAM_FINAL: CameraState = { x: 620, y: 300, k: 1.35 };
 
 export interface Scene {
   tl: Timeline;
@@ -160,7 +161,7 @@ export function buildScene(): Scene {
     dur: 6.55,
     text: 'What comes out of the clamps is a single flat panel wide enough to be a table top, made of boards that were never wide enough on their own.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 48.1, dur: 1.6, ease: ease.move });
+  tl.tween(cam, CAM_FINAL, { at: 48.1, dur: 1.6, ease: ease.move });
   tl.tween(clampU, 0, { at: 49.2, dur: 1.0, ease: ease.move });
   tl.tween(caulU, 0, { at: 49.4, dur: 1.0, ease: ease.move });
   tl.tween(padU, 0, { at: 49.4, dur: 0.8, ease: ease.move });
@@ -209,7 +210,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll}>
+        <g opacity={dimAll * (1 - closeU)}>
           {/* ---- the boards, end-on ---- */}
           {Array.from({ length: N }, (_, i) => {
             const u = clamp01(boardsU * 2.4 - i * 0.3);
@@ -230,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {boardsU > 0.6 && (
-            <text x={CXX} y={PY - 120} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(boardsU * 2 - 1.2)}>
+            <text x={CXX} y={PY - 120} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(boardsU * 2 - 1.2)}>
               four 1×8 boards, seen end-on
             </text>
           )}
@@ -249,7 +250,7 @@ export function Render({ s }: { s: SceneState }) {
               />
             ))}
           {closeUpU > 0 && (
-            <text x={JOINTS[0]} y={PY + BOARD_T + 40} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} opacity={closeUpU}>
+            <text x={JOINTS[0]} y={PY + BOARD_T + 40} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={closeUpU}>
               long grain to long grain
             </text>
           )}
@@ -258,13 +259,13 @@ export function Render({ s }: { s: SceneState }) {
           {clampU > 0 && (
             <g opacity={clampU}>
               {[-1, 1].map((sgn, i) => {
-                const x = sgn < 0 ? PX0 - 46 : PX0 + PANEL_W + 46;
+                const x = sgn < 0 ? PX0 - 80 : PX0 + PANEL_W + 80;
                 return (
                   <g key={i}>
                     <rect x={x - 16} y={PY - 6} width={32} height={BOARD_T + 12} rx={4} fill={colors.SECONDARY} />
-                    <line x1={x} y1={PY + BOARD_T / 2} x2={x - sgn * 40} y2={PY + BOARD_T / 2} stroke={colors.SECONDARY} strokeWidth={4} />
+                    <line x1={x} y1={PY + BOARD_T / 2} x2={x - sgn * 36} y2={PY + BOARD_T / 2} stroke={colors.SECONDARY} strokeWidth={4} />
                     <polygon
-                      points={`${x - sgn * 42},${PY + BOARD_T / 2} ${x - sgn * 62},${PY + BOARD_T / 2 - 9} ${x - sgn * 62},${PY + BOARD_T / 2 + 9}`}
+                      points={`${x - sgn * 38},${PY + BOARD_T / 2 - 9} ${x - sgn * 56},${PY + BOARD_T / 2} ${x - sgn * 38},${PY + BOARD_T / 2 + 9}`}
                       fill={colors.SECONDARY}
                     />
                   </g>
@@ -279,7 +280,7 @@ export function Render({ s }: { s: SceneState }) {
                   );
                 })}
               {padU > 0.5 && (
-                <text x={PX0 - 12} y={PY + BOARD_T + 52} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={clamp01(padU * 2 - 1)}>
+                <text x={PX0 - 22} y={PY + BOARD_T + 52} textAnchor="start" fill={colors.WARM} fontSize={14} opacity={clamp01(padU * 2 - 1)}>
                   scrap pads — softwood dents
                 </text>
               )}
@@ -298,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={caulU}>
               <rect x={PX0 - 24} y={PY - 30 - (1 - caulU) * 40} width={PANEL_W + 48} height={16} rx={4} fill="#4a5568" stroke={colors.GRID} />
               <rect x={PX0 - 24} y={PY + BOARD_T + 14 + (1 - caulU) * 40} width={PANEL_W + 48} height={16} rx={4} fill="#4a5568" stroke={colors.GRID} />
-              <text x={PX0 - 34} y={PY - 18} textAnchor="end" fill={colors.TEXT} fontSize={13.5}>
+              <text x={PX0 - 34} y={PY - 18} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                 cauls
               </text>
               {flatU > 0.6 && (
@@ -312,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- squeeze-out, and taking it off ---- */}
           {beadU > 0 &&
             JOINTS.map((x, i) => {
-              const gone = clamp01(scrapeU * 1.4 - i * 0.3);
+              const gone = clamp01(scrapeU * 1.4 - i * 0.2);
               const alive = beadU * (1 - gone);
               if (alive <= 0.02) return null;
               return (
@@ -324,8 +325,8 @@ export function Render({ s }: { s: SceneState }) {
             })}
           {scrapeU > 0 && scrapeU < 1 && (
             <g>
-              <rect x={PX0 + scrapeU * PANEL_W - 24} y={PY - 44} width={48} height={26} rx={3} fill={colors.WARM} />
-              <text x={PX0 + scrapeU * PANEL_W} y={PY - 54} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+              <rect x={PX0 + scrapeU * PANEL_W - 24} y={PY - 62} width={48} height={26} rx={3} fill={colors.WARM} />
+              <text x={PX0 + scrapeU * PANEL_W} y={PY - 70} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 chisel &amp; scraper
               </text>
             </g>

@@ -211,19 +211,27 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
 
+        {/* ---- users: where the dots come from ---- */}
+        <g opacity={boxU * dimAll * 0.85 * clamp01((700 - cam.x) / 60)}>
+          <text x={150} y={222} fill={colors.MUTED} fontSize={14}>
+            users
+          </text>
+          <path d="M150 236 H236 M228 230 L236 236 L228 242" fill="none" stroke={colors.MUTED} strokeWidth={1.4} />
+        </g>
+
         {/* ---- the box ---- */}
         <g opacity={boxU * dimAll}>
           <rect x={BOX.x - bw / 2} y={BOX.y - bh / 2} width={bw} height={bh} rx={16} fill={colors.PANEL} stroke={dieU > 0.4 ? colors.NEGATIVE : colors.TEXT} strokeWidth={1.8} />
-          <text x={BOX.x} y={BOX.y - bh / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={BOX.x} y={BOX.y - bh / 2 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             EC2 instance {sizeK > 0.5 ? '· a bigger box' : ''}
           </text>
           {/* web server + mysql inside */}
           <rect x={BOX.x - bw / 2 + 20} y={BOX.y - bh / 2 + 24} width={bw / 2 - 32} height={bh - 48} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-          <text x={BOX.x - bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5 * size}>
+          <text x={BOX.x - bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.ACCENT} fontSize={14 * size}>
             Web Server
           </text>
           <rect x={BOX.x + 12} y={BOX.y - bh / 2 + 24} width={bw / 2 - 32} height={bh - 48} rx={10} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-          <text x={BOX.x + bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5 * size}>
+          <text x={BOX.x + bw / 4 - 6} y={BOX.y} textAnchor="middle" fill={colors.POSITIVE} fontSize={14 * size}>
             MySQL
           </text>
           {dieU > 0.4 && (
@@ -239,22 +247,22 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- dns + elastic ip ---- */}
         <g opacity={dnsU * dimAll * (1 - dieU * 0.7)}>
-          <rect x={330} y={112} width={170} height={50} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-          <text x={415} y={133} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+          <rect x={310} y={112} width={210} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={415} y={135} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
             DNS · Route 53
           </text>
-          <text x={415} y={151} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={415} y={156} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             domain → Elastic IP
           </text>
-          <line x1={500} y1={137} x2={BOX.x - bw / 2 + 24} y2={BOX.y - bh / 2} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+          <line x1={470} y1={168} x2={BOX.x - bw / 2 + 24} y2={BOX.y - bh / 2} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
         </g>
 
         {/* ---- ports ---- */}
         <g opacity={portU * dimAll * (1 - dieU * 0.7)}>
           {['80 HTTP', '443 HTTPS', '22 SSH·allowlist'].map((p, i) => (
             <g key={p}>
-              <rect x={BOX.x - 202 + i * 140} y={BOX.y + bh / 2 + 14} width={124} height={28} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-              <text x={BOX.x - 140 + i * 140} y={BOX.y + bh / 2 + 32} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+              <rect x={386 + i * 174} y={BOX.y + bh / 2 + 14} width={160} height={30} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+              <text x={466 + i * 174} y={BOX.y + bh / 2 + 34} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                 {p}
               </text>
             </g>
@@ -266,18 +274,18 @@ export function Render({ s }: { s: SceneState }) {
           {METERS.map((m, i) => {
             const v = clamp01(loadU * (0.75 + i * 0.12));
             const x = 940;
-            const y = 170 + i * 56;
+            const y = 176 + i * 56;
             return (
               <g key={m}>
-                <text x={x - 10} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+                <text x={x - 12} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   {m}
                 </text>
-                <rect x={x} y={y} width={200} height={20} rx={6} fill={colors.BG} stroke={colors.GRID} />
-                <rect x={x} y={y} width={200 * v} height={20} rx={6} fill={v > 0.75 ? colors.NEGATIVE : v > 0.5 ? colors.WARM : colors.POSITIVE} opacity={0.8} />
+                <rect x={x} y={y} width={200} height={22} rx={6} fill={colors.BG} stroke={colors.GRID} />
+                <rect x={x} y={y} width={200 * v} height={22} rx={6} fill={v > 0.75 ? colors.NEGATIVE : v > 0.5 ? colors.WARM : colors.POSITIVE} opacity={0.8} />
               </g>
             );
           })}
-          <text x={940} y={152} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={1140} y={156} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             CloudWatch · top · statsd · graphite
           </text>
         </g>
@@ -295,7 +303,7 @@ export function Render({ s }: { s: SceneState }) {
             const y1 = 470 - c * 100;
             return <line key={i} x1={x0} y1={y0} x2={lerp(x0, x1, u)} y2={lerp(y0, y1, u)} stroke={colors.NEGATIVE} strokeWidth={2.5} />;
           })}
-          <text x={1030} y={492} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={1030} y={494} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             <tspan x={1030} dy={0}>cost per upgrade —</tspan>
             <tspan x={1030} dy={17}>vertical scaling gets expensive</tspan>
           </text>
@@ -303,6 +311,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
+          <rect x={290} y={225} width={700} height={220} rx={16} fill={colors.BG} />
           <rect x={290} y={225} width={700} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={276} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             benchmark · profile · fix · repeat

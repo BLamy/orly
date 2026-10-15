@@ -37,7 +37,7 @@ const BAND_W = 700;
 const BANDS = [
   { key: 'guest', y: 108, h: 104, title: 'the guest — unmodified Alpine', sub: 'eth0 · 10.0.2.15 via DHCP · default route 10.0.2.2' },
   { key: 'slirp', y: 250, h: 116, title: 'slirp — a TCP/IP stack compiled into the VM', sub: 'gateway 10.0.2.2 · DNS 10.0.2.3 · NAT flow table · no TUN, no privileges' },
-  { key: 'prov', y: 404, h: 116, title: 'the provider — tailscale | relay | offline', sub: 'a Worker in the same tab, holding the tailnet identity' },
+  { key: 'prov', y: 380, h: 180, title: 'the provider — tailscale | relay | offline', sub: 'a Worker in the same tab, holding the tailnet identity' },
 ] as const;
 const bandOf = (k: string) => BANDS.find((b) => b.key === k)!;
 
@@ -50,12 +50,18 @@ const STOPS = [
 
 // The framed protocol, drawn as a small legend.
 const OPS = ['OPEN', 'DATA', 'WINDOW', 'SHUTDOWN_WR', 'CLOSE', 'RST'];
+// Each op box is sized to its name (14px monospace ≈ 8.6px a character) and the
+// boxes are spread evenly across the band, so SHUTDOWN_WR never spills out.
+const OP_W = OPS.map((op) => op.length * 8.6 + 22);
+const OP_GAP = (BAND_W - 32 - OP_W.reduce((a, b) => a + b, 0)) / (OPS.length - 1);
+const opX = (i: number) => BAND_X + 16 + OP_W.slice(0, i).reduce((a, b) => a + b, 0) + OP_GAP * i;
 const INITIAL_WINDOW_KIB = 256;
 
 const TAILNET = { x: 1000, y: 330, r: 56 } as const;
 
 // Framings keep every label inside the 1280×720 stage: the wide shot spans the
 // guest through the tailnet, the provider shot keeps the slirp band visible.
+const CAM_OPEN: CameraState = { x: 560, y: 210, k: 1.3 };
 const CAM_WIDE: CameraState = { x: 700, y: 340, k: 0.92 };
 const CAM_GUEST: CameraState = { x: 560, y: 170, k: 1.5 };
 const CAM_SLIRP: CameraState = { x: 560, y: 306, k: 1.42 };
@@ -85,7 +91,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAM_WIDE, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_OPEN, cameraInterp);
   const guestU = tl.channel('guestU', 0);
   const dhcpU = tl.channel('dhcpU', 0);
   const slirpU = tl.channel('slirpU', 0);
@@ -311,7 +317,7 @@ export function Render({ s }: { s: SceneState }) {
             <g>
               <line x1={px} y1={STOPS[0].y} x2={px} y2={py} stroke={colors.GRID} strokeWidth={2} strokeDasharray="5 5" />
               <circle cx={px} cy={py} r={9} fill={STOPS[stopIdx].color} />
-              <text x={px + 18} y={py + 5} fill={STOPS[stopIdx].color} fontSize={13.5} fontWeight={600}>
+              <text x={px + 18} y={py + 5} fill={STOPS[stopIdx].color} fontSize={14} fontWeight={600}>
                 {STOPS[stopIdx].label}
               </text>
             </g>
@@ -325,8 +331,8 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={op} opacity={u}>
-                    <rect x={BAND_X + 16 + i * 112} y={provBand.y + 66} width={104} height={30} rx={5} fill={colors.BG} stroke={colors.WARM} />
-                    <text x={BAND_X + 68 + i * 112} y={provBand.y + 86} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily="monospace">
+                    <rect x={opX(i)} y={provBand.y + 58} width={OP_W[i]} height={28} rx={5} fill={colors.BG} stroke={colors.WARM} />
+                    <text x={opX(i) + OP_W[i] / 2} y={provBand.y + 77} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                       {op}
                     </text>
                   </g>
@@ -338,9 +344,9 @@ export function Render({ s }: { s: SceneState }) {
           {/* the credit window */}
           {windowU > 0 && (
             <g opacity={windowU}>
-              <rect x={BAND_X + 16} y={provBand.y + 118} width={420} height={26} rx={5} fill={colors.BG} stroke={colors.GRID} />
-              <rect x={BAND_X + 18} y={provBand.y + 120} width={416 * clamp01(creditU)} height={22} rx={4} fill={creditU < 0.2 ? colors.NEGATIVE : colors.POSITIVE} />
-              <text x={BAND_X + 452} y={provBand.y + 137} fill={creditU < 0.2 ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontWeight={700}>
+              <rect x={BAND_X + 16} y={provBand.y + 100} width={420} height={24} rx={5} fill={colors.BG} stroke={colors.GRID} />
+              <rect x={BAND_X + 18} y={provBand.y + 102} width={416 * clamp01(creditU)} height={20} rx={4} fill={creditU < 0.2 ? colors.NEGATIVE : colors.POSITIVE} />
+              <text x={BAND_X + 452} y={provBand.y + 117} fill={creditU < 0.2 ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontWeight={700}>
                 {Math.round(INITIAL_WINDOW_KIB * clamp01(creditU))} KiB credit
                 {creditU < 0.2 ? ' — sender stalls' : ''}
               </text>
@@ -363,7 +369,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={TAILNET.x + 72} y={TAILNET.y + 18} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                     100.72.19.4
                   </text>
-                  <text x={TAILNET.x + 72} y={TAILNET.y + 40} fill={colors.SECONDARY} fontSize={13.5}>
+                  <text x={TAILNET.x + 72} y={TAILNET.y + 40} fill={colors.SECONDARY} fontSize={14}>
                     DNS → MagicDNS
                   </text>
                 </g>
@@ -380,15 +386,18 @@ export function Render({ s }: { s: SceneState }) {
               {identityU > 0 && (
                 <g opacity={identityU}>
                   <rect x={TAILNET.x + 72} y={TAILNET.y + 54} width={170} height={30} rx={7} fill={colors.BG} stroke={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.8} />
-                  <text x={TAILNET.x + 157} y={TAILNET.y + 74} textAnchor="middle" fill={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={13.5} fontWeight={700}>
+                  <text x={TAILNET.x + 157} y={TAILNET.y + 74} textAnchor="middle" fill={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontWeight={700}>
                     node: this browser tab
                   </text>
                 </g>
               )}
               {denyU > 0 && (
                 <g opacity={denyU}>
-                  <text x={TAILNET.x} y={TAILNET.y + 226} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
-                    ACL: deny this node → the guest connection must fail
+                  <text x={936} y={TAILNET.y + 200} fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
+                    ACL: deny this node
+                  </text>
+                  <text x={936} y={TAILNET.y + 222} fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
+                    → the guest connection must fail
                   </text>
                 </g>
               )}
@@ -407,9 +416,12 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={p.name} opacity={u}>
-                    <rect x={BAND_X + 16 + i * 232} y={provBand.y + 160} width={214} height={44} rx={8} fill={colors.PANEL} stroke={p.color} />
-                    <text x={BAND_X + 30 + i * 232} y={provBand.y + 188} fill={p.color} fontSize={14} fontFamily="monospace">
-                      {p.name} · {p.cost}
+                    <rect x={BAND_X + 16 + i * 232} y={provBand.y + 128} width={214} height={40} rx={8} fill={colors.PANEL} stroke={p.color} />
+                    <text x={BAND_X + 30 + i * 232} y={provBand.y + 145} fill={p.color} fontSize={14} fontWeight={700}>
+                      {p.name}
+                    </text>
+                    <text x={BAND_X + 30 + i * 232} y={provBand.y + 162} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
+                      {p.cost}
                     </text>
                   </g>
                 );
@@ -418,18 +430,20 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </g>
 
-        {closeU > 0 && (
-          <g opacity={closeU}>
-            <rect x={260} y={256} width={760} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
-              slirp terminates the packets · a Worker carries the identity
-            </text>
-            <text x={640} y={354} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
-              the tab is the node
-            </text>
-          </g>
-        )}
       </Camera>
+
+      {/* the closing card sits in stage space, so it is centred whatever the camera does */}
+      {closeU > 0 && (
+        <g opacity={closeU}>
+          <rect x={STAGE_W / 2 - 380} y={STAGE_H / 2 - 72} width={760} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text x={STAGE_W / 2} y={STAGE_H / 2 - 18} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
+            slirp terminates the packets · a Worker carries the identity
+          </text>
+          <text x={STAGE_W / 2} y={STAGE_H / 2 + 26} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
+            the tab is the node
+          </text>
+        </g>
+      )}
     </>
   );
 }

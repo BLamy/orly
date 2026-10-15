@@ -96,7 +96,7 @@ function ClaimCard({ x, y, u, color = colors.ACCENT, label = 'method' }: { x: nu
     <text x={-123} y={-2} fill={colors.TEXT} fontSize={15} fontWeight={700}>source-grounded finding</text>
     <rect x={-123} y={18} width={220} height={5} rx={3} fill={colors.MUTED} opacity={0.42} />
     <rect x={-123} y={33} width={185} height={5} rx={3} fill={colors.MUTED} opacity={0.3} />
-    <text x={-123} y={60} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>confidence: high</text>
+    <text x={-123} y={60} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>confidence: high</text>
   </g>;
 }
 
@@ -111,28 +111,28 @@ export function Render({ s }: { s: SceneState }) {
   const cloudU = s.get(scene.cloudU);
   const scaleU = s.get(scene.scaleU);
   const mainOpacity = 1 - 0.97 * s.get(scene.dimU);
-  // earlier per-claim detail steps back once the cloud arrives, so the store reads cleanly
-  const detail = 1 - 0.9 * s.get(scene.cloudU);
+  // earlier per-claim detail clears once the cloud arrives, so the store reads cleanly
+  const detail = 1 - s.get(scene.cloudU);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <text x={640} y={52} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={780} opacity={mainOpacity}>Cut papers into verifiable claims</text>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity}>
-        <g opacity={1 - cutU * 0.88}>
+        <g opacity={(1 - cutU * 0.88) * (1 - cloudU)}>
           <Paper x={95} y={168} u={papersU} lines={5} />
           <Paper x={85} y={354} u={papersU} lines={4} />
           <Paper x={355} y={262} u={papersU} lines={5} />
-          <text x={220} y={550} textAnchor="middle" fill={colors.MUTED} fontSize={13}>document-shaped retrieval</text>
         </g>
+        <text x={220} y={550} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85 * papersU * (1 - cloudU)}>document-shaped retrieval</text>
         {cutU > 0 && <g opacity={cutU * detail}>
           {TYPES.map((type, i) => <g key={type} transform={`translate(${475 + i * 92} ${150 + i * 28})`}>
             <rect x={-48} y={-18} width={96} height={36} rx={10} fill={colors.PANEL} stroke={[colors.ACCENT, colors.WARM, colors.POSITIVE, colors.SECONDARY][i]} />
-            <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{type}</text>
+            <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{type}</text>
           </g>)}
           <path d="M335 336 C380 336 400 150 427 150" fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 8" strokeDashoffset={(1 - cutU) * 80} />
         </g>}
-        <g opacity={1 - scaleU}><ClaimCard x={760} y={342} u={claimU} /></g>
-        {fieldsU > 0 && <g opacity={fieldsU * detail} fontFamily={MONO} fontSize={13}>
+        <g opacity={(1 - scaleU) * (1 - cloudU)}><ClaimCard x={760} y={342} u={claimU} /></g>
+        {fieldsU > 0 && <g opacity={fieldsU * detail} fontFamily={MONO} fontSize={14}>
           <text x={928} y={264} fill={colors.ACCENT}>claim_type</text>
           <text x={928} y={294} fill={colors.WARM}>source_doi</text>
           <text x={928} y={324} fill={colors.POSITIVE}>verbatim_quote</text>
@@ -141,25 +141,25 @@ export function Render({ s }: { s: SceneState }) {
         {doiU > 0 && <g opacity={doiU * detail}>
           <path d="M760 416 C760 470 890 468 890 520" fill="none" stroke={colors.WARM} strokeWidth={3} />
           <rect x={732} y={512} width={316} height={46} rx={14} fill={colors.PANEL} stroke={colors.WARM} />
-          <text x={890} y={541} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>source_doi: 10.xxxx/...</text>
+          <text x={890} y={541} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>source_doi: 10.xxxx/...</text>
         </g>}
         {quoteU > 0 && <g opacity={quoteU * detail}>
-          <path d="M615 340 C545 340 535 458 468 458" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
+          <path d="M615 340 C560 340 500 380 470 430" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
           <rect x={294} y={430} width={300} height={66} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} />
-          <text x={444} y={457} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>verbatim_quote</text>
+          <text x={444} y={460} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>verbatim_quote</text>
           <rect x={325} y={473} width={238} height={5} rx={3} fill={colors.TEXT} opacity={0.5} />
         </g>}
         {s.get(scene.gateU) > 0 && <g opacity={s.get(scene.gateU) * detail}>
-          <rect x={1050} y={205} width={128} height={280} rx={22} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={3} />
-          <text x={1114} y={244} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>validate_claim</text>
+          <rect x={1040} y={205} width={148} height={280} rx={22} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={3} />
+          <text x={1114} y={244} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>validate_claim</text>
           <path d="M1074 354 l24 24 52 -70" fill="none" stroke={colors.POSITIVE} strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" />
         </g>}
         {s.get(scene.badU) > 0 && <g transform={`translate(${800 + bounceU * 155} ${165 - Math.sin(bounceU * Math.PI) * 62})`} opacity={s.get(scene.badU) * (1 - 0.45 * bounceU) * detail}>
           <rect x={-86} y={-30} width={172} height={60} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
-          <text y={-3} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>no quote</text>
-          <text y={16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>no locator</text>
+          <text y={-3} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>no quote</text>
+          <text y={17} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>no locator</text>
         </g>}
-        {cloudU > 0 && <g opacity={cloudU}>
+        {cloudU > 0 && <g opacity={cloudU * (1 - s.get(scene.dimU))}>
           {CLOUD.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={2.5 + (i % 4)} fill={i % 7 === 0 ? colors.WARM : colors.ACCENT} opacity={0.18 + 0.55 * clamp01(cloudU * 8 - i / 12)} />)}
           <g transform={`translate(${760 - scaleU * 120} ${342 + scaleU * 18}) scale(${1 - scaleU * 0.38})`}><ClaimCard x={0} y={0} u={1} /></g>
           <text x={640} y={590} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={760}>2.4M claims · 147K papers</text>
@@ -170,7 +170,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect x={180} y={226} width={920} height={220} rx={28} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} />
       <text x={640} y={302} textAnchor="middle" fill={colors.TEXT} fontSize={35} fontWeight={820}>The unit is the claim</text>
       <text x={640} y={352} textAnchor="middle" fill={colors.ACCENT} fontSize={22}>typed · source-grounded · independently retrievable</text>
-      <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={14}>the paper remains one bright tether away</text>
+      <text x={640} y={396} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={16}>the paper remains one bright tether away</text>
     </g>}
   </>;
 }

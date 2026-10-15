@@ -76,9 +76,9 @@ const BM = { x: 489, w: 348 }; // merged [0,4)
 
 // readers
 const READERS = [
-  { label: 'join', x: 1000, y: 170 },
-  { label: 'count', x: 1140, y: 250 },
-  { label: 'distinct', x: 1040, y: 330 },
+  { label: 'join', x: 1010, y: 170 },
+  { label: 'count', x: 1010, y: 250 },
+  { label: 'distinct', x: 1010, y: 330 },
 ];
 
 // y=325 lifts the shelf labels above the caption band at the wide framing
@@ -110,7 +110,6 @@ export function buildScene() {
   const pastDim = tl.channel('pastDim', 0);
 
   const arrU = tl.channel('arrU', 0); // arrange node + lane headers
-  const indexU = tl.channel('indexU', 0); // sorted key listing inside the zoomed batch
   const rain1U = tl.channel('rain1U', 0); // wave 1 chips rain + sort
   const pulse1U = tl.channel('pulse1U', 0); // frontier pulse sweeps staging
   const seal1U = tl.channel('seal1U', 0); // chips → brick 1
@@ -169,11 +168,7 @@ export function buildScene() {
     text: 'Look inside. A batch is not a log — it is an index. Every update for key A, then key B, then key C, in order.',
   });
   tl.tween(cam, CAM_BRICK, { at: 28.6, dur: 1.3, ease: ease.move });
-  tl.tween(arrU, 0, { at: 28.6, dur: 0.8, ease: ease.move });
-  tl.tween(indexU, 1, { at: 29.6, dur: 1.0, ease: ease.enter });
   tl.hold(33.6, 0.6);
-  tl.tween(indexU, 0, { at: 34.4, dur: 0.5, ease: ease.enter });
-  tl.tween(arrU, 1, { at: 34.6, dur: 0.6, ease: ease.enter });
 
   // — beat 5 · the trace: batches, edge to edge —
   tl.caption({
@@ -235,7 +230,6 @@ export function buildScene() {
     scanU,
     pastDim,
     arrU,
-    indexU,
     rain1U,
     pulse1U,
     seal1U,
@@ -296,11 +290,11 @@ function Brick({
           </g>
         );
       })}
-      <text x={x + w / 2} y={SHELF_Y - BRICK_H + 15} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={x + w / 2} y={SHELF_Y - BRICK_H + 15} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
         {label}
       </text>
       {timesLabel && (
-        <text x={x + w / 2} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text x={x + w / 2} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           {timesLabel}
         </text>
       )}
@@ -314,7 +308,6 @@ export function Render({ s }: { s: SceneState }) {
   const scanU = s.get(scene.scanU);
   const pastDim = s.get(scene.pastDim);
   const arrU = s.get(scene.arrU);
-  const indexU = s.get(scene.indexU);
   const rain1U = s.get(scene.rain1U);
   const pulse1U = s.get(scene.pulse1U);
   const seal1U = s.get(scene.seal1U);
@@ -330,6 +323,12 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const stageOp = 1 - 0.85 * dimU;
+
+  // beat 4 rides the camera zoom into the batch: the key listing appears and the
+  // arrange node steps aside, then both reverse as the camera pulls back out
+  const zoomIn = clamp01((cam.k - CAM_STAGE.k) / (CAM_BRICK.k - CAM_STAGE.k));
+  const indexU = clamp01((zoomIn - 0.5) * 2.5);
+  const arrShown = arrU * (1 - zoomIn);
 
   // brick positions under merge: b1 and b2 slide toward BM, merged fades in
   const b1x = lerp(B1.x, BM.x, mergeU);
@@ -357,7 +356,7 @@ export function Render({ s }: { s: SceneState }) {
       return (
         <g key={`${u.key}${u.time}${i}`} opacity={op}>
           <rect x={q.x - CHIP_W / 2} y={q.y - CHIP_H / 2} width={CHIP_W} height={CHIP_H} rx={7} fill={colors.PANEL} stroke={KEY_COLOR[u.key]} strokeWidth={1.4} />
-          <text x={q.x} y={q.y + 4} textAnchor="middle" fill={KEY_COLOR[u.key]} fontSize={11.5} fontFamily={MONO}>
+          <text x={q.x} y={q.y + 4} textAnchor="middle" fill={KEY_COLOR[u.key]} fontSize={13} fontFamily={MONO}>
             ({u.key}, t={u.time}, {u.diff > 0 ? '+1' : '−1'})
           </text>
         </g>
@@ -418,8 +417,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---------------- arrange + staging lanes ---------------- */}
-          {arrU > 0.01 && (
-            <g opacity={arrU}>
+          {arrShown > 0.01 && (
+            <g opacity={arrShown}>
               <rect x={ARR.x - ARR.w / 2} y={ARR.y - ARR.h / 2} width={ARR.w} height={ARR.h} rx={11} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
               <text x={ARR.x} y={ARR.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 arrange
@@ -446,7 +445,7 @@ export function Render({ s }: { s: SceneState }) {
           {pulse1U > 0.01 && pulse1U < 1 && (
             <g>
               <line x1={380 + pulse1U * 460} y1={LANE_TOP - 40} x2={380 + pulse1U * 460} y2={LANE_TOP + 110} stroke={colors.WARM} strokeWidth={2.5} opacity={0.9} />
-              <text x={380 + pulse1U * 460} y={LANE_TOP - 50} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+              <text x={380 + pulse1U * 460} y={LANE_TOP - 50} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                 frontier → 2
               </text>
             </g>
@@ -454,7 +453,7 @@ export function Render({ s }: { s: SceneState }) {
           {pulse2U > 0.01 && pulse2U < 1 && (
             <g>
               <line x1={380 + pulse2U * 460} y1={LANE_TOP - 40} x2={380 + pulse2U * 460} y2={LANE_TOP + 110} stroke={colors.WARM} strokeWidth={2.5} opacity={0.9} />
-              <text x={380 + pulse2U * 460} y={LANE_TOP - 50} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+              <text x={380 + pulse2U * 460} y={LANE_TOP - 50} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                 frontier → 4
               </text>
             </g>
@@ -464,8 +463,12 @@ export function Render({ s }: { s: SceneState }) {
           {shelfU > 0.01 && (
             <g opacity={shelfU}>
               <line x1={250} y1={SHELF_Y + 4} x2={1030} y2={SHELF_Y + 4} stroke={colors.GRID} strokeWidth={2} />
-              <text x={252} y={SHELF_Y + 34} fill={colors.MUTED} fontSize={13} fontStyle="italic">
-                the trace — a sequence of sealed batches
+              <text x={252} y={SHELF_Y + 34} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={1 - kissU}>
+                sealed batches, in order
+              </text>
+              {/* the name for the whole shelf, shown while the caption defines it */}
+              <text x={252} y={SHELF_Y + 34} fill={colors.TEXT} fontSize={14} opacity={kissU}>
+                the trace = every sealed batch, in order
               </text>
             </g>
           )}
@@ -481,10 +484,10 @@ export function Render({ s }: { s: SceneState }) {
           <Brick
             x={BM.x}
             w={BM.w}
-            label={compactU > 0.5 ? 'batch [0, 4) · old times merged' : 'batch [0, 4) — merged'}
+            label={compactU > 0.5 ? 'batch [0, 4) — compacted' : 'batch [0, 4) — merged'}
             op={mergedOp}
             laneCounts={[3, 3, 2]}
-            timesLabel={compactU > 0.5 ? 'compacted' : 't = 0 … 3'}
+            timesLabel={compactU > 0.5 ? 't ≈ old' : 't = 0 … 3'}
           />
           {/* upper == lower annotation at the kiss point */}
           {kissU > 0.01 && (
@@ -520,7 +523,7 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              <text x={1063} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={1010} y={416} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 TraceAgent — shared read access
               </text>
             </g>
@@ -530,14 +533,14 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- closing panel ---------------- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
-            <rect x={240} y={252} width={800} height={190} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={640} y={318} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={650}>
+            <rect x={120} y={236} width={1040} height={318} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+            <text x={640} y={322} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={650}>
               Memory instead of re-scanning.
             </text>
-            <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+            <text x={640} y={364} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
               seal batches at the frontier · merge them · share one index
             </text>
-            <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+            <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               Arranged {'{'} stream, trace {'}'}
             </text>
           </g>

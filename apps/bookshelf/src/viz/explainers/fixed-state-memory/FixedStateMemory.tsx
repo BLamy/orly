@@ -10,7 +10,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -87,20 +86,24 @@ const stateHeat = (tok: number): number[][] => {
 // Stage layout. Left: the growing cache. Right: the fixed state.
 // ---------------------------------------------------------------------------
 
-const CACHE_X = 150;
-const CACHE_TOP = 150;
-const SLOT_H = 17;
+const CACHE_X = 240;
+const CACHE_TOP = 120;
+const SLOT_H = 20;
 const SLOT_W = 190;
 
-const GRID_X = 760;
-const GRID_Y = 170;
-const CELL = 34;
+const GRID_X = 500;
+const GRID_Y = 160;
+const CELL = 31;
 
-const PLOT_X = scaleLinear().domain([0, T]).range([740, 1200]);
-const PLOT_Y = scaleLinear().domain([0, 1.05]).range([600, 470]);
+const PLOT_L = 470;
+const PLOT_X = scaleLinear().domain([0, T]).range([PLOT_L, 1010]);
+const PLOT_Y = scaleLinear().domain([0, 1.05]).range([590, 525]);
 
-const CAM_CACHE: CameraState = { x: 340, y: 330, k: 1.25 };
-const CAM_STATE: CameraState = { x: 920, y: 320, k: 1.2 };
+// The cache is 24 rows of SLOT_H: at k=1 it spans y 120..600, clear of the caption pill.
+const CAM_CACHE: CameraState = { x: 350, y: 360, k: 1 };
+const CAM_STATE: CameraState = { x: 700, y: 320, k: 1.2 };
+// Full-view framing for the interference beat: the state and plot sit centred.
+const CAM_FULL: CameraState = { x: 760, y: 360, k: 1 };
 
 // ---------------------------------------------------------------------------
 // Timeline — captions are the narration script.
@@ -180,7 +183,7 @@ export function buildScene(): Scene {
     dur: 5.8,
     text: 'But a fixed box has no free shelves. Every new write lands on top of the old ones, and the old associations start to blur.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 28.4, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_FULL, { at: 28.4, dur: 1.5, ease: ease.move });
   tl.tween(probeU, 1, { at: 29.6, dur: 0.7, ease: ease.enter });
   tl.tween(plotU, 1, { at: 30.4, dur: 1.0, ease: ease.draw });
   tl.caption({
@@ -254,7 +257,9 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   const titleU = s.get(scene.titleU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
+  // The cache is replaced by the fixed state: it fades out as the grid fills in.
+  const cacheOp = cacheU * (1 - gridU);
   const heat = stateHeat(stateTok);
   const gridW = D * CELL;
   const curTok = Math.min(T, curveU * T);
@@ -266,11 +271,11 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* left: the growing key-value cache */}
-          <g opacity={cacheU}>
+          <g opacity={cacheOp}>
             <text x={CACHE_X} y={CACHE_TOP - 34} fill={colors.TEXT} fontSize={20}>
               softmax attention
             </text>
-            <text x={CACHE_X} y={CACHE_TOP - 12} fill={colors.MUTED} fontSize={14}>
+            <text x={CACHE_X} y={CACHE_TOP - 12} fill={colors.MUTED} fontSize={15}>
               key value cache
             </text>
             {Array.from({ length: T }, (_, i) => {
@@ -282,18 +287,17 @@ function Frame({ s }: { s: SceneState }) {
                     x={CACHE_X}
                     y={CACHE_TOP + i * SLOT_H}
                     width={SLOT_W * u}
-                    height={SLOT_H - 4}
+                    height={SLOT_H - 3}
                     rx={3}
                     fill={colors.ACCENT}
-                    opacity={0.16 + 0.5 * (i / T)}
+                    opacity={0.35 + 0.4 * (i / T)}
                   />
                   <text
                     x={CACHE_X + 8}
-                    y={CACHE_TOP + i * SLOT_H + 11}
+                    y={CACHE_TOP + i * SLOT_H + 13}
                     fill={colors.TEXT}
-                    fontSize={10}
+                    fontSize={14}
                     fontFamily="monospace"
-                    opacity={0.8}
                   >
                     k{i + 1} v{i + 1}
                   </text>
@@ -314,7 +318,7 @@ function Frame({ s }: { s: SceneState }) {
                   x={CACHE_X + SLOT_W + 28}
                   y={CACHE_TOP + (Math.max(1, cacheTok) * SLOT_H) / 2}
                   fill={colors.WARM}
-                  fontSize={15}
+                  fontSize={16}
                 >
                   grows with T
                 </text>
@@ -357,10 +361,10 @@ function Frame({ s }: { s: SceneState }) {
             />
             <text
               x={GRID_X + gridW / 2}
-              y={GRID_Y + gridW + 26}
+              y={GRID_Y + gridW + 24}
               textAnchor="middle"
               fill={colors.SECONDARY}
-              fontSize={14}
+              fontSize={15}
             >
               fixed size, whatever T is
             </text>
@@ -378,22 +382,28 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
-      <MathLabel
-        tex="S_t = S_{t-1} + k_t v_t^{\top}"
-        x={980}
-        y={92}
+      {/* the update rule, as plain SVG text (no KaTeX, so no MathML duplicate) */}
+      <text
+        x={1000}
+        y={98}
+        textAnchor="middle"
+        fill={colors.SECONDARY}
         fontSize={24}
-        color={colors.SECONDARY}
         opacity={eqU * mainOp}
-      />
+      >
+        S<tspan baselineShift="sub" fontSize={16}>t</tspan> = S<tspan baselineShift="sub" fontSize={16}>t−1</tspan>
+        {' + '}k<tspan baselineShift="sub" fontSize={16}>t</tspan>
+        v<tspan baselineShift="sub" fontSize={16}>t</tspan>
+        <tspan baselineShift="super" fontSize={16}>⊤</tspan>
+      </text>
 
       {/* the measured interference curve */}
       {plotU > 0 && (
         <g opacity={plotU * mainOp}>
-          <text x={740} y={452} fill={colors.TEXT} fontSize={15}>
+          <text x={PLOT_L} y={468} fill={colors.TEXT} fontSize={15}>
             recall of the first stored value, as writes pile in
           </text>
-          <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="tokens written" fontSize={11} />
+          <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={3} xLabel="tokens written" fontSize={12} />
           <FunctionPlot
             x={PLOT_X}
             y={PLOT_Y}
@@ -422,7 +432,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* probe annotation */}
       <g opacity={probeU * mainOp}>
-        <text x={740} y={430} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+        <text x={PLOT_L} y={490} fill={colors.TEXT} fillOpacity={0.85} fontSize={14} fontFamily="monospace">
           recall: v̂ = Sᵀk₁ · cosine with v₁ (computed, d=8)
         </text>
       </g>
@@ -430,7 +440,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             A fixed state must forget.
           </text>

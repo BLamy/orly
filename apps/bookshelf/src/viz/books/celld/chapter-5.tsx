@@ -30,7 +30,7 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const CORE = { x: 640, y: 330, w: 310, h: 136 };
+const CORE = { x: 640, y: 330, w: 340, h: 136 };
 const SOURCES = [
   { label: 'mailbox · requests', y: 190, color: colors.ACCENT },
   { label: 'timers · lease ticks', y: 330, color: colors.WARM },
@@ -38,8 +38,8 @@ const SOURCES = [
 ] as const;
 const SRC_X = 200;
 const FX_X = 1105;
-// where a chip stops short of the core's left edge (chips are 124px wide)
-const CHIP_STOP = CORE.x - CORE.w / 2 - 70;
+// where a chip stops short of the core's left edge (chips are 150px wide)
+const CHIP_STOP = CORE.x - CORE.w / 2 - 92;
 
 const CAM_CORE: CameraState = { x: 640, y: 330, k: 1.14 };
 // wide enough at k=1.12 that the source labels stay on the 1280px stage
@@ -228,12 +228,21 @@ function BugWindows({ u }: { u: number }) {
         const x = 320 + i * 320;
         return (
           <g key={b} transform={`translate(${x}, ${300 + (1 - p) * 10})`} opacity={p}>
-            <rect x={-140} y={-46} width={280} height={92} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-            <text y={-6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO}>
+            <rect x={-140} y={-46} width={280} height={120} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+            <text y={-8} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontFamily={MONO}>
               {b}
             </text>
-            <text y={22} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <text y={16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5}>
               window: nanoseconds · opens rarely
+            </text>
+            {/* the window as a sliver on a run-length rail */}
+            <line x1={-120} x2={120} y1={44} y2={44} stroke={colors.GRID} strokeWidth={2} />
+            <rect x={-120} y={38} width={3} height={12} fill={colors.NEGATIVE} />
+            <text x={-120} y={66} fill={colors.NEGATIVE} fontSize={13}>
+              the window
+            </text>
+            <text x={120} y={66} textAnchor="end" fill={colors.SECONDARY} fontSize={13}>
+              the run →
             </text>
           </g>
         );
@@ -264,11 +273,11 @@ function CoreBox({ u, fence, dim }: { u: number; fence: number; dim: number }) {
       <text y={2} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
         on_event(state, event) → effects
       </text>
-      <text y={28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text y={28} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
         celld-logic · pure · no clock, no network
       </text>
       {fenced && (
-        <text y={54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+        <text y={54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
           decision: StopCause — fence this node
         </text>
       )}
@@ -320,11 +329,13 @@ function Lanes({ u, flow, hang, fence, dim }: { u: number; flow: number; hang: n
         const frozen = hang > 0.3 && chip.lane === 2;
         const pp = frozen ? Math.min(p, 0.45) : p;
         const x = SRC_X + 40 + (CHIP_STOP - SRC_X - 40) * pp;
-        const y = srcDef.y + (CORE.y - srcDef.y) * clamp01((pp - 0.75) * 4);
+        // each chip stays in its own lane and fades out at the core's edge,
+        // so chips never cross or sit on top of one another
+        const fade = Math.min(1, p * 4, (1 - pp) * 4);
         return (
-          <g key={i} transform={`translate(${x}, ${y})`} opacity={Math.min(1, p * 4)}>
-            <rect x={-62} y={-14} width={124} height={28} rx={14} fill={colors.BG} stroke={srcDef.color} strokeWidth={1.4} />
-            <text y={4} textAnchor="middle" fill={srcDef.color} fontSize={12} fontFamily={MONO}>
+          <g key={i} transform={`translate(${x}, ${srcDef.y})`} opacity={fade}>
+            <rect x={-75} y={-14} width={150} height={28} rx={14} fill={colors.BG} stroke={srcDef.color} strokeWidth={1.4} />
+            <text y={5} textAnchor="middle" fill={srcDef.color} fontSize={13} fontFamily={MONO}>
               {chip.label}
             </text>
           </g>
@@ -333,8 +344,8 @@ function Lanes({ u, flow, hang, fence, dim }: { u: number; flow: number; hang: n
       {/* the fence tick rides lane 1 during the hang */}
       {fence > 0 && fence < 0.9 && (
         <g transform={`translate(${SRC_X + 40 + (CHIP_STOP - SRC_X - 40) * ease.linear(clamp01(fence / 0.75))}, ${SOURCES[1].y})`}>
-          <rect x={-70} y={-15} width={140} height={30} rx={15} fill={colors.BG} stroke={colors.WARM} strokeWidth={2} />
-          <text y={5} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+          <rect x={-75} y={-15} width={150} height={30} rx={15} fill={colors.BG} stroke={colors.WARM} strokeWidth={2} />
+          <text y={5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
             NodeLeaseFence
           </text>
         </g>
@@ -355,19 +366,19 @@ function EffectLoop({ u, hang, dim }: { u: number; hang: number; dim: number }) 
     <g opacity={1 - 0.85 * dim}>
       <path d={d} fill="none" stroke={colors.SECONDARY} strokeWidth={2.2} strokeDasharray={`${len * uu} ${len}`} opacity={0.8} />
       {/* label sits above the outgoing line, to the right of the core */}
-      <text x={coreRight + 24} y={CORE.y - 14} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={uu}>
+      <text x={coreRight + 24} y={CORE.y - 14} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={uu}>
         effects: cas write · start runtime · arm timer
       </text>
       {uu > 0.9 && (
-        <text x={FX_X - 8} y={SOURCES[2].y + 66} textAnchor="end" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+        <text x={FX_X - 8} y={SOURCES[2].y + 66} textAnchor="end" fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
           completions come back through the mailbox — the loop closes
         </text>
       )}
       {/* the hung effect */}
       {hu > 0 && (
         <g transform={`translate(${FX_X}, ${CORE.y + 90})`} opacity={hu}>
-          <rect x={-124} y={-20} width={248} height={40} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.8} strokeDasharray="5 4" />
-          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+          <rect x={-150} y={-20} width={300} height={40} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.8} strokeDasharray="5 4" />
+          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             storage op · hung · still awaited
           </text>
         </g>
@@ -391,9 +402,9 @@ function SimFrame({ u, run, conf, dim }: { u: number; run: number; conf: number;
         if (p <= 0) return null;
         const done = p >= 1;
         return (
-          <g key={sched} transform={`translate(${190}, ${182 + i * 38})`} opacity={Math.min(1, p * 2)}>
-            <rect x={0} y={-15} width={264} height={30} rx={8} fill={colors.PANEL} stroke={done ? colors.POSITIVE : colors.WARM} strokeWidth={1.3} />
-            <text x={10} y={5} fill={done ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+          <g key={sched} transform={`translate(${170}, ${182 + i * 38})`} opacity={Math.min(1, p * 2)}>
+            <rect x={0} y={-15} width={290} height={30} rx={8} fill={colors.PANEL} stroke={done ? colors.POSITIVE : colors.WARM} strokeWidth={1.3} />
+            <text x={10} y={5} fill={done ? colors.POSITIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
               {sched} {done ? '· invariants hold' : '· running'}
             </text>
           </g>
@@ -406,7 +417,7 @@ function SimFrame({ u, run, conf, dim }: { u: number; run: number; conf: number;
           <text y={-28} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
             differential conformance
           </text>
-          <text y={-4} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text y={-4} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
             same program · identical bytes
           </text>
           <text x={-95} y={24} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
@@ -445,10 +456,10 @@ function RecapConstellation({ u, close }: { u: number; close: number }) {
               opacity={0.6}
             />
             <rect x={-130} y={-46} width={260} height={92} rx={14} fill={colors.PANEL} stroke={r.color} strokeWidth={1.8} />
-            <text y={-6} textAnchor="middle" fill={r.color} fontSize={15} fontWeight={700}>
+            <text y={-6} textAnchor="middle" fill={r.color} fontSize={16} fontWeight={700}>
               {r.title}
             </text>
-            <text y={18} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text y={18} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
               {r.sub}
             </text>
           </g>
@@ -467,13 +478,13 @@ function ClosingCard({ u }: { u: number }) {
       <text y={-40} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={750}>
         One function decides.
       </text>
-      <text y={-2} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+      <text y={-2} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
         on_event — production and simulation feed the same core
       </text>
-      <text y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+      <text y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         self-hosted Durable Objects · coordinated by your bucket
       </text>
-      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text y={61} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5}>
         celld · Deno Land · Apache-2.0
       </text>
     </g>
@@ -496,16 +507,16 @@ export function Render({ s }: { s: SceneState }) {
         <BugWindows u={s.get(scene.bugsU)} />
         {!shut && (
           <>
-            {/* the recap drops the connectors so the four cards read cleanly */}
+            {/* the recap clears the connectors fast so no label rides under a card */}
             <Lanes
-              u={s.get(scene.lanesU) * (1 - sim) * (1 - recap)}
+              u={s.get(scene.lanesU) * (1 - sim) * (1 - clamp01(recap * 2.5))}
               flow={s.get(scene.flowU)}
               hang={s.get(scene.hangU)}
               fence={s.get(scene.fenceU)}
               dim={dim}
             />
-            <EffectLoop u={s.get(scene.loopU) * (1 - sim) * (1 - recap)} hang={s.get(scene.hangU)} dim={dim} />
-            <CoreBox u={s.get(scene.coreU)} fence={s.get(scene.fenceU)} dim={Math.max(dim, recap * 0.4)} />
+            <EffectLoop u={s.get(scene.loopU) * (1 - sim) * (1 - clamp01(recap * 2.5))} hang={s.get(scene.hangU)} dim={dim} />
+            <CoreBox u={s.get(scene.coreU)} fence={s.get(scene.fenceU)} dim={Math.max(dim * 0.5, recap * 0.2)} />
             <SimFrame u={sim} run={s.get(scene.simRunU)} conf={s.get(scene.confU)} dim={dim} />
             <RecapConstellation u={recap} close={close} />
           </>

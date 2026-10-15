@@ -11,7 +11,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -232,7 +231,7 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the layer stack — a whisper once the camera moves to the charts */}
-          <g opacity={stackU * (1 - 0.75 * memU)}>
+          <g opacity={stackU * (1 - memU)}>
             <text x={STACK_X0} y={STACK_Y0 - 28} fill={colors.TEXT} fontSize={18}>
               48 layers — blue keeps a cache
             </text>
@@ -258,7 +257,7 @@ function Frame({ s }: { s: SceneState }) {
                     y={STACK_Y0 + row * (CELL_H + 7) + CELL_H / 2 + 4}
                     textAnchor="middle"
                     fill={attn ? colors.BG : colors.MUTED}
-                    fontSize={10}
+                    fontSize={12}
                     fontFamily="monospace"
                   >
                     {attn ? 'attn' : 'ssm'}
@@ -280,7 +279,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={620} y={122} fill={colors.MUTED} fontSize={12}>
                 48 layers · 8 KV heads · head dim 128 · fp16
               </text>
-              <Axes x={MEM_X} y={MEM_Y} reveal={memU} xTicks={4} yTicks={4} xLabel="attention fraction f" yLabel="GiB" fontSize={11} />
+              <Axes x={MEM_X} y={MEM_Y} reveal={memU} xTicks={4} yTicks={4} xLabel="attention fraction f" yLabel="GiB" fontSize={12} />
               <FunctionPlot
                 x={MEM_X}
                 y={MEM_Y}
@@ -296,7 +295,7 @@ function Frame({ s }: { s: SceneState }) {
                   <circle cx={MEM_X(sweepF)} cy={MEM_Y(memGiB(sweepF))} r={6} fill={colors.WARM} />
                   <text
                     x={MEM_X(sweepF) + 12}
-                    y={MEM_Y(memGiB(sweepF)) - 10}
+                    y={MEM_Y(memGiB(sweepF)) + 22}
                     fill={colors.WARM}
                     fontSize={14}
                     fontWeight={600}
@@ -305,14 +304,9 @@ function Frame({ s }: { s: SceneState }) {
                   </text>
                 </>
               )}
-              <MathLabel
-                tex="\text{mem}(f) \approx f \cdot L \cdot T \cdot 4\,\text{KiB}/\!\text{layer-token}"
-                x={790}
-                y={168}
-                fontSize={14}
-                color={colors.MUTED}
-                opacity={memU}
-              />
+              <text x={640} y={170} fill={colors.MUTED} fontSize={15} fontStyle="italic">
+                mem(f) ≈ f · L · T · 4 KiB per layer-token
+              </text>
             </g>
           )}
 
@@ -326,33 +320,31 @@ function Frame({ s }: { s: SceneState }) {
               {[0, 0.25, 0.5, 0.75, 1].map((v) => (
                 <g key={v}>
                   <line x1={MEM_X(v)} y1={DOT_Y - 4} x2={MEM_X(v)} y2={DOT_Y + 4} stroke={colors.GRID} />
-                  <text x={MEM_X(v)} y={DOT_Y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                  <text x={MEM_X(v)} y={DOT_Y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     {v}
                   </text>
                 </g>
               ))}
-              {REPORTED.map((m, i) => (
-                <g key={m.name}>
-                  <circle cx={MEM_X(m.f)} cy={DOT_Y} r={6} fill={colors.WARM} opacity={0.9} />
-                  <text
-                    x={MEM_X(m.f) + (i % 2 === 0 ? 0 : 0)}
-                    y={DOT_Y - 14 - (i % 3) * 16}
-                    textAnchor="middle"
-                    fill={colors.MUTED}
-                    fontSize={11}
-                  >
-                    {m.name}
-                  </text>
-                  <line
-                    x1={MEM_X(m.f)}
-                    y1={DOT_Y - 8}
-                    x2={MEM_X(m.f)}
-                    y2={DOT_Y - 10 - (i % 3) * 16}
-                    stroke={colors.GRID}
-                    strokeWidth={0.8}
-                  />
-                </g>
-              ))}
+              {/* names fan out along one row, each joined to its dot by a leader */}
+              {REPORTED.map((m, i) => {
+                const labelX = 650 + i * 100;
+                return (
+                  <g key={m.name}>
+                    <circle cx={MEM_X(m.f)} cy={DOT_Y} r={6} fill={colors.WARM} opacity={0.9} />
+                    <line
+                      x1={MEM_X(m.f)}
+                      y1={DOT_Y - 8}
+                      x2={labelX}
+                      y2={DOT_Y - 26 + 6}
+                      stroke={colors.MUTED}
+                      strokeWidth={0.8}
+                    />
+                    <text x={labelX} y={DOT_Y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                      {m.name}
+                    </text>
+                  </g>
+                );
+              })}
               <text x={MEM_X(0.62)} y={DOT_Y + 44} fill={colors.SECONDARY} fontSize={13}>
                 the whole cluster lives below one quarter
               </text>
@@ -371,7 +363,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Cost falls in a line; recall falls off a cliff.
           </text>

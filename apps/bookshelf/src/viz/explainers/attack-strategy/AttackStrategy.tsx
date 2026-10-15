@@ -1,11 +1,11 @@
 // Explained: AI Control — chapter 3: attack strategies.
 // The attacker's dilemma, simulated at module scope on chapter 2's monitor
-// (separation D = 2.2, audit top 2% → per-defection catch ≈ 55.8%). The
+// (separation D = 2.2, audit top 2% → per-defection catch ≈ 55.9%). The
 // untrusted model chooses how many times to defect over an episode. Each
 // defection is caught independently with probability p_catch; the attacker
 // "wins" only if it evades on ALL of its defections (one catch ends the game,
-// with a human now reading its work). Simulated evade-all probability:
-//   k=1 → 44.2%   k=2 → 19.4%   k=3 → 8.4%   k=5 → 1.7%   k=8 → 0.1%
+// with a human now reading its work). Simulated evade-all probability, as
+// rendered (rounded): k=1 → 44%   k=2 → 19%   k=3 → 8.2%   k=5 → 1.6%   k=8 → 0.2%
 // (20,000 seeded episodes per k). The frontier: defect often and you almost
 // certainly get caught; defect rarely and you almost never land an attack.
 // Rare-failure insertion is the attacker's only good move — and it is exactly
@@ -77,7 +77,9 @@ const PX = 220;
 const PY = 200;
 const PW = 620;
 const PH = 320;
-const px = (k: number) => PX + ((k - 1) / (KS[KS.length - 1] - 1)) * PW;
+// The first point sits clear of the y-axis so its label never meets the 50% tick.
+const PX_IN = 36;
+const px = (k: number) => PX + PX_IN + ((k - 1) / (KS[KS.length - 1] - 1)) * (PW - PX_IN);
 const py = (v: number) => PY + PH - v * PH;
 const CAM_CURVE: CameraState = { x: 560, y: 360, k: 1.12 };
 
@@ -201,7 +203,7 @@ function Frame({ s }: { s: SceneState }) {
               {[0, 0.25, 0.5, 0.75, 1].map((v) => (
                 <g key={v}>
                   <line x1={PX - 5} y1={py(v)} x2={PX + PW} y2={py(v)} stroke={colors.GRID} strokeWidth={0.5} opacity={0.35} />
-                  <text x={PX - 12} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={PX - 12} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {(v * 100).toFixed(0)}%
                   </text>
                 </g>
@@ -230,10 +232,10 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={p.k}>
                     <circle cx={px(p.k)} cy={py(p.evade)} r={spotlight ? 8 : 5} fill={colors.NEGATIVE} stroke={spotlight ? colors.WARM : 'none'} strokeWidth={spotlight ? 2.5 : 0} />
-                    <text x={px(p.k)} y={py(p.evade) - 14} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+                    <text x={px(p.k)} y={py(p.evade) - 14} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600} fontFamily="monospace">
                       {(p.evade * 100).toFixed(p.evade < 0.1 ? 1 : 0)}%
                     </text>
-                    <text x={px(p.k)} y={PY + PH + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+                    <text x={px(p.k)} y={PY + PH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                       k={p.k}
                     </text>
                   </g>
@@ -242,7 +244,7 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
           {rareU > 0 && (
-            <text x={px(1) + 16} y={py(EVADE[0].evade) + 6} fill={colors.WARM} fontSize={12.5} fontFamily="monospace" fontWeight={700} opacity={rareU}>
+            <text x={px(1) + 34} y={py(EVADE[0].evade) - 10} fill={colors.WARM} fontSize={13} fontFamily="monospace" fontWeight={700} opacity={rareU * (1 - closeU)}>
               ← defect once: the attacker’s only survivable move
             </text>
           )}
@@ -251,21 +253,21 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* dilemma panel — screen space */}
       {dilemmaU > 0 && (
-        <g opacity={dilemmaU * mainOp * (1 - 0.85 * clamp01(evadeU * 2))}>
-          <rect x={880} y={110} width={360} height={150} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={904} y={140} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+        <g opacity={dilemmaU * mainOp * (1 - 0.3 * clamp01(evadeU * 2))}>
+          <rect x={880} y={110} width={360} height={170} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.MUTED} strokeOpacity={0.5} />
+          <text x={904} y={142} fill={colors.TEXT} fontSize={16} fontWeight={600}>
             the attacker’s dilemma
           </text>
-          <text x={904} y={172} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={904} y={176} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
             defect more → more shots to land
           </text>
-          <text x={904} y={198} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={904} y={202} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
             defect more → more shots to hang
           </text>
-          <text x={904} y={230} fill={colors.MUTED} fontSize={12}>
+          <text x={904} y={240} fill={colors.TEXT} fontSize={14}>
             per-defection catch ≈ {(P_CATCH * 100).toFixed(1)}%
           </text>
-          <text x={904} y={250} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={264} fill={colors.MUTED} fontSize={13.5}>
             one catch ends the game
           </text>
         </g>
@@ -274,14 +276,14 @@ function Frame({ s }: { s: SceneState }) {
       {/* frontier note */}
       {frontU > 0 && (
         <g opacity={frontU * mainOp}>
-          <rect x={210} y={110} width={520} height={92} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.POSITIVE} />
-          <text x={234} y={142} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+          <rect x={210} y={84} width={520} height={92} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.POSITIVE} />
+          <text x={234} y={116} fill={colors.POSITIVE} fontSize={16} fontWeight={700}>
             the blue team’s win condition
           </text>
-          <text x={234} y={170} fill={colors.MUTED} fontSize={12.5}>
+          <text x={234} y={144} fill={colors.TEXT} fontSize={14}>
             force the attack to hinge on ONE rare event —
           </text>
-          <text x={234} y={190} fill={colors.MUTED} fontSize={12.5}>
+          <text x={234} y={164} fill={colors.TEXT} fontSize={14}>
             then make that one event as risky as possible to attempt.
           </text>
         </g>
@@ -296,7 +298,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Greedy attackers hang. Rare attackers barely land.
           </text>

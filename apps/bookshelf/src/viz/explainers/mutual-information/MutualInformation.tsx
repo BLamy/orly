@@ -65,7 +65,7 @@ function Mosaic({ x, y, size, joint, u, title }: { x: number; y: number; size: n
       cy += h;
     }
     cells.push(
-      <text key={`c${c}`} x={cx + w / 2} y={y + size + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} opacity={u}>
+      <text key={`c${c}`} x={cx + w / 2} y={y + size + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={u}>
         {COL_LABELS[c]}
       </text>,
     );
@@ -78,10 +78,10 @@ function Mosaic({ x, y, size, joint, u, title }: { x: number; y: number; size: n
       </text>
       {cells}
       {/* row labels on the left of the first column */}
-      <text x={x - 12} y={y + size * (J[0][0] / (J[0][0] + J[1][0])) * 0.5 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13.5} opacity={u}>
+      <text x={x - 12} y={y + size * (J[0][0] / (J[0][0] + J[1][0])) * 0.5 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={u}>
         {ROW_LABELS[0]}
       </text>
-      <text x={x - 12} y={y + size - size * (J[1][0] / (J[0][0] + J[1][0])) * 0.5 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13.5} opacity={u}>
+      <text x={x - 12} y={y + size - size * (J[1][0] / (J[0][0] + J[1][0])) * 0.5 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={u}>
         {ROW_LABELS[1]}
       </text>
     </g>
@@ -104,8 +104,9 @@ function Frame({ s }: { s: SceneState }) {
   // bar act geometry: two bars, H(X) and H(Y); slideU moves them together
   // until they overlap by MI (total width = HXY)
   const bx0 = BARS.x;
-  const y1 = BARS.y + 120;
+  const y1 = BARS.y;
   const y2 = y1 + BARS.rowH;
+  const barH = 56;
   const wX = HX * BARS.scale;
   const wY = HY * BARS.scale;
   const gap = 40; // initial horizontal gap between bar starts (side by side)
@@ -113,7 +114,9 @@ function Frame({ s }: { s: SceneState }) {
   const endYx = bx0 + (HXY - HY) * BARS.scale; // final Y-bar start so total = HXY
   const yBarX = startY + (endYx - startY) * slideU;
   const overlapW = Math.max(0, bx0 + wX - yBarX);
-  const midY = (y1 + y2) / 2 + 14;
+  const condY = y2 + barH + 84; // conditional bar row, under the "together" line
+  const condW = H_COND * BARS.scale;
+  const discountX = bx0 + condW + (MI * BARS.scale) / 2; // centre of the gap the discount leaves
 
   return (
     <>
@@ -124,17 +127,17 @@ function Frame({ s }: { s: SceneState }) {
           <g opacity={tableDim}>
             <Mosaic x={TILES.x} y={TILES.y} size={TILES.size} joint={J} u={tilesU} title="the real joint table" />
             <Mosaic x={IND_TILES.x} y={IND_TILES.y} size={IND_TILES.size} joint={JIND} u={indU} title="the independent twin" />
-            {/* marginal chips */}
+            {/* marginal chips: rain and sun sit on their rows, umbrella on the column-label line */}
             {margU > 0 && (
               <g opacity={margU}>
-                <text x={TILES.x + TILES.size + 26} y={TILES.y + 40} fill={colors.ACCENT} fontSize={14}>
-                  {`rain ${PX[0].toFixed(2)}`}
+                <text x={TILES.x + TILES.size + 26} y={TILES.y + TILES.size * (J[0][0] / PY[0]) * 0.5 + 5} fill={colors.ACCENT} fontSize={14}>
+                  {`P(rain) ${PX[0].toFixed(2)}`}
                 </text>
-                <text x={TILES.x + TILES.size + 26} y={TILES.y + 64} fill={colors.WARM} fontSize={14}>
-                  {`sun ${PX[1].toFixed(2)}`}
+                <text x={TILES.x + TILES.size + 26} y={TILES.y + TILES.size - TILES.size * (J[1][0] / PY[0]) * 0.5 + 5} fill={colors.WARM} fontSize={14}>
+                  {`P(sun) ${PX[1].toFixed(2)}`}
                 </text>
-                <text x={TILES.x + TILES.size + 26} y={TILES.y + 96} fill={colors.MUTED} fontSize={14}>
-                  {`umbrella ${PY[0].toFixed(2)}`}
+                <text x={TILES.x + TILES.size + 26} y={TILES.y + TILES.size + 24} fill={colors.MUTED} fontSize={14}>
+                  {`P(umbrella) ${PY[0].toFixed(2)}`}
                 </text>
               </g>
             )}
@@ -143,41 +146,51 @@ function Frame({ s }: { s: SceneState }) {
           {/* the bar accounting */}
           {barsU > 0 && (
             <g opacity={barsU}>
-              <text x={bx0} y={y1 - 16} fill={colors.ACCENT} fontSize={15}>
+              <text x={bx0} y={y1 - 14} fill={colors.ACCENT} fontSize={15}>
                 {`H(sky) = ${HX.toFixed(2)} bits`}
               </text>
-              <rect x={bx0} y={y1} width={wX} height={44} rx={9} fill={colors.ACCENT} opacity={0.55} stroke={colors.ACCENT} />
-              <text x={yBarX} y={y2 + 62} fill={colors.WARM} fontSize={15}>
+              <rect x={bx0} y={y1} width={wX} height={barH} rx={9} fill={colors.ACCENT} opacity={0.55} stroke={colors.ACCENT} />
+              <text x={yBarX} y={y2 + barH + 24} fill={colors.WARM} fontSize={15}>
                 {`H(umbrella) = ${HY.toFixed(2)} bits`}
               </text>
-              <rect x={yBarX} y={y2} width={wY} height={44} rx={9} fill={colors.WARM} opacity={0.55} stroke={colors.WARM} />
+              <rect x={yBarX} y={y2} width={wY} height={barH} rx={9} fill={colors.WARM} opacity={0.55} stroke={colors.WARM} />
               {/* overlap highlight */}
               {overlapW > 2 && (
                 <g>
-                  <rect x={yBarX} y={y1} width={overlapW} height={y2 + 44 - y1} rx={9} fill={colors.POSITIVE} opacity={0.3} stroke={colors.POSITIVE} strokeWidth={2} />
-                  <text x={yBarX + overlapW / 2} y={midY - 58} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5} fontWeight={650}>
+                  <rect x={yBarX} y={y1} width={overlapW} height={y2 + barH - y1} rx={9} fill={colors.POSITIVE} opacity={0.3} stroke={colors.POSITIVE} strokeWidth={2} />
+                  <text x={yBarX + overlapW / 2} y={y1 - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5} fontWeight={650}>
                     {slideU > 0.95 ? `I = ${MI.toFixed(2)} bits` : ''}
                   </text>
                 </g>
               )}
-              {/* total bracket */}
-              <text x={bx0} y={y2 + 108} fill={colors.MUTED} fontSize={14.5}>
+              {/* total line */}
+              <text x={bx0} y={y2 + barH + 54} fill={colors.MUTED} fontSize={14.5}>
                 {slideU > 0.95
                   ? `together: H(joint) = ${HXY.toFixed(2)} bits — not ${(HX + HY).toFixed(2)}`
                   : `separately: ${HX.toFixed(2)} + ${HY.toFixed(2)} = ${(HX + HY).toFixed(2)} bits`}
               </text>
-              {/* conditional payoff */}
+              {/* conditional payoff: H(sky | umbrella) as a bar, the discount as the gap left in H(sky) */}
               {condU > 0 && (
                 <g opacity={condU}>
-                  <rect x={bx0} y={y2 + 130} width={620} height={40} rx={10} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-                  <text x={bx0 + 18} y={y2 + 156} fill={colors.TEXT} fontSize={15}>
+                  <rect x={bx0} y={condY} width={wX} height={28} rx={6} fill="none" stroke={colors.MUTED} strokeDasharray="6 5" />
+                  <rect x={bx0} y={condY} width={condW} height={28} rx={6} fill={colors.ACCENT} opacity={0.55} stroke={colors.ACCENT} />
+                  <text x={discountX} y={condY + 19} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={650}>
+                    {`−${MI.toFixed(2)}`}
+                  </text>
+                  <text x={bx0} y={condY + 28 + 26} fill={colors.TEXT} fontSize={15}>
                     {`H(sky | umbrella) = ${H_COND.toFixed(2)} = ${HX.toFixed(2)} − ${MI.toFixed(2)}`}
                   </text>
                 </g>
               )}
-              <text x={bx0 + 700} y={y2 + 156} fill={colors.MUTED} fontSize={13.5} opacity={condU}>
-                {`independent twin: joint ${HXY_IND.toFixed(2)}, overlap 0.00`}
-              </text>
+              {/* independent twin check: its joint bar is the full sum, with no overlap */}
+              {condU > 0 && (
+                <g opacity={condU}>
+                  <text x={bx0} y={condY + 28 + 66} fill={colors.MUTED} fontSize={14}>
+                    {`independent twin: joint ${HXY_IND.toFixed(2)} = ${HX.toFixed(2)} + ${HY.toFixed(2)}, overlap 0.00`}
+                  </text>
+                  <rect x={bx0} y={condY + 28 + 76} width={HXY_IND * BARS.scale} height={22} rx={6} fill={colors.MUTED} opacity={0.3} stroke={colors.MUTED} />
+                </g>
+              )}
             </g>
           )}
         </g>

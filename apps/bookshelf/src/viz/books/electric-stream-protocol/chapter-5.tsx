@@ -34,9 +34,20 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const GIT = { x: 180, y: 250 } as const;
 const HOOK = { x: 420, y: 250 } as const;
 const STREAM = { x: 780, y: 340 } as const;
-const PEER_A = { x: 1090, y: 195 } as const;
-const PEER_B = { x: 1090, y: 340 } as const;
-const PEER_C = { x: 1090, y: 485 } as const;
+const PEER_A = { x: 1100, y: 195 } as const;
+const PEER_B = { x: 1100, y: 340 } as const;
+const PEER_C = { x: 1100, y: 485 } as const;
+
+// The shared card draws its badge straddling the top edge, so the chapter
+// draws its own badge fully inside the card.
+function CardBadge({ w, h, text, color }: { w: number; h: number; text: string; color: string }) {
+  return (
+    <g transform={`translate(${w / 2 - 8}, ${-h / 2 + 14})`}>
+      <rect x={-44} y={-10} width={44} height={18} rx={9} fill={PAPER} stroke={color} strokeWidth={1} />
+      <text x={-22} y={3} textAnchor="middle" fill={color} fontSize={11} fontWeight={800} fontFamily={MONO}>{text}</text>
+    </g>
+  );
+}
 
 export function buildScene() {
   const tl = new Timeline();
@@ -146,26 +157,51 @@ export function Render({ s }: { s: SceneState }) {
           u={frameU}
         >
           <circle cx={1172} cy={60} r={4} fill={GREEN} opacity={0.28 + protocolPulse * 0.62} />
+          <g opacity={cloneU}>
+            <rect x={88} y={318} width={184} height={118} rx={9} fill={PAPER} stroke="#c9cac4" strokeWidth={1.2} strokeDasharray="4 4" />
+            <text x={106} y={344} fill={MUTED} fontSize={13} fontFamily={MONO}>src/</text>
+            <text x={106} y={366} fill={MUTED} fontSize={13} fontFamily={MONO}>README.md</text>
+            <text x={106} y={388} fill={MUTED} fontSize={13} fontFamily={MONO}>.git/</text>
+            {hookU > 0.02 && (
+              <text x={122} y={410} opacity={hookU} fill={AMBER} fontSize={13} fontWeight={800} fontFamily={MONO}>hooks/post-clone</text>
+            )}
+          </g>
           <ArchitectureEdge from={{ x: GIT.x + 92, y: GIT.y }} to={{ x: HOOK.x - 92, y: HOOK.y }} tone="coral" label="clone" flow={cloneU} u={cloneU} />
-          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y + 20 }} to={{ x: STREAM.x - 142, y: STREAM.y - 24 }} via={[{ x: 560, y: HOOK.y + 20 }, { x: 560, y: STREAM.y - 24 }]} tone="amber" label="activate" flow={handshakeU} u={hookU} />
-          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y - 4 }} to={{ x: STREAM.x - 142, y: STREAM.y - 4 }} via={[{ x: 590, y: HOOK.y - 4 }, { x: 590, y: STREAM.y - 4 }]} tone="coral" label="append event" flow={eventU} u={eventU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_A.x - 106, y: PEER_A.y }} via={[{ x: 955, y: STREAM.y }, { x: 955, y: PEER_A.y }]} tone="green" label="replay" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_B.x - 106, y: PEER_B.y }} tone="green" label="digest" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_C.x - 106, y: PEER_C.y }} via={[{ x: 955, y: STREAM.y }, { x: 955, y: PEER_C.y }]} tone="green" label="catch up" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x - 100, y: STREAM.y + 62 }} to={{ x: GIT.x + 92, y: 485 }} via={[{ x: STREAM.x - 100, y: 485 }]} tone="violet" label="export / mirror" flow={exportU} u={exportU} />
+          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y + 20 }} to={{ x: STREAM.x - 130, y: STREAM.y - 24 }} via={[{ x: 560, y: HOOK.y + 20 }, { x: 560, y: STREAM.y - 24 }]} tone="amber" label="activate" flow={handshakeU} u={hookU} />
+          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y - 4 }} to={{ x: STREAM.x - 130, y: STREAM.y - 4 }} via={[{ x: 590, y: HOOK.y - 4 }, { x: 590, y: STREAM.y - 4 }]} tone="coral" label="append event" flow={eventU} u={eventU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 130, y: STREAM.y }} to={{ x: PEER_A.x - 112, y: PEER_A.y }} via={[{ x: 935, y: STREAM.y }, { x: 935, y: PEER_A.y }]} tone="green" label="replay" flow={peerU} u={peerU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 130, y: STREAM.y }} to={{ x: PEER_B.x - 112, y: PEER_B.y }} tone="green" flow={peerU} u={peerU} />
+          <g opacity={peerU}>
+            <text x={961} y={328} textAnchor="middle" fill={INK} fontSize={11.5} fontWeight={800} fontFamily={MONO}>digest</text>
+          </g>
+          <ArchitectureEdge from={{ x: STREAM.x + 130, y: STREAM.y }} to={{ x: PEER_C.x - 112, y: PEER_C.y }} via={[{ x: 935, y: STREAM.y }, { x: 935, y: PEER_C.y }]} tone="green" label="catch up" flow={peerU} u={peerU} />
+          <ArchitectureEdge from={{ x: STREAM.x - 100, y: STREAM.y + 62 }} to={{ x: GIT.x + 112, y: 485 }} via={[{ x: STREAM.x - 100, y: 485 }]} tone="violet" label="export / mirror" flow={exportU} u={exportU} />
 
-          <ArchitectureCard x={GIT.x} y={GIT.y} w={184} h={84} label="git clone" meta="ordinary working tree" badge="EDGE" tone="coral" u={cloneU} status="ready" />
-          <ArchitectureCard x={HOOK.x} y={HOOK.y} w={184} h={84} label="activation" meta="post-clone hook" badge="HOOK" tone="amber" u={hookU} status={handshakeU > 0.5 ? 'ready' : undefined} />
-          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={124} label="authoritative stream" meta="events · offsets · digests" badge="LIVE" tone="blue" u={eventU} status="ready">
-            <text x={-124} y={40} fill={MUTED} fontSize={11} fontFamily={MONO}>/streams/project-main</text>
-            <text x={-124} y={56} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>bridge → normal dispatch door</text>
+          <ArchitectureCard x={GIT.x} y={GIT.y} w={184} h={84} label="git clone" meta="ordinary working tree" tone="coral" u={cloneU} status="ready">
+            <CardBadge w={184} h={84} text="EDGE" color={CORAL} />
+          </ArchitectureCard>
+          <ArchitectureCard x={HOOK.x} y={HOOK.y} w={184} h={84} label="activation" meta="post-clone hook" tone="amber" u={hookU} status={handshakeU > 0.5 ? 'ready' : undefined}>
+            <CardBadge w={184} h={84} text="HOOK" color={AMBER} />
+          </ArchitectureCard>
+          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={260} h={124} label="authoritative stream" meta="events · offsets · digests" tone="blue" u={eventU} status="ready">
+            <CardBadge w={260} h={124} text="LIVE" color={BLUE} />
+            <text x={-112} y={40} fill={MUTED} fontSize={12} fontFamily={MONO}>/streams/project-main</text>
+            <text x={-112} y={58} fill={BLUE} fontSize={12.5} fontWeight={800} fontFamily={MONO}>bridge → normal dispatch door</text>
           </ArchitectureCard>
 
-          <ArchitectureCard x={PEER_A.x} y={PEER_A.y} w={212} h={70} label="peer A" meta="reduced · digest 7a19" badge="SYNC" tone="green" u={peerU} status="ready" />
-          <ArchitectureCard x={PEER_B.x} y={PEER_B.y} w={212} h={70} label="peer B" meta="reduced · offset 0043" badge="SYNC" tone="green" u={peerU} status="ready" />
-          <ArchitectureCard x={PEER_C.x} y={PEER_C.y} w={212} h={70} label="peer C" meta="reduced · evidence attached" badge="PROVE" tone="green" u={peerU} status="ready" />
+          <ArchitectureCard x={PEER_A.x} y={PEER_A.y} w={224} h={70} label="peer A" meta="reduced · digest 7a19" tone="green" u={peerU} status="ready">
+            <CardBadge w={224} h={70} text="SYNC" color={GREEN} />
+          </ArchitectureCard>
+          <ArchitectureCard x={PEER_B.x} y={PEER_B.y} w={224} h={70} label="peer B" meta="reduced · offset 0043" tone="green" u={peerU} status="ready">
+            <CardBadge w={224} h={70} text="SYNC" color={GREEN} />
+          </ArchitectureCard>
+          <ArchitectureCard x={PEER_C.x} y={PEER_C.y} w={224} h={70} label="peer C" meta="reduced · evidence attached" tone="green" u={peerU} status="ready">
+            <CardBadge w={224} h={70} text="PROVE" color={GREEN} />
+          </ArchitectureCard>
 
-          <ArchitectureCard x={GIT.x} y={485} w={184} h={66} label="git mirror" meta="snapshot / review / escape" badge="EXPORT" tone="violet" u={exportU} status="ready" />
+          <ArchitectureCard x={GIT.x} y={485} w={224} h={66} label="git mirror" meta="snapshot / review / escape" tone="violet" u={exportU} status="ready">
+            <CardBadge w={224} h={66} text="EXPORT" color={VIOLET} />
+          </ArchitectureCard>
           <ArchitecturePhaseRail x={150} y={566} w={640} phases={['clone', 'activate', 'append', 'converge']} active={Math.min(3, Math.max(0, phase))} u={castU} />
 
           {handshakeU > 0.02 && closeU < 1 && (

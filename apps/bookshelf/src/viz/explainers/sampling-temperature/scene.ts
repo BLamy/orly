@@ -374,8 +374,8 @@ export function buildScene(): Scene {
     dur: 5.6,
     text: 'So one dial trades reliability for surprise. Cold for facts and code, warm for stories and brainstorms.',
   });
-  tl.tween(chartOp, 0.1, { at: 78.6, dur: 1.2, ease: ease.move });
-  tl.tween(dialU, 0, { at: 78.6, dur: 0.9, ease: ease.move });
+  tl.tween(chartOp, 0, { at: 78.6, dur: 1.2, ease: ease.move });
+  tl.tween(dialU, 1, { at: 78.6, dur: 0.9, ease: ease.move }); // the one dial stays for the recap
   tl.tween(cutU, 0, { at: 78.6, dur: 0.9, ease: ease.move });
   tl.tween(topkPctU, 0, { at: 78.6, dur: 0.9, ease: ease.move });
   tl.tween(pctU, 0, { at: 78.6, dur: 0.9, ease: ease.move });

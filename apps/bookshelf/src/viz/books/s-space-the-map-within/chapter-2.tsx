@@ -83,7 +83,7 @@ function Txt({
   );
 }
 const monoW = (text: string, size: number): number => text.length * size * 0.602;
-function Chip({ x, y, text, color = INK.muted, opacity = 1, size = 11, anchor = 'middle' }: {
+function Chip({ x, y, text, color = INK.muted, opacity = 1, size = 12, anchor = 'middle' }: {
   x: number; y: number; text: string; color?: string; opacity?: number; size?: number; anchor?: 'start' | 'middle' | 'end';
 }) {
   if (opacity <= 0.003) return null;
@@ -437,11 +437,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* outputs: coordinate readout vs generated answer */}
           <g opacity={out}>
             <rect x={OUT.x} y={118} width={OUT.w} height={54} rx={8} fill={INK.panel} stroke={marginColor} strokeOpacity={0.8} />
-            <Txt x={OUT.x + 12} y={138} size={12} fill={INK.muted} opacity={tagO}>coordinate readout</Txt>
+            <Txt x={OUT.x + 12} y={138} size={13} fill={INK.muted} opacity={tagO}>coordinate readout</Txt>
             <Txt x={OUT.x + 12} y={161} size={16} mono fill={marginColor} opacity={tagO}>{`m = ${fmt(m)} → ${marginWord}`}</Txt>
             <rect x={OUT.x} y={186} width={OUT.w} height={54} rx={8} fill={INK.panel} stroke={INK.muted} strokeDasharray="5 4" />
-            <Txt x={OUT.x + 12} y={206} size={12} fill={INK.muted} opacity={tagO}>generated answer</Txt>
-            <Txt x={OUT.x + 12} y={229} size={16} fill={INK.text} opacity={tagO}>?  measured separately</Txt>
+            <Txt x={OUT.x + 12} y={206} size={13} fill={INK.muted} opacity={tagO}>generated answer</Txt>
+            <Txt x={OUT.x + 12} y={229} size={14} fill={INK.text} opacity={tagO}>not modelled here · see Table 7</Txt>
             <Txt x={OUT.x} y={262} size={12} fill={INK.muted} opacity={swapU * tagO}>coordinate flip ≠ guaranteed answer flip</Txt>
           </g>
 
@@ -485,14 +485,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- hidden ribbon block: h, Δh, h' ---- */}
         <g opacity={rib}>
-          <Txt x={RIB.x0} y={ROW_H - 38} size={11} fill={INK.muted}>Illustrative activations · 4 displayed dimensions</Txt>
+          <Txt x={RIB.x0} y={ROW_H - 38} size={12} fill={INK.muted}>Illustrative activations · 4 displayed dimensions</Txt>
           <CellRow y={ROW_H} vals={H_APPLE} color={INK.apple} label={'h'} fill={4} opacity={1} />
           <CellRow y={ROW_DH} vals={DELTA_H} color={INK.hx} label={'\\Delta h'} fill={delta} opacity={1} />
           <Txt x={cellX(1)} y={ROW_DH + 36} size={12} anchor="start" fill={INK.vy} opacity={clamp01(delta - 1.5)}>h₂ correction</Txt>
           <Txt x={cellX(0) + RIB.w / 2} y={ROW_DH + 36} size={12} anchor="middle" fill={INK.hx} opacity={clamp01(delta - 0.5)}>x request</Txt>
           <CellRow y={ROW_HE} vals={H_EDIT} color={INK.apple} label={"h'"} fill={edit} opacity={1} />
           <Txt x={cellX(3) + RIB.w / 2} y={ROW_HE + 36} size={12} anchor="middle" fill={INK.muted} opacity={clamp01(edit - 3.5)}>unchanged · outside span(V)</Txt>
-          <Vec x1={cellX(1) + RIB.w / 2} y1={ROW_DH + 42} x2={cellX(1) + RIB.w / 2} y2={ROW_HE - RIB.h / 2 - 4} grow={clamp01(edit)} color={INK.muted} width={1.4} head={7} opacity={0.6} />
+          <Vec x1={cellX(1) + RIB.w / 2} y1={ROW_DH + 50} x2={cellX(1) + RIB.w / 2} y2={ROW_HE - RIB.h / 2 - 4} grow={clamp01(edit)} color={INK.muted} width={1.4} head={7} opacity={0.6} />
           <MathLabel tex={"h' = h + \\Delta h"} x={RIB.x0} y={ROW_HE + 60} fontSize={14} anchor="start" boxWidth={180} color={INK.muted} opacity={clamp01(edit - 3.5)} />
         </g>
 
@@ -556,7 +556,7 @@ export function Render({ s }: { s: SceneState }) {
           <line x1={PLOT.x0} y1={PLOT.y1} x2={lerp(PLOT.x0, PLOT.x1, plot)} y2={PLOT.y1} stroke={colors.ink.axis} strokeWidth={1.5} />
           <line x1={PLOT.x0} y1={PLOT.y1} x2={PLOT.x0} y2={lerp(PLOT.y1, PLOT.y0, plot)} stroke={colors.ink.axis} strokeWidth={1.5} />
           <Txt x={(PLOT.x0 + PLOT.x1) / 2} y={PLOT.y1 + 42} size={12} anchor="middle" fill={INK.muted}>swap strength α (random edits matched in size)</Txt>
-          <Txt x={PLOT.x0 + 10} y={PLOT.y0 - 6} size={12} anchor="start" fill={INK.muted}>same answer as unedited</Txt>
+          <Txt x={PLOT.x1} y={py(100) + 18} size={12} anchor="end" fill={INK.muted}>same answer as unedited</Txt>
           {/* curves */}
           <path d={tracePath(RANDOM, trace)} stroke={INK.random} strokeWidth={3} fill="none" strokeLinejoin="round" strokeLinecap="round" />
           <path d={tracePath(SWAP, trace)} stroke={INK.hx} strokeWidth={3} fill="none" strokeLinejoin="round" strokeLinecap="round" />
@@ -600,18 +600,18 @@ export function Render({ s }: { s: SceneState }) {
           ].map((bar) => (
             <g key={bar.label}>
               <Txt x={200} y={bar.y} size={12} fill={bar.color}>{bar.label}</Txt>
-              <Txt x={410} y={bar.y} size={14} anchor="end" mono weight={600} fill={bar.color}>{`${bar.pct.toFixed(2)}%`}</Txt>
-              <rect x={200} y={bar.y + 8} width={210} height={18} rx={4} fill={colors.GRID} opacity={0.6} />
-              <rect x={200} y={bar.y + 8} width={210 * (bar.pct / 100) * pin} height={18} rx={4} fill={bar.color} />
+              <Txt x={390} y={bar.y} size={14} anchor="end" mono weight={600} fill={bar.color}>{`${bar.pct.toFixed(2)}%`}</Txt>
+              <rect x={200} y={bar.y + 8} width={190} height={18} rx={4} fill={colors.GRID} opacity={0.6} />
+              <rect x={200} y={bar.y + 8} width={190 * (bar.pct / 100) * pin} height={18} rx={4} fill={bar.color} />
             </g>
           ))}
         </g>
 
         {/* ---- quiet close ---- */}
-        <Field x={70} y={250} w={560} h={130} opacity={close}>
-          <Txt x={350} y={300} size={25} weight={600} anchor="middle">Spatial edits selectively influence answers</Txt>
-          <Txt x={350} y={332} size={12.5} anchor="middle" fill={INK.muted}>measured: Table 7 · Molmo2-ER L17 · 800 EmbSpatial · answer retention, not accuracy</Txt>
-          <Txt x={350} y={356} size={12.5} anchor="middle" fill={INK.muted}>no guarantee for every edit, or for every other answer</Txt>
+        <Field x={60} y={250} w={640} h={130} opacity={close}>
+          <Txt x={380} y={300} size={25} weight={600} anchor="middle">Spatial edits selectively influence answers</Txt>
+          <Txt x={380} y={332} size={14} anchor="middle" fill={INK.muted}>measured on Table 7 · Molmo2-ER L17 · 800 EmbSpatial</Txt>
+          <Txt x={380} y={356} size={14} anchor="middle" fill={INK.muted}>answer retention, not accuracy · no guarantee for every edit</Txt>
         </Field>
       </Camera>
 

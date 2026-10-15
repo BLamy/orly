@@ -138,9 +138,9 @@ function KeyChip({ x, y, label, sub, color, u }: { x: number; y: number; label: 
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <rect x={x - 78} y={y - 16} width={156} height={38} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x} y={y - 2} textAnchor="middle" fill={color} fontSize={12} fontFamily="monospace">{label}</text>
-      <text x={x} y={y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{sub}</text>
+      <rect x={x - 90} y={y - 18} width={180} height={44} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
+      <text x={x} y={y} textAnchor="middle" fill={color} fontSize={14} fontFamily="monospace">{label}</text>
+      <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>{sub}</text>
     </g>
   );
 }
@@ -169,11 +169,11 @@ export function Render({ s }: { s: SceneState }) {
       {/* bunker URI banner (screen-fixed, early) */}
       {uriU > 0 && (
         <g opacity={uriU * mainOp}>
-          <rect x={320} y={300} width={640} height={70} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-          <text x={640} y={332} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
+          <rect x={320} y={112} width={640} height={76} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+          <text x={640} y={144} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily="monospace">
             bunker://&lt;signer-pubkey&gt;
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+          <text x={640} y={170} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             ?relay=wss://relay.example&amp;secret=…
           </text>
         </g>
@@ -181,9 +181,12 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* the laptop and phone are ghosted while the URI is shown, then take over */}
           {appU > 0 && <ServiceNode x={APP.x} y={APP.y} kind="client" label="app" sublabel="laptop" u={appU} />}
+          {appU <= 0 && uriU > 0 && <ServiceNode x={APP.x} y={APP.y} kind="client" label="app" sublabel="laptop" u={uriU * 0.45} />}
           {relayU > 0 && <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay" sublabel="wss://" u={relayU} />}
           {signerU > 0 && <ServiceNode x={SIGNER.x} y={SIGNER.y} kind="mobile" label="signer" sublabel="phone · bunker" u={signerU} />}
+          {signerU <= 0 && uriU > 0 && <ServiceNode x={SIGNER.x} y={SIGNER.y} kind="mobile" label="signer" sublabel="phone · bunker" u={uriU * 0.45} />}
 
           {connU > 0 && (
             <>
@@ -197,15 +200,15 @@ export function Render({ s }: { s: SceneState }) {
             <>
               <KeyChip x={APP.x} y={APP.y + 96} label="client key" sub="disposable" color={colors.ACCENT} u={clamp01(keysU * 3)} />
               <KeyChip x={SIGNER.x} y={SIGNER.y + 96} label="signer key" sub="encrypts channel" color={colors.NEGATIVE} u={clamp01(keysU * 3 - 1)} />
-              <KeyChip x={SIGNER.x} y={SIGNER.y + 140} label="user key" sub="signs — never moves" color={colors.WARM} u={clamp01(keysU * 3 - 2)} />
+              <KeyChip x={SIGNER.x} y={SIGNER.y + 152} label="user key" sub="signs — never moves" color={colors.WARM} u={clamp01(keysU * 3 - 2)} />
             </>
           )}
 
           {/* request payload chip on the app side */}
           {reqU > 0 && wrapU < 0.05 && (
             <g opacity={reqU}>
-              <rect x={APP.x - 190} y={APP.y - 150} width={380} height={40} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={APP.x} y={APP.y - 125} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">{REQ}</text>
+              <rect x={APP.x - 225} y={APP.y - 150} width={450} height={40} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <text x={APP.x} y={APP.y - 125} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">{REQ}</text>
             </g>
           )}
 
@@ -218,7 +221,7 @@ export function Render({ s }: { s: SceneState }) {
                 u={clamp01(wrapU * 2)}
                 text="🔒 sign_event"
                 fill={colors.ACCENT}
-                fontSize={12.5}
+                fontSize={14}
                 lift={40}
               />
               <TokenFlight
@@ -227,7 +230,7 @@ export function Render({ s }: { s: SceneState }) {
                 u={clamp01(wrapU * 2 - 1)}
                 text="🔒 sign_event"
                 fill={colors.NEGATIVE}
-                fontSize={12.5}
+                fontSize={14}
                 lift={40}
               />
             </>
@@ -242,7 +245,7 @@ export function Render({ s }: { s: SceneState }) {
                 u={clamp01(resU * 2)}
                 text="🔒 result: id ✓"
                 fill={colors.POSITIVE}
-                fontSize={12.5}
+                fontSize={14}
                 lift={44}
               />
               <TokenFlight
@@ -251,9 +254,16 @@ export function Render({ s }: { s: SceneState }) {
                 u={clamp01(resU * 2 - 1)}
                 text="🔒 result: id ✓"
                 fill={colors.POSITIVE}
-                fontSize={12.5}
+                fontSize={14}
                 lift={44}
               />
+              {/* the app checks the returned id and signature against its pending request */}
+              <g opacity={clamp01((resU - 0.4) / 0.6)}>
+                <rect x={APP.x - 120} y={APP.y - 114} width={240} height={36} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+                <text x={APP.x} y={APP.y - 91} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
+                  verify: id ✓ · sig ✓
+                </text>
+              </g>
             </>
           )}
 
@@ -261,11 +271,11 @@ export function Render({ s }: { s: SceneState }) {
           {authU > 0 && (
             <g opacity={authU}>
               <path d="M 810 497 Q 900 440 946 336" fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 5" />
-              <rect x={RELAY.x - 170} y={470} width={340} height={54} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={RELAY.x} y={494} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+              <rect x={RELAY.x - 170} y={470} width={340} height={58} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <text x={RELAY.x} y={494} textAnchor="middle" fill={colors.WARM} fontSize={15} fontFamily="monospace">
                 result: "auth_url"
               </text>
-              <text x={RELAY.x} y={514} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={RELAY.x} y={517} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 approve on your phone → same request id
               </text>
             </g>
@@ -275,6 +285,8 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
+          {/* solid backing so the faded diagram never shows through the closing text */}
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.BG} />
           <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A conversation, not a handoff
@@ -282,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             encrypted kind-24133 request/response over a relay — the user key never moves
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">
             NIP-46 · remote signing · bunker://
           </text>
         </g>

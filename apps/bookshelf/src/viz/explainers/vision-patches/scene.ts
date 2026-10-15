@@ -83,13 +83,14 @@ export const STRIP_W = 4 * SPP - SGAP; // 56.5
 export const STRIP_Y = 96;
 export const STRIP_X0 = 150;
 export const STRIP_DX = 116;
-export const MAT = { x: 170, y: 250 } as const;
-export const MCELL = 30;
-export const MGAP = 3;
+export const MAT = { x: 200, y: 246 } as const;
+export const MCELL = 36;
+export const MGAP = 4;
 export const MP = MCELL + MGAP;
 
 export const CAM_IMG: CameraState = { x: 640, y: 300, k: 1.2 };
-export const CAM_MAT: CameraState = { x: 480, y: 380, k: 1.15 };
+// wide enough that the whole token strip, the matrix and the notes stay on stage
+export const CAM_MAT: CameraState = { x: 640, y: 350, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;

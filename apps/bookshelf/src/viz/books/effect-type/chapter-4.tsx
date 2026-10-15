@@ -220,14 +220,14 @@ function TreeNode({ y, tag, line1, line2, u, hot }: {
     <g opacity={u}>
       <rect x={TREE_X} y={y} width={NODE.w} height={NODE.h} rx={12} fill={colors.PANEL} stroke={hot > 0.5 ? colors.WARM : colors.ACCENT} strokeWidth={1.5 + 1.5 * hot} />
       <rect x={TREE_X + 14} y={y + 10} width={150} height={20} rx={10} fill={colors.BG} stroke={colors.GRID} />
-      <text x={TREE_X + 89} y={y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily="monospace">
+      <text x={TREE_X + 89} y={y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
         {tag}
       </text>
-      <text x={TREE_X + 16} y={y + 50} fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+      <text x={TREE_X + 16} y={y + 50} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
         {line1}
       </text>
       {line2 && (
-        <text x={TREE_X + 16} y={y + 66} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+        <text x={TREE_X + 16} y={y + 66} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
           {line2}
         </text>
       )}
@@ -240,7 +240,7 @@ function StackChip({ y, label, u }: { y: number; label: string; u: number }) {
   return (
     <g opacity={u}>
       <rect x={SLOT.x} y={y} width={SLOT.w} height={SLOT.h} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.4} />
-      <text x={SLOT.x + SLOT.w / 2} y={y + 27} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+      <text x={SLOT.x + SLOT.w / 2} y={y + 27} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
         {label}
       </text>
     </g>
@@ -285,9 +285,17 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ================= ACT 1 · the machine at work ================= */}
-        <g opacity={dim1 * dimU}>
+        <g opacity={dim1 * dimU * (1 - doorsU)}>
           {/* the description tree — gone once the Exit takes the camera */}
           {exitU < 0.5 && (<>
+          {/* ghost placeholder: the inert description before anything runs */}
+          {treeU < 0.99 && (
+            <g opacity={0.45 * (1 - treeU)}>
+              {[ROOT_Y, MID_Y, LEAF_Y].map((gy) => (
+                <rect key={gy} x={TREE_X} y={gy} width={NODE.w} height={NODE.h} rx={12} fill="none" stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="6 6" />
+              ))}
+            </g>
+          )}
           <g opacity={treeU}>
             <text x={TREE_X} y={ROOT_Y - 40} fill={colors.MUTED} fontSize={13}>
               the description, as the runtime sees it
@@ -350,16 +358,16 @@ export function Render({ s }: { s: SceneState }) {
           {exitU > 0.01 && (
             <g opacity={exitU}>
               <rect x={EXIT_CARD.x} y={EXIT_CARD.y} width={EXIT_CARD.w} height={EXIT_CARD.h} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={EXIT_CARD.x + EXIT_CARD.w / 2} y={EXIT_CARD.y - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              <text x={EXIT_CARD.x + EXIT_CARD.w / 2} y={EXIT_CARD.y - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 every run ends in an Exit
               </text>
-              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 44} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 44} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 _tag: "Success"
               </text>
-              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 70} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 70} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 value: 190
               </text>
-              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 102} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 102} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 or Failure — cause: ...
               </text>
             </g>
@@ -368,7 +376,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ================= ACT 2 · the three doorways ================= */}
         {doorsU > 0.01 && (
-          <g opacity={doorsU * dimU}>
+          <g opacity={doorsU * dimU * (1 - closeU)}>
             {/* — runSync — */}
             <g>
               <rect x={DOOR_X[0]} y={DOOR.y} width={DOOR.w} height={DOOR.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
@@ -408,11 +416,11 @@ export function Render({ s }: { s: SceneState }) {
                 a bridge to async and await
               </text>
               {/* mini track: fiber → promise → .then */}
-              <line x1={DOOR_X[1] + 30} y1={DOOR.y + 130} x2={DOOR_X[1] + DOOR.w - 30} y2={DOOR.y + 130} stroke={colors.GRID} strokeWidth={6} strokeLinecap="round" />
+              <line x1={DOOR_X[1] + 30} y1={DOOR.y + 140} x2={DOOR_X[1] + DOOR.w - 30} y2={DOOR.y + 140} stroke={colors.GRID} strokeWidth={6} strokeLinecap="round" />
               {promU > 0.01 && promU < 0.99 && (
-                <circle cx={DOOR_X[1] + 30 + (DOOR.w - 60) * promU} cy={DOOR.y + 130} r={8} fill={colors.ACCENT} />
+                <circle cx={DOOR_X[1] + 30 + (DOOR.w - 60) * promU} cy={DOOR.y + 140} r={8} fill={colors.ACCENT} />
               )}
-              <text x={DOOR_X[1] + 20} y={DOOR.y + 170} fill={colors.TEXT} fontSize={11.5} fontFamily="monospace" opacity={clamp01(promU * 4 - 3)}>
+              <text x={DOOR_X[1] + 20} y={DOOR.y + 190} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace" opacity={clamp01(promU * 4 - 3)}>
                 .then(console.log)  {'// 190'}
               </text>
             </g>
@@ -432,8 +440,8 @@ export function Render({ s }: { s: SceneState }) {
                 const on = forkT * 700 >= ms;
                 const x = DOOR_X[2] + 30 + ((DOOR.w - 60) * ms) / 700;
                 return (
-                  <g key={ms} opacity={on ? 1 : 0.15}>
-                    <circle cx={x} cy={DOOR.y + 140} r={7} fill={on ? colors.POSITIVE : colors.GRID} />
+                  <g key={ms}>
+                    <circle cx={x} cy={DOOR.y + 140} r={7} fill={on ? colors.POSITIVE : colors.GRID} opacity={on ? 1 : 0.35} />
                     <text x={x} y={DOOR.y + 122} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                       {ms} ms
                     </text>
@@ -452,7 +460,7 @@ export function Render({ s }: { s: SceneState }) {
                       </g>
                     );
                   })()}
-                  <text x={DOOR_X[2] + 20} y={DOOR.y + 190} fill={colors.NEGATIVE} fontSize={11.5} fontFamily="monospace">
+                  <text x={DOOR_X[2] + 20} y={DOOR.y + 190} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
                     Effect.runFork(Fiber.interrupt(fiber))
                   </text>
                   <text x={DOOR_X[2] + 20} y={DOOR.y + 212} fill={colors.MUTED} fontSize={12}>
@@ -461,7 +469,7 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               )}
               {forkT > 0.01 && forkT * 700 < 500 && (
-                <text x={DOOR_X[2] + 20} y={DOOR.y + 190} fill={colors.POSITIVE} fontSize={11.5} fontFamily="monospace">
+                <text x={DOOR_X[2] + 20} y={DOOR.y + 190} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
                   running...
                 </text>
               )}

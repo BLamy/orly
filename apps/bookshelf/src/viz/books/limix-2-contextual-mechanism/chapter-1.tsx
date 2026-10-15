@@ -1,6 +1,6 @@
 // Grounding: arXiv:2609.17488 Sections 2.1–2.2; official source
 // model/v2_0/transformer.py and model/v2_0/encoders.py.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -73,17 +73,20 @@ export function Render({ s }: { s: SceneState }) {
   const permute = s.get(scene.permuteU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">a table of cells, not rows</text>
+      <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">a table of cells, not rows</text>
+      {/* Row and column emphasis for the compare-within-a-row / down-a-column caption; it rides on the lift channel, so it stays off until the lift passes 1. */}
+      <rect x={GRID_X - 56} y={174 + 3 * 82 - 36 - lift * 10} width={COLS * 126 - 14} height="72" rx="18" fill={colors.WARM} opacity={0.14 * clamp01((lift - 1) / 0.7)} />
+      <rect x={GRID_X + 3 * 126 - 60 - permute * 252} y="104" width="120" height="440" rx="20" fill={colors.WARM} opacity={0.1 * clamp01((lift - 1) / 0.7)} />
       {COL_LABELS.map((label, c) => {
         const x = GRID_X + c * 126 + (c === 1 ? permute * 252 : c === 3 ? -permute * 252 : 0);
-        return <text key={label} x={x} y="130" textAnchor="middle" fill={c === 3 ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono} opacity={table}>{label}</text>;
+        return <text key={label} x={x} y="118" textAnchor="middle" fill={c === 3 ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono} opacity={table}>{label}</text>;
       })}
       {CELLS.map((cell, i) => {
         const swap = cell.col === 1 ? permute * 252 : cell.col === 3 ? -permute * 252 : 0;
         const x = cell.x + swap;
         const u = clamp01(table * CELLS.length - i);
         const isMask = i === MASK;
-        const value = isMask && mask > 0.15 ? 'Emiss' : `${((cell.row + 2) * (cell.col + 3)) % 17}.${cell.row}`;
+        const value = isMask && mask > 0.15 ? 'E_miss' : `${((cell.row + 2) * (cell.col + 3)) % 17}.${cell.row}`;
         const color = isMask ? colors.WARM : colors.ACCENT;
         return <g key={i} transform={`translate(${x} ${cell.y - lift * 10})`} opacity={u}>
           <rect x="-48" y="-28" width="96" height="56" rx="14" fill={isMask ? '#2b2513' : '#101827'} stroke={color} strokeWidth={isMask ? 3 : 1.5} />
@@ -96,16 +99,16 @@ export function Render({ s }: { s: SceneState }) {
           <path d={`M1090 ${174 + r * 82} H1147`} stroke={colors.NEGATIVE} strokeWidth="3" />
           <circle cx="1170" cy={174 + r * 82} r="23" fill="#281821" stroke={colors.NEGATIVE} strokeWidth="2" />
         </g>)}
-        <text x="1170" y="132" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">row compression</text>
+        <text x="1170" y="118" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">row compression</text>
       </g>
       <g opacity={code}>
         {/* Dashed route runs through the gap between rows 2 and 3, so it never crosses a cell. */}
-        <path d={`M${CELLS[MASK].x - permute * 252} ${CELLS[MASK].y - 28} V379 H1096`} fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 8" />
+        <path d={`M${CELLS[MASK].x - permute * 252} ${CELLS[MASK].y - lift * 10 - 28} V${379 - lift * 9} H1096`} fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 8" />
         <rect x="1096" y="335" width="170" height="88" rx="22" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="1181" y="371" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>u_j → E u_j</text>
         <text x="1181" y="401" textAnchor="middle" fill={colors.MUTED} fontSize="14">column code</text>
       </g>
-      <MathLabel tex={'d=256 \\qquad s=d/4'} x={1250} y={104} fontSize={21} anchor="end" opacity={s.get(scene.dimsU)} />
+      <text x="640" y="101" textAnchor="middle" fill={colors.MUTED} fontSize="18" fontFamily={colors.font.mono} opacity={s.get(scene.dimsU)}>d = 256 · s = d/4 = 64</text>
     </g>
     <g opacity={close}>
       <rect x="170" y="126" width="940" height="430" rx="58" fill={colors.BG} stroke={colors.WARM} strokeWidth="4" />

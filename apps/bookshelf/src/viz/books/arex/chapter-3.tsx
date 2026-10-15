@@ -79,7 +79,7 @@ export function buildScene() {
 
 const scene = buildScene();
 
-function AnswerCard({ u, evidenceU }: { u: number; evidenceU: number }) {
+function AnswerCard({ u, evidenceU, score }: { u: number; evidenceU: number; score: number }) {
   return (
     <g transform={`translate(105 ${205 + (1 - u) * 20})`} opacity={u}>
       <rect width={355} height={280} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
@@ -87,6 +87,7 @@ function AnswerCard({ u, evidenceU }: { u: number; evidenceU: number }) {
       <rect x={24} y={62} width={307} height={62} rx={10} fill={colors.ACCENT} fillOpacity={0.09} stroke={colors.GRID} />
       <text x={40} y={88} fill={colors.TEXT} fontSize={14}>provisional answer</text>
       <text x={40} y={110} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>y⁽ᵏ⁾</text>
+      <text x={315} y={110} textAnchor="end" fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO} opacity={evidenceU}>s⁽ᵏ⁾ = {Math.round(score * 100)}</text>
       <g opacity={evidenceU}>
         {[0, 1, 2].map((i) => (
           <g key={i}>
@@ -107,7 +108,7 @@ function movingPoint(p: number, y: number) {
 
 export function Render({ s }: { s: SceneState }) {
   const confidence = s.get(scene.confidence);
-  const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
+  const mainOpacity = 1 - 0.9 * s.get(scene.dimU);
   const gaugeX = 595;
   const gaugeW = 530;
   const thresholdX = gaugeX + gaugeW * 0.72;
@@ -120,7 +121,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={mainOpacity}>
           <text x={640} y={68} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>The paper's outer loop</text>
           <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>public quickstart boundary → paper mechanism</text>
-          <AnswerCard u={s.get(scene.cardU)} evidenceU={s.get(scene.evidenceU)} />
+          <AnswerCard u={s.get(scene.cardU)} evidenceU={s.get(scene.evidenceU)} score={confidence} />
 
           {s.get(scene.gateU) > 0 && (
             <g opacity={s.get(scene.gateU)}>
@@ -128,6 +129,7 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={gaugeX} y={118} width={gaugeW * confidence} height={40} rx={20} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} opacity={0.55} />
               <line x1={thresholdX} y1={110} x2={thresholdX} y2={166} stroke={colors.TEXT} strokeWidth={2} />
               <text x={thresholdX} y={104} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO}>τ = 72</text>
+              <text x={gaugeX + 18} y={143} fill={colors.TEXT} fontSize={16} fontWeight={700} fontFamily={MONO}>s⁽ᵏ⁾ = {Math.round(confidence * 100)}</text>
               <circle cx={markerX} cy={138} r={8} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} />
               <text x={gaugeX} y={186} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>s⁽ᵏ⁾ ∈ [0, 100]</text>
             </g>
@@ -135,7 +137,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {TRACKS.map((track, i) => (
             <g key={track.name} opacity={s.get(scene.gateU)}>
-              <path d={`M 565 ${track.y} C 735 ${track.y - 24} 880 ${track.y + 24} ${ROUTE_END} ${track.y}`} fill="none" stroke={track.color} strokeWidth={2.5} strokeOpacity={0.6} />
+              <path d={`M 460 345 C 500 345 520 ${track.y} 565 ${track.y} C 735 ${track.y - 24} 880 ${track.y + 24} ${ROUTE_END} ${track.y}`} fill="none" stroke={track.color} strokeWidth={2.5} strokeOpacity={0.6} />
               <rect x={ROUTE_END} y={track.y - 42} width={230} height={84} rx={14} fill={track.color} fillOpacity={0.1} stroke={track.color} strokeWidth={1.5} />
               <text x={ROUTE_END + 115} y={track.y - 8} textAnchor="middle" fill={track.color} fontSize={18} fontWeight={700}>{track.name}</text>
               <text x={ROUTE_END + 115} y={track.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{track.note}</text>
@@ -162,7 +164,7 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.boundedU) > 0 && (
             <g opacity={s.get(scene.boundedU)}>
               <MathLabel tex={'k \\le K_{\\max}'} x={785} y={580} color={colors.ACCENT} fontSize={25} />
-              <text x={785} y={614} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>fallback: highest completed confidence</text>
+              <text x={785} y={614} textAnchor="middle" fill={colors.MUTED} fontSize={13}>fallback: highest completed confidence</text>
             </g>
           )}
         </g>

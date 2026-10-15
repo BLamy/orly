@@ -64,17 +64,17 @@ const MEASURED_PREC = TP / (TP + FP); // 0.933
 const GOOD_SHOWN = DOTS.filter((d) => d.good).length;
 
 // dot layout: queue (left) → verdict bins (right), position pure in u
-const DOT_COLS = 11;
+const DOT_COLS = 12;
 const dotQueue = (i: number) => ({
   x: 200 + (i % DOT_COLS) * 17,
-  y: 190 + Math.floor(i / DOT_COLS) * 17,
+  y: 206 + Math.floor(i / DOT_COLS) * 17,
 });
 let accSeen = 0;
 let rejSeen = 0;
 const DOT_TARGETS = DOTS.map((d) => {
   if (d.accepted) {
     const k = accSeen++;
-    return { x: 830 + (k % 12) * 15, y: 180 + Math.floor(k / 12) * 15 };
+    return { x: 830 + (k % 12) * 15, y: 186 + Math.floor(k / 12) * 15 };
   }
   const k = rejSeen++;
   return { x: 830 + (k % 12) * 15, y: 470 + Math.floor(k / 12) * 15 };
@@ -85,7 +85,7 @@ const DOT_TARGETS = DOTS.map((d) => {
 // ---------------------------------------------------------------------------
 
 const GATE_X = 620;
-const CAM_DOTS: CameraState = { x: 620, y: 360, k: 1.15 };
+const CAM_DOTS: CameraState = { x: 620, y: 390, k: 1.15 };
 
 const SHELF_BOOKS = [
   { slug: 'wasm-vm-loop', note: 'a critic replays the VM' },
@@ -233,17 +233,19 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   const recapU = s.get(scene.recapU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
+  // the shelf bridge sits over the camera content; let it take the stage
+  const bodyOp = mainOp * (1 - 0.8 * shelfU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={bodyOp}>
         <Camera {...cam}>
-          {/* the asymmetry panel */}
+          {/* the asymmetry panel, gone once the dots arrive */}
           {asymU > 0 && (
-            <g opacity={asymU * (1 - 0.85 * clamp01(queueU * 3))}>
+            <g opacity={asymU * (1 - clamp01(queueU * 3))}>
               <rect x={220} y={160} width={380} height={110} rx={10} fill={colors.PANEL} opacity={0.9} stroke={colors.POSITIVE} />
               <text x={244} y={196} fill={colors.POSITIVE} fontSize={16} fontWeight={600}>
                 “it is broken”
@@ -264,12 +266,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* the claim population and gate */}
           {queueU > 0 && (
             <g>
-              <text x={200} y={160} fill={colors.TEXT} fontSize={15}>
-                {N_TASKS.toLocaleString()} tasks, {N_TASKS.toLocaleString()} success claims
-              </text>
-              <text x={200} y={182} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                showing {DOTS.length} · {GOOD_SHOWN} genuinely good
-              </text>
+              <g opacity={1 - shelfU}>
+                <text x={200} y={160} fill={colors.TEXT} fontSize={15}>
+                  {N_TASKS.toLocaleString()} tasks, {N_TASKS.toLocaleString()} success claims
+                </text>
+                <text x={200} y={182} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                  showing {DOTS.length} · {GOOD_SHOWN} genuinely good
+                </text>
+              </g>
               {DOTS.map((d, i) => {
                 const appear = clamp01(queueU * DOTS.length - i);
                 if (appear <= 0) return null;
@@ -291,40 +295,40 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {naiveU > 0 && flowU < 0.05 && (
-                <text x={200} y={560} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={naiveU}>
+                <text x={200} y={548} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={naiveU}>
                   believe every claim → precision {(BASE * 100).toFixed(0)}%
                 </text>
               )}
               {/* the critic gate */}
               {gateU > 0 && (
                 <g opacity={gateU}>
-                  <line x1={GATE_X} x2={GATE_X} y1={150} y2={620} stroke={colors.SECONDARY} strokeWidth={3} strokeDasharray="8 6" />
-                  <rect x={GATE_X - 74} y={340} width={148} height={54} rx={10} fill={colors.SECONDARY} opacity={0.92} />
+                  <line x1={GATE_X} x2={GATE_X} y1={150} y2={530} stroke={colors.SECONDARY} strokeWidth={3} strokeDasharray="8 6" />
+                  <rect x={GATE_X - 92} y={340} width={184} height={54} rx={10} fill={colors.SECONDARY} opacity={0.92} />
                   <text x={GATE_X} y={362} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={700}>
                     the critic
                   </text>
-                  <text x={GATE_X} y={382} textAnchor="middle" fill={colors.BG} fontSize={11} fontFamily="monospace">
+                  <text x={GATE_X} y={382} textAnchor="middle" fill={colors.BG} fontSize={13} fontFamily="monospace">
                     show me the evidence
                   </text>
                 </g>
               )}
               {/* bins */}
               {gateU > 0 && (
-                <g opacity={gateU}>
-                  <text x={830} y={160} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+                <g opacity={gateU * (1 - shelfU)}>
+                  <text x={830} y={160} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                     accepted
                   </text>
-                  <text x={830} y={450} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+                  <text x={830} y={450} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                     rejected — go look
                   </text>
                 </g>
               )}
               {statU > 0 && (
                 <g opacity={statU}>
-                  <text x={200} y={560} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
+                  <text x={200} y={548} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700}>
                     accepted-claim precision: {(MEASURED_PREC * 100).toFixed(1)}% measured · {(BAYES_PREC * 100).toFixed(1)}% by Bayes
                   </text>
-                  <text x={200} y={584} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={200} y={568} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                     {TP.toLocaleString()} true accepts · {FP.toLocaleString()} slipped through · critic: 90% catch, 2% false flag
                   </text>
                 </g>
@@ -335,7 +339,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* evidence kinds */}
           {evidU > 0 && (
             <g opacity={evidU * (1 - 0.7 * shelfU)}>
-              <text x={200} y={618} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <text x={200} y={586} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 evidence = recordings · diffs vs ground truth · tests the agent did not write
               </text>
             </g>
@@ -348,11 +352,11 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={shelfU * mainOp}>
           {SHELF_BOOKS.map((b, i) => (
             <g key={b.slug}>
-              <rect x={80 + i * 390} y={92} width={360} height={54} rx={9} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
-              <text x={100 + i * 390} y={116} fill={colors.ACCENT} fontSize={13} fontFamily="monospace" fontWeight={700}>
+              <rect x={80 + i * 390} y={92} width={360} height={54} rx={9} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+              <text x={100 + i * 390} y={116} fill={colors.ACCENT} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 {b.slug}
               </text>
-              <text x={100 + i * 390} y={136} fill={colors.MUTED} fontSize={12}>
+              <text x={100 + i * 390} y={136} fill={colors.MUTED} fontSize={14}>
                 {b.note}
               </text>
             </g>
@@ -377,7 +381,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* series recap + close */}
       {recapU > 0 && (
         <g opacity={recapU}>
-          <rect x={160} y={190} width={960} height={280} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={160} y={190} width={960} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
           <text x={640} y={244} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             The Explainers — the arc, closed.
           </text>

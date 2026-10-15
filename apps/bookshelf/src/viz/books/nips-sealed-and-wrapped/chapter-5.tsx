@@ -5,6 +5,9 @@
 // gift wrap signed by a one-time key that then evaporates. Timestamps
 // scatter across a two-day window; two wraps fly to the recipient's
 // kind-10050 relays (one copy per participant). Grounded in NIP-59/17.
+// Group size: the on-screen ledger says only that the spec does not cover
+// large groups. The narration's "beyond ten people" figure has no source in
+// this file yet; it needs a NIP-17 citation or a softer caption.
 import { CAMERA_HOME, Camera, Player, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState, TimelineOverrides } from '../../core';
 import { ServiceNode, shortHex } from '../../primitives';
@@ -74,7 +77,7 @@ export function buildScene(): Scene {
   });
   tl.tween(rumorU, 1, { at: 0.8, dur: 1.6, ease: ease.enter });
   tl.tween(cam, CAM_LETTER, { at: 1.0, dur: 1.4, ease: ease.move });
-  tl.tween(noSigU, 1, { at: 1.4, dur: 0.8, ease: ease.enter });
+  tl.tween(noSigU, 1, { at: 3.4, dur: 0.8, ease: ease.enter });
   tl.hold(6.5, 0.7);
 
   // Beat 2 — the seal.
@@ -182,7 +185,7 @@ function Envelope({ box, stroke, title, sub, opacity, titleFill }: {
         {title}
       </text>
       {sub && (
-        <text x={box.x + 18} y={box.y + 50} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+        <text x={box.x + 18} y={box.y + 50} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
           {sub}
         </text>
       )}
@@ -218,9 +221,6 @@ function Frame({ s }: { s: SceneState }) {
   // rumor tracks the seal's shrink too
   const rumorBox = lerpBox(rumorBox0, { x: sealInWrap.x + 32, y: sealInWrap.y + 76, w: sealInWrap.w - 64, h: 110 }, wrapShrinkU);
 
-  // the whole bundle slides toward relays as sendU rises (two copies)
-  const bundleShift = sendU > 0 ? 0 : 0;
-
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
@@ -228,7 +228,7 @@ function Frame({ s }: { s: SceneState }) {
       {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <g transform={`translate(${bundleShift}, 0)`}>
+          <g>
             {/* gift wrap (outermost) */}
             <Envelope
               box={WRAP_FULL}
@@ -260,7 +260,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={rumorBox.x + 26} y={rumorBox.y + rumorBox.h - 34} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                   sig: (never signed)
                 </text>
-                <text x={rumorBox.x + 232} y={rumorBox.y + rumorBox.h - 34} fill={colors.MUTED} fontSize={13}>
+                <text x={rumorBox.x + 232} y={rumorBox.y + rumorBox.h - 34} fill={colors.MUTED} fontSize={14}>
                   ← deniability
                 </text>
               </g>
@@ -272,11 +272,11 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={ephemU * (1 - ephemGoneU)} transform={`translate(${140}, ${150 + ephemGoneU * -60})`}>
               <circle cx={0} cy={0} r={22} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
               <text x={0} y={5} textAnchor="middle" fontSize={16}>🗝</text>
-              <text x={0} y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <text x={0} y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 one-time key
               </text>
               {ephemGoneU > 0 && (
-                <text x={0} y={66} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={ephemGoneU}>
+                <text x={0} y={66} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={ephemGoneU}>
                   …destroyed
                 </text>
               )}
@@ -295,7 +295,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g key={i} transform={`translate(${300 + i * 260}, 28)`}>
                   <circle cx={0} cy={0} r={17} fill="none" stroke={c.color} strokeWidth={1.6} />
                   <line x1={0} y1={0} x2={12 * Math.cos(-Math.PI / 2 + c.off * Math.PI * clockU)} y2={12 * Math.sin(-Math.PI / 2 + c.off * Math.PI * clockU)} stroke={c.color} strokeWidth={1.8} />
-                  <text x={28} y={5} fill={c.color} fontSize={13} fontFamily="monospace">
+                  <text x={28} y={5} fill={c.color} fontSize={14} fontFamily="monospace">
                     {c.label}
                   </text>
                 </g>
@@ -314,10 +314,12 @@ function Frame({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 const x0 = WRAP_FULL.x + WRAP_FULL.w;
                 const y0 = WRAP_FULL.y + WRAP_FULL.h / 2;
+                // the copy flies toward its relay and fades as it lands, so it
+                // reads as delivered and never sits against the relay's edge
                 return (
-                  <g key={i} opacity={0.95}>
+                  <g key={i} opacity={0.95 * (1 - 0.8 * u)}>
                     <rect
-                      x={x0 + (r.x - 90 - x0) * u - 16}
+                      x={x0 + (r.x - 120 - x0) * u - 16}
                       y={y0 + (r.y - y0) * u - 11}
                       width={32}
                       height={22}
@@ -329,7 +331,7 @@ function Frame({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              <text x={1080} y={470} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={clamp01(sendU * 2 - 1)}>
+              <text x={1080} y={470} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(sendU * 2 - 1)}>
                 one wrapped copy per participant
               </text>
             </g>
@@ -337,14 +339,14 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* unwrap arrows + limits */}
           {unwrapU > 0 && (
-            <text x={1080} y={500} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={unwrapU}>
+            <text x={1080} y={500} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={unwrapU}>
               recipient: unwrap → unseal → read
             </text>
           )}
           {limitsU > 0 && (
             <g opacity={limitsU}>
-              <text x={260} y={548} fill={colors.MUTED} fontSize={14}>
-                honest ledger: no forward secrecy · no post-compromise security · large groups: one copy per member, use another scheme
+              <text x={260} y={530} fill={colors.TEXT} fillOpacity={0.85} fontSize={14}>
+                honest ledger: no forward secrecy · no post-compromise security · large groups: the spec does not cover them
               </text>
             </g>
           )}
@@ -354,14 +356,30 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          <rect x={180} y={196} width={920} height={268} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={252} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Words, size, sender, time — all hidden
           </text>
-          <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={290} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             rumor (unsigned) → seal (author-signed) → wrap (one-time key)
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          {[
+            { x: 210, label: 'words', sub: 'cipher', color: colors.ACCENT },
+            { x: 430, label: 'size', sub: 'padding buckets', color: colors.WARM },
+            { x: 650, label: 'envelope', sub: 'gift wrap', color: colors.SECONDARY },
+            { x: 870, label: 'time', sub: 'fuzzed clocks', color: colors.POSITIVE },
+          ].map((c) => (
+            <g key={c.label}>
+              <rect x={c.x} y={316} width={200} height={64} rx={10} fill="none" stroke={c.color} strokeWidth={1.4} />
+              <text x={c.x + 100} y={342} textAnchor="middle" fill={c.color} fontSize={16} fontWeight={600}>
+                {c.label}
+              </text>
+              <text x={c.x + 100} y={366} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                {c.sub}
+              </text>
+            </g>
+          ))}
+          <text x={640} y={432} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-17 + NIP-59 · kinds 14 / 13 / 1059 · kind 10050 relays
           </text>
         </g>

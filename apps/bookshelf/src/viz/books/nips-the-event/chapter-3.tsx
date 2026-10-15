@@ -23,7 +23,7 @@ const RELAY = { x: 1060, y: 330 };
 const WIRE_Y = 330;
 const WIRE_X0 = CLIENT.x + 90;
 const WIRE_X1 = RELAY.x - 90;
-const DB = { x: RELAY.x, y: 470 };
+const DB = { x: RELAY.x, y: 500 };
 
 // Frames sit between the two service boxes: each one starts and lands just
 // outside a node's edge, so it never sits on top of a label.
@@ -62,7 +62,13 @@ const F_REQ = frame('["REQ", "sub1", {"kinds":[1],"limit":3}]', colors.WARM, 1, 
 const F_EOSE = frame('["EOSE", "sub1"]', colors.MUTED, -1, 26);
 const F_CLOSE = frame('["CLOSE", "sub1"]', colors.MUTED, 1, -26);
 const F_LIVE = frame('["EVENT", "sub1", {…}]', colors.SECONDARY, -1, 26);
-const STREAM: FrameSpec[] = [0, 1, 2].map(() => F_LIVE);
+// three stored events, newest first; each one leaves the store in turn
+const STORED_IDS = ['3f1a…', '9be0…', 'd52c…'];
+const STREAM: FrameSpec[] = STORED_IDS.map((id) => frame(`["EVENT", "sub1", {"id":"${id}"}]`, colors.SECONDARY, -1, 26));
+const SUB_W = 224; // the subscription chip sits just left of the relay, above the wire
+const CHIP_W = 124;
+const CHIP_H = 22;
+const CHIP_X = DB.x - 90 - CHIP_W;
 
 // a superseded frame fades from its resting opacity to nothing, so the next beat's frames read clearly
 const fadeOut = (from: number, to: number, u: number) => from + (to - from) * clamp01(u);
@@ -242,7 +248,7 @@ function Render_({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
 
   return (
     <>
@@ -256,16 +262,47 @@ function Render_({ s }: { s: SceneState }) {
               <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay" sublabel="websocket" u={stageU} />
               <line x1={WIRE_X0} y1={WIRE_Y} x2={WIRE_X0 + (WIRE_X1 - WIRE_X0) * stageU} y2={WIRE_Y}
                 stroke={colors.GRID} strokeWidth={2} strokeDasharray="2 6" opacity={0.8} />
+              {/* the vocabulary each side speaks: three words client, five relay */}
+              <text x={CLIENT.x} y={CLIENT.y + 58} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
+                three words
+              </text>
+              <text x={CLIENT.x} y={CLIENT.y + 80} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+                EVENT · REQ · CLOSE
+              </text>
+              <text x={RELAY.x} y={RELAY.y + 58} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
+                five words
+              </text>
+              <text x={RELAY.x} y={RELAY.y + 80} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+                EVENT · OK · EOSE
+              </text>
+              <text x={RELAY.x} y={RELAY.y + 100} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+                CLOSED · NOTICE
+              </text>
               {/* the relay's storage */}
               <g opacity={stageU}>
-                <ellipse cx={DB.x} cy={DB.y - 26} rx={44} ry={12} fill={colors.PANEL} stroke={colors.GRID} />
-                <path d={`M${DB.x - 44},${DB.y - 26} v40 a44,12 0 0 0 88,0 v-40`} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={DB.x} y={DB.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <ellipse cx={DB.x} cy={DB.y - 26} rx={44} ry={12} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.5} />
+                <path d={`M${DB.x - 44},${DB.y - 26} v40 a44,12 0 0 0 88,0 v-40`} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.5} />
+                <text x={DB.x} y={DB.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
                   stored events
                 </text>
               </g>
             </g>
           )}
+
+          {/* beat 5: the stored events leave the store one by one, as their frames go out */}
+          {streamU > 0 && STORED_IDS.map((id, i) => {
+            const leave = clamp01(streamU * 3 - i * 0.75);
+            const y = DB.y - 30 + i * 28;
+            return (
+              <g key={id} opacity={clamp01(streamU * 8) * (1 - 0.65 * leave)}>
+                <rect x={CHIP_X} y={y} width={CHIP_W} height={CHIP_H} rx={6}
+                  fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                <text x={CHIP_X + CHIP_W / 2} y={y + 15} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+                  {`${id} kind 1`}
+                </text>
+              </g>
+            );
+          })}
 
           {/* beat 2: EVENT → store → OK */}
           <Frame_ spec={F_EVENT} u={evtU} hold={false} />
@@ -283,7 +320,7 @@ function Render_({ s }: { s: SceneState }) {
           <Frame_ spec={F_BAD} u={badU} hold={false} />
           <Frame_ spec={F_BADOK} u={badOkU} rest={fadeOut(0.35, 0, reqU)} />
           {badOkU >= 1 && (
-            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" opacity={0.9 * (1 - reqU)}>
+            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" opacity={0.9 * (1 - reqU)}>
               prefix: invalid | blocked | rate-limited | pow | duplicate | …
             </text>
           )}
@@ -292,9 +329,9 @@ function Render_({ s }: { s: SceneState }) {
           <Frame_ spec={F_REQ} u={reqU} hold={false} />
           {subU > 0 && (
             <g opacity={subU}>
-              <rect x={RELAY.x - 84} y={RELAY.y - 96} width={168} height={34} rx={8}
+              <rect x={RELAY.x - 96 - SUB_W} y={RELAY.y - 100} width={SUB_W} height={34} rx={8}
                 fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-              <text x={RELAY.x} y={RELAY.y - 74} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+              <text x={RELAY.x - 96 - SUB_W / 2} y={RELAY.y - 78} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
                 sub1: kinds [1] · limit 3
               </text>
             </g>
@@ -306,27 +343,29 @@ function Render_({ s }: { s: SceneState }) {
           ))}
 
           {/* beat 6: EOSE */}
-          <Frame_ spec={F_EOSE} u={eoseU} rest={fadeOut(0.35, 0, liveU)} />
+          <Frame_ spec={F_EOSE} u={eoseU} rest={fadeOut(0.6, 0, liveU)} />
           {eoseU >= 1 && liveU < 1 && (
-            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.9}>
+            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.75}>
               ← history · live →
             </text>
           )}
 
-          {/* beat 7: someone else publishes; relay pushes live */}
+          {/* beat 7: someone else publishes; relay pushes live. The author sits above the relay, clear of the chip */}
           {liveU > 0 && (
             <g>
-              <g opacity={Math.min(1, liveU * 3)}>
-                <circle cx={RELAY.x + 10} cy={150} r={16} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                <text x={RELAY.x + 10} y={155} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>✍</text>
-                <line x1={RELAY.x + 10} y1={166} x2={RELAY.x + 4} y2={RELAY.y - 100 + 60 * clamp01(liveU * 2)} stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="3 4" />
+              <g opacity={Math.min(1, liveU * 3) * subU}>
+                <circle cx={RELAY.x} cy={RELAY.y - 150} r={16} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                <circle cx={RELAY.x} cy={RELAY.y - 150} r={5} fill={colors.SECONDARY} />
+                <text x={RELAY.x + 26} y={RELAY.y - 145} fill={colors.SECONDARY} fontSize={14}>another app</text>
+                <line x1={RELAY.x} y1={RELAY.y - 134} x2={RELAY.x} y2={RELAY.y - 30} stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="3 4"
+                  strokeDashoffset={-liveU * 12} />
               </g>
               <Frame_ spec={F_LIVE} u={clamp01(liveU * 2 - 1)} />
             </g>
           )}
 
           {/* beat 8: CLOSE */}
-          <Frame_ spec={F_CLOSE} u={closeReqU} />
+          <Frame_ spec={F_CLOSE} u={closeReqU} rest={0.7} />
         </Camera>
       </g>
 
@@ -342,7 +381,7 @@ function Render_({ s }: { s: SceneState }) {
           <text x={640} y={352} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily="monospace">
             relay: EVENT · OK · EOSE · CLOSED · NOTICE
           </text>
-          <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={640} y={396} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={0.8}>
             NIP-01 — every frame a JSON array on one websocket
           </text>
         </g>

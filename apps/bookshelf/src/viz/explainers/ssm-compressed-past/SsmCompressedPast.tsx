@@ -9,7 +9,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -138,21 +137,26 @@ const predAt = (fit: { pred: number[] }, lag: number) => (u: number): number => 
 // Bottom-left of midline: the memory kernels.
 // ---------------------------------------------------------------------------
 
+// Header band (y < 80) holds the title and the equation; content starts below it.
 const SIG_X = scaleLinear().domain([0, T - 1]).range([110, 780]);
-const SIG_Y = scaleLinear().domain([-1.6, 2.1]).range([320, 90]);
+const SIG_Y = scaleLinear().domain([-1.6, 2.1]).range([330, 140]);
 
 const BAR_X = 900;
-const BAR_TOP = 110;
+const BAR_TOP = 150;
 const BAR_H = 30;
 const BAR_SCALE = 34; // px per unit of state
+const BAR_ZERO = BAR_X + 150; // zero line sits right of the labels so negative bars never cross them
 
 const KER_X = scaleLinear().domain([0, 20]).range([140, 560]);
-const KER_Y = scaleLinear().domain([0, 1]).range([600, 430]);
+const KER_Y = scaleLinear().domain([0, 1]).range([575, 430]);
 
-const REC_Y = scaleLinear().domain([-1.6, 2.1]).range([600, 400]);
+const REC_X = scaleLinear().domain([0, T - 1]).range([720, 1200]);
+const REC_Y = scaleLinear().domain([-1.8, 2.1]).range([580, 455]);
 
-const CAM_STATE: CameraState = { x: 920, y: 240, k: 1.35 };
-const CAM_KER: CameraState = { x: 380, y: 490, k: 1.3 };
+// Camera targets: the state view keeps the replaying signal's live point and the bars in one frame;
+// the kernel view keeps the kernel panel whole with its header clear of the frame edge.
+const CAM_STATE: CameraState = { x: 650, y: 250, k: 1.1 };
+const CAM_KER: CameraState = { x: 360, y: 420, k: 1.25 };
 
 // ---------------------------------------------------------------------------
 // Timeline — captions are the narration script.
@@ -330,10 +334,10 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the input signal */}
           <g>
-            <text x={110} y={64} fill={colors.TEXT} fontSize={20}>
+            <text x={110} y={112} fill={colors.TEXT} fontSize={20}>
               the input signal
             </text>
-            <Axes x={SIG_X} y={SIG_Y} reveal={clamp01(titleU)} xTicks={6} yTicks={3} xLabel="step" fontSize={11} />
+            <Axes x={SIG_X} y={SIG_Y} reveal={clamp01(titleU)} xTicks={6} yTicks={3} xLabel="step" fontSize={13} />
             <FunctionPlot
               x={SIG_X}
               y={SIG_Y}
@@ -358,15 +362,15 @@ function Frame({ s }: { s: SceneState }) {
               return (
                 <g key={i}>
                   <line
-                    x1={BAR_X + 90}
+                    x1={BAR_ZERO}
                     y1={BAR_TOP + i * BAR_H}
-                    x2={BAR_X + 90}
+                    x2={BAR_ZERO}
                     y2={BAR_TOP + i * BAR_H + BAR_H - 8}
                     stroke={colors.GRID}
                     strokeWidth={1}
                   />
                   <rect
-                    x={v >= 0 ? BAR_X + 90 : BAR_X + 90 - w}
+                    x={v >= 0 ? BAR_ZERO : BAR_ZERO - w}
                     y={BAR_TOP + i * BAR_H}
                     width={Math.max(0.5, w)}
                     height={BAR_H - 8}
@@ -376,9 +380,10 @@ function Frame({ s }: { s: SceneState }) {
                   />
                   <text
                     x={BAR_X}
-                    y={BAR_TOP + i * BAR_H + 15}
-                    fill={colors.MUTED}
-                    fontSize={12}
+                    y={BAR_TOP + i * BAR_H + 16}
+                    fill={colors.TEXT}
+                    opacity={0.85}
+                    fontSize={14}
                     fontFamily="monospace"
                   >
                     h{i + 1} {hAt(tok, i).toFixed(2)}
@@ -386,17 +391,17 @@ function Frame({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={BAR_X} y={BAR_TOP + N * BAR_H + 18} fill={colors.SECONDARY} fontSize={13}>
+            <text x={BAR_X} y={BAR_TOP + N * BAR_H + 22} fill={colors.SECONDARY} fontSize={14}>
               fixed size, whatever T is
             </text>
           </g>
 
           {/* the memory kernels */}
           <g opacity={kerU}>
-            <text x={140} y={408} fill={colors.TEXT} fontSize={17}>
+            <text x={140} y={404} fill={colors.TEXT} fontSize={18}>
               what each number remembers
             </text>
-            <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="steps into the past" fontSize={11} />
+            <Axes x={KER_X} y={KER_Y} reveal={kerU} xTicks={4} yTicks={2} xLabel="steps into the past" fontSize={13} />
             {Array.from({ length: N }, (_, i) => (
               <FunctionPlot
                 key={i}
@@ -414,21 +419,13 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* the reconstruction */}
           {recU > 0 && (
-            <g opacity={recU * (1 - kerU * 0.0)}>
-              <text x={640} y={408} fill={colors.TEXT} fontSize={17}>
+            <g opacity={recU}>
+              <text x={720} y={404} fill={colors.TEXT} fontSize={18}>
                 reconstructed from the state: input {lagLabel}
               </text>
-              <Axes
-                x={scaleLinear().domain([0, T - 1]).range([640, 1180])}
-                y={REC_Y}
-                reveal={recU}
-                xTicks={6}
-                yTicks={3}
-                xLabel="step"
-                fontSize={11}
-              />
+              <Axes x={REC_X} y={REC_Y} reveal={recU} xTicks={6} yTicks={3} xLabel="step" fontSize={13} />
               <FunctionPlot
-                x={scaleLinear().domain([0, T - 1]).range([640, 1180])}
+                x={REC_X}
                 y={REC_Y}
                 f={truthF}
                 domain={[activeLag, T - 1]}
@@ -438,7 +435,7 @@ function Frame({ s }: { s: SceneState }) {
                 width={2}
               />
               <FunctionPlot
-                x={scaleLinear().domain([0, T - 1]).range([640, 1180])}
+                x={REC_X}
                 y={REC_Y}
                 f={predF}
                 domain={[activeLag, T - 1]}
@@ -447,36 +444,43 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.WARM}
                 width={2.4}
               />
-              <text x={1180} y={430} textAnchor="end" fill={colors.WARM} fontSize={15} fontWeight={600}>
-                {errLabel}
-              </text>
-              <text x={640} y={430} fill={colors.MUTED} fontSize={12}>
+              <text x={720} y={436} fill={colors.MUTED} fontSize={14}>
                 grey: truth · orange: linear readout of the 6 numbers
+              </text>
+              <text x={1200} y={436} textAnchor="end" fill={colors.WARM} fontSize={18} fontWeight={600}>
+                {errLabel}
               </text>
             </g>
           )}
         </Camera>
       </g>
 
-      {/* screen-fixed: title + equation */}
+      {/* screen-fixed header band: title left, equation right (plain SVG, no KaTeX dependency) */}
       <g opacity={titleU * mainOp}>
-        <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
+        <text x={40} y={48} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The compressed past
         </text>
       </g>
-      <MathLabel
-        tex="h_t = A\,h_{t-1} + B\,x_t"
-        x={520}
-        y={44}
+      <text
+        x={1240}
+        y={48}
+        textAnchor="end"
+        fill={colors.SECONDARY}
         fontSize={24}
-        color={colors.SECONDARY}
+        fontStyle="italic"
         opacity={eqU * mainOp}
-      />
+      >
+        h<tspan dy={6} fontSize={16}>t</tspan>
+        <tspan dy={-6}> = A h</tspan>
+        <tspan dy={6} fontSize={16}>t−1</tspan>
+        <tspan dy={-6}> + B x</tspan>
+        <tspan dy={6} fontSize={16}>t</tspan>
+      </text>
 
-      {/* closing panel */}
+      {/* closing panel: solid, so the faded content behind it cannot show through */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             The state is a compressed past.
           </text>

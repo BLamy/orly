@@ -28,7 +28,7 @@ const CAL = { x: 340, y: 96, w: 600 };
  * which the agent first reaches it. Weeks explore outward: early clusters
  * light first, stragglers later, and a few corners stay dark all month.
  */
-const N = 760;
+const N = 640;
 const CLUSTERS: Array<{ cx: number; cy: number; sx: number; sy: number; wk: number }> = [
   { cx: 0.2, cy: 0.3, sx: 0.09, sy: 0.13, wk: 0.1 }, // home + sign in
   { cx: 0.42, cy: 0.55, sx: 0.1, sy: 0.14, wk: 0.5 }, // browse + search
@@ -90,7 +90,6 @@ export function buildScene() {
   const fridayU = tl.channel('fridayU', 0); // the Friday cell glows
   const dimU = tl.channel('dimU', 0); // everything falls away
   const closeU = tl.channel('closeU', 0); // the last line
-  const pasteU = tl.channel('pasteU', 0); // the one link that stands for the whole month
 
   /* — beat 1 · a month in ————————————————————————————————————————————— */
   let t = 0.5;
@@ -178,7 +177,6 @@ export function buildScene() {
     text: 'A month ago, all you did was paste a link.',
   });
   tl.tween(dimU, 1, { at: t - 4.0, dur: 2.2, ease: ease.move });
-  tl.tween(pasteU, 1, { at: t - 3.2, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.5);
 
   /* — beat 10 · the last line ————————————————————————————————————————— */
@@ -190,7 +188,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: t - 4.8, dur: 1.4, ease: ease.enter });
   tl.hold(t, 1.6);
 
-  return { tl, cam, fieldU, weekU, calU, rewalkU, spotU, fridayU, dimU, pasteU, closeU };
+  return { tl, cam, fieldU, weekU, calU, rewalkU, spotU, fridayU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -221,14 +219,18 @@ function computeField(s: SceneState): ParticlePoint[] {
 /* -------------------------------------------------- local subcomponents */
 
 /** Four weeks of five day-cells, filling as `week` advances. */
-function CalendarStrip({ u, week, friday, fade }: { u: number; week: number; friday: number; fade: number }) {
+function CalendarStrip({ u, week, friday, spot, fade }: { u: number; week: number; friday: number; spot: number; fade: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const cellW = 22;
   const gap = 6;
   const weekW = DAYS_PER_WEEK * (cellW + gap) + 18;
+  // one focus per frame: the strip recedes while the field lights up and while
+  // the honest-note zoom is on, then comes back forward for Friday
+  const recede = 0.3 * clamp01((week - 0.6) / 0.6) * (1 - clamp01(friday));
+  const focus = (1 - recede) * (1 - 0.25 * clamp01(spot));
   return (
-    <g transform={`translate(${CAL.x}, ${CAL.y})`} opacity={uu * (0.15 + 0.85 * fade)}>
+    <g transform={`translate(${CAL.x}, ${CAL.y})`} opacity={uu * focus * (0.15 + 0.85 * fade)}>
       {/* a backing panel keeps dots from the zoomed field from running under the labels */}
       <rect x={-14} y={-26} width={4 * weekW - 18 + 28} height={54} rx={10} fill={colors.BG} opacity={0.85} />
       {WEEK_LABELS.map((wl, wi) => {
@@ -282,7 +284,7 @@ function SpotNote({ u }: { u: number }) {
         <text x={12} y={21} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           last walk: passed
         </text>
-        <text x={12} y={40} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        <text x={12} y={40} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
           movie saved, open any time
         </text>
       </g>
@@ -344,8 +346,15 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
       {/* the calendar is a fixed header, not part of the camera: the spot zoom
           must not push the week labels off the stage */}
-      <CalendarStrip u={s.get(scene.calU)} week={s.get(scene.weekU)} friday={s.get(scene.fridayU)} fade={fade} />
-      <PasteCard u={s.get(scene.pasteU) * (1 - clamp01(s.get(scene.closeU)))} />
+      <CalendarStrip
+        u={s.get(scene.calU)}
+        week={s.get(scene.weekU)}
+        friday={s.get(scene.fridayU)}
+        spot={s.get(scene.spotU)}
+        fade={fade}
+      />
+      {/* the paste card rises in the second half of the dim, inside the same window */}
+      <PasteCard u={clamp01((dim - 0.4) / 0.6) * (1 - clamp01(s.get(scene.closeU)))} />
       <CloseLine u={s.get(scene.closeU)} />
     </>
   );

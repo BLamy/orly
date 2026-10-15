@@ -79,9 +79,9 @@ export function buildScene(): Scene {
   const sweepU = tl.channel('sweepU', 0);
   const foreverU = tl.channel('foreverU', 0);
   const ghostU = tl.channel('ghostU', 0);
-  // the relay column sits off-camera during document beats — keep it at a
-  // whisper there so nothing clips at full opacity
-  const relayVis = tl.channel('relayVis', 0.3);
+  // the relay column sits off-camera during document beats — keep it readable
+  // but quiet there so nothing clips at full opacity
+  const relayVis = tl.channel('relayVis', 0.45);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -128,7 +128,7 @@ export function buildScene(): Scene {
   });
   tl.tween(swapU, 1, { at: 26.8, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_NOTE, { at: 26.8, dur: 1.4, ease: ease.move });
-  tl.tween(relayVis, 0.22, { at: 26.8, dur: 1.0, ease: ease.move });
+  tl.tween(relayVis, 0.3, { at: 26.8, dur: 1.0, ease: ease.move });
   tl.tween(delU, 1, { at: 27.6, dur: 1.8, ease: ease.draw });
   tl.hold(32.3, 0.7);
 
@@ -183,7 +183,7 @@ function RelayBox({ x, y, label, sub, u, note, noteOp, extra }: {
       {note && (
         <g opacity={noteOp}>
           <rect x={x + 110} y={y - 16} width={150} height={32} rx={7} fill={colors.PANEL} stroke={colors.ACCENT} opacity={0.9} />
-          <text x={x + 185} y={y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={x + 185} y={y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             "flash sale…"
           </text>
         </g>
@@ -209,7 +209,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
   const noteDocOp = (1 - swapU) * noteU;
 
   return (
@@ -227,8 +227,8 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={swapU}>
               <text x={96} y={128} fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>the deletion request — kind 5</text>
               <JsonDoc layout={DEL_LAYOUT} reveal={delU} />
-              {delU >= 1 && sweepU < 0.5 && (
-                <text x={96} y={352} fill={colors.MUTED} fontSize={13}>
+              {delU >= 1 && sweepU < 1 && (
+                <text x={96} y={380} fill={colors.TEXT} fontSize={14} opacity={1 - sweepU}>
                   same pubkey as the note — the one check that matters
                 </text>
               )}
@@ -240,7 +240,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={1 - swapU * 2}>
               <rect x={150} y={470} width={280 * (1 - timerU)} height={12} rx={6} fill={colors.WARM} opacity={0.8} />
               <rect x={150} y={470} width={280} height={12} rx={6} fill="none" stroke={colors.GRID} />
-              <text x={150} y={504} fill={timerU >= 1 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={150} y={504} fill={timerU >= 1 ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                 {timerU >= 1 ? 'expiration reached' : 'time remaining'}
               </text>
             </g>
@@ -253,19 +253,19 @@ export function Render({ s }: { s: SceneState }) {
             extra={
               <>
                 {dropU > 0 && swapU < 0.5 && (
-                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={13} opacity={dropU * (1 - swapU * 2)}>
+                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={14} opacity={dropU * (1 - swapU * 2)}>
                     dropped — not served
                   </text>
                 )}
                 {sweepU >= 1 && (
-                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={13} opacity={sweepU}>
+                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={14} opacity={sweepU}>
                     note gone
                   </text>
                 )}
                 {foreverU > 0 && (
                   <g opacity={foreverU}>
-                    <rect x={RELAY_A.x + 110} y={RELAY_A.y + 22} width={190} height={30} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} opacity={0.9} />
-                    <text x={RELAY_A.x + 205} y={RELAY_A.y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+                    <rect x={RELAY_A.x + 110} y={RELAY_A.y + 22} width={200} height={30} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} opacity={0.9} />
+                    <text x={RELAY_A.x + 210} y={RELAY_A.y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                       kind 5 — kept forever
                     </text>
                   </g>
@@ -280,12 +280,12 @@ export function Render({ s }: { s: SceneState }) {
             extra={
               <>
                 {keepU > 0 && (
-                  <text x={RELAY_B.x + 110} y={RELAY_B.y + 40} fill={colors.WARM} fontSize={13} opacity={keepU}>
+                  <text x={RELAY_B.x + 110} y={RELAY_B.y + 40} fill={colors.WARM} fontSize={14} opacity={keepU}>
                     still serving — within the rules
                   </text>
                 )}
                 {ghostU > 0 && (
-                  <text x={RELAY_B.x - 84} y={RELAY_B.y + 84} fill={colors.MUTED} fontSize={13} opacity={ghostU}>
+                  <text x={RELAY_B.x - 84} y={RELAY_B.y + 84} fill={colors.MUTED} fontSize={14} opacity={ghostU}>
                     …and no protocol reaches a screenshot
                   </text>
                 )}
@@ -297,6 +297,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
+          <rect x={200} y={225} width={880} height={215} rx={14} fill={colors.BG} />
           <rect x={200} y={225} width={880} height={215} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={293} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Forgetting is a request, not a guarantee

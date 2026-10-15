@@ -39,7 +39,7 @@ export const LOGC_MAX = 6.5;
 
 // LEFT — linear compute vs loss (only shows the low-compute elbow legibly)
 export const linX: ScaleLinear<number, number> = scaleLinear().domain([0, 1000]).range([110, 560]);
-export const linY: ScaleLinear<number, number> = scaleLinear().domain([0.5, 1.5]).range([600, 120]);
+export const linY: ScaleLinear<number, number> = scaleLinear().domain([0.5, 1.5]).range([500, 100]);
 /** Linear-panel curve: loss vs raw compute over a small window. */
 export const linLoss = (c: number): number => Math.pow(10, ALPHA_C * (LOG10_CC - Math.log10(Math.max(1e-3, c))));
 
@@ -47,7 +47,7 @@ export const linLoss = (c: number): number => Math.pow(10, ALPHA_C * (LOG10_CC -
 export const logX: ScaleLinear<number, number> = scaleLinear().domain([LOGC_MIN, LOGC_MAX]).range([720, 1200]);
 export const logY: ScaleLinear<number, number> = scaleLinear()
   .domain([Math.log10(lossOfLogC(LOGC_MAX)) - 0.02, Math.log10(lossOfLogC(LOGC_MIN)) + 0.02])
-  .range([600, 120]);
+  .range([500, 100]);
 
 export const CAM_LEFT: CameraState = { x: 360, y: 340, k: 1.28 };
 export const CAM_RIGHT: CameraState = { x: 950, y: 340, k: 1.24 };

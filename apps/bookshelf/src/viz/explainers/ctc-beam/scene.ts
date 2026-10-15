@@ -124,8 +124,10 @@ export const LAT_DY = 105;
 export const latX = (t: number): number => LAT_X0 + t * LAT_DX;
 export const latY = (s: number): number => LAT_Y0 + s * LAT_DY;
 
-export const CAM_LAT: CameraState = { x: 560, y: 280, k: 1.15 };
-export const CAM_BEAM: CameraState = { x: 700, y: 350, k: 1.05 };
+// Camera targets keep the row labels on the left and the legend panels (x up to
+// 1235) inside the 1280-wide stage at every held frame.
+export const CAM_LAT: CameraState = { x: 610, y: 280, k: 1.05 };
+export const CAM_BEAM: CameraState = { x: 650, y: 350, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -211,7 +213,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · the moral ————————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 44.6, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 45.2, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 45.2, dur: 1.1, ease: ease.move });
   tl.tween(mathU, 0, { at: 45.2, dur: 0.8, ease: ease.move });
   tl.tween(tableU, 0, { at: 45.2, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 46.4, dur: 0.9, ease: ease.enter });

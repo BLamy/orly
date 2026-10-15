@@ -31,11 +31,11 @@ export function buildScene() {
 
   tl.caption({ at: 6.9, dur: 6.2, text: 'Tool results arrive, messages accumulate, and eventually old context must be compacted.' });
   tl.tween(historyCompress, 1, { at: 7.7, dur: 2.0, ease: ease.move });
-  tl.tween(cam, { x: 420, y: 330, k: 1.15 }, { at: 9.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.1 }, { at: 9.6, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.5, dur: 6.3, text: 'Agent Team moves the plan into a run-scoped task board outside that message history.' });
   tl.tween(boardP, 4, { at: 14.2, dur: 2.5, ease: ease.enter });
-  tl.tween(cam, CAMERA_HOME, { at: 13.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 17.1, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 20.2, dur: 6.3, text: 'Every item gets a stable identifier, a concrete description, owners, a group, and a resolution.' });
   tl.tween(fieldsP, 4, { at: 20.9, dur: 2.2, ease: ease.enter });
@@ -68,8 +68,8 @@ export function buildScene() {
 
 const scene = buildScene();
 
-function HistoryTape({ reveal, compact }: { reveal: number; compact: number }) {
-  const count = Math.max(1, Math.round(8 - compact * 5));
+function HistoryTape({ reveal, compact, compacted, reinject }: { reveal: number; compact: number; compacted: number; reinject: number }) {
+  const count = Math.max(2, Math.round(8 - compact * 5 - compacted));
   const boxH = Math.max(64, count * 34 + 16);
   return <g opacity={reveal}>
     <text x="92" y="190" fill={colors.MUTED} fontSize="15" fontWeight="700">model message history</text>
@@ -79,6 +79,9 @@ function HistoryTape({ reveal, compact }: { reveal: number; compact: number }) {
     })}
     <rect x="88" y="198" width="188" height={boxH} rx="20" fill="none" stroke={colors.GRID} strokeWidth="2" strokeDasharray="7 7" />
     <text x="182" y={198 + boxH + 24} textAnchor="middle" fill={colors.WARM} fontSize="14" opacity={compact}>compact old bodies</text>
+    <text x="182" y="548" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="700" opacity={1 - reinject}>what survives?</text>
+    <text x="182" y="548" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="700" opacity={reinject}>the board, re-injected</text>
+    <path d="M282 540 L 318 470" fill="none" stroke={colors.WARM} strokeWidth="2.5" strokeDasharray="6 6" opacity={reinject} />
   </g>;
 }
 
@@ -89,44 +92,48 @@ export function Render({ s }: { s: SceneState }) {
   const fieldsP = s.get(scene.fieldsP);
   const resolutionP = s.get(scene.resolutionP);
   const phase = s.get(scene.phaseU);
-  const resolved = Math.floor(resolutionP);
+  // A reported item only resolves as the coordinator judges it, one row at a time.
+  const resolved = Math.min(ROWS.length, Math.floor(clamp01((resolutionP - 1) / 3) * ROWS.length + 1e-6));
+  const historyCompress = s.get(scene.historyCompress);
+  const reinject = s.get(scene.reinjectU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="68" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="800">The board outside the conversation</text>
       <path d="M74 112 C 170 92 240 150 322 176" fill="none" stroke={colors.WARM} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${Math.max(1, s.get(scene.objectiveU) * 300)} 320`} />
       <circle cx="74" cy="112" r="16" fill={colors.WARM} opacity={s.get(scene.objectiveU)} />
       <text x="96" y="88" fill={colors.WARM} fontSize="16" fontWeight="700" opacity={s.get(scene.objectiveU)}>objective</text>
-      <HistoryTape reveal={s.get(scene.historyU)} compact={s.get(scene.historyCompress) % 1} />
+      <HistoryTape reveal={s.get(scene.historyU)} compact={clamp01(historyCompress)} compacted={clamp01(historyCompress - 1)} reinject={reinject} />
 
       <g>
-        <rect x="320" y="126" width="866" height="420" rx="30" fill="#0d1526" stroke={s.get(scene.reinjectU) > 0 ? colors.WARM : colors.ACCENT} strokeWidth={3 + s.get(scene.reinjectU) * 4} />
+        <rect x="320" y="126" width="866" height="420" rx="30" fill="#0d1526" stroke={reinject > 0 ? colors.WARM : colors.ACCENT} strokeWidth={3 + reinject * 4} />
         <text x="354" y="164" fill={colors.ACCENT} fontSize="16" fontFamily={colors.font.mono} fontWeight="700">_BOARDS[task_id]</text>
         <text x="1150" y="164" textAnchor="end" fill={colors.MUTED} fontSize="14">outside LLM history</text>
+        <text x="753" y="336" textAnchor="middle" fill={colors.MUTED} fontSize="16" opacity={1 - clamp01(boardP)}>no task board yet</text>
         {ROWS.map((row, i) => {
           const u = clamp01(boardP - i);
-          const y = 188 + i * 82;
+          const y = 188 + i * 76;
           const rowResolved = i < resolved;
           const runtime = ['reported', 'running', 'queued', 'created'][i];
           return <g key={row.id} opacity={u} transform={`translate(${(1 - u) * 70} 0)`}>
             <rect x="344" y={y} width="818" height="64" rx="16" fill="#111c31" stroke={rowResolved ? colors.POSITIVE : row.color} strokeWidth="2.5" />
             <circle cx="376" cy={y + 32} r="16" fill={rowResolved ? colors.POSITIVE : row.color} opacity="0.9" />
-            <text x="376" y={y + 38} textAnchor="middle" fill="#08101e" fontSize="13" fontWeight="900">{rowResolved ? '✓' : '○'}</text>
+            <text x="376" y={y + 38} textAnchor="middle" fill="#08101e" fontSize="14" fontWeight="900">{rowResolved ? '✓' : '○'}</text>
             <text x="408" y={y + 27} fill={colors.TEXT} fontSize="17" fontFamily={colors.font.mono} fontWeight="700">{row.id}</text>
-            <text x="408" y={y + 49} fill={colors.MUTED} fontSize="13">one concrete, checkable work item</text>
+            <text x="408" y={y + 49} fill={colors.MUTED} fontSize="14">one concrete, checkable work item</text>
             <text x="742" y={y + 36} fill={row.color} fontSize="14">{row.owner}</text>
             <g opacity={s.get(scene.runtimeU)}>
               <rect x="932" y={y + 17} width="112" height="30" rx="15" fill="#08101e" stroke={colors.SECONDARY} />
-              <text x="988" y={y + 37} textAnchor="middle" fill={colors.SECONDARY} fontSize="13">{runtime}</text>
+              <text x="988" y={y + 37} textAnchor="middle" fill={colors.SECONDARY} fontSize="14">{runtime}</text>
             </g>
-            <text x="1134" y={y + 37} textAnchor="end" fill={rowResolved ? colors.POSITIVE : colors.WARM} fontSize="13" fontWeight="700">{rowResolved ? 'resolved' : 'open'}</text>
+            <text x="1134" y={y + 37} textAnchor="end" fill={rowResolved ? colors.POSITIVE : colors.WARM} fontSize="14" fontWeight="700">{rowResolved ? 'resolved' : 'open'}</text>
           </g>;
         })}
         <g opacity={clamp01(fieldsP)}>
           {FIELDS.map((field, i) => {
             const u = clamp01(fieldsP - i);
-            return <g key={field} opacity={u} transform={`translate(${430 + i * 178} 514)`}>
-              <rect x="-72" y="-16" width="144" height="32" rx="16" fill="#08101e" stroke={colors.MUTED} />
-              <text y="5" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{field}</text>
+            return <g key={field} opacity={u} transform={`translate(${444 + i * 206} 514)`}>
+              <rect x="-88" y="-16" width="176" height="32" rx="16" fill="#08101e" stroke={colors.MUTED} />
+              <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{field}</text>
             </g>;
           })}
         </g>

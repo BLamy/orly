@@ -41,7 +41,7 @@ export function buildScene() {
 
   tl.caption({ at: 24.4, dur: 5.5, text: 'The target is not one overloaded token. Version two splits it into four task slots, then flattens them only where the task path needs a joint readout.' });
   tl.tween(slotsU, 1, { at: 25.0, dur: 1.6, ease: ease.pop });
-  tl.tween(cam, { x: 668, y: 318, k: 1.2 }, { at: 25.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 318, k: 1.14 }, { at: 25.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 30.4, dur: 5.5, text: 'Asymmetric feature attention gives the task slots keys and values from features. The task reads structure without becoming another ordinary column.' });
   tl.tween(asymU, 1, { at: 31.0, dur: 2.0, ease: ease.draw });
@@ -71,10 +71,18 @@ export function Render({ s }: { s: SceneState }) {
   const depth = s.get(scene.depthU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">the dual-axis loom</text>
-      <text x="150" y="246" fill={colors.ACCENT} fontSize="13" fontWeight="800">CONTEXT</text>
-      <text x="150" y="486" fill={colors.WARM} fontSize="13" fontWeight="800">QUERY</text>
+      <g opacity={1 - depth}>
+        <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">the dual-axis loom</text>
+        <text x="560" y="128" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontWeight="700">feature axis →</text>
+      </g>
+      <text x="196" y="246" textAnchor="end" fill={colors.ACCENT} fontSize="14" fontWeight="800">CONTEXT</text>
+      <text x="196" y="486" textAnchor="end" fill={colors.WARM} fontSize="14" fontWeight="800">QUERY</text>
       <line x1="172" y1="416" x2="1020" y2="416" stroke={gate ? colors.WARM : colors.GRID} strokeWidth={2 + gate * 2} strokeDasharray="10 8" opacity={grid} />
+      <g opacity={depth}>
+        {Array.from({ length: 8 }, (_, i) => <rect key={i} x={210 + i * 8} y={130 - i * 4} width="700" height="420" rx="28" fill="none" stroke={colors.ACCENT} strokeWidth="1.5" opacity={0.12 + i * 0.06} />)}
+        <text x="238" y="96" fill={colors.ACCENT} fontSize="14" fontWeight="800">24 × transformer blocks</text>
+        <text x="940" y="96" textAnchor="end" fill={colors.ACCENT} fontSize="14" fontWeight="800">normalized queries and keys</text>
+      </g>
       {Array.from({ length: R * C }, (_, i) => {
         const r = Math.floor(i / C), c = i % C;
         const x = GX + c * DX, y = GY + r * DY;
@@ -85,29 +93,34 @@ export function Render({ s }: { s: SceneState }) {
         const glow = Math.max(sampleGlow, featGlow);
         return <g key={i} opacity={u}>
           <rect x={x - 38} y={y - 22} width="76" height="44" rx="12" fill={query ? '#2b2513' : '#101827'} stroke={glow > 0.1 ? colors.POSITIVE : query ? colors.WARM : colors.ACCENT} strokeWidth={1.5 + glow * 4} />
-          <text x={x} y={y + 5} textAnchor="middle" fill={query ? colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{`x${r + 1},${c + 1}`}</text>
+          <text x={x} y={y + 5} textAnchor="middle" fill={query ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{`x${r + 1},${c + 1}`}</text>
         </g>;
       })}
-      {gate > 0 && [0, 1, 2].map((i) => <path key={i} d={`M${GX + i * 2 * DX} 493 C${GX + i * 2 * DX + 40} 420 ${GX + i * 2 * DX + 20} 340 ${GX + i * 2 * DX} 315`} fill="none" stroke={colors.WARM} strokeWidth="3" markerEnd="url(#none)" opacity={gate} />)}
+      {gate > 0 && [0, 1, 2].map((i) => {
+        // Gate arcs run in the gutter between columns so they never cross a cell label.
+        const gx = GX + i * 2 * DX + DX / 2;
+        return <path key={i} d={`M${gx} 530 V396`} fill="none" stroke={colors.WARM} strokeWidth="3" opacity={gate} />;
+      })}
       <g opacity={slots}>
-        <text x="1058" y="172" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>K = 4 task slots</text>
-        {[0, 1, 2, 3].map((i) => <rect key={i} x={1007} y={205 + i * 70} width="102" height="48" rx="14" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" opacity={clamp01(slots * 5 - i)} />)}
-        <text x="1058" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="12">flatten → Kd</text>
+        <text x="1058" y="172" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>K = 4 task slots</text>
+        {[0, 1, 2, 3].map((i) => <g key={i}>
+          <rect x={1007} y={205 + i * 70} width="102" height="48" rx="14" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" opacity={clamp01(slots * 5 - i)} />
+          <text x="1058" y={234 + i * 70} textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity={clamp01(slots * 5 - i)}>{`slot ${i + 1}`}</text>
+        </g>)}
+        <text x="1058" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="14">flatten → Kd</text>
       </g>
       <g opacity={s.get(scene.asymU)}>
-        {[1, 2, 3, 4].map((r) => <path key={r} d={`M${GX + 5 * DX + 40} ${GY + r * DY} C930 ${GY + r * DY} 940 ${280 + (r - 1) * 34} 1004 ${280 + (r - 1) * 34}`} fill="none" stroke={colors.POSITIVE} strokeWidth="2.5" />)}
-        <text x="948" y="484" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">features →</text>
-        <text x="948" y="500" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">task readout</text>
+        {[1, 2, 3, 4].map((r) => <path key={r} d={`M${GX + 5 * DX + 40} ${GY + r * DY} C930 ${GY + r * DY} 940 ${229 + (r - 1) * 70} 1004 ${229 + (r - 1) * 70}`} fill="none" stroke={colors.POSITIVE} strokeWidth="2.5" />)}
+        <text x="948" y="484" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">features →</text>
+        <text x="948" y="502" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">task readout</text>
       </g>
       <g opacity={s.get(scene.ffnU)}>
+        <text x="401" y="566" textAnchor="middle" fill={colors.MUTED} fontSize="14">feature path</text>
         <rect x="246" y="575" width="310" height="42" rx="15" fill="#10261f" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="401" y="601" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>SeparateXYFFN · X SwiGLU</text>
+        <text x="401" y="601" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>SeparateXYFFN · X SwiGLU</text>
+        <text x="859" y="566" textAnchor="middle" fill={colors.MUTED} fontSize="14">task path</text>
         <rect x="704" y="575" width="310" height="42" rx="15" fill="#211b32" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="859" y="601" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>SeparateXYFFN · Y SwiGLU</text>
-      </g>
-      <g opacity={depth}>
-        {Array.from({ length: 8 }, (_, i) => <rect key={i} x={210 + i * 8} y={130 - i * 4} width="700" height="440" rx="28" fill="none" stroke={colors.ACCENT} strokeWidth="1.5" opacity={0.12 + i * 0.06} />)}
-        <text x="238" y="96" fill={colors.ACCENT} fontSize="14" fontWeight="800">24 × transformer blocks</text>
+        <text x="859" y="601" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>SeparateXYFFN · Y SwiGLU</text>
       </g>
     </g>
     <g opacity={close}>
@@ -115,9 +128,9 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="212" textAnchor="middle" fill={colors.TEXT} fontSize="48" fontWeight="880">rows teach · columns explain</text>
       {['sample axis', 'feature axis', 'four task slots'].map((label, i) => <g key={label} transform={`translate(${340 + i * 300} 370)`}>
         <rect x="-108" y="-64" width="216" height="128" rx="30" fill="#101827" stroke={[colors.ACCENT, colors.POSITIVE, colors.SECONDARY][i]} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="15">{label}</text>
+        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="16">{label}</text>
       </g>)}
-      <text x="640" y="506" textAnchor="middle" fill={colors.MUTED} fontSize="16">context becomes a prior for the current table</text>
+      <text x="640" y="506" textAnchor="middle" fill={colors.TEXT} fontSize="16">context becomes a prior for the current table</text>
     </g>
   </Camera>;
 }

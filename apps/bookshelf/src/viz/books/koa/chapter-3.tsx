@@ -160,7 +160,7 @@ export function buildScene(): Scene {
   tl.tween(cam, CAM_FLOOR, { at: 33.3, dur: 1.6, ease: ease.move });
   tl.tween(jU, 5, { at: 33.9, dur: 1.8, ease: ease.move });
   tl.tween(floorU, 1, { at: 36.0, dur: 0.7, ease: ease.pop });
-  tl.tween(floorU, 0.3, { at: 38.2, dur: 0.8, ease: ease.move });
+  tl.tween(floorU, 0.6, { at: 38.2, dur: 0.8, ease: ease.move });
   tl.hold(38.6, 0.4);
 
   // — Beat 7 · middleware two wakes: push 3 —
@@ -339,7 +339,7 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- code on the legs (the exact test trace) ---- */}
-        <g opacity={codeU * stageDim}>
+        <g opacity={codeU * stageDim * (1 - closeU)}>
           <LegLabel x={OUT.l - 16} y={250} text="calls.push(1)" color={colors.ACCENT} u={codeU} anchor="end" />
           <LegLabel x={OUT.l - 16} y={300} text="await next()" color={colors.MUTED} u={codeU} anchor="end" />
           <LegLabel x={OUT.r + 16} y={250} text="calls.push(4)" color={colors.ACCENT} u={codeU} anchor="start" />
@@ -357,7 +357,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={floorU * stageDim}>
             <circle cx={700} cy={INN.bot} r={34} fill={colors.WARM} opacity={0.14} />
             <circle cx={700} cy={INN.bot} r={34} fill="none" stroke={colors.WARM} strokeWidth={1.6} />
-            <text x={700} y={INN.bot + 56} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+            <text x={700} y={INN.bot + 56} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               i === length → Promise.resolve()
             </text>
           </g>
@@ -381,10 +381,10 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {checkU > 0 && (
             <g opacity={checkU}>
-              <text x={1075} y={172} textAnchor="start" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              <text x={1075} y={172} textAnchor="start" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 deepStrictEqual ✓
               </text>
-              <text x={1075} y={190} textAnchor="start" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={1075} y={192} textAnchor="start" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 [1, 2, 3, 4]
               </text>
             </g>
@@ -406,11 +406,11 @@ export function Render({ s }: { s: SceneState }) {
         {timerU > 0 && (
           <g opacity={stageDim}>
             <TimerArc cx={OUT.l - 60} cy={180} r={18} u={timerU} color={colors.WARM} />
-            <text x={OUT.l - 92} y={185} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+            <text x={OUT.l - 92} y={185} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="monospace">
               const start = Date.now()
             </text>
             {timerU >= 1 && (
-              <text x={OUT.r + 30} y={215} textAnchor="start" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+              <text x={1075} y={218} textAnchor="start" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 ms = Date.now() - start
               </text>
             )}

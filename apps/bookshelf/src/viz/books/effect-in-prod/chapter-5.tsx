@@ -60,6 +60,13 @@ const MINIS = [
 ];
 const MINI_Y = 420;
 
+// opening beat: the three services the caption names, drawn as blueprints
+const CHIPS = [
+  { x: 760, label: 'database', color: colors.TEAL },
+  { x: 960, label: 'repository', color: colors.SECONDARY },
+  { x: 1160, label: 'tracer', color: colors.WARM },
+];
+
 // ---------------------------------------------------------------------------
 // Timeline (~78s, 12 beats)
 // ---------------------------------------------------------------------------
@@ -81,7 +88,6 @@ export function buildScene() {
   const disposeU = tl.channel('disposeU', 0); // reverse teardown
   const miniU = tl.channel('miniU', 0); // recap miniatures
   const finalU = tl.channel('finalU', 0); // closing title
-  const reqU = tl.channel('reqU', 0); // opening request stream
 
   // — beat 1 · a million requests —
   tl.caption({
@@ -89,7 +95,6 @@ export function buildScene() {
     dur: 6.0,
     text: "Everything so far was one request's story. A service is that story told a million times — and every telling needs the same wiring: a database, a repository, a tracer.",
   });
-  tl.tween(reqU, 1, { at: 0.8, dur: 6.0, ease: ease.linear });
 
   // — beat 2 · a service is a typed key —
   tl.caption({
@@ -203,7 +208,6 @@ export function buildScene() {
     disposeU,
     miniU,
     finalU,
-    reqU,
   };
 }
 
@@ -258,7 +262,7 @@ function Card({
         {title}
       </text>
       {lines.filter(Boolean).map((ln, i) => (
-        <text key={i} x={cx - w / 2 + 16} y={cy - h / 2 + 48 + i * 19} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text key={i} x={cx - w / 2 + 16} y={cy - h / 2 + 48 + i * 19} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           {ln}
         </text>
       ))}
@@ -272,7 +276,7 @@ function Mini({ i, x, u }: { i: number; x: number; u: number }) {
   const c = [colors.SECONDARY, colors.WARM, colors.ACCENT, colors.TEAL][i];
   return (
     <g opacity={u}>
-      <rect x={x - 105} y={y - 70} width={210} height={118} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+      <rect x={x - 115} y={y - 70} width={230} height={118} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
       {i === 0 && (
         <g stroke={c} strokeWidth={2.5} fill="none" strokeLinecap="round">
           <path d={`M${x - 80} ${y} h130`} />
@@ -304,7 +308,7 @@ function Mini({ i, x, u }: { i: number; x: number; u: number }) {
           <path d={`M${x - 35} ${y + 18} h55`} opacity={0.7} />
         </g>
       )}
-      <text x={x} y={y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+      <text x={x} y={y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
         {MINIS[i].label}
       </text>
     </g>
@@ -326,37 +330,33 @@ export function Render({ s }: { s: SceneState }) {
   const disposeU = s.get(scene.disposeU);
   const miniU = s.get(scene.miniU);
   const finalU = s.get(scene.finalU);
-  const reqU = s.get(scene.reqU);
 
   const sqlB = sqlBuilt(sweepU);
   const repoB = repoBuilt(sweepU);
   const repoTear = clamp01(disposeU * 2);
   const sqlTear = clamp01(disposeU * 2 - 1);
-  const graphDim = 1 - miniU * 0.9;
+  // the graph clears fully before the recap, so no ghosts sit under the recap text
+  const graphDim = clamp01(1 - miniU * 2);
   const portY = REPO.y + REPO.h / 2;
   const flowing = flowU > 0.01 && disposeU < 0.05;
-  const reqFade = clamp01((1 - reqU) * 8);
+  // the opening blueprints hand off to the repository card as it appears
+  const chipsO = 1 - cardU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        {/* opening beat: requests arriving before the service exists */}
-        {reqFade > 0.01 && (
-          <g opacity={reqFade}>
-            {[0, 1, 2].map((k) => (
-              <Packet
-                key={k}
-                from={{ x: 120, y: 340 }}
-                to={{ x: 560, y: 340 }}
-                u={(reqU * 2 + k * 0.33) % 1}
-                r={6}
-                color={colors.WARM}
-              />
+        {/* opening beat: the three services the narration names, as blueprints */}
+        {chipsO > 0.01 && (
+          <g opacity={chipsO}>
+            {CHIPS.map((c) => (
+              <g key={c.label}>
+                <rect x={c.x - 85} y={312} width={170} height={56} rx={12} fill={colors.PANEL} stroke={c.color} strokeWidth={1.5} strokeDasharray="7 5" />
+                <text x={c.x} y={346} textAnchor="middle" fill={c.color} fontSize={15} fontFamily={MONO}>
+                  {c.label}
+                </text>
+              </g>
             ))}
-            <text x={120} y={316} fill={colors.MUTED} fontSize={14}>
-              requests
-            </text>
           </g>
         )}
         <g opacity={graphDim}>
@@ -386,17 +386,18 @@ export function Render({ s }: { s: SceneState }) {
                 elbow="v"
                 u={appU}
                 flow={flowing ? flowU * 2 : 0}
-                color={colors.GRID}
+                color={colors.MUTED}
               />
+              {/* right-angled route down the open right side, so it never crosses a card */}
               <Connection
                 from={{ x: APP.x + 130, y: APP.y + APP.h / 2 }}
-                via={[{ x: 1100, y: 520 }]}
+                via={[{ x: 1040, y: APP.y + APP.h / 2 }, { x: 1040, y: SQL.y - 14 }]}
                 to={{ x: SQL.x + SQL.w / 2, y: SQL.y - 14 }}
                 u={appU}
                 flow={flowing ? flowU * 2 : 0}
-                color={colors.GRID}
+                color={colors.MUTED}
                 label={mergeU > 0.3 ? 'Layer.provideMerge → SqlClient exposed too' : undefined}
-                labelSize={12}
+                labelSize={13}
               />
             </g>
           )}
@@ -492,7 +493,7 @@ export function Render({ s }: { s: SceneState }) {
                   color={colors.WARM}
                 />
               ))}
-              <text x={120} y={APP.y - 24} fill={colors.MUTED} fontSize={12}>
+              <text x={120} y={APP.y - 24} fill={colors.MUTED} fontSize={14}>
                 requests
               </text>
             </g>
@@ -501,8 +502,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* dispose sweep */}
           {disposeU > 0.01 && (
             <g opacity={clamp01(disposeU * 1.6)}>
-              <rect x={430} y={228} width={420} height={34} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} opacity={0.9} />
-              <text x={640} y={250} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+              <rect x={600} y={228} width={400} height={34} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} opacity={0.9} />
+              <text x={800} y={250} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 runtime.dispose() → release in reverse order
               </text>
               {repoTear > 0.5 && (
@@ -531,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={640} y={210} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>
                   Effect in Prod
                 </text>
-                <text x={640} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+                <text x={640} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
                   the service outlives the request
                 </text>
               </g>

@@ -68,6 +68,7 @@ const CHECKS = [
 ];
 
 const CAM_JSON: CameraState = { x: 400, y: 290, k: 1.2 };
+const CAM_CHECKS: CameraState = { x: 620, y: 360, k: 1.08 };
 
 interface Scene {
   tl: Timeline;
@@ -146,6 +147,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'A receipt is a claim, so clients check three things: the signer is the endpoint\'s advertised key, the invoice amount matches the requested amount, and the embedded request still hashes to the invoice\'s description hash.',
   });
+  tl.tween(cam, CAM_CHECKS, { at: 27.5, dur: 1.4, ease: ease.move });
   tl.tween(checkU, 1, { at: 28.2, dur: 3.2, ease: ease.linear });
   tl.hold(33.9, 0.7);
 
@@ -220,27 +222,27 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {fanU > 0 && (
             <>
-              <Connection from={{ x: 412, y: 200 }} to={{ x: RELAY_A.x - HALF_W, y: RELAY_A.y }} u={Math.min(1, fanU * 1.6)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
-              <Connection from={{ x: 412, y: 260 }} to={{ x: RELAY_B.x - HALF_W, y: RELAY_B.y }} u={Math.min(1, fanU * 1.6 - 0.3)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
+              <Connection from={{ x: WALLET.x + HALF_W, y: WALLET.y - 14 }} to={{ x: RELAY_A.x - HALF_W, y: RELAY_A.y }} u={Math.min(1, fanU * 1.6)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
+              <Connection from={{ x: WALLET.x + HALF_W, y: WALLET.y + 14 }} to={{ x: RELAY_B.x - HALF_W, y: RELAY_B.y }} u={Math.min(1, fanU * 1.6 - 0.3)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
             </>
           )}
 
           {/* validation checklist */}
           {checkU > 0 && (
             <g>
-              <text x={620} y={396} fill={colors.MUTED} fontSize={12.5} opacity={Math.min(1, checkU * 3)}>
+              <text x={620} y={440} fill={colors.MUTED} fontSize={13} opacity={Math.min(1, checkU * 3)}>
                 client-side validation (appendix F)
               </text>
               {CHECKS.map((c, i) => {
                 const u = clamp01(checkU * CHECKS.length - i);
                 if (u <= 0) return null;
-                const y = 424 + i * 52;
+                const y = 474 + i * 52;
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={634} cy={y} r={10} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
                     <path d={`M628 ${y} l4 4 l8 -9`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} strokeLinecap="round" opacity={u >= 1 ? 1 : 0} />
-                    <text x={656} y={y - 2} fill={colors.TEXT} fontSize={13.5}>{c.label}</text>
-                    <text x={656} y={y + 17} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">{c.detail}</text>
+                    <text x={656} y={y - 2} fill={colors.TEXT} fontSize={14}>{c.label}</text>
+                    <text x={656} y={y + 18} fill={colors.TEXT} fontSize={13} opacity={0.75} fontFamily="ui-monospace, Menlo, monospace">{c.detail}</text>
                   </g>
                 );
               })}
@@ -251,8 +253,8 @@ export function Render({ s }: { s: SceneState }) {
           {tallyU > 0 && (
             <g opacity={tallyU}>
               <rect x={520} y={80} width={300} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={540} y={106} fill={colors.TEXT} fontSize={13}>the zapped note</text>
-              <text x={540} y={128} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={540} y={106} fill={colors.TEXT} fontSize={14}>the zapped note</text>
+              <text x={540} y={128} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 {shortHex('9ae37aa68f48645127299e9453eb5d908a0cbb6058ff340d528ed4d37c8994fb', 8, 4)}
               </text>
               <text x={760} y={118} fill={colors.WARM} fontSize={16} fontWeight={700}>⚡ 21</text>
@@ -270,7 +272,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             kind 9735 · three checks: signer key, amount, intact request
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-57 appendices D–F — the zap receipt
           </text>
         </g>

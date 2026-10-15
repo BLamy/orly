@@ -155,7 +155,7 @@ export function Render({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* the note with a bare url */}
           {noteU > 0 && videoU < 0.5 && (
-            <g opacity={noteU}>
+            <g opacity={noteU * (1 - 0.7 * clamp01(cardU))}>
               <rect x={NOTE.x} y={NOTE.y} width={NOTE.w} height={NOTE.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={NOTE.x + 16} y={NOTE.y + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">content</text>
               <text x={NOTE.x + 16} y={NOTE.y + 58} fill={colors.TEXT} fontSize={14}>look at this sunset</text>
@@ -174,16 +174,16 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the imeta tag */}
           {imetaU > 0 && videoU < 0.5 && (
-            <g opacity={imetaU * (1 - 0.75 * clamp01(cardU))}>
-              <text x={IMETA.x} y={IMETA.y - 12} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">imeta — matches the link</text>
-              <rect x={IMETA.x} y={IMETA.y} width={340} height={IMETA_FIELDS.length * 26 + 20} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
+            <g opacity={imetaU * (1 - 0.5 * clamp01(cardU))}>
+              <text x={IMETA.x} y={IMETA.y - 12} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">imeta — matches the link</text>
+              <rect x={IMETA.x} y={IMETA.y} width={360} height={IMETA_FIELDS.length * 26 + 20} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
               {IMETA_FIELDS.map((f, i) => {
                 const u = clamp01(imetaU * IMETA_FIELDS.length - i);
                 if (u <= 0) return null;
                 return (
                   <g key={f.k} opacity={u}>
-                    <text x={IMETA.x + 16} y={IMETA.y + 30 + i * 26} fill={colors.WARM} fontSize={12} fontFamily="monospace">{f.k}</text>
-                    <text x={IMETA.x + 96} y={IMETA.y + 30 + i * 26} fill={colors.TEXT} fontSize={12} fontFamily="monospace">{f.v}</text>
+                    <text x={IMETA.x + 16} y={IMETA.y + 30 + i * 26} fill={colors.WARM} fontSize={13} fontFamily="monospace">{f.k}</text>
+                    <text x={IMETA.x + 96} y={IMETA.y + 30 + i * 26} fill={colors.TEXT} fontSize={13} fontFamily="monospace">{f.v}</text>
                   </g>
                 );
               })}
@@ -191,14 +191,24 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {bindU > 0 && bindU < 1 && videoU < 0.5 && (
             <TokenFlight
-              from={{ x: NOTE.x + 120, y: NOTE.y + 84 }}
+              from={{ x: NOTE.x + 330, y: NOTE.y + 84 }}
               to={{ x: IMETA.x + 40, y: IMETA.y + 30 }}
               u={bindU}
               text="url ↦"
               fill={colors.ACCENT}
-              fontSize={12}
-              lift={40}
+              fontSize={13}
+              lift={0}
             />
+          )}
+
+          {/* empty slot while the link is bare: nothing to show yet */}
+          {noteU > 0 && cardU < 1 && videoU < 0.5 && (
+            <g opacity={noteU * (1 - clamp01(cardU))}>
+              <rect x={CARD.x} y={CARD.y} width={CARD.w} height={110} rx={12} fill="none" stroke={colors.GRID} strokeDasharray="6 5" strokeWidth={1.5} />
+              <text x={CARD.x + CARD.w / 2} y={CARD.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                no size · no description · nothing to show
+              </text>
+            </g>
           )}
 
           {/* preview card (blurhash → image) */}
@@ -214,7 +224,7 @@ export function Render({ s }: { s: SceneState }) {
                   <path d={`M${CARD.x + 20} ${CARD.y + CARD.h - 62} L ${CARD.x + 120} ${CARD.y + CARD.h - 120} L ${CARD.x + 200} ${CARD.y + CARD.h - 62} Z`} fill={colors.ACCENT} opacity={0.7} />
                 </g>
               )}
-              <text x={CARD.x + 16} y={CARD.y + CARD.h - 18} fill={colors.MUTED} fontSize={13}>
+              <text x={CARD.x + 16} y={CARD.y + CARD.h - 18} fill={colors.MUTED} fontSize={14}>
                 alt: sun setting over water
               </text>
             </g>
@@ -223,7 +233,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* video variants */}
           {videoU > 0.05 && (
             <g opacity={clamp01(videoU * 1.4)}>
-              <text x={640} y={128} fill={colors.MUTED} fontSize={12} fontFamily="monospace">video event · kind 21 — one imeta per variant</text>
+              <text x={620} y={128} fill={colors.MUTED} fontSize={13} fontFamily="monospace">video event · kind 21 — one imeta per variant</text>
               {VARIANTS.map((v, i) => {
                 const u = clamp01(videoU * VARIANTS.length - i);
                 if (u <= 0) return null;
@@ -234,7 +244,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={640} y={v.y + 30} fill={chosen ? colors.POSITIVE : colors.TEXT} fontSize={15} fontWeight={600}>{v.label}</text>
                     <text x={640} y={v.y + 52} fill={colors.MUTED} fontSize={13} fontFamily="monospace">{v.m} · {v.dim}</text>
                     {chosen && pickU >= 1 && (
-                      <text x={960} y={v.y + 40} textAnchor="end" fill={colors.POSITIVE} fontSize={13}>← chosen for this connection</text>
+                      <text x={996} y={v.y + 40} fill={colors.POSITIVE} fontSize={13}>← chosen for this connection</text>
                     )}
                   </g>
                 );

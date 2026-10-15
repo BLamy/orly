@@ -202,11 +202,11 @@ const P0 = PASSES[0];
 
 /** One chip per backward hop, same order as BWD_EDGES: local × upstream. */
 export const CHIPS: Array<{ x: number; y: number; size: number; tex: string }> = [
-  { x: 800, y: 236, size: 16, tex: `\\frac{\\partial L}{\\partial \\hat y} = \\hat y - y = ${f2(P0.gYhat)}` },
+  { x: 800, y: 196, size: 16, tex: `\\frac{\\partial L}{\\partial \\hat y} = \\hat y - y = ${f2(P0.gYhat)}` },
   { x: 640, y: 566, size: 16, tex: `\\frac{\\partial L}{\\partial w_2} = ${f2(P0.gYhat)} \\times ${f2(P0.h)} = ${f2(P0.gW2)}` },
-  { x: 600, y: 266, size: 16, tex: `\\frac{\\partial L}{\\partial h} = ${f2(P0.gYhat)} \\times ${f2(P0.w2)} = ${f2(P0.gH)}` },
-  { x: 408, y: 236, size: 16, tex: `\\mathrm{ReLU}'\\,{=}\\,1:\\;\\; \\frac{\\partial L}{\\partial z_1} = ${f2(P0.gZ1)}` },
-  { x: 152, y: 428, size: 15, tex: `\\frac{\\partial L}{\\partial w_1} = ${f2(P0.gZ1)} \\times ${f2(X_IN)} = ${f2(P0.gW1)}` },
+  { x: 600, y: 262, size: 16, tex: `\\frac{\\partial L}{\\partial h} = ${f2(P0.gYhat)} \\times ${f2(P0.w2)} = ${f2(P0.gH)}` },
+  { x: 408, y: 196, size: 16, tex: `\\mathrm{ReLU}'\\,{=}\\,1:\\;\\; \\frac{\\partial L}{\\partial z_1} = ${f2(P0.gZ1)}` },
+  { x: 250, y: 586, size: 15, tex: `\\frac{\\partial L}{\\partial w_1} = ${f2(P0.gZ1)} \\times ${f2(X_IN)} = ${f2(P0.gW1)}` },
 ];
 
 export const LOSS_TEX = `L = \\tfrac{1}{2}(\\hat y - y)^2 = \\tfrac{1}{2}(${f2(P0.yhat)} - 1)^2 = ${fmtLoss(P0.L)}`;

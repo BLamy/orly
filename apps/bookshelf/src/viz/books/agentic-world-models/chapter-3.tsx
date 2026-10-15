@@ -312,12 +312,12 @@ function Chip({
   anchor?: 'middle' | 'start';
 }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.2 + 24;
+  const w = text.length * 7.8 + 24;
   const x0 = anchor === 'middle' ? x - w / 2 : x;
   return (
     <g opacity={u}>
       <rect x={x0} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
+      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -361,11 +361,11 @@ function LanePlot({
       <rect x={bounds.x - 14} y={bounds.y - 14} width={bounds.w + 28} height={bounds.h + 30} rx={12} fill={colors.PANEL} opacity={0.55} />
       <Axes x={xs} y={ys} reveal={reveal} xTicks={4} yTicks={2} fontSize={12} color={colors.MUTED} />
       <FunctionPlot x={xs} y={ys} f={f} domain={[0, 1000]} reveal={reveal} color={color} width={3} />
-      {/* axis titles: y = reward (top-left, clear of the rising curve), x = steps (right of the axis) */}
+      {/* axis titles: y = reward (top-left, clear of the rising curve), x = steps (on the tick-label row, after the 1,000 tick) */}
       <text x={bounds.x + 6} y={bounds.y + 14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         reward
       </text>
-      <text x={bounds.x + bounds.w + 10} y={ys(0) - 2} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+      <text x={bounds.x + bounds.w + 20} y={ys(0) + 22} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         steps
       </text>
       <text x={bounds.x - 4} y={bounds.y - LANE_TITLE_DY} fill={color} fontSize={13} fontWeight={600}>
@@ -531,7 +531,7 @@ export function Render({ s }: { s: SceneState }) {
 
           <Chip
             x={640}
-            y={68}
+            y={58}
             text="generalizes: trains on another agent's trajectories too"
             color={colors.ACCENT}
             u={generalizeU * termOpacity}
@@ -591,7 +591,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- closing backdrop ---------------- */}
         {endU > 0.01 && (
           <g opacity={endU}>
-            <rect x={140} y={260} width={1000} height={170} rx={18} fill={colors.BG} stroke={colors.GRID} />
+            <rect x={140} y={260} width={1000} height={170} rx={18} fill={colors.BG} stroke={colors.MUTED} strokeOpacity={0.5} />
             <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
               complex but predictable: helps a lot
             </text>

@@ -9,10 +9,19 @@ import {
 } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
 import {
-  BitField, JsonDoc, hexToBits, layoutJson, sha256Hex, shortHex,
+  BitField, hexToBits, layoutJson, sha256Hex, shortHex,
 } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+
+// Token colours as JsonDoc draws them.
+const TOKEN_FILL: Record<string, string> = {
+  key: colors.ACCENT,
+  string: colors.POSITIVE,
+  number: colors.WARM,
+  literal: colors.SECONDARY,
+  punct: colors.MUTED,
+};
 
 // A note and its REAL id (the thing a signer signs).
 const PUBKEY = '8e0d3d3eb2881ec137a11debbcf7f9df8ea3401e976a8fb2ef9ee0e79a5e0ed7';
@@ -38,6 +47,43 @@ const LAYOUT = layoutJson(EVENT, {
   fontSize: 14.5,
   abbrev: (_p, raw) => (raw.length > 26 ? shortHex(raw) : raw),
 });
+
+// Each token is stretched to its laid-out width, so commas and quotes sit
+// exactly where the layout puts them (a narrower fallback font left a gap
+// before every comma, and the content line's comma read as stray).
+function EventJson({ reveal }: { reveal: number }) {
+  const n = LAYOUT.lines.length;
+  return (
+    <g>
+      {LAYOUT.lines.map((line, i) => {
+        const lu = clamp01(reveal * n * 1.15 - i);
+        if (lu <= 0) return null;
+        return (
+          <g key={i} opacity={lu} transform={`translate(0, ${(1 - lu) * -6})`}>
+            {line.tokens.map((t, j) => {
+              const x = LAYOUT.x + t.col * LAYOUT.charW;
+              const w = t.text.length * LAYOUT.charW;
+              // the sig value stays a dashed empty slot until the signature lands
+              if (t.path === 'sig' && t.kind !== 'key' && t.kind !== 'punct') {
+                return (
+                  <rect key={j} x={x} y={line.y - LAYOUT.fontSize + 2} width={w} height={LAYOUT.fontSize + 4} rx={4}
+                    fill="none" stroke={colors.MUTED} strokeDasharray="4 4" opacity={0.5} />
+                );
+              }
+              return (
+                <text key={j} x={x} y={line.y} fill={TOKEN_FILL[t.kind]} fontSize={LAYOUT.fontSize}
+                  fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                  textLength={w} lengthAdjust="spacingAndGlyphs">
+                  {t.text}
+                </text>
+              );
+            })}
+          </g>
+        );
+      })}
+    </g>
+  );
+}
 
 const SIG_ANCHOR = LAYOUT.anchor('sig');
 const GRID = { x: 840, y: 150, cell: 12, gap: 3 };
@@ -148,17 +194,16 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* the sig slot stays a dashed empty box until the signature lands in it */}
-          <JsonDoc layout={LAYOUT} reveal={jsonU} hidden={['sig']} />
+          <EventJson reveal={jsonU} />
 
           {/* the nsec vault */}
           {nsecU > 0 && (
             <g opacity={nsecU}>
               <rect x={150} y={430} width={210} height={40} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-              <text x={168} y={455} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <text x={168} y={455} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 nsec = 4c96…d1e2
               </text>
-              <text x={150} y={420} fill={colors.NEGATIVE} fontSize={12} fontWeight={600}>
+              <text x={150} y={420} fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                 the secret — never leaves · demo key
               </text>
             </g>
@@ -167,7 +212,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* real digest */}
           {hashU > 0 && (
             <g opacity={hashU}>
-              <text x={GRID.x} y={GRID.y - 16} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+              <text x={GRID.x} y={GRID.y - 16} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 SHA-256(serialization) — the id
               </text>
               <BitField bits={ID_BITS} x={GRID.x} y={GRID.y} cell={GRID.cell} gap={GRID.gap} reveal={hashU} settle={hashU} seed={13} />
@@ -198,7 +243,7 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(leakU * 3 - i);
                 const x = 640 + u * (280 + i * 40);
                 return (
-                  <text key={i} x={x} y={580 + i * 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" opacity={0.9 * (1 - u * 0.4)}>
+                  <text key={i} x={x} y={580 + i * 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" opacity={1 - u * 0.3}>
                     nsec ⇒
                   </text>
                 );
@@ -210,6 +255,8 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
+          {/* solid under the panel, so the faded diagram cannot show through */}
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.BG} />
           <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The secret signs. Everything else only asks.
@@ -217,7 +264,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             get signatures without the app ever touching the key
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-07 · NIP-46 · NIP-49
           </text>
         </g>

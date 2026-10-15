@@ -65,21 +65,23 @@ export const H2: Feat[] = layer(H1);
 export const FOCUS = 4; // the bridge node
 export const FOCUS_NEIGH: number[] = NEIGH[FOCUS]; // [0, 3, 5]
 
+// Two communities, laid out so no edge runs through a third node.
 export const POS: Array<{ x: number; y: number }> = [
-  { x: 250, y: 180 },
+  { x: 240, y: 170 },
   { x: 120, y: 300 },
-  { x: 330, y: 320 },
-  { x: 190, y: 440 },
-  { x: 380, y: 470 },
-  { x: 590, y: 430 },
-  { x: 700, y: 280 },
+  { x: 340, y: 300 },
+  { x: 190, y: 430 },
+  { x: 360, y: 450 }, // bridge
+  { x: 560, y: 420 },
+  { x: 700, y: 300 },
   { x: 790, y: 450 },
-  { x: 880, y: 300 },
-  { x: 760, y: 160 },
+  { x: 880, y: 320 },
+  { x: 740, y: 150 },
 ];
 
-export const CAM_FOCUS: CameraState = { x: 400, y: 420, k: 1.55 };
-export const CAM_WIDE: CameraState = { x: 560, y: 340, k: 1.1 };
+// Both framings keep the whole graph (nodes, bars) inside the stage and above the caption pill.
+export const CAM_FOCUS: CameraState = { x: 500, y: 317, k: 1.4 };
+export const CAM_WIDE: CameraState = { x: 500, y: 317, k: 1.25 };
 
 export interface Scene {
   tl: Timeline;

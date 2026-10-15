@@ -77,7 +77,6 @@ export interface Scene {
   bCommitU: ChannelRef<number>;
   staleU: ChannelRef<number>;
   wipeU: ChannelRef<number>;
-  checkU: ChannelRef<number>;
   rowsA2: ChannelRef<number>;
   aCommitU: ChannelRef<number>;
   ruleU: ChannelRef<number>;
@@ -100,7 +99,6 @@ export function buildScene(): Scene {
   const bCommitU = tl.channel('bCommitU', 0);
   const staleU = tl.channel('staleU', 0);
   const wipeU = tl.channel('wipeU', 0);
-  const checkU = tl.channel('checkU', 0);
   const rowsA2 = tl.channel('rowsA2', 0);
   const aCommitU = tl.channel('aCommitU', 0);
   const ruleU = tl.channel('ruleU', 0);
@@ -159,8 +157,6 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'Commit is a version check: every reference still at the version we read? Then all the writes land in one indivisible step. All, or nothing.',
   });
-  tl.tween(checkU, 1, { at: 33.9, dur: 0.9, ease: ease.enter });
-  tl.tween(checkU, 0, { at: 38.6, dur: 0.6, ease: ease.move });
 
   // — Beat 7 · the race —
   tl.caption({
@@ -234,7 +230,6 @@ export function buildScene(): Scene {
     bCommitU,
     staleU,
     wipeU,
-    checkU,
     rowsA2,
     aCommitU,
     ruleU,
@@ -277,7 +272,7 @@ function Cell({ x, y, name, value, version, flash, u }: {
         stroke={flash > 0.05 ? colors.POSITIVE : colors.GRID}
         strokeWidth={1 + flash * 2.5}
       />
-      <text x={x - CELL_W / 2 + 16} y={y - CELL_H / 2 + 24} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+      <text x={x - CELL_W / 2 + 16} y={y - CELL_H / 2 + 24} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
         {name} — TxRef
       </text>
       <text x={x} y={y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>
@@ -285,7 +280,7 @@ function Cell({ x, y, name, value, version, flash, u }: {
       </text>
       <g>
         <rect x={x + CELL_W / 2 - 46} y={y - CELL_H / 2 + 10} width={36} height={20} rx={10} fill={colors.BG} stroke={colors.SECONDARY} />
-        <text x={x + CELL_W / 2 - 28} y={y - CELL_H / 2 + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+        <text x={x + CELL_W / 2 - 28} y={y - CELL_H / 2 + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
           v{version}
         </text>
       </g>
@@ -312,12 +307,18 @@ function Journal({ x, y, w, h, title, rows, rowU, u, stale, staleU, wipeX, commi
   return (
     <g opacity={u}>
       <rect x={x} y={y} width={w} height={h} rx={12} fill={colors.PANEL} stroke={flash > 0.05 ? colors.POSITIVE : colors.ACCENT} strokeWidth={flash > 0.05 ? 2.5 : 1.2} />
-      <text x={x + 16} y={y + 24} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+      <text x={x + 16} y={y + 24} fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
         {title}
       </text>
-      <text x={x + w - 16} y={y + 24} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+      <text x={x + w - 16} y={y + 24} textAnchor="end" fill={colors.MUTED} fontSize={13}>
         pencil until commit
       </text>
+      {/* an empty journal says so until the first read lands in it */}
+      {rowU < 0.25 && (
+        <text x={x + 22} y={y + 50} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(1 - rowU * 4)}>
+          empty — reads and writes land here
+        </text>
+      )}
       {rows.map((r, i) => {
         const ru = clamp01(rowU * rows.length - i);
         if (ru <= 0) return null;
@@ -330,14 +331,14 @@ function Journal({ x, y, w, h, title, rows, rowU, u, stale, staleU, wipeX, commi
               x={x + 22 + off}
               y={y + 50 + i * 22}
               fill={isStale ? colors.NEGATIVE : r.startsWith('write') ? colors.WARM : colors.MUTED}
-              fontSize={13}
+              fontSize={14}
               fontFamily="monospace"
               fontStyle={r.startsWith('write') ? 'italic' : 'normal'}
             >
               {r}
             </text>
             {isStale && (
-              <text x={x + w - 20 + off} y={y + 50 + i * 22} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" opacity={staleU}>
+              <text x={x + w - 20 + off} y={y + 50 + i * 22} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" opacity={staleU}>
                 stale ✗
               </text>
             )}
@@ -363,7 +364,6 @@ export function Render({ s }: { s: SceneState }) {
   const bCommitU = s.get(scene.bCommitU);
   const staleU = s.get(scene.staleU);
   const wipeU = s.get(scene.wipeU);
-  const checkU = s.get(scene.checkU);
   const rowsA2 = s.get(scene.rowsA2);
   const aCommitU = s.get(scene.aCommitU);
   const ruleU = s.get(scene.ruleU);
@@ -390,8 +390,8 @@ export function Render({ s }: { s: SceneState }) {
   // retry strip: parked until the offered value arrives
   const parked = retryU > 0.5 && offerU < 0.75;
   const retryAlpha = retryU * (1 - retryOut);
-  // version check shown while the commit is still pending
-  const checkAlpha = checkU;
+  // version check: shown on the stale window (beat 8), gone once the journal is wiped
+  const checkAlpha = staleU * (1 - wipeU);
 
   return (
     <>
@@ -401,7 +401,7 @@ export function Render({ s }: { s: SceneState }) {
           <Cell x={CELLS[0].x} y={CELLS[0].y} name={CELLS[0].name} value={checking.value} version={checking.version} flash={pulse(aCommitU)} u={cellsU} />
           <Cell x={CELLS[1].x} y={CELLS[1].y} name={CELLS[1].name} value={savings.value} version={savings.version} flash={cellFlash} u={cellsU} />
           {cellsU > 0 && (
-            <text x={CELLS[0].x} y={CELLS[0].y - 78} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={cellsU}>
+            <text x={CELLS[0].x} y={CELLS[0].y - 78} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={cellsU}>
               TxRef.make(100) · TxRef.make(20)
             </text>
           )}
@@ -448,29 +448,35 @@ export function Render({ s }: { s: SceneState }) {
             commit={bCommitU}
           />
 
-          {/* the commit check — every version read must still match */}
+          {/* the commit check — every version read must still match; it fails here */}
           {checkAlpha > 0 && (
             <g opacity={checkAlpha}>
-              <rect x={205} y={462} width={490} height={64} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+              <rect x={205} y={462} width={490} height={64} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} />
               <text x={225} y={488} fill={colors.TEXT} fontSize={14}>
                 commit check — is every version we read still current?
               </text>
-              <text x={225} y={512} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
-                checking v1 ✓    savings v1 ✓    → write both at once
+              <text x={225} y={512} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+                checking v1 ✓    savings v1 ✗ (now v2)    → discard, re-run
               </text>
             </g>
           )}
 
-          {/* the run-twice rule */}
+          {/* the run-twice rule, under panel B so it does not touch it */}
           {ruleU > 0 && (
             <g opacity={ruleU}>
-              <rect x={PANEL_A.x} y={PANEL_A.y + PANEL_A.h + 12} width={PANEL_A.w} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-              <text x={PANEL_A.x + PANEL_A.w / 2} y={PANEL_A.y + PANEL_A.h + 32} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <rect x={PANEL_B.x} y={PANEL_B.y + PANEL_B.h + 12} width={PANEL_B.w} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
+              <text x={PANEL_B.x + PANEL_B.w / 2} y={PANEL_B.y + PANEL_B.h + 32} textAnchor="middle" fill={colors.WARM} fontSize={13}>
                 bodies may run twice — pure state changes only
               </text>
             </g>
           )}
         </g>
+
+        {/* scrim: the dimmed stage goes almost fully dark behind the panels below,
+            so no cell edges or journal text peek out around them */}
+        {txDim < 1 && (
+          <rect x={-600} y={-400} width={STAGE_W + 1200} height={STAGE_H + 800} fill={colors.BG} opacity={1 - txDim} />
+        )}
 
         {/* ---- the retry strip (opaque panel over the dimmed stage) ---- */}
         {retryAlpha > 0 && (
@@ -482,28 +488,28 @@ export function Render({ s }: { s: SceneState }) {
             <text x={1020} y={272} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               Effect.txRetry
             </text>
-            {/* producer, rack, sleeper */}
-            <rect x={280} y={310} width={130} height={44} rx={10} fill={colors.BG} stroke={offerU > 0.05 ? colors.ACCENT : colors.GRID} />
-            <text x={345} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            {/* producer, rack, sleeper — the row is centred in the strip (20px margins) */}
+            <rect x={250} y={310} width={130} height={44} rx={10} fill={colors.BG} stroke={offerU > 0.05 ? colors.ACCENT : colors.GRID} />
+            <text x={315} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               producer fiber
             </text>
-            <text x={345} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={315} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               TxQueue.offer
             </text>
             {[0, 1, 2].map((i) => (
-              <rect key={i} x={560 + i * 50} y={312} width={42} height={40} rx={7} fill="none" stroke={colors.GRID} />
+              <rect key={i} x={529 + i * 50} y={312} width={42} height={40} rx={7} fill="none" stroke={colors.GRID} />
             ))}
             <rect x={820} y={310} width={210} height={44} rx={10} fill={colors.BG} stroke={parked ? colors.WARM : colors.POSITIVE} strokeWidth={1.8} />
             <text x={925} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               consumer fiber
             </text>
-            <text x={925} y={346} textAnchor="middle" fill={parked ? colors.WARM : colors.POSITIVE} fontSize={12}>
+            <text x={925} y={346} textAnchor="middle" fill={parked ? colors.WARM : colors.POSITIVE} fontSize={13}>
               {parked ? '⏸ parked, awaiting retry' : offerU >= 0.75 ? '✓ woke and took the value' : 'taking…'}
             </text>
-            {/* the offered value travels producer → slot → consumer */}
+            {/* the offered value travels producer → middle slot → consumer */}
             {offerU > 0.05 && (
               <circle
-                cx={offerU < 0.55 ? lerp(420, 581, offerU / 0.55) : offerU < 0.75 ? 581 : lerp(581, 812, (offerU - 0.75) / 0.25)}
+                cx={offerU < 0.55 ? lerp(380, 600, offerU / 0.55) : offerU < 0.75 ? 600 : lerp(600, 812, (offerU - 0.75) / 0.25)}
                 cy={332}
                 r={12}
                 fill={colors.ACCENT}
@@ -529,7 +535,8 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             {FAMILY.map((f, i) => {
               const u = clamp01(famU * 4 - i * 0.6);
-              const x = 300 + i * 180;
+              // four boxes centred on x=640 (span 300..980)
+              const x = 310 + i * 180;
               return (
                 <g key={f} opacity={u}>
                   <line x1={x + 60} y1={368} x2={640} y2={336} stroke={colors.GRID} strokeWidth={1} />

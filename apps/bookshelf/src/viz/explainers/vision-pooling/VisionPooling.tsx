@@ -64,21 +64,55 @@ function renderFrame(s: SceneState) {
   const pj = pos % POOL_N;
   const winOp = clamp01(Math.min(poolP * 30, (1 - poolP) * 30));
 
+  // the image slides off-stage while the camera is on the pooled map: fade it so
+  // the cut-off strip does not read as stray debris (driven by the camera channel)
+  const cam = s.get(scene.cam);
+  const imgFade = 1 - 0.85 * clamp01((cam.x - 600) / 230);
+
   return (
-    <Camera {...s.get(scene.cam)}>
+    <Camera {...cam}>
+      {/* receptive-field cone: one pooled cell ← a wide image patch (drawn under the grids) */}
+      <g opacity={fieldU}>
+        <polygon
+          points={`${IMG.x + 0.5 * IPITCH},${IMG.y + 1 * IPITCH} ${IMG.x + 6.5 * IPITCH},${IMG.y + 1 * IPITCH} ${POOL.x + 1 * PPITCH + PCELL / 2},${POOL.y + PPITCH / 2} ${IMG.x + 0.5 * IPITCH},${IMG.y + 7 * IPITCH}`}
+          fill={colors.SECONDARY}
+          fillOpacity={0.1}
+          stroke={colors.SECONDARY}
+          strokeWidth={1.5}
+          strokeDasharray="4 6"
+        />
+        <rect
+          x={IMG.x + 0.5 * IPITCH - 6}
+          y={IMG.y + 1 * IPITCH - 6}
+          width={6 * IPITCH + 12}
+          height={6 * IPITCH + 12}
+          rx={8}
+          fill="none"
+          stroke={colors.SECONDARY}
+          strokeWidth={2}
+        />
+        <text x={IMG.x + IMG_W / 2} y={IMG.y + IMG_W + 28} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
+          one deep cell sees this whole patch
+        </text>
+      </g>
+
       {/* ── image ── */}
-      <text x={IMG.x + IMG_W / 2} y={IMG.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(imgU * 8)}>
-        image · 12×12
-      </text>
-      <MatrixGrid
-        x={IMG.x}
-        y={IMG.y}
-        values={image}
-        cell={ICELL}
-        gap={IGAP}
-        cellU={(i, j) => clamp01(imgU * 144 - (i * 12 + j))}
-        emphasize={2}
-      />
+      <g opacity={imgFade}>
+        {cam.x < 800 && (
+          <text x={IMG.x + IMG_W / 2} y={IMG.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(imgU * 8)}>
+            image · 12×12
+          </text>
+        )}
+        <MatrixGrid
+          x={IMG.x}
+          y={IMG.y}
+          values={image}
+          cell={ICELL}
+          gap={IGAP}
+          cellU={(i, j) => clamp01(imgU * 144 - (i * 12 + j))}
+          emphasize={2}
+        />
+      </g>
 
       {/* ── feature map ── */}
       <text x={MAPL.x + MAP_W / 2} y={MAPL.y - 16} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={clamp01(mapU * 8)}>
@@ -169,37 +203,12 @@ function renderFrame(s: SceneState) {
 
       {/* the changed-cell scoreboard */}
       <g opacity={panelU}>
-        <rect x={452} y={520} width={520} height={78} rx={12} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
-        <text x={472} y={552} fill={colors.NEGATIVE} fontSize={17}>
+        <rect x={452} y={452} width={520} height={78} rx={12} fill={colors.PANEL} fillOpacity={0.92} stroke={colors.GRID} />
+        <text x={472} y={484} fill={colors.NEGATIVE} fontSize={17}>
           feature map: 10 / 100 cells changed
         </text>
-        <text x={472} y={582} fill={colors.POSITIVE} fontSize={17}>
+        <text x={472} y={514} fill={colors.POSITIVE} fontSize={17}>
           pooled map: 0 / 25 cells changed
-        </text>
-      </g>
-
-      {/* receptive-field cone: one pooled cell ← a wide image patch */}
-      <g opacity={fieldU}>
-        <polygon
-          points={`${IMG.x + 0.5 * IPITCH},${IMG.y + 1 * IPITCH} ${IMG.x + 6.5 * IPITCH},${IMG.y + 1 * IPITCH} ${POOL.x + 1 * PPITCH + PCELL / 2},${POOL.y + PPITCH / 2} ${IMG.x + 0.5 * IPITCH},${IMG.y + 7 * IPITCH}`}
-          fill={colors.SECONDARY}
-          fillOpacity={0.1}
-          stroke={colors.SECONDARY}
-          strokeWidth={1.5}
-          strokeDasharray="4 6"
-        />
-        <rect
-          x={IMG.x + 0.5 * IPITCH - 6}
-          y={IMG.y + 1 * IPITCH - 6}
-          width={6 * IPITCH + 12}
-          height={6 * IPITCH + 12}
-          rx={8}
-          fill="none"
-          stroke={colors.SECONDARY}
-          strokeWidth={2}
-        />
-        <text x={IMG.x + IMG_W / 2} y={IMG.y + IMG_W + 28} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
-          one deep cell sees this whole patch
         </text>
       </g>
 
@@ -209,7 +218,7 @@ function renderFrame(s: SceneState) {
         x={640}
         y={600}
         fontSize={20}
-        color={colors.MUTED}
+        color={colors.TEXT}
         opacity={closeU}
       />
     </Camera>

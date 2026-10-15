@@ -49,11 +49,11 @@ const STRIP_W = D_MODEL * STRIP_CELL;
 const STRIP_Y = 336;
 
 // — the encoding matrix heatmap ————————————————————————————————————————————
-const CELL = 15;
-const GAP = 1.5;
+const CELL = 12;
+const GAP = 1.2;
 const PITCH = CELL + GAP;
-const GRID_X = 160;
-const GRID_Y = 88;
+const GRID_X = 130;
+const GRID_Y = 100;
 const GRID_W = D_MODEL * PITCH - GAP;
 const GRID_H = N_POS * PITCH - GAP;
 
@@ -63,14 +63,17 @@ const COL_LABELS = Array.from({ length: D_MODEL }, (_, j) => (j % 8 === 0 ? Stri
 const WAVE_COLORS = [colors.ACCENT, colors.POSITIVE, colors.WARM] as const;
 
 // — the pulled-out waveforms (right panel) —————————————————————————————————
-const xWave = scaleLinear().domain([0, N_POS - 1]).range([680, 1180]);
+const xWave = scaleLinear().domain([0, N_POS - 1]).range([640, 1110]);
 const WAVE_CY = [170, 320, 470] as const;
 const WAVE_AMP = 52;
 
 // — the similarity panel (replaces the waves in the row beats) —————————————
-const SIM_PANEL = { x: 660, y: 130, w: 540, h: 440 } as const;
-const xSim = scaleLinear().domain([0, MAX_OFFSET]).range([720, 1160]);
-const ySim = scaleLinear().domain([-0.5, 1]).range([SIM_PANEL.y + 390, SIM_PANEL.y + 60]);
+const SIM_PANEL = { x: 680, y: 120, w: 520, h: 380 } as const;
+const xSim = scaleLinear().domain([0, MAX_OFFSET]).range([730, 1160]);
+const ySim = scaleLinear().domain([-0.5, 1]).range([SIM_PANEL.y + 330, SIM_PANEL.y + 60]);
+
+// — the recap card (solid, so the closing words sit on nothing faded) ——————
+const RECAP_PANEL = { x: 340, y: 232, w: 600, h: 190 } as const;
 
 function TokenPill({ x, word, glow, opacity }: { x: number; word: string; glow?: number; opacity: number }) {
   if (opacity <= 0) return null;
@@ -159,7 +162,7 @@ function Frame({ s }: { s: SceneState }) {
               WORDS.map((_, i) => (
                 <g key={`chip-${i}`} opacity={chipsU}>
                   <circle cx={slotX(i)} cy={TOKEN_Y - 46} r={13} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} />
-                  <text x={slotX(i)} y={TOKEN_Y - 41} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+                  <text x={slotX(i)} y={TOKEN_Y - 41} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                     {i}
                   </text>
                 </g>
@@ -182,8 +185,8 @@ function Frame({ s }: { s: SceneState }) {
                   x={slotX(FOCUS_TOKEN)}
                   y={STRIP_Y + 34}
                   textAnchor="middle"
-                  fill={colors.MUTED}
-                  fontSize={13}
+                  fill={colors.TEXT}
+                  fontSize={14}
                   fontStyle="italic"
                 >
                   the fingerprint of position {FOCUS_TOKEN}
@@ -221,21 +224,21 @@ function Frame({ s }: { s: SceneState }) {
               cellU={(_i, j) => clamp01(gridU * (D_MODEL + 2) - j)}
               rowLabels={ROW_LABELS}
               colLabels={COL_LABELS}
-              labelSize={10}
+              labelSize={14}
             />
             <g opacity={gridTexU}>
               <MathLabel
                 tex="\mathrm{PE} \in \mathbb{R}^{32 \times 24}"
                 x={GRID_X + GRID_W / 2}
-                y={GRID_Y - 42}
+                y={GRID_Y - 40}
                 fontSize={19}
                 opacity={gridTexU}
               />
               <text
                 x={GRID_X - 46}
                 y={GRID_Y + GRID_H / 2}
-                fill={colors.MUTED}
-                fontSize={13}
+                fill={colors.TEXT}
+                fontSize={14}
                 textAnchor="middle"
                 transform={`rotate(-90 ${GRID_X - 46} ${GRID_Y + GRID_H / 2})`}
               >
@@ -243,9 +246,9 @@ function Frame({ s }: { s: SceneState }) {
               </text>
               <text
                 x={GRID_X + GRID_W / 2}
-                y={GRID_Y + GRID_H + 34}
-                fill={colors.MUTED}
-                fontSize={13}
+                y={GRID_Y + GRID_H + 30}
+                fill={colors.TEXT}
+                fontSize={14}
                 textAnchor="middle"
               >
                 dimension k
@@ -349,13 +352,12 @@ function Frame({ s }: { s: SceneState }) {
               height={SIM_PANEL.h}
               rx={12}
               fill={colors.PANEL}
-              opacity={0.92}
               stroke={colors.GRID}
             />
             <text x={SIM_PANEL.x + 26} y={SIM_PANEL.y + 36} fill={colors.TEXT} fontSize={16}>
               how alike two fingerprints are, by distance
             </text>
-            <Axes x={xSim} y={ySim} reveal={simU} xTicks={5} yTicks={4} xLabel="offset" fontSize={11} />
+            <Axes x={xSim} y={ySim} reveal={simU} xTicks={5} yTicks={4} xLabel="offset" fontSize={13} />
             <FunctionPlot
               x={xSim}
               y={ySim}
@@ -367,7 +369,7 @@ function Frame({ s }: { s: SceneState }) {
             />
             <MathLabel
               tex="\cos(\mathrm{PE}_8, \mathrm{PE}_{8+o})"
-              x={SIM_PANEL.x + SIM_PANEL.w - 118}
+              x={SIM_PANEL.x + SIM_PANEL.w - 150}
               y={SIM_PANEL.y + 66}
               fontSize={15}
               color={colors.POSITIVE}
@@ -380,6 +382,15 @@ function Frame({ s }: { s: SceneState }) {
       {/* — recap, over everything faded to a whisper — */}
       {recapU > 0 && (
         <g opacity={recapU}>
+          <rect
+            x={RECAP_PANEL.x}
+            y={RECAP_PANEL.y}
+            width={RECAP_PANEL.w}
+            height={RECAP_PANEL.h}
+            rx={16}
+            fill={colors.PANEL}
+            stroke={colors.GRID}
+          />
           <MathLabel
             tex="x_p = e_{\text{word}} + \mathrm{PE}_p"
             x={640}
@@ -388,7 +399,7 @@ function Frame({ s }: { s: SceneState }) {
             color={colors.TEXT}
             opacity={recapU}
           />
-          <text x={640} y={368} textAnchor="middle" fill={colors.MUTED} fontSize={19} fontStyle="italic">
+          <text x={640} y={368} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontStyle="italic">
             order rides along with meaning
           </text>
         </g>

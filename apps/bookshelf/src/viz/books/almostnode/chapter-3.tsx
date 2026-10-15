@@ -101,7 +101,6 @@ export function buildScene() {
   const noNodeU = tl.channel('noNodeU', 0); // "no Node here" strike
   const pressU = tl.channel('pressU', 0); // the wrapper prints around it
   const gridU = tl.channel('gridU', 0); // shim grid (windowed)
-  const gridFade = tl.channel('gridFade', 1); // shim grid leaves once its beat is over
   const countU = tl.channel('countU', 0); // "40+ modules" counter
   const rayHttp = tl.channel('rayHttp', 0); // require('http') ray
   const rayFs = tl.channel('rayFs', 0); // require('fs') ray
@@ -145,6 +144,7 @@ export function buildScene() {
     dur: 3.6,
     text: 'Now watch what happens when the code calls require.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 14.4, dur: 1.3, ease: ease.move });
   tl.tween(line1Hot, 1, { at: 15.6, dur: 0.5, ease: ease.pop });
   tl.hold(17.9, 0.4);
 
@@ -180,7 +180,6 @@ export function buildScene() {
   });
   tl.tween(line2Hot, 0, { at: 32.0, dur: 0.5, ease: ease.move });
   tl.tween(rayFs, 0, { at: 32.0, dur: 0.6, ease: ease.move });
-  tl.tween(gridFade, 0, { at: 31.6, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_ESM, { at: 32.1, dur: 1.3, ease: ease.move });
   tl.tween(esmU, 1, { at: 32.8, dur: 1.0, ease: ease.enter });
   tl.hold(38.3, 0.5);
@@ -247,7 +246,6 @@ export function buildScene() {
     noNodeU,
     pressU,
     gridU,
-    gridFade,
     countU,
     rayHttp,
     rayFs,
@@ -279,7 +277,6 @@ export function Render({ s }: { s: SceneState }) {
   const noNodeU = s.get(scene.noNodeU);
   const pressU = s.get(scene.pressU);
   const gridU = s.get(scene.gridU);
-  const gridFade = s.get(scene.gridFade);
   const countU = s.get(scene.countU);
   const rayHttp = s.get(scene.rayHttp);
   const rayFs = s.get(scene.rayFs);
@@ -294,7 +291,10 @@ export function Render({ s }: { s: SceneState }) {
   const doorU = s.get(scene.doorU);
   const rejectU = s.get(scene.rejectU);
   const closeU = s.get(scene.closeU);
-  const machineOp = 1 - 0.88 * dimU;
+  // the machine dims for the cages, then clears completely behind the closer
+  const machineOp = (1 - dimU) * (1 - closeU);
+  // the shim grid leaves with the camera's pan to the rewrite station: it fades across the pan, then stays gone
+  const gridFade = s.get(scene.esmU) > 0 ? 0 : clamp01((cam.x - CAM_SRC.x) / (CAM_GRID.x - CAM_SRC.x));
 
   const httpCell = shimPos(SHIM_HTTP);
   const fsCell = shimPos(SHIM_FS);
@@ -332,7 +332,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SRC.x - 6} y={SRC.y + SRC.h + 24} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               {WRAP_BOT}
             </text>
-            <text x={SRC.x + SRC.w + 30} y={SRC.y - WRAP_PAD_TOP + 22} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={SRC.x + SRC.w + 30} y={SRC.y - WRAP_PAD_TOP + 22} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               runtime.ts
             </text>
           </g>
@@ -340,7 +340,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the source card */}
           <g opacity={srcU}>
             <rect x={SRC.x} y={SRC.y} width={SRC.w} height={SRC.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={SRC.x + 16} y={SRC.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={1 - pressU}>
+            <text x={SRC.x + 16} y={SRC.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={1 - pressU}>
               server.js
             </text>
             {SRC_LINES.map((line, i) => (
@@ -400,7 +400,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={GRID.x0} y={GRID.y0 + 3 * (GRID.cellH + GRID.gapY) + 16} fill={colors.MUTED} fontSize={14}>
                   … 40+ shimmed modules
                 </text>
-                <text x={GRID.x0 + 2 * (GRID.cellW + GRID.gapX)} y={GRID.y0 - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                <text x={GRID.x0 + 2 * (GRID.cellW + GRID.gapX)} y={GRID.y0 - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                   {"require(name) → shims[name]"}
                 </text>
               </g>
@@ -408,13 +408,17 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* require rays */}
-          <Connection from={srcRight} to={{ x: httpCell.x - GRID.cellW / 2, y: httpCell.y }} u={rayHttp} color={colors.WARM} label="require('http')" />
-          <Connection from={srcRight2} to={{ x: fsCell.x - GRID.cellW / 2, y: fsCell.y }} u={rayFs} color={colors.POSITIVE} label="require('fs') → VirtualFS" />
+          <Connection from={srcRight} to={{ x: httpCell.x - GRID.cellW / 2, y: httpCell.y }} u={rayHttp} color={colors.WARM} />
+          <Connection from={srcRight2} to={{ x: fsCell.x - GRID.cellW / 2, y: fsCell.y }} u={rayFs} color={colors.POSITIVE} />
+          {/* the fs answer names its target above the cell, clear of the ray and the grid header */}
+          <text x={fsCell.x} y={GRID.y0 - 8} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={clamp01(rayFs * 2)}>
+            → VirtualFS
+          </text>
 
           {/* the acorn rewrite station */}
           <g opacity={esmU}>
             <rect x={ESM.x} y={ESM.y} width={ESM.w} height={ESM.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={ESM.x + 16} y={ESM.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={ESM.x + 16} y={ESM.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               acorn AST · code-transforms.ts
             </text>
             <text x={ESM.x + 16} y={ESM.y + 32} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
@@ -468,33 +472,37 @@ export function Render({ s }: { s: SceneState }) {
           {pingU > 0 && pingU < 1 && (
             <g>
               <circle cx={pingP.x} cy={pingP.y} r={7} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pingP.x - 10} y={pingP.y - 13} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+              {/* the label sits under the badge, clear of its text, and follows the ping in */}
+              <text x={SW_BADGE.x + 130} y={SW_BADGE.y + 54 + 24} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={clamp01(pingU * 4)}>
                 {'server-registered {port: 3000}'}
               </text>
             </g>
           )}
         </g>
 
-        {/* the three cages */}
+        {/* the three cages — the question the caption asks, answered by a choice of cage */}
+        <text x={STAGE_W / 2} y={DOORS_Y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={15} opacity={clamp01(doorU * 2) * (1 - closeU)}>
+          where can untrusted code run?
+        </text>
         {DOORS.map((d, i) => {
           const u = clamp01(doorU * 3 - i);
           if (u <= 0) return null;
           const x = DOORS_X0 + i * (DOOR_W + DOOR_GAP);
           return (
-            <g key={d.title} opacity={u}>
+            <g key={d.title} opacity={u * (1 - closeU)}>
               <rect x={x} y={DOORS_Y - 12 * (1 - u)} width={DOOR_W} height={190} rx={14} fill={colors.PANEL} stroke={d.color} strokeWidth={1.5} />
               <rect x={x + 22} y={DOORS_Y + 24} width={44} height={70} rx={6} fill="none" stroke={d.color} strokeWidth={1.6} />
               <circle cx={x + 56} cy={DOORS_Y + 60} r={3} fill={d.color} />
               <text x={x + 84} y={DOORS_Y + 44} fill={colors.TEXT} fontSize={16} fontWeight={650}>
                 {d.title}
               </text>
-              <text x={x + 84} y={DOORS_Y + 68} fill={colors.MUTED} fontSize={12.5}>
+              <text x={x + 84} y={DOORS_Y + 68} fill={colors.MUTED} fontSize={13}>
                 {d.note}
               </text>
-              <text x={x + 22} y={DOORS_Y + 136} fill={d.color} fontSize={13.5} fontFamily={MONO}>
+              <text x={x + 22} y={DOORS_Y + 136} fill={d.color} fontSize={14} fontFamily={MONO}>
                 {d.code}
               </text>
-              <text x={x + 22} y={DOORS_Y + 162} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={x + 22} y={DOORS_Y + 162} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 create-runtime.ts
               </text>
             </g>
@@ -505,9 +513,9 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={rejectU}>
           <rect x={400} y={452} width={440} height={64} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
           <text x={620} y={478} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
-            createRuntime(vfs)
+            createRuntime(vfs) — no cage chosen
           </text>
-          <text x={620} y={502} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+          <text x={620} y={502} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             {"✗ throws: 'almostnode: For security…'"}
           </text>
         </g>

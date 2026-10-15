@@ -1,7 +1,7 @@
 import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
-import { DENSE, GRID, INTERF, LPAN, NF, RPAN, SPARSE, buildScene, colAt } from './scene';
+import { DENSE, GRID, LPAN, NF, RPAN, SPARSE, buildScene, colAt } from './scene';
 
 /**
  * Superposition — more features than neurons.
@@ -16,6 +16,18 @@ const MOTION = { file: 'src/viz/explainers/superposition/overrides.json', slug: 
 
 const FCOLORS = [colors.WARM, colors.ACCENT, colors.POSITIVE, colors.SECONDARY, colors.NEGATIVE];
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
+
+// cosine between the sparse run's arrows: 1 on the diagonal
+const COS: number[][] = SPARSE.cols.map((a) =>
+  SPARSE.cols.map((b) => {
+    const na = Math.hypot(a[0], a[1]);
+    const nb = Math.hypot(b[0], b[1]);
+    return Math.abs(a[0] * b[0] + a[1] * b[1]) / (na * nb || 1);
+  }),
+);
+// the closest pair of distinct arrows, read off the data rather than assumed
+const NEAR = Math.min(...COS.flatMap((row, i) => row.filter((_, j) => j !== i)));
+const NEAR_DEG = (Math.acos(Math.min(1, NEAR)) * 180) / Math.PI;
 
 function ArrowPanel({
   run,
@@ -91,10 +103,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y - 34} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
                 interference
               </text>
-              <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                |wᵢ · wⱼ|
+              <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                cosine between arrows
               </text>
-              {INTERF.map((row, i) =>
+              {COS.map((row, i) =>
                 row.map((v, j) => {
                   const u = clamp01(gridU * 2 - (i * NF + j) / (NF * NF));
                   return (
@@ -110,20 +122,23 @@ function Frame({ s }: { s: SceneState }) {
                       />
                       <text
                         x={GRID.x + j * GRID.cell + GRID.cell / 2 - 1}
-                        y={GRID.y + i * GRID.cell + GRID.cell / 2 + 3.5}
+                        y={GRID.y + i * GRID.cell + GRID.cell / 2 + 4.5}
                         textAnchor="middle"
-                        fill={colors.BG}
-                        fontSize={9}
+                        fill={v > 0.5 ? colors.BG : colors.TEXT}
+                        fontSize={12}
                         fontWeight={700}
                       >
-                        {v.toFixed(1).replace('0.', '.')}
+                        {v.toFixed(2).replace('0.', '.')}
                       </text>
                     </g>
                   );
                 }),
               )}
-              <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y + NF * GRID.cell + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-                neighbors read ≈ ⅓
+              <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y + NF * GRID.cell + 20} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                closest pair: cos ≈ {NEAR.toFixed(2).replace('0.', '.')}
+              </text>
+              <text x={GRID.x + (NF * GRID.cell) / 2} y={GRID.y + NF * GRID.cell + 37} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                ({NEAR_DEG.toFixed(0)}° apart)
               </text>
             </g>
           )}

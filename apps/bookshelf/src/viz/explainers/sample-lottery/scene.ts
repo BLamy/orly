@@ -55,18 +55,19 @@ export const STRIP_Y = 150;
 export const stripX = (k: number): number => STRIP_X0 + (k / (M - 1)) * (STRIP_X1 - STRIP_X0);
 
 export const FLIP_X0 = 250;
-export const FLIP_Y = 330;
+export const FLIP_Y = 310;
 export const FLIP_DX = 40;
 
 export const HG_X0 = 250;
 export const HG_X1 = 1030;
 export const HG_Y0 = 560;
-export const HG_H = 130;
+export const HG_H = 115;
 export const hgX = (bin: number): number => HG_X0 + (bin / 10) * (HG_X1 - HG_X0);
 export const HG_BW = ((HG_X1 - HG_X0) / 10) * 0.82;
 
-export const CAM_STRIP: CameraState = { x: 640, y: 220, k: 1.25 };
-export const CAM_FLIPS: CameraState = { x: 620, y: 330, k: 1.3 };
+// k 1.1 keeps the whole strip (and its end labels) inside the 1280-wide stage.
+export const CAM_STRIP: CameraState = { x: 640, y: 220, k: 1.1 };
+export const CAM_FLIPS: CameraState = { x: 640, y: 330, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -156,7 +157,7 @@ export function buildScene(): Scene {
   tl.hold(47.7, 0.6);
 
   // — Beat 5 · close ———————————————————————————————————————————————————
-  tl.tween(dimU, 0.13, { at: 48.3, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0.06, { at: 48.3, dur: 1.1, ease: ease.move });
   tl.tween(hookU, 0, { at: 48.3, dur: 0.8, ease: ease.move });
   tl.tween(endU, 1, { at: 49.5, dur: 0.9, ease: ease.enter });
   tl.caption({

@@ -81,10 +81,11 @@ export const INTERF: number[][] = Array.from({ length: NF }, (_, i) =>
 // layout: two circle panels + interference grid
 export const LPAN = { cx: 330, cy: 330, r: 190 };
 export const RPAN = { cx: 830, cy: 330, r: 190 };
-export const GRID = { x: 1075, y: 200, cell: 26 };
+export const GRID = { x: 1075, y: 200, cell: 30 };
 
 export const CAM_L: CameraState = { x: 330, y: 330, k: 1.35 };
-export const CAM_R: CameraState = { x: 860, y: 330, k: 1.3 };
+// frames both panels so the dense one never leaves the stage during the sparse beat
+export const CAM_R: CameraState = { x: 600, y: 330, k: 1.2 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {

@@ -86,6 +86,7 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">Link stitches one longer goal</text>
+      <text x="640" y="102" textAnchor="middle" fill={colors.MUTED} fontSize="19">Link is the component. Chain skills is the benchmark suite that runs on it.</text>
       <g opacity={1 - evidenceStage}>
       <Reel x={330} label="A" sublabel="env_a : ActionableEnv" reveal={s.get(scene.reelA)} progress={s.get(scene.aProgress)} color={colors.ACCENT} />
       <Reel x={950} label="B" sublabel="env_b : ActionableEnv" reveal={s.get(scene.reelB)} progress={s.get(scene.bProgress)} color={colors.SECONDARY} />
@@ -95,9 +96,9 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="292" textAnchor="middle" fill={colors.WARM} fontSize="18" fontWeight="700" opacity={s.get(scene.linkU)}>Link.step()</text>
 
       <g opacity={s.get(scene.aVerify)}>
-        <circle cx="330" cy="425" r="27" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
-        <text x="330" y="435" textAnchor="middle" fill={colors.POSITIVE} fontSize="26">✓</text>
-        <text x="330" y="469" textAnchor="middle" fill={colors.MUTED} fontSize="14">a.evaluate().success</text>
+        <circle cx="330" cy="470" r="27" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
+        <text x="330" y="480" textAnchor="middle" fill={colors.POSITIVE} fontSize="26">✓</text>
+        <text x="330" y="514" textAnchor="middle" fill={colors.MUTED} fontSize="14">a.evaluate().success</text>
         <rect x="228" y="150" width="204" height="52" rx="16" fill="#111827" stroke={colors.ACCENT} />
         <text x="330" y="182" textAnchor="middle" fill={colors.TEXT} fontSize="15">termination masked</text>
       </g>
@@ -106,31 +107,31 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="505" y="380" width="270" height="104" rx="20" fill="#211a38" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="640" y="410" textAnchor="middle" fill={colors.SECONDARY} fontSize="16" fontWeight="700">[switched to new task]</text>
         <text x="640" y="439" textAnchor="middle" fill={colors.TEXT} fontSize="14">tail of A's last observation</text>
-        <text x="640" y="467" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>carry_chars = 1500</text>
+        <text x="640" y="467" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>carry_chars = 1500</text>
       </g>
 
       <g opacity={s.get(scene.bVerify)}>
-        <circle cx="950" cy="425" r="27" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
-        <text x="950" y="435" textAnchor="middle" fill={colors.POSITIVE} fontSize="26">✓</text>
-        <text x="950" y="469" textAnchor="middle" fill={colors.MUTED} fontSize="14">b.evaluate().success</text>
+        <circle cx="950" cy="470" r="27" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
+        <text x="950" y="480" textAnchor="middle" fill={colors.POSITIVE} fontSize="26">✓</text>
+        <text x="950" y="514" textAnchor="middle" fill={colors.MUTED} fontSize="14">b.evaluate().success</text>
       </g>
 
       <g opacity={s.get(scene.resultU)}>
-        <rect x="520" y="110" width="240" height="86" rx="24" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
-        <text x="640" y="145" textAnchor="middle" fill={colors.POSITIVE} fontSize="20" fontWeight="800">combined = A AND B</text>
-        <text x="640" y="177" textAnchor="middle" fill={colors.TEXT} fontSize="15">two original verifiers</text>
+        <rect x="520" y="122" width="240" height="86" rx="24" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
+        <text x="640" y="157" textAnchor="middle" fill={colors.POSITIVE} fontSize="20" fontWeight="800">combined = A AND B</text>
+        <text x="640" y="189" textAnchor="middle" fill={colors.TEXT} fontSize="15">two original verifiers</text>
       </g>
 
       <g opacity={Math.min(s.get(scene.reelA), s.get(scene.reelB))}>
-        <text x="330" y="470" textAnchor="middle" fill={colors.MUTED} fontSize="13" opacity={1 - s.get(scene.aVerify)}>reset now</text>
-        <text x="950" y="470" textAnchor="middle" fill={colors.MUTED} fontSize="13" opacity={1 - s.get(scene.bVerify)}>lazy reset at handoff</text>
+        <text x="330" y="470" textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity={0.75 * (1 - s.get(scene.aVerify))}>reset now</text>
+        <text x="950" y="470" textAnchor="middle" fill={colors.TEXT} fontSize="14" opacity={0.75 * (1 - s.get(scene.bVerify))}>lazy reset at handoff</text>
       </g>
       </g>
 
       <g opacity={s.get(scene.evidenceU)}>
         <rect x="310" y="175" width="660" height="260" rx="34" fill="#111827" stroke={colors.WARM} strokeWidth="4" />
         <text x="640" y="235" textAnchor="middle" fill={colors.WARM} fontSize="23" fontWeight="700">Stage + Contract + Chain skills</text>
-        <text x="640" y="268" textAnchor="middle" fill={colors.MUTED} fontSize="16">Chain = one goal stitched across A and B by Link</text>
+        <text x="640" y="268" textAnchor="middle" fill={colors.MUTED} fontSize="16">Chain skills = the benchmark suite run on Link: one goal across A and B</text>
         <text x="500" y="325" textAnchor="middle" fill={colors.POSITIVE} fontSize="42" fontWeight="800">54.30%</text>
         <text x="500" y="362" textAnchor="middle" fill={colors.MUTED} fontSize="16">success rate</text>
         <path d="M640 275 V385" stroke={colors.GRID} strokeWidth="3" />

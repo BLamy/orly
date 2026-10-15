@@ -273,29 +273,45 @@ function AcmeBrowser({ enter, runP, fail, dim }: { enter: number; runP: number; 
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <rect x={14} y={12} width={w - 28} height={28} rx={14} fill={colors.BG} opacity={0.6} />
       <circle cx={30} cy={26} r={4} fill={colors.NEGATIVE} opacity={0.9} />
-      <text x={44} y={31} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
+      <text x={44} y={31} fill={colors.MUTED} fontSize={13.5} fontFamily={mono}>
         acme-store.example.com{checkoutIn > 0.5 ? '/checkout' : '/products'}
       </text>
       <text x={22} y={74} fill={colors.TEXT} fontSize={16} fontWeight={700}>
         {checkoutIn > 0.5 ? 'Checkout' : 'Products'}
       </text>
-      <g opacity={cartIn}>
-        <text x={22} y={106} fill={colors.MUTED} fontSize={13.5}>
+      {/* the product page: one listing, its button flips to "Added" when the cart fills */}
+      <g opacity={1 - checkoutIn}>
+        <rect x={22} y={92} width={w - 44} height={100} rx={10} fill={colors.BG} opacity={0.5} stroke={colors.GRID} strokeWidth={1.5} />
+        <text x={40} y={122} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+          Laptop
+        </text>
+        <text x={40} y={148} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+          $1,299.00
+        </text>
+        <rect x={w - 172} y={148} width={140} height={32} rx={8} fill={cartIn > 0.5 ? colors.POSITIVE : colors.ACCENT} opacity={0.22} />
+        <rect x={w - 172} y={148} width={140} height={32} rx={8} fill="none" stroke={cartIn > 0.5 ? colors.POSITIVE : colors.ACCENT} strokeWidth={1.5} />
+        <text x={w - 102} y={169} textAnchor="middle" fill={cartIn > 0.5 ? colors.POSITIVE : colors.ACCENT} fontSize={14} fontWeight={700}>
+          {cartIn > 0.5 ? 'Added to cart' : 'Add to cart'}
+        </text>
+      </g>
+      {/* the checkout page: the cart line and the card row */}
+      <g opacity={cartIn * checkoutIn}>
+        <text x={22} y={106} fill={colors.MUTED} fontSize={14}>
           1 × Laptop
         </text>
-        <text x={w - 22} y={106} textAnchor="end" fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>
+        <text x={w - 22} y={106} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           $1,299.00
         </text>
       </g>
       <g opacity={cardIn}>
-        <text x={22} y={136} fill={colors.MUTED} fontSize={13.5}>
+        <text x={22} y={136} fill={colors.MUTED} fontSize={14}>
           card
         </text>
-        <text x={w - 22} y={136} textAnchor="end" fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>
+        <text x={w - 22} y={136} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           •••• •••• •••• 4242
         </text>
       </g>
-      <line x1={22} y1={158} x2={w - 22} y2={158} stroke={colors.GRID} strokeWidth={1.5} />
+      <line x1={22} y1={158} x2={w - 22} y2={158} stroke={colors.GRID} strokeWidth={1.5} opacity={checkoutIn} />
       <g opacity={checkoutIn}>
         <rect x={22} y={176} width={w - 44} height={40} rx={9} fill={colors.ACCENT} opacity={0.22} />
         <rect x={22} y={176} width={w - 44} height={40} rx={9} fill="none" stroke={colors.ACCENT} strokeWidth={1.5} />
@@ -325,10 +341,10 @@ function JourneyCard({ enter, steps, fail, dim }: { enter: number; steps: number
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * dim)}>
       <rect x={-16} y={-58} width={w + 32} height={STEPS.length * 32 + 82} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text y={-36} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text y={-36} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         journey-acme-cart
       </text>
-      <text y={-16} fill={colors.TEXT} fontSize={13} fontWeight={600}>
+      <text y={-14} fill={colors.TEXT} fontSize={14} fontWeight={600}>
         Add item to cart and checkout
       </text>
       {STEPS.map((label, i) => {
@@ -347,7 +363,7 @@ function JourneyCard({ enter, steps, fail, dim }: { enter: number; steps: number
                 <line x1={12} y1={5} x2={6} y2={11} />
               </g>
             )}
-            <text x={28} y={13} fill={done > 0.5 ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={mono}>
+            <text x={28} y={13} fill={done > 0.5 ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={mono}>
               {i + 1}. {label}
             </text>
           </g>
@@ -368,7 +384,7 @@ function Legend({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={r.kind} transform={`translate(${i * 240}, 0)`} opacity={ru}>
             <circle cx={6} cy={-4} r={5} fill={POINT_COLOR[r.kind]} />
-            <text x={18} y={0} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
+            <text x={18} y={0} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               {r.label}
             </text>
           </g>
@@ -386,13 +402,13 @@ function RunCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu}>
       <rect width={w} height={RUN_CARD.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-      <text x={20} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={20} y={28} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         test_runs
       </text>
-      <text x={20} y={52} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>
+      <text x={20} y={52} fill={colors.TEXT} fontSize={16} fontWeight={700} fontFamily={mono}>
         run-001 · completed · 4m00s
       </text>
-      <text x={20} y={78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+      <text x={20} y={78} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>
         replay_recording_id: b5f2a3c1-7d4e…
       </text>
     </g>

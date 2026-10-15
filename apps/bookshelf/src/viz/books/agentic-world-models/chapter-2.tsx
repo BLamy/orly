@@ -50,19 +50,24 @@ const KINDS: Kind[] = [
   'action', 'action', 'action', 'obs', 'obs',
 ];
 const N = KINDS.length;
-const TOKEN_Y = 148;
+const TOKEN_Y = 214;
 const TOKEN_X0 = 108;
 const TOKEN_DX = 68;
 const tokenX = (i: number): number => TOKEN_X0 + i * TOKEN_DX;
 const kindColor = (k: Kind): string => (k === 'action' ? colors.ACCENT : colors.SECONDARY);
+const ACTION_IDX: number[] = [];
+const OBS_IDX: number[] = [];
+KINDS.forEach((k, i) => (k === 'action' ? ACTION_IDX : OBS_IDX).push(i));
 
 // mask boundary the camera pushes into: between token 2 (action) and 3 (obs)
 const MASK_I = 2;
 const MASK_X = (tokenX(MASK_I) + tokenX(MASK_I + 1)) / 2;
 
-// merge points where each group's chips visually gather before the rivers
+// merge points where each group's rivers start; the chips gather into a row
+// centred on each point, just above the river it feeds
 const MERGE_A = { x: 420, y: 262 };
 const MERGE_O = { x: 900, y: 262 };
+const CLUSTER_DX = 46;
 const BASIN = { x: 640, y: 552 };
 
 // deterministic "spiky" advantage weights for the 8 action tokens (group
@@ -92,7 +97,7 @@ function riverD(x0: number, y0: number, x1: number, y1: number, reveal: number):
 
 const CAM_MASK: CameraState = { x: MASK_X, y: TOKEN_Y + 10, k: 2.4 };
 const CAM_RIVERS: CameraState = { x: 660, y: 340, k: 1.15 };
-const CAM_BASIN: CameraState = { x: 640, y: 470, k: 1.3 };
+const CAM_BASIN: CameraState = { x: 640, y: 440, k: 1.3 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~92s, twelve beats)
@@ -276,11 +281,11 @@ const scene = buildScene();
 function Chip({
   x, y, text, color, u, anchor = 'middle',
 }: {
-  x: number; y: number; text: string; color: string; u: number; anchor?: 'middle' | 'start';
+  x: number; y: number; text: string; color: string; u: number; anchor?: 'middle' | 'start' | 'end';
 }) {
   if (u <= 0.01) return null;
   const w = text.length * 8.1 + 24;
-  const x0 = anchor === 'middle' ? x - w / 2 : x;
+  const x0 = anchor === 'middle' ? x - w / 2 : anchor === 'end' ? x - w : x;
   return (
     <g opacity={u}>
       <rect x={x0} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.75} />
@@ -312,20 +317,20 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const fade = 1 - 0.9 * endU;
+  const actionIdx = ACTION_IDX;
+  const obsIdx = OBS_IDX;
 
-  // token chip position: resting in the row, or lerped toward its group's
-  // merge point as gatherU rises (the SAME chips, morphed, not re-created)
+  // token chip position: resting in the row, or lerped toward its slot in its
+  // group's cluster as gatherU rises (the SAME chips, morphed, not re-created)
   const chipPos = (i: number): { x: number; y: number } => {
-    const kind = KINDS[i];
-    const merge = kind === 'action' ? MERGE_A : MERGE_O;
+    const isAction = KINDS[i] === 'action';
+    const group = isAction ? actionIdx : obsIdx;
+    const merge = isAction ? MERGE_A : MERGE_O;
+    const slot = (group.indexOf(i) - (group.length - 1) / 2) * CLUSTER_DX;
     const x0 = tokenX(i);
     const y0 = TOKEN_Y;
-    return { x: x0 + (merge.x - x0) * gatherU, y: y0 + (merge.y - y0) * gatherU };
+    return { x: x0 + (merge.x + slot - x0) * gatherU, y: y0 };
   };
-
-  const actionIdx: number[] = [];
-  const obsIdx: number[] = [];
-  KINDS.forEach((k, i) => (k === 'action' ? actionIdx : obsIdx).push(i));
 
   return (
     <>
@@ -356,6 +361,34 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
         </g>
+
+        {/* the cluster labels name each river's tokens once the chips gather */}
+        <g opacity={gatherU * fade}>
+          <text x={MERGE_A.x} y={TOKEN_Y - 26} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+            action tokens
+          </text>
+          <text x={MERGE_O.x} y={TOKEN_Y - 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
+            observation tokens
+          </text>
+        </g>
+
+        {/* flat advantage bars: the same height under every token (SFT view) */}
+        {unifyLblU > 0.01 && (
+          <g opacity={unifyLblU * fade * (1 - gatherU)}>
+            {KINDS.map((k, i) => (
+              <rect
+                key={i}
+                x={tokenX(i) - 14}
+                y={TOKEN_Y + 26}
+                width={28}
+                height={12}
+                rx={3}
+                fill={kindColor(k)}
+                opacity={0.7}
+              />
+            ))}
+          </g>
+        )}
 
         {/* mask boundary marker (only meaningful before the gather) */}
         <g opacity={fade * (1 - gatherU)}>
@@ -388,11 +421,21 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             <text
               x={STAGE_W / 2}
-              y={TOKEN_Y + 72}
+              y={TOKEN_Y + 62}
               textAnchor="middle"
               fill={colors.TEXT}
-              fontSize={13}
-              opacity={0.7}
+              fontSize={14}
+              opacity={0.85}
+            >
+              same flat advantage on every token
+            </text>
+            <text
+              x={STAGE_W / 2}
+              y={TOKEN_Y + 104}
+              textAnchor="middle"
+              fill={colors.TEXT}
+              fontSize={14}
+              opacity={0.75}
             >
               read as an interpretation of the loss (ECHO and Wolfe's essay), not a settled fact
             </text>
@@ -444,10 +487,10 @@ export function Render({ s }: { s: SceneState }) {
               return <circle key={tokIdx} cx={p.x} cy={p.y} r={4.5} fill={colors.SECONDARY} opacity={0.75} />;
             })}
 
-          <Chip x={MERGE_A.x - 30} y={MERGE_A.y - 30} text="G R P O loss" color={colors.ACCENT} u={grpoChipU} />
-          <Chip x={MERGE_A.x - 30} y={MERGE_A.y - 62} text="advantage-weighted" color={colors.ACCENT} u={advChipU} />
-          <Chip x={MERGE_O.x + 30} y={MERGE_O.y - 30} text="supervised loss" color={colors.SECONDARY} u={supChipU} />
-          <Chip x={MERGE_O.x + 30} y={MERGE_O.y - 62} text="constant positive advantage" color={colors.SECONDARY} u={supChipU} />
+          <Chip x={MERGE_A.x - 18} y={MERGE_A.y + 4} text="G R P O loss" color={colors.ACCENT} u={grpoChipU} anchor="end" />
+          <Chip x={MERGE_A.x - 18} y={MERGE_A.y + 40} text="advantage-weighted" color={colors.ACCENT} u={advChipU} anchor="end" />
+          <Chip x={MERGE_O.x + 18} y={MERGE_O.y + 4} text="supervised loss" color={colors.SECONDARY} u={supChipU} anchor="start" />
+          <Chip x={MERGE_O.x + 18} y={MERGE_O.y + 40} text="constant positive advantage" color={colors.SECONDARY} u={supChipU} anchor="start" />
         </g>
 
         {/* ---------------- the loss basin ---------------- */}
@@ -473,7 +516,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---------------- the formula ---------------- */}
         {formulaU > 0.01 && (
-          <g opacity={formulaU * fade * (1 - 0.7 * basinU)}>
+          <g opacity={formulaU * fade * (1 - basinU)}>
             <rect
               x={STAGE_W / 2 - 340}
               y={330}
@@ -521,17 +564,17 @@ export function Render({ s }: { s: SceneState }) {
         />
       )}
       {endU > 0.3 && (
-        <text
-          x={STAGE_W / 2}
-          y={368}
-          textAnchor="middle"
-          fill={colors.WARM}
-          fontSize={22}
-          fontWeight={600}
-          opacity={endU}
-        >
-          the masking trick
-        </text>
+        <g opacity={endU}>
+          <text x={STAGE_W / 2} y={336} textAnchor="middle" fill={colors.WARM} fontSize={22} fontWeight={600}>
+            the masking trick
+          </text>
+          <text x={STAGE_W / 2} y={378} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+            dense supervision on every observation · sparse reward on every action
+          </text>
+          <text x={STAGE_W / 2} y={406} textAnchor="middle" fill={colors.TEXT} fontSize={16} opacity={0.8}>
+            unified into one loss, one pass of training
+          </text>
+        </g>
       )}
     </>
   );

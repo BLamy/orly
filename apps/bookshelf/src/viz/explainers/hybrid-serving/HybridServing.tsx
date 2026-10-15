@@ -10,7 +10,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -56,8 +55,10 @@ const BAR_W = 960;
 const BAR_H = 120;
 const gibW = (g: number): number => (g / HBM_GIB) * BAR_W;
 
-const CAM_BAR: CameraState = { x: 640, y: 240, k: 1.25 };
-const CAM_COUNT: CameraState = { x: 640, y: 430, k: 1.3 };
+// Framings keep the bar, its labels and the arithmetic inside the stage and
+// above the caption band (y < 630) at every caption midpoint.
+const CAM_BAR: CameraState = { x: 645, y: 245, k: 1.2 };
+const CAM_COUNT: CameraState = { x: 645, y: 306, k: 1.2 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -184,10 +185,14 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The old content fades to a ghost (0.1) behind the closing panel.
+  const mainOp = 1 - 0.9 * dimU;
   const weightsW = gibW(WEIGHTS_GIB) * wU;
   const nFull = fullSeqs;
   const nHyb = hybSeqs;
+  // Working room left after the sequences already on the card.
+  const freeGib = Math.max(0, FREE_GIB - nFull * FULL_SEQ_GIB - nHyb * HYB_SEQ_GIB);
+  const plural = (n: number, one: string, many: string) => (Math.floor(n + 1e-6) === 1 ? one : many);
 
   return (
     <>
@@ -200,12 +205,15 @@ function Frame({ s }: { s: SceneState }) {
             <text x={BAR_X0} y={BAR_Y0 - 34} fill={colors.TEXT} fontSize={19}>
               one accelerator — 80 GiB of fast memory
             </text>
-            <rect x={BAR_X0} y={BAR_Y0} width={BAR_W} height={BAR_H} rx={10} fill={colors.PANEL} opacity={0.7} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={BAR_X0 + BAR_W} y={BAR_Y0 - 34} textAnchor="end" fill={colors.TEXT} fontSize={17} opacity={wU}>
+              free for caches: {Math.round(freeGib)} GiB
+            </text>
+            <rect x={BAR_X0} y={BAR_Y0} width={BAR_W} height={BAR_H} rx={10} fill={colors.PANEL} opacity={0.7} stroke={colors.MUTED} strokeWidth={1.2} />
             {/* GiB ticks */}
             {[0, 20, 40, 60, 80].map((gv) => (
               <g key={gv}>
-                <line x1={BAR_X0 + gibW(gv)} y1={BAR_Y0 + BAR_H} x2={BAR_X0 + gibW(gv)} y2={BAR_Y0 + BAR_H + 6} stroke={colors.GRID} />
-                <text x={BAR_X0 + gibW(gv)} y={BAR_Y0 + BAR_H + 22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                <line x1={BAR_X0 + gibW(gv)} y1={BAR_Y0 + BAR_H} x2={BAR_X0 + gibW(gv)} y2={BAR_Y0 + BAR_H + 6} stroke={colors.MUTED} />
+                <text x={BAR_X0 + gibW(gv)} y={BAR_Y0 + BAR_H + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {gv} GiB
                 </text>
               </g>
@@ -229,9 +237,9 @@ function Frame({ s }: { s: SceneState }) {
                 const w = gibW(FULL_SEQ_GIB) * u;
                 return (
                   <g key={i}>
-                    <rect x={x} y={BAR_Y0} width={w} height={BAR_H} fill={colors.ACCENT} opacity={0.7} stroke={colors.BG} strokeWidth={1.5} />
+                    <rect x={x} y={BAR_Y0} width={w} height={BAR_H} fill={colors.ACCENT} opacity={0.85} stroke={colors.BG} strokeWidth={1.5} />
                     {u > 0.7 && (
-                      <text x={x + gibW(FULL_SEQ_GIB) / 2} y={BAR_Y0 + BAR_H / 2 + 5} textAnchor="middle" fill={colors.BG} fontSize={13} fontWeight={600}>
+                      <text x={x + gibW(FULL_SEQ_GIB) / 2} y={BAR_Y0 + BAR_H / 2 + 5} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={600}>
                         seq {i + 1}: 24 GiB
                       </text>
                     )}
@@ -262,36 +270,26 @@ function Frame({ s }: { s: SceneState }) {
               })}
 
             {/* running labels under the bar */}
-            {nFull > 0.01 && (
-              <text x={BAR_X0} y={BAR_Y0 + BAR_H + 52} fill={colors.ACCENT} fontSize={15}>
-                full attention: {Math.floor(nFull + 1e-6)} sequences fit — 24 GiB of cache each
+            {Math.floor(nFull + 1e-6) >= 1 && (
+              <text x={BAR_X0} y={BAR_Y0 + BAR_H + 52} fill={colors.ACCENT} fontSize={16}>
+                full attention: {Math.floor(nFull + 1e-6)} {plural(nFull, 'sequence fits', 'sequences fit')} — 24 GiB of cache each
               </text>
             )}
-            {hybridU > 0 && nHyb > 0.01 && (
-              <text x={BAR_X0} y={BAR_Y0 + BAR_H + 52} fill={colors.POSITIVE} fontSize={15}>
-                hybrid, one attention layer in eight: {Math.floor(nHyb + 1e-6)} sequences — {HYB_SEQ_GIB.toFixed(1)} GiB each
+            {hybridU > 0 && Math.floor(nHyb + 1e-6) >= 1 && (
+              <text x={BAR_X0} y={BAR_Y0 + BAR_H + 52} fill={colors.POSITIVE} fontSize={16}>
+                hybrid, one attention layer in eight: {Math.floor(nHyb + 1e-6)} {plural(nHyb, 'sequence', 'sequences')} — {HYB_SEQ_GIB.toFixed(1)} GiB each
               </text>
             )}
           </g>
 
           {/* the arithmetic, on screen as math */}
           <g opacity={barU}>
-            <MathLabel
-              tex="192\ \text{KiB/token} \times 128\text{k} = 24\ \text{GiB}"
-              x={BAR_X0}
-              y={370}
-              fontSize={17}
-              color={colors.ACCENT}
-              opacity={barU}
-            />
-            <MathLabel
-              tex="f=\tfrac{1}{8}:\ 3.0\ \text{GiB} + 47\ \text{MiB state}"
-              x={BAR_X0 + 480}
-              y={370}
-              fontSize={17}
-              color={colors.POSITIVE}
-              opacity={hybridU}
-            />
+            <text x={BAR_X0} y={376} fill={colors.ACCENT} fontSize={17}>
+              192 KiB/token × 128k = 24 GiB
+            </text>
+            <text x={BAR_X0 + 500} y={376} fill={colors.POSITIVE} fontSize={17} opacity={hybridU}>
+              f = 1/8: 3.0 GiB + 47 MiB state
+            </text>
           </g>
 
           {/* bandwidth beat */}
@@ -300,12 +298,12 @@ function Frame({ s }: { s: SceneState }) {
               <text x={BAR_X0} y={452} fill={colors.TEXT} fontSize={16}>
                 and every decoded token streams its cache through the chip
               </text>
-              <rect x={BAR_X0} y={470} width={gibW(24) * 2} height={16} rx={4} fill={colors.ACCENT} opacity={0.7} />
-              <text x={BAR_X0 + gibW(24) * 2 + 10} y={483} fill={colors.ACCENT} fontSize={12}>
+              <rect x={BAR_X0} y={470} width={gibW(24) * 2} height={16} rx={4} fill={colors.ACCENT} opacity={0.85} />
+              <text x={BAR_X0 + gibW(24) * 2 + 10} y={484} fill={colors.ACCENT} fontSize={14}>
                 full: 24 GiB read per token
               </text>
-              <rect x={BAR_X0} y={496} width={gibW(3) * 2} height={16} rx={4} fill={colors.POSITIVE} opacity={0.8} />
-              <text x={BAR_X0 + gibW(3) * 2 + 10} y={509} fill={colors.POSITIVE} fontSize={12}>
+              <rect x={BAR_X0} y={496} width={gibW(3) * 2} height={16} rx={4} fill={colors.POSITIVE} opacity={0.9} />
+              <text x={BAR_X0 + gibW(3) * 2 + 10} y={510} fill={colors.POSITIVE} fontSize={14}>
                 hybrid: 3 GiB — one eighth the bytes, one eighth the stall
               </text>
             </g>
@@ -323,7 +321,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={220} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={220} rx={14} fill={colors.PANEL} stroke={colors.MUTED} />
           <text x={640} y={278} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Nine times the conversations per card.
           </text>
@@ -333,7 +331,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             2 sequences at 24 GiB each → 18 at 3 GiB each.
           </text>
-          <text x={640} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
+          <text x={640} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={16}>
             The serving machinery itself: Explained — Inference, on this shelf.
           </text>
         </g>

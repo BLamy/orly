@@ -94,8 +94,10 @@ export const CH_H = 350;
 export const chX = (idx: number): number => CH_X0 + (idx / (NS.length - 1)) * (CH_X1 - CH_X0);
 export const chY = (v: number): number => CH_Y0 - v * CH_H;
 
-export const CAM_CLOUD: CameraState = { x: 360, y: 320, k: 1.25 };
-export const CAM_CURVES: CameraState = { x: 900, y: 320, k: 1.15 };
+// Cloud view sits a little lower so its x-axis label clears the caption pill;
+// the curves view is wide enough to keep the answer cloud in frame as context.
+export const CAM_CLOUD: CameraState = { x: 360, y: 344, k: 1.25 };
+export const CAM_CURVES: CameraState = { x: 680, y: 320, k: 1 };
 
 export interface Scene {
   tl: Timeline;

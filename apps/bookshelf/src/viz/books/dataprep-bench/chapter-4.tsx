@@ -18,6 +18,8 @@ const PAIRS = [
   { label: 'candidate pool', x: 987, y: 270, c: colors.POSITIVE },
 ];
 const DOMAINS = ['math', 'general', 'science', 'business', 'medicine', 'law'];
+// Row centres inside the mapping panel; the pairing plane's start points use the same rows.
+const rowY = (i: number) => 250 + i * 76;
 
 export function buildScene() {
   const tl = new Timeline();
@@ -94,20 +96,26 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>A score must track reality</text>
-          <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>metrics.score(dataset) ↔ accuracys[dataset.name]</text>
+          <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>metrics.score(dataset) ↔ accuracys[dataset.name]</text>
 
           <g opacity={1 - 0.85 * s.get(scene.recapU)}>
           <g opacity={s.get(scene.hypothesisU)}>
             <rect x={80} y={152} width={380} height={386} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={108} y={188} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>metrics_results_mapping</text>
+            <text x={108} y={188} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>metrics_results_mapping</text>
+            <g opacity={s.get(scene.hypothesisU) * (1 - s.get(scene.metricU))}>
+              <text x={108} y={246} fill={colors.TEXT} fontSize={17}>If a metric is useful,</text>
+              <text x={108} y={274} fill={colors.TEXT} fontSize={17}>high scores should travel with</text>
+              <text x={108} y={302} fill={colors.TEXT} fontSize={17}>high downstream accuracy.</text>
+              <text x={108} y={358} fill={colors.WARM} fontSize={15} fontWeight={700}>hypothesis: unverified</text>
+            </g>
             {PAIRS.map((p, i) => {
-              const y = 234 + i * 70;
+              const y = rowY(i);
               const u = clamp01(s.get(scene.metricU) * 6 - i);
               return (
                 <g key={p.label} opacity={u}>
                   <rect x={104} y={y - 23} width={332} height={46} rx={9} fill={colors.BG} stroke={p.c} strokeOpacity={0.7} />
                   <text x={124} y={y + 5} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{p.label}</text>
-                  <text x={416} y={y + 4} textAnchor="end" fill={p.c} fontSize={12} fontFamily={MONO}>metric ↔ accuracy</text>
+                  <text x={416} y={y + 4} textAnchor="end" fill={p.c} fontSize={13} fontFamily={MONO}>metric ↔ accuracy</text>
                 </g>
               );
             })}
@@ -118,24 +126,26 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={620} y1={536} x2={620} y2={150} stroke={colors.MUTED} strokeWidth={1.5} />
             <text x={840} y={570} textAnchor="middle" fill={colors.MUTED} fontSize={14}>metric value</text>
             <text x={585} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={14} transform="rotate(-90 585 350)">downstream accuracy</text>
-            <text x={634} y={172} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>schematic pairing plane</text>
+            <text x={634} y={172} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>schematic pairing plane</text>
+
+            {fitU > 0 && <line x1={690} y1={510} x2={1026} y2={218} stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray={`${450 * fitU} 450`} />}
 
             {PAIRS.map((p, i) => {
               const u = clamp01(pairsU * 6 - i);
               const x0 = 420;
-              const y0 = 234 + i * 70;
+              const y0 = rowY(i);
               const x = x0 + (p.x - x0) * u;
               const y = y0 + (p.y - y0) * u;
               return (
                 <g key={p.label} transform={`translate(${x} ${y})`} opacity={u}>
                   <circle r={10} fill={p.c} />
                   <circle r={18} fill="none" stroke={p.c} opacity={0.28} />
-                  {u > 0.9 && <text x={14} y={-10} fill={p.c} fontSize={12} fontFamily={MONO}>{p.label}</text>}
+                  {u > 0.9 && (
+                    <text x={14} y={-10} fill={p.c} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={5} paintOrder="stroke">{p.label}</text>
+                  )}
                 </g>
               );
             })}
-
-            {fitU > 0 && <line x1={690} y1={510} x2={1026} y2={218} stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray={`${450 * fitU} 450`} />}
           </g>
 
           <MathLabel tex={'r=\\operatorname{corr}(m,a)'} x={820} y={112} fontSize={18} opacity={s.get(scene.pearsonU)} />
@@ -155,11 +165,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {s.get(scene.resultU) > 0 && (
             <g opacity={s.get(scene.resultU)} transform="translate(1040 470)">
-              <rect x={-92} y={-58} width={184} height={116} rx={14} fill={colors.PANEL} stroke={colors.WARM} />
+              <rect x={-106} y={-58} width={212} height={116} rx={14} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={0} y={-20} textAnchor="middle" fill={colors.WARM} fontSize={22} fontWeight={800}>4 / 6</text>
-              <text x={0} y={4} textAnchor="middle" fill={colors.MUTED} fontSize={14}>strongest cross-model</text>
-              <text x={0} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>Math · Science · Medical</text>
-              <text x={0} y={44} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>correlation &gt; 0.70</text>
+              <text x={0} y={4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>strongest cross-model</text>
+              <text x={0} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>Math · Science · Medical</text>
+              <text x={0} y={44} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>correlation &gt; 0.70</text>
             </g>
           )}
           </g>
@@ -187,7 +197,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={220} y={232} width={840} height={196} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Training data answers to results</text>
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>construction → training → distribution → correlation</text>
-          <text x={640} y={382} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>DataPrep-Bench · arXiv 2607.20465</text>
+          <text x={640} y={382} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>DataPrep-Bench · arXiv 2607.20465</text>
         </g>
       )}
     </>

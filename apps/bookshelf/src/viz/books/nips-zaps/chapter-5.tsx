@@ -1,6 +1,6 @@
 // Nostr Implementation Possibilities №8 — Zaps, chapter 5.
 // NIP-47 Nostr Wallet Connect: the wallet itself becomes a nostr service.
-// A nostr+walletconnect:// URI (client pubkey path + relay + secret) pairs a
+// A nostr+walletconnect:// URI (wallet service pubkey + relay + secret) pairs a
 // client to a wallet service; kind-13194 advertises capabilities; requests are
 // kind-23194 with NIP-44-encrypted {method, params}; responses are kind-23195
 // with an e tag back to the request. The same request/response-over-a-relay
@@ -29,8 +29,8 @@ const PAY_RESPONSE = {
   result: { preimage: '0f28…77aa', fees_paid: 4 },
 };
 
-const REQ_LAYOUT = layoutJson(PAY_REQUEST, { x: 120, y: 400, fontSize: 13.5 });
-const RES_LAYOUT = layoutJson(PAY_RESPONSE, { x: 820, y: 400, fontSize: 13.5 });
+const REQ_LAYOUT = layoutJson(PAY_REQUEST, { x: 120, y: 400, fontSize: 15 });
+const RES_LAYOUT = layoutJson(PAY_RESPONSE, { x: 820, y: 400, fontSize: 15 });
 
 const CLIENT = { x: 250, y: 250 };
 const RELAY = { x: 640, y: 150 };
@@ -151,7 +151,8 @@ const scene = buildScene();
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
-  const uriF = Math.round(s.get(scene.uriF));
+  const uriRaw = s.get(scene.uriF);
+  const uriF = Math.round(uriRaw);
   const uriU = s.get(scene.uriU);
   const nodesU = s.get(scene.nodesU);
   const infoU = s.get(scene.infoU);
@@ -163,6 +164,9 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
+  // The "?" placeholders stand for the open question of beat 1; they fade
+  // once the URI is being read (uriF leaves -1 at the start of beat 2).
+  const ghostOp = uriU * (1 - 0.7 * clamp01(uriRaw + 1));
 
   // URI parts laid out as one long monospace string, centred in its box, with a gap between parts
   const uriTotal = URI_PARTS.reduce((sum, p) => sum + p.text.length * URI_CHAR_W, 0) + URI_GAP * (URI_PARTS.length - 1);
@@ -179,7 +183,19 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* pairing URI */}
+          {/* pairing URI, with the open question drawn as dashed placeholders */}
+          {uriU > 0 && (
+            <g opacity={ghostOp}>
+              {[{ x: CLIENT.x, label: 'your client' }, { x: WALLETSVC.x, label: 'which wallet?' }].map((g) => (
+                <g key={g.label}>
+                  <rect x={g.x - HALF_W} y={CLIENT.y - 44} width={NODE_W} height={88} rx={10} fill="none" stroke={colors.MUTED} strokeDasharray="6 6" />
+                  <text x={g.x} y={CLIENT.y - 2} textAnchor="middle" fill={colors.MUTED} fontSize={28}>?</text>
+                  <text x={g.x} y={CLIENT.y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={14}>{g.label}</text>
+                </g>
+              ))}
+              <text x={640} y={CLIENT.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={34}>→ ?</text>
+            </g>
+          )}
           {uriU > 0 && (
             <g opacity={uriU}>
               <rect x={140} y={330} width={1000} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
@@ -187,11 +203,11 @@ export function Render({ s }: { s: SceneState }) {
                 const active = uriF === p.i;
                 return (
                   <g key={p.i}>
-                    <text x={p.x} y={363} fill={p.color} fontSize={16} fontFamily="ui-monospace, Menlo, monospace" opacity={uriF < 0 || active ? 1 : 0.45} fontWeight={active ? 700 : 400}>
+                    <text x={p.x} y={363} fill={p.color} fontSize={16} fontFamily="ui-monospace, Menlo, monospace" opacity={uriF < 0 || active ? 1 : 0.6} fontWeight={active ? 700 : 400}>
                       {p.text}
                     </text>
                     {active && (
-                      <text x={p.x} y={416} fill={p.color} fontSize={13}>
+                      <text x={p.x} y={416} fill={p.color} fontSize={14}>
                         {p.note}
                       </text>
                     )}
@@ -215,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={infoU}>
               <Connection from={{ x: WALLETSVC.x, y: WALLETSVC.y + 28 }} to={{ x: WALLETSVC.x, y: 330 }} u={infoU} color={colors.SECONDARY} arrow={false} />
               <rect x={WALLETSVC.x - 130} y={330} width={260} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} opacity={0.95} />
-              <text x={WALLETSVC.x} y={353} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+              <text x={WALLETSVC.x} y={353} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                 13194: pay_invoice, get_balance
               </text>
             </g>
@@ -225,7 +241,7 @@ export function Render({ s }: { s: SceneState }) {
           {reqU > 0 && (
             <g opacity={1 - 0.6 * resU}>
               <JsonDoc layout={REQ_LAYOUT} reveal={reqU} />
-              <text x={120} y={382} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, Menlo, monospace" opacity={reqU}>
+              <text x={120} y={382} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={reqU}>
                 kind 23194 — content, before sealing
               </text>
             </g>
@@ -237,7 +253,7 @@ export function Render({ s }: { s: SceneState }) {
               u={Math.min(1, sealU * 1.4)}
               text="🔒 nip44( pay_invoice )"
               fill={colors.POSITIVE}
-              fontSize={13}
+              fontSize={14}
               lift={80}
               fadeOut
             />
@@ -265,7 +281,7 @@ export function Render({ s }: { s: SceneState }) {
                 label="23195 · e → request"
               />
               <JsonDoc layout={RES_LAYOUT} reveal={resU} />
-              <text x={820} y={382} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, Menlo, monospace" opacity={resU}>
+              <text x={820} y={382} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={resU}>
                 kind 23195 — decrypted content
               </text>
             </>
@@ -288,7 +304,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             pair with a URI · ask with 23194 · proof comes back as 23195
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-47 — nostr wallet connect · NIP-57 complete
           </text>
         </g>

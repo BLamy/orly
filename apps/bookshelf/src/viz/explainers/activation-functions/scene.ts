@@ -236,7 +236,7 @@ export const yScale: ScaleLinear<number, number> = scaleLinear()
   .range([625, 85]);
 
 // loss inset (screen space, top right): log epoch → log mse
-export const LOSS_PANEL = { x: 950, y: 92, w: 300, h: 220 } as const;
+export const LOSS_PANEL = { x: 930, y: 92, w: 330, h: 220 } as const;
 export const LOG_MAX = Math.log10(EPOCHS + 1);
 export const xLoss: ScaleLinear<number, number> = scaleLinear()
   .domain([0, LOG_MAX])
@@ -251,7 +251,7 @@ export const lossLogCurve = (lx: number): number => Math.log10(lossAt(10 ** lx -
 // The timeline
 // ---------------------------------------------------------------------------
 
-const CAM_HINGE: CameraState = { x: 560, y: 380, k: 1.3 };
+const CAM_HINGE: CameraState = { x: 560, y: 356, k: 1.02 };
 const CAM_FIT: CameraState = { x: 600, y: 356, k: 1.04 };
 
 export interface Scene {
@@ -337,7 +337,7 @@ export function buildScene(): Scene {
   tl.hold(24.9, 0.8);
 
   // — Beat 2 · the hinge ——————————————————————————————————————————————————
-  tl.tween(linOp, 0.12, { at: 25.3, dur: 1.1, ease: ease.move });
+  tl.tween(linOp, 0, { at: 25.3, dur: 1.1, ease: ease.move });
   tl.tween(line1TexU, 0, { at: 25.3, dur: 0.8, ease: ease.move });
   tl.tween(collapseTexU, 0, { at: 25.3, dur: 0.8, ease: ease.move });
   tl.caption({
@@ -422,7 +422,7 @@ export function buildScene(): Scene {
     text: 'Look closely: the bends sit exactly where the hidden units switch on. That is the whole secret — depth needs bends, and the hinges supply them.',
   });
   tl.tween(bendsU, 1, { at: 87.2, dur: 1.2, ease: ease.enter });
-  tl.tween(panelU, 0.15, { at: 87.0, dur: 1.0, ease: ease.move });
+  tl.tween(panelU, 0, { at: 87.0, dur: 1.0, ease: ease.move });
   tl.hold(93.6, 1.2);
 
   return {

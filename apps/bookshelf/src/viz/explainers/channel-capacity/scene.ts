@@ -44,12 +44,13 @@ export const TOTAL_FLIPS = BLOCKS.reduce((s, b) => s + b.flips, 0); // 13
 export const DECODE_ERRORS = BLOCKS.filter((b) => b.decoded !== b.bit).length; // 0
 
 // layout: channel band across the middle; detailed block view; tally; chart
-export const BAND = { x: 140, y: 250, w: 1000, h: 130 };
+export const BAND = { x: 140, y: 250, w: 1000, h: 166 };
 export const TAPE = { x: 140, y: 120, w: 1000 };
 export const OUT = { x: 140, y: 452, w: 1000 };
 export const CHART = { x: 260, y: 120, w: 760, h: 380 };
 
-export const CAM_BAND: CameraState = { x: 400, y: 300, k: 1.15 };
+// centred on the 1000-wide band so the tape and band never clip the stage edge
+export const CAM_BAND: CameraState = { x: 640, y: 300, k: 1.15 };
 export const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -126,7 +127,7 @@ export function buildScene(): Scene {
   tl.hold(34.3, 0.5);
 
   // — Beat 4 · Shannon's surprise ———————————————————————————————————————————
-  tl.tween(actU, 0.12, { at: 34.8, dur: 1.0, ease: ease.move });
+  tl.tween(actU, 0, { at: 34.8, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_WIDE, { at: 34.8, dur: 1.4, ease: ease.move });
   tl.tween(chartU, 1, { at: 35.9, dur: 1.2, ease: ease.draw });
   tl.caption({

@@ -213,7 +213,7 @@ function computeParticles(s: SceneState): ParticlePoint[] {
       if (u <= 0 || u >= 1) continue;
       const uu = ease.move(clamp01(u));
       const fx = px + PANE_W / 2 + (e.mine ? 60 : -60);
-      const fy = ADA.y + PANE_H - 40;
+      const fy = ADA.y + PANE_H + 8; // leave from the pane's lower edge, not over its text
       const tx = px + e.at * PANE_W;
       const ty = TAPE_Y + TAPE_H / 2;
       const pt = PTS[base + i];
@@ -263,23 +263,23 @@ function ChatPane({
       <rect x={12} y={10} width={PANE_W - 24} height={24} rx={12} fill={colors.BG} opacity={0.6} />
       <circle cx={26} cy={22} r={4} fill={colors.NEGATIVE} opacity={0.9} />
       <text x={40} y={26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-        Replay Chromium · worker {persona === 'Ada' ? '1' : '2'} · /app?room=…
+        Replay Chromium (recording browser) · worker {persona === 'Ada' ? '1' : '2'}
       </text>
-      {/* login form → auth header */}
+      {/* login form → auth header; the form stays readable until the handshake lands */}
       {!authed && (
-        <g opacity={1 - lg}>
+        <g opacity={1 - clamp01((lg - 0.8) / 0.2)}>
           <text x={20} y={64} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             Sign in
           </text>
           <rect x={20} y={78} width={PANE_W - 40} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} />
-          <text x={30} y={95} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={30} y={95} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
             {lg > 0.25 ? email : ''}
           </text>
           <rect x={20} y={112} width={PANE_W - 40} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} />
-          <text x={30} y={129} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={30} y={129} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
             {lg > 0.55 ? 'DemoPass123' : ''}
           </text>
-          <text x={20} y={162} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={20} y={162} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             auth0-emulator-url: http://127.0.0.1:4101
           </text>
         </g>
@@ -289,7 +289,7 @@ function ChatPane({
           <text x={20} y={58} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             {displayName}
           </text>
-          <text x={20} y={76} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={20} y={76} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             auth-user: {email} · Auth0 emulator · live
           </text>
           {/* transcript */}
@@ -309,10 +309,10 @@ function ChatPane({
                   fill={sentByMe ? colors.ACCENT : colors.SECONDARY}
                   opacity={0.1}
                 />
-                <text x={10} y={15} fill={sentByMe ? colors.ACCENT : colors.SECONDARY} fontSize={12} fontFamily={MONO} fontWeight={700}>
+                <text x={10} y={15} fill={sentByMe ? colors.ACCENT : colors.SECONDARY} fontSize={13} fontFamily={MONO} fontWeight={700}>
                   {m.from === 'Ada' ? 'Ada Lovelace' : 'Linus Torvalds'} · {m.delay}
                 </text>
-                <text x={10} y={31} fill={colors.TEXT} fontSize={12}>
+                <text x={10} y={31} fill={colors.TEXT} fontSize={13}>
                   {m.text.length > 50 ? `${m.text.slice(0, 50)}…` : m.text}
                 </text>
                 {checked > 0 && (
@@ -325,7 +325,7 @@ function ChatPane({
             );
           })}
           {clamp01(assert) > 0.8 && (
-            <text x={20} y={PANE_H - 14} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={clamp01(assert)}>
+            <text x={20} y={PANE_H - 14} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={clamp01(assert)}>
               expect getByText(message) toBeVisible — all 4 ✓
             </text>
           )}
@@ -352,11 +352,15 @@ function StreamSpine({ u, convo, dim, close }: { u: number; convo: number; dim: 
       />
       {uu >= 0.999 && (
         <g>
-          <text x={SPINE_X} y={SPINE_TOP - 12} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
-            /rooms/&lt;room&gt;/messages
+          {/* the gap between the panes is 300px wide: keep these labels inside it */}
+          <text x={SPINE_X} y={SPINE_TOP - 12} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontFamily={MONO}>
+            durable stream
           </text>
-          <text x={SPINE_X} y={SPINE_BOT + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={SPINE_X} y={SPINE_BOT + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             append-only log · readers track an offset
+          </text>
+          <text x={SPINE_X} y={SPINE_BOT + 46} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
+            /rooms/&lt;room&gt;/messages
           </text>
         </g>
       )}
@@ -368,7 +372,7 @@ function StreamSpine({ u, convo, dim, close }: { u: number; convo: number; dim: 
         return (
           <g key={i} opacity={au}>
             <circle cx={SPINE_X} cy={y} r={5} fill={colors.TEAL} />
-            <text x={SPINE_X + 12} y={y + 4} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={SPINE_X + 12} y={y + 4} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               offset {i} · {m.from}
             </text>
           </g>

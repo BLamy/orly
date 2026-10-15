@@ -33,9 +33,17 @@ function CircuitCard({
 }) {
   if (u <= 0) return null;
   const cx = c.x + c.w / 2;
-  const y1 = c.y + 170; // head 1
-  const y2 = c.y + 95; // head 2
+  const y1 = c.y + 214; // head 1 (previous token), lower in the stack
+  const y2 = c.y + 124; // head 2 (induction)
   const ok = !h1Dead && !h2Dead;
+  // knockout mark sits in the gutter beside its head, so it never crosses the head's label
+  const xMark = cx + 132;
+  const knockX = (y: number) => (
+    <g stroke={colors.NEGATIVE} strokeWidth={3.5} strokeLinecap="round">
+      <line x1={xMark - 11} y1={y - 11} x2={xMark + 11} y2={y + 11} />
+      <line x1={xMark - 11} y1={y + 11} x2={xMark + 11} y2={y - 11} />
+    </g>
+  );
   return (
     <g opacity={u}>
       <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={14} fill={colors.PANEL} opacity={0.55} stroke={ok ? colors.GRID : colors.NEGATIVE} strokeWidth={1.6} />
@@ -43,47 +51,33 @@ function CircuitCard({
         {title}
       </text>
       {/* tokens in */}
-      <text x={cx} y={c.y + c.h - 20} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text x={cx} y={c.y + c.h - 16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
         tokens in
       </text>
       {/* head 1 box */}
-      <g opacity={h1Dead ? 0.3 : 1}>
+      <g opacity={h1Dead ? 0.4 : 1}>
         <rect x={cx - 105} y={y1 - 22} width={210} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
-        <text x={cx} y={y1 + 5} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5}>
+        <text x={cx} y={y1 + 5} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
           head 1 · previous token
         </text>
       </g>
       {/* head 2 box */}
-      <g opacity={h2Dead ? 0.3 : 1}>
+      <g opacity={h2Dead ? 0.4 : 1}>
         <rect x={cx - 105} y={y2 - 22} width={210} height={44} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={2} />
-        <text x={cx} y={y2 + 5} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+        <text x={cx} y={y2 + 5} textAnchor="middle" fill={colors.WARM} fontSize={14}>
           head 2 · induction
         </text>
       </g>
       {/* wires */}
-      <line x1={cx} y1={c.y + c.h - 34} x2={cx} y2={y1 + 22} stroke={colors.GRID} strokeWidth={2} opacity={h1Dead ? 0.25 : 0.9} />
+      <line x1={cx} y1={y1 + 22} x2={cx} y2={c.y + c.h - 30} stroke={colors.GRID} strokeWidth={2} opacity={h1Dead ? 0.25 : 0.9} />
       <line x1={cx} y1={y1 - 22} x2={cx} y2={y2 + 22} stroke={colors.GRID} strokeWidth={2} opacity={h1Dead || h2Dead ? 0.25 : 0.9} />
-      <line x1={cx} y1={y2 - 22} x2={cx} y2={c.y + 44} stroke={colors.GRID} strokeWidth={2} opacity={h2Dead ? 0.25 : 0.9} />
-      {/* knockout X */}
-      {(h1Dead || h2Dead) && (
-        <g stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round">
-          {h1Dead && (
-            <>
-              <line x1={cx - 20} y1={y1 - 16} x2={cx + 20} y2={y1 + 16} />
-              <line x1={cx - 20} y1={y1 + 16} x2={cx + 20} y2={y1 - 16} />
-            </>
-          )}
-          {h2Dead && (
-            <>
-              <line x1={cx - 20} y1={y2 - 16} x2={cx + 20} y2={y2 + 16} />
-              <line x1={cx - 20} y1={y2 + 16} x2={cx + 20} y2={y2 - 16} />
-            </>
-          )}
-        </g>
-      )}
+      <line x1={cx} y1={y2 - 22} x2={cx} y2={c.y + 72} stroke={colors.GRID} strokeWidth={2} opacity={h2Dead ? 0.25 : 0.9} />
+      {/* knockout marks */}
+      {h1Dead && knockX(y1)}
+      {h2Dead && knockX(y2)}
       {/* score chip */}
-      <rect x={cx - 62} y={c.y + 44} width={124} height={30} rx={8} fill={colors.BG} stroke={ok ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1.6} />
-      <text x={cx} y={c.y + 64} textAnchor="middle" fill={ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace">
+      <rect x={cx - 62} y={c.y + 44} width={124} height={28} rx={8} fill={colors.BG} stroke={ok ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1.6} />
+      <text x={cx} y={c.y + 63} textAnchor="middle" fill={ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontFamily="ui-monospace, monospace">
         {score}
       </text>
     </g>
@@ -107,14 +101,15 @@ function Frame({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimU}>
           <CircuitCard c={CARDS[0]} title="full circuit" h1Dead={false} h2Dead={false} score={`copies ${SCORES[0].ok}/${SCORES[0].tot}`} u={card0U} />
-          <CircuitCard c={CARDS[1]} title="ablate head 1" h1Dead={true} h2Dead={false} score={`copies ${SCORES[1].ok}/${SCORES[1].tot}`} u={card1U} />
+          {/* card 1 steps back while the head-2 knockout is the subject */}
+          <CircuitCard c={CARDS[1]} title="ablate head 1" h1Dead={true} h2Dead={false} score={`copies ${SCORES[1].ok}/${SCORES[1].tot}`} u={card1U * (1 - 0.55 * card2U)} />
           <CircuitCard c={CARDS[2]} title="ablate head 2" h1Dead={false} h2Dead={true} score={`copies ${SCORES[2].ok}/${SCORES[2].tot}`} u={card2U} />
 
           {/* survival chip under card 2 */}
           {surviveU > 0 && H1_UNCHANGED && (
             <g opacity={surviveU}>
               <rect x={CARDS[2].x + 10} y={CARDS[2].y + CARDS[2].h + 14} width={CARDS[2].w - 20} height={40} rx={10} fill={colors.PANEL} opacity={0.93} stroke={colors.POSITIVE} />
-              <text x={CARDS[2].x + CARDS[2].w / 2} y={CARDS[2].y + CARDS[2].h + 39} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
+              <text x={CARDS[2].x + CARDS[2].w / 2} y={CARDS[2].y + CARDS[2].h + 39} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 head 1 pattern: identical, bit for bit
               </text>
             </g>
@@ -148,7 +143,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={225} width={820} height={200} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={225} width={820} height={200} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Ablation
           </text>

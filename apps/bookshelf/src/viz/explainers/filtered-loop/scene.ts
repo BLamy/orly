@@ -89,14 +89,15 @@ export const GATE_DEMO: { x: number; acc: boolean }[] = (() => {
 })();
 
 // ---------------------------------------------------------------------------
-// Layout — gate demo top-left, twin sd chart right, curves bottom-left.
+// Layout — gate demo far left, final curves bottom-left, twin sd chart right.
+// All three sit inside one camera frame (CAM_CHART) so nothing is cut off.
 // ---------------------------------------------------------------------------
 
-export const GATE_X = 260;
+export const GATE_X = 110;
 export const GATE_Y0 = 120;
 
-export const DIST_X0 = 90;
-export const DIST_X1 = 620;
+export const DIST_X0 = 340;
+export const DIST_X1 = 650;
 export const DIST_Y0 = 560;
 export const DIST_H = 210;
 export const dx = (x: number): number => DIST_X0 + ((x + 3.2) / 6.4) * (DIST_X1 - DIST_X0);
@@ -109,8 +110,10 @@ export const CH_H = 320;
 export const chX = (gen: number): number => CH_X0 + (gen / GENS) * (CH_X1 - CH_X0);
 export const chY = (sd: number): number => CH_Y0 - sd * CH_H;
 
-export const CAM_GATE: CameraState = { x: 350, y: 260, k: 1.25 };
-export const CAM_CHART: CameraState = { x: 900, y: 320, k: 1.15 };
+// CAM_GATE frames the legend; CAM_CHART frames the legend, the final curves and
+// the chart together (content spans x 70–1190, y 84–564; caption pill sits below ~590).
+export const CAM_GATE: CameraState = { x: 185, y: 272, k: 1.3 };
+export const CAM_CHART: CameraState = { x: 630, y: 358, k: 1.06 };
 
 export interface Scene {
   tl: Timeline;

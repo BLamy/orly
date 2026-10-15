@@ -204,6 +204,9 @@ export function Render({ s }: { s: SceneState }) {
   // it for the unfold beat where the page is rebuilt.
   const pageFade = 1 - 0.82 * clamp01(wrapU) * (1 - clamp01(unfoldU));
   const back = clamp01(unfoldU);
+  // the MUST callouts and the clock notes belong to the forward story; they
+  // clear before the unfold so the rebuilt event is not crowded
+  const calloutFade = 1 - back;
   // per-fold progress, reversed by the unfold
   const fu = (i: number) => clamp01(foldU * FOLDS.length - i) * (1 - clamp01(back * FOLDS.length - i));
   const bodyFold = clamp01(bodyU) * (1 - back);
@@ -230,8 +233,8 @@ export function Render({ s }: { s: SceneState }) {
               <text x={TITLE_POS.x} y={TITLE_POS.y} fill={colors.TEXT} fontSize={24} fontWeight={700} opacity={1 - 0.85 * fu(0)}>
                 Why Relays Matter
               </text>
-              <rect x={PAGE.x + 24} y={PAGE.y + 70} width={352} height={54} rx={8} fill={colors.GRID} opacity={0.4} />
-              <text x={PAGE.x + 200} y={PAGE.y + 102} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <rect x={PAGE.x + 24} y={PAGE.y + 70} width={352} height={54} rx={8} fill={colors.GRID} opacity={0.6} />
+              <text x={PAGE.x + 200} y={PAGE.y + 102} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 cover image
               </text>
               <text x={SUMMARY_POS.x} y={SUMMARY_POS.y} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={1 - 0.85 * fu(1)}>
@@ -239,8 +242,8 @@ export function Render({ s }: { s: SceneState }) {
               </text>
               {['nostr', 'infrastructure'].map((t, i) => (
                 <g key={t} opacity={1 - 0.85 * fu(2 + i)}>
-                  <rect x={TOPIC_POS[i].x - 24} y={TOPIC_POS[i].y - 14} width={t.length * 7 + 22} height={20} rx={10} fill="none" stroke={colors.SECONDARY} opacity={0.7} />
-                  <text x={TOPIC_POS[i].x - 13} y={TOPIC_POS[i].y} fill={colors.SECONDARY} fontSize={12}>
+                  <rect x={TOPIC_POS[i].x - 24} y={TOPIC_POS[i].y - 14} width={t.length * 8 + 26} height={22} rx={11} fill="none" stroke={colors.SECONDARY} opacity={0.8} />
+                  <text x={TOPIC_POS[i].x - 12} y={TOPIC_POS[i].y} fill={colors.SECONDARY} fontSize={14}>
                     {t}
                   </text>
                 </g>
@@ -295,9 +298,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* MUST #1 — hard-wrapped text rejected, then reflowed */}
           {wrapU > 0 && (
-            <g opacity={wrapU * (1 - 0.9 * clamp01(htmlU * 1.4))}>
+            <g opacity={wrapU * (1 - 0.9 * clamp01(htmlU * 1.4)) * calloutFade}>
               <rect x={620} y={446} width={470} height={104} rx={10} fill={colors.PANEL} stroke={wrapFixU >= 1 ? colors.POSITIVE : colors.NEGATIVE} />
-              <text x={640} y={472} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={640} y={472} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 {wrapFixU >= 1 ? 'one flowing paragraph — wraps per screen' : 'hard-wrapped at column 80 — MUST NOT'}
               </text>
               {wrapFixU < 1 ? (
@@ -317,13 +320,16 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* MUST #2 — HTML bounced */}
           {htmlU > 0 && (
-            <g opacity={htmlU}>
+            <g opacity={htmlU * calloutFade}>
               <rect x={620} y={446} width={470} height={104} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
               <text x={640} y={478} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 {'<div onclick=…>'}
               </text>
-              <text x={640} y={506} fill={colors.MUTED} fontSize={12}>
-                markup in markdown — MUST NOT: rendering belongs to the reader
+              <text x={640} y={504} fill={colors.TEXT} fontSize={14} opacity={0.9}>
+                markup in markdown — MUST NOT:
+              </text>
+              <text x={640} y={524} fill={colors.TEXT} fontSize={14} opacity={0.9}>
+                rendering belongs to the reader
               </text>
               <text x={1076} y={492} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
                 ✕
@@ -334,19 +340,19 @@ export function Render({ s }: { s: SceneState }) {
           {/* two clocks */}
           {/* each clock label sits beside its own tag line, right of the JSON */}
           {clocksU > 0 && (
-            <g opacity={clocksU}>
-              <rect x={1010} y={135} width={210} height={44} rx={8} fill="none" stroke={colors.ACCENT} opacity={0.7} />
-              <text x={1022} y={153} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+            <g opacity={clocksU * calloutFade}>
+              <rect x={1010} y={135} width={250} height={50} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} opacity={0.9} />
+              <text x={1022} y={155} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 created_at 1700860000
               </text>
-              <text x={1022} y={171} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={1022} y={175} fill={colors.TEXT} fontSize={14} opacity={0.85}>
                 freshness: every edit
               </text>
-              <rect x={1010} y={308} width={210} height={44} rx={8} fill="none" stroke={colors.WARM} opacity={0.7} />
-              <text x={1022} y={326} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <rect x={1010} y={308} width={250} height={50} rx={8} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
+              <text x={1022} y={328} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 published_at 1699000000
               </text>
-              <text x={1022} y={344} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={1022} y={348} fill={colors.TEXT} fontSize={14} opacity={0.85}>
                 history: first publication
               </text>
             </g>
@@ -364,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             kind 30023 · title, summary, topics as tags · the markdown as content
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-23 — long-form content
           </text>
         </g>

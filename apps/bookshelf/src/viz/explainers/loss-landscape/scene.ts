@@ -321,7 +321,7 @@ export function buildScene(): Scene {
   });
   tl.tween(whiskerU, 0, { at: 19.0, dur: 0.8, ease: ease.move });
   tl.tween(probeU, 0, { at: 19.2, dur: 0.8, ease: ease.move });
-  tl.tween(panelOp, 0.12, { at: 19.2, dur: 1.2, ease: ease.move });
+  tl.tween(panelOp, 0, { at: 19.2, dur: 1.2, ease: ease.move });
   tl.tween(contourReveal, 1, { at: 19.4, dur: 3.6, ease: ease.draw });
   tl.tween(cam, CAM_REVEAL, { at: 19.6, dur: 2.0, ease: ease.move });
 
@@ -406,7 +406,7 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, { x: 640, y: 360, k: 1 }, { at: 75.0, dur: 1.8, ease: ease.move });
   tl.tween(contourOp, 0.15, { at: 75.2, dur: 1.2, ease: ease.move });
-  tl.tween(panelOp, 0.12, { at: 75.2, dur: 1.2, ease: ease.move });
+  tl.tween(panelOp, 0, { at: 75.2, dur: 1.2, ease: ease.move });
   tl.tween(lossTexU, 0, { at: 75.0, dur: 0.8, ease: ease.move });
   tl.tween(saddleU, 0.12, { at: 75.2, dur: 1.2, ease: ease.move });
   tl.tween(localU, 0.12, { at: 75.2, dur: 1.2, ease: ease.move });

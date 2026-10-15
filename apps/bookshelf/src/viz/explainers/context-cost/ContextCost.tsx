@@ -5,16 +5,15 @@
 // million tokens — while prefill attention work is quadratic: growing the
 // context 128× (8k → 1M) multiplies the attention bill by 16,384×. At decode,
 // each generated token must stream the whole cache: 192 GiB per token caps
-// generation near 15 tokens per second on a 3 TB/s part, from memory traffic
-// alone. The alternatives replotted on the same axes: a sliding window
-// (flat past its width), and the hybrid ratio from book thirty three
-// (the same line divided by eight). Closing bridge to Explained: Hybrid
-// Attention.
+// generation near 16 tokens per second on a 3 TB/s part (3 TB/s = 3,072 GiB/s,
+// binary units), from memory traffic alone. The alternatives replotted on the
+// same axes: a sliding window (flat past its width), and the hybrid ratio from
+// book thirty three (the same line divided by eight). Closing bridge to
+// Explained: Hybrid Attention.
 import { scaleLinear, scaleLog } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -59,15 +58,22 @@ const LOG_T = scaleLog().domain([8192, 1048576]).range([0, 1]);
 // Bottom band: the decode-speed statement.
 // ---------------------------------------------------------------------------
 
-const MEM_X = scaleLinear().domain([0, 1]).range([150, 590]); // in log-units
+const MEM_L = 150; // memory plot, left edge
+const CMP_L = 1100; // compute plot, left edge: far enough right that the camera never shows both panels
+const PLOT_W = 440;
+const MEM_X = scaleLinear().domain([0, 1]).range([MEM_L, MEM_L + PLOT_W]); // in log-units
 const MEM_Y = scaleLog().domain([0.1, 300]).range([420, 130]);
 
-const CMP_X = scaleLinear().domain([0, 1]).range([700, 1140]);
+const CMP_X = scaleLinear().domain([0, 1]).range([CMP_L, CMP_L + PLOT_W]);
 const CMP_Y = scaleLog().domain([0.5, 30000]).range([420, 130]);
 
-const CAM_MEM: CameraState = { x: 380, y: 280, k: 1.3 };
-const CAM_CMP: CameraState = { x: 920, y: 280, k: 1.3 };
-const CAM_DEC: CameraState = { x: 640, y: 500, k: 1.3 };
+// Each camera centres its own panel (content spans roughly 85..600 and 1040..1560).
+const CAM_MEM: CameraState = { x: 341, y: 280, k: 1.3 };
+const CAM_CMP: CameraState = { x: 1300, y: 280, k: 1.3 };
+// The decode statement is framed on its own, well below both panels.
+const DEC_X = 700;
+const DEC_Y = 800;
+const CAM_DEC: CameraState = { x: DEC_X, y: DEC_Y, k: 1.3 };
 
 const TICKS = [8192, 32768, 131072, 524288, 1048576];
 const tickLabel = (t: number): string => (t >= 1048576 ? '1M' : t >= 1024 ? `${Math.round(t / 1024)}k` : `${t}`);
@@ -198,149 +204,192 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
   const memT = 8192 * Math.pow(128, memSweep); // 8k → 1M along the log axis
   const cmpT = 8192 * Math.pow(128, cmpSweep);
+
+  // Draw only what the camera can see, so a panned-away plot never leaves
+  // its labels hanging off the stage. Bounds are in world units.
+  const halfW = STAGE_W / 2 / cam.k;
+  const halfH = STAGE_H / 2 / cam.k;
+  const inView = (x0: number, x1: number, y0: number, y1: number): boolean =>
+    x1 >= cam.x - halfW && x0 <= cam.x + halfW && y1 >= cam.y - halfH && y0 <= cam.y + halfH;
+  const memVisible = inView(60, 680, 60, 460);
+  const cmpVisible = inView(CMP_L - 100, CMP_L + PLOT_W + 20, 60, 460);
+  const decVisible = inView(300, 1100, 700, 950);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
-        <Camera {...cam}>
-          {/* memory panel */}
-          {memU > 0 && (
-            <g opacity={memU}>
-              <text x={150} y={100} fill={colors.TEXT} fontSize={17}>
-                cache memory vs context length
-              </text>
-              <text x={150} y={122} fill={colors.MUTED} fontSize={12}>
-                log–log · 192 KiB per token, full attention
-              </text>
-              <line x1={150} y1={420} x2={590} y2={420} stroke={colors.GRID} strokeWidth={1.2} />
-              <line x1={150} y1={420} x2={150} y2={130} stroke={colors.GRID} strokeWidth={1.2} />
-              {TICKS.map((t) => (
-                <text key={t} x={MEM_X(LOG_T(t))} y={440} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-                  {tickLabel(t)}
+      {mainOp > 0.02 && (
+        <g opacity={mainOp}>
+          <Camera {...cam}>
+            {/* memory panel */}
+            {memU > 0 && memVisible && (
+              <g opacity={memU}>
+                <text x={MEM_L} y={100} fill={colors.TEXT} fontSize={18}>
+                  cache memory vs context length
                 </text>
-              ))}
-              {[1, 10, 100].map((v) => (
-                <text key={v} x={142} y={MEM_Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11}>
-                  {v} GiB
+                <text x={MEM_L} y={124} fill={colors.MUTED} fontSize={14}>
+                  log–log · 192 KiB per token, full attention
                 </text>
-              ))}
-              <FunctionPlot
-                x={MEM_X}
-                y={MEM_Y}
-                f={(u) => memGiB(8192 * Math.pow(128, u))}
-                domain={[0, Math.max(0.01, memSweep)]}
-                samples={120}
-                reveal={1}
-                color={colors.ACCENT}
-                width={2.6}
-              />
-              {altU > 0 && (
-                <>
+                <line x1={MEM_L} y1={420} x2={MEM_L + PLOT_W} y2={420} stroke={colors.GRID} strokeWidth={1.2} />
+                <line x1={MEM_L} y1={420} x2={MEM_L} y2={130} stroke={colors.GRID} strokeWidth={1.2} />
+                {TICKS.map((t) => (
+                  <text key={t} x={MEM_X(LOG_T(t))} y={444} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    {tickLabel(t)}
+                  </text>
+                ))}
+                {[1, 10, 100].map((v) => (
+                  <text key={v} x={MEM_L - 8} y={MEM_Y(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                    {v} GiB
+                  </text>
+                ))}
+                {/* the whole curve, faint, so the sweep has a path to follow */}
+                <g opacity={0.22}>
                   <FunctionPlot
                     x={MEM_X}
                     y={MEM_Y}
-                    f={(u) => memWindowGiB(8192 * Math.pow(128, u))}
+                    f={(u) => memGiB(8192 * Math.pow(128, u))}
                     domain={[0, 1]}
                     samples={120}
-                    reveal={altU}
-                    color={colors.MUTED}
-                    width={2.2}
+                    reveal={1}
+                    color={colors.ACCENT}
+                    width={2.6}
                   />
+                </g>
+                <FunctionPlot
+                  x={MEM_X}
+                  y={MEM_Y}
+                  f={(u) => memGiB(8192 * Math.pow(128, u))}
+                  domain={[0, Math.max(0.01, memSweep)]}
+                  samples={120}
+                  reveal={1}
+                  color={colors.ACCENT}
+                  width={2.6}
+                />
+                {altU > 0 && (
+                  <>
+                    <FunctionPlot
+                      x={MEM_X}
+                      y={MEM_Y}
+                      f={(u) => memWindowGiB(8192 * Math.pow(128, u))}
+                      domain={[0, 1]}
+                      samples={120}
+                      reveal={altU}
+                      color={colors.MUTED}
+                      width={2.2}
+                    />
+                    <FunctionPlot
+                      x={MEM_X}
+                      y={MEM_Y}
+                      f={(u) => memHybridGiB(8192 * Math.pow(128, u))}
+                      domain={[0, 1]}
+                      samples={120}
+                      reveal={altU}
+                      color={colors.POSITIVE}
+                      width={2.4}
+                    />
+                    <text x={MEM_X(1) - 6} y={MEM_Y(memHybridGiB(1048576)) - 10} textAnchor="end" fill={colors.POSITIVE} fontSize={14} opacity={altU}>
+                      hybrid ⅛: {memHybridGiB(1048576).toFixed(0)} GiB
+                    </text>
+                    <text x={MEM_X(1) - 6} y={MEM_Y(memWindowGiB(1048576)) + 22} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={altU}>
+                      window 8k: flat at {memWindowGiB(1048576).toFixed(1)} GiB
+                    </text>
+                  </>
+                )}
+                {memSweep > 0.02 && (
+                  <>
+                    <circle cx={MEM_X(LOG_T(memT))} cy={MEM_Y(memGiB(memT))} r={5} fill={colors.WARM} />
+                    <text x={MEM_X(LOG_T(memT)) + 10} y={MEM_Y(memGiB(memT)) - 10} fill={colors.WARM} fontSize={14} fontWeight={600}>
+                      {memGiB(memT) >= 10 ? memGiB(memT).toFixed(0) : memGiB(memT).toFixed(1)} GiB
+                    </text>
+                  </>
+                )}
+              </g>
+            )}
+
+            {/* compute panel */}
+            {cmpU > 0 && cmpVisible && (
+              <g opacity={cmpU}>
+                <text x={CMP_L} y={100} fill={colors.TEXT} fontSize={18}>
+                  prefill attention work (relative)
+                </text>
+                <text x={CMP_L} y={124} fill={colors.MUTED} fontSize={14}>
+                  log–log · normalized to 8k = 1
+                </text>
+                <line x1={CMP_L} y1={420} x2={CMP_L + PLOT_W} y2={420} stroke={colors.GRID} strokeWidth={1.2} />
+                <line x1={CMP_L} y1={420} x2={CMP_L} y2={130} stroke={colors.GRID} strokeWidth={1.2} />
+                {TICKS.map((t) => (
+                  <text key={t} x={CMP_X(LOG_T(t))} y={444} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    {tickLabel(t)}
+                  </text>
+                ))}
+                {[1, 100, 10000].map((v) => (
+                  <text key={v} x={CMP_L - 8} y={CMP_Y(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                    {v}×
+                  </text>
+                ))}
+                <g opacity={0.22}>
                   <FunctionPlot
-                    x={MEM_X}
-                    y={MEM_Y}
-                    f={(u) => memHybridGiB(8192 * Math.pow(128, u))}
+                    x={CMP_X}
+                    y={CMP_Y}
+                    f={(u) => prefillRel(8192 * Math.pow(128, u))}
                     domain={[0, 1]}
                     samples={120}
-                    reveal={altU}
-                    color={colors.POSITIVE}
-                    width={2.4}
+                    reveal={1}
+                    color={colors.NEGATIVE}
+                    width={2.6}
                   />
-                  <text x={MEM_X(1) - 4} y={MEM_Y(memHybridGiB(1048576)) - 10} textAnchor="end" fill={colors.POSITIVE} fontSize={12} opacity={altU}>
-                    hybrid ⅛: {memHybridGiB(1048576).toFixed(0)} GiB
-                  </text>
-                  <text x={MEM_X(1) - 4} y={MEM_Y(memWindowGiB(1048576)) + 20} textAnchor="end" fill={colors.MUTED} fontSize={12} opacity={altU}>
-                    window 8k: flat at {memWindowGiB(1048576).toFixed(1)} GiB
-                  </text>
-                </>
-              )}
-              {memSweep > 0.02 && (
-                <>
-                  <circle cx={MEM_X(LOG_T(memT))} cy={MEM_Y(memGiB(memT))} r={5} fill={colors.WARM} />
-                  <text x={MEM_X(LOG_T(memT)) + 10} y={MEM_Y(memGiB(memT)) - 10} fill={colors.WARM} fontSize={13} fontWeight={600}>
-                    {memGiB(memT) >= 10 ? memGiB(memT).toFixed(0) : memGiB(memT).toFixed(1)} GiB
-                  </text>
-                </>
-              )}
-            </g>
-          )}
-
-          {/* compute panel */}
-          {cmpU > 0 && (
-            <g opacity={cmpU}>
-              <text x={700} y={100} fill={colors.TEXT} fontSize={17}>
-                prefill attention work (relative)
-              </text>
-              <text x={700} y={122} fill={colors.MUTED} fontSize={12}>
-                log–log · normalized to 8k = 1
-              </text>
-              <line x1={700} y1={420} x2={1140} y2={420} stroke={colors.GRID} strokeWidth={1.2} />
-              <line x1={700} y1={420} x2={700} y2={130} stroke={colors.GRID} strokeWidth={1.2} />
-              {TICKS.map((t) => (
-                <text key={t} x={CMP_X(LOG_T(t))} y={440} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-                  {tickLabel(t)}
+                </g>
+                <FunctionPlot
+                  x={CMP_X}
+                  y={CMP_Y}
+                  f={(u) => prefillRel(8192 * Math.pow(128, u))}
+                  domain={[0, Math.max(0.01, cmpSweep)]}
+                  samples={120}
+                  reveal={1}
+                  color={colors.NEGATIVE}
+                  width={2.6}
+                />
+                <text x={CMP_L + 40} y={200} fill={colors.NEGATIVE} fontSize={18} opacity={cmpU}>
+                  work ∝ T<tspan fontSize={12} dy={-7}>2</tspan>
                 </text>
-              ))}
-              {[1, 100, 10000].map((v) => (
-                <text key={v} x={692} y={CMP_Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11}>
-                  {v}×
-                </text>
-              ))}
-              <FunctionPlot
-                x={CMP_X}
-                y={CMP_Y}
-                f={(u) => prefillRel(8192 * Math.pow(128, u))}
-                domain={[0, Math.max(0.01, cmpSweep)]}
-                samples={120}
-                reveal={1}
-                color={colors.NEGATIVE}
-                width={2.6}
-              />
-              <MathLabel tex="\text{work} \propto T^2" x={730} y={166} fontSize={17} color={colors.NEGATIVE} opacity={cmpU} />
-              {cmpSweep > 0.02 && (
-                <>
-                  <circle cx={CMP_X(LOG_T(cmpT))} cy={CMP_Y(prefillRel(cmpT))} r={5} fill={colors.WARM} />
-                  <text x={CMP_X(LOG_T(cmpT)) - 10} y={CMP_Y(prefillRel(cmpT)) - 12} textAnchor="end" fill={colors.WARM} fontSize={13} fontWeight={600}>
-                    {prefillRel(cmpT) >= 100 ? prefillRel(cmpT).toFixed(0) : prefillRel(cmpT).toFixed(1)}×
-                  </text>
-                </>
-              )}
-            </g>
-          )}
+                {cmpSweep > 0.02 && (
+                  <>
+                    <circle cx={CMP_X(LOG_T(cmpT))} cy={CMP_Y(prefillRel(cmpT))} r={5} fill={colors.WARM} />
+                    <text x={CMP_X(LOG_T(cmpT)) - 10} y={CMP_Y(prefillRel(cmpT)) - 12} textAnchor="end" fill={colors.WARM} fontSize={14} fontWeight={600}>
+                      {prefillRel(cmpT) >= 100 ? prefillRel(cmpT).toFixed(0) : prefillRel(cmpT).toFixed(1)}×
+                    </text>
+                  </>
+                )}
+              </g>
+            )}
 
-          {/* decode-speed statement */}
-          {decU > 0 && (
-            <g opacity={decU}>
-              <text x={280} y={505} fill={colors.TEXT} fontSize={16}>
-                decode at 1M tokens: every token streams the whole cache
-              </text>
-              <MathLabel
-                tex="\frac{3\ \text{TB/s}}{192\ \text{GiB/token}} \approx 16\ \text{tokens/s}"
-                x={430}
-                y={560}
-                fontSize={20}
-                color={colors.WARM}
-                opacity={decU}
-              />
-            </g>
-          )}
-        </Camera>
-      </g>
+            {/* decode-speed statement, framed below the panels */}
+            {decU > 0 && decVisible && (
+              <g opacity={decU}>
+                <text x={DEC_X} y={722} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={600}>
+                  Decoding at a million tokens: every token streams the whole cache
+                </text>
+                {Array.from({ length: 16 }, (_, i) => (
+                  <rect key={i} x={DEC_X - 380 + i * 48} y={752} width={40} height={40} rx={6} fill={colors.WARM} opacity={0.85} />
+                ))}
+                <text x={DEC_X} y={822} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+                  one second of decoding: 16 tokens, each one reading all 192 GiB of cache
+                </text>
+                <text x={DEC_X} y={890} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={600}>
+                  3 TB/s ÷ 192 GiB per token ≈ 16 tokens/s
+                </text>
+                <text x={DEC_X} y={932} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+                  3 TB/s = 3,072 GiB/s, and 3,072 ÷ 192 = 16
+                </text>
+              </g>
+            )}
+          </Camera>
+        </g>
+      )}
 
       {/* screen-fixed title */}
       <g opacity={titleU * mainOp}>
@@ -349,15 +398,15 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
-      {/* closing panel */}
+      {/* closing panel: solid, so nothing shows through it */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={220} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={220} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={278} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             The window grows; the bill grows faster.
           </text>
           <text x={640} y={322} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            Rotations · stretched rulers · pinned sinks · a rotting middle ·
+            Rotations · stretched rulers · pinned sinks · a rotting middle
           </text>
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             192 GiB and 16,384× the work at a million tokens.

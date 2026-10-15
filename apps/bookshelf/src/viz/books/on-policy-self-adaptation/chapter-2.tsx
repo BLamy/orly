@@ -90,8 +90,11 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={token.id} transform={`translate(${x} ${y + split * (token.sample === 0 ? -110 : 110)})`} opacity={s.get(scene.rowsU) * active * (token.valid ? 1 : 1 - split)}>
           <rect x="-21" y="-28" width="42" height="56" rx="12" fill={selected && cut ? '#341923' : token.valid ? '#13243b' : '#202332'} stroke={selected && cut ? colors.NEGATIVE : token.valid ? colors.ACCENT : colors.MUTED} strokeWidth={selected && cut ? 3 : 1.5} />
           <text y="-3" textAnchor="middle" fill={selected && cut ? colors.WARM : colors.TEXT} fontSize="14" fontWeight="800">{token.id}</text>
-          <text y="16" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{token.logp.toFixed(1)}</text>
-          {split > 0 && <circle cx="14" cy="-20" r="9" fill={selected ? colors.POSITIVE : colors.GRID} stroke={selected ? colors.POSITIVE : colors.MUTED} />}
+          <text y="16" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{token.logp.toFixed(1)}</text>
+          {split > 0 && <g opacity={split}>
+            <circle cx="0" cy="-42" r="12" fill={selected ? colors.POSITIVE : colors.GRID} stroke={selected ? colors.POSITIVE : colors.MUTED} />
+            <text y="-37" textAnchor="middle" fill={selected ? colors.BG : colors.TEXT} fontSize="14" fontWeight="800">{selected ? '1' : '0'}</text>
+          </g>}
         </g>;
       })}
       <g opacity={cut * (1 - split)}>
@@ -113,7 +116,7 @@ export function Render({ s }: { s: SceneState }) {
       {ORDER.map((t, i) => <g key={t.id} transform={`translate(${222 + i * 44} 344)`}>
         <rect x="-19" y="-34" width="38" height="68" rx="11" fill={i < 4 ? '#341923' : '#15243a'} stroke={i < 4 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={i < 4 ? 3 : 1.5} />
         <text y="-5" textAnchor="middle" fill={i < 4 ? colors.WARM : colors.TEXT} fontSize="16" fontWeight="800">{t.id}</text>
-        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{t.logp.toFixed(1)}</text>
+        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{t.logp.toFixed(1)}</text>
       </g>)}
       <text x="640" y="488" textAnchor="middle" fill={colors.MUTED} fontSize="17">valid only · stable ascending sort · exact loss mask</text>
     </g>

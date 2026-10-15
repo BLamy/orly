@@ -1,5 +1,5 @@
 import { interpolateRgb } from 'd3';
-import { MathLabel, Player, colors } from '../../core';
+import { Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import { Vec } from '../../primitives';
@@ -127,7 +127,7 @@ function renderFrame(s: SceneState) {
         const scale = (0.6 + 0.4 * u) * (1 + Math.max(0, v - 1) * 1.8) * (i === 11 ? 1 + 0.12 * missEff : 1);
         const cx = bitX(i);
         const cy = STRIP.y + STRIP.cell / 2;
-        const digitFill = i === 11 && missEff > 0.05 ? colors.NEGATIVE : vc > 0.55 ? '#08101f' : colors.MUTED;
+        const digitFill = i === 11 && missEff > 0.05 ? colors.NEGATIVE : vc > 0.55 ? '#08101f' : colors.TEXT;
         return (
           <g key={i} opacity={u} transform={`translate(${cx}, ${cy}) scale(${scale})`}>
             <rect x={-STRIP.cell / 2} y={-STRIP.cell / 2} width={STRIP.cell} height={STRIP.cell} rx={8} fill={fill} stroke={colors.GRID} strokeWidth={1} />
@@ -141,11 +141,17 @@ function renderFrame(s: SceneState) {
         const u = clamp01((stripU * (M + 3) - i) / 3);
         if (u <= 0) return null;
         return (
-          <text key={`ix${i}`} x={bitX(i)} y={STRIP.y + STRIP.cell + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={0.85 * u}>
+          <text key={`ix${i}`} x={bitX(i)} y={STRIP.y + STRIP.cell + 20} textAnchor="middle" fill={colors.TEXT} fontSize={12} opacity={0.7 * u}>
             {i}
           </text>
         );
       })}
+      {/* the strip's name, so the opening frame is not just a row of zeros */}
+      {stripU > 0.002 && (
+        <text x={STRIP.x} y={112} fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={0.8 * clamp01(stripU)}>
+          bit array · m = 24 bits · k = 3 hashes per word
+        </text>
+      )}
 
       {/* bit 9's "already set!" blink (dog colliding with cat) */}
       {flash9 > 0.002 && (
@@ -165,7 +171,7 @@ function renderFrame(s: SceneState) {
         <g opacity={missEff}>
           <rect x={bitX(11) - STRIP.cell / 2 - 10} y={STRIP.y - 10} width={STRIP.cell + 20} height={STRIP.cell + 20} rx={12} fill="none" stroke={colors.NEGATIVE} strokeWidth={10} opacity={0.22} />
           <rect x={bitX(11) - STRIP.cell / 2 - 6} y={STRIP.y - 6} width={STRIP.cell + 12} height={STRIP.cell + 12} rx={10} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
-          <text x={bitX(11)} y={STRIP.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={600}>
+          <text x={bitX(11)} y={STRIP.y + STRIP.cell + 50} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontWeight={600}>
             still 0
           </text>
         </g>
@@ -189,13 +195,18 @@ function renderFrame(s: SceneState) {
 
       {/* ── finale: the fill-rate meter and the false-positive formula ── */}
       {mathU > 0.002 && (
-        <MathLabel
-          tex={`\\left(1-e^{-kn/m}\\right)^{k}\\;=\\;\\left(1-e^{-3\\cdot ${row.n}/24}\\right)^{3}\\;\\approx\\;${(row.p * 100).toFixed(1)}\\%`}
-          x={640}
-          y={FINALE.mathY}
-          fontSize={26}
-          opacity={mathU}
-        />
+        // plain SVG text, not MathLabel: its fallback copy printed on top of the formula
+        <text x={640} y={FINALE.mathY} textAnchor="middle" fill={colors.TEXT} fontSize={26} opacity={mathU}>
+          <tspan>(1 − e</tspan>
+          <tspan dy={-10} fontSize={17}>−kn/m</tspan>
+          <tspan dy={10}>)</tspan>
+          <tspan dy={-10} fontSize={17}>k</tspan>
+          <tspan dy={10}> = (1 − e</tspan>
+          <tspan dy={-10} fontSize={17}>−3·{row.n}/24</tspan>
+          <tspan dy={10}>)</tspan>
+          <tspan dy={-10} fontSize={17}>3</tspan>
+          <tspan dy={10}> ≈ {(row.p * 100).toFixed(1)}%</tspan>
+        </text>
       )}
       {meterU > 0.002 && (
         <g opacity={meterU}>

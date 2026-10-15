@@ -50,27 +50,36 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout — the gate, the four lanes, the channel to the main thread.
 // ---------------------------------------------------------------------------
 
-const GATE = { x: 490, y: 100, w: 300, h: 88 } as const;
+const GATE = { x: 490, y: 100, w: 300, h: 124 } as const;
 const GATE_C = { x: 640, y: 144 } as const;
+// where a request leaves the gate, below the title and subtitle lines
+const GATE_OUT: Pt = { x: 640, y: 190 };
 const DROP: Pt = { x: 640, y: 34 };
 
 const BRIDGE: Pt = { x: 235, y: 400 };
-const SNIFF = { x: 505, y: 322, w: 210, h: 54 } as const;
-const CHIP302 = { x: 872, y: 236, w: 168, h: 34 } as const;
+// the referrer sniffer sits right of the channel line, clear of every lane
+const SNIFF = { x: 640, y: 360, w: 236, h: 54 } as const;
+const CHIP302 = { x: 872, y: 236, w: 184, h: 34 } as const;
 const PRESS = { x: 872, y: 410, w: 150, h: 58 } as const;
 const CLOUD: Pt = { x: 1030, y: 410 };
+// the npm card dwells just above the sniffer, never on its text
+const NPM_DWELL: Pt = { x: SNIFF.x - SNIFF.w / 2 + 90, y: SNIFF.y - 22 };
 
 // lane paths
-const P_VIRTUAL: Pt[] = [DROP, GATE_C, { x: 640, y: 200 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
-const P_NPM: Pt[] = [DROP, GATE_C, { x: SNIFF.x + SNIFF.w / 2 - 40, y: SNIFF.y + SNIFF.h / 2 }, { x: BRIDGE.x + 60, y: BRIDGE.y }];
-const P_NAV_OUT: Pt[] = [DROP, GATE_C, { x: CHIP302.x + 20, y: CHIP302.y + CHIP302.h / 2 }];
+const P_VIRTUAL: Pt[] = [DROP, GATE_OUT, { x: 640, y: 232 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
+const P_NPM: Pt[] = [DROP, GATE_OUT, NPM_DWELL, { x: BRIDGE.x + 60, y: BRIDGE.y }];
+const P_NAV_OUT: Pt[] = [DROP, GATE_OUT, { x: CHIP302.x + 20, y: CHIP302.y + CHIP302.h / 2 }];
 const P_NAV_BACK: Pt[] = [
   { x: CHIP302.x + 20, y: CHIP302.y + CHIP302.h / 2 },
   { x: 1010, y: 130 },
   { x: 860, y: 46 },
   DROP,
 ];
-const P_PASS: Pt[] = [DROP, GATE_C, { x: PRESS.x, y: PRESS.y + PRESS.h / 2 }, { x: CLOUD.x - 60, y: CLOUD.y }];
+// the passthrough card drops down the right of the sniffer, not through it
+const P_PASS: Pt[] = [DROP, GATE_OUT, { x: 790, y: 300 }, { x: PRESS.x, y: PRESS.y + PRESS.h / 2 }, { x: CLOUD.x - 60, y: CLOUD.y }];
+
+// the page's own traffic, shown before it reaches the gate
+const SOURCES = ['page · GET /', 'script · app.js', 'image · logo.png', 'call · fetch()'] as const;
 
 // the header stamps (verbatim from __sw__.js)
 const STAMPS = ['COEP: credentialless', 'COOP: same-origin', 'CORP: cross-origin'] as const;
@@ -80,9 +89,11 @@ const XFO_Y = STAMP_Y0 + 3 * 30;
 
 // the main thread + the message channel
 const MAIN = { x: 100, y: 548, w: 300, h: 54 } as const;
-const CHAN_A: Pt = { x: MAIN.x + MAIN.w / 2, y: MAIN.y };
+const CHAN_A: Pt = { x: MAIN.x + (MAIN.w * 4) / 5, y: MAIN.y };
 const CHAN_B: Pt = { x: GATE_C.x - 60, y: GATE.y + GATE.h };
-const KA_POS: Pt = { x: (CHAN_A.x + CHAN_B.x) / 2 - 30, y: (CHAN_A.y + CHAN_B.y) / 2 + 10 };
+// labels sit beside the line, never on it: the keepalive timer at 25%, the channel name at 12%
+const KA_POS: Pt = { x: CHAN_A.x + (CHAN_B.x - CHAN_A.x) * 0.25, y: CHAN_A.y + (CHAN_B.y - CHAN_A.y) * 0.25 };
+const MC_POS: Pt = { x: CHAN_A.x + (CHAN_B.x - CHAN_A.x) * 0.12, y: CHAN_A.y + (CHAN_B.y - CHAN_A.y) * 0.12 };
 
 // the recap row — the whole book in five badges
 const RECAP = [
@@ -94,12 +105,13 @@ const RECAP = [
 ] as const;
 const RECAP_Y = 330;
 // the request runs on a bus just below the badges, so its '200' never sits on a badge
-const RECAP_PATH: Pt[] = RECAP.map((r) => ({ x: r.x, y: RECAP_Y + 46 }));
+const RECAP_PATH: Pt[] = RECAP.map((r) => ({ x: r.x, y: RECAP_Y + 70 }));
 
 // camera marks — each frame keeps its subject fully inside the 1280×720 stage
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_GATE: CameraState = { x: 640, y: 200, k: 1.25 };
-const CAM_PRESS: CameraState = { x: 680, y: 360, k: 1.1 };
+// wide enough that the page's request column stays on stage
+const CAM_GATE: CameraState = { x: 560, y: 190, k: 1.15 };
+const CAM_PRESS: CameraState = { x: 664, y: 360, k: 1.1 };
 const CAM_CHAN: CameraState = { x: 520, y: 390, k: 1.1 };
 
 // ---------------------------------------------------------------------------
@@ -328,11 +340,11 @@ const scene = buildScene();
 // ---------------------------------------------------------------------------
 
 function ReqCard({ p, text, color, opacity = 1 }: { p: Pt; text: string; color: string; opacity?: number }) {
-  const w = text.length * 7.4 + 22;
+  const w = text.length * 8 + 24;
   return (
     <g opacity={opacity}>
       <rect x={p.x - w / 2} y={p.y - 15} width={w} height={30} rx={8} fill={colors.BG} stroke={color} strokeWidth={1.5} />
-      <text x={p.x} y={p.y + 4.5} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
+      <text x={p.x} y={p.y + 4.5} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -346,7 +358,8 @@ export function Render({ s }: { s: SceneState }) {
   const regexHot = s.get(scene.regexHot);
   const deadU = s.get(scene.deadU);
   const dimU = s.get(scene.dimU);
-  const machineOp = 1 - 0.9 * dimU;
+  // the machine clears fully for the recap, so no ghost lines sit under the badges
+  const machineOp = 1 - dimU;
 
   const c1U = s.get(scene.c1U);
   const c2U = s.get(scene.c2U);
@@ -369,7 +382,7 @@ export function Render({ s }: { s: SceneState }) {
   const gateStroke = deadU > 0.3 ? colors.MUTED : gateGlow > 0.1 || regexHot > 0.1 ? colors.WARM : colors.GRID;
 
   // the stalled card path: drop → gate (stops short at 0.32) → bridge
-  const P_STALL: Pt[] = [DROP, { x: 640, y: 60 }, GATE_C, { x: 640, y: 200 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
+  const P_STALL: Pt[] = [DROP, { x: 640, y: 44 }, GATE_OUT, { x: 640, y: 232 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
 
   return (
     <>
@@ -379,10 +392,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the gate */}
           <g opacity={gateU * (1 - 0.45 * deadU)}>
             <rect x={GATE.x} y={GATE.y} width={GATE.w} height={GATE.h} rx={14} fill={colors.PANEL} stroke={gateStroke} strokeWidth={1.6 + gateGlow + regexHot} />
-            <text x={GATE_C.x} y={GATE.y + 34} textAnchor="middle" fill={deadU > 0.3 ? colors.MUTED : colors.TEXT} fontSize={15} fontWeight={600}>
+            <text x={GATE_C.x} y={GATE.y + 36} textAnchor="middle" fill={deadU > 0.3 ? colors.MUTED : colors.TEXT} fontSize={15} fontWeight={600}>
               __sw__.js
             </text>
-            <text x={GATE_C.x} y={GATE.y + 58} textAnchor="middle" fill={regexHot > 0.1 ? colors.WARM : colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={GATE_C.x} y={GATE.y + 62} textAnchor="middle" fill={regexHot > 0.1 ? colors.WARM : colors.MUTED} fontSize={13} fontFamily={MONO}>
               {regexHot > 0.1 ? "/__virtual__/(\\d+)/ → port 3000" : "addEventListener('fetch', …)"}
             </text>
             {deadU > 0.3 && (
@@ -392,6 +405,21 @@ export function Render({ s }: { s: SceneState }) {
             )}
           </g>
 
+          {/* the page's own requests, queued before the gate */}
+          <g opacity={gateU * (1 - stampU)}>
+            <text x={170} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              {'requests from the page'}
+            </text>
+            {SOURCES.map((t, i) => (
+              <g key={t}>
+                <rect x={80} y={98 + i * 38} width={180} height={28} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+                <text x={170} y={116.5 + i * 38} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+                  {t}
+                </text>
+              </g>
+            ))}
+          </g>
+
           {/* the bridge + the network cloud */}
           <NodeBadge x={BRIDGE.x} y={BRIDGE.y} w={150} h={58} label="ServerBridge" sublabel="main thread" color={colors.ACCENT} u={s.get(scene.bridgeU)} />
           <NodeBadge x={CLOUD.x} y={CLOUD.y} w={130} h={58} label="real network" sublabel="pass-through" color={colors.MUTED} u={s.get(scene.cloudU)} />
@@ -399,10 +427,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the referrer sniffer */}
           <g opacity={s.get(scene.sniffU)}>
             <rect x={SNIFF.x - SNIFF.w / 2} y={SNIFF.y} width={SNIFF.w} height={SNIFF.h} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.3} />
-            <text x={SNIFF.x} y={SNIFF.y + 22} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
+            <text x={SNIFF.x} y={SNIFF.y + 22} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
               referer: /__virtual__/3000/
             </text>
-            <text x={SNIFF.x} y={SNIFF.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={SNIFF.x} y={SNIFF.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               {'→ route to port 3000'}
             </text>
           </g>
@@ -410,7 +438,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the 302 chip */}
           <g opacity={s.get(scene.chip302U)}>
             <rect x={CHIP302.x - CHIP302.w / 2} y={CHIP302.y} width={CHIP302.w} height={CHIP302.h} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={CHIP302.x} y={CHIP302.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+            <text x={CHIP302.x} y={CHIP302.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               302 · prefix restored
             </text>
           </g>
@@ -421,7 +449,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={PRESS.x} y={PRESS.y + 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
               header press
             </text>
-            <text x={PRESS.x} y={PRESS.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={PRESS.x} y={PRESS.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               on every response
             </text>
           </g>
@@ -433,7 +461,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={t} opacity={u}>
                 <rect x={STAMP_X} y={STAMP_Y0 + i * 30 - 4 * (1 - u)} width={192} height={26} rx={7} fill={colors.BG} stroke={colors.POSITIVE} />
-                <text x={STAMP_X + 96} y={STAMP_Y0 + i * 30 + 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+                <text x={STAMP_X + 96} y={STAMP_Y0 + i * 30 + 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                   {t}
                 </text>
               </g>
@@ -441,7 +469,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
           <g opacity={clamp01(xfoU * 2)}>
             <rect x={STAMP_X} y={XFO_Y} width={192} height={26} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} opacity={0.8} />
-            <text x={STAMP_X + 96} y={XFO_Y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={STAMP_X + 96} y={XFO_Y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               X-Frame-Options
             </text>
             <line x1={STAMP_X + 8} y1={XFO_Y + 13} x2={STAMP_X + 8 + 176 * xfoU} y2={XFO_Y + 13} stroke={colors.NEGATIVE} strokeWidth={2} />
@@ -450,7 +478,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* crossOriginIsolated payoff chip */}
           <g opacity={isoU}>
             <rect x={STAMP_X + 220} y={STAMP_Y0 + 26} width={230} height={40} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={STAMP_X + 335} y={STAMP_Y0 + 51} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+            <text x={STAMP_X + 335} y={STAMP_Y0 + 51} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               crossOriginIsolated ✓
             </text>
           </g>
@@ -461,7 +489,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={MAIN.x + 18} y={MAIN.y + 24} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
               main thread
             </text>
-            <text x={MAIN.x + 18} y={MAIN.y + 42} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={MAIN.x + 18} y={MAIN.y + 42} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               bridge.initServiceWorker()
             </text>
           </g>
@@ -479,7 +507,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the fresh channel */}
           <line x1={CHAN_A.x - 14} y1={CHAN_A.y} x2={CHAN_B.x - 14} y2={CHAN_B.y} stroke={colors.POSITIVE} strokeWidth={2.2} strokeDasharray="7 5" opacity={freshU} />
           <g opacity={s.get(scene.chanU)}>
-            <text x={KA_POS.x - 44} y={KA_POS.y + 42} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={MC_POS.x - 30} y={MC_POS.y + 5} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               MessageChannel
             </text>
           </g>
@@ -488,7 +516,7 @@ export function Render({ s }: { s: SceneState }) {
           {kaU > 0 && kaU < 3 && (
             <g>
               <TimerArc cx={KA_POS.x} cy={KA_POS.y} r={17} u={kaU % 1} color={colors.WARM} />
-              <text x={KA_POS.x + 28} y={KA_POS.y + 5} fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+              <text x={KA_POS.x - 34} y={KA_POS.y + 5} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                 keepalive · 20 s
               </text>
             </g>
@@ -502,7 +530,7 @@ export function Render({ s }: { s: SceneState }) {
                 x={GATE_C.x - 44 + (CHAN_A.x - GATE_C.x + 60) * needsU}
                 y={GATE.y + GATE.h + (CHAN_A.y - GATE.y - GATE.h) * needsU - 12}
                 fill={colors.WARM}
-                fontSize={12}
+                fontSize={13}
                 fontFamily={MONO}
               >
                 sw-needs-init

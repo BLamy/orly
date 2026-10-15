@@ -28,13 +28,14 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 // The real harness files (Fig. 2, Source Repository). The 4th is the one the
 // request actually touches — the "true target" nobody can point to yet.
+// `role` is a short muted tag on the left, naming what the caption says each part does.
 const FILES = [
-  { name: 'agent-harness/', y: 150 },
-  { name: 'planner.py', y: 214 },
-  { name: 'executor.py', y: 278 },
-  { name: 'memory.py', y: 342, target: true },
-  { name: 'tools/', y: 406 },
-  { name: 'parser.py', y: 470 },
+  { name: 'agent-harness/', y: 150, role: 'the loop' },
+  { name: 'planner.py', y: 214, role: 'plans edits' },
+  { name: 'executor.py', y: 278, role: 'runs steps' },
+  { name: 'memory.py', y: 342, role: 'keeps results', target: true },
+  { name: 'tools/', y: 406, role: 'calls tools' },
+  { name: 'parser.py', y: 470, role: 'reads output' },
 ] as const;
 const FILE_X = 300;
 const PLANNER = { x: 760, y: 310 };
@@ -118,16 +119,10 @@ export function buildScene(): Scene {
     text: "The change lived in one place all along — the memory module. The trouble was never the edit. It was finding the edit inside a system that had no readable map of its own behavior.",
   });
   tl.tween(scatterU, 0, { at: 28.8, dur: 1.0, ease: ease.move });
-  tl.tween(lostU, 0.1, { at: 28.8, dur: 1.0, ease: ease.move });
+  tl.tween(lostU, 0, { at: 28.8, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_TARGET, { at: 29.0, dur: 1.5, ease: ease.move });
+  // the true target lights up and stays lit through the caption
   tl.tween(targetU, 1, { at: 30.0, dur: 1.0, ease: ease.pop });
-  // the true target keeps pulsing (chained tweens, deterministic)
-  tl.tween(targetU, 0.35, { at: 31.0, dur: 0.5, ease: ease.move });
-  tl.tween(targetU, 1, { at: 31.5, dur: 0.5, ease: ease.move });
-  tl.tween(targetU, 0.35, { at: 32.0, dur: 0.5, ease: ease.move });
-  tl.tween(targetU, 1, { at: 32.5, dur: 0.5, ease: ease.move });
-  tl.tween(targetU, 0.35, { at: 33.0, dur: 0.5, ease: ease.move });
-  tl.tween(targetU, 1, { at: 33.5, dur: 0.5, ease: ease.move });
   tl.hold(34.8, 0.6);
 
   // — Beat 6 · close / the promise —
@@ -154,7 +149,8 @@ export function Render({ s }: { s: SceneState }) {
   const targetU = s.get(scene.targetU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.9;
+  // old content fades to 0.1 before the closing panel is half-up, so no ghosts show through it
+  const dimAll = 1 - clamp01(closeU * 2) * 0.9;
 
   return (
     <>
@@ -203,6 +199,9 @@ export function Render({ s }: { s: SceneState }) {
               >
                 {f.name}
               </text>
+              <text x={FILE_X - 152} y={f.y + 6} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                {f.role}
+              </text>
               {isTarget && pulse > 0.05 && (
                 <text x={FILE_X + 152} y={f.y + 6} fill={colors.ACCENT} fontSize={14} opacity={pulse}>
                   ← the behavior lived here
@@ -218,16 +217,16 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PLANNER.x} y={PLANNER.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
             planner
           </text>
-          <text x={PLANNER.x} y={PLANNER.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={PLANNER.x} y={PLANNER.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             "where do I edit?"
           </text>
           {/* the modification request card */}
-          <g opacity={clamp01(reqU * 1.4)} transform={`translate(${PLANNER.x - 92} ${PLANNER.y - 118})`}>
-            <rect x={0} y={0} width={184} height={54} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={92} y={22} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+          <g opacity={clamp01(reqU * 1.4)} transform={`translate(${PLANNER.x - 116} ${PLANNER.y - 118})`}>
+            <rect x={0} y={0} width={232} height={58} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+            <text x={116} y={23} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               modification request
             </text>
-            <text x={92} y={40} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={116} y={43} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               "change how memory is kept"
             </text>
           </g>
@@ -272,7 +271,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PLANNER.x} y={PLANNER.y + 92} textAnchor="middle" fill={colors.NEGATIVE} fontSize={40} fontWeight={700}>
             ?
           </text>
-          <text x={PLANNER.x} y={PLANNER.y + 122} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
+          <text x={PLANNER.x} y={PLANNER.y + 124} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
             attention everywhere = nowhere
           </text>
         </g>

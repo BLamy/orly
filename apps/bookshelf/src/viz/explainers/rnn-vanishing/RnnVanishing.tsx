@@ -72,7 +72,8 @@ function Frame({ s }: { s: SceneState }) {
                     y1={CHAIN_Y}
                     x2={cellX(t) - 17}
                     y2={CHAIN_Y}
-                    stroke={lit ? colors.ACCENT : colors.GRID}
+                    stroke={lit ? colors.ACCENT : colors.MUTED}
+                    strokeOpacity={lit ? 1 : 0.6}
                     strokeWidth={2}
                   />
                 )}
@@ -81,7 +82,8 @@ function Frame({ s }: { s: SceneState }) {
                   cy={CHAIN_Y}
                   r={15}
                   fill={lit ? colors.PANEL : colors.BG}
-                  stroke={lit ? colors.ACCENT : colors.GRID}
+                  stroke={lit ? colors.ACCENT : colors.MUTED}
+                  strokeOpacity={lit ? 1 : 0.6}
                   strokeWidth={2}
                 />
                 {/* the state value fills the cell as the packet passes */}
@@ -95,7 +97,13 @@ function Frame({ s }: { s: SceneState }) {
                   />
                 )}
                 {(t === 0 || t === T_STEPS || t % 5 === 0) && (
-                  <text x={cellX(t)} y={CHAIN_Y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text
+                    x={t === 0 ? cellX(t) - 4 : t === T_STEPS ? cellX(t) + 14 : cellX(t)}
+                    y={CHAIN_Y - 26}
+                    textAnchor={t === 0 ? 'start' : t === T_STEPS ? 'end' : 'middle'}
+                    fill={colors.MUTED}
+                    fontSize={14}
+                  >
                     {`t=${t}`}
                   </text>
                 )}
@@ -106,11 +114,12 @@ function Frame({ s }: { s: SceneState }) {
           {flowU > 0 && flowU < T_STEPS && (
             <circle cx={cellX(flowU)} cy={CHAIN_Y} r={7} fill={colors.WARM} />
           )}
-          <text x={cellX(0) - 8} y={CHAIN_Y + 44} fill={colors.MUTED} fontSize={13} opacity={chainU}>
+          <text x={cellX(0) - 8} y={CHAIN_Y + 44} fill={colors.MUTED} fontSize={14} opacity={chainU}>
             inputs enter below each cell
           </text>
 
           {/* gradient bars — sweep RIGHT to LEFT (blame travels backward) */}
+          <g opacity={1 - 0.65 * curveU}>
           {gradU > 0 &&
             Array.from({ length: T_STEPS + 1 }, (_, d) => {
               // d steps back from the end → drawn at column T-d
@@ -145,19 +154,20 @@ function Frame({ s }: { s: SceneState }) {
                 </g>
               );
             })}
+          </g>
           {gradU > 0 && (
             <g>
-              <line x1={cellX(0) - 22} y1={BAR_Y0} x2={cellX(T_STEPS) + 22} y2={BAR_Y0} stroke={colors.GRID} />
-              <text x={cellX(0) - 22} y={BAR_Y0 + 24} fill={colors.MUTED} fontSize={13}>
+              <line x1={cellX(0) - 22} y1={BAR_Y0} x2={cellX(T_STEPS) + 22} y2={BAR_Y0} stroke={colors.MUTED} strokeOpacity={0.6} />
+              <text x={cellX(0) - 22} y={BAR_Y0 + 24} fill={colors.MUTED} fontSize={14}>
                 {`gradient reaching each step (log scale) — w = 0.9`}
               </text>
               {gradU >= T_STEPS - 0.5 && (
-                <text x={cellX(0)} y={BAR_Y0 - barH(FINAL_GRAD) - 10} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
+                <text x={cellX(0)} y={BAR_Y0 - barH(FINAL_GRAD) - 10} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
                   {FINAL_GRAD.toFixed(4)}
                 </text>
               )}
               {bigU > 0 && (
-                <text x={cellX(4)} y={BAR_Y0 + 24} fill={colors.NEGATIVE} fontSize={13} opacity={bigU}>
+                <text x={cellX(0) - 22} y={BAR_Y0 + 48} fill={colors.NEGATIVE} fontSize={14} opacity={bigU}>
                   {`w = 1.6 saturates: ${FINAL_GRAD_BIG.toExponential(1)} at step 0`}
                 </text>
               )}
@@ -169,7 +179,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* screen-fixed: the Jacobian product */}
       <MathLabel
         tex={'\\left|\\frac{\\partial h_{20}}{\\partial h_0}\\right| = \\prod_{k=1}^{20} \\left|w\\,(1-h_k^2)\\right| \\approx 0.008'}
-        x={985}
+        x={640}
         y={92}
         fontSize={20}
         color={colors.WARM}
@@ -179,7 +189,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* knife-edge inset: 0.9^k vs 1.1^k */}
       {curveU > 0 && (
         <g opacity={curveU * dimU}>
-          <rect x={950} y={330} width={280} height={190} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <rect x={950} y={330} width={280} height={190} rx={12} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.5} />
           {(['lo', 'hi'] as const).map((key) => {
             const pts = KNIFE.map((p) => {
               const v = p[key];
@@ -196,13 +206,13 @@ function Frame({ s }: { s: SceneState }) {
               />
             );
           })}
-          <text x={1090} y={352} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <text x={1090} y={352} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             the knife edge
           </text>
-          <text x={1170} y={375} fill={colors.NEGATIVE} fontSize={12}>
+          <text x={1170} y={375} fill={colors.NEGATIVE} fontSize={14}>
             1.1ᵏ
           </text>
-          <text x={1170} y={495} fill={colors.ACCENT} fontSize={12}>
+          <text x={1170} y={495} fill={colors.ACCENT} fontSize={14}>
             0.9ᵏ
           </text>
         </g>
@@ -211,7 +221,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.5} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Vanishing Gradient
           </text>

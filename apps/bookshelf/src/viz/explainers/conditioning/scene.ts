@@ -293,7 +293,7 @@ export function buildScene(): Scene {
   });
   tl.tween(ruleTexU, 1, { at: 15.0, dur: 0.7, ease: ease.enter });
   tl.tween(startU, 1, { at: 15.6, dur: 0.6, ease: ease.enter });
-  tl.tween(eigU, 0.15, { at: 15.6, dur: 0.9, ease: ease.move });
+  tl.tween(eigU, 0, { at: 15.6, dur: 0.9, ease: ease.move });
 
   // — Beat 4 · η too small: the crawl —————————————————————————————————————
   tl.caption({

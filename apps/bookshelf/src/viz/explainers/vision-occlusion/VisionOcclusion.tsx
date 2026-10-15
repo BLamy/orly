@@ -40,6 +40,17 @@ for (let i = 0; i < OCC_N; i++)
 /** drop map scaled so 0.25 reads bright */
 const DROP_DISP = DROPS.map((r) => r.map((v) => v * 4));
 
+/** dark slate → amber: the hotter the cell, the more hiding the input hurt */
+const HURT_LO = [0x1b, 0x24, 0x38];
+const HURT_HI = [0xfb, 0xbf, 0x24];
+const hurtFill = (v: number) => {
+  const t = clamp01(v);
+  const c = HURT_LO.map((a, k) => Math.round(a + (HURT_HI[k] - a) * t));
+  return `rgb(${c.join(',')})`;
+};
+
+const CLOSE_EQ = '\\text{saliency}(p) = s(x) - s(x \\setminus p)';
+
 function renderFrame(s: SceneState) {
   const imgU = s.get(scene.imgU);
   const meterU = s.get(scene.meterU);
@@ -69,7 +80,10 @@ function renderFrame(s: SceneState) {
   const maskOp = Math.max(demoU, sweepOp);
 
   return (
+    <>
     <Camera {...s.get(scene.cam)}>
+      {/* the closing beat fades the whole picture so its panel reads cleanly */}
+      <g opacity={1 - 0.85 * closeU}>
       {/* ── the image ── */}
       <text x={IMG_XY.x + IMG_W / 2} y={IMG_XY.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(imgU * 8)}>
         input · 14×14
@@ -86,6 +100,11 @@ function renderFrame(s: SceneState) {
       {/* the gray occluder */}
       {maskOp > 0.002 && (
         <g opacity={maskOp}>
+          <defs>
+            <pattern id="vo-hatch" width={7} height={7} patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1={0} y1={0} x2={0} y2={7} stroke={colors.MUTED} strokeWidth={2} />
+            </pattern>
+          </defs>
           <rect
             x={IMG_XY.x + 2 * maskJ * IP - 2}
             y={IMG_XY.y + 2 * maskI * IP - 2}
@@ -97,15 +116,15 @@ function renderFrame(s: SceneState) {
             stroke={colors.TEXT}
             strokeWidth={1.5}
           />
-          <text
-            x={IMG_XY.x + 2 * maskJ * IP + MASK_W / 2}
-            y={IMG_XY.y + 2 * maskI * IP + MASK_W / 2 + 5}
-            textAnchor="middle"
-            fill={colors.TEXT}
-            fontSize={13}
-          >
-            ▨
-          </text>
+          <rect
+            x={IMG_XY.x + 2 * maskJ * IP}
+            y={IMG_XY.y + 2 * maskI * IP}
+            width={MASK_W}
+            height={MASK_W}
+            rx={4}
+            fill="url(#vo-hatch)"
+            opacity={0.35}
+          />
         </g>
       )}
 
@@ -137,7 +156,7 @@ function renderFrame(s: SceneState) {
             strokeWidth={2}
             strokeDasharray="5 5"
           />
-          <text x={METER.x + METER.w + 16} y={METER.y + 4 + (METER.h - 8) * 0.25 + 5} fill={colors.NEGATIVE} fontSize={13}>
+          <text x={METER.x + METER.w + 16} y={METER.y + 4 + (METER.h - 8) * 0.25 + 5} fill={colors.NEGATIVE} fontSize={14}>
             floor 0.75
           </text>
         </g>
@@ -154,14 +173,14 @@ function renderFrame(s: SceneState) {
         cell={DC}
         gap={DG}
         cellU={(i, j) => clamp01(sweepP * 36 - (i * 6 + j))}
-        emphasize={2}
+        fill={(v) => hurtFill(v)}
         showValues={(v) => (v / 4).toFixed(2)}
-        labelSize={12}
+        labelSize={13}
       />
       {/* ring / hole highlights */}
       <g opacity={ringU}>
         {RING_CELLS.map(([i, j]) => (
-          <rect key={`r${i}-${j}`} x={DROP_XY.x + j * DP - 2} y={DROP_XY.y + i * DP - 2} width={DC + 4} height={DC + 4} rx={6} fill="none" stroke={colors.WARM} strokeWidth={2} />
+          <rect key={`r${i}-${j}`} x={DROP_XY.x + j * DP - 2} y={DROP_XY.y + i * DP - 2} width={DC + 4} height={DC + 4} rx={6} fill="none" stroke={colors.TEXT} strokeWidth={2} />
         ))}
       </g>
       <g opacity={holeU}>
@@ -170,16 +189,19 @@ function renderFrame(s: SceneState) {
         ))}
       </g>
 
-      {/* closing */}
-      <MathLabel
-        tex="\text{saliency}(p) = s(x) - s(x \setminus p)"
-        x={640}
-        y={600}
-        fontSize={21}
-        color={colors.MUTED}
-        opacity={closeU}
-      />
+      </g>
     </Camera>
+    {/* closing: a solid panel in stage space, clear of the caption pill */}
+    {closeU > 0.002 && (
+      <g opacity={closeU}>
+        <rect x={120} y={512} width={1040} height={112} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+        <text x={640} y={550} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+          kernels: edges → pooling: shifts forgiven → layers: shape → occlusion: receipt
+        </text>
+        <MathLabel tex={CLOSE_EQ} x={640} y={598} fontSize={21} color={colors.TEXT} />
+      </g>
+    )}
+    </>
   );
 }
 

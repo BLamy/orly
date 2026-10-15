@@ -118,7 +118,7 @@ function Frame({ s }: { s: SceneState }) {
               {[-2, -1, 0, 1, 2].map((z) => (
                 <g key={z}>
                   <line x1={zScale(z)} y1={Z_AXIS_Y - 5} x2={zScale(z)} y2={Z_AXIS_Y + 5} stroke={colors.TEXT} strokeWidth={1.5} opacity={0.7} />
-                  <text x={zScale(z)} y={Z_AXIS_Y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                  <text x={zScale(z)} y={Z_AXIS_Y + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {z}
                   </text>
                 </g>
@@ -144,7 +144,7 @@ function Frame({ s }: { s: SceneState }) {
                   stroke={colors.SECONDARY}
                   strokeWidth={3}
                   strokeLinecap="round"
-                  opacity={0.18 * fuzzU}
+                  opacity={0.45 * fuzzU}
                 />
               );
             })}
@@ -197,10 +197,10 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* screen-fixed math + badge */}
       <MathLabel
-        tex={'L = \\lVert x - \\hat x\\rVert^2 + \\mathrm{KL}\\big(\\mathcal{N}(\\mu,\\sigma^2)\\,\\|\\,\\mathcal{N}(0,1)\\big)'}
-        x={1000}
-        y={70}
-        fontSize={19}
+        tex={'L = \\|x - \\hat x\\|^2 +\\mathrm{KL}\\big(\\mathcal{N}(\\mu,\\sigma^2)\\,\\|\\,\\mathcal{N}(0,1)\\big)'}
+        x={640}
+        y={56}
+        fontSize={17}
         opacity={s.get(scene.texU) * dimU}
       />
       {badgeU > 0 && (
@@ -219,14 +219,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Variational Autoencoder
           </text>
-          <MathLabel
-            tex={`\\sqrt{${MU_SPREAD.toFixed(2)}^2 + ${SIGMA.toFixed(2)}^2} = ${AGG_STD.toFixed(2)} \\approx 1`}
-            x={640}
-            y={345}
-            fontSize={21}
-            color={colors.WARM}
-            opacity={endU}
-          />
+          <text x={640} y={352} textAnchor="middle" fill={colors.WARM} fontSize={21} fontWeight={600}>
+            {`√(${MU_SPREAD.toFixed(2)}² + ${SIGMA.toFixed(2)}²) = ${AGG_STD.toFixed(2)} ≈ 1`}
+          </text>
           <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             the codes collectively tile the prior — so sampling, walking, and interpolating all work
           </text>

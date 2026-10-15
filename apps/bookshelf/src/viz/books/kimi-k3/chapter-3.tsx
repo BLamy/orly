@@ -96,7 +96,7 @@ function SituCurve({ u }: { u: number }) {
       <polyline points={pts} fill="none" stroke={colors.NEGATIVE} strokeWidth={3.5} />
       <line x1={130} y1={498} x2={455} y2={498} stroke={colors.WARM} strokeDasharray="6 6" />
       <text x={295} y={378} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>SiTU-GLU smooth cap</text>
-      <text x={445} y={490} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>β₁=4 · β₂=25</text>
+      <text x={445} y={490} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO}>β₁=4 · β₂=25</text>
     </g>
   );
 }
@@ -114,7 +114,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={750}>Stable LatentMoE</text>
-        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>896 routed experts · top-16 · latent width 3584 · 2 shared experts</text>
+        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>896 routed experts · top-16 · latent width 3584 · 2 shared experts</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -126,7 +126,7 @@ export function Render({ s }: { s: SceneState }) {
               const active = ACTIVE.has(i);
               const heat = heatU > 0 && col < 5 ? (5 - col) / 5 : 0;
               const level = heat * (1 - balanceU) + (active ? 0.72 : 0.08) * balanceU;
-              const fill = active ? colors.ACCENT : heat > 0 ? colors.NEGATIVE : colors.PANEL;
+              const fill = active ? colors.ACCENT : heat > 0 ? colors.NEGATIVE : colors.MUTED;
               return (
                 <rect
                   key={i}
@@ -136,18 +136,25 @@ export function Render({ s }: { s: SceneState }) {
                   height={10}
                   rx={2}
                   fill={fill}
-                  opacity={u * (0.18 + (active ? 0.72 * routeU : 0) + 0.65 * level)}
+                  opacity={u * (0.3 + (active ? 0.72 * routeU : 0) + 0.65 * level)}
                 />
               );
             })}
-            <text x={547} y={440} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>expert field E₁ … E₈₉₆</text>
+            <text x={547} y={440} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>expert field E₁ … E₈₉₆</text>
           </g>
 
           {s.get(scene.tokenU) > 0 && (
             <g opacity={s.get(scene.tokenU)} transform="translate(130 170)">
               <rect width={220} height={74} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} />
               <text x={110} y={31} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>token representation</text>
-              <text x={110} y={54} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>d = 7168</text>
+              <text x={110} y={54} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>d = 7168</text>
+            </g>
+          )}
+
+          {routeU > 0 && latentU < 1 && (
+            <g opacity={routeU * (1 - latentU)}>
+              <line x1={350} y1={207} x2={540} y2={275} stroke={colors.NEGATIVE} strokeWidth={5} />
+              <text x={130} y={150} textAnchor="start" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>full width d = 7168 → 16 routes</text>
             </g>
           )}
 
@@ -156,15 +163,12 @@ export function Render({ s }: { s: SceneState }) {
               <path d="M350 207 C430 207 450 275 540 275" fill="none" stroke={colors.SECONDARY} strokeWidth={5} />
               <rect x={400} y={244} width={120} height={62} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} />
               <text x={460} y={270} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>W↓x</text>
-              <text x={460} y={291} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ℓ = 3584</text>
+              <text x={460} y={291} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ℓ = 3584</text>
             </g>
           )}
 
           {routeU > 0 && (
             <g opacity={routeU}>
-              {latentU < 1 && (
-                <text x={520} y={268} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={1 - latentU}>full width d = 7168 → 16 routes</text>
-              )}
               {Array.from(ACTIVE).map((i, j) => {
                 const row = Math.floor(i / COLS);
                 const col = i % COLS;
@@ -176,9 +180,9 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.sharedU) > 0 && (
             <g opacity={s.get(scene.sharedU)}>
               {[0, 1].map((i) => (
-                <g key={i} transform={`translate(${170 + i * 130} 295)`}>
+                <g key={i} transform={`translate(${130 + i * 120} 270)`}>
                   <rect width={110} height={54} rx={11} fill={colors.POSITIVE} opacity={0.16} stroke={colors.POSITIVE} />
-                  <text x={55} y={31} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>shared {i + 1}</text>
+                  <text x={55} y={31} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>shared {i + 1}</text>
                 </g>
               ))}
             </g>
@@ -188,7 +192,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={s.get(scene.normU)} transform="translate(1200 300)">
               <rect x={-60} y={-34} width={120} height={68} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} />
               <text x={0} y={-5} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>RMSNorm</text>
-              <text x={0} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>before W↑</text>
+              <text x={0} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>before W↑</text>
             </g>
           )}
 
@@ -207,6 +211,13 @@ export function Render({ s }: { s: SceneState }) {
               <line x1={0} y1={50} x2={550} y2={50} stroke={colors.GRID} />
             </g>
           )}
+
+          {balanceU > 0 && (
+            <g opacity={balanceU} fill={colors.TEXT} fontSize={14}>
+              <text x={100} y={606}><tspan fontWeight={700}>Stability:</tspan> RMSNorm and SiTU-GLU keep activations calm.</text>
+              <text x={100} y={626}><tspan fontWeight={700}>Routing:</tspan> Quantile Balancing spreads load across experts.</text>
+            </g>
+          )}
         </g>
       </Camera>
       {s.get(scene.endU) > 0 && (
@@ -214,7 +225,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={220} y={245} width={840} height={174} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
           <text x={640} y={308} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={750}>Sixteen experts, no stampede</text>
           <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={16}>latent routing · bounded activations · quantile-balanced dispatch</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>Stable LatentMoE · Eq. 11–14</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>Stable LatentMoE · Eq. 11–14</text>
         </g>
       )}
     </>

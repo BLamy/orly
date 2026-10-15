@@ -33,7 +33,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 const TAPE_Y = 118;
 const TAPE_X0 = 210;
-const CELL_W = 54; // wide enough for "msg:m3" at 12px
+const CELL_W = 60; // wide enough for "msg:m3" at 13px
 const CELL_H = 42;
 const N_BASE = 4; // preloaded events: u1, u2, m1, m2
 const cellX = (i: number): number => TAPE_X0 + i * CELL_W;
@@ -79,12 +79,14 @@ const UP_PATH = [
   { x: 130, y: 240 },
   { x: cellX(N_BASE + 1) + 20, y: TAPE_Y - CELL_H / 2 - 26 },
 ];
-const DOWN_PATH = [
-  { x: cellX(N_BASE + 1) + 20, y: TAPE_Y + CELL_H / 2 },
+// events return by going around the messages panel (never across its rows)
+const SIDE_ROUTE = [
   { x: DISP.x, y: DISP.y - 34 },
-  { x: MSGS.x, y: MSGS.y - MSGS.h / 2 },
-  { x: QUERY.x + 160, y: QUERY.y - QUERY.h / 2 },
+  { x: 1088, y: 300 },
+  { x: 1088, y: 468 },
+  { x: QUERY.x + 260, y: QUERY.y - QUERY.h / 2 },
 ];
+const DOWN_PATH = [{ x: cellX(N_BASE + 1) + 20, y: TAPE_Y + CELL_H / 2 }, ...SIDE_ROUTE];
 
 // ---------------------------------------------------------------------------
 // Timeline — ~68s, 10 captions.
@@ -243,11 +245,11 @@ function Panel({
   return (
     <g opacity={u}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={12} fill={colors.PANEL} stroke={stroke ?? colors.GRID} strokeWidth={1.4} />
-      <text x={x - w / 2 + 14} y={y - h / 2 + 22} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+      <text x={x - w / 2 + 14} y={y - h / 2 + 22} fill={colors.TEXT} fontSize={14} fontWeight={700}>
         {title}
       </text>
       {mono && (
-        <text x={x + w / 2 - 12} y={y - h / 2 + 22} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+        <text x={x + w / 2 - 12} y={y - h / 2 + 22} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           {mono}
         </text>
       )}
@@ -275,12 +277,9 @@ export function Render({ s }: { s: SceneState }) {
   const schemaBig = clamp01((schemaU - 0.4) / 0.6); // 1 while cards are centered
   const nTapeCells = N_BASE + (liveU > 0.3 ? 1 : 0) + (upU >= 1 ? 1 : 0);
   // live insert flight: tape → dispatcher → messages → query
-  const livePath = [
-    { x: cellX(N_BASE) + 19, y: TAPE_Y + CELL_H / 2 },
-    { x: DISP.x, y: DISP.y - 34 },
-    { x: MSGS.x, y: MSGS.y - MSGS.h / 2 },
-    { x: QUERY.x + 160, y: QUERY.y - QUERY.h / 2 },
-  ];
+  const livePath = [{ x: cellX(N_BASE) + 19, y: TAPE_Y + CELL_H / 2 }, ...SIDE_ROUTE];
+  // optimistic lifecycle: the step the write is on (1 apply · 2 append · 3 confirm · 4 rollback)
+  const step = failU > 0.01 ? 4 : downU > 0.02 ? 3 : upU > 0.02 ? 2 : 1;
   const liveFlight = clamp01(liveU * 1.35 - 0.35);
   const livePos = along(livePath, liveFlight);
   const upPos = along(UP_PATH, upU);
@@ -338,7 +337,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i}>
                   <rect x={cellX(i)} y={TAPE_Y - CELL_H / 2} width={CELL_W - 6} height={CELL_H} rx={6} fill={colors.PANEL} stroke={isOpt ? colors.WARM : isLive ? colors.POSITIVE : colors.GRID} strokeWidth={isLive || isOpt ? 1.8 : 1.1} />
-                  <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                  <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                     {i < N_BASE ? BASE_EVENTS[i].label : i === N_BASE ? 'msg:m3' : 'msg:m4'}
                   </text>
                 </g>
@@ -347,7 +346,7 @@ export function Render({ s }: { s: SceneState }) {
             {/* dispatcher */}
             <g>
               <rect x={DISP.x - 26} y={DISP.y - 26} width={52} height={52} rx={10} transform={`rotate(45 ${DISP.x} ${DISP.y})`} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.8} />
-              <text x={DISP.x} y={DISP.y + 58} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
+              <text x={DISP.x} y={DISP.y + 58} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
                 EventDispatcher
               </text>
             </g>
@@ -355,10 +354,10 @@ export function Render({ s }: { s: SceneState }) {
             <path d={`M${cellX(2)} ${TAPE_Y + CELL_H / 2 + 10} L ${DISP.x} ${DISP.y - 40}`} stroke={colors.GRID} strokeWidth={1.5} fill="none" strokeDasharray="2 5" />
             <path d={`M${DISP.x - 26} ${DISP.y + 16} L ${USERS.x + 40} ${USERS.y - USERS.h / 2 - 6}`} stroke={colors.ACCENT} strokeWidth={1.5} fill="none" strokeDasharray="2 5" opacity={0.7} />
             <path d={`M${DISP.x + 26} ${DISP.y + 16} L ${MSGS.x - 40} ${MSGS.y - MSGS.h / 2 - 6}`} stroke={colors.SECONDARY} strokeWidth={1.5} fill="none" strokeDasharray="2 5" opacity={0.7} />
-            <text x={DISP.x - 110} y={DISP.y + 44} fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+            <text x={DISP.x - 110} y={DISP.y + 44} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
               type: "user"
             </text>
-            <text x={DISP.x + 108} y={DISP.y + 44} textAnchor="end" fill={colors.SECONDARY} fontSize={10.5} fontFamily={MONO}>
+            <text x={DISP.x + 108} y={DISP.y + 44} textAnchor="end" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
               type: "message"
             </text>
 
@@ -420,10 +419,10 @@ export function Render({ s }: { s: SceneState }) {
               differential dataflow: only the changed rows recompute
             </text>
             <rect x={QUERY.x - QUERY.w / 2} y={QUERY.y - QUERY.h / 2} width={QUERY.w} height={QUERY.h} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={QUERY.x - QUERY.w / 2 + 16} y={QUERY.y - QUERY.h / 2 + 24} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+            <text x={QUERY.x - QUERY.w / 2 + 16} y={QUERY.y - QUERY.h / 2 + 24} fill={colors.TEXT} fontSize={14} fontWeight={700}>
               live query
             </text>
-            <text x={QUERY.x + QUERY.w / 2 - 14} y={QUERY.y - QUERY.h / 2 + 24} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={QUERY.x + QUERY.w / 2 - 14} y={QUERY.y - QUERY.h / 2 + 24} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               useLiveQuery · join(messages, users)
             </text>
             {QUERY_ROWS.map((r, i) => (
@@ -455,10 +454,31 @@ export function Render({ s }: { s: SceneState }) {
               <g opacity={Math.max(0, 1 - failBack)}>
                 <rect x={QUERY.x + 24} y={QUERY.y + 16} width={250} height={24} rx={6} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.1} strokeDasharray="4 4" />
                 <text x={QUERY.x + 34} y={QUERY.y + 33} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} opacity={0.8}>
-                  "oops" — Alice (rolling back)
+                  {OPT_ROW} ✗
                 </text>
               </g>
             )}
+          </g>
+        )}
+
+        {/* ================= optimistic lifecycle (sits clear of the return path) ================= */}
+        {ghostU > 0.01 && (
+          <g opacity={ghostU * (1 - dim)}>
+            {/* kept inside the query camera's frame (x ≤ 1176 at k 1.15) */}
+            <rect x={912} y={112} width={262} height={124} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.1} />
+            <text x={928} y={136} fill={colors.TEXT} fontSize={14} fontWeight={700}>
+              createOptimisticAction
+            </text>
+            {[
+              { n: 1, text: 'onMutate → apply locally' },
+              { n: 2, text: 'mutationFn → append txid' },
+              { n: 3, text: 'synced: txid matches → harden' },
+              { n: 4, text: 'PreconditionFailed → rollback' },
+            ].map((l) => (
+              <text key={l.n} x={928} y={160 + (l.n - 1) * 21} fill={l.n === step ? colors.WARM : colors.MUTED} fontSize={12.5} fontFamily={MONO} fontWeight={l.n === step ? 700 : 400}>
+                {`${l.n} ${l.text}`}
+              </text>
+            ))}
           </g>
         )}
 
@@ -475,9 +495,9 @@ export function Render({ s }: { s: SceneState }) {
         {downU > 0.02 && downU < 0.98 && (
           <g>
             <circle cx={downPos.x} cy={downPos.y} r={9} fill={colors.WARM} opacity={0.95} />
-            <rect x={downPos.x + 12} y={downPos.y - 10} width={164} height={20} rx={5} fill={colors.BG} />
-            <text x={downPos.x + 16} y={downPos.y + 4} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
-              synced · awaitTxId ✓
+            <rect x={downPos.x + 12} y={downPos.y - 11} width={170} height={22} rx={5} fill={colors.BG} stroke={colors.WARM} strokeWidth={0.8} />
+            <text x={downPos.x + 18} y={downPos.y + 4} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+              {downU < 0.4 ? 'routed: type "message"' : 'synced · txid a1b2… ✓'}
             </text>
           </g>
         )}
@@ -486,8 +506,8 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <circle cx={failPos.x} cy={failPos.y} r={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2} />
             {failOut > 0.95 && failBack < 0.4 && (
-              <text x={failPos.x - 16} y={failPos.y - 8} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontWeight={700}>
-                ✗ rejected
+              <text x={failPos.x - 16} y={failPos.y - 8} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
+                ✗ PreconditionFailed
               </text>
             )}
           </g>

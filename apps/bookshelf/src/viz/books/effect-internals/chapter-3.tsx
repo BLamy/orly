@@ -51,7 +51,7 @@ const QUEUE = { x: 120, y: 410, w: 500, h: 150 } as const;
 const slotPos = (i: number) => ({ x: QUEUE.x + 18 + i * 130, y: QUEUE.y + 58 });
 const TICK_CHIP = { x: QUEUE.x + QUEUE.w + 28, y: QUEUE.y + 66 } as const;
 const PARK = { x: 820, y: 410, w: 340, h: 150 } as const;
-const CODA = { x: 380, y: 205, w: 520, h: 200 } as const;
+const CODA = { x: 380, y: 226, w: 520, h: 200 } as const;
 
 // every framing keeps the content inside the stage and above the caption band (y ≈ 630)
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.0 };
@@ -288,7 +288,7 @@ function FiberChip({ i, pos, u, running }: { i: number; pos: { x: number; y: num
       <text x={pos.x + 14} y={pos.y + 23} fill={FIBER_COLORS[i]} fontSize={15} fontFamily={MONO} fontWeight={700}>
         {FIBER_NAMES[i]}
       </text>
-      <text x={pos.x + 14} y={pos.y + 42} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+      <text x={pos.x + 14} y={pos.y + 42} fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
         {running ? 'runLoop …' : 'suspended'}
       </text>
     </g>
@@ -316,7 +316,7 @@ function TaskCard({
   return (
     <g opacity={vis}>
       <rect x={x} y={y} width={116} height={36} rx={8} fill={colors.BG} stroke={color} strokeWidth={1.4} />
-      <text x={x + 58} y={y + 23} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
+      <text x={x + 58} y={y + 23} textAnchor="middle" fill={color} fontSize={13.5} fontFamily={MONO}>
         {label}
       </text>
     </g>
@@ -358,7 +358,7 @@ export function Render({ s }: { s: SceneState }) {
   const flushU = s.get(scene.flushU);
   const dimU = s.get(scene.dimU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
   const p1 = alongIdx(PATH_F1, f1P);
   const p2 = alongIdx(PATH_F2, f2P);
   const p3 = alongIdx(PATH_F3, f3P);
@@ -380,14 +380,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* the one thread */}
           <g opacity={laneU}>
             <rect x={LANE.x} y={LANE.y} width={LANE.w * laneU} height={LANE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={LANE.x + 16} y={LANE.y - 12} fill={colors.MUTED} fontSize={13}>
+            <text x={LANE.x + 16} y={LANE.y - 12} fill={colors.TEXT} opacity={0.75} fontSize={14}>
               the only thread
             </text>
           </g>
 
           {/* the budget meter */}
           <g opacity={clamp01(chipsU * 2)}>
-            <text x={METER.x} y={METER.y - 10} fill={colors.MUTED} fontSize={14}>
+            <text x={METER.x} y={METER.y - 10} fill={colors.TEXT} opacity={0.75} fontSize={14}>
               op budget of the running fiber
             </text>
             <rect x={METER.x} y={METER.y} width={METER.w} height={20} rx={10} fill={colors.BG} stroke={colors.GRID} />
@@ -395,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={METER.x} y={METER.y + 56} fill={budgetFrac > 0.97 ? colors.NEGATIVE : colors.TEXT} fontSize={28} fontFamily={MONO} fontWeight={600}>
               {ops.toLocaleString('en-US')} / 2048
             </text>
-            <text x={METER.x + METER.w} y={METER.y + 56} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={METER.x} y={METER.y + 80} fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
               maxOpsBeforeYield
             </text>
           </g>
@@ -403,8 +403,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* shouldYield flash */}
           {yflash > 0.02 && (
             <g opacity={yflash}>
-              <rect x={METER.x} y={METER.y + 74} width={METER.w} height={36} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-              <text x={METER.x + METER.w / 2} y={METER.y + 98} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO}>
+              <rect x={METER.x} y={METER.y + 100} width={METER.w} height={36} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+              <text x={METER.x + METER.w / 2} y={METER.y + 124} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontFamily={MONO}>
                 shouldYield → true
               </text>
             </g>
@@ -416,13 +416,13 @@ export function Render({ s }: { s: SceneState }) {
           <FiberChip i={2} pos={p3} u={clamp01(chipsU * 3 - 2)} running={onLane(f3P, [1, 3])} />
 
           {/* the Async instruction card, met on the lane */}
-          {asyncU > 0.02 && f3P < 2.4 && (
-            <g opacity={asyncU * (parked ? 0.4 : 1)}>
+          {asyncU > 0.02 && !parked && f3P < 2.4 && (
+            <g opacity={asyncU}>
               <rect x={LANE_SLOT.x + 180} y={LANE_SLOT.y + 4} width={150} height={46} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
               <text x={LANE_SLOT.x + 255} y={LANE_SLOT.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 op: "Async"
               </text>
-              <text x={LANE_SLOT.x + 255} y={LANE_SLOT.y + 41} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={LANE_SLOT.x + 255} y={LANE_SLOT.y + 41} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
                 register(resume)
               </text>
             </g>
@@ -434,7 +434,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={QUEUE.x + 16} y={QUEUE.y + 26} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
               PriorityBuckets
             </text>
-            <text x={QUEUE.x + QUEUE.w - 16} y={QUEUE.y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={QUEUE.x + QUEUE.w - 16} y={QUEUE.y + 26} textAnchor="end" fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
               priority 0 · FIFO →
             </text>
             {[0, 1, 2].map((i) => {
@@ -462,9 +462,9 @@ export function Render({ s }: { s: SceneState }) {
           <TickPulse d={dR} />
 
           {/* the park zone */}
-          <g opacity={clamp01(asyncU * 2) * (timerU >= 1 && dR > 0.5 ? 0.35 : 1)}>
+          <g opacity={clamp01(asyncU * 2) * (timerU >= 1 && dR > 0.5 ? 0.15 : 1)}>
             <rect x={PARK.x} y={PARK.y} width={PARK.w} height={PARK.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeDasharray="6 5" />
-            <text x={PARK.x + 16} y={PARK.y + 26} fill={colors.MUTED} fontSize={14}>
+            <text x={PARK.x + 16} y={PARK.y + 26} fill={colors.TEXT} opacity={0.75} fontSize={14}>
               parked — waiting on a callback
             </text>
             {/* timer arc */}
@@ -493,7 +493,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={CODA.x + 24} y={CODA.y + 36} fill={colors.TEXT} fontSize={16} fontWeight={700}>
             Effect.runSync
           </text>
-          <text x={CODA.x + CODA.w - 22} y={CODA.y + 36} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={CODA.x + CODA.w - 22} y={CODA.y + 36} textAnchor="end" fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
             MixedScheduler("sync")
           </text>
           {/* mini queue that flushes in one go */}
@@ -502,7 +502,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={1 - gone}>
                 <rect x={CODA.x + 30 + i * 160 + gone * 60} y={CODA.y + 76} width={124} height={38} rx={8} fill={colors.BG} stroke={colors.GRID} />
-                <text x={CODA.x + 92 + i * 160 + gone * 60} y={CODA.y + 100} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                <text x={CODA.x + 92 + i * 160 + gone * 60} y={CODA.y + 100} textAnchor="middle" fill={colors.TEXT} opacity={0.75} fontSize={13.5} fontFamily={MONO}>
                   task
                 </text>
               </g>

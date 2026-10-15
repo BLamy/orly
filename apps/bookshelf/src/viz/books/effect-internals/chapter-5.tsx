@@ -37,13 +37,15 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 
 const MASK = { x: 48, y: 116, w: 264, h: 208 } as const;
-const PANEL = { x: 356, y: 96, w: 420, h: 452 } as const;
+// The panel ends above the caption pill (stage y ~630 under every camera framing).
+const PANEL = { x: 356, y: 96, w: 420, h: 420 } as const;
 const SLOT = { x: 388, y: 180, w: 208, h: 74 } as const;
 const SLOT_C = { x: SLOT.x + SLOT.w / 2, y: SLOT.y + SLOT.h / 2 } as const;
-const STACK_X = 632;
+const STACK_X = 628;
 const STACK_W = 132;
 const STACK_H = 46;
-const stackY = (i: number): number => 470 - i * 56;
+const RAIL = { x: 614, y: 262, w: 158, h: 244 } as const;
+const stackY = (i: number): number => 450 - i * 56;
 const SCOPE = { x: 856, y: 110, w: 350, h: 264 } as const;
 const TRAY = { x: 856, y: 410, w: 350, h: 74 } as const;
 
@@ -156,7 +158,6 @@ export function buildScene() {
     text: 'Scale it up. Each acquisition files its release into a scope — a map of finalizers, remembered in the order you acquired them.',
   });
   tl.tween(rewindU, 1, { at: 36.8, dur: 0.7, ease: ease.move });
-  tl.tween(maskU, 0, { at: 36.6, dur: 0.6, ease: ease.enter });
   tl.tween(shieldG, 0, { at: 36.8, dur: 0.5, ease: ease.enter });
   tl.tween(cam, CAM_SCOPE, { at: 37.0, dur: 1.4, ease: ease.move });
   tl.tween(scopeU, 1, { at: 37.6, dur: 0.9, ease: ease.enter });
@@ -274,7 +275,8 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const dimU = s.get(scene.dimU);
 
-  const mainOp = 1 - 0.9 * dimU;
+  // the old machine fades fully out so the closing recap sits on a clean stage
+  const mainOp = 1 - dimU;
   const cur = CUR[Math.min(curK, CUR.length - 1)];
   const ang = spinU * Math.PI * 2;
   const dotX = SLOT_C.x + 128 * Math.cos(ang);
@@ -283,7 +285,7 @@ export function Render({ s }: { s: SceneState }) {
   // demo pass bubbles travel bottom→top past the demo frame at stackY(0)
   const passPos = (u: number) => ({
     x: STACK_X + STACK_W / 2,
-    y: 560 - u * 300,
+    y: 512 - u * 290,
   });
   const pg = passPos(passG);
   const pr = passPos(passR);
@@ -312,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* acquireUseRelease anatomy */}
-        <g opacity={maskU * mainOp}>
+        <g opacity={maskU * (1 - rewindU) * mainOp}>
           <rect x={MASK.x} y={MASK.y} width={MASK.w} height={MASK.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={MASK.x + 18} y={MASK.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             acquireUseRelease
@@ -358,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
           <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={126} ry={54} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.color} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={SLOT_C.x} y={SLOT_C.y - 60} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             current
           </text>
           <text x={SLOT.x + 16} y={SLOT.y + 30} fill={cur.color} fontSize={14} fontFamily={MONO} fontWeight={700}>
@@ -368,8 +370,9 @@ export function Render({ s }: { s: SceneState }) {
             {cur.sub}
           </text>
 
-          {/* the stack */}
-          <text x={STACK_X + STACK_W / 2} y={stackY(1) - 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          {/* the stack: a rail the frames stack up from the bottom */}
+          <rect x={RAIL.x} y={RAIL.y} width={RAIL.w} height={RAIL.h} rx={12} fill="none" stroke={colors.GRID} strokeDasharray="4 5" />
+          <text x={RAIL.x + 12} y={RAIL.y + 20} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             _stack
           </text>
 
@@ -386,7 +389,7 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={shieldG > 0.3 ? colors.WARM : colors.TEAL}
                 strokeWidth={1.8}
               />
-              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={12} fontFamily={MONO} fontWeight={600}>
+              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={13} fontFamily={MONO} fontWeight={600}>
                 OnExit
               </text>
               <text x={STACK_X + 10} y={stackY(0) + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
@@ -398,10 +401,10 @@ export function Render({ s }: { s: SceneState }) {
               {shieldG > 0.02 && (
                 <g opacity={shieldG}>
                   <rect x={STACK_X - 6} y={stackY(0) - 6} width={STACK_W + 12} height={STACK_H + 12} rx={12} fill="none" stroke={colors.WARM} strokeWidth={2} />
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 16} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <text x={STACK_X - 22} y={stackY(0) + 18} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     interruptible:
                   </text>
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 31} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <text x={STACK_X - 22} y={stackY(0) + 33} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     false while it runs
                   </text>
                 </g>
@@ -422,7 +425,7 @@ export function Render({ s }: { s: SceneState }) {
               if (vis <= 0.01) return null;
               const busy = f.i === 0 && climbU > 0.9 && climbU < 2.1;
               return (
-                <g key={f.i} opacity={vis} transform={`translate(${skipT * 220} ${(1 - present) * 14})`}>
+                <g key={f.i} opacity={vis} transform={`translate(0 ${(1 - present) * 14 + skipT * 26})`}>
                   <rect x={STACK_X} y={stackY(f.i)} width={STACK_W} height={STACK_H} rx={9} fill={colors.PANEL} stroke={busy ? colors.WARM : f.i === 0 ? colors.TEAL : colors.GRID} strokeWidth={busy ? 2.2 : 1.4} />
                   <text x={STACK_X + 10} y={stackY(f.i) + 20} fill={f.i === 0 ? colors.TEAL : colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
                     {f.name}
@@ -438,7 +441,7 @@ export function Render({ s }: { s: SceneState }) {
                   )}
                   {f.i === 1 && <circle cx={STACK_X + STACK_W - 12} cy={stackY(1) + 14} r={5} fill={colors.POSITIVE} />}
                   {skipT > 0.15 && (
-                    <text x={STACK_X + STACK_W + 12} y={stackY(1) + 30} fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
+                    <text x={STACK_X - 22} y={stackY(1) + 30} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
                       ✕
                     </text>
                   )}
@@ -455,8 +458,8 @@ export function Render({ s }: { s: SceneState }) {
           {passR > 0.01 && passR < 0.99 && <circle cx={pr.x} cy={pr.y} r={9} fill={colors.NEGATIVE} opacity={0.9} />}
           {relFlash % 1 > 0.05 && relFlash % 1 < 0.95 && relFlash > 0 && relFlash < 2.01 && (
             <g opacity={0.9}>
-              <rect x={STACK_X + 65 - 124} y={stackY(0) + STACK_H + 14} width={248} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
-              <text x={STACK_X + 65} y={stackY(0) + STACK_H + 33} textAnchor="middle" fill={colors.TEAL} fontSize={12.5} fontFamily={MONO}>
+              <rect x={362} y={stackY(1) + 6} width={230} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
+              <text x={477} y={stackY(1) + 25} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
                 finalizer ran · exit passed on
               </text>
             </g>
@@ -465,7 +468,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the interrupt strike */}
         {strikeU > 0.01 && strikeU < 0.99 && (
-          <circle cx={120 + (SLOT_C.x - 120) * strikeU} cy={620 - (620 - SLOT_C.y) * strikeU} r={11} fill={colors.NEGATIVE} opacity={0.92} />
+          <circle cx={130 + (SLOT_C.x - 130) * strikeU} cy={470 - (470 - SLOT_C.y) * strikeU} r={11} fill={colors.NEGATIVE} opacity={0.92} />
         )}
 
         {/* the climbing exit */}
@@ -497,7 +500,7 @@ export function Render({ s }: { s: SceneState }) {
             const vis = inU * (1 - peel);
             if (vis <= 0.01) return null;
             return (
-              <g key={r} opacity={vis} transform={`translate(${peel * 60} 0)`}>
+              <g key={r} opacity={vis}>
                 <rect x={SCOPE.x + 20} y={SCOPE.y + 68 + i * 56} width={SCOPE.w - 40} height={44} rx={9} fill={colors.BG} stroke={peel > 0.05 ? colors.WARM : colors.GRID} />
                 <text x={SCOPE.x + 36} y={SCOPE.y + 87 + i * 56} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   key {i + 1} → release {r}

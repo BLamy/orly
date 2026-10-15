@@ -19,6 +19,7 @@ const stages=['observe','input','infer','transport','execute','recover'];
 const x=scaleBand<string>().domain(stages).range([92,1190]).paddingInner(.035);
 const outcomes=[{name:'clean completion',color:C.good,y:329},{name:'wrong turn + recovery',color:C.bad,y:379},{name:'abstain + fallback',color:C.pending,y:429}];
 const route=line<[number,number]>().x(d=>d[0]).y(d=>d[1]);
+const Tag=({x,y,w,text,color}:{x:number;y:number;w:number;text:string;color:string})=><g><rect x={x} y={y} width={w} height={32} rx={8} fill='#0a1120' stroke={color}/><Label x={x+w/2} y={y+21} anchor='middle' size={14} color={color}>{text}</Label></g>;
 export function buildScene(){return chapter(CAPTIONS);}const scene=buildScene();
 export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),expand=on(p,0),task=on(p,1),report=on(p,2),coverage=on(p,3),counter=on(p,4),live=on(p,5),freeze=on(p,6);
@@ -26,12 +27,12 @@ export function Render({s}:{s:SceneState}){
     {stages.map((v,i)=><g key={v} opacity={v==='infer'?1:expand}><rect x={lerp(492,x(v)!,expand)} y={132} width={lerp(295,x.bandwidth(),expand)} height={63} rx={8} fill={[C.observation,C.model,C.model,C.pending,C.good,C.bad][i]} fillOpacity={.14} stroke={[C.observation,C.model,C.model,C.pending,C.good,C.bad][i]}/><Label x={lerp(640,x(v)!+x.bandwidth()/2,expand)} y={171} anchor='middle' size={17}>{v}</Label></g>)}
     <g opacity={expand*(1-.6*freeze)}><line x1={92} y1={212} x2={1190} y2={212} stroke={C.muted} strokeWidth={2} strokeDasharray='6 6'/></g>
     <Label x={640} y={232} anchor='middle' size={16} color={C.muted}>Cold and warm runs are separate groups</Label>
-    <g opacity={task*(1-.85*freeze)}>{outcomes.map((o,i)=><g key={o.name}><Label x={81} y={o.y+5} size={15} color={o.color}>{o.name}</Label><path d={route([[345,o.y],[535,o.y],[i===1?535:780,o.y+(i===1?18:0)],[1010,o.y],[1180,o.y]])!} fill='none' stroke={o.color} strokeWidth={3}/>{[0,1,2,3].map(j=>i===1&&j>0?<circle key={j} cx={365+j*235} cy={o.y} r={7} fill='#0a1120' stroke={o.color} strokeWidth={2.5}/>:<circle key={j} cx={365+j*235} cy={o.y} r={5} fill={o.color}/>)}{i===1&&<Label x={652} y={o.y-12} size={12} color={C.bad}>wrong action is retained</Label>}</g>)}</g>
+    <g opacity={task*(1-freeze)}>{outcomes.map((o,i)=>{const y=o.y;const dips:[number,number][]=[560,795,1030].flatMap(c=>[[c-40,y],[c-22,y+22],[c+22,y+22],[c+40,y]] as [number,number][]);const pts:[number,number][]=i===1?[[345,y],...dips,[1180,y]]:[[345,y],[1180,y]];return <g key={o.name}><Label x={81} y={y+5} size={15} color={o.color}>{o.name}</Label><path d={route(pts)!} fill='none' stroke={o.color} strokeWidth={3}/>{[0,1,2,3].map(j=>i===1&&j>0?<circle key={j} cx={365+j*235} cy={y} r={7} fill='#0a1120' stroke={o.color} strokeWidth={2.5}/>:<circle key={j} cx={365+j*235} cy={y} r={5} fill={o.color}/>)}{i===1&&<Label x={835} y={y-18} anchor='middle' size={15} color={C.bad}>wrong action is retained</Label>}</g>;})}</g>
     <g opacity={report*(1-freeze)}><Label x={640} y={277} anchor='middle' size={16} color={C.pending}>Success · wrong actions · coverage · fallback · p50 / p95</Label></g>
-    <g opacity={coverage*(1-counter)}><Chip x={211} y={482} w={404} text='Same-menu comparison isolates ranking' color={C.model}/><Chip x={647} y={482} w={414} text='Broader baseline exposes missing actions' color={C.observation}/></g>
-    <g opacity={counter*(1-freeze)}><Chip x={192} y={482} w={895} text={live>.5?'Reset live environment → act → observe → independently verify outcome':'Recording: only the taken route is known; alternate outcomes are unknown'} color={live>.5?C.good:C.pending}/></g>
+    <g opacity={coverage*(1-counter)}><Tag x={211} y={482} w={404} text='Same-menu comparison isolates ranking' color={C.model}/><Tag x={647} y={482} w={414} text='Broader baseline exposes missing actions' color={C.observation}/></g>
+    <g opacity={counter*(1-freeze)}><Tag x={192} y={482} w={895} text={live>.5?'Reset live environment → act → observe → independently verify outcome':'Recording: only the taken route is known; alternate outcomes are unknown'} color={live>.5?C.good:C.pending}/></g>
     <Panel x={251} y={287} w={778} h={173} title='Freeze the release gates before model selection' color={C.good} opacity={freeze}>
-      {['development selection','separate calibration','untouched final test'].map((v,i)=><Chip key={v} x={276+i*245} y={354} w={230} text={v} color={[C.observation,C.pending,C.good][i]}/>)}
+      {['development selection','separate calibration','untouched final test'].map((v,i)=><Tag key={v} x={276+i*245} y={354} w={230} text={v} color={[C.observation,C.pending,C.good][i]}/>)}
       <Label x={640} y={426} anchor='middle' size={17}>Evidence must fill the gates; this diagram does not pass them</Label>
     </Panel>
     <Label x={640} y={560} anchor='middle' size={16} color={C.muted}>The claim concerns completed useful tasks, with recovery counted</Label>

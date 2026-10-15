@@ -41,7 +41,7 @@ const P = {
   queue: { x: 700, y: 360 },
   worker: { x: 1000, y: 360 },
   bank: { x: 1000, y: 150 },
-  store: { x: 1100, y: 500 },
+  store: { x: 1040, y: 500 },
   tdb: { x: 820, y: 520 },
 } as const;
 
@@ -63,10 +63,13 @@ const STATS = [
   'write heavy · 10:1 write to read',
 ] as const;
 
-// modest pushes: each frame keeps every label on the 1280-wide stage
+// modest pushes: each frame keeps every label on the 1280-wide stage. The rig
+// (Client's left edge) through the store's right edge spans x 75–1115, so the
+// pans centre on x≈595 to keep both ends inside the frame at k 1.2.
+const CAM_START: CameraState = { x: 620, y: 215, k: 1.15 };
 const CAM_LINK: CameraState = { x: 600, y: 240, k: 1.15 };
-const CAM_QUEUE: CameraState = { x: 620, y: 335, k: 1.2 };
-const CAM_DRAIN: CameraState = { x: 620, y: 350, k: 1.2 };
+const CAM_QUEUE: CameraState = { x: 595, y: 335, k: 1.2 };
+const CAM_DRAIN: CameraState = { x: 595, y: 350, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -84,7 +87,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_START, cameraInterp);
   const rigU = tl.channel('rigU', 0); // client → web → accounts api → sql
   const linkU = tl.channel('linkU', 0); // the link request packet
   const rowU = tl.channel('rowU', 0); // accounts row lands
@@ -222,19 +225,17 @@ export function Render({ s }: { s: SceneState }) {
           <line x1={P.client.x + 60} y1={P.client.y} x2={P.web.x - 70} y2={P.web.y} stroke={colors.GRID} strokeWidth={1.4} />
           <line x1={P.web.x + 70} y1={P.web.y} x2={P.api.x - 85} y2={P.api.y} stroke={colors.GRID} strokeWidth={1.4} />
           <line x1={P.api.x + 85} y1={P.api.y - 14} x2={P.db.x - 80} y2={P.db.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={P.api.x + 60} y1={P.api.y + 24} x2={P.queue.x - 110} y2={P.queue.y} stroke={colors.GRID} strokeWidth={1.4} />
           <Box x={P.client.x} y={P.client.y} w={110} title="Client" />
           <Box x={P.web.x} y={P.web.y} w={130} title="Web Server" />
           <Box x={P.api.x} y={P.api.y} w={170} title="Accounts API" sub="POST /api/v1/account" stroke={colors.ACCENT} />
           <Box x={P.db.x} y={P.db.y} w={170} title="SQL Database" sub="accounts" stroke={colors.POSITIVE} />
-          <Box x={P.bank.x} y={P.bank.y} w={190} title="Financial Institution" sub="the user's bank" stroke={colors.WARM} />
         </g>
 
         {/* accounts row + hash note */}
         <g opacity={rowU * dimAll}>
           <rect x={P.db.x - 125} y={P.db.y + 42} width={270} height={34} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
           <text x={P.db.x + 10} y={P.db.y + 63} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
-            account_url · login · password_hash
+            account_url · login · <tspan fill={colors.WARM}>password_hash</tspan>
           </text>
         </g>
 
@@ -252,6 +253,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the queue conveyor ---- */}
         <g opacity={clamp01(jobsU * 4) * dimAll}>
+          <line x1={P.api.x + 60} y1={P.api.y + 24} x2={P.queue.x - 110} y2={P.queue.y} stroke={colors.GRID} strokeWidth={1.4} />
           <rect x={P.queue.x - 110} y={P.queue.y - 26} width={220} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
           <text x={P.queue.x} y={P.queue.y - 36} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
             Queue
@@ -289,6 +291,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the worker + drain ---- */}
         <g opacity={clamp01(pullU * 3) * dimAll}>
+          <line x1={P.bank.x} y1={P.bank.y + 29} x2={P.worker.x} y2={P.worker.y - 32} stroke={colors.GRID} strokeWidth={1.4} />
+          <Box x={P.bank.x} y={P.bank.y} w={190} title="Financial Institution" sub="the user's bank" stroke={colors.WARM} />
           <Box x={P.worker.x} y={P.worker.y} w={230} h={64} title="Transaction Extraction Service" sub="pulls from the queue" stroke={colors.ACCENT} />
         </g>
         <g opacity={clamp01(drainU * 4) * dimAll}>

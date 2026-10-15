@@ -380,7 +380,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PANEL.x + 24} y={PANEL.y + 32} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
             FiberImpl · id: 1
           </text>
-          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
             internal/effect.ts
           </text>
 
@@ -388,7 +388,7 @@ export function Render({ s }: { s: SceneState }) {
           <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={132} ry={56} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.color} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
             current
           </text>
           <text x={SLOT.x + 16} y={SLOT.y + 30} fill={cur.color} fontSize={14.5} fontFamily={MONO} fontWeight={700}>
@@ -421,10 +421,10 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={f.special ? colors.WARM : colors.GRID}
                   strokeWidth={glow ? 2.4 : f.special ? 1.8 : 1.2}
                 />
-                <text x={STACK_X + 10} y={y + 20} fill={f.special ? colors.WARM : colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
+                <text x={STACK_X + 10} y={y + 20} fill={f.special ? colors.WARM : colors.TEXT} fontSize={10.5} fontFamily={MONO} fontWeight={600}>
                   {f.name}
                 </text>
-                <text x={STACK_X + 10} y={y + 37} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text x={STACK_X + 10} y={y + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
                   {f.tag}
                 </text>
                 {!f.special && <circle cx={STACK_X + STACK_W - 12} cy={y + 14} r={5} fill={colors.POSITIVE} />}
@@ -493,7 +493,7 @@ export function Render({ s }: { s: SceneState }) {
         {pulse1 > 0.01 && pulse1 < 0.99 && (
           <g>
             <circle cx={p1.x} cy={p1.y} r={11} fill={colors.NEGATIVE} opacity={0.92} />
-            <text x={p1.x} y={p1.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+            <text x={p1.x} y={p1.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
               causeInterrupt
             </text>
           </g>
@@ -516,7 +516,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={898} y={364} fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO} fontWeight={700}>
             Exit · Failure
           </text>
-          <text x={898} y={384} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+          <text x={898} y={384} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
             cause: Interrupt
           </text>
         </g>
@@ -524,20 +524,20 @@ export function Render({ s }: { s: SceneState }) {
         {/* the exit traveling home to fiber 2 */}
         {exitBackU > 0.01 && exitBackU < 0.99 && (
           <g>
-            <rect x={exitPos.x - 76} y={exitPos.y - 18} width={152} height={36} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-            <text x={exitPos.x} y={exitPos.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+            <rect x={exitPos.x - 70} y={exitPos.y - 18} width={140} height={36} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+            <text x={exitPos.x} y={exitPos.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
               Exit · Interrupted
             </text>
           </g>
         )}
 
-        {/* the loose end: opaque panel centred over the faded machine */}
+        {/* the loose end */}
         <g opacity={teaseU}>
-          <rect x={420} y={290} width={440} height={100} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-          <text x={640} y={328} textAnchor="middle" fill={colors.WARM} fontSize={18} fontFamily={MONO} fontWeight={700}>
+          <rect x={470} y={566} width={340} height={48} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+          <text x={640} y={586} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
             conn — still open
           </text>
-          <text x={640} y={356} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+          <text x={640} y={604} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
             who closes this?
           </text>
         </g>

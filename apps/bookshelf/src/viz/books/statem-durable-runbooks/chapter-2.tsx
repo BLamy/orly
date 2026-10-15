@@ -38,6 +38,9 @@ const GATES = [
   { x: 1035, top: 'target', bottom: 'in_hook' },
 ] as const;
 
+const CAM_FAIL: CameraState = { x: 415, y: 365, k: 1.55 };
+const CAM_COMMIT: CameraState = { x: 930, y: 360, k: 1.22 };
+
 interface Scene {
   tl: Timeline;
   cam: ChannelRef<CameraState>;
@@ -96,6 +99,7 @@ export function buildScene(): Scene {
     dur: 5.9,
     text: 'Here, a host-evaluated predicate asks for fresh evidence. The file is missing, so the gate closes.',
   });
+  tl.tween(cam, CAM_FAIL, { at: 14.3, dur: 1.3, ease: ease.move });
   tl.tween(tokenX, 405, { at: 14.6, dur: 0.8, ease: ease.linear });
   tl.tween(failU, 1, { at: 15.2, dur: 0.45, ease: ease.pop });
   tl.hold(20.0, 0.6);
@@ -136,6 +140,7 @@ export function buildScene(): Scene {
     dur: 6.2,
     text: 'Only now does the current phase flip to verify. A new target entry is created, and its entry hook refreshes the next phase’s context.',
   });
+  tl.tween(cam, CAM_COMMIT, { at: 41.4, dur: 1.3, ease: ease.move });
   tl.tween(tokenX, TARGET_X, { at: 42.0, dur: 2.4, ease: ease.linear });
   tl.tween(passedU, 6, { at: 42.0, dur: 1.4, ease: ease.linear });
   tl.tween(commitU, 1, { at: 44.0, dur: 0.55, ease: ease.pop });
@@ -189,16 +194,6 @@ function Gate({ gate, u, passed, failed }: { gate: (typeof GATES)[number]; u: nu
   );
 }
 
-function Bracket({ x1, x2, y, u, label }: { x1: number; x2: number; y: number; u: number; label: string }) {
-  if (u <= 0.002) return null;
-  return (
-    <g opacity={u}>
-      <path d={`M ${x1} ${y + 8} L ${x1} ${y} L ${x2} ${y} L ${x2} ${y + 8}`} fill="none" stroke={colors.MUTED} strokeWidth={1.5} />
-      <text x={(x1 + x2) / 2} y={y - 6} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={14}>{label}</text>
-    </g>
-  );
-}
-
 export function Render({ s }: { s: SceneState }) {
   const nodesU = s.get(scene.nodesU);
   const railU = s.get(scene.railU);
@@ -215,8 +210,6 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
   const dim = 1 - endDim * 0.9;
   const committed = commitU > 0.45;
-  const evidenceU = Math.max(failU, repairU);
-  const repaired = repairU > 0.5;
 
   return (
     <>
@@ -232,8 +225,6 @@ export function Render({ s }: { s: SceneState }) {
           {GATES.map((gate, i) => (
             <Gate key={gate.x} gate={gate} u={clamp01(gatesU - i)} passed={passedU > i + 0.7} failed={i === 1 && failU > 0.3} />
           ))}
-          <Bracket x1={195} x2={635} y={RAIL_Y - 170} u={clamp01(gatesU)} label="pre-leave gates" />
-          <Bracket x1={660} x2={1100} y={RAIL_Y - 170} u={clamp01(gatesU - 3)} label="hooks after the gates pass" />
 
           {nodesU > 0 && (
             <g transform={`translate(${tokenX} ${RAIL_Y})`}>
@@ -245,25 +236,25 @@ export function Render({ s }: { s: SceneState }) {
 
           {blockedU > 0 && (
             <g opacity={blockedU}>
-              <rect x={70} y={500} width={325} height={80} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={94} y={530} fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>history += goto_blocked</text>
-              <text x={94} y={557} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>current: execute · entry-e3a1</text>
+              <rect x={70} y={488} width={325} height={80} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={94} y={518} fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>history += goto_blocked</text>
+              <text x={94} y={545} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>current: execute · entry-e3a1</text>
             </g>
           )}
 
-          {evidenceU > 0 && (
-            <g opacity={evidenceU} transform={`translate(0 ${lerp(10, 0, evidenceU)})`}>
-              <rect x={438} y={500} width={300} height={80} rx={12} fill={colors.PANEL} stroke={repaired ? colors.POSITIVE : colors.NEGATIVE} />
-              <text x={462} y={530} fill={repaired ? colors.POSITIVE : colors.NEGATIVE} fontFamily={MONO} fontSize={14}>evidence/receipt.json</text>
-              <text x={462} y={557} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>{repaired ? 'exists: true · non_empty: true' : 'exists: false · file missing'}</text>
+          {repairU > 0 && (
+            <g opacity={repairU} transform={`translate(0 ${lerp(10, 0, repairU)})`}>
+              <rect x={438} y={488} width={300} height={80} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
+              <text x={462} y={518} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>evidence/receipt.json</text>
+              <text x={462} y={545} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>exists: true · non_empty: true</text>
             </g>
           )}
 
           {persistU > 0 && (
             <g opacity={clamp01(persistU)}>
-              <rect x={790} y={500} width={402} height={80} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={814} y={530} fill={colors.WARM} fontFamily={MONO} fontSize={13}>out_hook → progress receipt</text>
-              <text x={814} y={557} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>external effects require explicit retry or compensation</text>
+              <rect x={790} y={488} width={402} height={80} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={814} y={518} fill={colors.WARM} fontFamily={MONO} fontSize={13}>out_hook → progress receipt</text>
+              <text x={814} y={545} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>external effects require explicit retry or compensation</text>
             </g>
           )}
         </g>

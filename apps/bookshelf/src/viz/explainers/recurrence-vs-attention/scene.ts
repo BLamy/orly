@@ -49,15 +49,15 @@ export const DEP_SURVIVE = survive(DEP_HOPS); // ≈ 0.387
 // ---------------------------------------------------------------------------
 
 export const TOK_Y = 300;
-export const TOK_X0 = 92;
-export const TOK_DX = (1180 - TOK_X0) / (N_TOK - 1);
+export const TOK_X0 = 134;
+export const TOK_DX = (1146 - TOK_X0) / (N_TOK - 1);
 export const tokX = (i: number): number => TOK_X0 + i * TOK_DX;
 
 // parallelism race lanes
 export const RACE_Y0 = 150;
 export const RACE_STEPS = 12;
 
-export const CAM_DEP: CameraState = { x: 640, y: 300, k: 1.2 };
+export const CAM_DEP: CameraState = { x: 640, y: 300, k: 1.1 };
 export const CAM_RACE: CameraState = { x: 640, y: 330, k: 1.1 };
 
 export interface Scene {

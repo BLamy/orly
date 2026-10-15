@@ -39,9 +39,15 @@ const N_WRITE = { x: 495, y: 110 };
 const N_FAN = { x: 690, y: 110 };
 const N_GRAPH = { x: 690, y: 300 };
 const N_SQL = { x: 300, y: 300 };
-const N_SEARCH = { x: 150, y: 500 };
-const N_STORE = { x: 330, y: 500 };
-const N_QUEUE = { x: 510, y: 500 };
+// Side-effect row sits low, below the O(n) counter; its bus runs at SIDE_BUS_Y.
+const N_SEARCH = { x: 150, y: 520 };
+const N_STORE = { x: 330, y: 520 };
+const N_QUEUE = { x: 510, y: 520 };
+const SIDE_BUS_Y = 468;
+// Bus trunk leaves the Fan Out box's bottom-left and drops down the gap between
+// the write lane and the User Graph / counter column, so no line crosses a box.
+const SIDE_TRUNK_X = 585;
+const SIDE_TRUNK_START = { x: 620, y: N_FAN.y + 28 };
 
 // Eight follower home-timeline strips (Redis lists) on the right.
 const STRIPS = { x: 880, w: 350, y0: 176, gap: 46, h: 34, cells: 8 } as const;
@@ -146,7 +152,6 @@ export function buildScene() {
   });
   tl.tween(cam, CAM_ZOOM, { at: 35.7, dur: 1.6, ease: ease.move });
   tl.tween(byteU, 1, { at: 37.4, dur: 1.2, ease: ease.draw });
-  tl.tween(byteU, 0, { at: 43.4, dur: 0.6, ease: ease.linear });
   tl.hold(43.0, 0.7);
 
   // — Beat 7 · the honest price —
@@ -204,7 +209,7 @@ function TimelineStrip({ i, u, push, glowHead, dim, ring }: {
   const shift = push * CELL_W;
   return (
     <g opacity={op}>
-      <text x={STRIPS.x - 10} y={y + STRIPS.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+      <text x={STRIPS.x - 10} y={y + STRIPS.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
         follower {i + 1}
       </text>
       <rect x={STRIPS.x} y={y} width={STRIPS.w} height={STRIPS.h} rx={7} fill={colors.PANEL} stroke={colors.GRID} />
@@ -260,39 +265,47 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const headX = STRIPS.x + CELL_W / 2;
+  // zoom beat lasts only while the camera is still on the strip: it eases out with the pan at 43.9
+  const zoom = byteU * clamp01((cam.x - CAM_BURST.x) / (CAM_ZOOM.x - CAM_BURST.x));
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the write lane — recedes during the zoom beat, the strip is the subject there */}
-        <g opacity={1 - 0.9 * byteU}>
+        <g opacity={1 - 0.9 * zoom}>
           <Connection from={N_CLIENT} to={N_WEB} u={laneU} arrow />
           {/* route label sits above the lane: the gap between boxes is too narrow for a chip */}
-          <text x={(N_CLIENT.x + N_WEB.x) / 2} y={N_CLIENT.y - 44} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={laneU}>
+          <text x={(N_CLIENT.x + N_WEB.x) / 2} y={N_CLIENT.y - 44} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace" opacity={laneU}>
             POST /api/v1/tweet
           </text>
           <Connection from={N_WEB} to={N_WRITE} u={laneU} arrow />
           <Connection from={N_WRITE} to={N_FAN} u={clamp01(fanGlow * 2)} arrow />
           <Connection from={N_WRITE} to={N_SQL} u={sqlU > 0 ? 1 : 0} elbow="v" arrow dim={0.3} />
           <Connection from={N_FAN} to={N_GRAPH} u={graphU > 0 ? 1 : 0} arrow dim={0.3} />
+
+          {/* packets are drawn under the boxes, so a packet passing a node never sits on its title */}
+          {/* the post traveling the lane */}
+          <RequestFlow path={[N_CLIENT, N_WEB, N_WRITE]} u={postU} dwell={0.18} hold={false} />
+          {/* store-once packet down to SQL; its name is set beside the line instead */}
+          <Packet from={N_WRITE} to={N_SQL} u={sqlU} r={6} color={colors.SECONDARY} />
+          <text x={N_WRITE.x + 12} y={210} fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace" opacity={clamp01(sqlU * 2)}>
+            INSERT ×1
+          </text>
+          {/* who-follows round trip */}
+          <RequestFlow path={[N_FAN, N_GRAPH]} u={graphU} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label="who follows?" responseLabel="follower list" turnDwell={0.15} />
+
           <ServiceNode {...N_CLIENT} kind="mobile" label="Client" u={laneU} />
           <ServiceNode {...N_WEB} kind="server" label="Web Server" sublabel="reverse proxy" u={laneU} />
           <ServiceNode {...N_WRITE} kind="server" label="Write API" u={laneU} />
           <ServiceNode {...N_FAN} kind="fn" label="Fan Out Service" u={laneU} glow={fanGlow * (1 - 0.6 * endU)} />
-          <ServiceNode {...N_GRAPH} kind="cache" label="User Graph Service" sublabel="followers, in Memory Cache" u={graphU > 0 ? 1 : 0} />
+          <ServiceNode {...N_GRAPH} kind="cache" label="User Graph Service" sublabel="followers, in cache" u={graphU > 0 ? 1 : 0} />
           <ServiceNode {...N_SQL} kind="db" label="SQL Database" sublabel="user timeline" u={sqlU > 0 ? 1 : 0} glow={clamp01(sqlU * 2 - 1) * 0.7} />
 
-          {/* the post traveling the lane */}
-          <RequestFlow path={[N_CLIENT, N_WEB, N_WRITE]} u={postU} label="tweet" dwell={0.18} hold={false} />
-          {/* store-once packet down to SQL */}
-          <Packet from={N_WRITE} to={N_SQL} u={sqlU} r={6} color={colors.SECONDARY} label="INSERT ×1" labelSize={12} />
-          {/* who-follows round trip */}
-          <RequestFlow path={[N_FAN, N_GRAPH]} u={graphU} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label="who follows?" responseLabel="follower list" turnDwell={0.15} />
           {/* the follower-list chip */}
           <g opacity={listU}>
             <rect x={N_FAN.x - 62} y={N_FAN.y + 44} width={124} height={26} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} />
-            <text x={N_FAN.x} y={N_FAN.y + 61} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={N_FAN.x} y={N_FAN.y + 61} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace">
               followers: 1,000
             </text>
           </g>
@@ -317,15 +330,15 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the eight follower home timelines */}
         <g>
-          <g opacity={stripsU * (1 - 0.9 * Math.max(byteU, sideU * (1 - endU)))}>
-            <text x={STRIPS.x + STRIPS.w / 2} y={STRIPS.y0 - 22} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <g opacity={stripsU * (1 - 0.9 * Math.max(zoom, sideU * (1 - endU)))}>
+            <text x={STRIPS.x + STRIPS.w / 2} y={STRIPS.y0 - 22} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               home timelines — one Redis list per follower
             </text>
           </g>
           {Array.from({ length: N_STRIPS }, (_, i) => {
             const arrive = clamp01(burstU * (N_STRIPS / 4 + 1) - i / 4);
             // zoom beat: strip 3 is the focus; the side-effects beat fades the rest back
-            const focusDim = i === 2 ? 0 : byteU * 0.9;
+            const focusDim = i === 2 ? 0 : zoom * 0.9;
             const sideDim = sideU * (1 - endU) * 0.85;
             return (
               <TimelineStrip
@@ -335,14 +348,14 @@ export function Render({ s }: { s: SceneState }) {
                 push={clamp01((arrive - 0.85) / 0.15)}
                 glowHead={endU}
                 dim={Math.max(focusDim, sideDim)}
-                ring={i === 2 ? byteU : 0}
+                ring={i === 2 ? zoom : 0}
               />
             );
           })}
         </g>
 
         {/* entry anatomy for the strip in focus (zoom beat), drawn to scale: 17 bytes */}
-        <g opacity={byteU}>
+        <g opacity={zoom}>
           {(() => {
             const y = ANAT.y;
             const bx = ANAT.x;
@@ -389,13 +402,13 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             {/* sits below the Graph Service node, under the fan-out it belongs to */}
             <rect x={606} y={352} width={168} height={76} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={690} y={384} textAnchor="middle" fill={colors.WARM} fontSize={22} fontWeight={700} fontFamily="ui-monospace, monospace">
+            <text x={690} y={386} textAnchor="middle" fill={colors.WARM} fontSize={22} fontWeight={700} fontFamily="ui-monospace, monospace">
               {fmt(countN)}
             </text>
-            <text x={690} y={407} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={690} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               lookups + inserts
             </text>
-            <text x={596} y={397} textAnchor="end" fill={colors.WARM} fontSize={17} fontStyle="italic" opacity={clamp01(countN / 400)}>
+            <text x={618} y={370} fill={colors.WARM} fontSize={15} fontStyle="italic" opacity={clamp01(countN / 400)}>
               O(n)
             </text>
           </g>
@@ -403,9 +416,18 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* side effects — supporting cast, brief */}
         <g opacity={sideU * (1 - 0.9 * endU)}>
-          <Connection from={{ x: N_FAN.x - 20, y: N_FAN.y + 28 }} to={{ x: N_SEARCH.x, y: N_SEARCH.y - 34 }} elbow="v" u={sideU} arrow dim={0.35} />
-          <Connection from={{ x: N_FAN.x - 10, y: N_FAN.y + 28 }} to={{ x: N_STORE.x, y: N_STORE.y - 34 }} elbow="v" u={sideU} arrow dim={0.35} />
-          <Connection from={{ x: N_FAN.x, y: N_FAN.y + 28 }} to={{ x: N_QUEUE.x, y: N_QUEUE.y - 34 }} elbow="v" u={sideU} arrow dim={0.35} />
+          {/* one bus from the fan-out, dropping into each side service from above */}
+          {[N_SEARCH, N_STORE, N_QUEUE].map((n) => (
+            <Connection
+              key={n.x}
+              from={SIDE_TRUNK_START}
+              to={{ x: n.x, y: n.y - 28 }}
+              via={[{ x: SIDE_TRUNK_X, y: SIDE_TRUNK_START.y }, { x: SIDE_TRUNK_X, y: SIDE_BUS_Y }, { x: n.x, y: SIDE_BUS_Y }]}
+              u={sideU}
+              arrow
+              dim={0.35}
+            />
+          ))}
           <ServiceNode {...N_SEARCH} kind="search" label="Search Index" sublabel="Service" u={sideU} />
           <ServiceNode {...N_STORE} kind="storage" label="Object Store" sublabel="media" u={sideU} />
           <ServiceNode {...N_QUEUE} kind="queue" label="Queue" sublabel="Notification Service" u={sideU} />

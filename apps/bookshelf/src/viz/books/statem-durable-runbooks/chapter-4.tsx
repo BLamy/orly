@@ -42,7 +42,7 @@ const PRACTICES = [
 ] as const;
 
 const CAM_MATRIX: CameraState = { x: 640, y: 360, k: 1.02 };
-const CAM_PROVIDER: CameraState = { x: 655, y: 430, k: 1.04 };
+const CAM_PROVIDER: CameraState = { x: 655, y: 400, k: 1.04 };
 const CAM_SIEVE: CameraState = { x: 640, y: 355, k: 1.05 };
 
 interface Scene {
@@ -208,17 +208,22 @@ export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
   const dim = 1 - endDim * 0.9;
-  const matrixOpacity = (1 - matrixDim * 0.88) * dim;
+  // The matrix settles to a faint backdrop for the sieve, then leaves the stage
+  // entirely while the task-transfer cards and the recap take over.
+  const matrixOpacity = clamp01(1 - matrixDim * 0.88) * dim * (1 - businessU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
         <g opacity={frameU * matrixOpacity}>
-          <text x={100} y={120} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">TERMINAL-BENCH 2.1 · TRIAL SUCCESS RATE (%)</text>
-          <text x={440} y={165} textAnchor="middle" fill={colors.MUTED} fontSize={12}>reference / baseline</text>
-          <text x={705} y={165} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>StateM profile</text>
-          <text x={970} y={165} textAnchor="middle" fill={colors.WARM} fontSize={12}>adapted profile</text>
+          <g opacity={clamp01(1 - matrixDim)}>
+            <text x={100} y={120} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">TERMINAL-BENCH 2.1 · TRIAL SUCCESS RATE (%)</text>
+            <text x={100} y={142} fill={colors.TEXT} fontSize={12}>profile = the runtime controls the harness holds fixed when it moves to another model or task</text>
+            <text x={440} y={165} textAnchor="middle" fill={colors.MUTED} fontSize={12}>reference / baseline</text>
+            <text x={705} y={165} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>StateM profile</text>
+            <text x={970} y={165} textAnchor="middle" fill={colors.WARM} fontSize={12}>adapted profile</text>
+          </g>
           {ROWS.map((row, i) => {
             const rowU = clamp01(rowsU - i);
             const active = Math.abs(activeRow - i) < 0.55;
@@ -233,7 +238,10 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {transferU > 0 && (
-            <path d={`M 705 245 C 770 260, 770 350, 705 375`} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 6" opacity={transferU} />
+            <g opacity={transferU}>
+              <path d="M 789 207 C 838 225, 838 282, 789 300" fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 6" />
+              <path d="M 789 332 C 838 350, 838 370, 789 390" fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 6" />
+            </g>
           )}
           {providerU > 0 && (
             <text x={705} y={540} textAnchor="middle" fill={colors.NEGATIVE} fontFamily={MONO} fontSize={12} opacity={providerU}>exact-profile transfer: −0.7 points</text>
@@ -242,18 +250,18 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={caveatU}>
               <rect x={355} y={548} width={600} height={50} rx={10} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={655} y={570} textAnchor="middle" fill={colors.WARM} fontSize={12}>95.28% raw public submission · pre-adjudication · submission PR remains open</text>
-              <text x={655} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={10}>the paper reports adjudication-sensitive alternatives separately</text>
+              <text x={655} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={12}>the paper reports adjudication-sensitive alternatives separately</text>
             </g>
           )}
         </g>
 
         {sieveU > 0 && (
           <g opacity={clamp01(sieveU) * dim * (1 - 0.85 * businessU)}>
-            <text x={640} y={115} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>TRANSFER DISTANCE FILTERS PROCEDURE</text>
+            <text x={640} y={115} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700} opacity={clamp01(1 - businessU)}>TRANSFER DISTANCE FILTERS PROCEDURE</text>
             <line x1={640} y1={165} x2={640} y2={535} stroke={colors.SECONDARY} strokeWidth={5} />
             <path d="M 620 185 L 660 205 L 620 225 M 620 315 L 660 335 L 620 355 M 620 445 L 660 465 L 620 485" fill="none" stroke={colors.SECONDARY} strokeWidth={3} />
-            <text x={470} y={575} textAnchor="middle" fill={colors.MUTED} fontSize={12}>nearby model</text>
-            <text x={810} y={575} textAnchor="middle" fill={colors.MUTED} fontSize={12}>new provider or task family</text>
+            <text x={400} y={575} textAnchor="middle" fill={colors.MUTED} fontSize={12}>nearby model</text>
+            <text x={940} y={575} textAnchor="middle" fill={colors.MUTED} fontSize={12}>new provider or task family</text>
             {PRACTICES.map((practice, i) => {
               const u = clamp01(sieveU * 1.7 - i * 0.12);
               const pass = practice.outcome !== 'drop';
@@ -307,16 +315,17 @@ export function Render({ s }: { s: SceneState }) {
         {recapU > 0 && (
           <g opacity={recapU * dim * (1 - endU)}>
             {[
-              { x: 190, lines: ['DURABLE', 'PHASE'], color: colors.ACCENT },
-              { x: 490, lines: ['CHECKED', 'GATE'], color: colors.POSITIVE },
-              { x: 790, lines: ['RUN', 'LEDGER'], color: colors.SECONDARY },
-              { x: 1090, lines: ['SELECTED', 'PRACTICE'], color: colors.WARM },
+              { x: 190, lines: ['DURABLE', 'PHASE'], role: 'holds its place', color: colors.ACCENT },
+              { x: 490, lines: ['CHECKED', 'GATE'], role: 'protects handoff', color: colors.POSITIVE },
+              { x: 790, lines: ['RUN', 'LEDGER'], role: 'enables recovery', color: colors.SECONDARY },
+              { x: 1090, lines: ['SELECTED', 'PRACTICE'], role: 'carries lessons forward', color: colors.WARM },
             ].map((item, i, all) => (
               <g key={item.lines[0]} opacity={clamp01(recapU * 5 - i)}>
-                {i < all.length - 1 && <line x1={item.x + 60} y1={350} x2={all[i + 1].x - 60} y2={350} stroke={colors.GRID} strokeWidth={3} />}
+                {i < all.length - 1 && <line x1={item.x + 60} y1={350} x2={all[i + 1].x - 60} y2={350} stroke={colors.MUTED} strokeWidth={2} />}
                 <circle cx={item.x} cy={350} r={60} fill={colors.PANEL} stroke={item.color} strokeWidth={2.2} />
-                <text x={item.x} y={346} textAnchor="middle" fill={item.color} fontSize={12} fontWeight={700}>{item.lines[0]}</text>
-                <text x={item.x} y={364} textAnchor="middle" fill={item.color} fontSize={12} fontWeight={700}>{item.lines[1]}</text>
+                <text x={item.x} y={346} textAnchor="middle" fill={item.color} fontSize={14} fontWeight={700}>{item.lines[0]}</text>
+                <text x={item.x} y={366} textAnchor="middle" fill={item.color} fontSize={14} fontWeight={700}>{item.lines[1]}</text>
+                <text x={item.x} y={448} textAnchor="middle" fill={colors.TEXT} fontSize={15}>{item.role}</text>
               </g>
             ))}
             <text x={640} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>THE RUNBOOK REMEMBERS THE RUN</text>

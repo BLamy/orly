@@ -101,17 +101,17 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={headingFade}>the concept clock</text>
-      <text x="640" y="91" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono} opacity={headingFade}>Token Encoder · 16 layers · hidden_size: 4096 · k: 4</text>
+      <text x="640" y="91" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono} opacity={headingFade}>Token Encoder · 16 layers · hidden_size: 4096 · k: 4</text>
 
       <g opacity={s.get(scene.encoderU)}>
         {Array.from({ length: 16 }, (_, i) => {
           const x = 105 + i * 71;
           return <g key={i} opacity={0.16 + 0.44 * clamp01(s.get(scene.encoderU) * 16 - i)}>
             <line x1={x} y1="148" x2={x} y2="360" stroke={i % 4 === 3 ? GROUP_COLORS[Math.floor(i / 4)] : colors.GRID} strokeWidth={i % 4 === 3 ? 3 : 1.2} />
-            <text x={x} y="132" textAnchor="middle" fill={colors.MUTED} fontSize="12">{i + 1}</text>
+            <text x={x} y="132" textAnchor="middle" fill={colors.MUTED} fontSize="14">{i + 1}</text>
           </g>;
         })}
-        <text x="86" y="250" transform="rotate(-90 86 250)" textAnchor="middle" fill={colors.MUTED} fontSize="12">encoder depth</text>
+        <text x="86" y="250" transform="rotate(-90 86 250)" textAnchor="middle" fill={colors.MUTED} fontSize="14">encoder depth</text>
       </g>
 
       {TOKENS.map((t) => {
@@ -124,9 +124,10 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={t.i}>
           <line x1={t.x} y1="470" x2={t.x} y2={414 - 150 * pool} stroke={GROUP_COLORS[t.group]} strokeWidth="2" opacity={hidden * (1 - pool * 0.65)} />
           <Token i={t.i} x={t.x} y={470} u={u * (1 - pool * 0.45)} active={active} />
+          {t.i === targetIndex && <text x={t.x} y="440" textAnchor="middle" fill={colors.WARM} fontSize="14" opacity={clamp01(ribbon) * (1 - clamp01(hidden * 20))}>next token</text>}
           {hidden > 0 && <g transform={`translate(${hx} ${hy})`} opacity={hidden * (1 - concepts * 0.55)}>
             <circle r={8 + 7 * (1 - pool)} fill={GROUP_COLORS[t.group]} opacity={0.45 + 0.4 * u} />
-            <text y="-14" textAnchor="middle" fill={colors.MUTED} fontSize="12" opacity={1 - pool}>{`h${t.i + 1}`}</text>
+            <text y="-14" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={1 - pool}>{`h${t.i + 1}`}</text>
           </g>}
         </g>;
       })}
@@ -137,7 +138,8 @@ export function Render({ s }: { s: SceneState }) {
         const cx = (x0 + x1) / 2;
         const tick = clamp01(clock - g);
         return <g key={g}>
-          <Brace x0={x0} x1={x1} y={526} u={clamp01(braces * 5 - g)} color={GROUP_COLORS[g]} label="4 → 1 mean" fontSize={12} opacity={1 - pool * 0.85} />
+          <Brace x0={x0} x1={x1} y={526} u={clamp01(braces * 5 - g)} color={GROUP_COLORS[g]} opacity={1 - pool * 0.6} />
+          <text x={cx} y="562" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={clamp01(braces * 5 - g)}>4 → 1 mean</text>
           {concepts > 0 && <g transform={`translate(${cx} 264) scale(${0.82 + 0.18 * concepts})`} opacity={concepts}>
             <circle r={35 + tick * 5} fill="#101827" stroke={tick > 0 ? colors.WARM : GROUP_COLORS[g]} strokeWidth={tick > 0 ? 4 : 3} />
             <circle r="22" fill={GROUP_COLORS[g]} opacity={0.22 + 0.18 * tick} />
@@ -147,10 +149,13 @@ export function Render({ s }: { s: SceneState }) {
       })}
 
       <g opacity={clamp01(scale)}>
-        <line x1="116" y1="565" x2="1164" y2="565" stroke={colors.ACCENT} strokeWidth="3" strokeDasharray="10 8" />
-        <text x="1164" y="590" textAnchor="end" fill={colors.ACCENT} fontSize="13">token clock · 16 positions</text>
+        <line x1="116" y1="596" x2="1164" y2="596" stroke={colors.ACCENT} strokeWidth="3" strokeDasharray="10 8" />
+        <text x="1164" y="586" textAnchor="end" fill={colors.ACCENT} fontSize="14">token clock · 16 positions</text>
+      </g>
+      <g opacity={clamp01(scale) + 0.45 * clamp01(target - 3) * (1 - clamp01(scale))}>
         <line x1="232" y1="185" x2="1048" y2="185" stroke={colors.WARM} strokeWidth="4" strokeDasharray="14 10" />
-        <text x="1048" y="167" textAnchor="end" fill={colors.WARM} fontSize="13">concept clock · 4 positions</text>
+        <rect x="826" y="152" width="228" height="24" rx="6" fill={colors.BG} />
+        <text x="1048" y="169" textAnchor="end" fill={colors.WARM} fontSize="14">concept clock · 4 positions</text>
       </g>
     </g>
 
@@ -164,6 +169,7 @@ export function Render({ s }: { s: SceneState }) {
         <text y="76" textAnchor="middle" fill={colors.MUTED} fontSize="14">one concept</text>
       </g>)}
       <text x="640" y="492" textAnchor="middle" fill={colors.MUTED} fontSize="16">token input → mean-pooled concept → token output</text>
+      <text x="640" y="528" textAnchor="middle" fill={colors.TEXT} fontSize="16">An invariant is a property that holds at every step of the stream.</text>
     </g>
   </Camera>;
 }

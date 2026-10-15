@@ -34,17 +34,30 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 // Graph geometry — depth 0 builds first, tears down last.
 // ---------------------------------------------------------------------------
 
-const BOX_W = 230;
+const BOX_W = 300;
 const BOX_H = 64;
 
 const REPO = { x: 400, y: 200 } as const;
 const SQL = { x: 400, y: 330 } as const; // docks up against the repo
-const MAILER = { x: 790, y: 200 } as const;
-const SMTP = { x: 790, y: 330 } as const;
+const MAILER = { x: 770, y: 200 } as const;
+const SMTP = { x: 770, y: 330 } as const;
 const APP = { x: 595, y: 80 } as const;
-const GHOST = { x: 1090, y: 330 } as const; // the duplicate client build
+const GHOST = { x: 1110, y: 330 } as const; // the duplicate client build
 
-const MERGE_PANEL = { x: 880, y: 150, w: 330, h: 210 } as const;
+const MERGE_PANEL = { x: 950, y: 150, w: 300, h: 210 } as const;
+
+// the tangle an unwired app looks like before the wiring is named (beat 1 only)
+const TANGLE = [
+  { x: 120, y: 110, label: 'cache' },
+  { x: 760, y: 110, label: 'metrics' },
+  { x: 110, y: 330, label: 'auth' },
+  { x: 800, y: 330, label: 'queue' },
+  { x: 300, y: 400, label: 'logger' },
+  { x: 560, y: 410, label: 'smtp' },
+] as const;
+const TANGLE_EDGES = [
+  [0, 3], [1, 2], [4, 3], [5, 0], [2, 4],
+] as const;
 
 const RECAP = [
   { label: 'streams pull', color: colors.ACCENT },
@@ -198,7 +211,7 @@ export function buildScene(): Scene {
     text: 'And that is the book. Streams pull, queues hand off, hubs broadcast, transactions commit all or nothing — and layers wire the whole machine together. Those are the good parts.',
   });
   tl.tween(cam, CAM_WIDE, { at: 67.2, dur: 1.5, ease: ease.move });
-  tl.tween(stageDim, 0.12, { at: 67.6, dur: 1.2, ease: ease.move });
+  tl.tween(stageDim, 0.06, { at: 67.6, dur: 1.2, ease: ease.move });
   tl.tween(recapU, 1, { at: 68.8, dur: 1.6, ease: ease.enter });
   tl.hold(75.5, 1.5);
 
@@ -261,10 +274,10 @@ function ServiceBox({ x, y, title, code, u, power = 0, ghost, sealedWith }: {
         strokeWidth={power > 0.5 ? 2 : 1.2}
         strokeDasharray={ghost ? '5 5' : undefined}
       />
-      <text x={x} y={y - 6} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+      <text x={x} y={y - 6} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
         {title}
       </text>
-      <text x={x} y={y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">
+      <text x={x} y={y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
         {code}
       </text>
       {/* output plug */}
@@ -274,7 +287,7 @@ function ServiceBox({ x, y, title, code, u, power = 0, ghost, sealedWith }: {
           x={x - BOX_W / 2 - 14}
           y={y - BOX_H / 2 - 18}
           width={BOX_W + 28}
-          height={BOX_H * 2 + 96}
+          height={BOX_H * 2 + 128}
           rx={16}
           fill="none"
           stroke={colors.ACCENT}
@@ -292,7 +305,7 @@ function Socket({ x, y, open, u, label }: { x: number; y: number; open: boolean;
     <g opacity={u}>
       <rect x={x - 16} y={y} width={32} height={9} rx={3} fill="none" stroke={open ? colors.WARM : colors.POSITIVE} strokeWidth={1.5} strokeDasharray={open ? '3 3' : undefined} />
       {label && open && (
-        <text x={x + 24} y={y + 9} fill={colors.WARM} fontSize={10} fontFamily="monospace">
+        <text x={x + 24} y={y + 9} fill={colors.WARM} fontSize={12} fontFamily="monospace">
           {label}
         </text>
       )}
@@ -323,6 +336,15 @@ export function Render({ s }: { s: SceneState }) {
   const ghostX = lerp(GHOST.x, SQL.x, memoU);
   const ghostY = lerp(GHOST.y, sqlY, memoU);
   const ghostAlpha = ghostU * (1 - clamp01((memoU - 0.75) / 0.25));
+  // the second ask's edge: from the app's underside, through the gap between repo and mailer
+  const memoEx = lerp(ghostX, SQL.x + BOX_W / 2 + 4, memoU);
+  const memoEy = lerp(ghostY - BOX_H / 2 - 10, sqlY, memoU);
+  const memoC1x = lerp(900, APP.x, memoU);
+  const memoC1y = lerp(APP.y + 60, 170, memoU);
+  const memoC2x = lerp(ghostX + 140, APP.x, memoU);
+  const memoC2y = lerp(ghostY - 90, 250, memoU);
+  // the tangle fades out as the type anatomy takes over
+  const tangleU = repoU * (1 - clamp01(anatU));
 
   const p0 = powerOf(0, buildT, stopU);
   const p1 = powerOf(1, buildT, stopU);
@@ -347,12 +369,27 @@ export function Render({ s }: { s: SceneState }) {
               <line x1={APP.x + 60} y1={APP.y + BOX_H / 2 + 8} x2={MAILER.x} y2={MAILER.y - BOX_H / 2 - 10} stroke={edgeStroke(p1)} strokeWidth={1.3} />
               {/* the second ask for the client — bends into the shared box once memoized */}
               <path
-                d={`M ${APP.x + 130} ${APP.y + 18} C ${lerp(GHOST.x, 900, memoU)} ${APP.y + 60}, ${ghostX + 140} ${ghostY - 90}, ${ghostX + (memoU > 0.9 ? BOX_W / 2 + 4 : 0)} ${ghostY - (memoU > 0.9 ? 0 : BOX_H / 2 + 10)}`}
+                d={`M ${APP.x} ${APP.y + BOX_H / 2} C ${memoC1x} ${memoC1y}, ${memoC2x} ${memoC2y}, ${memoEx} ${memoEy}`}
                 fill="none"
                 stroke={ghostU > 0 ? edgeStroke(p0) : 'none'}
                 strokeWidth={1.3}
                 opacity={ghostU}
               />
+            </g>
+          )}
+          {tangleU > 0.01 && (
+            <g opacity={tangleU * 0.8}>
+              {TANGLE_EDGES.map(([a, b]) => (
+                <line key={`${a}-${b}`} x1={TANGLE[a].x} y1={TANGLE[a].y} x2={TANGLE[b].x} y2={TANGLE[b].y} stroke={colors.GRID} strokeWidth={1.2} />
+              ))}
+              {TANGLE.map((n) => (
+                <g key={n.label}>
+                  <rect x={n.x - 58} y={n.y - 17} width={116} height={34} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1} />
+                  <text x={n.x} y={n.y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                    {n.label}
+                  </text>
+                </g>
+              ))}
             </g>
           )}
           {sqlU > 0 && provideU < 0.2 && (
@@ -376,16 +413,16 @@ export function Render({ s }: { s: SceneState }) {
           {/* type anatomy */}
           {anatU > 0 && provideU < 0.5 && (
             <g opacity={anatU * (1 - clamp01(provideU * 2))}>
-              <text x={REPO.x} y={REPO.y - BOX_H / 2 - 20} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+              <text x={REPO.x} y={REPO.y - BOX_H / 2 - 20} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 {'Layer<ROut, E, RIn>'}
               </text>
-              <text x={REPO.x - BOX_W / 2 - 12} y={REPO.y + 4} textAnchor="end" fill={colors.NEGATIVE} fontSize={10} fontFamily="monospace">
+              <text x={REPO.x - BOX_W / 2 - 12} y={REPO.y + 4} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                 E: SqlError
               </text>
             </g>
           )}
           {provideU > 0.3 && (
-            <text x={REPO.x} y={sqlY + BOX_H / 2 + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily="monospace" opacity={clamp01((provideU - 0.3) / 0.4) * (graphU > 0 ? 0.35 : 1) * (1 - clamp01((memoU - 0.5) / 0.3))}>
+            <text x={REPO.x} y={sqlY + BOX_H / 2 + 56} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={clamp01((provideU - 0.3) / 0.4) * (graphU > 0 ? 0.7 : 1) * (1 - clamp01((memoU - 0.5) / 0.3))}>
               layerNoDeps.pipe(Layer.provide(SqlClientLayer))
             </text>
           )}
@@ -394,19 +431,19 @@ export function Render({ s }: { s: SceneState }) {
           {mergeU > 0 && (
             <g opacity={mergeU}>
               <rect x={MERGE_PANEL.x} y={MERGE_PANEL.y} width={MERGE_PANEL.w} height={MERGE_PANEL.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + 26} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+              <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + 26} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                 Layer.provideMerge(SqlClientLayer)
               </text>
               {[0, 1].map((i) => (
                 <g key={i}>
                   <rect x={MERGE_PANEL.x + 40} y={MERGE_PANEL.y + 48 + i * 70} width={MERGE_PANEL.w - 80} height={52} rx={9} fill={colors.BG} stroke={colors.GRID} />
                   <rect x={MERGE_PANEL.x + MERGE_PANEL.w / 2 - 12} y={MERGE_PANEL.y + 41 + i * 70} width={24} height={7} rx={3} fill={colors.POSITIVE} />
-                  <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + 79 + i * 70} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+                  <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + 79 + i * 70} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                     {i === 0 ? 'UserRepository' : 'SqlClient'}
                   </text>
                 </g>
               ))}
-              <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + MERGE_PANEL.h - 12} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+              <text x={MERGE_PANEL.x + MERGE_PANEL.w / 2} y={MERGE_PANEL.y + MERGE_PANEL.h - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 both plugs stay exposed
               </text>
             </g>
@@ -419,8 +456,8 @@ export function Render({ s }: { s: SceneState }) {
           <ServiceBox x={ghostX} y={ghostY} title="SqlClient" code="the same layer, asked twice" u={ghostAlpha} ghost />
           {memoU > 0.75 && (
             <g opacity={clamp01((memoU - 0.75) / 0.25)}>
-              <rect x={SQL.x - 92} y={sqlY + BOX_H / 2 + 8} width={184} height={24} rx={12} fill={colors.BG} stroke={colors.SECONDARY} />
-              <text x={SQL.x} y={sqlY + BOX_H / 2 + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily="monospace">
+              <rect x={SQL.x - 124} y={sqlY + BOX_H / 2 + 8} width={248} height={26} rx={13} fill={colors.BG} stroke={colors.SECONDARY} />
+              <text x={SQL.x} y={sqlY + BOX_H / 2 + 25} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
                 MemoMap — built once, shared
               </text>
             </g>
@@ -428,17 +465,17 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* acquire / release chips on the transport */}
           {buildT > 0.15 && stopU < 0.6 && (
-            <text x={SMTP.x + BOX_W / 2 + 12} y={SMTP.y + 4} fill={colors.POSITIVE} fontSize={10} fontFamily="monospace" opacity={clamp01(buildT * 3) * (1 - clamp01(stopU * 2))}>
+            <text x={SMTP.x} y={SMTP.y + BOX_H / 2 + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={clamp01(buildT * 3) * (1 - clamp01(stopU * 2))}>
               acquire ✓
             </text>
           )}
           {finSmtp > 0 && (
-            <text x={SMTP.x + BOX_W / 2 + 12} y={SMTP.y + 4} fill={colors.WARM} fontSize={10} fontFamily="monospace" opacity={finSmtp}>
+            <text x={SMTP.x} y={SMTP.y + BOX_H / 2 + 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={finSmtp}>
               transporter.close()
             </text>
           )}
           {finApp > 0 && stopU > 0.05 && (
-            <text x={APP.x + 170} y={APP.y + 4} fill={colors.WARM} fontSize={10} fontFamily="monospace" opacity={finApp}>
+            <text x={APP.x + BOX_W / 2 + 20} y={APP.y + 4} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={finApp}>
               finalizers — reverse order
             </text>
           )}
@@ -446,20 +483,20 @@ export function Render({ s }: { s: SceneState }) {
           {/* launch outline */}
           {launchU > 0 && (
             <g opacity={launchU}>
-              <rect x={240} y={28} width={800} height={382} rx={18} fill="none" stroke={heartbeat > 0 ? colors.ACCENT : colors.GRID} strokeWidth={1.6} strokeDasharray="10 7" />
-              <text x={264} y={54} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+              <rect x={196} y={28} width={896} height={382} rx={18} fill="none" stroke={heartbeat > 0 ? colors.ACCENT : colors.GRID} strokeWidth={1.6} strokeDasharray="10 7" />
+              <text x={220} y={54} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 Layer.launch(app)
               </text>
               {heartbeat > 0 && (
                 <g>
                   <circle cx={1006} cy={48} r={7} fill={colors.POSITIVE} opacity={heartbeat} />
-                  <text x={992} y={53} textAnchor="end" fill={colors.POSITIVE} fontSize={11} opacity={heartbeat}>
+                  <text x={992} y={53} textAnchor="end" fill={colors.POSITIVE} fontSize={13} opacity={heartbeat}>
                     running
                   </text>
                 </g>
               )}
               {stopU > 0.1 && (
-                <text x={1006} y={53} textAnchor="end" fill={colors.WARM} fontSize={11} opacity={clamp01(stopU * 2)}>
+                <text x={1006} y={53} textAnchor="end" fill={colors.WARM} fontSize={13} opacity={clamp01(stopU * 2)}>
                   interrupted — closing scope
                 </text>
               )}
@@ -476,11 +513,11 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             {RECAP.map((r, i) => {
               const u = clamp01(recapU * 5 - i * 0.7);
-              const x = 300 + i * 172;
+              const x = 296 + i * 172;
               return (
                 <g key={r.label} opacity={u}>
                   <circle cx={x} cy={340} r={9} fill={r.color} opacity={0.85} />
-                  <text x={x} y={372} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                  <text x={x} y={372} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {r.label}
                   </text>
                 </g>

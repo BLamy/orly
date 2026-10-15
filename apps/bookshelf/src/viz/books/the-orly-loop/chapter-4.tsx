@@ -42,7 +42,7 @@ const PANEL_CK = { x: 800, y: 96, w: 384, h: 300 } as const;
 const ckY = (i: number) => PANEL_CK.y + 52 + i * 41;
 
 /** Snapshot pair (the alive check) sits under the checklist; beat 6 turns the same pair into the frozen counterexample. */
-const SNAP = { y: 440, w: 160, h: 112, ax: 800, bx: 1010 } as const;
+const SNAP = { y: 440, w: 160, h: 112, ax: 800, bx: 1024 } as const; // bx lines the second shot up with the checklist's right edge
 const SNAP_GAP_X = (SNAP.ax + SNAP.w + SNAP.bx) / 2;
 const PHASE_A = 0.52;
 const PHASE_B = 0.585;
@@ -107,7 +107,7 @@ export interface Scene {
 export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
-  const browserU = tl.channel('browserU', 0);
+  const browserU = tl.channel('browserU', 1); // the browser is already up when the chapter opens
   const urlU = tl.channel('urlU', 0);
   const playT = tl.channel('playT', 0); // mini-chapter progress 0..1
   const checks = CHECKS.map((_, i) => tl.channel(`ck${i}`, 0));
@@ -137,8 +137,8 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'So the built shelf is served for real, and a headless browser opens the book the way a reader would — chapter by chapter, every chapter.',
   });
-  tl.tween(browserU, 1, { at: 2.0, dur: 1.2, ease: ease.enter }); // up during beat 1 so the opening frame isn't blank
   tl.tween(cam, CAM_BROWSER, { at: 8.2, dur: 1.4, ease: ease.move });
+  tl.tween(ccGlow, 0, { at: 8.4, dur: 0.9, ease: ease.move }); // holds the CC pill's glow off while the URL types
   tl.tween(urlU, 1, { at: 9.4, dur: 1.8, ease: ease.linear });
   tl.tween(playT, 0.2, { at: 11.4, dur: 9, ease: ease.linear });
 
@@ -169,6 +169,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Now the hard question: is it actually animating? Take a snapshot, wait seven hundred milliseconds, take another. If the picture changed, it is alive.',
   });
+  tl.tween(frozenU, 0, { at: 28.0, dur: 1.4, ease: ease.move }); // frozen stays off until the counterexample
   tl.tween(browserDim, 0.5, { at: 28.2, dur: 0.8, ease: ease.move });
   tl.tween(snapU, 1, { at: 28.8, dur: 2.2, ease: ease.move });
   tl.tween(checks[3], 1, { at: 33.0, dur: 0.5, ease: ease.pop });
@@ -179,6 +180,7 @@ export function buildScene(): Scene {
     dur: 6,
     text: "A frozen scene fails right here — identical pictures, and a clock that isn't moving. That is exactly the bug this gate exists to catch.",
   });
+  tl.tween(snapU, 1, { at: 35.6, dur: 1.3, ease: ease.move }); // the snapshot pair stays up through the freeze
   tl.tween(frozenU, 1, { at: 35.8, dur: 1.0, ease: ease.enter });
   tl.hold(41.4, 0.6);
 
@@ -191,6 +193,7 @@ export function buildScene(): Scene {
   tl.tween(frozenU, 0, { at: 42.2, dur: 0.7, ease: ease.move });
   tl.tween(snapU, 0, { at: 42.2, dur: 0.7, ease: ease.move });
   tl.tween(browserDim, 0, { at: 42.4, dur: 0.8, ease: ease.move });
+  tl.tween(ccGlow, 0, { at: 42.4, dur: 1.3, ease: ease.move }); // glow stays off until the pill is named
   tl.tween(ccGlow, 1, { at: 43.6, dur: 0.8, ease: ease.enter });
   tl.tween(checks[4], 1, { at: 44.6, dur: 0.5, ease: ease.pop });
 
@@ -273,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
   const ringU = s.get(scene.ringU);
   const litU = s.get(scene.litU);
 
-  const worldOp = 1 - 0.88 * dimU;
+  const worldOp = 1 - 0.92 * dimU; // the old scene drops to 0.08 so the ring finale reads over a clean field
   const urlShown = URL_TEXT.slice(0, Math.round(clamp01(urlU) * URL_TEXT.length));
   const phase = playT * 2.2; // the orbit keeps moving as the chapter plays
 
@@ -298,6 +301,13 @@ export function Render({ s }: { s: SceneState }) {
               {[0, 1, 2].map((i) => (
                 <circle key={i} cx={BROWSER.x + 22 + i * 18} cy={BROWSER.y + 22} r={5} fill={colors.GRID} />
               ))}
+              {/* the claim the gate has to prove; it turns green once the console check passes */}
+              <g opacity={browserU * (1 - dimU)}>
+                <rect x={BROWSER.x + BROWSER.w - 176} y={BROWSER.y - 34} width={176} height={22} rx={11} fill="none" stroke={ck[5] > 0.3 ? colors.POSITIVE : colors.WARM} strokeWidth={1.2} />
+                <text x={BROWSER.x + BROWSER.w - 88} y={BROWSER.y - 19} textAnchor="middle" fill={ck[5] > 0.3 ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+                  {ck[5] > 0.3 ? 'proven: it plays' : 'claim: it plays'}
+                </text>
+              </g>
               <rect x={BROWSER.x + 80} y={BROWSER.y + 10} width={BROWSER.w - 100} height={24} rx={12} fill={colors.BG} stroke={colors.GRID} />
               <text x={BROWSER.x + 94} y={BROWSER.y + 26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {urlShown}
@@ -307,7 +317,7 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h} rx={8} fill={colors.BG} />
               {/* the mini chapter is on screen from the start; the URL finishing is what fades in the CC pill */}
               <g opacity={clamp01(browserU * 2 - 0.4)}>
-                <MiniScene cx={VIEW.x + VIEW.w / 2} cy={VIEW.y + VIEW.h / 2 - 14} scale={1} phase={phase} />
+                <MiniScene cx={VIEW.x + VIEW.w / 2} cy={VIEW.y + VIEW.h / 2 - 34} scale={1.35} phase={phase} />
               </g>
               {urlU > 0.7 && (
                 <g opacity={clamp01((urlU - 0.7) * 4)}>
@@ -395,7 +405,6 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* ---- the alive check: two snapshots ---- */}
           {/* ---- the alive check: two snapshots; beat 6 makes the second one identical (frozen → FAIL) ---- */}
           {snapU > 0 && (
             <g>
@@ -455,7 +464,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- ring finale ---- */}
         <ProgressRing ringU={ringU} lit={4} litU={litU} />
         {litU > 0 && (
-          <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.MUTED} fontSize={16} fontStyle="italic" opacity={litU}>
+          <text x={RING.cx} y={RING.cy + 8} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontStyle="italic" opacity={litU}>
             proven to play
           </text>
         )}

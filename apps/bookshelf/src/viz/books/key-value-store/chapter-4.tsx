@@ -44,7 +44,8 @@ const laneY = (i: number): number => 262 + i * 100; // row centers
 const CHIP_X = 790; // stored-value chip slot inside each lane
 const COORD = { x: 180, y: 362 } as const;
 
-const PANEL = { x: LANE_X, y: 84, w: LANE_W, h: 92 } as const;
+// tall enough that the dial labels (W = 2, R = 2) sit inside the panel
+const PANEL = { x: LANE_X, y: 84, w: LANE_W, h: 112 } as const;
 const DIAL_W = { x: 600, y: PANEL.y + 46 } as const;
 const DIAL_R = { x: 760, y: PANEL.y + 46 } as const;
 
@@ -381,7 +382,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={LANE_X + 24} y={laneY(i) + 6} fill={LANE_COLOR[i]} fontSize={18} fontWeight={700}>
                   {nd}
                 </text>
-                <text x={LANE_X + 52} y={laneY(i) + 6} fill={colors.MUTED} fontSize={12}>
+                <text x={LANE_X + 52} y={laneY(i) + 6} fill={colors.TEXT} fillOpacity={0.75} fontSize={14}>
                   replica
                 </text>
                 {/* the stored value chip */}
@@ -391,7 +392,7 @@ export function Render({ s }: { s: SceneState }) {
                 </text>
                 {i === 2 && staleU > 0 && (
                   <g opacity={staleU}>
-                    <text x={CHIP_X + 38} y={laneY(i) + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontStyle="italic">
+                    <text x={CHIP_X - 14} y={laneY(i) + 6} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontStyle="italic" fontWeight={600}>
                       stale — allowed
                     </text>
                   </g>
@@ -405,7 +406,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={COORD.x} y={COORD.y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
             coordinator
           </text>
-          <text x={COORD.x} y={COORD.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+          <text x={COORD.x} y={COORD.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             {write1U === 0
               ? 'ready'
               : ok1U > 0.5
@@ -417,7 +418,7 @@ export function Render({ s }: { s: SceneState }) {
           {ok1U > 0 && (
             <g opacity={ok1U}>
               <rect x={COORD.x - 34} y={COORD.y + 24} width={68} height={26} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.6} />
-              <text x={COORD.x} y={COORD.y + 42} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700}>
+              <text x={COORD.x} y={COORD.y + 42} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 OK
               </text>
             </g>
@@ -517,7 +518,7 @@ export function Render({ s }: { s: SceneState }) {
           {strongU > 0.01 && (
             <g opacity={strongU}>
               <rect x={READM(0).x} y={READM(0).y} width={READM(0).w} height={READM(0).h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                 README · Strong consistency
               </text>
               <text x={READM(0).x + 20} y={READM(0).y + 60} fill={colors.TEXT} fontSize={14} fontStyle="italic">
@@ -531,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
           {evU > 0.01 && (
             <g opacity={evU}>
               <rect x={READM(0).x} y={READM(0).y} width={READM(0).w} height={READM(0).h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                 README · Eventual consistency
               </text>
               <text x={READM(0).x + 20} y={READM(0).y + 60} fill={colors.TEXT} fontSize={14} fontStyle="italic">
@@ -545,7 +546,7 @@ export function Render({ s }: { s: SceneState }) {
           {capU > 0.01 && (
             <g opacity={capU}>
               <rect x={READM(0).x} y={READM(0).y} width={READM(0).w} height={READM(0).h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={READM(0).x + 20} y={READM(0).y + 30} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                 README · CAP theorem
               </text>
               <text x={READM(0).x + 20} y={READM(0).y + 60} fill={colors.TEXT} fontSize={14} fontStyle="italic">

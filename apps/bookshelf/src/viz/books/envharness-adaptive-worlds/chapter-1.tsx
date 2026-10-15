@@ -34,7 +34,7 @@ export function buildScene() {
 
   tl.caption({ at: 7.0, dur: 6.4, text: 'But a hand-built benchmark is static. It repeats the same lesson, even after the learner changes.' });
   tl.tween(freezeU, 1, { at: 7.8, dur: 1.0, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 335, k: 1.1 }, { at: 9.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.04 }, { at: 9.0, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.8, dur: 6.4, text: 'Environment Harness leaves that world in place and wraps a programmable membrane around its interface.' });
   tl.tween(orbitU, 1, { at: 14.4, dur: 1.4, ease: ease.draw });
@@ -49,7 +49,7 @@ export function buildScene() {
 
   tl.caption({ at: 34.2, dur: 6.5, text: 'The wrapper is itself an actionable environment, so another layer can wrap it again without changing the agent.' });
   tl.tween(stackU, 1, { at: 34.8, dur: 1.6, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 335, k: 1.1 }, { at: 37.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.04 }, { at: 37.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 41.2, dur: 6.4, text: 'Inside, the benchmark transition logic stays frozen while the membrane reshapes what passes through.' });
   tl.tween(freezeU, 1.6, { at: 41.8, dur: 1.0, ease: ease.pop });
@@ -92,7 +92,7 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx="640" cy="335" r="118" fill={colors.PANEL} stroke={colors.MUTED} strokeWidth="3" />
           <path d="M628 252 l24 24 M652 252 l-24 24" fill="none" stroke={colors.ACCENT} strokeWidth="4" strokeLinecap="round" opacity="0.7" />
           <text x="640" y="326" textAnchor="middle" fill={colors.TEXT} fontSize="24" fontWeight="700">static environment</text>
-          <text x="640" y="360" textAnchor="middle" fill={colors.MUTED} fontSize="15">native transitions · original task</text>
+          <text x="640" y="360" textAnchor="middle" fill={colors.MUTED} fontSize="15">transitions frozen · original task</text>
           <text x="640" y="399" textAnchor="middle" fill={colors.ACCENT} fontSize="32" opacity={0.35 + 0.65 * clamp01(s.get(scene.freezeU))}>❄</text>
         </g>
 
@@ -105,8 +105,9 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(s.get(scene.methodP) - i);
           const x = 640 + Math.cos(m.a) * 190;
           const y = 335 + Math.sin(m.a) * 190;
+          const w = Math.max(136, m.label.length * 9 + 24);
           return <g key={m.label} opacity={u} transform={`translate(${x} ${y}) scale(${0.75 + 0.25 * u})`}>
-            <rect x="-68" y="-18" width="136" height="36" rx="18" fill="#111827" stroke={i === 3 ? colors.POSITIVE : colors.SECONDARY} strokeWidth="2" />
+            <rect x={-w / 2} y="-18" width={w} height="36" rx="18" fill="#111827" stroke={i === 3 ? colors.POSITIVE : colors.SECONDARY} strokeWidth="2" />
             <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{m.label}</text>
           </g>;
         })}
@@ -144,7 +145,7 @@ export function Render({ s }: { s: SceneState }) {
               <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="16">{d}</text>
             </g>;
           })}
-          <text x="640" y="155" textAnchor="middle" fill={colors.SECONDARY} fontSize="22" fontWeight="700" opacity={clamp01(s.get(scene.domainsP))}>one interface layer · five benchmark families</text>
+          <text x="640" y="196" textAnchor="middle" fill={colors.SECONDARY} fontSize="22" fontWeight="700" opacity={clamp01(s.get(scene.domainsP))}>one interface layer · five benchmark families</text>
         </g>
       </g>
 

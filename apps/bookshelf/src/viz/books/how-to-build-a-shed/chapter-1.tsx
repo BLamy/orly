@@ -90,10 +90,10 @@ const GROUND: P3[] = [
 
 // the clutter with nowhere to live (step 1's inventory)
 const CLUTTER = [
-  { label: 'bikes', x: 200, y: 170 },
-  { label: 'lawnmower', x: 330, y: 250 },
-  { label: 'wheelbarrow', x: 165, y: 320 },
-  { label: 'garden tools', x: 310, y: 400 },
+  { label: 'bikes', x: 160, y: 150 },
+  { label: 'lawnmower', x: 232, y: 232 },
+  { label: 'wheelbarrow', x: 120, y: 320 },
+  { label: 'garden tools', x: 212, y: 404 },
 ] as const;
 const STASH = iso(4, 1.4, 4); // where the clutter disappears to
 
@@ -210,7 +210,7 @@ export function buildScene(): Scene {
     text: 'There is one catch waiting in this particular backyard: the lawn drops about a foot across those eight feet. Set the cube down and one whole corner floats in the air.',
   });
   tl.tween(cam, CAM_SLOPE, { at: 42.2, dur: 1.6, ease: ease.move });
-  tl.tween(sideDim, 0.18, { at: 42.2, dur: 1.2, ease: ease.move });
+  tl.tween(sideDim, 0.3, { at: 42.2, dur: 1.2, ease: ease.move });
   tl.tween(groundU, 1, { at: 42.8, dur: 1.6, ease: ease.draw });
   tl.tween(gapU, 1, { at: 45.4, dur: 1.0, ease: ease.enter });
   tl.hold(48.6, 0.5);
@@ -294,6 +294,8 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   // the side column fades out behind the closing panel
   const sideFade = s.get(scene.sideDim) * (1 - closeU);
+  // the diagram fades to a ghost behind the closing panel, so no half-faded lines show around it
+  const diagramFade = 1 - 0.85 * closeU;
 
   const dimLabel = (a: P3, b: P3, dx: number, dy: number, text: string) => {
     const p = iso(...a);
@@ -318,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the diagram steps back once the closing panel arrives */}
-        <g opacity={1 - 0.75 * closeU}>
+        <g opacity={diagramFade}>
         {/* ---- the lawn, arriving late ---- */}
         {groundU > 0 && (
           <g opacity={groundU}>
@@ -431,7 +433,7 @@ export function Render({ s }: { s: SceneState }) {
         })}
         {boardU > 0.6 && (
           <g opacity={clamp01(boardU * 2 - 1) * Math.min(1, boardU)}>
-            <line x1={382} y1={534} x2={iso(4, 0, 8).X - 6} y2={iso(4, 0, 8).Y + 7} stroke={colors.WARM} strokeWidth={1.2} opacity={0.7} />
+            <line x1={342} y1={534} x2={iso(4, 0, 8).X - 6} y2={iso(4, 0, 8).Y + 7} stroke={colors.WARM} strokeWidth={1.2} opacity={0.7} />
             <text x={236} y={540} fill={colors.WARM} fontSize={14} fontWeight={600}>
               8-ft boards, uncut
             </text>
@@ -474,7 +476,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={1068} y={160} textAnchor="end" fill={colors.WARM} fontSize={22} fontWeight={700}>
             ≈ $1,200
           </text>
-          <text x={782} y={178} fill={colors.MUTED} fontSize={12}>
+          <text x={782} y={178} fill={colors.MUTED} fontSize={13}>
             2015 prices · scrap pile: nearly empty
           </text>
         </g>
@@ -500,22 +502,25 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={812} y={278 + i * 34} fill={colors.TEXT} fontSize={14}>
                   {r.rule}
                 </text>
-                <text x={1068} y={278 + i * 34} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                <text x={1068} y={278 + i * 34} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   {r.fact}
                 </text>
               </g>
             );
           })}
+          <text x={782} y={370} fill={colors.MUTED} fontSize={13}>
+            rules vary by city — check yours
+          </text>
         </g>
         <g opacity={digU * sideFade}>
-          <rect x={760} y={404} width={330} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.5} />
+          <rect x={760} y={404} width={330} height={92} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.5} />
           <text x={782} y={427} fill={colors.WARM} fontSize={14} fontWeight={600}>
             digging? call before you dig
           </text>
-          <text x={782} y={446} fill={colors.MUTED} fontSize={12}>
+          <text x={782} y={447} fill={colors.TEXT} fontSize={13}>
             utility locates are free — and required
           </text>
-          <text x={782} y={484} fill={colors.MUTED} fontSize={12}>
+          <text x={782} y={476} fill={colors.MUTED} fontSize={13}>
             source: Instructables, “Build a Simple Shed”
           </text>
         </g>

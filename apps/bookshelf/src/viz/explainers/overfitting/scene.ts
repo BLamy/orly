@@ -170,7 +170,7 @@ export const yErr: ScaleLinear<number, number> = scaleLinear()
   .range([PANEL_Y + 462, PANEL_Y + 128]);
 
 // camera keyframes
-export const CAM_PUSH: CameraState = { x: xScale(0.62), y: yScale(-0.15), k: 1.75 };
+export const CAM_PUSH: CameraState = { x: xScale(0.35), y: yScale(0), k: 1.3 };
 export const CAM_WIDE: CameraState = { ...CAMERA_HOME };
 
 // stage constants re-exported for the render

@@ -84,19 +84,24 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="66" y="124" width="246" height="410" rx="30" fill="#101a2d" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="189" y="164" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>QueryClassification</text>
         <rect x="92" y="190" width="194" height="92" rx="18" fill="#15273d" stroke={colors.SECONDARY} />
-        <text x="189" y="212" textAnchor="middle" fill={colors.MUTED} fontSize="12">schemas</text>
+        <text x="189" y="212" textAnchor="middle" fill={colors.MUTED} fontSize="14">schemas</text>
         <text x="189" y="238" textAnchor="middle" fill={colors.TEXT} fontSize="18">daily_life</text>
-        <text x="189" y="264" textAnchor="middle" fill={colors.MUTED} fontSize="12">a category of memory</text>
+        <text x="189" y="264" textAnchor="middle" fill={colors.MUTED} fontSize="14">a category of memory</text>
         <rect x="92" y="300" width="194" height="92" rx="18" fill="#251d36" stroke={colors.WARM} />
-        <text x="189" y="322" textAnchor="middle" fill={colors.MUTED} fontSize="12">entities</text>
+        <text x="189" y="322" textAnchor="middle" fill={colors.MUTED} fontSize="14">entities</text>
         <text x="189" y="348" textAnchor="middle" fill={colors.TEXT} fontSize="18">café</text>
-        <text x="189" y="374" textAnchor="middle" fill={colors.MUTED} fontSize="12">a named person or thing</text>
-        <text x="189" y="440" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchCogGraph</text>
-        <text x="189" y="466" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchData</text>
-        <text x="189" y="492" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>Rank(top_k=5)</text>
+        <text x="189" y="374" textAnchor="middle" fill={colors.MUTED} fontSize="14">a named person or thing</text>
+        <text x="189" y="440" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>SearchCogGraph</text>
+        <text x="189" y="466" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>SearchData</text>
+        <text x="189" y="492" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>Rank(top_k=5)</text>
       </g>
 
       <g>
+        {rank > 0 && <g opacity={clamp01(rank * 5) * (1 - clamp01((rank - 0.94) * 18))}>
+          <line x1={356 + rank * 730} y1="138" x2={356 + rank * 730} y2="562" stroke={colors.POSITIVE} strokeWidth="6" strokeLinecap="round" />
+          <rect x={884 + rank * 110} y="92" width="172" height="32" rx="16" fill="#102a22" stroke={colors.POSITIVE} />
+          <text x={970 + rank * 110} y="113" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>vector similarity</text>
+        </g>}
         {CELLS.map((cell) => {
           const enter = clamp01(s.get(scene.fieldP) - cell.i);
           const inSchema = SCHEMA.has(cell.i);
@@ -104,10 +109,10 @@ export function Render({ s }: { s: SceneState }) {
           const inNeighbor = NEIGHBORS.has(cell.i);
           const survivor = inEntity || inNeighbor;
           const isTop = TOP.has(cell.i);
-          let opacity = 0.22 + enter * 0.78;
+          let opacity = 0.16 + enter * 0.84;
           let fill = colors.MUTED;
           if (schema > 0) {
-            opacity *= inSchema ? 1 : 1 - schema * 0.88;
+            opacity *= inSchema ? 1 : 1 - schema * 0.94;
             fill = inSchema ? colors.ACCENT : fill;
           }
           if (entity > 0) {
@@ -125,27 +130,27 @@ export function Render({ s }: { s: SceneState }) {
           }
           const lift = isTop ? top * 18 : 0;
           return <g key={cell.i} opacity={opacity * enter} transform={`translate(${xFor(cell.col)} ${yFor(cell.row) - lift}) scale(${0.75 + enter * 0.25 + (isTop ? top * 0.12 : 0)})`}>
+            <rect x="-27" y="-24" width="54" height="48" rx="11" fill={colors.BG} />
             <rect x="-27" y="-24" width="54" height="48" rx="11" fill={fill} opacity="0.22" stroke={fill} strokeWidth={isTop ? 3.5 : 2} />
-            <text y="5" textAnchor="middle" fill={fill} fontSize="12" fontFamily={colors.font.mono}>m{cell.i + 1}</text>
+            <text y="5" textAnchor="middle" fill={fill} fontSize="14" fontFamily={colors.font.mono}>m{cell.i + 1}</text>
           </g>;
         })}
         <g opacity={schema}>
           <rect x="575" y="130" width="374" height="300" rx="30" fill="none" stroke={colors.ACCENT} strokeWidth="4" strokeDasharray="10 8" />
-          <text x="762" y="118" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>memory_ids_for_slots_v2</text>
+          <text x="762" y="118" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>memory_ids_for_slots_v2</text>
         </g>
         <g opacity={entity}>
           <ellipse cx="750" cy="312" rx={160 - entity * 36} ry={150 - entity * 34} fill={colors.WARM} fillOpacity="0.05" stroke={colors.WARM} strokeWidth="4" />
-          <text x="750" y="500" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>strict: slot ∩ entity</text>
+          <text x="750" y="452" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>strict: slot ∩ entity</text>
+        </g>
+        <g opacity={entity * (1 - neighbor)}>
+          <rect x="66" y="78" width="352" height="34" rx="17" fill="#241d10" stroke={colors.WARM} />
+          <text x="242" y="100" textAnchor="middle" fill={colors.WARM} fontSize="14">filters so far: schema, then entity</text>
         </g>
         <g opacity={neighbor}>
-          <path d="M586 257 C540 226 522 198 516 166 M874 257 C928 224 948 196 948 166" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="8 7" />
-          <text x="1050" y="188" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>neighbor_entity_ids</text>
+          <path d="M575 150 C545 130 520 118 500 112 M949 170 C975 160 990 152 1000 150" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="8 7" />
+          <text x="1010" y="156" textAnchor="start" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>neighbor_entity_ids</text>
         </g>
-        {rank > 0 && <g opacity={clamp01(rank * 5) * (1 - clamp01((rank - 0.94) * 18))}>
-          <line x1={356 + rank * 730} y1="138" x2={356 + rank * 730} y2="562" stroke={colors.POSITIVE} strokeWidth="6" strokeLinecap="round" />
-          <rect x={884 + rank * 110} y="92" width="172" height="32" rx="16" fill="#102a22" stroke={colors.POSITIVE} />
-          <text x={970 + rank * 110} y="113" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>vector similarity</text>
-        </g>}
       </g>
 
       <g opacity={s.get(scene.densityU)}>

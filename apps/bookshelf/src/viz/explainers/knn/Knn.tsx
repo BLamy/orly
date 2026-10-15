@@ -152,11 +152,11 @@ function Frame({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* k badge */}
+          {/* k badge, inside the plot's top-left corner so the zoomed camera keeps it on stage */}
           {fieldU > 0 && (
             <g opacity={fieldU}>
-              <rect x={PLOT.x} y={PLOT.y - 40} width={96} height={30} rx={8} fill={colors.PANEL} opacity={0.9} stroke={colors.GRID} />
-              <text x={PLOT.x + 48} y={PLOT.y - 19} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
+              <rect x={PLOT.x + 12} y={PLOT.y + 12} width={96} height={30} rx={8} fill={colors.PANEL} opacity={0.9} stroke={colors.GRID} />
+              <text x={PLOT.x + 60} y={PLOT.y + 31} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
                 {`k = ${kShown}`}
               </text>
             </g>
@@ -182,6 +182,18 @@ function Frame({ s }: { s: SceneState }) {
                 const best = LOO_ERR[i] === Math.min(...LOO_ERR);
                 return (
                   <g key={k}>
+                    {/* empty slot, visible from the start so the chart reads as a chart before the bars grow */}
+                    <rect
+                      x={CHART.x + i * barW + 10}
+                      y={CHART.y}
+                      width={barW - 20}
+                      height={CHART.h}
+                      rx={6}
+                      fill="none"
+                      stroke={colors.GRID}
+                      strokeWidth={1.5}
+                      strokeDasharray="5 5"
+                    />
                     <rect
                       x={CHART.x + i * barW + 10}
                       y={CHART.y + CHART.h - h}
@@ -204,10 +216,10 @@ function Frame({ s }: { s: SceneState }) {
                     )}
                     <text
                       x={CHART.x + i * barW + barW / 2}
-                      y={CHART.y + CHART.h + 20}
+                      y={CHART.y + CHART.h + 22}
                       textAnchor="middle"
                       fill={colors.MUTED}
-                      fontSize={13}
+                      fontSize={14}
                     >
                       {`k=${k}`}
                     </text>
@@ -246,7 +258,7 @@ function Frame({ s }: { s: SceneState }) {
                     opacity={0.85}
                   />
                   {u > 0.9 && (
-                    <text x={BARS.x + 72 + w} y={y + rowH / 2 + 5} fill={colors.TEXT} fontSize={13}>
+                    <text x={BARS.x + 72 + w} y={y + rowH / 2 + 5} fill={colors.TEXT} fontSize={14}>
                       {CONTRAST[i] >= 10 ? CONTRAST[i].toFixed(0) : CONTRAST[i].toFixed(2)}
                     </text>
                   )}
@@ -260,7 +272,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={260} y={230} width={760} height={190} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={260} y={230} width={760} height={190} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             k-Nearest Neighbors
           </text>

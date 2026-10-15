@@ -44,8 +44,8 @@ const ROWS = [
   { pips: 1, judge: false }, // attempt 10 — the hard cap
 ];
 const JUDGE = { y: 320, w: 520, h: 60 };
-const THRASH_Y = 396;
-const STATE = { x: 700, y: 424, w: 480, h: 166 };
+const THRASH_Y = 404;
+const STATE = { x: 700, y: 432, w: 490, h: 166 };
 const HUMAN = { x: 400, y: 600 };
 
 // one framing for the whole right-hand story: the ring keeps its labels in view
@@ -245,21 +245,21 @@ export function Render({ s }: { s: SceneState }) {
             reveal={ringU}
             color={colors.ACCENT}
             dim={ringDim}
-            labelSize={13}
+            labelSize={14}
           />
           {ringU > 0.9 && (
-            <text x={RING.cx} y={RING.cy + 6} textAnchor="middle" fill={ringDim > 0.5 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily={MONO} opacity={0.9}>
+            <text x={RING.cx} y={RING.cy + 6} textAnchor="middle" fill={ringDim > 0.5 ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily={MONO} opacity={0.85}>
               {ringDim > 0.5 ? 'loop frozen' : 'work-queue — the gauntlet, looped'}
             </text>
           )}
 
           {/* ---- the rework ledger: rounds of 3, judge gates, the cap ---- */}
           {ledgerU > 0 && (
-            <g opacity={ledgerU * (1 - 0.5 * ringDim)}>
-              <text x={LEDGER.x} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={14}>
+            <g opacity={ledgerU * (1 - 0.65 * ringDim)}>
+              <text x={LEDGER.x} y={LEDGER.y - 22} fill={colors.TEXT} fontSize={14}>
                 rework budget
               </text>
-              <text x={LEDGER.x + 150} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+              <text x={LEDGER.x + 150} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 roundSize: 3 · maxAttempts: 10
               </text>
               {ROWS.map((row, r) => {
@@ -270,7 +270,7 @@ export function Render({ s }: { s: SceneState }) {
                 const judgeHalts = r === 1 && judge2U > 0.5;
                 return (
                   <g key={r} opacity={rowU}>
-                    <text x={LEDGER.x - 6} y={y + 13} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} textAnchor="end" opacity={0.9}>
+                    <text x={LEDGER.x - 6} y={y + 14} fill={colors.TEXT} fontSize={14} fontFamily={MONO} textAnchor="end" opacity={0.85}>
                       {r < 3 ? `r${r + 1}` : 'cap'}
                     </text>
                     {Array.from({ length: row.pips }, (_, c) => {
@@ -288,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
                             </g>
                           )}
                           {isCap && capU > 0.3 && (
-                            <text x={20} y={4.5} fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={capU}>
+                            <text x={20} y={5} fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={capU}>
                               attempt 10 — no eleventh
                             </text>
                           )}
@@ -298,8 +298,8 @@ export function Render({ s }: { s: SceneState }) {
                     {/* judge gate after each full round */}
                     {row.judge && (
                       <g transform={`translate(${LEDGER.x + 16 + 3 * PIP_DX + 26} ${y + 8})`}>
-                        <path d="M 0 -12 L 12 0 L 0 12 L -12 0 Z" fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.PANEL} stroke={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1.6} opacity={judgeRuled > 0.5 ? 0.9 : 0.8} />
-                        <text x={22} y={4.5} fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={MONO}>
+                        <path d="M 0 -12 L 12 0 L 0 12 L -12 0 Z" fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.PANEL} stroke={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.MUTED} strokeWidth={1.6} opacity={judgeRuled > 0.5 ? 0.9 : 0.9} />
+                        <text x={22} y={5} fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>
                           {judgeHalts ? 'judge: circling — halt' : judgeRuled > 0.5 ? 'judge: progressing' : `judge @ ${(r + 1) * 3}`}
                         </text>
                       </g>
@@ -312,12 +312,12 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the progress judge panel ---- */}
           {judge1U > 0 && (
-            <g opacity={judge1U * (1 - 0.5 * ringDim)}>
-              <rect x={LEDGER.x} y={JUDGE.y} width={JUDGE.w} height={JUDGE.h} rx={12} fill={colors.PANEL} stroke={judge2U > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
+            <g opacity={judge1U * (1 - 0.65 * ringDim)}>
+              <rect x={LEDGER.x} y={JUDGE.y} width={JUDGE.w} height={JUDGE.h} rx={12} fill={colors.PANEL} stroke={judge2U > 0.5 ? colors.NEGATIVE : colors.MUTED} strokeWidth={1.5} />
               <text x={LEDGER.x + 16} y={JUDGE.y + 26} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 the progress judge — a third critic, fresh eyes
               </text>
-              <text x={LEDGER.x + 16} y={JUDGE.y + 47} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={LEDGER.x + 16} y={JUDGE.y + 47} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 reads successive verdicts · rules ONLY on convergence · fixes nothing
               </text>
             </g>
@@ -337,7 +337,7 @@ export function Render({ s }: { s: SceneState }) {
           {stateU > 0 && (
             <g opacity={stateU}>
               <rect x={STATE.x} y={STATE.y} width={STATE.w} height={STATE.h} rx={14} fill={colors.PANEL} stroke={flipU > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={flipU > 0.5 ? 2 : 1.5} />
-              <text x={STATE.x + 18} y={STATE.y + 26} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+              <text x={STATE.x + 18} y={STATE.y + 26} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 .eforest/project.json — status
               </text>
               {STATES.map((st, i) => {
@@ -347,7 +347,7 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={st} transform={`translate(${STATE.x + 18 + (i % 2) * 224} ${STATE.y + 40 + Math.floor(i / 2) * 38})`}>
                     <rect width={206} height={32} rx={9} fill={active ? color : 'none'} opacity={active ? 0.16 : 1} stroke={active ? color : colors.GRID} strokeWidth={active ? 1.8 : 1} />
                     <circle cx={18} cy={16} r={5} fill={active ? color : colors.GRID} />
-                    <text x={34} y={21} fill={active ? colors.TEXT : colors.MUTED} fontSize={12.5} fontFamily={MONO} fontWeight={active ? 700 : 400}>
+                    <text x={34} y={21} fill={active ? colors.TEXT : colors.MUTED} fontSize={13.5} fontFamily={MONO} fontWeight={active ? 700 : 400}>
                       {st}
                     </text>
                   </g>
@@ -378,11 +378,37 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={310} y={262} width={660} height={124} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+            <rect x={310} y={226} width={660} height={200} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+            <text x={640} y={268} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
               rounds of three · a judge between rounds · a cap of ten
             </text>
-            <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            {/* the recap ledger: ten attempts, three gates, the cap */}
+            {Array.from({ length: 10 }, (_, i) => {
+              const isCap = i === 9;
+              const x = isCap ? 865 : 415 + Math.floor(i / 3) * 150 + (i % 3) * 30;
+              return (
+                <g key={i} transform={`translate(${x} 318)`}>
+                  <circle r={11} fill={isCap ? colors.PANEL : colors.NEGATIVE} stroke={isCap ? colors.WARM : colors.NEGATIVE} strokeWidth={isCap ? 2.4 : 1.5} opacity={isCap ? 1 : 0.9} />
+                  {!isCap && (
+                    <g stroke={colors.BG} strokeWidth={2} strokeLinecap="round">
+                      <line x1={-4} y1={-4} x2={4} y2={4} />
+                      <line x1={4} y1={-4} x2={-4} y2={4} />
+                    </g>
+                  )}
+                  {isCap && (
+                    <text y={5} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} fontWeight={700}>10</text>
+                  )}
+                </g>
+              );
+            })}
+            {[0, 1, 2].map((g) => (
+              <g key={g} transform={`translate(${510 + g * 150} 318)`}>
+                <path d="M 0 -12 L 12 0 L 0 12 L -12 0 Z" fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.6} />
+                <text y={30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>judge</text>
+              </g>
+            ))}
+            <text x={850} y={348} fill={colors.WARM} fontSize={12} fontFamily={MONO}>no eleventh</text>
+            <text x={640} y={390} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               the loop would rather halt than lie
             </text>
           </g>

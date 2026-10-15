@@ -19,7 +19,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -83,7 +82,14 @@ const denseSignal = (x: number): number =>
   Math.min(1, sparseSignal(x) + 0.62 * OBS_IDX.reduce((acc, i) => acc + gauss(x, i, 0.3), 0));
 
 const sigX = scaleLinear().domain([0, LAST]).range([cxAt(0), cxAt(LAST)]);
-const sigY = scaleLinear().domain([0, 1]).range([330, 168]);
+// the signal gets the upper half of the stage: baseline at y 320, peak at y 120
+const SIG_BASE_Y = 320;
+const SIG_TOP_Y = 120;
+const sigY = scaleLinear().domain([0, 1]).range([SIG_BASE_Y, SIG_TOP_Y]);
+
+// per-card darkness while the tape dims or relights: card i brightens in order
+// as dimU falls, so the relight runs card by card across the same tween
+const cardDim = (dimU: number, i: number): number => clamp01(dimU * (N + 2) - (N - 1 - i));
 
 // seeded burst particles for the reward pulse (module scope — deterministic)
 const burstRand = mulberry32(7);
@@ -292,7 +298,7 @@ function TapeCard({
         strokeWidth={1.6}
         strokeOpacity={0.4 + 0.6 * Math.max(lit, isLast ? finalFlash : 0)}
       />
-      <text x={cxAt(i)} y={TAPE_Y + 30} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
+      <text x={cxAt(i)} y={TAPE_Y + 30} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {card.kind}
       </text>
       <text x={cxAt(i)} y={TAPE_Y + 60} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
@@ -320,10 +326,23 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         <g opacity={stageFade}>
-          {/* the signal curve above the tape */}
-          <text x={X0} y={148} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          {/* the signal axis and its label, above the tape */}
+          <line
+            x1={cxAt(0)}
+            x2={cxAt(LAST)}
+            y1={SIG_BASE_Y}
+            y2={SIG_BASE_Y}
+            stroke={colors.MUTED}
+            strokeOpacity={0.35 * tapeU}
+            strokeWidth={1}
+          />
+          <text x={X0} y={SIG_BASE_Y + 26} fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={tapeU}>
             training signal along the trajectory
           </text>
+          {/* faint trace of the lone spike, waiting to be drawn in */}
+          <g opacity={0.2 * tapeU * (1 - sigRevealU)}>
+            <FunctionPlot x={sigX} y={sigY} f={sparseSignal} domain={[0, LAST]} reveal={1} color={colors.WARM} width={3} />
+          </g>
           <FunctionPlot
             x={sigX}
             y={sigY}
@@ -335,12 +354,7 @@ export function Render({ s }: { s: SceneState }) {
             width={3}
           />
 
-          {/* the tape */}
-          {CARDS.map((_, i) => (
-            <TapeCard key={i} i={i} u={win(tapeU, N, i, 3)} dim={dimU} glow={glowU} finalFlash={Math.max(dimU, glowU > 0 ? 0.4 : 0) + 0.6 * (dimU > 0 ? 1 : 0)} />
-          ))}
-
-          {/* reward burst — the centerpiece particle cloud */}
+          {/* reward burst — drawn under the cards so the dots never sit on a label */}
           <ParticleCloud
             state={s}
             r={2}
@@ -362,6 +376,16 @@ export function Render({ s }: { s: SceneState }) {
               });
             }}
           />
+
+          {/* the tape */}
+          {CARDS.map((_, i) => (
+            <TapeCard key={i} i={i} u={win(tapeU, N, i, 3)} dim={cardDim(dimU, i)} glow={glowU} finalFlash={Math.max(dimU, glowU > 0 ? 0.4 : 0) + 0.6 * (dimU > 0 ? 1 : 0)} />
+          ))}
+
+          {/* names the lone pulse once it ignites */}
+          <text x={cxAt(LAST)} y={TAPE_Y + CARD_H + 44} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={sigRevealU}>
+            outcome reward
+          </text>
         </g>
 
         {/* the combined loss */}
@@ -369,14 +393,20 @@ export function Render({ s }: { s: SceneState }) {
         {eqU > 0.01 && endU < 0.99 && (
           <g opacity={eqU * (1 - endU)}>
             <rect x={200} y={506} width={880} height={96} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.7} />
-            <MathLabel
-              tex={'\\mathcal{L} = m_{\\text{action}}\\,\\mathcal{L}_{\\text{GRPO}} + m_{\\text{obs}}\\,\\mathcal{L}_{\\text{supervised}}'}
-              x={640}
-              y={546}
-              fontSize={22}
-              boxWidth={860}
-            />
-            <text x={640} y={586} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={640} y={552} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontFamily="Georgia, serif">
+              <tspan fontStyle="italic">L</tspan>
+              {' = '}
+              <tspan fontStyle="italic">m</tspan>
+              <tspan dy={6} fontSize={16}>action</tspan>
+              <tspan dy={-6} fontStyle="italic">{' L'}</tspan>
+              <tspan dy={6} fontSize={16}>GRPO</tspan>
+              <tspan dy={-6}>{' + '}</tspan>
+              <tspan fontStyle="italic">m</tspan>
+              <tspan dy={6} fontSize={16}>obs</tspan>
+              <tspan dy={-6} fontStyle="italic">{' L'}</tspan>
+              <tspan dy={6} fontSize={16}>supervised</tspan>
+            </text>
+            <text x={640} y={586} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               one loss, two masks: reinforcement on actions, supervision on observations
             </text>
           </g>
@@ -392,7 +422,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               the same rollout, read twice
             </text>
-            <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               GRPO loss on actions + supervised loss on observations
             </text>
           </g>

@@ -166,7 +166,6 @@ export function buildScene(): Scene {
     text: 'The fix is a handful of solid, level contact points: one under each corner, and one at the midpoint of every wall. Masonry, not soil, decides where this shed stands.',
   });
   tl.tween(cam, CAM_PLAN, { at: 13.9, dur: 1.5, ease: ease.move });
-  tl.tween(dimAll, 0, { at: 13.9, dur: 1.0, ease: ease.move });
   tl.tween(planU, 1, { at: 14.3, dur: 1.0, ease: ease.draw });
   tl.tween(dotsU, 1, { at: 15.5, dur: 2.2, ease: ease.move });
   tl.hold(20.3, 0.5);
@@ -179,7 +178,6 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, CAM_UPHILL, { at: 21.0, dur: 1.6, ease: ease.move });
   tl.tween(planDim, 0, { at: 21.0, dur: 1.2, ease: ease.move });
-  tl.tween(dimAll, 1, { at: 21.0, dur: 1.2, ease: ease.move });
   tl.tween(blockU, 1, { at: 22.0, dur: 1.2, ease: ease.move });
   tl.tween(midU, 1, { at: 24.4, dur: 1.2, ease: ease.move });
   tl.hold(27.6, 0.5);
@@ -202,7 +200,6 @@ export function buildScene(): Scene {
     text: 'Piers have to land exactly where the floor frame will. So a temporary frame — a throwaway rectangle built to the exact footprint — is set over the layout to mark every spot.',
   });
   tl.tween(cam, CAM_PLAN, { at: 35.6, dur: 1.6, ease: ease.move });
-  tl.tween(dimAll, 0, { at: 35.8, dur: 1.0, ease: ease.move });
   tl.tween(planDim, 1, { at: 35.8, dur: 1.0, ease: ease.move });
   tl.tween(ghostU, 1, { at: 36.6, dur: 1.4, ease: ease.draw });
   tl.hold(41.6, 0.4);
@@ -224,8 +221,6 @@ export function buildScene(): Scene {
     text: 'Support by support, every top rises to meet one line. A bead of landscaping adhesive will lock the frame to the masonry — and the slope has been argued flat.',
   });
   tl.tween(cam, CAM_WIDE, { at: 49.3, dur: 1.7, ease: ease.move });
-  tl.tween(planDim, 0, { at: 49.3, dur: 1.0, ease: ease.move });
-  tl.tween(dimAll, 1, { at: 49.3, dur: 1.2, ease: ease.move });
   tl.tween(meetU, 1, { at: 50.5, dur: 1.6, ease: ease.draw });
   tl.tween(glueU, 1, { at: 52.6, dur: 0.8, ease: ease.enter });
   tl.tween(wedgeU, 0.25, { at: 50.5, dur: 1.4, ease: ease.move });
@@ -274,7 +269,7 @@ const scene = buildScene();
 function GardenBlock({ cam, x, top, u, label }: { cam: CameraState; x: number; top: number; u: number; label?: string }) {
   if (u <= 0) return null;
   const drop = (1 - u) * 46;
-  const labelOp = label ? inFrame(cam, x, top - drop - 8) : 0;
+  const labelOp = label ? inFrame(cam, x, top - drop - 14) : 0;
   return (
     <g opacity={u}>
       <rect
@@ -296,7 +291,7 @@ function GardenBlock({ cam, x, top, u, label }: { cam: CameraState; x: number; t
         opacity={0.5}
       />
       {labelOp > 0.05 && (
-        <text x={x} y={top - drop - 8} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={labelOp}>
+        <text x={x} y={top - drop - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={labelOp}>
           {label}
         </text>
       )}
@@ -306,6 +301,8 @@ function GardenBlock({ cam, x, top, u, label }: { cam: CameraState; x: number; t
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
+  // 0 on the cross-section, 1 on the plan: follows the camera's own moves, so no extra timing is needed
+  const planness = clamp01((cam.x - 780) / 200);
   const terrainU = s.get(scene.terrainU);
   const levelU = s.get(scene.levelU);
   const wedgeU = s.get(scene.wedgeU);
@@ -348,8 +345,8 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- cross-section ---- */}
-        {dimAll > 0.02 && (
-        <g opacity={dimAll}>
+        {dimAll * (1 - planness) > 0.02 && (
+        <g opacity={dimAll * (1 - planness)}>
           <g opacity={terrainU}>
             <path d={soil} fill="#233042" opacity={0.55} />
             <path d={surface} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - terrainU} opacity={0.85} />
@@ -375,8 +372,8 @@ export function Render({ s }: { s: SceneState }) {
                 strokeDashoffset={0}
                 opacity={levelU * 0.9}
               />
-              {levelU * inFrame(cam, EX(5.4), LEVEL_Y - 10) > 0.05 && (
-                <text x={EX(5.4)} y={LEVEL_Y - 10} fill={colors.ACCENT} fontSize={14} opacity={levelU * inFrame(cam, EX(5.4), LEVEL_Y - 10)}>
+              {levelU * inFrame(cam, EX(6.6), LEVEL_Y - 10) > 0.05 && (
+                <text x={EX(6.6)} y={LEVEL_Y - 10} fill={colors.ACCENT} fontSize={14} opacity={levelU * inFrame(cam, EX(6.6), LEVEL_Y - 10)}>
                   level
                 </text>
               )}
@@ -429,10 +426,11 @@ export function Render({ s }: { s: SceneState }) {
               />
               {/* riser label sits mid-riser so it clears the ~12 in drop label below it */}
               <text x={SUPPORTS.corner8.x + 44} y={LEVEL_Y + riserH * 0.35} fill={colors.WARM} fontSize={14}>
-                riser — 4x6 PT
+                riser · short wood post
               </text>
-              <text x={SUPPORTS.corner8.x - 44} y={PIER_TOP + 34} textAnchor="end" fill={colors.MUTED} fontSize={13}>
-                pier block
+              {/* pier label sits below the sod, clear of the terrain line */}
+              <text x={SUPPORTS.corner8.x - 44} y={PIER_TOP + 64} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                pier block · concrete base
               </text>
             </g>
           )}
@@ -440,7 +438,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={boltU}>
               <circle cx={SUPPORTS.corner8.x} cy={PIER_TOP - 10} r={3.5} fill={colors.ACCENT} />
               <circle cx={SUPPORTS.corner8.x} cy={PIER_TOP - 26} r={3.5} fill={colors.ACCENT} />
-              <text x={SUPPORTS.corner8.x - 26} y={PIER_TOP - 16} textAnchor="end" fill={colors.ACCENT} fontSize={13}>
+              <text x={SUPPORTS.corner8.x - 26} y={PIER_TOP - 16} textAnchor="end" fill={colors.ACCENT} fontSize={14}>
                 bolted
               </text>
             </g>
@@ -460,8 +458,8 @@ export function Render({ s }: { s: SceneState }) {
               {[SUPPORTS.corner0.x, SUPPORTS.mid.x].map((x, i) => (
                 <ellipse key={i} cx={x} cy={LEVEL_Y - 3} rx={16} ry={4} fill={colors.SECONDARY} opacity={0.8} />
               ))}
-              <text x={SUPPORTS.mid.x} y={LEVEL_Y - 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
-                landscaping adhesive
+              <text x={SUPPORTS.mid.x} y={LEVEL_Y - 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
+                landscaping adhesive · construction glue
               </text>
             </g>
           )}
@@ -469,9 +467,9 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- plan-view inset ---- */}
-        {planU * planDim > 0.02 && (
-        <g opacity={planU * planDim}>
-          <rect x={PLAN.x0 - 40} y={PLAN.y0 - 60} width={PLAN.w + 80} height={PLAN.h + 110} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+        {planU * planDim * planness > 0.02 && (
+        <g opacity={planU * planDim * planness}>
+          <rect x={PLAN.x0 - 40} y={PLAN.y0 - 60} width={PLAN.w + 80} height={PLAN.h + 130} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 - 34} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             footprint, from above — 8 × 8 ft
           </text>
@@ -490,6 +488,11 @@ export function Render({ s }: { s: SceneState }) {
               opacity={ghostU * 0.9}
             />
           )}
+          {ghostU > 0 && (
+            <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 + PLAN.h + 58} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={ghostU}>
+              dashed frame = temporary frame
+            </text>
+          )}
 
           {/* contact dots */}
           {DOTS.map((d, i) => {
@@ -504,13 +507,13 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={diagU}>
               <line x1={c(0, 0).x} y1={c(0, 0).y} x2={c(1, 1).x} y2={c(1, 1).y} stroke={colors.ACCENT} strokeWidth={1.8} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - diagU} />
               <line x1={c(1, 0).x} y1={c(1, 0).y} x2={c(0, 1).x} y2={c(0, 1).y} stroke={colors.SECONDARY} strokeWidth={1.8} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - diagU} />
-              <text x={PLAN.x0 + 4} y={PLAN.y0 + PLAN.h + 32} fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
+              <text x={PLAN.x0 + 4} y={PLAN.y0 + PLAN.h + 32} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 {dA.toFixed(1)} in
               </text>
-              <text x={PLAN.x0 + PLAN.w} y={PLAN.y0 + PLAN.h + 32} textAnchor="end" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <text x={PLAN.x0 + PLAN.w} y={PLAN.y0 + PLAN.h + 32} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 {dB.toFixed(1)} in
               </text>
-              <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 + PLAN.h + 32} textAnchor="middle" fill={square ? colors.POSITIVE : colors.NEGATIVE} fontSize={13} fontWeight={700}>
+              <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 + PLAN.h + 32} textAnchor="middle" fill={square ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 {square ? '= square' : '≠'}
               </text>
             </g>

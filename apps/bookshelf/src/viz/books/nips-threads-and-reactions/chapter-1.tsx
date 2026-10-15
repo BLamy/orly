@@ -63,12 +63,12 @@ const CAM_WIDE: CameraState = { x: 620, y: 340, k: 1.05 };
 interface Scene {
   tl: Timeline;
   cam: ChannelRef<CameraState>;
-  nothingU: ChannelRef<number>;
   rootU: ChannelRef<number>;
   draftU: ChannelRef<number>;
   eFlyU: ChannelRef<number>;
   markU: ChannelRef<number>;
   pFlyU: ChannelRef<number>;
+  bobGlowU: ChannelRef<number>;
   carolU: ChannelRef<number>;
   carolTagU: ChannelRef<number>;
   ghostU: ChannelRef<number>;
@@ -80,12 +80,12 @@ interface Scene {
 export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
-  const nothingU = tl.channel('nothingU', 0);
   const rootU = tl.channel('rootU', 0);
   const draftU = tl.channel('draftU', 0);
   const eFlyU = tl.channel('eFlyU', 0);
   const markU = tl.channel('markU', 0);
   const pFlyU = tl.channel('pFlyU', 0);
+  const bobGlowU = tl.channel('bobGlowU', 0);
   const carolU = tl.channel('carolU', 0);
   const carolTagU = tl.channel('carolTagU', 0);
   const ghostU = tl.channel('ghostU', 0);
@@ -100,8 +100,6 @@ export function buildScene(): Scene {
     text: 'Alice posts a note, and it is completely alone. The protocol has no reply button, no thread table, no conversation object. All it has is tags — and that turns out to be enough.',
   });
   tl.tween(rootU, 1, { at: 0.8, dur: 0.8, ease: ease.enter });
-  tl.tween(nothingU, 1, { at: 1.6, dur: 0.8, ease: ease.enter });
-  tl.tween(nothingU, 0, { at: 6.2, dur: 0.6, ease: ease.move });
   tl.hold(6.5, 0.7);
 
   // Beat 2 — Bob starts a reply.
@@ -139,6 +137,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'Now Carol answers Bob, and the pattern deepens. Her note carries two e tags: one marked root, still pointing at Alice’s note, and one marked reply, pointing at Bob’s. Root says which conversation. Reply says which branch.',
   });
+  tl.tween(bobGlowU, 1, { at: 27.3, dur: 1.4, ease: ease.move });
   tl.tween(carolU, 1, { at: 28.2, dur: 0.8, ease: ease.enter });
   tl.tween(carolTagU, 1, { at: 29.0, dur: 2.6, ease: ease.linear });
   tl.hold(33.9, 0.7);
@@ -173,7 +172,7 @@ export function buildScene(): Scene {
   tl.hold(53.8, 1.2);
 
   return {
-    tl, cam, nothingU, rootU, draftU, eFlyU, markU, pFlyU,
+    tl, cam, rootU, draftU, eFlyU, markU, pFlyU, bobGlowU,
     carolU, carolTagU, ghostU, shuffleU, dimU, closeU,
   };
 }
@@ -189,10 +188,10 @@ function NoteCard({ x, y, who, text, id, color, u, glow = 0 }: {
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <rect x={x - 105} y={y - 42} width={210} height={84} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={glow > 0 ? 2.2 : 1.4} />
-      <text x={x - 90} y={y - 18} fill={color} fontSize={14} fontWeight={600}>{who}</text>
-      <text x={x - 90} y={y + 4} fill={colors.TEXT} fontSize={13.5}>{text}</text>
-      <text x={x - 90} y={y + 26} fill={colors.MUTED} fontSize={12} fontFamily="monospace">id {id}</text>
+      <rect x={x - 105} y={y - 42} width={210} height={84} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={glow > 0 ? 2.6 : 2} />
+      <text x={x - 90} y={y - 18} fill={color} fontSize={15} fontWeight={600}>{who}</text>
+      <text x={x - 90} y={y + 4} fill={colors.TEXT} fontSize={14}>{text}</text>
+      <text x={x - 90} y={y + 26} fill={colors.MUTED} fontSize={13} fontFamily="monospace">id {id}</text>
     </g>
   );
 }
@@ -203,12 +202,14 @@ const MARK_ANCHOR = REPLY_LAYOUT.anchor('tags[0][3]');
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
-  const nothingU = s.get(scene.nothingU);
   const rootU = s.get(scene.rootU);
   const draftU = s.get(scene.draftU);
+  // the struck-through "nothing" labels ride on Alice's note and clear as Bob's draft fades in
+  const nothingU = rootU * (1 - draftU);
   const eFlyU = s.get(scene.eFlyU);
   const markU = s.get(scene.markU);
   const pFlyU = s.get(scene.pFlyU);
+  const bobGlowU = s.get(scene.bobGlowU);
   const carolU = s.get(scene.carolU);
   const carolTagU = s.get(scene.carolTagU);
   const ghostU = s.get(scene.ghostU);
@@ -232,13 +233,13 @@ function Frame({ s }: { s: SceneState }) {
                 const x = 300 + i * 220;
                 return (
                   <g key={label}>
-                    <rect x={x} y={300} width={200} height={40} rx={8} fill="none" stroke={colors.GRID} strokeDasharray="4 4" />
-                    <text x={x + 100} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={14}>{label}</text>
-                    <line x1={x + 16} y1={336} x2={x + 184} y2={336} stroke={colors.NEGATIVE} strokeWidth={1.5} opacity={0.6} />
+                    <rect x={x} y={300} width={200} height={40} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 4" />
+                    <text x={x + 100} y={326} textAnchor="middle" fill={colors.TEXT} fontSize={15}>{label}</text>
+                    <line x1={x + 16} y1={336} x2={x + 184} y2={336} stroke={colors.NEGATIVE} strokeWidth={1.8} opacity={0.85} />
                   </g>
                 );
               })}
-              <text x={300} y={372} fill={colors.MUTED} fontSize={12} fontFamily="monospace">none of these exist in the protocol</text>
+              <text x={300} y={372} fill={colors.MUTED} fontSize={14} fontFamily="monospace">none of these exist in the protocol</text>
             </g>
           )}
           {/* thread tree, right field */}
@@ -246,16 +247,20 @@ function Frame({ s }: { s: SceneState }) {
           {bobPlaced && (
             <g>
               <line x1={TREE.root.x} y1={TREE.root.y + 42} x2={TREE.bob.x} y2={TREE.bob.y - 42} stroke={colors.WARM} strokeWidth={1.8} opacity={Math.min(1, eFlyU)} />
-              <text x={TREE.root.x + 12} y={(TREE.root.y + TREE.bob.y) / 2 + 4} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={markU}>
+              <text x={TREE.root.x + 12} y={(TREE.root.y + TREE.bob.y) / 2 + 4} fill={colors.WARM} fontSize={13} fontFamily="monospace" opacity={markU}>
                 root
               </text>
             </g>
+          )}
+          {/* Bob's card brightens as the parent Carol answers */}
+          {bobGlowU > 0 && (
+            <rect x={TREE.bob.x - 116} y={TREE.bob.y - 51} width={232} height={102} rx={15} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={bobGlowU * 0.8} />
           )}
           <NoteCard x={TREE.bob.x} y={TREE.bob.y} who="bob" text="welcome to nostr!" id={shortHex(BOB_ID, 8, 4)} color={colors.POSITIVE} u={bobPlaced ? 1 : 0} />
           {carolU > 0 && (
             <g>
               <line x1={TREE.bob.x} y1={TREE.bob.y + 42} x2={TREE.carol.x} y2={TREE.carol.y - 42} stroke={colors.SECONDARY} strokeWidth={1.8} opacity={clamp01(carolTagU * 2 - 1)} />
-              <text x={TREE.bob.x + 12} y={(TREE.bob.y + TREE.carol.y) / 2 + 4} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace" opacity={clamp01(carolTagU * 2 - 1)}>
+              <text x={TREE.bob.x + 12} y={(TREE.bob.y + TREE.carol.y) / 2 + 4} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={clamp01(carolTagU * 2 - 1)}>
                 reply
               </text>
               {/* carol → root long arc, marked root */}
@@ -264,12 +269,12 @@ function Frame({ s }: { s: SceneState }) {
                 fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 5"
                 opacity={clamp01(carolTagU * 2) * 0.8}
               />
-              <text x={TREE.carol.x - 250} y={(TREE.root.y + TREE.carol.y) / 2 + 4} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={clamp01(carolTagU * 2) * 0.9}>
+              <text x={TREE.carol.x - 250} y={(TREE.root.y + TREE.carol.y) / 2 + 4} fill={colors.WARM} fontSize={13} fontFamily="monospace" opacity={clamp01(carolTagU * 2) * 0.9}>
                 root
               </text>
             </g>
           )}
-          <NoteCard x={TREE.carol.x} y={TREE.carol.y} who="carol" text="thanks bob, helping her out" id={shortHex('a7e3', 4, 0)} color={colors.SECONDARY} u={carolU} />
+          <NoteCard x={TREE.carol.x} y={TREE.carol.y} who="carol" text="thanks bob, helping her out" id={shortHex('a7e3', 4, 0)} color={colors.SECONDARY} u={carolU} glow={1} />
           {/* carol's tag chips */}
           {carolU > 0 &&
             CAROL_TAGS.map((t, i) => {
@@ -279,12 +284,12 @@ function Frame({ s }: { s: SceneState }) {
               const x = TREE.carol.x - 168 + i * 112;
               return (
                 <g key={i} opacity={u}>
-                  <rect x={x - 50} y={y - 17} width={100} height={34} rx={6} fill={colors.PANEL} stroke={t.marker ? (t.marker === 'root' ? colors.WARM : colors.SECONDARY) : colors.GRID} />
-                  <text x={x} y={y - 3} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
+                  <rect x={x - 50} y={y - 17} width={100} height={34} rx={6} fill={colors.PANEL} stroke={t.marker ? (t.marker === 'root' ? colors.WARM : colors.SECONDARY) : colors.MUTED} strokeWidth={1.2} />
+                  <text x={x} y={y - 3} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                     {t.tag} {t.val}
                   </text>
                   {t.marker && (
-                    <text x={x} y={y + 12} textAnchor="middle" fill={t.marker === 'root' ? colors.WARM : colors.SECONDARY} fontSize={12} fontFamily="monospace">
+                    <text x={x} y={y + 12} textAnchor="middle" fill={t.marker === 'root' ? colors.WARM : colors.SECONDARY} fontSize={13} fontFamily="monospace">
                       {t.marker}
                     </text>
                   )}
@@ -304,7 +309,7 @@ function Frame({ s }: { s: SceneState }) {
             ]}
           />
           {draftU >= 1 && (
-            <text x={78} y={146} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={draftU}>
+            <text x={78} y={146} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={draftU}>
               bob’s reply — composed by his client
             </text>
           )}
@@ -350,9 +355,9 @@ function Frame({ s }: { s: SceneState }) {
                 const meaning = (i === 0) !== (swap >= 0.5) ? 'read as: root' : 'read as: parent';
                 return (
                   <g key={i}>
-                    <rect x={x} y={488} width={190} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} strokeDasharray="4 4" />
-                    <text x={x + 95} y={507} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">{label}</text>
-                    <text x={x + 95} y={536} textAnchor="middle" fill={swap >= 0.5 ? colors.NEGATIVE : colors.MUTED} fontSize={12}>
+                    <rect x={x} y={488} width={190} height={30} rx={6} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.2} strokeDasharray="4 4" />
+                    <text x={x + 95} y={507} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">{label}</text>
+                    <text x={x + 95} y={536} textAnchor="middle" fill={swap >= 0.5 ? colors.NEGATIVE : colors.MUTED} fontSize={13}>
                       {meaning}
                     </text>
                   </g>
@@ -370,7 +375,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.98} stroke={colors.MUTED} strokeWidth={1.2} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A thread is a claim, not a table
           </text>

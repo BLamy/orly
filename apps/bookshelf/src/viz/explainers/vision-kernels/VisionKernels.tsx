@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, colors } from '../../core';
+import { Camera, Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { MatrixGrid } from '../../primitives';
 import overrides from './overrides.json';
@@ -16,8 +16,10 @@ import {
   K_TEX,
   K_VERT,
   MAP_HORZ,
+  MAP_OFF,
   MAP_TEX,
   MAP_VERT,
+  MAP_W,
   MAP_X,
   MCELL,
   MGAP,
@@ -46,7 +48,6 @@ const fmtW = (v: number) => {
   return Math.abs(w - Math.round(w)) < 0.02 ? String(Math.round(w)) : w.toFixed(1);
 };
 
-const MAP_W = OUT_N * MPITCH - MGAP;
 const WIN_W = 3 * PITCH - GAP;
 
 function renderFrame(s: SceneState) {
@@ -103,7 +104,7 @@ function renderFrame(s: SceneState) {
             x1={IMG.x + oj * PITCH + WIN_W + 8}
             y1={IMG.y + oi * PITCH + WIN_W / 2}
             x2={MAP_X + oj * MPITCH - 4}
-            y2={ROW_Y[0] + 24 + oi * MPITCH + MCELL / 2}
+            y2={ROW_Y[0] + MAP_OFF + oi * MPITCH + MCELL / 2}
             stroke={colors.MUTED}
             strokeWidth={1.5}
             strokeDasharray="3 7"
@@ -145,14 +146,14 @@ function renderFrame(s: SceneState) {
               showValues={fmtW}
               labelSize={13}
             />
-            {/* kernel → map arrow */}
-            <g opacity={kU}>
+            {/* kernel → map arrow, drawn only once its map starts filling */}
+            <g opacity={clamp01(mapP * 10)}>
               <line
                 x1={KER_X + 3 * KPITCH + 8}
                 y1={KER_Y[k] + (3 * KPITCH - GAP) / 2}
                 x2={MAP_X - 18}
-                y2={ROW_Y[k] + 24 + MAP_W / 2}
-                stroke={colors.GRID}
+                y2={ROW_Y[k] + MAP_OFF + MAP_W / 2}
+                stroke={colors.MUTED}
                 strokeWidth={1.5}
               />
             </g>
@@ -170,7 +171,7 @@ function renderFrame(s: SceneState) {
             <g opacity={0.28 + 0.72 * glow}>
               <rect
                 x={MAP_X - 8}
-                y={ROW_Y[k] + 24 - 8}
+                y={ROW_Y[k] + MAP_OFF - 8}
                 width={MAP_W + 16}
                 height={MAP_W + 16}
                 rx={10}
@@ -182,7 +183,7 @@ function renderFrame(s: SceneState) {
             </g>
             <MatrixGrid
               x={MAP_X}
-              y={ROW_Y[k] + 24}
+              y={ROW_Y[k] + MAP_OFF}
               values={MAPS[k]}
               cell={MCELL}
               gap={MGAP}
@@ -195,23 +196,25 @@ function renderFrame(s: SceneState) {
 
       {/* the "texture hides from Sobel" note, pinned to the checker patch */}
       <g opacity={noteU}>
-        <rect x={470} y={560} width={400} height={44} rx={10} fill={colors.PANEL} fillOpacity={0.9} stroke={colors.GRID} />
-        <text x={670} y={588} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+        <rect x={150} y={530} width={400} height={40} rx={10} fill={colors.PANEL} fillOpacity={0.9} stroke={colors.GRID} />
+        <text x={350} y={556} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
           edge response on the checker patch: exactly 0
         </text>
-        <line x1={475} y1={560} x2={IMG.x + 10 * PITCH} y2={IMG.y + 10 * PITCH} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="3 6" />
+        <line x1={372} y1={530} x2={372} y2={510} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="3 6" />
       </g>
 
       {/* closing: the maps are the layer's output */}
       <g opacity={closeU}>
-        <MathLabel tex="\text{layer output} = 3 \times 10 \times 10" x={KER_X + 60} y={620} fontSize={19} color={colors.MUTED} anchor="start" />
+        <text x={600} y={603} fill={colors.MUTED} fontSize={19}>
+          layer output = 3 × 10 × 10
+        </text>
         {[0, 1, 2].map((k) => (
           <line
             key={k}
             x1={MAP_X + MAP_W + 14}
-            y1={ROW_Y[k] + 24 + MAP_W / 2}
+            y1={ROW_Y[k] + MAP_OFF + MAP_W / 2}
             x2={MAP_X + MAP_W + 34}
-            y2={ROW_Y[k] + 24 + MAP_W / 2}
+            y2={ROW_Y[k] + MAP_OFF + MAP_W / 2}
             stroke={MAP_COLORS[k]}
             strokeWidth={2.5}
             markerEnd={undefined}

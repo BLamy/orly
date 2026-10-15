@@ -93,23 +93,24 @@ export function Render({ s }: { s: SceneState }) {
         <circle cx="100" cy="128" r="18" fill={colors.WARM} opacity="0.28" />
         <path d="M96 120 L113 128 L96 136 Z" fill={colors.WARM} />
         <text x="130" y="134" textAnchor="start" fill={colors.TEXT} fontSize="15" fontWeight="800">video path</text>
-        <text x="152" y="168" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>source_type: path</text>
+        <text x="152" y="168" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>source_type: path</text>
       </g>
       <path d={`M244 145 H${Math.max(244, 294 + clamp01(s.get(scene.decodeP) / 8) * 78)}`} stroke={colors.ACCENT} strokeWidth="4" strokeDasharray="8 7" />
       {Array.from({ length: 8 }, (_, i) => <MiniFrame key={i} x={330 + i * 92} y={145} i={i} u={clamp01(s.get(scene.decodeP) - i)} />)}
-      <text x="654" y="204" textAnchor="middle" fill={colors.ACCENT} fontSize="13" opacity={clamp01(s.get(scene.decodeP) / 8)}>decoded tensors + frames_indices</text>
+      <text x="654" y="204" textAnchor="middle" fill={colors.ACCENT} fontSize="14" opacity={clamp01(s.get(scene.decodeP) / 8)}>decoded tensors + frames_indices</text>
+      <text x="64" y="262" fill={colors.ACCENT} fontSize="14" fontWeight="800" opacity={clamp01(s.get(scene.decodeP) / 8)}>one decode · shared by all 8 rollouts</text>
 
       <g opacity={contract} transform={`translate(0 ${(1 - contract) * 24})`}>
         <rect x="348" y="236" width="584" height="94" rx="26" fill="#10263a" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="640" y="267" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontWeight="800" fontFamily={colors.font.mono}>multi_modal_data['video']</text>
         {[
-          { label: 'source_type: inline', w: 150, cx: 497 },
-          { label: 'frames', w: 72, cx: 622 },
-          { label: 'metadatas', w: 100, cx: 722 },
-          { label: 'paths', w: 72, cx: 822 },
+          { label: 'source_type: inline', w: 172, cx: 490 },
+          { label: 'frames', w: 84, cx: 620 },
+          { label: 'metadatas', w: 112, cx: 724 },
+          { label: 'paths', w: 80, cx: 830 },
         ].map(({ label, w, cx }, i) => <g key={label} transform={`translate(${cx} 301)`}>
           <rect x={-w / 2} y="-15" width={w} height="30" rx="15" fill="#08131f" stroke={i === 0 ? colors.POSITIVE : colors.MUTED} />
-          <text y="5" textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+          <text y="5" textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{label}</text>
         </g>)}
       </g>
 
@@ -120,9 +121,14 @@ export function Render({ s }: { s: SceneState }) {
           return <g key={label} opacity={u}>
             <path d={`M640 332 C640 356 ${x} 342 ${x} 382`} fill="none" stroke={i === 2 ? colors.WARM : colors.SECONDARY} strokeWidth="3" strokeDasharray="7 6" />
             <rect x={x - 72} y="374" width="144" height="42" rx="18" fill="#111827" stroke={i === 2 ? colors.WARM : colors.SECONDARY} />
-            <text x={x} y="400" textAnchor="middle" fill={i === 2 ? colors.WARM : colors.SECONDARY} fontSize="13">{label}</text>
+            <text x={x} y="400" textAnchor="middle" fill={i === 2 ? colors.WARM : colors.SECONDARY} fontSize="14">{label}</text>
           </g>;
         })}
+      </g>
+
+      <g opacity={s.get(scene.advantagesU)}>
+        <path d="M244 512 H1036" stroke={colors.WARM} strokeWidth="4" strokeDasharray="9 7" />
+        <text x="640" y="562" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>driver: advantages → detached anchor → selection</text>
       </g>
 
       <g>
@@ -132,28 +138,24 @@ export function Render({ s }: { s: SceneState }) {
           const x = row.x;
           const selectedY = 520;
           const y = 458 + (selectedY - 458) * actor * (keep ? 1 : 0);
-          const dim = select * (keep ? 0 : 0.9);
+          const dim = select * (keep ? 0 : 0.8);
           const color = row.oracle ? colors.WARM : keep ? colors.POSITIVE : colors.ACCENT;
           return <g key={i} opacity={u * (1 - dim)} transform={`translate(${x} ${y}) scale(${0.82 + u * 0.18})`}>
             <circle r={keep && select > 0 ? 22 : 17} fill={color} stroke="#07101d" strokeWidth="3" />
-            <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">{row.oracle ? 'GT' : i + 1}</text>
+            <text y="5" textAnchor="middle" fill="#07101d" fontSize="14" fontWeight="900">{row.oracle ? 'GT' : i + 1}</text>
             {keep && select > 0 && <circle r="29" fill="none" stroke={colors.WARM} strokeWidth="2" strokeDasharray="6 5" />}
           </g>;
         })}
-        <text x="640" y="490" textAnchor="middle" fill={colors.MUTED} fontSize="13" opacity={clamp01(s.get(scene.groupP) / 8)}>eight policy rows + one oracle row</text>
+        <text x="640" y="434" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={clamp01(s.get(scene.groupP) / 8)}>eight policy rows + one oracle row</text>
       </g>
 
       <g opacity={s.get(scene.overlapU)}>
         <path d="M360 418 C300 426 200 426 174 438" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
         <path d="M880 418 C950 426 1040 426 1102 438" fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
-        <text x="326" y="404" textAnchor="end" fill={colors.POSITIVE} fontSize="13">reward future</text>
-        <text x="954" y="404" textAnchor="start" fill={colors.SECONDARY} fontSize="13">old log probabilities</text>
+        <text x="326" y="404" textAnchor="end" fill={colors.POSITIVE} fontSize="14">reward future</text>
+        <text x="954" y="404" textAnchor="start" fill={colors.SECONDARY} fontSize="14">old log probabilities</text>
       </g>
 
-      <g opacity={s.get(scene.advantagesU)}>
-        <path d="M244 512 H1036" stroke={colors.WARM} strokeWidth="4" strokeDasharray="9 7" />
-        <text x="640" y="562" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>driver: advantages → detached anchor → selection</text>
-      </g>
       <g opacity={actor}>
         <rect x="458" y="576" width="364" height="46" rx="23" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="3" />
         <text x="640" y="605" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="850">actor update · 4 retained rows</text>

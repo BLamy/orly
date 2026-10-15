@@ -2,7 +2,7 @@
 //
 // Grounded in arXiv:2608.03573 Figure 2 and Section 3, plus
 // src/parallel_rl/analyze_lora.py, analyze_full.py, and merge_lora.py.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Vec } from '../../primitives';
 
@@ -82,19 +82,20 @@ export function buildScene() {
 const scene = buildScene();
 
 function CosineMatrix({ x, y, morph, opacity, collision }: { x: number; y: number; morph: number; opacity: number; collision: number }) {
-  const cell = 54;
+  const cell = 60;
   return <g opacity={opacity}>
-    <text x={x + 108} y={y - 42} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={750}>pairwise cosine</text>
+    <text x={x + 2 * cell} y={y - 74} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={750}>pairwise cosine</text>
+    <text x={x + 2 * cell} y={y - 48} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>cosine: 1 same direction · 0 unrelated · −1 opposite</text>
     {TASKS.map((t, i) => <text key={`c${t}`} x={x + i * cell + cell / 2} y={y - 14} textAnchor="middle" fill={C[i]} fontSize={14} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
-    {TASKS.map((t, i) => <text key={`r${t}`} x={x - 12} y={y + i * cell + 34} textAnchor="end" fill={C[i]} fontSize={14} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
+    {TASKS.map((t, i) => <text key={`r${t}`} x={x - 12} y={y + i * cell + 36} textAnchor="end" fill={C[i]} fontSize={14} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
     {SFT_COS.map((row, i) => row.map((_, j) => {
       const v = lerp(SFT_COS[i][j], RL_COS[i][j], morph);
       const mag = Math.abs(v);
-      const hot = 0.1 + mag * 0.82;
+      const hot = 0.22 + mag * 0.7;
       const hit = collision * ((i === 0 && j === 3) || (i === 3 && j === 0) ? 1 : 0);
       return <g key={`${i}-${j}`}>
         <rect x={x + j * cell} y={y + i * cell} width={cell - 5} height={cell - 5} rx={7} fill={v < 0 ? colors.NEGATIVE : colors.ACCENT} opacity={i === j ? 0.32 : hot} stroke={hit ? colors.WARM : 'none'} strokeWidth={hit ? 4 : 0} />
-        <text x={x + j * cell + (cell - 5) / 2} y={y + i * cell + 30} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{i === j ? '—' : (Math.abs(v) < .001 ? v.toExponential(0) : v.toFixed(2))}</text>
+        <text x={x + j * cell + (cell - 5) / 2} y={y + i * cell + 33} textAnchor="middle" fill={hot > 0.6 ? colors.BG : colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO}>{i === j ? '—' : (Math.abs(v) < .001 ? v.toExponential(0) : v.toFixed(2))}</text>
       </g>;
     }))}
   </g>;
@@ -103,7 +104,7 @@ function CosineMatrix({ x, y, morph, opacity, collision }: { x: number; y: numbe
 export function Render({ s }: { s: SceneState }) {
   const morph = clamp01(s.get(scene.morph));
   const normU = clamp01(s.get(scene.normalizeU));
-  const dim = 1 - 0.9 * s.get(scene.dimU);
+  const dim = 1 - 0.95 * s.get(scene.dimU);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
@@ -114,7 +115,7 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={dim}>
         <g opacity={s.get(scene.originU)}>
           <circle cx={390} cy={350} r={8} fill={colors.TEXT} />
-          <text x={390} y={382} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>W_base</text>
+          <text x={374} y={338} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>W_base</text>
         </g>
         <g opacity={s.get(scene.loraU)}>
           <rect x={168} y={104} width={444} height={54} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
@@ -136,17 +137,17 @@ export function Render({ s }: { s: SceneState }) {
           </g>;
         })}
         <circle cx={390} cy={350} r={250} fill="none" stroke={colors.GRID} opacity={0.28 * normU} strokeDasharray="5 10" />
-        <text x={390} y={616} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={normU}>direction-only view · vectors normalized</text>
+        <text x={390} y={616} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={normU}>direction-only view · vectors normalized</text>
         <CosineMatrix x={820} y={212} morph={morph} opacity={s.get(scene.matrixU)} collision={s.get(scene.collisionU)} />
         <g opacity={s.get(scene.sparseU)}>
-          <rect x={784} y={474} width={298} height={106} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} />
-          <text x={933} y={508} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={800}>parameters above 10⁻⁵</text>
-          <text x={855} y={550} textAnchor="middle" fill={colors.NEGATIVE} fontSize={27} fontFamily={MONO}>93%</text>
-          <text x={1010} y={550} textAnchor="middle" fill={colors.POSITIVE} fontSize={27} fontFamily={MONO}>20%</text>
-          <text x={855} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={12}>SFT</text>
-          <text x={1010} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={12}>RL</text>
+          <rect x={820} y={496} width={240} height={106} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} />
+          <text x={940} y={530} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={800}>parameters above 10⁻⁵</text>
+          <text x={880} y={574} textAnchor="middle" fill={colors.NEGATIVE} fontSize={27} fontFamily={MONO}>93%</text>
+          <text x={1000} y={574} textAnchor="middle" fill={colors.POSITIVE} fontSize={27} fontFamily={MONO}>20%</text>
+          <text x={880} y={592} textAnchor="middle" fill={colors.MUTED} fontSize={14}>SFT</text>
+          <text x={1000} y={592} textAnchor="middle" fill={colors.MUTED} fontSize={14}>RL</text>
         </g>
-        <MathLabel tex={'\\Delta W_i = W_i - W_{base}'} x={390} y={132} fontSize={22} opacity={s.get(scene.deltaU) * (1 - s.get(scene.loraU))} />
+        <text x={390} y={132} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontFamily={MONO} opacity={s.get(scene.deltaU) * (1 - s.get(scene.loraU))}>ΔW<tspan fontSize={15} dy={5}>i</tspan><tspan dy={-5}> = W</tspan><tspan fontSize={15} dy={5}>i</tspan><tspan dy={-5}> − W</tspan><tspan fontSize={15} dy={5}>base</tspan></text>
       </g>
     </Camera>
     <g opacity={s.get(scene.endU)}>

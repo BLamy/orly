@@ -66,6 +66,8 @@ export function Render({ s }: { s: SceneState }) {
   const fold = s.get(scene.foldU);
   const close = s.get(scene.closeU);
   const scan = s.get(scene.scanP);
+  const fork = s.get(scene.forkU);
+  const fields = s.get(scene.fieldsU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       <text x="640" y="68" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">compile evidence, do not invent it</text>
@@ -80,37 +82,52 @@ export function Render({ s }: { s: SceneState }) {
             <text x="18" y="32" fill={i === 4 ? colors.NEGATIVE : colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{turn}</text>
           </g>;
         })}
-        {scan > 0 && <line x1="16" y1={70 + scan * 70} x2="464" y2={70 + scan * 70} stroke={colors.WARM} strokeWidth="4" opacity="0.8" />}
+        <line x1="16" y1={61 + clamp01(scan) * 70} x2="464" y2={61 + clamp01(scan) * 70} stroke={colors.WARM} strokeWidth="4" strokeLinecap="round" opacity={clamp01(scan * 4) * clamp01((5 - scan) * 4) * 0.8} />
       </g>
 
       <path d="M520 250 C560 210 560 210 600 200" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="9 7" opacity={s.get(scene.forkU)} />
       <g transform="translate(600 110)" opacity={1 - fold * 0.4}>
         <rect width="600" height="480" rx="28" fill="#141a2d" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="300" y="38" textAnchor="middle" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>compile_packet_from_reporter</text>
+        <text x="300" y="262" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={1 - fork}>packet waits for the Reporter</text>
+        <g opacity={fork * (1 - clamp01(fields))}>
+          <text x="22" y="62" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>temporary copy of the Worker turns</text>
+          {TURNS.map((turn, i) => <g key={turn} transform={`translate(22 ${80 + i * 30})`}>
+            <rect width="556" height="24" rx="8" fill="none" stroke={colors.MUTED} strokeDasharray="4 4" />
+            <text x="12" y="17" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{turn}</text>
+          </g>)}
+        </g>
         {FIELDS.map((field, i) => {
-          const u = clamp01(s.get(scene.fieldsU) - i);
-          return <g key={field} transform={`translate(22 ${65 + i * 61})`} opacity={u}>
-            <rect width="556" height="46" rx="12" fill="#1a2439" stroke={colors.MUTED} />
-            <text x="16" y="29" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{field}</text>
+          const u = clamp01(fields - i);
+          return <g key={field} transform={`translate(22 ${60 + i * 44})`} opacity={u}>
+            <rect width="556" height="38" rx="12" fill="#1a2439" stroke={colors.MUTED} />
+            <text x="16" y="25" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{field}</text>
           </g>;
         })}
+        <g transform="translate(22 244)" opacity={clamp01((scan - 2) * 2)}>
+          <rect width="556" height="40" rx="12" fill="#16233a" stroke={colors.WARM} strokeWidth="2" />
+          <text x="16" y="25" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>claim: ran focused tests</text>
+          <rect x="250" y="8" width="72" height="24" rx="8" fill="#2b2415" stroke={colors.WARM} />
+          <text x="286" y="25" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>E14</text>
+          <text x="336" y="25" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>→ quoted turn</text>
+        </g>
         <g transform="translate(22 312)" opacity={s.get(scene.contextU)}>
           <rect width="174" height="48" rx="12" fill="#26203a" stroke={colors.SECONDARY} />
-          <text x="87" y="20" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>round_index</text>
-          <text x="87" y="38" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>previous_action</text>
+          <text x="87" y="20" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>round_index</text>
+          <text x="87" y="38" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>previous_action</text>
         </g>
         <g transform="translate(214 312)" opacity={s.get(scene.budgetU)}>
           <rect width="364" height="48" rx="12" fill="#2b2415" stroke={colors.WARM} />
           <rect x="14" y="30" width="336" height="8" rx="4" fill={colors.GRID} />
           <rect x="14" y="30" width="202" height="8" rx="4" fill={colors.WARM} />
-          <text x="182" y="20" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>remaining_inner_react_turns</text>
+          <text x="182" y="22" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>remaining_inner_react_turns</text>
         </g>
         <g transform="translate(22 378)" opacity={s.get(scene.quoteU)}>
-          {[12, 14, 16].map((n, i) => <g key={n} transform={`translate(${i * 148} 0)`}><rect width="136" height="34" rx="10" fill="#102a22" stroke={colors.POSITIVE} /><text x="68" y="22" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>{`quoted E${n}`}</text></g>)}
+          {[12, 14, 16].map((n, i) => <g key={n} transform={`translate(${i * 148} 0)`}><rect width="136" height="34" rx="10" fill="#102a22" stroke={colors.POSITIVE} /><text x="68" y="22" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>{`quoted E${n}`}</text></g>)}
         </g>
-        <g opacity={s.get(scene.rejectU)} transform="translate(22 432)"><rect width="200" height="30" rx="12" fill="#341723" stroke={colors.NEGATIVE} strokeWidth="3" /><text x="100" y="20" textAnchor="middle" fill={colors.NEGATIVE} fontSize="12" fontFamily={colors.font.mono}>unknown E99 rejected</text></g>
+        <g opacity={s.get(scene.rejectU)} transform="translate(22 432)"><rect width="200" height="34" rx="12" fill="#341723" stroke={colors.NEGATIVE} strokeWidth="3" /><text x="100" y="22" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>unknown E99 rejected</text></g>
         <g transform="translate(0 432)" opacity={s.get(scene.actionsU)}>
-          {['advance', 'verify', 'stop'].map((a, i) => <g key={a} transform={`translate(${240 + i * 114} 0)`}><rect width="106" height="30" rx="15" fill="#102a22" stroke={colors.POSITIVE} /><text x="53" y="20" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>{a}</text></g>)}
+          {['advance', 'verify', 'stop'].map((a, i) => <g key={a} transform={`translate(${240 + i * 114} 0)`}><rect width="106" height="34" rx="15" fill="#102a22" stroke={colors.POSITIVE} /><text x="53" y="22" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>{a}</text></g>)}
         </g>
       </g>
     </g>
@@ -119,10 +136,10 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="192" textAnchor="middle" fill={colors.TEXT} fontSize="36" fontWeight="850">an Evidence Packet preserves provenance</text>
       <g transform="translate(330 264)">
         {FIELDS.map((field, i) => <g key={field} transform={`translate(0 ${i * 54})`}><rect width="290" height="40" rx="10" fill="#16233a" stroke={colors.SECONDARY} /><text x="14" y="25" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{field}</text></g>)}
-        <text x="145" y="218" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>round_report</text>
+        <text x="145" y="218" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>round_report</text>
       </g>
       <path d="M646 354 H770" stroke={colors.WARM} strokeWidth="7" /><polygon points="770,354 746,340 746,368" fill={colors.WARM} />
-      <g transform="translate(884 354)"><rect x="-98" y="-94" width="196" height="188" rx="28" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" /><text y="-30" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="800">quoted turns</text><text y="2" textAnchor="middle" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>E12 · E14 · E16</text><text y="48" textAnchor="middle" fill={colors.MUTED} fontSize="12">complete · unchanged</text></g>
+      <g transform="translate(884 354)"><rect x="-98" y="-94" width="196" height="188" rx="28" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" /><text y="-30" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="800">quoted turns</text><text y="2" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>E12 · E14 · E16</text><text y="48" textAnchor="middle" fill={colors.TEXT} fontSize="14">complete · unchanged</text></g>
       <text x="640" y="542" textAnchor="middle" fill={colors.MUTED} fontSize="17">structured report · validated citations · finite budget</text>
     </g>
   </Camera>;

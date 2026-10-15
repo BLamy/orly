@@ -6,6 +6,7 @@ import {
   CHECK_RANK,
   EVENTS,
   FINAL,
+  INIT_WRONG,
   INIT_WRONG_SET,
   MISTAKES,
   N_POINTS,
@@ -113,7 +114,8 @@ function Frame({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <Camera {...cam}>
-        <g opacity={dimU}>
+        {endU < 1 && (
+        <g opacity={dimU * (1 - endU)}>
           <Axes x={xScale} y={yScale} reveal={axesU} grid xTicks={8} yTicks={5} opacity={0.5} />
 
           {/* half-plane tints — the converged payoff */}
@@ -195,8 +197,8 @@ function Frame({ s }: { s: SceneState }) {
               />
               <MathLabel
                 tex="y\,\mathbf{x}"
-                x={sx(wTip[0] + nudge[0] * 0.5) + 26}
-                y={sy(wTip[1] + nudge[1] * 0.5) - 14}
+                x={sx(wTip[0] + nudge[0]) + 16}
+                y={sy(wTip[1] + nudge[1]) + 12}
                 fontSize={19}
                 color={evPt.label === 1 ? posColor : negColor}
                 opacity={nudgeU}
@@ -246,31 +248,45 @@ function Frame({ s }: { s: SceneState }) {
               );
             })}
         </g>
+        )}
       </Camera>
 
       {/* screen-fixed math (top-right, clear of the caption lower-third) */}
+      {/* solid backing so the camera's data never shows through the formulas */}
+      <rect x={880} y={44} width={382} height={38} rx={8} fill={colors.BG} opacity={0.85 * s.get(scene.ruleTexU)} />
+      <rect x={770} y={92} width={492} height={36} rx={8} fill={colors.BG} opacity={0.85 * s.get(scene.updTexU)} />
       <MathLabel
         tex="\hat y = \mathrm{sign}(\mathbf{w}\cdot\mathbf{x} + b)"
-        x={1046}
+        x={1262}
         y={64}
         fontSize={22}
+        anchor="end"
         opacity={s.get(scene.ruleTexU)}
       />
       <MathLabel
         tex="\mathbf{w} \leftarrow \mathbf{w} + y\,\mathbf{x},\quad b \leftarrow b + y"
-        x={1046}
+        x={1262}
         y={110}
         fontSize={20}
+        anchor="end"
         color={colors.WARM}
         opacity={s.get(scene.updTexU)}
       />
 
-      {/* the honest mistake counter (top-left) */}
+      {/* the counters (top-centre): the wrong-side count while the bad guess is up, then the running update count */}
+      {misU * (1 - s.get(scene.counterU)) > 0 && (
+        <g opacity={misU * (1 - s.get(scene.counterU))}>
+          <rect x={470} y={30} width={340} height={44} rx={10} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={17}>
+            {`wrong side: ${INIT_WRONG} of ${N_POINTS}`}
+          </text>
+        </g>
+      )}
       {s.get(scene.counterU) > 0 && (
         <g opacity={s.get(scene.counterU)}>
-          <rect x={36} y={34} width={236} height={44} rx={10} fill={colors.PANEL} opacity={0.85} stroke={colors.GRID} />
-          <text x={54} y={62} fill={colors.TEXT} fontSize={17}>
-            {`mistakes used: ${updates} / ${MISTAKES}`}
+          <rect x={470} y={30} width={340} height={44} rx={10} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={17}>
+            {`mistakes fixed: ${updates} of ${MISTAKES}`}
           </text>
         </g>
       )}
@@ -278,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending: closing card over the dimmed field */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={280} y={230} width={720} height={200} rx={16} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <rect x={280} y={230} width={720} height={200} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Perceptron
           </text>

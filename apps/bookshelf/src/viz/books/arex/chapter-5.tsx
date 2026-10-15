@@ -5,7 +5,7 @@
 // valid tool use and reconstructable evidence. Mid-training replays key steps;
 // reinforcement learning uses hierarchical step-balanced normalization and a
 // bounded key-step bonus only for successful trajectories.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
@@ -38,7 +38,7 @@ export function buildScene() {
 
   tl.caption({ at: 0.4, dur: 5.7, text: 'Training starts with long teacher trajectories: actions, tool calls, observations, analysis, and a structured answer.' });
   tl.tween(trajU, 1, { at: 0.9, dur: 2.2, ease: ease.draw });
-  tl.tween(cam, { x: 644, y: 340, k: 1.06 }, { at: 1.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.06 }, { at: 1.2, dur: 1.4, ease: ease.move });
   tl.hold(6.1, 0.5);
 
   tl.caption({ at: 6.6, dur: 5.2, text: 'The pipeline removes runs with invalid tools, ignored observations, unsupported claims, or answers that the evidence cannot reconstruct.' });
@@ -51,7 +51,7 @@ export function buildScene() {
   tl.hold(17.4, 0.5);
 
   tl.caption({ at: 17.9, dur: 5.3, text: 'But that flat signal cannot say which turn found decisive evidence or corrected a bad direction.' });
-  tl.tween(cam, { x: 632, y: 345, k: 1.08 }, { at: 18.3, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 345, k: 1.08 }, { at: 18.3, dur: 1.4, ease: ease.move });
   tl.tween(keyU, 1, { at: 18.6, dur: 1.6, ease: ease.enter });
   tl.hold(23.2, 0.5);
 
@@ -90,11 +90,13 @@ export function Render({ s }: { s: SceneState }) {
   const shapeU = s.get(scene.shapeU);
   const modelsU = s.get(scene.modelsU);
   const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
-  const startX = 40;
   const stepW = 44;
   const gap = 3;
   const baseY = 405;
-  const rowEnd = startX + (STEPS.length - 1) * (stepW + gap) + stepW;
+  // Centre the 24-card strip on the stage so no card sits on the canvas edge.
+  const rowW = (STEPS.length - 1) * (stepW + gap) + stepW;
+  const startX = (1280 - rowW) / 2;
+  const rowEnd = startX + rowW;
 
   return (
     <>
@@ -102,7 +104,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={68} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>Credit for a long trajectory</text>
-          <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>teacher trajectory → quality control → mid-training → reinforcement learning</text>
+          <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>teacher trajectory → quality control → mid-training → reinforcement learning</text>
 
           {trajU > 0 && (
             <text x={startX} y={352} fill={colors.MUTED} fontSize={14} opacity={trajU}>one teacher trajectory · 24 steps</text>
@@ -141,12 +143,17 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.flatU) > 0 && (
             <g opacity={s.get(scene.flatU)}>
               <path d={`M ${startX} 300 L ${rowEnd} 300`} stroke={colors.SECONDARY} strokeWidth={4} strokeLinecap="round" />
-              <text x={640} y={262} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>same outcome advantage across every step</text>
+              <text x={startX} y={268} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>same outcome advantage across every step</text>
             </g>
           )}
 
           {shapeU > 0 && modelsU < 1 && (
-            <MathLabel tex={'A_{i,j}=A^{out}_i+\\lambda_{key}\\,\\widetilde B_{i,j}'} x={640} y={170} color={colors.WARM} fontSize={26} opacity={shapeU * (1 - modelsU)} />
+            <text x={640} y={170} textAnchor="middle" fill={colors.WARM} fontSize={26} fontStyle="italic" opacity={shapeU * (1 - modelsU)}>
+              A<tspan dy={5} fontSize={18}>i,j</tspan>
+              <tspan dy={-5}> = A</tspan><tspan dy={5} fontSize={18}>i</tspan>
+              <tspan dy={-5}> + λ</tspan><tspan dy={5} fontSize={18}>key</tspan>
+              <tspan dy={-5}> · B</tspan><tspan dy={5} fontSize={18}>i,j</tspan>
+            </text>
           )}
 
           {s.get(scene.normalizeU) > 0 && (
@@ -175,9 +182,9 @@ export function Render({ s }: { s: SceneState }) {
                 const x = 185 + i * 228;
                 return (
                   <g key={label} opacity={u}>
-                    <circle cx={x} cy={595} r={18} fill={i === 4 ? colors.WARM : colors.ACCENT} opacity={0.2} stroke={i === 4 ? colors.WARM : colors.ACCENT} />
+                    <circle cx={x} cy={595} r={18} fill={i === 4 ? colors.WARM : colors.ACCENT} opacity={0.35} stroke={i === 4 ? colors.WARM : colors.ACCENT} strokeWidth={2} />
                     <text x={x} y={626} textAnchor="middle" fill={colors.TEXT} fontSize={14}>{label}</text>
-                    {i < 4 && <path d={`M ${x + 24} 595 L ${x + 202} 595`} stroke={colors.GRID} strokeWidth={2} />}
+                    {i < 4 && <path d={`M ${x + 24} 595 L ${x + 202} 595`} stroke={colors.MUTED} strokeOpacity={0.5} strokeWidth={2} />}
                   </g>
                 );
               })}
@@ -190,7 +197,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={205} y={225} width={870} height={222} rx={20} fill={colors.PANEL} stroke={colors.WARM} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>The answer audits itself</text>
           <text x={640} y={333} textAnchor="middle" fill={colors.MUTED} fontSize={16}>discover → gather → verify → preserve → improve</text>
-          <text x={640} y={373} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>key-step shaping keeps final correctness primary</text>
+          <text x={640} y={373} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>key-step shaping keeps final correctness primary</text>
           <text x={640} y={405} textAnchor="middle" fill={colors.MUTED} fontSize={12}>arXiv:2607.21461 · official code: VectorSpaceLab/arex-model</text>
         </g>
       )}

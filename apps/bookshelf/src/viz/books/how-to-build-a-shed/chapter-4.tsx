@@ -167,9 +167,8 @@ export function buildScene(): Scene {
     text: 'Now the trick that makes it all work: a bare frame can rack into a parallelogram, but a factory-cut panel is perfectly square. Nail the panel on, and it pulls the whole frame true.',
   });
   tl.tween(cam, CAM_RACK, { at: 37.8, dur: 1.5, ease: ease.move });
-  tl.tween(endDim, 0.15, { at: 37.8, dur: 1.2, ease: ease.move });
+  tl.tween(endDim, 0.08, { at: 37.8, dur: 1.2, ease: ease.move });
   tl.tween(cornerU, 0, { at: 37.8, dur: 1.0, ease: ease.move });
-  tl.tween(oldU, 0, { at: 37.8, dur: 1.2, ease: ease.move });
   tl.tween(rackU, 1, { at: 38.4, dur: 1.2, ease: ease.move });
   tl.tween(panelU, 1, { at: 40.6, dur: 1.6, ease: ease.move });
   tl.tween(trueU, 1, { at: 42.4, dur: 1.4, ease: ease.move });
@@ -200,7 +199,7 @@ export function buildScene(): Scene {
     text: 'The work table has one product left: roof trusses, and the magic number — twenty-two and a half degrees. Cut a piece at that angle, and its mating piece is cut at the same angle. Every joint repeats it.',
   });
   tl.tween(cam, CAM_TRUSS, { at: 60.4, dur: 1.5, ease: ease.move });
-  tl.tween(wallsDim, 0.12, { at: 60.4, dur: 1.2, ease: ease.move });
+  tl.tween(wallsDim, 0.04, { at: 60.4, dur: 1.2, ease: ease.move });
   tl.tween(trussU, 1, { at: 61.2, dur: 1.8, ease: ease.draw });
   tl.tween(protU, 1, { at: 63.4, dur: 1.4, ease: ease.draw });
   tl.hold(67.7, 0.5);
@@ -280,7 +279,6 @@ export function Render({ s }: { s: SceneState }) {
   const fiveU = s.get(scene.fiveU);
   const dimAll = s.get(scene.dimAll);
   const closeU = s.get(scene.closeU);
-  const oldU = s.get(scene.oldU);
 
   // side wall: sheared by rack, restored by true
   const shear = SHEAR_PX * rackU * (1 - trueU);
@@ -305,6 +303,22 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the platform / work table ---- */}
           <g opacity={tableU * wallsDim}>
             <rect x={wx(-4)} y={WBOT + 10} width={104 * IN} height={PLATFORM_IN * IN * 2} rx={3} fill={colors.SECONDARY} opacity={0.25} stroke={colors.SECONDARY} strokeWidth={1} />
+            {/* right-angle marks: the table is square */}
+            {[
+              [wx(-4), WBOT + 10, 1, 1],
+              [wx(100), WBOT + 10, -1, 1],
+              [wx(-4), WBOT + 10 + PLATFORM_IN * IN * 2, 1, -1],
+              [wx(100), WBOT + 10 + PLATFORM_IN * IN * 2, -1, -1],
+            ].map(([cx, cy, dx, dy], i) => (
+              <path
+                key={i}
+                d={`M ${cx + dx * 16} ${cy} L ${cx} ${cy} L ${cx} ${cy + dy * 16}`}
+                fill="none"
+                stroke={colors.TEXT}
+                strokeWidth={1.6}
+                opacity={0.7}
+              />
+            ))}
             <text x={wx(48)} y={WBOT + 42} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               the platform — now a work table
             </text>
@@ -357,7 +371,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* ---- height number line: panel = wall + platform ---- */}
-          <g opacity={heightU * wallsDim * oldU}>
+          <g opacity={heightU * wallsDim * endDim}>
             <rect x={NL.x} y={wy(96 - PLATFORM_IN)} width={NL.w} height={(96 - PLATFORM_IN) * IN} fill={colors.ACCENT} opacity={0.3} stroke={colors.ACCENT} />
             <rect x={NL.x} y={wy(0)} width={NL.w} height={PLATFORM_IN * IN} fill={colors.POSITIVE} opacity={0.45} stroke={colors.POSITIVE} />
             <text x={NL.x + NL.w + 14} y={wy(45)} fill={colors.ACCENT} fontSize={14}>
@@ -371,7 +385,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
           {/* paper vs tape */}
-          <g opacity={tapeU * wallsDim * oldU}>
+          <g opacity={tapeU * wallsDim * endDim}>
             <rect x={780} y={430} width={224} height={100} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={800} y={458} fill={colors.MUTED} fontSize={14}>
               paper: 6 1/4 in
@@ -380,7 +394,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={800} y={488} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>
               tape: 6 3/8 in ✓
             </text>
-            <text x={800} y={510} fill={colors.MUTED} fontSize={13}>
+            <text x={800} y={510} fill={colors.MUTED} fontSize={14}>
               build to the tape
             </text>
           </g>
@@ -393,18 +407,18 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             {/* end wall frame runs full width */}
             <rect x={880} y={200} width={180} height={22} fill={FRAME} opacity={0.85} />
-            <text x={1070} y={216} fill={colors.MUTED} fontSize={13}>
+            <text x={1070} y={216} fill={colors.MUTED} fontSize={14}>
               end wall frame
             </text>
             {/* side wall frame tucks behind, 3.5 in back */}
             <rect x={880} y={222} width={22} height={110} fill={FRAME} opacity={0.65} />
-            <text x={910} y={300} fill={colors.MUTED} fontSize={13}>
+            <text x={910} y={300} fill={colors.MUTED} fontSize={14}>
               side wall — held back 3 1/2 in
             </text>
             {/* side panel wraps the corner */}
             <rect x={862} y={196} width={10} height={150} fill={PANEL_C} opacity={0.8} />
             <rect x={862} y={186} width={248} height={10} fill={PANEL_C} opacity={0.45} />
-            <text x={862} y={370} fill={PANEL_C} fontSize={13}>
+            <text x={862} y={370} fill={PANEL_C} fontSize={14}>
               panels stay full width — the corner disappears
             </text>
           </g>
@@ -457,7 +471,7 @@ export function Render({ s }: { s: SceneState }) {
               )}
               {/* skirt label */}
               {skirtU > 0.3 && (
-                <text x={wx(96)} y={WBOT + 22} fill={PANEL_C} fontSize={13.5} opacity={skirtU}>
+                <text x={wx(102)} y={WBOT + 22} fill={PANEL_C} fontSize={14} opacity={skirtU}>
                   panel skirts the floor frame
                 </text>
               )}
@@ -473,12 +487,13 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                   {/* door: framed opening, panel left on */}
                   <rect x={wx(56)} y={wy(58)} width={26 * IN} height={wy(0) - wy(58)} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 5" />
-                  <rect x={wx(69) - 92} y={wy(58) - 38} width={184} height={36} rx={6} fill={colors.BG} opacity={0.9} />
-                  <text x={wx(69)} y={wy(58) - 24} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontWeight={600}>
+                  {/* callout sits inside the opening, clear of the panel's top edge */}
+                  <rect x={wx(69) - 62} y={wy(30) - 24} width={124} height={48} rx={6} fill={colors.BG} opacity={0.92} stroke={colors.WARM} strokeWidth={1} />
+                  <text x={wx(69)} y={wy(30) - 5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
                     door — framed
                   </text>
-                  <text x={wx(69)} y={wy(58) - 9} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
-                    panel stays on for stiffness
+                  <text x={wx(69)} y={wy(30) + 14} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+                    panel stays on
                   </text>
                 </g>
               )}
@@ -509,7 +524,7 @@ export function Render({ s }: { s: SceneState }) {
                   {/* angle labels sit inside each wedge, below the rafter */}
                   <MathLabel tex={'22.5^{\\circ}'} x={TX - HALF + 125} y={TY + 24} color={colors.ACCENT} fontSize={19} opacity={protU} />
                   <MathLabel tex={'22.5^{\\circ}'} x={TX + HALF - 125} y={TY + 24} color={colors.ACCENT} fontSize={19} opacity={clamp01(protU * 2 - 1)} />
-                  <text x={TX} y={TY - T_RISE - 4} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                  <text x={TX} y={TY - T_RISE - 4} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     every cut, the same angle — mating pieces match by construction
                   </text>
                 </g>
@@ -535,10 +550,10 @@ export function Render({ s }: { s: SceneState }) {
                     );
                   })}
                   <line x1={TX - 176} y1={TY + 152} x2={TX - 88} y2={TY + 152} stroke={colors.ACCENT} strokeWidth={1.2} />
-                  <text x={TX - 132} y={TY + 170} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5}>
+                  <text x={TX - 132} y={TY + 170} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
                     24 in
                   </text>
-                  <text x={TX + 110} y={TY + 170} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                  <text x={TX + 110} y={TY + 170} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     five trusses, one template
                   </text>
                 </g>

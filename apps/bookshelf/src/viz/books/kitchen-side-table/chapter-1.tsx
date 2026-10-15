@@ -28,6 +28,12 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // ---------------------------------------------------------------------------
 
 const T = { x: 720, y: 180, w: 300, h: 330 } as const;
+// the sketch is drawn at a larger scale around its own centre, so its labels read at a glance
+const TABLE_SCALE = 1.2;
+const TABLE_CX = T.x + T.w / 2;
+const TABLE_CY = T.y + T.h / 2;
+// lifted so the feet clear the caption pill while the camera pans down
+const TABLE_LIFT = -50;
 
 // ---------------------------------------------------------------------------
 // Four boards, edge to edge, about to be a panel.
@@ -63,7 +69,7 @@ const TRI: [number, number][] = [
 const CAM_TABLE: CameraState = { x: 870, y: 330, k: 1.24 };
 const CAM_PANEL: CameraState = { x: 600, y: 330, k: 1.1 };
 const CAM_SCATTER: CameraState = { x: 500, y: 380, k: 0.95 };
-const CAM_ERROR: CameraState = { x: 500, y: 320, k: 1.2 };
+const CAM_ERROR: CameraState = { x: 540, y: 320, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.9 };
 
 export interface Scene {
@@ -231,7 +237,10 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* ---- the table this is all for ---- */}
           {/* steps back while the boards are the subject, and comes forward again for the every-group beat */}
-          <g opacity={tableU * (1 - apart * 0.93) * (1 - 0.55 * partsU * (1 - everyU))}>
+          <g
+            opacity={tableU * (1 - apart) * (1 - 0.55 * partsU * (1 - everyU))}
+            transform={`translate(${TABLE_CX}, ${TABLE_CY + TABLE_LIFT}) scale(${TABLE_SCALE}) translate(${-TABLE_CX}, ${-TABLE_CY})`}
+          >
             <rect x={T.x} y={T.y} width={T.w} height={16} rx={3} fill={OAK_LIT} stroke="#2f2415" />
             <text x={T.x + T.w / 2} y={T.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               top &amp; lid
@@ -319,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
           {apart > 0.4 && catchU < 0.1 && (
-            <text x={510} y={PANEL_Y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(apart * 2 - 0.8)}>
+            <text x={510} y={PANEL_Y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={16} opacity={clamp01(apart * 2 - 0.8) * 0.8}>
               jointed, planed, stood against the wall — and shuffled
             </text>
           )}
@@ -330,12 +339,12 @@ export function Render({ s }: { s: SceneState }) {
               {['the top', 'compartment bottoms', 'side frames'].map((label, i) => {
                 const u = clamp01(everyU * 3 - i * 0.6);
                 if (u <= 0) return null;
-                const x = 300 + i * 260;
+                const x = 150 + i * 210;
                 const y = 566;
                 return (
                   <g key={label} opacity={u}>
                     <polygon points={`${x + 42},${y - 44} ${x + 8},${y} ${x + 76},${y}`} fill="none" stroke={colors.WARM} strokeWidth={3} strokeLinejoin="round" />
-                    <text x={x + 42} y={y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                    <text x={x + 42} y={y + 22} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
                       {label}
                     </text>
                   </g>
@@ -347,6 +356,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
+            {/* solid backing so the faded scene never shows through the closing text */}
+            <rect x={316} y={258} width={648} height={140} rx={16} fill={colors.BG} />
             <rect x={316} y={258} width={648} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               one mark across a whole group of parts

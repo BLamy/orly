@@ -57,7 +57,7 @@ const APP = { x: 560, y: 500, w: 320, h: 96 };
 // Each camera keeps every visible label on the 1280×720 stage: the recommendation
 // stays in frame while the handler is in focus, so nothing is cropped mid-beat.
 const CAM_REC: CameraState = { x: 330, y: 300, k: 1.25 };
-const CAM_HANDLER: CameraState = { x: 700, y: 300, k: 1.1 };
+const CAM_HANDLER: CameraState = { x: 680, y: 300, k: 1.1 };
 const CAM_APP: CameraState = { x: 640, y: 400, k: 1.15 };
 
 export function buildScene() {
@@ -68,7 +68,6 @@ export function buildScene() {
   const recU = tl.channel('recU', 0);
   const dMatchU = tl.channel('dMatchU', 0);
   const handlerU = tl.channel('handlerU', 0);
-  const calloutU = tl.channel('calloutU', 0);
   const fillU = tl.channel('fillU', 0);
   const openU = tl.channel('openU', 0);
   const dimU = tl.channel('dimU', 0);
@@ -112,7 +111,6 @@ export function buildScene() {
     dur: 6.4,
     text: 'Inside are web address templates, one per platform. Each has a hole in it — the word bech32 — a blank the client is required to fill with the exact entity the link was pointing at.',
   });
-  tl.tween(calloutU, 1, { at: 20.9, dur: 0.9, ease: ease.enter });
   tl.hold(26.9, 0.6);
 
   // Beat 5 — fill the hole with the entity.
@@ -146,7 +144,7 @@ export function buildScene() {
   tl.hold(46.5, 1.2);
 
   return {
-    tl, cam, linkU, stuckU, recU, dMatchU, handlerU, calloutU, fillU, openU, dimU, closeU,
+    tl, cam, linkU, stuckU, recU, dMatchU, handlerU, fillU, openU, dimU, closeU,
   };
 }
 
@@ -159,14 +157,13 @@ export function Render({ s }: { s: SceneState }) {
   const recU = s.get(scene.recU);
   const dMatchU = s.get(scene.dMatchU);
   const handlerU = s.get(scene.handlerU);
-  const calloutU = s.get(scene.calloutU);
   const fillU = s.get(scene.fillU);
   const openU = s.get(scene.openU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  // fade to a ghost (≤ 0.1) so the closing card reads over a clean stage
-  const mainOp = 1 - 0.9 * dimU;
+  // fade to a ghost (≤ 0.05) so the closing card reads over a clean stage
+  const mainOp = 1 - 0.95 * dimU;
   const webAnchor = HANDLER_LAYOUT.anchor('tags[2][1]');
   const filledUrl = `https://app.example/a/${NADDR}`;
 
@@ -194,8 +191,24 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* the app the reader holds: it knows short notes only */}
+          {stuckU > 0 && (
+            <g opacity={stuckU}>
+              <rect x={LINK.x} y={200} width={280} height={96} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={LINK.x + 16} y={226} fill={colors.MUTED} fontSize={14}>
+                the app you are holding
+              </text>
+              <text x={LINK.x + 16} y={256} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+                kind 1 · short notes
+              </text>
+              <text x={LINK.x + 16} y={282} fill={colors.MUTED} fontSize={14}>
+                no handler for kind 30023 yet
+              </text>
+            </g>
+          )}
+
           {/* kind 31989 recommendation */}
-          <JsonDoc layout={REC_LAYOUT} reveal={recU} focus={dMatchU > 0 ? ['tags[0]', 'kind'] : undefined} focusU={dMatchU} />
+          <JsonDoc layout={REC_LAYOUT} reveal={recU} focus={dMatchU > 0 ? ['tags[0]', 'kind'] : undefined} focusU={dMatchU} dim={0.5} />
           {dMatchU > 0 && (
             <g opacity={dMatchU}>
               {(() => {
@@ -216,8 +229,8 @@ export function Render({ s }: { s: SceneState }) {
           <JsonDoc layout={HANDLER_LAYOUT} reveal={handlerU} hidden={fillU > 0 ? ['tags[2][1]'] : undefined} />
 
           {/* what the hole is: the placeholder names an encoded identifier */}
-          {calloutU > 0 && fillU === 0 && (
-            <g opacity={calloutU}>
+          {handlerU > 0 && fillU === 0 && (
+            <g opacity={handlerU}>
               <text x={webAnchor.x + webAnchor.w + 16} y={webAnchor.cy + 4} fill={colors.WARM} fontSize={14}>
                 ← bech32 = the encoded id
               </text>

@@ -59,11 +59,17 @@ const columnSlot: number[] = (() => {
     return k;
   });
 })();
+// each row of a column is centred on its tick, so a 3-dot cluster and a
+// 59-dot column both sit under their own difficulty label
 const dotPos = (i: number) => {
   const k = columnSlot[i];
+  const d = ACHIEVED[i];
+  const row = Math.floor(k / 4);
+  const inRow = Math.min(4, (COUNTS.get(d) ?? 0) - row * 4);
+  const j = k - row * 4;
   return {
-    x: histX(ACHIEVED[i]) + ((k % 4) - 1.5) * HIST.pitch,
-    y: HIST.y0 - Math.floor(k / 4) * HIST.pitch,
+    x: histX(d) + (j - (inRow - 1) / 2) * HIST.pitch,
+    y: HIST.y0 - row * HIST.pitch,
   };
 };
 
@@ -187,7 +193,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.92 * dimU;
+  // near-invisible by the close, so the closing panel is not drawn over ghosts
+  const mainOp = 1 - 0.97 * dimU;
 
   return (
     <>
@@ -196,11 +203,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* the farm */}
           {farmU > 0 && (
             <g opacity={farmU * (1 - gateU)}>
-              <rect x={96} y={150} width={220} height={92} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={120} y={186} fill={colors.NEGATIVE} fontSize={15} fontWeight={600}>
+              <rect x={96} y={150} width={264} height={92} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={120} y={186} fill={colors.NEGATIVE} fontSize={16} fontWeight={600}>
                 spam farm
               </text>
-              <text x={120} y={210} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={120} y={210} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 target: {TARGET} bits · ~2⁶ hashes/note
               </text>
               {/* the price of one note: six zero bits, one pip each */}
@@ -208,7 +215,7 @@ export function Render({ s }: { s: SceneState }) {
                 {[0, 1, 2, 3, 4, 5].map((j) => (
                   <circle key={j} cx={120 + j * 32} cy={266} r={9} fill={colors.NEGATIVE} opacity={0.85} />
                 ))}
-                <text x={120} y={298} fill={colors.MUTED} fontSize={12}>
+                <text x={120} y={298} fill={colors.MUTED} fontSize={14}>
                   6 zero bits per note
                 </text>
               </g>
@@ -221,11 +228,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* axis */}
               <line x1={histX(TARGET) - 40} y1={HIST.y0 + 18} x2={histX(14) + 40} y2={HIST.y0 + 18} stroke={colors.GRID} strokeWidth={1.5} opacity={Math.min(1, rainU * 3)} />
               {[6, 7, 8, 9, 10, 11, 12, 13].map((d) => (
-                <text key={d} x={histX(d)} y={HIST.y0 + 40} textAnchor="middle" fill={d >= STRICT ? colors.WARM : colors.MUTED} fontSize={13} fontFamily="monospace" opacity={Math.min(1, rainU * 3)}>
+                <text key={d} x={histX(d)} y={HIST.y0 + 42} textAnchor="middle" fill={d >= STRICT ? colors.WARM : colors.MUTED} fontSize={15} fontFamily="monospace" opacity={Math.min(1, rainU * 3)}>
                   {d}
                 </text>
               ))}
-              <text x={histX(9) + 40} y={HIST.y0 + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={Math.min(1, rainU * 3)}>
+              <text x={histX(9) + 40} y={HIST.y0 + 68} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={Math.min(1, rainU * 3)}>
                 achieved difficulty, 120 genuinely mined notes
               </text>
               {ACHIEVED.map((d, i) => {
@@ -239,7 +246,8 @@ export function Render({ s }: { s: SceneState }) {
                 const drift = lucky ? clamp01(slipU) * (1 - clamp01(bounceU)) : 0;
                 const lane = GATE.y - 40 + LUCKY.indexOf(i) * 40;
                 const x = p.x + (GATE.x - 90 - p.x) * drift;
-                const y = p.y - 260 * (1 - u) + (lane - p.y) * drift;
+                // short drop-in: a tall fall would cross the farm panel above
+                const y = p.y - 28 * (1 - u) + (lane - p.y) * drift;
                 return (
                   <g key={i} opacity={u * (gone ? 0.35 : 1)}>
                     <circle
@@ -256,10 +264,10 @@ export function Render({ s }: { s: SceneState }) {
               })}
               {luckyU > 0 && (
                 <g opacity={luckyU * (1 - clamp01(slipU * 4))}>
-                  <text x={histX(13)} y={HIST.y0 - 124} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
+                  <text x={histX(13)} y={HIST.y0 - 56} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600}>
                     {LUCKY.length} lucky hits
                   </text>
-                  <text x={histX(13)} y={HIST.y0 - 102} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                  <text x={histX(13)} y={HIST.y0 - 34} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                     13 bits = 2⁷ × the work of 6
                   </text>
                 </g>
@@ -270,31 +278,31 @@ export function Render({ s }: { s: SceneState }) {
           {/* the strict relay gate */}
           {gateU > 0 && (
             <g opacity={gateU}>
-              <rect x={GATE.x - 60} y={GATE.y - 120} width={150} height={240} rx={12} fill={colors.PANEL} stroke={bounceU > 0 ? colors.NEGATIVE : colors.GRID} />
-              <text x={GATE.x + 15} y={GATE.y - 88} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+              <rect x={GATE.x - 70} y={GATE.y - 120} width={170} height={240} rx={12} fill={colors.PANEL} stroke={bounceU > 0 ? colors.NEGATIVE : colors.GRID} />
+              <text x={GATE.x + 15} y={GATE.y - 88} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 strict relay
               </text>
-              <text x={GATE.x + 15} y={GATE.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={GATE.x + 15} y={GATE.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 require ≥ {STRICT} bits
               </text>
               {/* judgment line: flips from hash-only to commitment */}
-              <text x={GATE.x + 15} y={GATE.y - 20} textAnchor="middle" fill={commitU > 0.5 ? colors.MUTED : colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={commitU > 0.5 ? 0.45 : 1}>
+              <text x={GATE.x + 15} y={GATE.y - 20} textAnchor="middle" fill={commitU > 0.5 ? colors.MUTED : colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={commitU > 0.5 ? 0.45 : 1}>
                 zeros(id) = 13 ✓
               </text>
               {commitU > 0 && (
                 <g opacity={commitU}>
-                  <text x={GATE.x + 15} y={GATE.y + 10} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                  <text x={GATE.x + 15} y={GATE.y + 10} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                     tag says target "6"
                   </text>
-                  <text x={GATE.x + 15} y={GATE.y + 34} textAnchor="middle" fill={bounceU > 0 ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily="monospace">
+                  <text x={GATE.x + 15} y={GATE.y + 34} textAnchor="middle" fill={bounceU > 0 ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily="monospace">
                     6 &lt; 13 → reject
                   </text>
                 </g>
               )}
               {bounceU > 0 && (
                 <g opacity={bounceU}>
-                  <line x1={GATE.x - 34} y1={GATE.y + 74} x2={GATE.x + 64} y2={GATE.y + 74} stroke={colors.NEGATIVE} strokeWidth={2} />
-                  <text x={GATE.x + 15} y={GATE.y + 98} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={600}>
+                  <line x1={GATE.x - 50} y1={GATE.y + 74} x2={GATE.x + 80} y2={GATE.y + 74} stroke={colors.NEGATIVE} strokeWidth={2} />
+                  <text x={GATE.x + 15} y={GATE.y + 98} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                     all 3 bounced
                   </text>
                 </g>
@@ -313,7 +321,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the committed target turns luck back into economics
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-13 · third slot SHOULD carry the target · missing commitment MAY be rejected
           </text>
         </g>

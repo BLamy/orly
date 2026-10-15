@@ -5,6 +5,7 @@ import type { SceneState } from '../../core';
 import { Brace, ParticleCloud } from '../../primitives';
 import {
   BRACE,
+  CLUSTER,
   FRAME,
   H_BLOCK,
   POSITIVES,
@@ -43,6 +44,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(ch.dimU);
   const splitU = s.get(ch.splitU);
   const countU = s.get(ch.countU);
+  const clusterO = s.get(ch.clusterU) * (1 - splitU);
   const chrome = 1 - dimU; // the frame + brace fade as the negatives dim
   const count = Math.round(TRUE_POS * countU);
   const countO = clamp01(countU * 6);
@@ -118,6 +120,19 @@ export function Render({ s }: { s: SceneState }) {
             false alarms
           </text>
         </>
+      )}
+      {/* beat 4: name the regrouped crowd; it hands off to the split labels */}
+      {clusterO > 0.01 && (
+        <text
+          x={CLUSTER.cx}
+          y={CLUSTER.cy + 146}
+          textAnchor="middle"
+          fill={colors.WARM}
+          fontSize={17}
+          opacity={clusterO}
+        >
+          196 people tested positive
+        </text>
       )}
       {countO > 0.01 && (
         <text

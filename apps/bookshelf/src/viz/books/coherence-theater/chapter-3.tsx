@@ -203,6 +203,12 @@ export function Render({ s }: { s: SceneState }) {
   const provenance = lerp(PROVENANCE[seg], PROVENANCE[Math.min(seg + 1, 5)], su);
   const hardened = travelU > 0.55;
   const cardX = Math.max(180, Math.min(1108, ax));
+  // a stop's vector stamp fades in as the artifact reaches it; the last stop
+  // has no travel after it, so its stamp fades in over the end of the move
+  const stampU = (i: number) =>
+    i === STOPS.length - 1
+      ? clamp01((travelU - 0.9) * 10)
+      : clamp01((t - i + 0.02) * 3);
 
   return (
     <>
@@ -223,12 +229,12 @@ export function Render({ s }: { s: SceneState }) {
             w={560}
             h={342}
             reveal={tableU}
-            opacity={tableU}
+            opacity={tableU * (1 - figU)}
             caption="paper Table 1 · propagation vectors by primary function"
           />
 
           {/* ---- the journey ---- */}
-          <g opacity={laneU * (1 - figU * 0.9)}>
+          <g opacity={laneU * (1 - figU)}>
             <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={120} y={150} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the scenario
@@ -262,14 +268,14 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 30 : -46)} textAnchor="middle" fill={arrived ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={MONO} fontWeight={arrived ? 700 : 400}>
                     {stop.label}
                   </text>
-                  <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 48 : -28)} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={arrived ? 0.9 : 0.4}>
+                  <text x={i === STOPS.length - 1 ? stopX(i) - 36 : stopX(i)} y={stopY(i) + (i % 2 === 0 ? 48 : -28)} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={arrived ? 0.9 : 0.6}>
                     {stop.note}
                   </text>
                   {/* the vector stamp, once the artifact has passed */}
-                  {stop.vector && arrived && (
-                    <g opacity={clamp01((travelU * (STOPS.length - 1) - i + 0.02) * 3)}>
+                  {stop.vector && stampU(i) > 0 && (
+                    <g opacity={stampU(i)}>
                       <rect x={Math.max(198, Math.min(1088, stopX(i))) - 102} y={stopY(i) + (i % 2 === 0 ? 60 : -100)} width={204} height={26} rx={7} fill={colors.BG} stroke={i >= 4 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.4} />
-                      <text x={Math.max(198, Math.min(1088, stopX(i)))} y={stopY(i) + (i % 2 === 0 ? 77 : -83)} textAnchor="middle" fill={i >= 4 ? colors.NEGATIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+                      <text x={Math.max(198, Math.min(1088, stopX(i)))} y={stopY(i) + (i % 2 === 0 ? 77 : -83)} textAnchor="middle" fill={i >= 4 ? colors.NEGATIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
                         {stop.vector}
                       </text>
                     </g>
@@ -278,14 +284,14 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
 
-            {/* the artifact */}
-            {travelU > 0.01 && (
+            {/* the artifact: introduced on the rail at the source as the lane draws in */}
+            {laneU > 0.01 && (
               <g transform={`translate(${cardX} ${RAIL_Y})`}>
                 <rect x={-74} y={-28} width={148} height={52} rx={11} fill={colors.PANEL} stroke={hardened ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2.5 + (hardened ? 1.5 : 0)} />
-                <text y={-6} textAnchor="middle" fill={hardened ? colors.NEGATIVE : colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                <text y={-6} textAnchor="middle" fill={hardened ? colors.NEGATIVE : colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   the summary
                 </text>
-                <text y={14} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                <text y={14} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                   {hardened ? 'treated as settled fact' : 'plausible · helpful'}
                 </text>
               </g>
@@ -294,11 +300,11 @@ export function Render({ s }: { s: SceneState }) {
             {/* refusal suppression, at the summary stop: sits inside the V under the summary */}
             {refusalU > 0.05 && (
               <g opacity={refusalU}>
-                <rect x={212} y={426} width={272} height={40} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-                <text x={stopX(1)} y={442} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                <rect x={212} y={440} width={272} height={42} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+                <text x={stopX(1)} y={457} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                   “insufficient confidence” → friction
                 </text>
-                <text x={stopX(1)} y={459} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={stopX(1)} y={474} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   plausible answer keeps throughput
                 </text>
               </g>
@@ -343,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x={640} y={338} textAnchor="middle" fill={colors.WARM} fontSize={18}>
           default → authority → infrastructure → metric → auditor
         </text>
-        <text x={640} y={380} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        <text x={640} y={380} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
           the artifact moves faster than its uncertainty · next: the threshold
         </text>
       </g>

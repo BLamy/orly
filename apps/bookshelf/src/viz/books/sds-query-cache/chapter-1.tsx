@@ -66,8 +66,14 @@ const P = {
   api: { x: 680, y: 360 },
   idx: { x: 1020, y: 250 },
   doc: { x: 1020, y: 470 },
-  cache: { x: 820, y: 360 },
+  // directly under the Query API, so the cache hangs off the service instead of crowding the doc box
+  cache: { x: 680, y: 500 },
 } as const;
+
+// the cache's top edge and the link from the Query API down to it
+const CACHE_HW = 70;
+const CACHE_H = 54;
+const CACHE_TOP = P.cache.y - CACHE_H / 2;
 
 // Query API is wider than the other boxes so its sub-line fits inside it.
 const API_HW = 110;
@@ -91,7 +97,6 @@ export interface Scene {
   cacheU: ChannelRef<number>;
   hitU: ChannelRef<number>;
   closeU: ChannelRef<number>;
-  budgetU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -108,7 +113,6 @@ export function buildScene(): Scene {
   const cacheU = tl.channel('cacheU', 0); // memory cache slots in
   const hitU = tl.channel('hitU', 0); // a hit bounces off the cache
   const closeU = tl.channel('closeU', 0); // closing panel
-  const budgetU = tl.channel('budgetU', 0); // the byte budget under the cache
 
   // — Beat 1 · the rain —
   tl.caption({
@@ -197,7 +201,6 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Each cached entry is tiny: the query, a title, a snippet, about two hundred seventy bytes. But ten billion unique queries would need nearly three terabytes a month, and memory is limited.',
   });
-  tl.tween(budgetU, 1, { at: 60.6, dur: 1.2, ease: ease.move });
   tl.hold(67.0, 0.5);
 
   // — Beat 10 · quiet close —
@@ -210,7 +213,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 68.1, dur: 1.4, ease: ease.move });
   tl.hold(74.5, 1.5);
 
-  return { tl, cam, rainU, statsU, pipeU, qU, parseK, backU, fanU, raceU, cacheU, hitU, closeU, budgetU };
+  return { tl, cam, rainU, statsU, pipeU, qU, parseK, backU, fanU, raceU, cacheU, hitU, closeU };
 }
 
 const scene = buildScene();
@@ -229,7 +232,7 @@ function NodeBox({ x, y, w = 150, h = 60, title, sub, stroke = colors.GRID, opac
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -252,9 +255,9 @@ export function Render({ s }: { s: SceneState }) {
   const cacheU = s.get(scene.cacheU);
   const hitU = s.get(scene.hitU);
   const closeU = s.get(scene.closeU);
-  const budgetU = s.get(scene.budgetU);
 
-  const dimAll = 1 - closeU * 0.88;
+  // the closing panel replaces the diagram outright, so no ghost boxes peek past its edges
+  const dimAll = 1 - closeU;
   const stage = Math.min(5, Math.floor(parseK + 0.001));
   const qx = qU < 0.5 ? lerp(P.client.x, P.web.x, qU * 2) : lerp(P.web.x, P.api.x, (qU - 0.5) * 2);
 
@@ -265,11 +268,13 @@ export function Render({ s }: { s: SceneState }) {
   // The latency race owns the top of the stage: the number chips and the
   // parse panel step aside for it (and stay gone once the cache is in), and the
   // backend boxes wait until the bars are long.
+  // The number chips stay fully legible through the pipeline; only the race hides them.
   const raceOn = Math.max(clamp01(raceU * 4), cacheU);
   const backFade = clamp01((raceU - 0.25) * 4);
-  const statsOp = statsU * dimAll * (1 - pipeU * 0.85) * (1 - raceOn);
+  const statsOp = statsU * dimAll * (1 - raceOn);
   const rainTextOp = rainU * (1 - statsU * 0.4) * (1 - pipeU);
-  const parseOp = dimAll * (1 - backU * 0.85) * (1 - raceOn);
+  // the parse panel clears fully before the backend boxes arrive, so no ghost text overlaps them
+  const parseOp = dimAll * (1 - backU) * (1 - raceOn);
   const backOp = backU * dimAll * (1 - backFade);
 
   return (
@@ -277,13 +282,13 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       {/* the rain's caption sits on the screen, not the camera, so no camera move can crop it */}
       {rainTextOp > 0.01 && (
-        <text x={STAGE_W / 2} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={rainTextOp}>
+        <text x={STAGE_W / 2} y={70} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontStyle="italic" opacity={rainTextOp * 0.8}>
           search queries, all day, every day
         </text>
       )}
       <Camera {...cam}>
         {/* ---- the rain of queries ---- */}
-        <g opacity={dimAll * (1 - pipeU * 0.85)}>
+        <g opacity={dimAll * (1 - pipeU)}>
           {DROPS.map((d, i) => {
             const u = clamp01((rainU - d.delay) * d.speed * 2.2);
             if (u <= 0) return null;
@@ -301,8 +306,8 @@ export function Render({ s }: { s: SceneState }) {
               { t: '4,000 requests / s', c: colors.WARM },
             ].map((chip, i) => (
               <g key={i}>
-                <rect x={340 + i * 210} y={128} width={196} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={438 + i * 210} y={150} textAnchor="middle" fill={chip.c} fontSize={13}>
+                <rect x={294 + i * 236} y={128} width={220} height={34} rx={9} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1} />
+                <text x={404 + i * 236} y={150} textAnchor="middle" fill={chip.c} fontSize={14}>
                   {chip.t}
                 </text>
               </g>
@@ -328,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
         {parseOp > 0.01 && pipeU > 0.9 && qU >= 1 && (
           <g opacity={parseOp}>
             <rect x={P.api.x - 210} y={168} width={420} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={P.api.x} y={192} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <text x={P.api.x} y={192} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
               parse_query · {PARSE_STAGES[stage].label}
             </text>
             <text x={P.api.x} y={222} textAnchor="middle" fill={stage === 5 ? colors.POSITIVE : colors.TEXT} fontSize={16} fontFamily="ui-monospace, monospace">
@@ -365,16 +370,17 @@ export function Render({ s }: { s: SceneState }) {
             reading 1 MB, sequentially
           </text>
           {RACE.map((r, i) => {
-            const u = clamp01(raceU * (1.3 - i * 0.12));
+            // each bar finishes early enough that its µs label is on screen while the caption names it
+            const u = clamp01(raceU * (2.4 - i * 0.5));
             const y = 140 + i * 44;
             return (
               <g key={r.name}>
-                <text x={190} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                <text x={190} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                   {r.name}
                 </text>
                 <rect x={200} y={y} width={Math.max(2, r.len * u)} height={20} rx={5} fill={r.color} opacity={0.8} />
                 {u > 0.97 && (
-                  <text x={210 + r.len} y={y + 15} fill={r.color} fontSize={13} fontFamily="ui-monospace, monospace">
+                  <text x={210 + r.len} y={y + 15} fill={r.color} fontSize={14} fontFamily="ui-monospace, monospace">
                     ~{r.us.toLocaleString('en-US')} µs
                   </text>
                 )}
@@ -386,25 +392,31 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the memory cache slots in ---- */}
         {cacheU * dimAll > 0.01 && (
           <g opacity={cacheU * dimAll}>
-            <rect x={P.cache.x - 70} y={P.cache.y + 78} width={140} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-            <text x={P.cache.x} y={P.cache.y + 100} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
+            <line x1={P.api.x} y1={P.api.y + 30} x2={P.cache.x} y2={CACHE_TOP} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={0.8} />
+            <rect x={P.cache.x - CACHE_HW} y={CACHE_TOP} width={CACHE_HW * 2} height={CACHE_H} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
+            <text x={P.cache.x} y={P.cache.y - 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               Memory Cache
             </text>
-            <text x={P.cache.x} y={P.cache.y + 118} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={P.cache.x} y={P.cache.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               Redis or Memcached
             </text>
-            <line x1={P.api.x + 40} y1={P.api.y + 30} x2={P.cache.x - 30} y2={P.cache.y + 78} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={0.8} />
           </g>
         )}
-        {budgetU > 0.01 && (
-          <text x={P.cache.x} y={530} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace" opacity={budgetU * (1 - closeU)}>
-            10B × 270 bytes ≈ 2.7 TB / month
-          </text>
+        {/* the byte budget appears with the cache, on the cache's own window */}
+        {cacheU > 0.01 && (
+          <g opacity={cacheU * (1 - closeU)}>
+            <text x={P.cache.x} y={CACHE_TOP + CACHE_H + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
+              one entry ≈ 270 bytes
+            </text>
+            <text x={P.cache.x} y={CACHE_TOP + CACHE_H + 48} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
+              10B × 270 bytes ≈ 2.7 TB / month
+            </text>
+          </g>
         )}
         {hitU > 0 && hitU < 1 && (
           <Packet
-            from={{ x: P.api.x + 40, y: P.api.y + 30 }}
-            to={{ x: P.cache.x - 30, y: P.cache.y + 78 }}
+            from={{ x: P.api.x, y: P.api.y + 30 }}
+            to={{ x: P.cache.x, y: CACHE_TOP }}
             u={hitU < 0.5 ? hitU * 2 : 2 - hitU * 2}
             r={6.5}
             color={colors.POSITIVE}
@@ -420,10 +432,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={320} textAnchor="middle" fill={colors.ACCENT} fontSize={15}>
             keep what — evict what — trust it for how long
           </text>
-          <text x={640} y={370} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
+          <text x={640} y={370} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             270 bytes / entry · 10B queries / month · 4,000 req / s
           </text>
-          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             memory is fast, and memory is finite
           </text>
         </g>

@@ -92,9 +92,11 @@ const MEAN = {
 // the recurrent layer condenses. Right: accuracy vs noise curves + two bars.
 // ---------------------------------------------------------------------------
 
-const STACK_EARLY_X = 140;
-const STACK_LATE_X = 320;
-const STACK_Y0 = 140;
+// The stacks sit centre-top so they stay in frame during the bars beat, where
+// they name the two placements the bars then measure.
+const STACK_EARLY_X = 540;
+const STACK_LATE_X = 700;
+const STACK_Y0 = 250;
 const SCELL_W = 120;
 const SCELL_H = 44;
 
@@ -107,10 +109,10 @@ const ACC_Y = scaleLinear().domain([0, 1.05]).range([420, 140]);
 const BAR_Y0 = 590;
 const BAR_MAXW = 320;
 
-const CAM_STACKS: CameraState = { x: 300, y: 300, k: 1.35 };
+const CAM_STACKS: CameraState = { x: 680, y: 340, k: 1.35 };
 const CAM_CLOUD: CameraState = { x: 640, y: 270, k: 1.5 };
 const CAM_ACC: CameraState = { x: 950, y: 300, k: 1.3 };
-const CAM_BARS: CameraState = { x: 560, y: 500, k: 1.3 };
+const CAM_BARS: CameraState = { x: 560, y: 420, k: 1.3 };
 
 const STACK_LAYERS: { early: string; late: string }[] = [
   { early: 'attn', late: 'ssm' },
@@ -248,8 +250,16 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The closing panel gets the stage to itself: the chart fades out completely.
+  const mainOp = 1 - dimU;
   const sweepSig = 0.2 + accSweep * 1.0;
+  // The stacks show while the cue is still clean, then clear for the chart and
+  // return for the bars, which are the placements they name.
+  const stackOp = stacksU * Math.max((1 - cloudU) * (1 - accU), barsU);
+  // The noisy cue cloud clears once the accuracy chart takes over the stage,
+  // and the chart clears for the bars.
+  const cloudOp = cloudU * (1 - accU);
+  const accOp = accU * (1 - barsU);
 
   return (
     <>
@@ -258,15 +268,15 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* two candidate stacks */}
-          <g opacity={stacksU}>
-            <text x={STACK_EARLY_X} y={STACK_Y0 - 40} fill={colors.TEXT} fontSize={17}>
+          <g opacity={stackOp}>
+            <text x={STACK_EARLY_X} y={STACK_Y0 - 40} fill={colors.TEXT} fontSize={18}>
               same budget, two designs
             </text>
             {(['early', 'late'] as const).map((which, col) => {
               const x0 = col === 0 ? STACK_EARLY_X : STACK_LATE_X;
               return (
                 <g key={which}>
-                  <text x={x0 + SCELL_W / 2} y={STACK_Y0 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={x0 + SCELL_W / 2} y={STACK_Y0 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                     {which === 'early' ? 'attention first' : 'attention last'}
                   </text>
                   {STACK_LAYERS.map((row, i) => {
@@ -291,8 +301,8 @@ function Frame({ s }: { s: SceneState }) {
                           x={x0 + SCELL_W / 2}
                           y={y + SCELL_H / 2 + 4}
                           textAnchor="middle"
-                          fill={attn ? colors.BG : colors.MUTED}
-                          fontSize={12}
+                          fill={attn ? colors.BG : colors.TEXT}
+                          fontSize={14}
                           fontFamily="monospace"
                         >
                           {attn ? 'attention' : 'recurrent'}
@@ -303,19 +313,19 @@ function Frame({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={STACK_EARLY_X} y={STACK_Y0 + 4 * (SCELL_H + 8) + 18} fill={colors.MUTED} fontSize={12}>
+            <text x={STACK_EARLY_X} y={STACK_Y0 + 4 * (SCELL_H + 8) + 18} fill={colors.MUTED} fontSize={13}>
               tokens enter at the bottom
             </text>
           </g>
 
           {/* the noisy cue cloud, condensed by the recurrent average */}
           {cloudU > 0 && (
-            <g opacity={cloudU * (1 - 0.85 * accU)}>
-              <text x={CLOUD_CX - 90} y={CLOUD_CY - 90} fill={colors.TEXT} fontSize={15}>
+            <g opacity={cloudOp}>
+              <text x={CLOUD_CX - 90} y={CLOUD_CY - 90} fill={colors.TEXT} fontSize={16}>
                 four noisy mentions of one cue
               </text>
               <circle cx={CLOUD_CX} cy={CLOUD_CY} r={4} fill={colors.POSITIVE} opacity={0.9} />
-              <text x={CLOUD_CX + 10} y={CLOUD_CY + 4} fill={colors.POSITIVE} fontSize={11}>
+              <text x={CLOUD_CX + 10} y={CLOUD_CY + 4} fill={colors.POSITIVE} fontSize={13}>
                 true key
               </text>
               {MENTIONS.map((m, i) => {
@@ -324,7 +334,7 @@ function Frame({ s }: { s: SceneState }) {
                 return <circle key={i} cx={x} cy={y} r={7 - condense * 2} fill={colors.WARM} opacity={0.8} />;
               })}
               {condense > 0.6 && (
-                <text x={CLOUD_CX + MEAN.dx + 12} y={CLOUD_CY + MEAN.dy - 8} fill={colors.WARM} fontSize={12} opacity={(condense - 0.6) / 0.4}>
+                <text x={CLOUD_CX + MEAN.dx + 12} y={CLOUD_CY + MEAN.dy - 8} fill={colors.WARM} fontSize={13} opacity={(condense - 0.6) / 0.4}>
                   averaged: noise halved
                 </text>
               )}
@@ -340,15 +350,15 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* accuracy vs noise */}
-          {accU > 0 && (
-            <g opacity={accU}>
-              <text x={760} y={104} fill={colors.TEXT} fontSize={16}>
+          {accOp > 0 && (
+            <g opacity={accOp}>
+              <text x={760} y={104} fill={colors.TEXT} fontSize={18}>
                 needle accuracy vs cue noise
               </text>
-              <text x={760} y={126} fill={colors.MUTED} fontSize={12}>
+              <text x={760} y={126} fill={colors.MUTED} fontSize={13}>
                 24 keys · 32 dims · 400 trials per point
               </text>
-              <Axes x={ACC_X} y={ACC_Y} reveal={accU} xTicks={5} yTicks={3} xLabel="cue noise σ" fontSize={11} />
+              <Axes x={ACC_X} y={ACC_Y} reveal={accU} xTicks={5} yTicks={3} xLabel="cue noise σ" fontSize={13} />
               <FunctionPlot
                 x={ACC_X}
                 y={ACC_Y}
@@ -373,18 +383,18 @@ function Frame({ s }: { s: SceneState }) {
                 <>
                   <circle cx={ACC_X(SIGMA_DEMO)} cy={ACC_Y(rawAt(SIGMA_DEMO))} r={5} fill={colors.NEGATIVE} />
                   <circle cx={ACC_X(SIGMA_DEMO)} cy={ACC_Y(smAt(SIGMA_DEMO))} r={5} fill={colors.POSITIVE} />
-                  <text x={ACC_X(SIGMA_DEMO) + 8} y={ACC_Y(rawAt(SIGMA_DEMO)) + 18} fill={colors.NEGATIVE} fontSize={13} fontWeight={600}>
+                  <text x={ACC_X(SIGMA_DEMO) - 10} y={ACC_Y(rawAt(SIGMA_DEMO)) + 5} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                     {(ACC_EARLY * 100).toFixed(0)}%
                   </text>
-                  <text x={ACC_X(SIGMA_DEMO) + 8} y={ACC_Y(smAt(SIGMA_DEMO)) - 10} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
+                  <text x={ACC_X(SIGMA_DEMO) + 10} y={ACC_Y(smAt(SIGMA_DEMO)) - 10} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                     {(ACC_LATE * 100).toFixed(0)}%
                   </text>
                 </>
               )}
-              <text x={ACC_X(1.2)} y={ACC_Y(smAt(1.2)) - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
+              <text x={ACC_X(1.2)} y={ACC_Y(0.8)} textAnchor="end" fill={colors.POSITIVE} fontSize={13}>
                 smoothed cue (attention late)
               </text>
-              <text x={ACC_X(0.52)} y={ACC_Y(0.3)} fill={colors.NEGATIVE} fontSize={12}>
+              <text x={ACC_X(0.25)} y={ACC_Y(0.2)} fill={colors.NEGATIVE} fontSize={13}>
                 raw cue (attention early)
               </text>
             </g>
@@ -393,21 +403,21 @@ function Frame({ s }: { s: SceneState }) {
           {/* the two placement bars */}
           {barsU > 0 && (
             <g opacity={barsU}>
-              <text x={220} y={BAR_Y0 - 52} fill={colors.TEXT} fontSize={16}>
+              <text x={220} y={BAR_Y0 - 52} fill={colors.TEXT} fontSize={18}>
                 needle accuracy at noise 0.6, by placement
               </text>
-              <text x={220} y={BAR_Y0 - 8} fill={colors.NEGATIVE} fontSize={13}>
+              <text x={220} y={BAR_Y0 - 8} fill={colors.NEGATIVE} fontSize={14}>
                 attention as layer 1
               </text>
               <rect x={420} y={BAR_Y0 - 22} width={BAR_MAXW * ACC_EARLY * barsU} height={18} rx={4} fill={colors.NEGATIVE} opacity={0.85} />
-              <text x={428 + BAR_MAXW * ACC_EARLY * barsU} y={BAR_Y0 - 8} fill={colors.NEGATIVE} fontSize={13} fontWeight={600}>
+              <text x={428 + BAR_MAXW * ACC_EARLY * barsU} y={BAR_Y0 - 8} fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
                 {(ACC_EARLY * 100).toFixed(0)}%
               </text>
-              <text x={220} y={BAR_Y0 + 26} fill={colors.POSITIVE} fontSize={13}>
+              <text x={220} y={BAR_Y0 + 26} fill={colors.POSITIVE} fontSize={14}>
                 attention as layer 4
               </text>
               <rect x={420} y={BAR_Y0 + 12} width={BAR_MAXW * ACC_LATE * barsU} height={18} rx={4} fill={colors.POSITIVE} opacity={0.85} />
-              <text x={428 + BAR_MAXW * ACC_LATE * barsU} y={BAR_Y0 + 26} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
+              <text x={428 + BAR_MAXW * ACC_LATE * barsU} y={BAR_Y0 + 26} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                 {(ACC_LATE * 100).toFixed(0)}%
               </text>
             </g>
@@ -425,7 +435,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* closing panel */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={220} width={840} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Spend the spotlight on refined queries.
           </text>

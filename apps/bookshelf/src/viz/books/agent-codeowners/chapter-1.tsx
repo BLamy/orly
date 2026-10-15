@@ -119,7 +119,8 @@ export function Render({ s }: { s: SceneState }) {
       {/* changed file card */}
       <g opacity={fileU * dim}>
         <rect x={140} y={92} width={1000} height={54} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-        <text x={166} y={112} fill={colors.MUTED} fontSize={13} fontFamily={mono}>changed file</text>
+        <text x={140} y={78} fill={colors.MUTED} fontSize={14} fontFamily={mono}>pull request · 1 file changed</text>
+        <text x={166} y={112} fill={colors.MUTED} fontSize={14} fontFamily={mono}>changed file</text>
         <text x={166} y={132} fill={colors.WARM} fontSize={14} fontFamily={mono}>{CHANGED_FILE}</text>
       </g>
 
@@ -132,19 +133,19 @@ export function Render({ s }: { s: SceneState }) {
           const isSuperseded = i === SUPERSEDED;
           const won = isWinner ? winnerU : 0;
           const superseded = isSuperseded ? supersedeU : 0;
-          const rowOpacity = 0.35 + 0.65 * seen;
+          const rowOpacity = 0.55 + 0.45 * seen;
           const strokeColor = won > 0 ? colors.POSITIVE : row.match && seen > 0.5 ? colors.WARM : colors.MUTED;
-          const strokeOp = superseded > 0 ? lerp(1, 0.15, superseded) : row.match ? 0.4 + 0.5 * seen : 0.25;
+          const strokeOp = superseded > 0 ? lerp(1, 0.15, superseded) : row.match ? 0.4 + 0.5 * seen : 0.35;
           const y = LIST_Y + i * ROW_H;
           return <g key={row.pattern} opacity={rowOpacity * (isWinner ? 1 : lerp(1, 0.6, closeU))} transform={`translate(0 ${(1 - seen) * 6})`}>
             <rect x={LIST_X} y={y} width={ROW_W} height={ROW_H - 10} rx={10}
               fill={won > 0 ? colors.POSITIVE : colors.BG} fillOpacity={won > 0 ? 0.08 + 0.06 * won : 0}
               stroke={strokeColor} strokeOpacity={strokeOp} strokeWidth={won > 0 ? 2.2 : 1.4} />
             <text x={LIST_X + 20} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.TEXT} fontSize={14} fontFamily={mono}>{row.pattern}</text>
-            <text x={LIST_X + 260} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.ACCENT} fontSize={13} fontFamily={mono}>{row.owner}</text>
-            {row.agents && <text x={LIST_X + 520} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.SECONDARY} fontSize={13} fontFamily={mono} opacity={0.5 + 0.5 * seen}># agents:{row.agents}</text>}
+            <text x={LIST_X + 230} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.ACCENT} fontSize={14} fontFamily={mono}>{row.owner}</text>
+            {row.agents && <text x={LIST_X + 430} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.SECONDARY} fontSize={14} fontFamily={mono} opacity={0.6 + 0.4 * seen}># agents:{row.agents}</text>}
             {seen > 0.3 && !row.match && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01((seen - 0.3) * 3)}>✕</text>}
-            {won >= 1 && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontWeight={800} opacity={won}>← last match wins</text>}
+            {won >= 1 && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontWeight={800} opacity={won}>← last match wins</text>}
           </g>;
         })}
       </g>
@@ -153,23 +154,23 @@ export function Render({ s }: { s: SceneState }) {
       {splitU > 0 && <g opacity={splitU * dim}>
         {(() => {
           const y = LIST_Y + WINNER * ROW_H + (ROW_H - 10) / 2;
-          const hashX = LIST_X + 480;
+          const hashX = LIST_X + 420;
           const boxY = y + 116;
           return <>
-            <path d={`M ${hashX} ${y} L ${hashX} ${y + 64}`} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.5} />
+            <path d={`M ${hashX} ${y} L ${hashX} ${y + 64}`} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.7} />
             <g opacity={humanU}>
               <path d={`M ${hashX - 40} ${y + 64} L ${LIST_X + 140} ${boxY}`} fill="none" stroke={colors.ACCENT} strokeWidth={2}
                 strokeDasharray="200" strokeDashoffset={200 * (1 - humanU)} />
               <rect x={LIST_X + 30} y={boxY} width={230} height={56} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-              <text x={LIST_X + 145} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>GitHub sees</text>
-              <text x={LIST_X + 145} y={boxY + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={mono}>@our-org/database</text>
+              <text x={LIST_X + 145} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>GitHub sees</text>
+              <text x={LIST_X + 145} y={boxY + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono}>@our-org/database</text>
             </g>
             <g opacity={agentU}>
               <path d={`M ${hashX + 40} ${y + 64} L ${LIST_X + 780} ${boxY}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2}
                 strokeDasharray="360" strokeDashoffset={360 * (1 - agentU)} />
               <rect x={LIST_X + 660} y={boxY} width={280} height={56} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.8} />
-              <text x={LIST_X + 800} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>the action reads</text>
-              <text x={LIST_X + 800} y={boxY + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>@claude/db-review</text>
+              <text x={LIST_X + 800} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>the action reads</text>
+              <text x={LIST_X + 800} y={boxY + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={mono}>@claude/db-review</text>
             </g>
           </>;
         })()}

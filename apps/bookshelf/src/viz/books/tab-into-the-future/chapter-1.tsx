@@ -16,7 +16,7 @@ const CAPTIONS = [
   "That is why the first version should be opt-in and limited to declared sites and contexts. Compatibility is part of whether the assistance is actually helpful.",
   "The experience we want is simple: the browser offers the next useful place, and the person remains the one who chooses to go there."
 ] as const;
-const page={x:75,y:126,scale:.9};
+const page={x:75,y:126,scale:1};
 const initial=controlRect('profile-menu',page),target=controlRect('display-name-field',page),email=controlRect('email-field',page);
 export function buildScene(){return chapter(CAPTIONS);}const scene=buildScene();
 export function Render({s}:{s:SceneState}){
@@ -25,19 +25,19 @@ export function Render({s}:{s:SceneState}){
   return <><Header title='Anticipation without taking over' tag='PROPOSED OPT-IN FOCUS ASSISTANCE · FICTIONAL PAGE'/><Camera {...s.get(scene.cam)}>
     <ProfilePage place={page} />
     <g><rect x={435} y={131} width={140} height={22} rx={11} fill='#082f49' stroke={C.observation}/><circle cx={447} cy={142} r={3.5} fill={C.observation}/><Label x={457} y={146} size={14} color={C.observation}>live context</Label></g>
-    <g opacity={suggest}><rect x={target.x-4} y={target.y-4} width={target.w+8} height={target.h+8} rx={12} fill={C.model} opacity={.08}/><rect x={target.x-4} y={target.y-4} width={target.w+8} height={target.h+8} rx={12} fill='none' stroke={C.model} strokeWidth={2.4} strokeDasharray='9 7' strokeDashoffset={-p*32}/></g>
+    <g opacity={suggest}><rect x={target.x-4} y={target.y-1} width={target.w+8} height={target.h+5} rx={12} fill={C.model} opacity={.08}/><rect x={target.x-4} y={target.y-1} width={target.w+8} height={target.h+5} rx={12} fill='none' stroke={C.model} strokeWidth={2.4} strokeDasharray='9 7' strokeDashoffset={-p*32}/></g>
     <g opacity={suggest}><rect x={target.x+target.w+26} y={target.y+target.h/2-11} width={140} height={22} rx={11} fill='#1a1333' stroke={C.model}/><Label x={target.x+target.w+38} y={target.y+target.h/2+4} size={14} color={C.model}>suggested target</Label></g>
     <FocusRing rect={focus} u={1}/>
-    <Keycap x={598} y={290} label='Tab' u={span(p,2,4)} press={accepted*(1-on(p,3))}/>
-    <Panel x={743} y={127} w={467} h={271} title='One suggestion · the person chooses' color={C.model}>
+    <Keycap x={664} y={target.y+target.h/2-13} label='Tab' u={span(p,2,4)} press={accepted*(1-on(p,3))}/>
+    <Panel x={743} y={126} w={467} h={271} title='One suggestion · the person chooses' color={C.model}>
       <rect x={766} y={187} width={42} height={24} rx={8} fill='none' stroke={C.model} strokeWidth={2} strokeDasharray='6 4'/><Label x={831} y={206} size={17}>Prediction is a suggestion</Label>
       <rect x={766} y={239} width={42} height={24} rx={8} fill='none' stroke='#f1f5f9' strokeWidth={2.5}/><Label x={831} y={258} size={17}>Solid ring is actual focus</Label>
       <Label x={766} y={322} color={C.good} size={18}>{accepted>.5?'Accepted Tab moves focus only':'Wait for opt-in acceptance'}</Label>
-      <Label x={766} y={361} color={C.muted} size={16}>Save remains unclicked; the form is unchanged</Label>
+      <Label x={766} y={361} color='#cbd5e1' size={16}>Save remains unclicked; the form is unchanged</Label>
     </Panel>
     <g opacity={ordinary}><Chip x={744} y={421} w={466} text='Uncertain or stale → ordinary navigation' color={C.pending}/></g>
     <g opacity={keys}><Keycap x={760} y={477} label='Escape' u={1}/><Keycap x={885} y={477} label='Shift-Tab' u={1}/><Keycap x={1038} y={477} label='Editor keys' u={1}/></g>
-    <Label x={980} y={550} anchor='middle' size={15} color={C.muted}>{enabled>.5?'Declared sites and contexts · explicit opt-in':'Suggestion, focus and activation stay separate'}</Label>
+    <Label x={980} y={550} anchor='middle' size={15} color='#cbd5e1'>{enabled>.5?'Declared sites and contexts · explicit opt-in':'Suggestion, focus and activation stay separate'}</Label>
   </Camera></>;
 }
 export const vizScene=()=>scene;

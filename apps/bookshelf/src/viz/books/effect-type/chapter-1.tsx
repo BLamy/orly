@@ -128,7 +128,7 @@ export function buildScene(): Scene {
     dur: 7.0,
     text: 'Now wrap that same code in the sync constructor. Out comes a value: a little frozen object holding your function. And look at the console. Nothing happened.',
   });
-  tl.tween(rawDim, 0.12, { at: 14.9, dur: 1.0, ease: ease.move });
+  tl.tween(rawDim, 0, { at: 14.9, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_BENCH, { at: 15.0, dur: 1.5, ease: ease.move });
   tl.tween(wrapU, 1, { at: 15.8, dur: 1.1, ease: ease.enter });
   tl.hold(21.8, 0.5);
@@ -184,7 +184,7 @@ export function buildScene(): Scene {
     text: 'So hold onto this picture. Creating an Effect does nothing. Running it is a separate, deliberate act. Everything else in this book is about composing these descriptions.',
   });
   tl.tween(cam, CAM_WIDE, { at: 53.8, dur: 1.6, ease: ease.move });
-  tl.tween(dimU, 0.12, { at: 54.2, dur: 1.2, ease: ease.move });
+  tl.tween(dimU, 0.06, { at: 54.2, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 55.6, dur: 0.9, ease: ease.enter });
   tl.hold(60.8, 1.4);
 
@@ -229,27 +229,28 @@ function EffectCard({ x, y, scale = 1, opacity = 1, compact = false }: {
   if (opacity <= 0.01) return null;
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`} opacity={opacity}>
-      <rect width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-      <rect x={14} y={12} width={104} height={22} rx={11} fill={colors.BG} stroke={colors.GRID} />
-      <text x={66} y={27} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+      {/* a compact card is only its tab: no body, so the stack reads as shelved copies */}
+      <rect width={CARD.w} height={compact ? COPY_STEP + 4 : CARD.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+      <rect x={14} y={12} width={108} height={24} rx={12} fill={colors.BG} stroke={colors.GRID} />
+      <text x={68} y={28} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
         op: "Sync"
       </text>
       {!compact && (
         <g>
           <rect x={14} y={46} width={CARD.w - 28} height={74} rx={8} fill={colors.BG} stroke={colors.GRID} strokeDasharray="5 5" />
-          <text x={26} y={76} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+          <text x={26} y={76} fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
             {'() => console.log('}
           </text>
-          <text x={44} y={96} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+          <text x={44} y={96} fill={colors.WARM} fontSize={13.5} fontFamily="monospace">
             "Hello, World!"
           </text>
-          <text x={26} y={112} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+          <text x={26} y={112} fill={colors.TEXT} fontSize={13.5} fontFamily="monospace">
             {')'}
           </text>
-          <text x={CARD.w - 16} y={62} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={CARD.w - 16} y={62} textAnchor="end" fill={colors.MUTED} fontSize={13} fontStyle="italic">
             frozen thunk
           </text>
-          <text x={14} y={CARD.h - 14} fill={colors.MUTED} fontSize={12}>
+          <text x={14} y={CARD.h - 14} fill={colors.MUTED} fontSize={13}>
             an inert object — nothing runs
           </text>
         </g>
@@ -328,7 +329,7 @@ function FiberMachine({ u, spin }: { u: number; spin: number }) {
           />
         ))}
       </g>
-      <text x={cx} y={FIBER.y + FIBER.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+      <text x={cx} y={FIBER.y + FIBER.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
         Effect.runSync(program)
       </text>
     </g>
@@ -373,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
   const sp2 = sparkPos(spark2, CONSOLE.y + 136);
 
   const lines: ConsoleLine[] = [
-    { text: 'Hello, World!', u: clamp01(rawSpark * 5 - 4) * rawDim, note: 'printed at definition time' },
+    { text: 'Hello, World!', u: clamp01(rawSpark * 5 - 4) * rawDim, note: 'printed the moment it was called' },
     { text: 'Hello, World!', u: clamp01(spark1 * 5 - 4), note: 'first run' },
     { text: 'Hello, World!', u: clamp01(spark2 * 5 - 4), note: 'second run' },
   ];
@@ -418,11 +419,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the minting bench ---- */}
         <g opacity={wrapU * dimU}>
-          <rect x={110} y={128} width={440} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={126} y={151} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+          <rect x={110} y={118} width={440} height={56} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={126} y={141} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             const program = <tspan fill={colors.ACCENT}>Effect.sync</tspan>(
           </text>
-          <text x={142} y={170} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+          <text x={142} y={160} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             {'() => console.log('}<tspan fill={colors.WARM}>"Hello, World!"</tspan>{'))'}
           </text>
         </g>
@@ -443,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the main card (run 1) */}
           {run1U < 0.98 && <EffectCard x={c1x} y={c1y} scale={c1s} opacity={wrapU} />}
           {copiesU > 0.01 && (
-            <text x={CARD.x} y={CARD.y + CARD.h + 62}fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={copiesU * (1 - run2U)}>
+            <text x={CARD.x} y={CARD.y + CARD.h + 62} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={copiesU * (1 - run2U)}>
               const copies = [program, program, program]
             </text>
           )}
@@ -451,9 +452,9 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* type chip + source quote */}
         {typeU > 0.01 && (
-          <g opacity={typeU * dimU}>
+          <g opacity={typeU * dimU * (1 - run1U)}>
             <rect x={CARD.x} y={CARD.y + CARD.h + 10} width={262} height={30} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={CARD.x + 131} y={CARD.y + CARD.h + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
+            <text x={CARD.x + 131} y={CARD.y + CARD.h + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
               {'Effect<void, never, never>'}
             </text>
           </g>
@@ -467,7 +468,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={482} y={274} fill={colors.TEXT} fontSize={14.5} fontStyle="italic">
               a workflow or job”
             </text>
-            <text x={822} y={310} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={822} y={310} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               — packages/effect/src/Effect.ts
             </text>
           </g>

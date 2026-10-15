@@ -24,16 +24,17 @@ const MINED_BITS = hexToBits(MINED_ID);
 
 // the serialization strip: what the id commits to — and what it doesn't
 const STRIP = [
-  { label: '0', w: 34 },
+  { label: 'leading 0', w: 84 },
   { label: 'pubkey', w: 96 },
   { label: 'created_at', w: 110 },
   { label: 'kind', w: 62 },
   { label: 'tags ⟵ nonce', w: 128 },
   { label: 'content', w: 96 },
 ];
-const STRIP_X = 250;
 const STRIP_Y = 150;
 const STRIP_TOTAL = STRIP.reduce((a, c) => a + c.w + 10, -10);
+// the strip plus the dashed sig slot, centred on the camera's x
+const STRIP_X = 640 - (STRIP_TOTAL + 110) / 2;
 
 const PHONE = { x: 220, y: 400 };
 const PROVIDER = { x: 1010, y: 400 };
@@ -56,7 +57,6 @@ interface Scene {
   sendU: ChannelRef<number>;
   grindU: ChannelRef<number>;
   returnU: ChannelRef<number>;
-  verifyU: ChannelRef<number>;
   signU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   closeU: ChannelRef<number>;
@@ -72,7 +72,6 @@ export function buildScene(): Scene {
   const sendU = tl.channel('sendU', 0);
   const grindU = tl.channel('grindU', 0);
   const returnU = tl.channel('returnU', 0);
-  const verifyU = tl.channel('verifyU', 0);
   const signU = tl.channel('signU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
@@ -125,7 +124,6 @@ export function buildScene(): Scene {
     text: 'Back comes the draft — same author, same words, now wearing a heavy id and its nonce tag. The provider could not have impersonated the phone: it never held the key.',
   });
   tl.tween(returnU, 1, { at: 28.6, dur: 2.0, ease: ease.linear });
-  tl.tween(verifyU, 1, { at: 31.2, dur: 1.0, ease: ease.enter });
   tl.hold(33.9, 0.7);
 
   // Beat 6 — the phone signs.
@@ -150,7 +148,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, phoneU, batteryU, stripU, sigGapU, sendU, grindU,
-    returnU, verifyU, signU, dimU, closeU,
+    returnU, signU, dimU, closeU,
   };
 }
 
@@ -165,7 +163,6 @@ export function Render({ s }: { s: SceneState }) {
   const sendU = s.get(scene.sendU);
   const grindU = s.get(scene.grindU);
   const returnU = s.get(scene.returnU);
-  const verifyU = s.get(scene.verifyU);
   const signU = s.get(scene.signU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
@@ -177,6 +174,8 @@ export function Render({ s }: { s: SceneState }) {
   const inbound = clamp01(returnU);
   const draftX = PHONE.x + HALF_W + 40 + (PROVIDER.x - PHONE.x - 2 * HALF_W - 120) * (inbound > 0 ? 1 - inbound : outbound);
   const draftVisible = (sendU > 0 && grindU < 1) || (returnU > 0 && returnU < 1);
+  // the check panel rises during the return leg, no timing of its own
+  const verifyU = clamp01((returnU - 0.4) * 2.5);
 
   return (
     <>
@@ -204,10 +203,10 @@ export function Render({ s }: { s: SceneState }) {
               {sigGapU > 0 && (
                 <g opacity={sigGapU}>
                   <rect x={STRIP_X + STRIP_TOTAL + 24} y={STRIP_Y} width={86} height={38} rx={7} fill="none" stroke={colors.NEGATIVE} strokeDasharray="5 4" />
-                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                     sig
                   </text>
-                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+                  <text x={STRIP_X + STRIP_TOTAL + 67} y={STRIP_Y + 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
                     not hashed
                   </text>
                 </g>
@@ -219,26 +218,32 @@ export function Render({ s }: { s: SceneState }) {
           {phoneU > 0 && (
             <g>
               <ServiceNode x={PHONE.x} y={PHONE.y} kind="mobile" label="phone" sublabel="holds nsec" u={phoneU} glow={signU} />
-              <text x={PHONE.x} y={PHONE.y - 64} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={phoneU * (1 - clamp01(stripU * 4))}>
-                relay asks: 20 bits · ~1M hashes
-              </text>
               {batteryU > 0 && (
                 <g opacity={batteryU}>
                   <rect x={PHONE.x - 44} y={PHONE.y + 44} width={88} height={14} rx={4} fill="none" stroke={colors.MUTED} />
                   <rect x={PHONE.x - 42} y={PHONE.y + 46} width={84 * 0.18} height={10} rx={3} fill={colors.NEGATIVE} opacity={0.85} />
-                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                     2²⁰ hashes? not on this battery
                   </text>
                 </g>
               )}
             </g>
           )}
+          {/* the relay that asks for the work; it hands over to the provider */}
+          {phoneU > 0 && sendU < 1 && (
+            <g opacity={phoneU * (1 - clamp01(sendU * 4))}>
+              <ServiceNode x={PROVIDER.x} y={PROVIDER.y} kind="server" label="relay" sublabel="asks 20 bits" u={1} />
+              <text x={PROVIDER.x} y={PROVIDER.y - 64} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                20 bits · ~1M hashes
+              </text>
+            </g>
+          )}
           {sendU > 0 && (
             <g>
               <ServiceNode x={PROVIDER.x} y={PROVIDER.y} kind="server" label="pow provider" sublabel="sells hashes" u={Math.min(1, sendU * 2)} glow={grindU > 0 && grindU < 1 ? 0.8 : 0} />
               <Connection
-                from={{ x: PHONE.x + HALF_W, y: PHONE.y - 10 }}
-                to={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y - 10 }}
+                from={{ x: PHONE.x + HALF_W, y: PHONE.y - 20 }}
+                to={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y - 20 }}
                 u={Math.min(1, sendU * 1.6)}
                 label="unsigned draft →"
                 color={colors.MUTED}
@@ -247,8 +252,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {returnU > 0 && (
             <Connection
-              from={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y + 12 }}
-              to={{ x: PHONE.x + HALF_W, y: PHONE.y + 12 }}
+              from={{ x: PROVIDER.x - HALF_W, y: PROVIDER.y + 20 }}
+              to={{ x: PHONE.x + HALF_W, y: PHONE.y + 20 }}
               u={Math.min(1, returnU * 1.6)}
               label="← mined draft + nonce"
               color={colors.WARM}
@@ -257,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
           {draftVisible && (
             <g>
               <rect x={draftX - 46} y={PHONE.y - 64} width={92} height={30} rx={7} fill={colors.PANEL} stroke={inbound > 0 ? colors.WARM : colors.MUTED} />
-              <text x={draftX} y={PHONE.y - 44} textAnchor="middle" fill={inbound > 0 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily="monospace">
+              <text x={draftX} y={PHONE.y - 44} textAnchor="middle" fill={inbound > 0 ? colors.WARM : colors.MUTED} fontSize={12} fontFamily="monospace">
                 {inbound > 0 ? 'id: 0002e0…' : 'draft · no sig'}
               </text>
             </g>
@@ -322,7 +327,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the id never commits to the signature, so the grinding can be bought
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-13 · delegated proof of work
           </text>
         </g>

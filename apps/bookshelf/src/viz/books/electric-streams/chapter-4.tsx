@@ -41,7 +41,7 @@ const PROD = { x: 218, y: 330 } as const;
 const ZOMB = { x: 200, y: 520 } as const;
 const BAND = { x: 420, y: 150, w: 130, h: 420 } as const;
 const GATE = { x: 660, y: 360 } as const; // where batches are checked
-const REG = { x: 640, y: 170, w: 330, h: 96 } as const; // the register panel
+const REG = { x: 640, y: 170, w: 360, h: 96 } as const; // the register panel
 const TAPE = { x0: 700, y: 500, cellW: 56, cellH: 42 } as const;
 const cellX = (i: number): number => TAPE.x0 + i * TAPE.cellW;
 
@@ -227,7 +227,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const cardU = s.get(scene.cardU);
 
-  const machineOp = 1 - 0.92 * dimU;
+  const machineOp = 1 - 0.97 * dimU;
 
   // register contents (derived, so the panel always matches the action)
   const landedSeq = -1 + Math.floor(s0U) + Math.floor(s1U) + Math.floor(s2U) + Math.floor(pipeU * 3 + 1e-6);
@@ -265,15 +265,15 @@ export function Render({ s }: { s: SceneState }) {
           <ServiceNode x={PROD.x} y={PROD.y} kind="server" label="producer" sublabel="order-service-1" u={nodesU} glow={restartU * 0.6} />
           <g opacity={restartU}>
             <rect x={PROD.x - 62} y={PROD.y - 74} width={124} height={24} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-            <text x={PROD.x} y={PROD.y - 57} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+            <text x={PROD.x} y={PROD.y - 57} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
               restart → epoch 1
             </text>
           </g>
           <g opacity={zombU > 0 ? 1 : 0}>
-            <ServiceNode x={ZOMB.x} y={ZOMB.y} kind="server" label="zombie twin" sublabel="still epoch 0" u={clamp01(zombU * 4)} dim={0.35} status={fenceU > 0.5 ? 'down' : 'warn'} />
+            <ServiceNode x={ZOMB.x} y={ZOMB.y} kind="server" label="zombie twin" sublabel="still epoch 0" u={clamp01(zombU * 4)} dim={0.15}status={fenceU > 0.5 ? 'down' : 'warn'} />
           </g>
           <Zone x={BAND.x} y={BAND.y} w={BAND.w} h={BAND.h} label="the network" kind="group" u={nodesU} color={colors.NEGATIVE} dim={0.25} />
-          <text x={BAND.x + BAND.w / 2} y={BAND.y + BAND.h - 96} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={nodesU}>
+          <text x={BAND.x + BAND.w / 2} y={BAND.y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={nodesU}>
             <tspan x={BAND.x + BAND.w / 2}>drops packets,</tspan>
             <tspan x={BAND.x + BAND.w / 2} dy={17}>loses receipts</tspan>
           </text>
@@ -282,19 +282,19 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the double-charge inset — the stakes */}
         <g opacity={naiveU * machineOp}>
-          <rect x={430} y={210} width={420} height={92} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-          <text x={454} y={240} fill={colors.MUTED} fontSize={12.5}>
+          <rect x={430} y={28} width={420} height={86} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+          <text x={454} y={54} fill={colors.MUTED} fontSize={12.5}>
             naive retry, no headers:
           </text>
           {[0, 1].map((i) => (
             <g key={i} opacity={win(naiveU, 2, i, 1.2)}>
-              <rect x={454 + i * 130} y={252} width={118} height={34} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} />
-              <text x={513 + i * 130} y={274} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+              <rect x={454 + i * 130} y={68} width={118} height={34} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} />
+              <text x={513 + i * 130} y={90} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 charge $9
               </text>
             </g>
           ))}
-          <text x={740} y={274} fill={colors.NEGATIVE} fontSize={13} fontWeight={600} opacity={win(naiveU, 2, 1, 1.2)}>
+          <text x={740} y={90} fill={colors.NEGATIVE} fontSize={13} fontWeight={600} opacity={win(naiveU, 2, 1, 1.2)}>
             twice.
           </text>
         </g>
@@ -323,10 +323,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={REG.x + 18} y={REG.y + 80} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
             {`lastSeq: ${landedSeq < 0 ? '—' : landedSeq}`}
           </text>
-          <text x={REG.x + REG.w - 16} y={REG.y + 56} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={REG.x + REG.w - 16} y={REG.y + 56} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             accept iff seq == lastSeq + 1
           </text>
-          <text x={REG.x + REG.w - 16} y={REG.y + 80} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={REG.x + REG.w - 16} y={REG.y + 80} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             seq ≤ lastSeq → duplicate
           </text>
         </g>
@@ -355,7 +355,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           <g opacity={dupU * machineOp}>
-            <text x={cellX(2)} y={TAPE.y - TAPE.cellH / 2 - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+            <text x={cellX(2)} y={TAPE.y - TAPE.cellH / 2 - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
               still just one
             </text>
           </g>
@@ -377,7 +377,8 @@ export function Render({ s }: { s: SceneState }) {
           {pAck && (
             <g opacity={1 - ackDying}>
               <circle cx={pAck.x} cy={pAck.y + ackDying * ackDying * 60} r={7} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={pAck.x} y={pAck.y - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <rect x={pAck.x - 26} y={pAck.y - 27} width={52} height={18} fill={colors.BG} />
+              <text x={pAck.x} y={pAck.y - 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 200 OK
               </text>
             </g>
@@ -402,11 +403,16 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                 </g>
               ) : (
-                <circle cx={ackPos(rBack).x} cy={ackPos(rBack).y} r={7} fill={colors.POSITIVE} />
+                <g>
+                  <circle cx={ackPos(rBack).x} cy={ackPos(rBack).y} r={7} fill={colors.POSITIVE} />
+                  <text x={ackPos(rBack).x} y={ackPos(rBack).y - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+                    204
+                  </text>
+                </g>
               )}
             </g>
           )}
-          <g opacity={dupU * (1 - 0.5 * clamp01(pipeU * 2))}>
+          <g opacity={dupU * (1 - 0.5 * clamp01(pipeU * 2)) * (1 - clamp01(gapU * 2))}>
             <rect x={GATE.x - 8} y={GATE.y - 86} width={250} height={28} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
             <text x={GATE.x + 117} y={GATE.y - 67} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
               204 — duplicate, already have it
@@ -425,8 +431,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {/* the equation chip */}
           <g opacity={eqU * machineOp}>
-            <rect x={430} y={92} width={420} height={34} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-            <text x={640} y={114} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
+            <rect x={430} y={72} width={420} height={34} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
+            <text x={640} y={94} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
               at least once + server dedupe = exactly once
             </text>
           </g>
@@ -441,7 +447,12 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                 </g>
               ) : (
-                <circle cx={ackPos(gBack).x} cy={ackPos(gBack).y} r={7} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
+                <g>
+                  <circle cx={ackPos(gBack).x} cy={ackPos(gBack).y} r={7} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
+                  <text x={ackPos(gBack).x} y={ackPos(gBack).y - 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                    409
+                  </text>
+                </g>
               )}
             </g>
           )}

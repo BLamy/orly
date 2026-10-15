@@ -28,11 +28,11 @@ export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),update=on(p,2),review=on(p,4),distinction=on(p,5),exportU=on(p,6),u=clamp((p-2)/2),pos=u*(train.length-1),idx=Math.floor(pos),weights=train[idx].map((v,j)=>lerp(v,train[Math.min(idx+1,train.length-1)][j],pos-idx));
   const scores=features.map(f=>f.reduce((v,x,j)=>v+x*weights[j],0));
   return <><Header title='Teach a small model a small job' tag='SYNTHETIC LINEAR-RANKER TRAINING · NOT MEASURED QUALITY'/><Camera {...s.get(scene.cam)}>
-    <Panel x={60} y={118} w={555} h={288} title='One causal example · three legal candidates' opacity={1-.85*exportU}>
+    <Panel x={60} y={118} w={555} h={288} title='One causal example · three legal candidates' opacity={1-exportU}>
       {['focus Email','focus Display name','focus Sign out'].map((label,i)=><g key={label}><Label x={80} y={186+i*74} size={15} color={i===1?C.good:C.muted}>{label}{i===1?' · reviewed target':''}</Label><rect x={80} y={198+i*74} width={440} height={14} fill='#1e293b' rx={5}/><rect x={80} y={198+i*74} width={Math.max(1,bar(scores[i]))} height={14} rx={5} fill={i===1?C.good:C.model}/></g>)}
     </Panel>
-    <Panel x={657} y={118} w={553} h={288} title='Weights change across training examples' color={C.model} opacity={1-.85*exportU}>
-      {weights.map((w,i)=><g key={i}><Label x={678} y={184+i*53} size={15}>feature {i+1}</Label><line x1={815} x2={1150} y1={179+i*53} y2={179+i*53} stroke={C.muted}/><circle cx={lerp(820,1138,(w+1)/4)} cy={179+i*53} r={8} fill={C.model}/></g>)}
+    <Panel x={657} y={118} w={553} h={288} title='Weights change across training examples' color={C.model} opacity={1-exportU}>
+      {weights.map((w,i)=><g key={i}><Label x={678} y={184+i*53} size={15}>{['page features','recent history','optional task'][i]}</Label><line x1={815} x2={1150} y1={179+i*53} y2={179+i*53} stroke={C.muted}/><circle cx={lerp(820,1138,(w+1)/4)} cy={179+i*53} r={8} fill={C.model}/></g>)}
       <Label x={678} y={367} size={14} color={C.pending}>Held-out mistake stays outside weight updates</Label>
     </Panel>
     <g opacity={update*(1-exportU)}><Label x={82} y={436} size={14} color={C.muted}>P(reviewed target) per training step · dashed = chance (1 of 3)</Label><line x1={82} x2={552} y1={probY(1/3)} y2={probY(1/3)} stroke={C.muted} strokeDasharray='4 4'/><path d={curve(pTarget.slice(0,idx+1).map((v,i)=>[probX(i),probY(v)] as [number,number]))!} stroke={C.model} fill='none' strokeWidth={3}/><circle cx={probX(idx)} cy={probY(pTarget[idx])} r={5} fill={C.model}/></g>

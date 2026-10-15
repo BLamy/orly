@@ -86,14 +86,16 @@ const DOOR = { w0: 4.7, w1: 7.1, h1: 5.9 } as const;
 // trusses stand across x, spaced every 24 in along z
 const TRUSS_Z = [0, 2, 4, 6, 8];
 
-// shingle courses climb the right roof slope (x from 8 → 4), with overhang
+// shingle courses climb both roof slopes from the eave (x = 8 or 0) to the
+// ridge (x = 4), with overhang
 const COURSES = 6;
 const OVER = 0.35;
-const courseQuad = (i: number): P3[] => {
+const courseQuad = (i: number, side: 1 | -1 = 1): P3[] => {
   const t0 = i / COURSES;
   const t1 = (i + 1) / COURSES;
-  const x0 = 8 - 4 * t0;
-  const x1 = 8 - 4 * t1;
+  const xe = side === 1 ? 8 : 0;
+  const x0 = xe + (4 - xe) * t0;
+  const x1 = xe + (4 - xe) * t1;
   const y0 = EAVE + RISE * t0;
   const y1 = EAVE + RISE * t1;
   return [
@@ -104,9 +106,10 @@ const courseQuad = (i: number): P3[] => {
   ];
 };
 
-// the chapter-one clutter, finally moving in
+// the chapter-one clutter, finally moving in: it stacks on the shed floor
 const CLUTTER = ['bikes', 'lawnmower', 'wheelbarrow', 'garden tools'] as const;
-const DOOR_TARGET = iso(6, 2, 8.3);
+const HOME_X = 490;
+const HOME_Y = 440;
 
 // Every framing keeps the whole shed between about y 120 and y 610, clear of
 // the caption pill. The finish and recap cards live in screen space instead.
@@ -432,6 +435,21 @@ export function Render({ s }: { s: SceneState }) {
     frontWall(DOOR.w1, 0, 1),
   ].map(([x, y, z]) => iso(x + doorOut * 0.2, y, z + doorOut));
 
+  // the saw's tip rides the cut path (door sides and head, in wall-local feet)
+  const cutLen = 2 * DOOR.h1 + (DOOR.w1 - DOOR.w0);
+  const cutD = cutU * cutLen;
+  let sawW: number = DOOR.w0;
+  let sawH = cutD;
+  if (cutD >= DOOR.h1 && cutD < DOOR.h1 + (DOOR.w1 - DOOR.w0)) {
+    sawW = DOOR.w0 + (cutD - DOOR.h1);
+    sawH = DOOR.h1;
+  } else if (cutD >= DOOR.h1 + (DOOR.w1 - DOOR.w0)) {
+    sawW = DOOR.w1;
+    sawH = DOOR.h1 - (cutD - DOOR.h1 - (DOOR.w1 - DOOR.w0));
+  }
+  const saw = dp(sawW, sawH);
+  const sawOp = clamp01((cutU - 0.1) * 5) * (1 - clamp01((cutU - 0.9) * 10));
+
   const quad = (pts: P3[]): string => pts.map((p) => {
     const q = iso(...p);
     return `${q.X},${q.Y}`;
@@ -442,7 +460,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the whole model dims behind the closing card */}
-        <g opacity={1 - 0.8 * closeU}>
+        <g opacity={(1 - 0.85 * closeU) * (1 - 0.3 * (1 - sideDim))}>
           {/* ---- the platform ---- */}
           {floorU > 0 && (
             <g opacity={floorU}>
@@ -490,11 +508,8 @@ export function Render({ s }: { s: SceneState }) {
               const p = iso(x, y, z);
               return <circle key={i} cx={p.X} cy={p.Y} r={2.2} fill={colors.TEXT} opacity={0.8 * u} />;
             })}
-          {screwU > 0.05 && screwU < 0.4 && (
-            <text x={iso(4, -0.9, 0).X} y={iso(4, -0.9, 0).Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
-              4 in screws, through the floor into the frame
-            </text>
-          )}
+          {screwU > 0.05 && screwU < 0.4 &&
+            callout('4-in screws into the frame', [iso(0.15, 0.1, 2).X, iso(0.15, 0.1, 2).Y], [SLOT_L, 300], colors.MUTED, 1, 'end')}
 
           {/* ---- the door, cut from its own wall ---- */}
           {cutU > 0 && (
@@ -509,10 +524,11 @@ export function Render({ s }: { s: SceneState }) {
               opacity={0.95 * (1 - doorU * 0.6)}
             />
           )}
-          {cutU > 0.15 && cutU < 1 && (
-            <text x={dp(3.2, 6.7).X} y={dp(3.2, 6.7).Y} fill={colors.NEGATIVE} fontSize={13}>
-              reciprocating saw — save the panel
-            </text>
+          {cutU > 0 && cutU < 1 && (
+            <>
+              <circle cx={saw.X} cy={saw.Y} r={5} fill={colors.NEGATIVE} stroke={colors.BG} strokeWidth={2} />
+              {callout('reciprocating saw, keep panel', [saw.X, saw.Y], [SLOT_L, 380], colors.NEGATIVE, sawOp, 'end')}
+            </>
           )}
           {doorU > 0 && (
             <g opacity={Math.min(1, doorU * 1.5)}>
@@ -602,7 +618,8 @@ export function Render({ s }: { s: SceneState }) {
           {stripU > 0 && shingleU < 0.5 && (
             <>
               <g opacity={stripU * (1 - clamp01(shingleU * 2)) * ann}>
-                <polygon points={quad(courseQuad(0))} fill={colors.WARM} opacity={0.35} stroke={colors.WARM} strokeWidth={1} />
+                <polygon points={quad(courseQuad(0, 1))} fill={colors.WARM} opacity={0.35} stroke={colors.WARM} strokeWidth={1} />
+                <polygon points={quad(courseQuad(0, -1))} fill={colors.WARM} opacity={0.35} stroke={colors.WARM} strokeWidth={1} />
               </g>
               {callout(
                 '7-inch strips finish the edge',
@@ -618,13 +635,14 @@ export function Render({ s }: { s: SceneState }) {
           {dripU > 0 && (
             <g opacity={dripU * ann}>
               <line x1={iso(8, EAVE, -OVER).X} y1={iso(8, EAVE, -OVER).Y} x2={iso(8, EAVE, 8 + OVER).X} y2={iso(8, EAVE, 8 + OVER).Y} stroke={colors.ACCENT} strokeWidth={2.4} />
+              <line x1={iso(0, EAVE, -OVER).X} y1={iso(0, EAVE, -OVER).Y} x2={iso(0, EAVE, 8 + OVER).X} y2={iso(0, EAVE, 8 + OVER).Y} stroke={colors.ACCENT} strokeWidth={2.4} />
               {callout('aluminum drip edge', [iso(8, EAVE, 4).X, iso(8, EAVE, 4).Y], [SLOT_R, 380], colors.ACCENT, 1)}
             </g>
           )}
-          {Array.from({ length: COURSES }, (_, i) => {
+          {[1, -1].flatMap((side) => Array.from({ length: COURSES }, (_, i) => ({ side: side as 1 | -1, i }))).map(({ side, i }) => {
             const u = clamp01(shingleU * (COURSES + 1) - i);
             if (u <= 0) return null;
-            const q = courseQuad(i);
+            const q = courseQuad(i, side);
             const [x0, y0] = [q[0][0], q[0][1]];
             const [x1, y1] = [q[3][0], q[3][1]];
             // staggered tab slits, so each course reads as shingles, not a slab
@@ -633,7 +651,7 @@ export function Render({ s }: { s: SceneState }) {
             const lo = iso(...q[0]);
             const lo2 = iso(...q[1]);
             return (
-              <g key={i} opacity={u}>
+              <g key={`${side}-${i}`} opacity={u}>
                 <polygon
                   points={quad(q)}
                   fill={i % 2 === 0 ? '#5a6472' : '#4e5866'}
@@ -692,14 +710,14 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0) return null;
               const x0 = 130;
               const y0 = 160 + i * 60;
-              const x = x0 + (DOOR_TARGET.X - x0) * u;
-              const y = y0 + (DOOR_TARGET.Y - y0) * u;
-              const k = 1 - 0.6 * u;
-              const w = (label.length * 7.5 + 30) * k;
+              const homeY = HOME_Y + i * 34;
+              const x = x0 + (HOME_X - x0) * u;
+              const y = y0 + (homeY - y0) * u;
+              const w = label.length * 7.5 + 30;
               return (
-                <g key={label} opacity={Math.min(1, u * 3) * (1 - u * u * 0.9)}>
-                  <rect x={x - w / 2} y={y - 14 * k} width={w} height={28 * k} rx={14 * k} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={x} y={y + 4 * k} textAnchor="middle" fill={colors.TEXT} fontSize={13 * k}>
+                <g key={label} opacity={Math.min(1, u * 3) * 0.9}>
+                  <rect x={x - w / 2} y={y - 14} width={w} height={28} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={x} y={y + 4.5} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                     {label}
                   </text>
                 </g>
@@ -709,13 +727,13 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
 
       {/* ---- finish chips (right column, screen space) ---- */}
-      <g opacity={chipsU * sideDim}>
+      <g opacity={chipsU * sideDim * ann}>
         <rect x={950} y={150} width={260} height={168} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
         <circle cx={984} cy={188} r={14} fill={BRICK} />
         <text x={1010} y={184} fill={colors.TEXT} fontSize={13}>
           Behr exterior paint
         </text>
-        <text x={1010} y={201} fill={colors.MUTED} fontSize={12.5}>
+        <text x={1010} y={201} fill={colors.MUTED} fontSize={13}>
           color: Boston Brick
         </text>
         <g opacity={clamp01(chipsU * 2 - 0.4)}>
@@ -732,7 +750,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={1010} y={270} fill={colors.TEXT} fontSize={13}>
             floor: deck paint, 2 coats
           </text>
-          <text x={1010} y={287} fill={colors.MUTED} fontSize={12.5}>
+          <text x={1010} y={287} fill={colors.MUTED} fontSize={13}>
             waterproof · one gallon
           </text>
         </g>
@@ -740,7 +758,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* ---- recap strip (screen space) ---- */}
       {recapU > 0 && (
-        <g opacity={recapU * sideDim}>
+        <g opacity={recapU * (1 - closeU)}>
           {(['level blocks', 'a furniture floor', 'walls built flat', 'squared by siding', 'one friendly angle'] as const).map((t, i) => {
             const u = clamp01(recapU * 3 - i * 0.45);
             if (u <= 0) return null;

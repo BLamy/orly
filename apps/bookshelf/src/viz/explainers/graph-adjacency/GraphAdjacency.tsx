@@ -55,7 +55,7 @@ function renderFrame(s: SceneState) {
             </text>
             {/* degree chip */}
             <g opacity={degU}>
-              <text x={p.x + 22} y={p.y - 12} fill={colors.WARM} fontSize={13}>
+              <text x={p.x + 22} y={p.y - 12} fill={colors.WARM} fontSize={14}>
                 d={DEG[i]}
               </text>
             </g>
@@ -90,7 +90,7 @@ function renderFrame(s: SceneState) {
         emphasize={2}
         rowLabels={POS.map((_, i) => String(i))}
         colLabels={POS.map((_, i) => String(i))}
-        labelSize={11}
+        labelSize={14}
       />
       {/* bridge cells */}
       <g opacity={bridgeU}>

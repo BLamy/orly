@@ -1,5 +1,5 @@
 import { interpolateRgb } from 'd3';
-import { MathLabel, Player, colors, ease } from '../../core';
+import { Player, colors, ease } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { NodeBadge } from '../../primitives';
 import overrides from './overrides.json';
@@ -200,8 +200,12 @@ function Strawman({ s, opacity }: { s: SceneState; opacity: number }) {
         );
       })}
 
-      <MathLabel tex="h(k) \bmod 3" x={640} y={168} fontSize={30} opacity={s.get(scene.mod3U)} />
-      <MathLabel tex="h(k) \bmod 4" x={640} y={168} fontSize={30} opacity={s.get(scene.mod4U)} />
+      <text x={640} y={176} textAnchor="middle" fill={colors.TEXT} fontSize={30} opacity={s.get(scene.mod3U)}>
+        <tspan fontStyle="italic">h</tspan>(k) mod 3
+      </text>
+      <text x={640} y={176} textAnchor="middle" fill={colors.TEXT} fontSize={30} opacity={s.get(scene.mod4U)}>
+        <tspan fontStyle="italic">h</tspan>(k) mod 4
+      </text>
       <CountLabel x={640} y={240} u={countU} text={`${MOD_MOVED} of 12 keys moved`} color={colors.NEGATIVE} />
     </g>
   );
@@ -252,7 +256,17 @@ function Ring({ s }: { s: SceneState }) {
         transform={`rotate(-90 ${RING.cx} ${RING.cy})`}
       />
       <line x1={topTick0.x} y1={topTick0.y} x2={topTick1.x} y2={topTick1.y} stroke={colors.MUTED} strokeWidth={2} opacity={0.7 * ringV} />
-      <MathLabel tex="0 \equiv 2^{32}" x={584} y={62} fontSize={16} color={colors.MUTED} anchor="start" opacity={0.9 * ringV} />
+      <text x={584} y={62} fill={colors.MUTED} fontSize={16} opacity={0.9 * ringV}>
+        0 ≡ 2<tspan dy={-6} fontSize={11}>32</tspan>
+      </text>
+
+      {/* faint hash marks: each key's spot appears as the ring draws past it, then the keys land */}
+      {landP < 1 &&
+        KEY_ANGLES.map((a, i) => {
+          if (cwDelta(-Math.PI / 2, a) / TAU > ringV) return null;
+          const p = ringPoint(a, RING.r);
+          return <circle key={`hm${i}`} cx={p.x} cy={p.y} r={3} fill={colors.MUTED} opacity={0.7 * (1 - landP)} />;
+        })}
 
       {/* beat-3 rule demos: walk clockwise until you hit a server */}
       {EXAMPLE_KEYS.map((k, j) => {
@@ -387,7 +401,9 @@ function LoadBars({ s }: { s: SceneState }) {
           </g>
         );
       })}
-      <MathLabel tex="\text{keys moved} \approx K/n" x={BAR_X0 + BAR_STEP} y={430} fontSize={23} color={colors.WARM} opacity={s.get(scene.texU)} />
+      <text x={BAR_X0 + BAR_STEP} y={428} textAnchor="middle" fill={colors.WARM} fontSize={22} opacity={s.get(scene.texU)}>
+        keys moved ≈ <tspan fontStyle="italic">K</tspan>/<tspan fontStyle="italic">n</tspan>
+      </text>
     </g>
   );
 }

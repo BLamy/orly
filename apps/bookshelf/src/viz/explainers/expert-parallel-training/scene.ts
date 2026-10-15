@@ -86,7 +86,7 @@ export const lbH = (count: number): number => (count / 2800) * LB_H;
 export const ROUTER = { x: 640, y: 105 };
 
 export const CAM_DEV: CameraState = { x: 640, y: 300, k: 1.12 };
-export const CAM_BARS: CameraState = { x: 640, y: 430, k: 1.18 };
+export const CAM_BARS: CameraState = { x: 640, y: 375, k: 1.12 };
 
 export interface Scene {
   tl: Timeline;
@@ -170,7 +170,7 @@ export function buildScene(): Scene {
 
   // — Beat 5 · recap + close ————————————————————————————————————————————
   tl.tween(cam, CAMERA_HOME, { at: 43.7, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.13, { at: 44.3, dur: 1.1, ease: ease.move });
+  tl.tween(dimU, 0, { at: 44.3, dur: 1.1, ease: ease.move });
   tl.tween(endU, 1, { at: 45.5, dur: 0.9, ease: ease.enter });
   tl.caption({
     at: 45.5,

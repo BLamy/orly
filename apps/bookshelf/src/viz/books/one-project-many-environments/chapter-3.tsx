@@ -118,17 +118,17 @@ export function buildScene() {
 
 const scene = buildScene();
 
-function FirePacket({ u, y, color, url }: { u: number; y: number; color: string; url: string }) {
+function FirePacket({ u, y, color, url, x0 = 850 }: { u: number; y: number; color: string; url: string; x0?: number }) {
   if (u <= 0) return null;
-  const x = lerp(850, 1100, clamp01(u));
+  const x = lerp(x0, 1100, clamp01(u));
   return <g>
-    <line x1={850} y1={y} x2={x} y2={y} stroke={color} strokeWidth={2.4} opacity={0.7} />
+    <line x1={x0} y1={y} x2={x} y2={y} stroke={color} strokeWidth={2.4} opacity={0.7} />
     <circle cx={x} cy={y} r={9} fill={color} />
     {u > 0.92 && <g opacity={(u - 0.92) * 12.5} transform={`translate(1116 ${y - 16})`}>
       <rect width={54} height={32} rx={9} fill={color} opacity={0.16} />
-      <text x={27} y={21} textAnchor="middle" fill={color} fontSize={12} fontWeight={750}>run</text>
+      <text x={27} y={21} textAnchor="middle" fill={color} fontSize={13} fontWeight={750}>run</text>
     </g>}
-    <text x={852} y={y - 12} fill={color} fontSize={12} fontFamily={mono} opacity={clamp01(u * 3)}>{url}</text>
+    <text x={x0 + 2} y={y - 12} fill={color} fontSize={13} fontFamily={mono} opacity={clamp01(u * 3)}>{url}</text>
   </g>;
 }
 
@@ -138,7 +138,7 @@ export function Render({ s }: { s: SceneState }) {
   // 1 when this lane is the camera's subject (or no lane is), else dimmed to a whisper
   const laneOp = (i: number) => {
     const active = clamp01(1 - Math.abs(focus - (i + 1)));
-    return lerp(1, lerp(0.32, 1, active), clamp01(focus));
+    return lerp(1, lerp(0.42, 1, active), clamp01(focus));
   };
   const weekU = s.get(scene.weekU);
   const pipeU = s.get(scene.pipeU);
@@ -158,9 +158,9 @@ export function Render({ s }: { s: SceneState }) {
       {LANES.map((lane, i) => {
         const show = clamp01(lanesU * 3 - i * 0.8);
         return <g key={lane.name} opacity={show * laneOp(i)}>
-          <rect x={85} y={lane.y - 42} width={1110} height={160} rx={20} fill={colors.PANEL} stroke={lane.color} strokeWidth={1.6} opacity={0.5} />
+          <rect x={85} y={lane.y - 42} width={1110} height={170} rx={20} fill={colors.PANEL} stroke={lane.color} strokeWidth={1.6} opacity={0.5} />
           <text x={124} y={lane.y - 12} fill={colors.TEXT} fontSize={19} fontWeight={750}>{lane.name}</text>
-          <text x={124} y={lane.y + 10} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{lane.url}</text>
+          <text x={124} y={lane.y + 10} fill={colors.MUTED} fontSize={13} fontFamily={mono}>{lane.url}</text>
         </g>;
       })}
 
@@ -175,7 +175,7 @@ export function Render({ s }: { s: SceneState }) {
             {i < 5 && lit > 0.7 && <circle cx={22} cy={-8} r={3.5} fill={colors.POSITIVE} opacity={(lit - 0.7) * 3.3} />}
           </g>;
         })}
-        <text x={400} y={LANES[0].y + 78} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono} opacity={weekU}>schedule: nightly · weekdays · 02:00 UTC</text>
+        <text x={400} y={LANES[0].y + 78} fill={colors.POSITIVE} fontSize={13} fontFamily={mono} opacity={weekU}>schedule: nightly · weekdays · 02:00 UTC</text>
         <FirePacket u={s.get(scene.prodFire)} y={LANES[0].y + 30} color={colors.POSITIVE} url="nightly run" />
       </g>
 
@@ -184,16 +184,16 @@ export function Render({ s }: { s: SceneState }) {
         {PIPELINE.map((stage, i) => {
           const done = clamp01(pipeU * 4.4 - i);
           const isLast = i === PIPELINE.length - 1;
-          return <g key={stage} transform={`translate(${400 + i * 112} ${LANES[1].y + 8})`}>
-            <rect width={96} height={44} rx={10} fill={isLast && done > 0.6 ? colors.WARM : colors.BG}
+          return <g key={stage} transform={`translate(${400 + i * 128} ${LANES[1].y + 8})`}>
+            <rect width={112} height={44} rx={10} fill={isLast && done > 0.6 ? colors.WARM : colors.BG}
               fillOpacity={isLast && done > 0.6 ? 0.2 : 1}
               stroke={done > 0.3 ? colors.WARM : colors.MUTED} strokeOpacity={done > 0.3 ? 0.95 : 0.35} strokeWidth={1.6} />
-            <text x={48} y={26} textAnchor="middle" fill={done > 0.3 ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={mono}>{stage}</text>
-            {i < PIPELINE.length - 1 && <line x1={96} y1={22} x2={112} y2={22} stroke={done > 0.8 ? colors.WARM : colors.MUTED} strokeWidth={2} opacity={done > 0.8 ? 1 : 0.3} />}
+            <text x={56} y={26} textAnchor="middle" fill={done > 0.3 ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={mono}>{stage}</text>
+            {i < PIPELINE.length - 1 && <line x1={112} y1={22} x2={128} y2={22} stroke={done > 0.8 ? colors.WARM : colors.MUTED} strokeWidth={2} opacity={done > 0.8 ? 1 : 0.3} />}
           </g>;
         })}
-        <text x={400} y={LANES[1].y + 78} fill={colors.WARM} fontSize={11.5} fontFamily={mono} opacity={clamp01(pipeU * 2)}>trigger: deployment pipeline completed on main</text>
-        <FirePacket u={s.get(scene.stageFire)} y={LANES[1].y + 30} color={colors.WARM} url="post-deploy run" />
+        <text x={400} y={LANES[1].y + 78} fill={colors.WARM} fontSize={13} fontFamily={mono} opacity={clamp01(pipeU * 2)}>trigger: deployment pipeline completed on main</text>
+        <FirePacket u={s.get(scene.stageFire)} y={LANES[1].y + 30} color={colors.WARM} url="post-deploy run" x0={928} />
       </g>
 
       {/* preview: ready-for-review AND live preview deployment */}
@@ -201,32 +201,32 @@ export function Render({ s }: { s: SceneState }) {
         <g transform={`translate(400 ${LANES[2].y + 8})`}>
           <rect width={150} height={44} rx={10} fill={prReadyU > 0.5 ? colors.SECONDARY : colors.BG}
             fillOpacity={prReadyU > 0.5 ? 0.18 : 1} stroke={prReadyU > 0.5 ? colors.SECONDARY : colors.MUTED} strokeWidth={1.6} strokeOpacity={prReadyU > 0.5 ? 1 : 0.4} />
-          <text x={75} y={26} textAnchor="middle" fill={prReadyU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={11.5} fontFamily={mono}>
+          <text x={75} y={26} textAnchor="middle" fill={prReadyU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={mono}>
             {prReadyU > 0.5 ? 'ready for review' : 'draft'}</text>
         </g>
         <g transform={`translate(570 ${LANES[2].y + 8})`}>
           <rect width={150} height={44} rx={10} fill={prDeployU > 0.5 ? colors.SECONDARY : colors.BG}
             fillOpacity={prDeployU > 0.5 ? 0.18 : 1} stroke={prDeployU > 0.5 ? colors.SECONDARY : colors.MUTED} strokeWidth={1.6} strokeOpacity={prDeployU > 0.5 ? 1 : 0.4} />
-          <text x={75} y={26} textAnchor="middle" fill={prDeployU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={11.5} fontFamily={mono}>
+          <text x={75} y={26} textAnchor="middle" fill={prDeployU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={mono}>
             {prDeployU > 0.5 ? 'preview deployed' : 'deploying…'}</text>
         </g>
         {/* AND gate */}
         <g transform={`translate(745 ${LANES[2].y + 8})`}>
           <path d="M 0 0 L 26 0 A 22 22 0 0 1 26 44 L 0 44 Z" fill={gateU > 0.5 ? colors.SECONDARY : colors.BG}
             fillOpacity={gateU > 0.5 ? 0.25 : 1} stroke={colors.SECONDARY} strokeWidth={1.8} strokeOpacity={0.5 + 0.5 * gateU} />
-          <text x={20} y={27} textAnchor="middle" fill={gateU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={10.5} fontWeight={700}>AND</text>
+          <text x={22} y={27} textAnchor="middle" fill={gateU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={12} fontWeight={700}>AND</text>
         </g>
-        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono} opacity={clamp01(prReadyU * 2) * (1 - clamp01(patternU * 2))}>trigger: ready_for_review ∧ preview deployed</text>
+        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={13} fontFamily={mono} opacity={clamp01(prReadyU * 2) * (1 - clamp01(patternU * 2))}>trigger: ready_for_review ∧ preview deployed</text>
         {patternU > 0 && <g opacity={patternU}>
-          <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>target_url: <tspan fill={colors.TEXT}>https://preview-*.example.com</tspan>  <tspan fill={colors.MUTED}>(pattern)</tspan></text>
-          <text x={800} y={LANES[2].y + 78} fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={clamp01(searchU * 2 - 0.6)}>no match: run skips · several: first wins</text>
+          <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>target_url: <tspan fill={colors.TEXT}>https://preview-*.example.com</tspan>  <tspan fill={colors.MUTED}>(pattern)</tspan></text>
+          <text x={400} y={LANES[2].y + 122} fill={colors.TEXT} fontSize={13} fontFamily={mono} opacity={clamp01(searchU * 2 - 0.6) * 0.9}>no match: run skips · several: first wins</text>
           <g opacity={clamp01(searchU * 2)}>
-            <text x={400} y={LANES[2].y + 100} fill={clamp01(searchU * 2 - 0.4) > 0 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={mono}>1 · checks{clamp01(searchU * 2 - 0.4) > 0 ? ' · preview-421.example.com ✓ match' : ' · scanning links…'}</text>
-            <text x={780} y={LANES[2].y + 100} fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={0.4 + 0.3 * searchU}>2 · comments · only if checks have no match</text>
+            <text x={400} y={LANES[2].y + 100} fill={clamp01(searchU * 2 - 0.4) > 0 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={mono}>1 · checks{clamp01(searchU * 2 - 0.4) > 0 ? ' · preview-421.example.com ✓ match' : ' · scanning links…'}</text>
+            <text x={800} y={LANES[2].y + 100} fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={0.7 + 0.3 * searchU}>2 · comments · only if checks have no match</text>
           </g>
-          {matchU > 0 && <g opacity={matchU} transform={`translate(832 ${LANES[2].y + 44})`}>
-            <rect width={310} height={26} rx={13} fill={colors.SECONDARY} opacity={0.14} />
-            <text x={155} y={17} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>override_url = preview-421.example.com</text>
+          {matchU > 0 && <g opacity={matchU} transform={`translate(820 ${LANES[2].y + 54})`}>
+            <rect width={310} height={24} rx={12} fill={colors.SECONDARY} opacity={0.14} />
+            <text x={155} y={16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>override_url = preview-421.example.com</text>
           </g>}
         </g>}
         <FirePacket u={s.get(scene.prFire)} y={LANES[2].y + 30} color={colors.SECONDARY} url="preview run" />
@@ -234,31 +234,31 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* journey × environment applicability matrix */}
       {matrixU > 0 && <g opacity={matrixU}>
-        <text x={365} y={130} fill={colors.TEXT} fontSize={21} fontWeight={750}>Which journeys run where</text>
-        <text x={365} y={152} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>journey_exclusions · runs everywhere unless excluded</text>
+        <text x={285} y={130} fill={colors.TEXT} fontSize={21} fontWeight={750}>Which journeys run where</text>
+        <text x={285} y={152} fill={colors.MUTED} fontSize={13} fontFamily={mono}>journey_exclusions · runs everywhere unless excluded</text>
         {ENV_COLS.map((env, c) => (
-          <text key={env} x={700 + c * 130} y={192} textAnchor="middle" fill={c === 0 ? colors.POSITIVE : c === 1 ? colors.WARM : colors.SECONDARY}
-            fontSize={13} fontWeight={700} fontFamily={mono} opacity={clamp01(matrixU * 3 - c * 0.5)}>{env}</text>
+          <text key={env} x={620 + c * 130} y={192} textAnchor="middle" fill={c === 0 ? colors.POSITIVE : c === 1 ? colors.WARM : colors.SECONDARY}
+            fontSize={14} fontWeight={700} fontFamily={mono} opacity={clamp01(matrixU * 3 - c * 0.5)}>{env}</text>
         ))}
         {JOURNEYS.map((j, r) => {
           const stripe = r === 2;
           return <g key={j} opacity={clamp01(matrixU * 3 - r * 0.5)}>
-            <rect x={355} y={208 + r * 62} width={730} height={50} rx={12} fill={colors.PANEL}
+            <rect x={275} y={208 + r * 62} width={730} height={50} rx={12} fill={colors.PANEL}
               stroke={stripe && skipU > 0.1 ? colors.NEGATIVE : colors.MUTED} strokeOpacity={stripe && skipU > 0.1 ? 0.9 : 0.3}
               strokeWidth={stripe ? 1 + skipU * 1.4 : 1} />
-            <text x={380} y={239 + r * 62} fill={colors.TEXT} fontSize={14.5} fontFamily={mono}>{j}</text>
+            <text x={300} y={239 + r * 62} fill={colors.TEXT} fontSize={15} fontFamily={mono}>{j}</text>
             {ENV_COLS.map((env, c) => {
               const ok = ALLOWED[r]![c]!;
               const cellShow = clamp01(matrixU * 8 - (r * 3 + c) * 0.5);
-              return <g key={env} opacity={cellShow} transform={`translate(${700 + c * 130} ${233 + r * 62})`}>
+              return <g key={env} opacity={cellShow} transform={`translate(${620 + c * 130} ${233 + r * 62})`}>
                 {!ok && skipU > 0.05 && <circle r={15 + 3 * skipU} fill={colors.NEGATIVE} opacity={0.14 * skipU} />}
                 <text textAnchor="middle" y={6} fill={ok || skipU < 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={ok || skipU < 0.5 ? 15 : 17} fontWeight={800}>{ok || skipU < 0.5 ? '✓' : '✕'}</text>
               </g>;
             })}
           </g>;
         })}
-        {skipU < 0.5 && <text x={365} y={492} fill={colors.POSITIVE} fontSize={12.5} fontFamily={mono} opacity={clamp01(matrixU * 2 - 1) * (1 - skipU * 2)}>no exclusions yet: every journey runs everywhere</text>}
-        {skipU > 0.3 && <text x={365} y={492} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>exclusion row: production skips it · no real charges</text>}
+        {skipU < 0.5 && <text x={285} y={492} fill={colors.POSITIVE} fontSize={14} fontFamily={mono} opacity={clamp01(matrixU * 2 - 1) * (1 - skipU * 2)}>no exclusions yet: every journey runs everywhere</text>}
+        {skipU > 0.3 && <text x={285} y={492} fill={colors.NEGATIVE} fontSize={14} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>exclusion row: nightly run skips production · no real charges</text>}
       </g>}
 
       {/* close */}

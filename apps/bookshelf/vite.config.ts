@@ -21,6 +21,9 @@ export default defineConfig({
     alias: {
       '@agent-wasm/core': fileURLToPath(new URL('./src/optional-agent-wasm.ts', import.meta.url)),
     },
+    // One React for the app and for linked packages such as @brett_lamy/viz-engine (its hooks
+    // otherwise run against a second, uninitialised copy and the whole book renders blank).
+    dedupe: ['react', 'react-dom'],
   },
   plugins: [
     react(),

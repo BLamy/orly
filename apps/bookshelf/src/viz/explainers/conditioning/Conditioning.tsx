@@ -35,6 +35,9 @@ const MOTION = { file: 'src/viz/explainers/conditioning/overrides.json', slug: '
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+/** Right edge of the screen-fixed formula column (stage is 1280 wide). */
+const RIGHT_X = 1232;
+
 // — contours: depth ramp on the core heat scale (deep = bright, rim = dim)
 const THRESHOLDS = 14;
 const contourColor = (_level: number, i: number): string =>
@@ -158,7 +161,7 @@ function AxisPanel({
       <MathLabel
         tex={`\\lambda = ${lam}`}
         x={px + PANEL.w / 2}
-        y={PANEL.y + 306}
+        y={PANEL.y + 62}
         fontSize={21}
         color={color}
         opacity={u}
@@ -207,7 +210,7 @@ function AxisPanel({
           y={TRACK_Y - 18}
           textAnchor="end"
           fill={colors.MUTED}
-          fontSize={13}
+          fontSize={14}
           opacity={winU}
         >
           {windowNote}
@@ -342,42 +345,44 @@ function Frame({ s }: { s: SceneState }) {
             />
           </g>
 
-          {/* three exact gradient-descent runs — the η sweep */}
-          <Trail pts={SMALL} prog={smallProg} u={smallU} color={colors.ACCENT} />
-          {smallU > 0 && smallProg > 0.12 && (
-            <MathLabel
-              tex={'\\eta = 0.01'}
-              x={xScale(-1.7)}
-              y={yScale(0) + 42}
-              fontSize={17}
-              color={colors.ACCENT}
-              opacity={smallU}
-            />
-          )}
-          <Trail pts={DIV} prog={divProg} u={divU} color={colors.NEGATIVE} />
-          {divU > 0 && divProg > 0.12 && (
-            <MathLabel
-              tex={'\\eta = 0.084 > 2/\\lambda_{\\max}'}
-              x={xScale(-2.4)}
-              y={yScale(-1.25)}
-              anchor="start"
-              fontSize={17}
-              color={colors.NEGATIVE}
-              opacity={divU}
-            />
-          )}
-          <Trail pts={GOOD} prog={goodProg} u={goodU} color={colors.POSITIVE} />
-          {goodU > 0 && goodProg > 0.12 && (
-            <MathLabel
-              tex={'\\eta^\\ast \\approx 0.077'}
-              x={xScale(-1.1)}
-              y={yScale(0.75)}
-              anchor="start"
-              fontSize={17}
-              color={colors.POSITIVE}
-              opacity={goodU}
-            />
-          )}
+          {/* three exact gradient-descent runs — the η sweep; they step back while the panels explain them */}
+          <g opacity={1 - 0.85 * panelU}>
+            <Trail pts={SMALL} prog={smallProg} u={smallU} color={colors.ACCENT} />
+            {smallU > 0 && smallProg > 0.12 && (
+              <MathLabel
+                tex={'\\eta = 0.01'}
+                x={xScale(-1.7)}
+                y={yScale(0) + 42}
+                fontSize={17}
+                color={colors.ACCENT}
+                opacity={smallU}
+              />
+            )}
+            <Trail pts={DIV} prog={divProg} u={divU} color={colors.NEGATIVE} />
+            {divU > 0 && divProg > 0.12 && (
+              <MathLabel
+                tex={'\\eta = 0.084 > 2/\\lambda_{\\max}'}
+                x={xScale(0.9)}
+                y={yScale(-0.75)}
+                anchor="start"
+                fontSize={17}
+                color={colors.NEGATIVE}
+                opacity={divU}
+              />
+            )}
+            <Trail pts={GOOD} prog={goodProg} u={goodU} color={colors.POSITIVE} />
+            {goodU > 0 && goodProg > 0.12 && (
+              <MathLabel
+                tex={'\\eta^\\ast \\approx 0.077'}
+                x={xScale(0.6)}
+                y={yScale(1.1)}
+                anchor="end"
+                fontSize={17}
+                color={colors.POSITIVE}
+                opacity={goodU}
+              />
+            )}
+          </g>
 
           {/* momentum + Adam on the same bowl */}
           <Trail pts={MOMENTUM} prog={momProg} u={momU} color={colors.SECONDARY} />
@@ -385,56 +390,56 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math labels (top strip, clear of the caption band) */}
+      {/* screen-fixed math labels (top strip, right-aligned so long formulas stay on the stage) */}
       <MathLabel
         tex={'L(x,y)=\\tfrac{1}{2}\\left(x^2+25\\,y^2\\right)'}
-        x={946}
+        x={RIGHT_X}
         y={58}
-        anchor="start"
+        anchor="end"
         fontSize={21}
         opacity={s.get(scene.lossTexU)}
       />
       <MathLabel
         tex={'\\kappa = \\lambda_{\\max}/\\lambda_{\\min} = 25'}
-        x={946}
+        x={RIGHT_X}
         y={102}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.WARM}
         opacity={s.get(scene.kappaTexU)}
       />
       <MathLabel
         tex={'\\theta \\leftarrow \\theta - \\eta\\,\\nabla L(\\theta)'}
-        x={946}
+        x={RIGHT_X}
         y={146}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.MUTED}
         opacity={s.get(scene.ruleTexU)}
       />
       <MathLabel
         tex={'v \\leftarrow \\beta v - \\eta\\nabla L,\\quad \\theta \\leftarrow \\theta + v'}
-        x={946}
+        x={RIGHT_X}
         y={102}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.SECONDARY}
         opacity={s.get(scene.momTexU)}
       />
       <MathLabel
         tex={`\\kappa \\to \\sqrt{\\kappa}: \\;\\; ${STEPS_MOM}\\ \\text{steps}`}
-        x={946}
+        x={RIGHT_X}
         y={146}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.SECONDARY}
         opacity={s.get(scene.sqrtTexU)}
       />
       <MathLabel
         tex={'\\theta \\leftarrow \\theta - \\eta\\,\\hat m/(\\sqrt{\\hat v}+\\varepsilon)'}
-        x={946}
+        x={RIGHT_X}
         y={190}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.WARM}
         opacity={s.get(scene.adamTexU)}

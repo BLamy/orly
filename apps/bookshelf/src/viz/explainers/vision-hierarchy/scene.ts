@@ -127,10 +127,14 @@ export const SG = 4;
 export const SP = SC + SG;
 export const SHAPE_XY = { x: 928, y: 238 } as const; // 3·56−4 = 164
 
-export const CAM_IMG: CameraState = { x: 320, y: 340, k: 1.3 };
-export const CAM_EDGE: CameraState = { x: 450, y: 330, k: 1.35 };
-export const CAM_COR: CameraState = { x: 700, y: 330, k: 1.3 };
-export const CAM_SHAPE: CameraState = { x: 950, y: 330, k: 1.25 };
+// Every framing keeps the 14×14 input fully on the stage (x 46…278), so the
+// pixels stay in view while the camera pushes toward the layer in question.
+export const CAM_IMG: CameraState = { x: 162, y: 330, k: 1.3 };
+export const CAM_EDGE: CameraState = { x: 300, y: 330, k: 1.3 };
+export const CAM_COR: CameraState = { x: 440, y: 335, k: 1.3 };
+export const CAM_SHAPE: CameraState = { x: 575, y: 335, k: 1.15 };
+/** the whole ladder, centred: input on the left, square on the right */
+export const CAM_ALL: CameraState = { x: 569, y: 335, k: 1 };
 
 export interface Scene {
   tl: Timeline;
@@ -234,7 +238,7 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'Pull back and read the whole ladder: pixels, then edges, then corners, then a shape. Each layer sees a wider window and a more abstract world.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 50.2, dur: 1.8, ease: ease.move });
+  tl.tween(cam, CAM_ALL, { at: 50.2, dur: 1.8, ease: ease.move });
   tl.tween(ladderU, 1, { at: 51.4, dur: 1.2, ease: ease.enter });
 
   tl.caption({

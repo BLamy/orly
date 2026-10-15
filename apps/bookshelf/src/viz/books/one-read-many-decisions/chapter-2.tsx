@@ -191,8 +191,10 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <Camera {...s.get(scene.cam)}>
-      <Label x={TRUNK.x0} y={62} text="shared context" u={clamp01(tapeU * 4) * (1 - longU)} size={18} weight={700} />
-      <Label x={TRUNK.x0 + 140} y={62} text="schematic pieces · not real tokenization" u={clamp01(tapeU * 4) * (1 - longU)} size={13} color={ROLE.PENDING} mono />
+      {/* beat 8 — the working content fades back so the closing panel reads alone */}
+      <g opacity={1 - 0.85 * closeU}>
+      <Label x={TRUNK.x0} y={62} text="shared context"u={clamp01(tapeU * 4) * (1 - longU)} size={18} weight={700} />
+      <Label x={TRUNK.x0 + 140} y={62} text="schematic pieces · not real tokenization" u={clamp01(tapeU * 4) * (1 - longU)} size={14} color={ROLE.PENDING} mono />
       <Label x={TRUNK.x0} y={62} text="a long page: the same read, many more positions" u={longU} size={18} weight={700} />
 
       {/* the shared tape — and its ghost pressing down into the matrix */}
@@ -307,7 +309,7 @@ export function Render({ s }: { s: SceneState }) {
                 return <rect key={`${i}-${l}`} x={SUF.x + i * SUF.step} y={br.y + 44 + l * 7} width={SUF.w} height={5} rx={1.5} fill={heatColor(0.3 + 0.7 * hash01(i + 9 * k, l + 3))} opacity={bu} />;
               }),
             )}
-            <Label x={SUF.x + br.pieces.length * SUF.step + 4} y={br.y + 70} text="◆ own" u={clamp01(branchU * 2 - 1)} size={13} color={ROLE.MODEL} mono />
+            <Label x={SUF.x + br.pieces.length * SUF.step + 4} y={br.y + 70} text="◆ own" u={clamp01(branchU * 2 - 1)} size={14} color={ROLE.MODEL} mono />
             {/* how the trunk reaches this branch is an open, measurable question */}
             <g opacity={slabU}>
               <rect x={SUF.slabX} y={br.y + 44} width={SUF.slabW} height={40} rx={5} fill="#1a1405" stroke={ROLE.PENDING} strokeWidth={1.5} strokeDasharray="5 4" />
@@ -322,17 +324,21 @@ export function Render({ s }: { s: SceneState }) {
       {/* beat 6 — the costs that remain (unscaled) */}
       {barsU > 0.002 && (
         <g opacity={barsU}>
-          <Label x={TRUNK.x0} y={450} text="prefill compute grows with the input" size={14} />
+          <Label x={TRUNK.x0} y={450} text="prefill compute grows with the input · 18 positions → 72 (schematic)" size={14} />
           <rect x={TRUNK.x0} y={456} width={lerp(190, 770, longU)} height={13} rx={4} fill={ROLE.MODEL} />
           <Label x={TRUNK.x0} y={494} text="stored keys + values: every position × every layer" size={14} />
           <rect x={TRUNK.x0} y={500} width={lerp(190, 770, longU)} height={13} rx={4} fill="none" stroke={ROLE.PENDING} strokeWidth={1.6} />
           <rect x={TRUNK.x0} y={500} width={lerp(190, 770, longU)} height={13} rx={4} fill={ROLE.PENDING} opacity={0.45} />
           <Label x={TRUNK.x0} y={536} text="unscaled · illustrative, not measured" size={13} color={ROLE.PENDING} mono />
+          <Label x={TRUNK.x0} y={566} text="saved: the 18-position trunk is read once" size={14} color={ROLE.CHECKED} weight={650} />
+          <Label x={TRUNK.x0} y={588} text="still runs: each field's own 4–5 question pieces, and its state" size={14} color={colors.TEXT} weight={650} />
         </g>
       )}
 
       <StatusTag x={TRUNK.x0} y={540} kind="INTENDED" text="design calls for one shared prefill, then field questions" u={s.get(scene.intendedU) * (1 - barsU)} />
       <StatusTag x={700} y={540} kind="REFERENCE" text="native engine broadcasts cache rows" u={s.get(scene.refU)} />
+
+      </g>
 
       {/* beat 8 — closing on an opaque panel */}
       <Panel x={230} y={446} w={820} h={110} u={closeU} stroke={ROLE.MODEL}>

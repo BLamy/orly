@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -9,6 +9,10 @@ import {
   MSE_FRESH_3,
   MSE_TRAIN_3,
   N_PLOT,
+  PLOT_AMP,
+  PLOT_X0,
+  PLOT_X1,
+  PLOT_Y_MID,
   XF,
   XT,
   X_MAX,
@@ -31,15 +35,21 @@ const MOTION = { file: 'src/viz/explainers/contamination/overrides.json', slug: 
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
-function curvePath(ys: number[], reveal: number): string {
+function curvePath(ys: number[], reveal: number, yOf: (y: number) => number = py): string {
   const n = Math.max(2, Math.ceil(reveal * N_PLOT));
   let d = '';
   for (let i = 0; i < n; i++) {
     const x = X_MIN + ((X_MAX - X_MIN) * i) / (N_PLOT - 1);
-    d += `${i === 0 ? 'M' : 'L'}${px(x).toFixed(1)} ${py(ys[i]).toFixed(1)}`;
+    d += `${i === 0 ? 'M' : 'L'}${px(x).toFixed(1)} ${yOf(ys[i]).toFixed(1)}`;
   }
   return d;
 }
+
+// The memorizer's spikes run far past the plot's band. They are clipped at the
+// plot box instead of being flattened onto its edge, so each one exits cleanly.
+const PLOT_TOP = PLOT_Y_MID - 2.2 * PLOT_AMP;
+const PLOT_BOTTOM = PLOT_Y_MID + 2 * PLOT_AMP;
+const yRaw = (y: number): number => PLOT_Y_MID - y * PLOT_AMP;
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -57,14 +67,23 @@ function Frame({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <Camera {...cam}>
+        <defs>
+          <clipPath id="contamination-plot">
+            <rect x={PLOT_X0 - 30} y={PLOT_TOP} width={PLOT_X1 - PLOT_X0 + 60} height={PLOT_BOTTOM - PLOT_TOP} />
+          </clipPath>
+        </defs>
         <g opacity={dimU}>
           {/* axis */}
           <line x1={px(X_MIN)} y1={py(0)} x2={px(X_MAX)} y2={py(0)} stroke={colors.GRID} opacity={ptsU} />
 
-          {/* memorizer curve */}
-          {fitU > 0 && <path d={curvePath(CURVE_11, fitU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} opacity={0.9} />}
+          {/* memorizer curve, clipped to the plot box */}
+          <g clipPath="url(#contamination-plot)">
+            {fitU > 0 && (
+              <path d={curvePath(CURVE_11, fitU, yRaw)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} opacity={0.9} />
+            )}
+          </g>
           {fitU > 0.9 && (
-            <text x={px(X_MIN) + 4} y={py(0) - 148} fill={colors.NEGATIVE} fontSize={14} opacity={clamp01((fitU - 0.9) * 10)}>
+            <text x={px(-0.9)} y={py(1.75)} fill={colors.NEGATIVE} fontSize={14} opacity={clamp01((fitU - 0.9) * 10)}>
               the memorizer — 12 knobs, train error 4e-18
             </text>
           )}
@@ -120,7 +139,16 @@ function Frame({ s }: { s: SceneState }) {
       {/* scoreboard */}
       {boardU > 0 && (
         <g opacity={boardU * dimU}>
-          <rect x={935} y={120} width={296} height={freshU > 0.3 ? (honestU > 0.3 ? 262 : 208) : 148} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect
+            x={935}
+            y={120}
+            width={296}
+            height={148 + 60 * clamp01(freshU) + 54 * clamp01(honestU)}
+            rx={14}
+            fill={colors.PANEL}
+            opacity={0.94}
+            stroke={colors.GRID}
+          />
           <text x={958} y={152} fill={colors.TEXT} fontSize={16} fontWeight={650}>
             the scoreboard
           </text>
@@ -156,18 +184,22 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Contamination
           </text>
-          <MathLabel
-            tex={'\\text{score}_{\\text{leaked}} = 0 \\qquad \\text{score}_{\\text{fresh}} = 3.74'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fill={colors.NEGATIVE} fontSize={21}>
+            score
+            <tspan baselineShift="sub" fontSize={15}>
+              leaked
+            </tspan>
+            {' = 0'}
+            <tspan dx={56}>score</tspan>
+            <tspan baselineShift="sub" fontSize={15}>
+              fresh
+            </tspan>
+            {' = 3.74'}
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             skill travels to new questions — memorization does not
           </text>

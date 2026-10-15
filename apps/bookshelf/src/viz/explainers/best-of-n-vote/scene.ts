@@ -90,8 +90,8 @@ export const VOTE_PICK = (() => {
 // ---------------------------------------------------------------------------
 
 export const BAL_X = 235;
-export const BAL_Y0 = 130;
-export const BAL_DY = 44;
+export const BAL_Y0 = 96;
+export const BAL_DY = 40;
 
 export const CH_X0 = 620;
 export const CH_X1 = 1180;

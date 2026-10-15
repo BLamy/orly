@@ -65,10 +65,32 @@ function Frame({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const histOp = 1 - simU;
+  // Screen-space scoring strip for the launch beat; it clears as the Verified event arrives.
+  const flowOp = axU * (1 - verU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+      <g opacity={flowOp}>
+        <rect x={170} y={20} width={280} height={48} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+        <text x={310} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+          GitHub issue from a real repo
+        </text>
+        <text x={475} y={50} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
+          →
+        </text>
+        <rect x={500} y={20} width={280} height={48} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+        <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+          model writes a patch
+        </text>
+        <text x={805} y={50} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
+          →
+        </text>
+        <rect x={830} y={20} width={280} height={48} rx={10} fill={colors.PANEL} stroke={colors.WARM} />
+        <text x={970} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+          repo's own tests: pass or fail
+        </text>
+      </g>
       <Camera {...cam}>
         <g opacity={dimU}>
           {/* shared axes frame */}
@@ -76,13 +98,13 @@ function Frame({ s }: { s: SceneState }) {
             <line x1={X0} y1={Y0} x2={X1} y2={Y0} stroke={colors.GRID} />
             {[0, 50, 100].map((p) => (
               <g key={p}>
-                <text x={X0 - 12} y={sy(p) + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                <text x={X0 - 12} y={sy(p) + 5} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                   {p}
                 </text>
                 <line x1={X0} y1={sy(p)} x2={X1} y2={sy(p)} stroke={colors.GRID} strokeDasharray="3 9" opacity={0.4} />
               </g>
             ))}
-            <text x={X0 - 12} y={sy(100) - 22} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+            <text x={X0 - 12} y={sy(100) - 22} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={14}>
               % resolved
             </text>
           </g>
@@ -91,11 +113,11 @@ function Frame({ s }: { s: SceneState }) {
           <g opacity={histOp}>
             <g opacity={axU}>
               {[2024, 2025, 2026].map((yr) => (
-                <text key={yr} x={sx(yr)} y={Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <text key={yr} x={sx(yr)} y={Y0 + 26} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                   {yr}
                 </text>
               ))}
-              <text x={X1} y={Y0 + 48} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+              <text x={X1} y={Y0 + 48} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                 reported scores, replotted (approximate)
               </text>
             </g>
@@ -106,7 +128,7 @@ function Frame({ s }: { s: SceneState }) {
               return <circle key={i} cx={sx(x)} cy={sy(y)} r={4.5} fill={colors.ACCENT} />;
             })}
             {histU > 0.02 && (
-              <text x={sx(2023.8) + 8} y={sy(1.96) - 12} fill={colors.WARM} fontSize={13.5}>
+              <text x={sx(2023.8) - 10} y={sy(1.96) - 20} textAnchor="end" fill={colors.WARM} fontSize={14}>
                 Claude 2 · 1.96%
               </text>
             )}
@@ -142,16 +164,16 @@ function Frame({ s }: { s: SceneState }) {
           {simU > 0 && (
             <g opacity={simU}>
               {Array.from({ length: GENS }, (_, i) => (
-                <text key={i} x={gx(i)} y={Y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                <text key={i} x={gx(i)} y={Y0 + 26} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                   {`gen ${i}`}
                 </text>
               ))}
-              <text x={X1} y={Y0 + 48} textAnchor="end" fill={colors.MUTED} fontSize={13.5}>
+              <text x={X1} y={Y0 + 48} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={14}>
                 toy simulation — 160 items · leak 12%/gen · seeded
               </text>
               {/* true skill reference */}
               <path d={polyPath(TRUE_PTS, gx, sy, 1)} fill="none" stroke={colors.MUTED} strokeWidth={2} strokeDasharray="4 7" opacity={0.6} />
-              <text x={gx(GENS - 1) + 8} y={sy(100 * skillOf(GENS - 1)) + 26} fill={colors.MUTED} fontSize={13}>
+              <text x={gx(GENS - 1) + 8} y={sy(100 * skillOf(GENS - 1)) + 26} fill={colors.TEXT} opacity={0.8} fontSize={14}>
                 true skill
               </text>
               {/* fixed pool */}
@@ -172,8 +194,11 @@ function Frame({ s }: { s: SceneState }) {
               {gapU > 0 && (
                 <g opacity={gapU}>
                   <line x1={gx(GENS - 1) - 24} y1={sy(FIXED_SCORES[GENS - 1])} x2={gx(GENS - 1) - 24} y2={sy(ROLLING_SCORES[GENS - 1])} stroke={colors.WARM} strokeWidth={2.5} />
-                  <text x={gx(GENS - 1) - 38} y={(sy(FIXED_SCORES[GENS - 1]) + sy(ROLLING_SCORES[GENS - 1])) / 2} textAnchor="end" fill={colors.WARM} fontSize={15} fontWeight={650}>
-                    {`+${FINAL_INFLATION.toFixed(1)} pts of contamination`}
+                  <text x={gx(GENS - 1) + 16} y={(sy(FIXED_SCORES[GENS - 1]) + sy(ROLLING_SCORES[GENS - 1])) / 2 - 4} fill={colors.WARM} fontSize={16} fontWeight={650}>
+                    {`+${FINAL_INFLATION.toFixed(1)} pts`}
+                  </text>
+                  <text x={gx(GENS - 1) + 16} y={(sy(FIXED_SCORES[GENS - 1]) + sy(ROLLING_SCORES[GENS - 1])) / 2 + 16} fill={colors.WARM} fontSize={14}>
+                    of contamination
                   </text>
                 </g>
               )}

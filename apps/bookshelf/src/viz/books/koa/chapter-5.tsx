@@ -234,7 +234,7 @@ export function buildScene(): Scene {
     dur: 8,
     text: 'And that is the whole machine. Use pushes, compose folds, the request dives, turns at the floor, and climbs back out — carrying your body on success, or a rejection that someone, somewhere, always catches.',
   });
-  tl.tween(stageDim, 0.12, { at: 81.2, dur: 1.4, ease: ease.move });
+  tl.tween(stageDim, 0, { at: 81.2, dur: 1.4, ease: ease.move });
   tl.tween(recapU, 1, { at: 82.4, dur: 2.6, ease: ease.draw });
   tl.tween(closeU, 1, { at: 85.6, dur: 0.9, ease: ease.enter });
   tl.hold(88.9, 1.8);
@@ -273,10 +273,10 @@ function HeaderRow({ y, name, value, gone, u, color }: { y: number; name: string
   return (
     <g opacity={u * (1 - gone)} transform={`translate(${gone * 150}, 0)`}>
       <rect x={-118} y={y - 12} width={236} height={24} rx={5} fill={colors.BG} stroke={colors.GRID} />
-      <text x={-108} y={y + 4} fill={color ?? colors.MUTED} fontSize={12} fontFamily="monospace">
+      <text x={-108} y={y + 4} fill={color ?? colors.MUTED} fontSize={13} fontFamily="monospace">
         {name}
       </text>
-      <text x={108} y={y + 4} textAnchor="end" fill={color ?? colors.MUTED} fontSize={12} fontFamily="monospace">
+      <text x={108} y={y + 4} textAnchor="end" fill={color ?? colors.MUTED} fontSize={13} fontFamily="monospace">
         {value}
       </text>
     </g>
@@ -315,19 +315,19 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the rim: the net chapter one installed ---- */}
         <g opacity={stageU * stageDim}>
           <line x1={280} y1={RIM_Y} x2={760} y2={RIM_Y} stroke={colors.POSITIVE} strokeWidth={1.6} strokeDasharray="7 6" opacity={0.5 + 0.5 * netU} />
-          <text x={280} y={RIM_Y - 34} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={280} y={RIM_Y - 36} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             fnMiddleware(ctx)
           </text>
-          <text x={280} y={RIM_Y - 16} fill={netU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={280} y={RIM_Y - 16} fill={netU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily="monospace">
             .then(handleResponse).catch(onerror)
           </text>
         </g>
 
         {/* ---- the outer ring: your try/catch (ghost until scenario B) ---- */}
-        <g opacity={stageU * (0.18 + 0.82 * tryU) * stageDim}>
+        <g opacity={stageU * (0.5 + 0.5 * tryU) * stageDim}>
           <path d={bracketPath(OUT)} fill="none" stroke={colors.POSITIVE} strokeWidth={22} opacity={0.09 + 0.1 * absorbU} strokeLinejoin="round" />
-          <path d={bracketPath(OUT)} fill="none" stroke={colors.POSITIVE} strokeWidth={1.7} opacity={0.85} strokeLinejoin="round" />
-          <text x={OUT.l - 10} y={OUT.top - 12} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+          <path d={bracketPath(OUT)} fill="none" stroke={colors.POSITIVE} strokeWidth={2} opacity={1} strokeLinejoin="round" />
+          <text x={OUT.l - 10} y={OUT.top - 12} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
             try {'{'} await next() {'}'} catch (err) {'{'} … {'}'}
           </text>
         </g>
@@ -336,20 +336,20 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={stageU * stageDim}>
           <path d={bracketPath(INN)} fill="none" stroke={colors.SECONDARY} strokeWidth={22} opacity={0.1} strokeLinejoin="round" />
           <path d={bracketPath(INN)} fill="none" stroke={colors.SECONDARY} strokeWidth={1.7} opacity={0.85} strokeLinejoin="round" />
-          <text x={INN.l - 10} y={INN.top - 12} fill={colors.SECONDARY} fontSize={13}>
+          <text x={INN.l - 10} y={INN.top - 12} fill={colors.SECONDARY} fontSize={14}>
             the handler
           </text>
-          <text x={THROW_PT.x} y={THROW_PT.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace" opacity={bodySetU}>
+          <text x={THROW_PT.x} y={THROW_PT.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={bodySetU}>
             ctx.body = 'something else'
           </text>
-          <text x={THROW_PT.x} y={THROW_PT.y - 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily="monospace" opacity={throwU}>
+          <text x={THROW_PT.x} y={THROW_PT.y - 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" opacity={throwU}>
             ctx.throw(418, 'boom')
           </text>
         </g>
 
         {/* the throw spark */}
         {throwU > 0 && (
-          <g opacity={throwU}>
+          <g opacity={throwU * stageDim}>
             <circle cx={THROW_PT.x} cy={THROW_PT.y} r={10 + 8 * (1 - throwU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} />
             <circle cx={THROW_PT.x} cy={THROW_PT.y} r={5} fill={colors.NEGATIVE} />
           </g>
@@ -360,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <circle cx={p.x} cy={p.y} r={9} fill={colors.NEGATIVE} />
             <circle cx={p.x} cy={p.y} r={15} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.5} opacity={0.6} />
-            <text x={p.x + 24} y={p.y + 4} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+            <text x={p.x + 24} y={p.y + 5} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
               rejected
             </text>
           </g>
@@ -380,13 +380,13 @@ export function Render({ s }: { s: SceneState }) {
             <text x={OUT.r - 30} y={580} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
               ctx.status = err.statusCode || 500 · ctx.body = {'{'} message {'}'}
             </text>
-            <text x={OUT.r + 34} y={240} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+            <text x={OUT.r + 34} y={240} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
               caught
             </text>
-            <text x={OUT.r + 34} y={256} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={OUT.r + 34} y={258} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               no rethrow
             </text>
-            <text x={OUT.r + 34} y={272} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={OUT.r + 34} y={276} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               → no app event
             </text>
           </g>
@@ -396,19 +396,19 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={stageU * stageDim}>
           {/* onerror box at the end of the rim */}
           <rect x={928} y={RIM_Y - 22} width={166} height={44} rx={9} fill={colors.PANEL} stroke={netU > 0.3 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
-          <text x={1011} y={RIM_Y + 5} textAnchor="middle" fill={netU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={1011} y={RIM_Y + 5} textAnchor="middle" fill={netU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontFamily="monospace">
             ctx.onerror(err)
           </text>
 
           {/* the app, listening */}
           <rect x={758} y={44} width={150} height={40} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={833} y={69} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          <text x={833} y={69} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
             app.on('error')
           </text>
           {emitU > 0 && (
             <g opacity={emitU}>
               <line x1={960} y1={RIM_Y - 24} x2={lerp(960, 875, emitU)} y2={lerp(RIM_Y - 24, 88, emitU)} stroke={colors.WARM} strokeWidth={2} strokeDasharray="5 4" />
-              <text x={955} y={106} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={955} y={106} fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 app.emit('error', err, this)
               </text>
             </g>
@@ -416,16 +416,16 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the response card */}
           <rect x={BENCH.x - 130} y={BENCH.y - 100} width={260} height={212} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={BENCH.x} y={BENCH.y - 76} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <text x={BENCH.x} y={BENCH.y - 76} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             the response
           </text>
           <g transform={`translate(${BENCH.x}, 0)`}>
             {/* status row */}
             <g opacity={bodySetU}>
-              <text x={-118} y={BENCH.y - 48} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={-118} y={BENCH.y - 48} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 status
               </text>
-              <text x={118} y={BENCH.y - 48} textAnchor="end" fill={fixU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily="monospace" fontWeight={700}>
+              <text x={118} y={BENCH.y - 48} textAnchor="end" fill={fixU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 {fixU > 0.5 ? '418' : '200'}
               </text>
             </g>
@@ -435,7 +435,7 @@ export function Render({ s }: { s: SceneState }) {
             {/* the error's own header lands */}
             <HeaderRow y={BENCH.y - 20} name="X-New-Header" value="Value" gone={0} u={newHdrU} color={colors.WARM} />
             {fixU > 0 && (
-              <text x={-118} y={BENCH.y + 12} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={fixU}>
+              <text x={-118} y={BENCH.y + 12} fill={colors.WARM} fontSize={13} fontFamily="monospace" opacity={fixU}>
                 Content-Type: text plain
               </text>
             )}
@@ -443,11 +443,11 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={bodySetU}>
               <rect x={-118} y={BENCH.y + 34} width={236} height={30} rx={5} fill={colors.BG} stroke={swapU > 0.5 ? colors.NEGATIVE : colors.GRID} />
               {swapU < 0.5 ? (
-                <text x={0} y={BENCH.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="monospace" opacity={1 - swapU}>
+                <text x={0} y={BENCH.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={1 - swapU}>
                   'something else'
                 </text>
               ) : (
-                <text x={0} y={BENCH.y + 54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" opacity={swapU}>
+                <text x={0} y={BENCH.y + 54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" opacity={swapU}>
                   res.end('boom')
                 </text>
               )}
@@ -481,7 +481,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={word} opacity={u}>
                   <circle cx={x} cy={300} r={7} fill={i === 3 ? colors.WARM : colors.ACCENT} />
                   {i < 5 && <line x1={x + 12} y1={300} x2={x + 113} y2={300} stroke={colors.GRID} strokeWidth={2} />}
-                  <text x={x} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+                  <text x={x} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {word}
                   </text>
                 </g>

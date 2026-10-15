@@ -97,53 +97,55 @@ export function Render({ s }: { s: SceneState }) {
         <text x="105" y="34" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>user turn</text>
         <text x="105" y="59" textAnchor="middle" fill={colors.TEXT} fontSize="13">request + recent context</text>
       </g>
-      <path d="M240 191 C275 191 290 250 326 250" fill="none" stroke={colors.ACCENT} strokeWidth="5" strokeDasharray="12 8" strokeDashoffset={-36 * s.get(scene.pulse)} opacity={s.get(scene.fieldU)} />
+      <g opacity={s.get(scene.requestU) * (1 - s.get(scene.fieldU))} transform="translate(135 270)">
+        <text textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>harness</text>
+        <text y="22" textAnchor="middle" fill={colors.MUTED} fontSize="14">backed by several models</text>
+      </g>
+      <path d="M240 191 C270 191 272 250 300 250" fill="none" stroke={colors.ACCENT} strokeWidth="5" strokeDasharray="12 8" strokeDashoffset={-36 * s.get(scene.pulse)} opacity={s.get(scene.fieldU)} />
       <g opacity={s.get(scene.fieldU)}>
         <rect x="300" y="184" width="700" height="150" rx="38" fill="#0f1728" stroke={colors.GRID} strokeWidth="2" />
         {TIERS.map((tier) => <Tier key={tier.id} tier={tier} u={s.get(scene.fieldU)} selected={selected} pulse={s.get(scene.pulse)} />)}
       </g>
       <g opacity={s.get(scene.predictionU)}>
         <path d="M560 118 C620 100 690 118 740 186" fill="none" stroke={colors.WARM} strokeWidth="3" />
-        <text x="560" y="106" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>raw prediction → C2</text>
+        <text x="560" y="106" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>raw prediction → C2</text>
       </g>
       <g opacity={policy}>
-        <rect x="775" y="116" width="250" height="46" rx="18" fill="#2d2111" stroke={colors.WARM} />
-        <text x="900" y="145" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>policy-adjusted decision → C2</text>
+        <rect x="750" y="116" width="300" height="46" rx="18" fill="#2d2111" stroke={colors.WARM} />
+        <text x="900" y="145" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>policy-adjusted decision → C2</text>
       </g>
       <g opacity={selected}>
-        <path d="M740 306 V316" stroke={colors.WARM} strokeWidth="5" />
-        <polygon points="740,326 731,312 749,312" fill={colors.WARM} />
-        <text x="758" y="318" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>served tier C2</text>
+        <text x="740" y="328" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="700" fontFamily={colors.font.mono}>served tier C2</text>
       </g>
 
-      <g transform="translate(92 400)">
+      <g transform="translate(92 408)">
         <rect width="1096" height="154" rx="30" fill="#111a2a" stroke={colors.GRID} strokeWidth="2" opacity={clamp01(events * 2)} />
-        <text x="30" y="32" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={clamp01(events * 2)}>trajectory / user turn / subscene</text>
+        <text x="30" y="26" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono} opacity={clamp01(events * 2) * 0.75}>trajectory / user turn / subscene</text>
         {EVENTS.map((event, i) => {
           const u = clamp01(events * EVENTS.length - i);
           const x = 35 + i * 174;
-          return <g key={event.short} transform={`translate(${x} 56)`} opacity={u}>
+          return <g key={event.short} transform={`translate(${x} 44)`} opacity={u}>
             <rect width="146" height="66" rx="17" fill={i === 4 ? '#301923' : '#15243a'} stroke={event.color} strokeWidth="2" />
-            <text x="73" y="28" textAnchor="middle" fill={event.color} fontSize="13" fontFamily={colors.font.mono}>{event.short}</text>
-            <text x="73" y="49" textAnchor="middle" fill={colors.TEXT} fontSize="12">{event.label}</text>
+            <text x="73" y="26" textAnchor="middle" fill={event.color} fontSize="14" fontFamily={colors.font.mono}>{event.short}</text>
+            <text x="73" y="48" textAnchor="middle" fill={colors.TEXT} fontSize="14">{event.label}</text>
             {i < EVENTS.length - 1 && <path d="M146 33 H174" stroke={colors.MUTED} strokeWidth="3" />}
           </g>;
         })}
         <g opacity={s.get(scene.contextU)}>
-          <path d="M220 135 H525" stroke={colors.SECONDARY} strokeWidth="5" strokeDasharray="9 7" />
-          <text x="372" y="148" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>earlier visible history retained · earlier reasoning omitted</text>
+          <path d="M209 126 H529" stroke={colors.SECONDARY} strokeWidth="5" strokeDasharray="9 7" />
+          <text x="369" y="146" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>earlier visible history retained · earlier reasoning omitted</text>
         </g>
       </g>
       <g opacity={s.get(scene.linksU)}>
-        <path d="M165 566 C250 600 410 600 494 566" fill="none" stroke={colors.ACCENT} strokeWidth="3" />
-        <path d="M790 566 C878 600 1015 600 1100 566" fill="none" stroke={colors.SECONDARY} strokeWidth="3" />
-        <text x="330" y="614" textAnchor="middle" fill={colors.ACCENT} fontSize="13">parent trajectory</text>
-        <text x="945" y="614" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">local subscene</text>
+        <path d="M165 574 C250 608 410 608 494 574" fill="none" stroke={colors.ACCENT} strokeWidth="3" />
+        <path d="M790 574 C878 608 1015 608 1100 574" fill="none" stroke={colors.SECONDARY} strokeWidth="3" />
+        <text x="330" y="622" textAnchor="middle" fill={colors.ACCENT} fontSize="14">parent trajectory</text>
+        <text x="945" y="622" textAnchor="middle" fill={colors.SECONDARY} fontSize="14">local subscene</text>
       </g>
-      <g opacity={s.get(scene.recordU)} transform="translate(640 362)">
-        <rect x="-230" y="-32" width="460" height="64" rx="24" fill="#13291f" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text y="-3" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="800">prediction → action → outcome</text>
-        <text y="20" textAnchor="middle" fill={colors.TEXT} fontSize="12">one provenance-linked training record</text>
+      <g opacity={s.get(scene.recordU)} transform="translate(640 368)">
+        <rect x="-230" y="-28" width="460" height="56" rx="22" fill="#13291f" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text y="-5" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="800">prediction → action → outcome</text>
+        <text y="14" textAnchor="middle" fill={colors.TEXT} fontSize="14">one provenance-linked training record</text>
       </g>
     </g>
     <g opacity={close}>

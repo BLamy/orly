@@ -166,6 +166,8 @@ const MOTION = {
 };
 
 const LENS_PATHS = ['pubkey', 'tags[0][1]', 'created_at'];
+// the public relays that store the envelope (stage space, under the JSON)
+const RELAYS = ['wss://relay-a', 'wss://relay-b', 'wss://relay-c'];
 
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -178,7 +180,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
+  // relays are present from the start, brighten when the envelope is read, and step aside for the graph
+  const relayOp = (0.6 + 0.4 * clamp01(lensU * 4)) * (1 - clamp01(graphU * 3));
 
   let focus: string[] | undefined;
   let focusU = 0;
@@ -201,12 +205,12 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the doc recedes once its values live on the card and the graph takes over */}
-          <JsonDoc layout={LAYOUT} reveal={jsonU} focus={focus} focusU={focusU} opacity={1 - 0.8 * clamp01(graphU * 2)} />
+          <JsonDoc layout={LAYOUT} reveal={jsonU} focus={focus} focusU={focusU} dim={0.55} opacity={1 - 0.6 * clamp01(graphU * 2)} />
 
           {/* "?iv=" callout while the cipher beat is on */}
           {encU > 0 && (
             <g opacity={encU}>
-              <text x={90} y={430} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <text x={90} y={430} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 AES-256-CBC · key = unhashed ECDH x · "?iv=" appended in the clear
               </text>
             </g>
@@ -216,10 +220,10 @@ function Frame({ s }: { s: SceneState }) {
           {metaU > 0 && (
             <g>
               <rect x={CARD.x} y={CARD.y} width={CARD.w} height={64 + ROWS.length * 40} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} opacity={Math.min(1, metaU * 3)} />
-              <text x={CARD.x + 20} y={CARD.y + 32} fill={colors.NEGATIVE} fontSize={15} fontWeight={600} opacity={Math.min(1, metaU * 3)}>
+              <text x={CARD.x + 20} y={CARD.y + 32} fill={colors.NEGATIVE} fontSize={16} fontWeight={600} opacity={Math.min(1, metaU * 3)}>
                 eavesdropper’s notebook
               </text>
-              <text x={CARD.x + 20} y={CARD.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.min(1, metaU * 3)}>
+              <text x={CARD.x + 20} y={CARD.y + 52} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={Math.min(1, metaU * 3)}>
                 cipher: unbroken · notebook: full
               </text>
               {ROWS.map((r, i) => {
@@ -235,10 +239,10 @@ function Frame({ s }: { s: SceneState }) {
                       u={u}
                       text={r.value}
                       fill={colors.TEXT}
-                      fontSize={13}
+                      fontSize={14}
                       lift={60}
                     />
-                    <text x={CARD.x + 20} y={ty} fill={colors.MUTED} fontSize={13} opacity={u}>
+                    <text x={CARD.x + 20} y={ty} fill={colors.MUTED} fontSize={14} opacity={u}>
                       {r.label}
                     </text>
                   </g>
@@ -250,6 +254,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* the metadata graph */}
           {graphU > 0 && (
             <g>
+              {/* edges first, so they run under the nodes and never through a label */}
+              {[[GRAPH.ax, GRAPH.ay, GRAPH.bx, GRAPH.by], [GRAPH.ax, GRAPH.ay, EXTRA[0].x, EXTRA[0].y], [GRAPH.bx, GRAPH.by, EXTRA[1].x, EXTRA[1].y], [EXTRA[0].x, EXTRA[0].y, GRAPH.bx, GRAPH.by]].map(([x1, y1, x2, y2], i) => {
+                const u = clamp01(graphU * 4 - i - 0.5);
+                if (u <= 0) return null;
+                return (
+                  <line key={i} x1={x1} y1={y1} x2={x1 + (x2 - x1) * u} y2={y1 + (y2 - y1) * u} stroke={colors.NEGATIVE} strokeWidth={1.5} opacity={0.6} />
+                );
+              })}
               {[{ x: GRAPH.ax, y: GRAPH.ay, l: shortHex(ALICE, 4, 4) }, { x: GRAPH.bx, y: GRAPH.by, l: shortHex(BOB, 4, 4) }, ...EXTRA.map((e, i) => ({ ...e, l: `…${i + 1}` }))].map((n, i) => {
                 const u = clamp01(graphU * 4 - i);
                 if (u <= 0) return null;
@@ -258,20 +270,13 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={n.x} cy={n.y} r={16} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                    <text x={n.x} y={named ? n.y + 36 : n.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                    <text x={n.x} y={named ? n.y + 36 : n.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                       {n.l}
                     </text>
                   </g>
                 );
               })}
-              {[[GRAPH.ax, GRAPH.ay, GRAPH.bx, GRAPH.by], [GRAPH.ax, GRAPH.ay, EXTRA[0].x, EXTRA[0].y], [GRAPH.bx, GRAPH.by, EXTRA[1].x, EXTRA[1].y], [EXTRA[0].x, EXTRA[0].y, GRAPH.bx, GRAPH.by]].map(([x1, y1, x2, y2], i) => {
-                const u = clamp01(graphU * 4 - i - 0.5);
-                if (u <= 0) return null;
-                return (
-                  <line key={i} x1={x1} y1={y1} x2={x1 + (x2 - x1) * u} y2={y1 + (y2 - y1) * u} stroke={colors.NEGATIVE} strokeWidth={1.5} opacity={0.6} />
-                );
-              })}
-              <text x={GRAPH.ax - 20} y={575} fill={colors.NEGATIVE} fontSize={12} opacity={clamp01(graphU * 2 - 1)}>
+              <text x={GRAPH.ax - 20} y={575} fill={colors.NEGATIVE} fontSize={14} opacity={clamp01(graphU * 2 - 1)}>
                 the social graph, from envelopes alone
               </text>
             </g>
@@ -284,16 +289,33 @@ function Frame({ s }: { s: SceneState }) {
               <text x={320} y={498} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} fontWeight={700} letterSpacing={2}>
                 DEPRECATED — kind 4
               </text>
-              <text x={320} y={532} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
+              <text x={320} y={532} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                 "leaks metadata in the events" → NIP-17
               </text>
             </g>
           )}
         </Camera>
+        {relayOp > 0 && (
+          <g opacity={relayOp}>
+            <text x={90} y={542} fill={colors.MUTED} fontSize={14}>
+              public relays keep every envelope in the clear
+            </text>
+            {RELAYS.map((r, i) => (
+              <g key={r}>
+                <rect x={90 + i * 300} y={554} width={260} height={40} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={90 + i * 300 + 130} y={579}textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                  {r}
+                </text>
+              </g>
+            ))}
+          </g>
+        )}
       </g>
 
       {closeU > 0 && (
         <g opacity={closeU}>
+          {/* solid backing so the faded scene cannot show through the panel */}
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.BG} />
           <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The letter was never the leak
@@ -301,7 +323,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             encrypting content is easy — hiding the envelope takes four more chapters
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-04 · kind 4 · AES-256-CBC · deprecated in favor of NIP-17
           </text>
         </g>

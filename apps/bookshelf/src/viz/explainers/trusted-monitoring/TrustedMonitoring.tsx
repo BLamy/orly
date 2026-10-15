@@ -75,9 +75,9 @@ const AH = 300;
 const sx = (score: number) => AX + ((score + 3.5) / 8) * AW; // score range ~ [-3.5, 4.5]
 const CAM_DIST: CameraState = { x: 560, y: 360, k: 1.12 };
 const BX = 200;
-const BY = 560;
+const BY = 200;
 const BW = 640;
-const BH = 150;
+const BH = 260;
 const bx = (i: number) => BX + (i + 0.5) * (BW / BUDGETS.length);
 const by = (v: number) => BY + BH - v * BH;
 
@@ -186,7 +186,7 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
-  const distFade = 1 - 0.85 * clamp01(curveU * 2.5);
+  const distFade = 1 - clamp01(curveU * 2.5);
   const thr = sx(AT2.thr);
 
   return (
@@ -259,14 +259,14 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* budget curve */}
           {curveU > 0 && (
-            <g opacity={curveU}>
+            <g opacity={curveU * (1 - closeU)}>
               <line x1={BX} y1={BY} x2={BX} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={BX} y1={BY + BH} x2={BX + BW} y2={BY + BH} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={BX + BW / 2} y={BY + BH + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={BX + BW / 2} y={BY + BH + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 audit budget (share of submissions) — 20,000 seeded per point
               </text>
-              <text x={BX - 14} y={BY + 6} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">100%</text>
-              <text x={BX - 14} y={BY + BH} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">0</text>
+              <text x={BX - 14} y={BY + 6} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">100%</text>
+              <text x={BX - 14} y={BY + BH} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">0</text>
               <polyline
                 points={CATCH.map((p, i) => `${bx(i)} ${by(p.rate)}`).join(' ')}
                 fill="none"
@@ -280,10 +280,10 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={p.c} opacity={u}>
                     <circle cx={bx(i)} cy={by(p.rate)} r={5} fill={colors.POSITIVE} />
-                    <text x={bx(i)} y={by(p.rate) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily="monospace">
+                    <text x={bx(i)} y={by(p.rate) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily="monospace">
                       {(p.rate * 100).toFixed(0)}%
                     </text>
-                    <text x={bx(i)} y={BY + BH + 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+                    <text x={bx(i)} y={BY + BH + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                       {(p.c * 100).toFixed(p.c < 0.01 ? 1 : 0)}%
                     </text>
                   </g>
@@ -294,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
         </Camera>
       </g>
 
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleU}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           A weak model, watching
         </text>
@@ -313,8 +313,8 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={362} textAnchor="middle" fill={colors.POSITIVE} fontSize={15.5}>
             real safety, from a monitor too weak to do the job
           </text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14}>
-            but the attacker chooses when to defect — next
+          <text x={640} y={404} textAnchor="middle" fill={colors.WARM} fontSize={15}>
+            but the curve assumes a fixed attack rate; the attacker chooses when to defect — next
           </text>
         </g>
       )}

@@ -307,7 +307,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
           {die1U > 0.4 && keyU > 0 && (
-            <text x={ourP.x - 16} y={ourP.y + 26} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontStyle="italic" opacity={die1U}>
+            <text x={ourP.x - 16} y={ourP.y + 26} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontStyle="italic" opacity={die1U}>
               zero copies
             </text>
           )}
@@ -355,7 +355,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={prefU * (1 - dimU)}>
             <path d={walkD(OUR_S, NODE_S.D, 1, -60)} fill="none" stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="1 5" opacity={0.7} />
             <rect x={64} y={392} width={252} height={112} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={86} y={424} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={86} y={424} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               preference list — user:42
             </text>
             {(['B', 'C', 'D'] as NodeId[]).map((nd, i) => (
@@ -393,7 +393,7 @@ export function Render({ s }: { s: SceneState }) {
               fully in frame (visible x ends ≈ 994 while zoomed) */}
           <g opacity={quoteU}>
             <rect x={64} y={110} width={344} height={122} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={86} y={142} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={86} y={142} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               README · Availability patterns
             </text>
             <text x={86} y={170} fill={colors.TEXT} fontSize={14} fontStyle="italic">
@@ -409,14 +409,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* availability math */}
           <g opacity={mathU * (1 - dimU)}>
-            <rect x={928} y={108} width={306} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={950} y={140} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <rect x={920} y={108} width={336} height={160} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={942} y={140} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               README · Availability in parallel
             </text>
-            <MathLabel tex={'A_{\\text{node}} = 99.9\\%'} x={950} y={158} fontSize={18} color={colors.TEXT} anchor="start" boxWidth={280} />
-            <MathLabel tex={'A = 1 - (1 - 0.999)^3'} x={950} y={196} fontSize={18} color={colors.ACCENT} anchor="start" boxWidth={280} />
+            <MathLabel tex={'A_{\\text{node}} = 99.9\\%'} x={942} y={166} fontSize={18} color={colors.TEXT} anchor="start" boxWidth={300} />
+            <MathLabel tex={'A = 1 - (1 - 0.999)^3'} x={942} y={204} fontSize={18} color={colors.ACCENT} anchor="start" boxWidth={300} />
             <g opacity={math2U}>
-              <MathLabel tex={'= 99.9999999\\%'} x={950} y={238} fontSize={20} color={colors.POSITIVE} anchor="start" boxWidth={280} />
+              <MathLabel tex={'= 99.9999999\\%'} x={942} y={244} fontSize={20} color={colors.POSITIVE} anchor="start" boxWidth={300} />
             </g>
           </g>
         </g>

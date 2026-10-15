@@ -44,27 +44,30 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout.
 // ---------------------------------------------------------------------------
 
-const SERVER = { x: 56, y: 116, w: 424, h: 430 } as const;
-const CLIENT = { x: 800, y: 116, w: 424, h: 430 } as const;
+// Both panels sit 96px in from the stage edges so no zoom clips them.
+// Panels stop above the caption pill (y ≈ 506 at the zoomed server and client shots).
+const SERVER = { x: 96, y: 116, w: 380, h: 384 } as const;
+const CLIENT = { x: 804, y: 116, w: 380, h: 384 } as const;
 const WIRE_Y = 330;
 const GATE_X = 640;
 
-const ACTIONS = { x: 88, y: 158, w: 360, h: 148 } as const;
-const DECODE = { x: 88, y: 348, w: 360, h: 150 } as const;
-const BUTTON = { x: 838, y: 168, w: 200, h: 54 } as const;
-const STUB = { x: 838, y: 258, w: 350, h: 104 } as const;
-const FORM = { x: 838, y: 396, w: 350, h: 112 } as const;
+const ACTIONS = { x: 120, y: 158, w: 312, h: 148 } as const;
+const DECODE = { x: 120, y: 366, w: 312, h: 124 } as const;
+const BUTTON = { x: 828, y: 168, w: 200, h: 54 } as const;
+const STUB = { x: 828, y: 258, w: 332, h: 104 } as const;
+const FORM = { x: 828, y: 384, w: 332, h: 112 } as const;
 
 const CLIENTFN_ERR = [
-  'Client Functions cannot be passed directly',
-  'to Server Functions. Only Functions passed',
-  'from the Server can be passed back again.',
+  'Client Functions cannot be passed',
+  'directly to Server Functions. Only',
+  'Functions passed from the Server can',
+  'be passed back again.',
 ];
 
 // camera marks
 const CAM_OPEN: CameraState = { x: 640, y: 340, k: 1.05 };
 const CAM_SERVER: CameraState = { x: 240, y: 300, k: 1.32 };
-const CAM_CLIENT: CameraState = { x: 960, y: 300, k: 1.3 };
+const CAM_CLIENT: CameraState = { x: 994, y: 300, k: 1.3 };
 const CAM_GATE: CameraState = { x: 640, y: 330, k: 1.12 };
 const CAM_FORM: CameraState = { x: 680, y: 360, k: 1.0 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
@@ -285,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const endU = s.get(scene.endU);
 
-  const mainOp = 1 - 0.88 * dimU;
+  const mainOp = 1 - 0.96 * dimU;
   const count = backU >= 1 ? 'Count: 43' : 'Count: 42';
 
   // the call packet: stub -> gate -> decode card (right to left)
@@ -324,6 +327,18 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
 
+          {/* the page as the server first describes it, before actions.js appears */}
+          <Card x={ACTIONS.x} y={ACTIONS.y} w={ACTIONS.w} h={ACTIONS.h} u={stageU * (1 - actU)} stroke={colors.SECONDARY} title="page.tsx" titleColor={colors.TEXT}>
+            {['<Page>', '  <Counter count={42} />', '</Page>'].map((l, i) => (
+              <text key={i} x={ACTIONS.x + 20} y={ACTIONS.y + 52 + i * 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                {l}
+              </text>
+            ))}
+            <text x={ACTIONS.x + 20} y={ACTIONS.y + 124} fill={colors.MUTED} fontSize={12}>
+              rendered on the server, sent as rows
+            </text>
+          </Card>
+
           {/* actions.js */}
           <Card x={ACTIONS.x} y={ACTIONS.y} w={ACTIONS.w} h={ACTIONS.h} u={actU} stroke={colors.SECONDARY} title="actions.js" titleColor={colors.TEXT}>
             <text x={ACTIONS.x + 130} y={ACTIONS.y + 24} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
@@ -341,24 +356,25 @@ export function Render({ s }: { s: SceneState }) {
             {/* the stamp */}
             {stampU > 0.02 && (
               <g opacity={stampU} transform={`translate(${ACTIONS.x + 20},${ACTIONS.y + 118}) scale(${0.8 + 0.2 * stampU})`}>
-                <rect x={0} y={0} width={320} height={22} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-                <text x={10} y={15} fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+                <rect x={0} y={0} width={ACTIONS.w - 40} height={22} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+                <text x={10} y={15} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                   $$id: "./src/actions.js#increment"
                 </text>
               </g>
             )}
           </Card>
           {actU > 0.5 && (
-            <text x={ACTIONS.x + 4} y={ACTIONS.y + ACTIONS.h + 18} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={stampU * (1 - 0.7 * dimU)}>
-              registerServerReference — ReactFlightWebpackNodeRegister.js
+            <text x={ACTIONS.x + 4} y={ACTIONS.y + ACTIONS.h + 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={stampU * (1 - 0.7 * dimU)}>
+              <tspan x={ACTIONS.x + 4}>registerServerReference —</tspan>
+              <tspan x={ACTIONS.x + 4} dy={18}>ReactFlightWebpackNodeRegister.js</tspan>
             </text>
           )}
 
-          {/* the reference crossing to the client */}
+          {/* the reference crossing to the client, leaving from the stamp */}
           {refU > 0.02 && refU < 1 && (
             <g>
-              <rect x={lerp(ACTIONS.x + 300, STUB.x + 20, refU) - 24} y={lerp(ACTIONS.y + 129, STUB.y - 14, refU) - 12} width={48} height={24} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-              <text x={lerp(ACTIONS.x + 300, STUB.x + 20, refU)} y={lerp(ACTIONS.y + 129, STUB.y - 14, refU) + 4} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+              <rect x={lerp(ACTIONS.x + ACTIONS.w + 8, STUB.x + 20, refU) - 24} y={lerp(ACTIONS.y + 129, STUB.y - 14, refU) - 12} width={48} height={24} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+              <text x={lerp(ACTIONS.x + ACTIONS.w + 8, STUB.x + 20, refU)} y={lerp(ACTIONS.y + 129, STUB.y - 14, refU) + 4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                 "$h4"
               </text>
             </g>
@@ -391,10 +407,10 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={gateU}>
               <rect x={GATE_X - 26} y={WIRE_Y - 46} width={12} height={92} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
               <rect x={GATE_X + 14} y={WIRE_Y - 46} width={12} height={92} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-              <text x={GATE_X} y={WIRE_Y + 64} textAnchor="middle" fill={colors.WARM} fontSize={11}>
+              <text x={GATE_X} y={WIRE_Y + 64} textAnchor="middle" fill={colors.WARM} fontSize={12}>
                 the same gate, reversed
               </text>
-              <text x={GATE_X} y={WIRE_Y + 82} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+              <text x={GATE_X} y={WIRE_Y + 82} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 processReply → decodeReply
               </text>
             </g>
@@ -403,8 +419,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* the call packet */}
           {callPos && (
             <g>
-              <rect x={callPos.x - 62} y={callPos.y - 13} width={124} height={26} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-              <text x={callPos.x} y={callPos.y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>
+              <rect x={callPos.x - 70} y={callPos.y - 13} width={140} height={26} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+              <text x={callPos.x} y={callPos.y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 {'{id, args: [42]}'}
               </text>
             </g>
@@ -414,19 +430,19 @@ export function Render({ s }: { s: SceneState }) {
           {bouncePos && (
             <g opacity={bouncePos.op}>
               <rect x={bouncePos.x - 46} y={bouncePos.y - 13} width={92} height={26} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
-              <text x={bouncePos.x} y={bouncePos.y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+              <text x={bouncePos.x} y={bouncePos.y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 a client fn
               </text>
             </g>
           )}
           {bounceU > 0.5 && (
             <g opacity={clamp01((bounceU - 0.5) / 0.2) * (1 - clamp01(runU * 2)) * mainOp}>
-              <rect x={GATE_X - 160} y={430} width={330} height={78} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-              <text x={GATE_X - 146} y={450} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} fontWeight={700}>
+              <rect x={GATE_X - 150} y={432} width={300} height={104} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+              <text x={GATE_X - 136} y={452} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
                 Error
               </text>
               {CLIENTFN_ERR.map((l, i) => (
-                <text key={i} x={GATE_X - 146} y={468 + i * 14} fill={colors.TEXT} fontSize={9.5} fontFamily={MONO} opacity={0.92}>
+                <text key={i} x={GATE_X - 136} y={472 + i * 16} fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={0.92}>
                   {l}
                 </text>
               ))}
@@ -436,11 +452,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* decode + run on the server */}
           <Card x={DECODE.x} y={DECODE.y} w={DECODE.w} h={DECODE.h} u={runU} stroke={colors.POSITIVE} title="the reply, decoded" titleColor={colors.TEXT}>
             {['decodeReply → args: [42]', 'manifest lookup → increment', 'increment(42) → 43'].map((l, i) => (
-              <text key={i} x={DECODE.x + 20} y={DECODE.y + 50 + i * 20} fill={i === 2 ? colors.POSITIVE : colors.MUTED} fontSize={11.5} fontFamily={MONO} fontWeight={i === 2 ? 700 : 400}>
+              <text key={i} x={DECODE.x + 20} y={DECODE.y + 50 + i * 20} fill={i === 2 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={MONO} fontWeight={i === 2 ? 700 : 400}>
                 {l}
               </text>
             ))}
-            <text x={DECODE.x + 20} y={DECODE.y + 132} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={DECODE.x + 20} y={DECODE.y + 110} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               ReactFlightReplyServer.js
             </text>
           </Card>
@@ -453,8 +469,9 @@ export function Render({ s }: { s: SceneState }) {
               return <circle key={i} cx={lerp(SERVER.x + SERVER.w, CLIENT.x, u)} cy={WIRE_Y + 12 + ((i % 3) - 1) * 8} r={3} fill={colors.WARM} opacity={0.95} />;
             })}
           {backU > 0.2 && backU < 1 && (
-            <text x={GATE_X} y={WIRE_Y + 118} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={0.9}>
-              another Flight tape — the return value rides home
+            <text x={GATE_X} y={WIRE_Y + 118} textAnchor="middle" fill={colors.WARM} fontSize={12} opacity={0.9}>
+              <tspan x={GATE_X}>another Flight tape —</tspan>
+              <tspan x={GATE_X} dy={18}>the return value rides home</tspan>
             </text>
           )}
 
@@ -464,10 +481,10 @@ export function Render({ s }: { s: SceneState }) {
               {'<form> POST — hidden field name:'}
             </text>
             <rect x={FORM.x + 16} y={FORM.y + 56} width={FORM.w - 32} height={22} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={FORM.x + 26} y={FORM.y + 71} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
+            <text x={FORM.x + 26} y={FORM.y + 71} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
               $ACTION_ID_./src/actions.js#increment
             </text>
-            <text x={FORM.x + 20} y={FORM.y + 98} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={FORM.x + 20} y={FORM.y + 98} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               decodeAction — ReactFlightActionServer.js
             </text>
           </Card>

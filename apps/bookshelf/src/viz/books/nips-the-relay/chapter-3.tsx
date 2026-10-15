@@ -16,7 +16,7 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const rand = mulberry32(45);
 const DOTS = Array.from({ length: 140 }, () => ({
   x: 180 + rand() * 380,
-  y: 150 + rand() * 330,
+  y: 200 + rand() * 270,
   r: 2.5 + rand() * 2.5,
 }));
 
@@ -190,6 +190,16 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       {mainOp > 0.07 && <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* plain-words glossary, shown on the REQ and COUNT timings */}
+          {reqU > 0 && (
+            <g opacity={reqU * leftOp}>
+              <text x={180} y={46} fill={colors.TEXT} fontSize={14}>subscribe (REQ): a live query, the relay keeps sending matches</text>
+              <text x={180} y={68} fill={colors.TEXT} fontSize={14}>filter: the query object, saying which events you want</text>
+            </g>
+          )}
+          {countU > 0 && (
+            <text x={180} y={90} fill={colors.WARM} fontSize={14} opacity={countU * leftOp}>COUNT: the same filter, answered with one number</text>
+          )}
           {/* the naive REQ */}
           {reqU > 0 && (
             <text x={180} y={120} fill={countU > 0.5 ? colors.MUTED : colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, Menlo, monospace" opacity={reqU * (1 - 0.5 * countU) * leftOp}>
@@ -205,7 +215,7 @@ export function Render({ s }: { s: SceneState }) {
             return <circle key={i} cx={x} cy={y - (1 - u) * 40} r={d.r * (1 - 0.8 * collapse)} fill={colors.ACCENT} opacity={0.55 * u * (1 - collapse)} />;
           })}
           {pourU >= 1 && collapse < 1 && (
-            <text x={380} y={510} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={1 - collapse}>
+            <text x={380} y={510} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={1 - collapse}>
               140 full events on the wire — to learn "140"
             </text>
           )}
@@ -239,8 +249,8 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={r.label} opacity={u}>
                     <rect x={r.x - 74} y={r.y - 24} width={148} height={48} rx={9} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                    <text x={r.x} y={r.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>{r.label}</text>
-                    <text x={r.x} y={r.y + 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, Menlo, monospace">
+                    <text x={r.x} y={r.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>{r.label}</text>
+                    <text x={r.x} y={r.y + 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                       hll · {r.count}
                     </text>
                     <line x1={r.x} y1={r.y + 24} x2={950 + (r.x - 950) * (1 - clamp01(mergeU * 2 - 1))} y2={r.y + 24 + 76 * clamp01(mergeU * 2 - 1)} stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.7} />
@@ -253,7 +263,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={950} y={263} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                     merged: 3 802
                   </text>
-                  <text x={950} y={298} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                  <text x={950} y={298} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     union, not sum — shared reactors counted once
                   </text>
                   <text x={950} y={328} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily="ui-monospace, Menlo, monospace">
@@ -266,9 +276,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* NIP-50 search */}
           <JsonDoc layout={REQ_LAYOUT} reveal={searchU} />
+          {searchU > 0 && rankU < 0.5 && (
+            <text x={700} y={300} fill={colors.TEXT} fontSize={14} opacity={searchU * (1 - clamp01(rankU * 2))}>
+              search: a plain string, matched against event content
+            </text>
+          )}
           {rankU > 0 && (
             <g>
-              <text x={700} y={312} fill={colors.MUTED} fontSize={13} opacity={Math.min(1, (rankU - 0.9) * 10)}>
+              <text x={700} y={312} fill={colors.MUTED} fontSize={14} opacity={Math.min(1, (rankU - 0.9) * 10)}>
                 ranked by relevance · limit applied after scoring
               </text>
               {RESULTS.map((res, i) => {
@@ -277,26 +292,31 @@ export function Render({ s }: { s: SceneState }) {
                 const y = 340 + i * 32;
                 const w = 200 + 200 * res.score;
                 return (
-                  <g key={res.text} opacity={u * (0.45 + 0.55 * res.score)}>
+                  <g key={res.text} opacity={u * (0.7 + 0.3 * res.score)}>
                     <rect x={700} y={y - 16} width={w} height={26} rx={6} fill={colors.PANEL} stroke={i === 0 ? colors.POSITIVE : colors.GRID} />
-                    <text x={712} y={y + 1} fill={colors.TEXT} fontSize={13}>{res.text}</text>
-                    <text x={700 + w - 10} y={y + 1} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, Menlo, monospace">
+                    <text x={712} y={y + 1} fill={colors.TEXT} fontSize={14}>{res.text}</text>
+                    <text x={700 + w - 10} y={y + 1} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                       {res.score.toFixed(2)}
                     </text>
                   </g>
                 );
               })}
+              {/* the cut: the limit keeps the top three after scoring */}
+              <g opacity={Math.min(1, (rankU - 0.9) * 10)}>
+                <line x1={700} y1={418} x2={1000} y2={418} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 4" opacity={0.8} />
+                <text x={960} y={434} fill={colors.WARM} fontSize={14}>limit 3: cut after scoring</text>
+              </g>
             </g>
           )}
           {extU > 0 && (
             <g opacity={extU}>
-              <text x={700} y={490} fill={colors.MUTED} fontSize={13}>
+              <text x={700} y={490} fill={colors.MUTED} fontSize={14}>
                 key:value extensions — unsupported ones are simply ignored
               </text>
               {['language:en', 'domain:example.com', 'include:spam'].map((e, i) => (
                 <g key={e}>
-                  <rect x={700 + i * 170} y={502} width={160} height={28} rx={14} fill="none" stroke={colors.WARM} opacity={0.7} />
-                  <text x={780 + i * 170} y={521} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+                  <rect x={700 + i * 190} y={502} width={180} height={28} rx={14} fill="none" stroke={colors.WARM} opacity={0.7} />
+                  <text x={790 + i * 190} y={521} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                     {e}
                   </text>
                 </g>
@@ -315,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={347} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             COUNT with honest approximation · search ranked by relevance
           </text>
-          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-45 · NIP-50
           </text>
         </g>

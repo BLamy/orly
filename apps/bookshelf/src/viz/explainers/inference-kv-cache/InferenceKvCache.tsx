@@ -10,7 +10,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -92,7 +91,8 @@ const GRID_Y = 200;
 const BAR_X = scaleLinear().domain([0, 70]).range([180, 1120]);
 
 const CAM_GRIDS: CameraState = { x: 470, y: 330, k: 1.25 };
-const CAM_BARS: CameraState = { x: 640, y: 470, k: 1.15 };
+// Bars and bytes share the home framing; the grids dim out of the way instead.
+const CAM_BARS: CameraState = { x: 640, y: 360, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -235,6 +235,8 @@ function Frame({ s }: { s: SceneState }) {
   const weightsW = BAR_X(WEIGHTS_GB) - BAR_X(0);
   const cacheW = (BAR_X(BATCH_GB) - BAR_X(0)) * barU;
   const gqaW = (BAR_X(GQA_BATCH_GB) - BAR_X(0)) * gqaU;
+  // once the bytes beat starts, the grids step back so the arithmetic reads
+  const gridDim = gridU * (1 - 0.7 * bytesU);
 
   return (
     <>
@@ -242,18 +244,26 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* the weights bar: the 14 GB sweep from the last chapter, always on screen */}
+          <g opacity={titleU}>
+            <rect x={BAR_X(0)} y={478} width={weightsW} height={22} rx={4} fill={colors.SECONDARY} opacity={0.7} />
+            <text x={BAR_X(0) + 8} y={493} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+              weights {WEIGHTS_GB} GB
+            </text>
+          </g>
+
           {/* the two cache grids — real computed K and V rows */}
-          <g opacity={gridU}>
+          <g opacity={gridDim}>
             <text x={K_X} y={GRID_Y - 40} fill={colors.TEXT} fontSize={17}>
               the key cache
             </text>
-            <text x={K_X} y={GRID_Y - 18} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={K_X} y={GRID_Y - 18} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               K[t] = W_k · x[t]
             </text>
             <text x={V_X} y={GRID_Y - 40} fill={colors.TEXT} fontSize={17}>
               the value cache
             </text>
-            <text x={V_X} y={GRID_Y - 18} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={V_X} y={GRID_Y - 18} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               V[t] = W_v · x[t]
             </text>
             <MatrixGrid x={K_X} y={GRID_Y} values={K01} cell={CELL} gap={GAP} cellU={cellU} />
@@ -298,49 +308,48 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* the no-cache cost */}
           {quadU > 0 && (
-            <g opacity={quadU}>
-              <text x={800} y={250} fill={colors.TEXT} fontSize={15}>
+            <g opacity={quadU * (1 - closeU)}>
+              <text x={730} y={250} fill={colors.TEXT} fontSize={15}>
                 without the cache
               </text>
-              <text x={800} y={282} fill={colors.NEGATIVE} fontSize={19} fontFamily="monospace" fontWeight={700}>
+              <text x={730} y={282} fill={colors.NEGATIVE} fontSize={19} fontFamily="monospace" fontWeight={700}>
                 ~{Math.round(RECOMPUTE_FACTOR)}× the work
               </text>
-              <text x={800} y={308} fill={colors.MUTED} fontSize={13}>
-                per step, averaged over 2048 tokens
+              <text x={730} y={308} fill={colors.MUTED} fontSize={13}>
+                per step, avg. over 2048 tokens
               </text>
             </g>
           )}
 
-          {/* the byte arithmetic */}
+          {/* the byte arithmetic, set to the right of the dimmed grids */}
           {bytesU > 0 && (
             <g opacity={bytesU}>
-              <text x={180} y={430} fill={colors.TEXT} fontSize={16}>
+              <text x={780} y={382} fill={colors.TEXT} fontSize={16}>
                 the cache bill at 7B
               </text>
-              <text x={180} y={462} fill={colors.WARM} fontSize={19} fontFamily="monospace" fontWeight={700}>
-                {LAYERS} layers × 2 × {HIDDEN} × {BYTES} B = {KV_KB.toFixed(0)} KB / token
+              <text x={780} y={412} fill={colors.WARM} fontSize={17} fontFamily="monospace" fontWeight={700}>
+                {LAYERS} layers × 2 × {HIDDEN} × {BYTES} B
               </text>
-              <text x={180} y={490} fill={colors.MUTED} fontSize={14}>
+              <text x={780} y={440} fill={colors.WARM} fontSize={19} fontFamily="monospace" fontWeight={700}>
+                = {KV_KB.toFixed(0)} KB / token
+              </text>
+              <text x={780} y={466} fill={colors.MUTED} fontSize={14}>
                 {CTX.toLocaleString()}-token context → {CACHE_GB.toFixed(0)} GB per stream
               </text>
             </g>
           )}
 
-          {/* weights vs batch cache bars */}
+          {/* weights vs batch cache bars: the label sits above each bar, never past the stage edge */}
           {barU > 0 && (
             <g opacity={Math.min(1, barU * 2)}>
-              <rect x={BAR_X(0)} y={530} width={weightsW} height={22} rx={4} fill={colors.SECONDARY} opacity={0.7} />
-              <text x={BAR_X(0) + 8} y={546} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
-                weights {WEIGHTS_GB} GB
-              </text>
-              <rect x={BAR_X(0)} y={562} width={Math.max(2, cacheW)} height={22} rx={4} fill={colors.NEGATIVE} opacity={0.85} />
-              <text x={BAR_X(0) + Math.max(2, cacheW) + 10} y={578} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <text x={BAR_X(0)} y={520} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 KV cache, {BATCH} streams: {(BATCH_GB * barU).toFixed(0)} GB ({RATIO.toFixed(1)}× the weights)
               </text>
+              <rect x={BAR_X(0)} y={526} width={Math.max(2, cacheW)} height={22} rx={4} fill={colors.NEGATIVE} opacity={0.85} />
               {gqaU > 0 && (
                 <g opacity={gqaU}>
-                  <rect x={BAR_X(0)} y={594} width={Math.max(2, gqaW)} height={22} rx={4} fill={colors.POSITIVE} opacity={0.85} />
-                  <text x={BAR_X(0) + Math.max(2, gqaW) + 10} y={610} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+                  <rect x={BAR_X(0)} y={560} width={Math.max(2, gqaW)} height={22} rx={4} fill={colors.POSITIVE} opacity={0.85} />
+                  <text x={BAR_X(0) + Math.max(2, gqaW) + 10} y={576} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                     with GQA (4 heads share 1 KV): {GQA_KB.toFixed(0)} KB/token → {GQA_BATCH_GB.toFixed(0)} GB
                   </text>
                 </g>
@@ -355,18 +364,21 @@ function Frame({ s }: { s: SceneState }) {
           The cache that remembers the conversation
         </text>
       </g>
-      <MathLabel
-        tex="\text{cache} = 2 \cdot L \cdot d \cdot \text{bytes} \cdot n_{\text{tokens}}"
-        x={860}
-        y={54}
+      <text
+        x={1240}
+        y={56}
+        textAnchor="end"
+        fill={colors.SECONDARY}
         fontSize={19}
-        color={colors.SECONDARY}
+        fontFamily="monospace"
         opacity={bytesU * mainOp}
-      />
+      >
+        cache = 2 · L · d · bytes · n tokens
+      </text>
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Spend memory to never redo the past.
           </text>

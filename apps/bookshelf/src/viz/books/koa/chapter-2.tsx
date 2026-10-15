@@ -46,10 +46,14 @@ const chipPos = (i: number): { x: number; y: number } => ({ x: ONION.x, y: ONION
 const CAM_ARRAY: CameraState = { x: 400, y: 330, k: 1.4 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_RING: CameraState = { x: 850, y: 330, k: 1.2 };
-const CAM_CENTER: CameraState = { x: 850, y: 360, k: 1.3 };
+const CAM_CENTER: CameraState = { x: 850, y: 345, k: 1.3 };
 
 // the index counter sits left of the onion, clear of the outer ring
 const IDX_BOX = { x: 380, y: ONION.y - 40, w: 250, h: 80 } as const;
+
+// dispatch(0) entry: from a chip below-left, into the outer ring
+const ENTRY_FROM = { x: 540, y: 560 } as const;
+const ENTRY_TO = { x: 660, y: 452 } as const; // on ring 0
 
 export interface Scene {
   tl: Timeline;
@@ -164,7 +168,7 @@ export function buildScene(): Scene {
   tl.set(idxN, 0, 47.6);
   tl.set(idxN, 1, 48.4);
   tl.tween(guardU, 1, { at: 49.6, dur: 0.6, ease: ease.pop });
-  tl.tween(guardU, 0.2, { at: 52.0, dur: 1.0, ease: ease.move });
+  tl.tween(guardU, 0, { at: 52.0, dur: 1.0, ease: ease.move });
   tl.hold(52.6, 0.5);
 
   // — Beat 9 · the empty center —
@@ -239,24 +243,24 @@ function CodeChip({ x, y, text, u, color }: { x: number; y: number; text: string
 }
 
 // one middleware card, morphing from its array slot onto its ring
-function MiddlewareCard({ i, enterU, foldP }: { i: number; enterU: number; foldP: number }) {
+function MiddlewareCard({ i, enterU, foldP, dim }: { i: number; enterU: number; foldP: number; dim: number }) {
   if (enterU <= 0) return null;
   const slot = { x: ARRAY_X, y: ARRAY_Y0 + i * ARRAY_DY };
   const chip = chipPos(i);
-  // sweep with a vertical lift so the cards arc over instead of sliding flat
+  // sweep with a low lift so the cards arc over instead of sliding flat, and stay below the compose chip
   const x = lerp(slot.x, chip.x, foldP);
-  const y = lerp(slot.y, chip.y, foldP) - 70 * Math.sin(Math.PI * foldP);
+  const y = lerp(slot.y, chip.y, foldP) - 36 * Math.sin(Math.PI * foldP);
   const w = lerp(CARD_W, 86, foldP);
   const h = lerp(CARD_H, 28, foldP);
   const c = RING_COLORS[i];
   return (
-    <g opacity={enterU} transform={`translate(${x}, ${y})`}>
+    <g opacity={enterU * dim} transform={`translate(${x}, ${y})`}>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={8} fill={colors.PANEL} stroke={c} strokeWidth={1.4} />
-      <text x={0} y={foldP > 0.5 ? 4.5 : -8} textAnchor="middle" fill={c} fontSize={foldP > 0.5 ? 13 : 15} fontFamily="monospace" fontWeight={700}>
+      <text x={0} y={foldP > 0.5 ? 5 : -8} textAnchor="middle" fill={c} fontSize={foldP > 0.5 ? 14 : 15} fontFamily="monospace" fontWeight={700}>
         fn {i}
       </text>
       {foldP < 0.5 && (
-        <text x={0} y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={1 - foldP * 2}>
+        <text x={0} y={16} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={1 - foldP * 2}>
           async (ctx, next) =&gt; …
         </text>
       )}
@@ -302,6 +306,9 @@ export function Render({ s }: { s: SceneState }) {
               this.middleware = []
             </text>
             <CodeChip x={ARRAY_X} y={ARRAY_Y0 - 60} text="use(fn) → this.middleware.push(fn)" u={clamp01(cardsU)} />
+            <text x={ARRAY_X} y={ARRAY_Y0 + 2 * ARRAY_DY + 80} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={clamp01(cardsU)}>
+              order matters: fn 0 runs first
+            </text>
             {/* the bracket */}
             <path
               d={`M ${ARRAY_X - CARD_W / 2 - 22} ${ARRAY_Y0 - 40} h -14 V ${ARRAY_Y0 + 2 * ARRAY_DY + 55} h 14`}
@@ -320,7 +327,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the three middleware cards (array slots → rings) ---- */}
         {[0, 1, 2].map((i) => (
-          <MiddlewareCard key={i} i={i} enterU={clamp01(cardsU - i)} foldP={clamp01(foldU * 1.9 - i * 0.45)} />
+          <MiddlewareCard key={i} i={i} enterU={clamp01(cardsU - i)} foldP={clamp01(foldU * 1.9 - i * 0.45)} dim={stageDim} />
         ))}
 
         {/* ---- the non-function bounce ---- */}
@@ -343,7 +350,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- compose chip ---- */}
         <CodeChip
           x={640}
-          y={112}
+          y={92}
           text="callback(): const fn = this.compose(this.middleware)"
           u={composeChipU * stageDim}
           color={colors.WARM}
@@ -446,14 +453,14 @@ export function Render({ s }: { s: SceneState }) {
         {entryU > 0 && (
           <g opacity={entryU * stageDim}>
             <line
-              x1={ONION.x - RINGS[0] - 150}
-              y1={ONION.y + 120}
-              x2={lerp(ONION.x - RINGS[0] - 150, ONION.x - RINGS[0] - 8, entryU)}
-              y2={lerp(ONION.y + 120, ONION.y + 40, entryU)}
+              x1={ENTRY_FROM.x}
+              y1={ENTRY_FROM.y}
+              x2={lerp(ENTRY_FROM.x, ENTRY_TO.x, entryU)}
+              y2={lerp(ENTRY_FROM.y, ENTRY_TO.y, entryU)}
               stroke={colors.POSITIVE}
               strokeWidth={2.5}
             />
-            <CodeChip x={ONION.x - RINGS[0] - 130} y={ONION.y + 150} text="fnMiddleware(ctx) → dispatch(0)" u={entryU} color={colors.POSITIVE} />
+            <CodeChip x={ENTRY_FROM.x - 150} y={ENTRY_FROM.y + 12} text="fnMiddleware(ctx) → dispatch(0)" u={entryU} color={colors.POSITIVE} />
           </g>
         )}
 

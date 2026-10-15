@@ -40,10 +40,12 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const CLASS0 = colors.ACCENT;
 const CLASS1 = colors.WARM;
 
+// headroom above the tallest peak keeps the peak labels clear of the panel title
+const GAIN_TOP = GAIN_MAX * 1.2;
+const gainY = (g: number): number => CURVE.y + CURVE.h - (g / GAIN_TOP) * CURVE.h;
+
 const gainPath = (gains: number[]): string =>
-  gains
-    .map((g2, i) => `${i === 0 ? 'M' : 'L'}${CURVE.x + (i / (SWEEP_N - 1)) * CURVE.w},${CURVE.y + CURVE.h - (g2 / GAIN_MAX) * CURVE.h}`)
-    .join('');
+  gains.map((g2, i) => `${i === 0 ? 'M' : 'L'}${CURVE.x + (i / (SWEEP_N - 1)) * CURVE.w},${gainY(g2)}`).join('');
 const PATH1 = gainPath(GAIN_ROOT_X);
 const PATH2 = gainPath(GAIN_LEFT_Y);
 
@@ -55,7 +57,7 @@ function TreeNode({ x, y, label, sub, color, u }: { x: number; y: number; label:
       <text x={x} y={y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontFamily="ui-monospace, monospace">
         {label}
       </text>
-      <text x={x} y={y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text x={x} y={y + 15} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13}>
         {sub}
       </text>
     </g>
@@ -163,7 +165,7 @@ function Frame({ s }: { s: SceneState }) {
                 opacity={0.85 * Math.max(curve1U, curve2U)}
                 stroke={colors.GRID}
               />
-              <text x={CURVE.x} y={CURVE.y - 12} fill={colors.MUTED} fontSize={13.5} opacity={Math.max(curve1U, curve2U)}>
+              <text x={CURVE.x} y={CURVE.y - 12} fill={colors.TEXT} fontSize={13.5} opacity={0.85 * Math.max(curve1U, curve2U)}>
                 {activeCurve === 1 ? 'information gain — vertical cut position' : 'information gain — horizontal cut (left region)'}
               </text>
               {/* curve 1 */}
@@ -176,17 +178,18 @@ function Frame({ s }: { s: SceneState }) {
                   strokeDasharray={sweeping1 ? `${(i1 / (SWEEP_N - 1)) * 1400} 2000` : undefined}
                   pathLength={sweeping1 ? 1400 : undefined}
                 />
+                {/* the root's marker steps aside once the second sweep takes over the panel */}
                 {cut1U > 0 && (
-                  <g opacity={cut1U}>
+                  <g opacity={cut1U * (1 - curve2U)}>
                     <circle
                       cx={CURVE.x + ((ROOT.t - 0.02) / 0.96) * CURVE.w}
-                      cy={CURVE.y + CURVE.h - (ROOT.gain / GAIN_MAX) * CURVE.h}
+                      cy={gainY(ROOT.gain)}
                       r={6}
                       fill={colors.POSITIVE}
                     />
                     <text
                       x={CURVE.x + ((ROOT.t - 0.02) / 0.96) * CURVE.w + 12}
-                      y={CURVE.y + CURVE.h - (ROOT.gain / GAIN_MAX) * CURVE.h - 8}
+                      y={gainY(ROOT.gain) - 8}
                       fill={colors.POSITIVE}
                       fontSize={13.5}
                     >
@@ -209,13 +212,13 @@ function Frame({ s }: { s: SceneState }) {
                   <g opacity={cut2U}>
                     <circle
                       cx={CURVE.x + ((SPLIT_L.t - 0.02) / 0.96) * CURVE.w}
-                      cy={CURVE.y + CURVE.h - (SPLIT_L.gain / GAIN_MAX) * CURVE.h}
+                      cy={gainY(SPLIT_L.gain)}
                       r={6}
                       fill={colors.POSITIVE}
                     />
                     <text
                       x={CURVE.x + ((SPLIT_L.t - 0.02) / 0.96) * CURVE.w - 190}
-                      y={CURVE.y + CURVE.h - (SPLIT_L.gain / GAIN_MAX) * CURVE.h - 8}
+                      y={gainY(SPLIT_L.gain) - 8}
                       fill={colors.POSITIVE}
                       fontSize={13.5}
                     >
@@ -231,7 +234,7 @@ function Frame({ s }: { s: SceneState }) {
           {tree1U > 0 && (
             <g>
               {/* edges */}
-              <g stroke={colors.GRID} strokeWidth={1.8} opacity={Math.min(tree1U, tree2U > 0 ? 1 : tree1U)}>
+              <g stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={1.8} opacity={Math.min(tree1U, tree2U > 0 ? 1 : tree1U)}>
                 <line x1={TREE.rootX} y1={TREE.rootY + 26} x2={TREE.rootX - TREE.dx} y2={TREE.rootY + TREE.dy - 26} opacity={tree1U} />
                 <line x1={TREE.rootX} y1={TREE.rootY + 26} x2={TREE.rootX + TREE.dx} y2={TREE.rootY + TREE.dy - 26} opacity={tree1U} />
                 <line
@@ -295,8 +298,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* accuracy chip */}
           {leafU > 0 && (
             <g opacity={leafU}>
-              <rect x={TREE.rootX - 105} y={TREE.rootY + 2 * TREE.dy + 60} width={210} height={34} rx={9} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-              <text x={TREE.rootX} y={TREE.rootY + 2 * TREE.dy + 83} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+              <rect x={TREE.rootX - 105} y={TREE.rootY + 2 * TREE.dy + 50} width={210} height={34} rx={9} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+              <text x={TREE.rootX} y={TREE.rootY + 2 * TREE.dy + 73} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
                 training: 86 / 90 correct
               </text>
             </g>
@@ -310,7 +313,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={250} y={230} width={780} height={190} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={250} y={230} width={780} height={190} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Decision Trees
           </text>

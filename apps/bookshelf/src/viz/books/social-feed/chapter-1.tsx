@@ -224,6 +224,8 @@ function computeCrowd(s: SceneState) {
   const crowdU = s.get(scene.crowdU);
   const tide = s.get(scene.tide);
   const dim = 1 - 0.88 * s.get(scene.dimU);
+  // the bars take the frame: the crowd steps back so the two bars read first
+  const quiet = 1 - 0.6 * s.get(scene.barU);
   return READERS.map((m, k) => {
     const appear = clamp01(crowdU * 1.6 - (k / READERS.length) * 0.6);
     const lit = clamp01((tide - m.litAt) * 6);
@@ -231,7 +233,7 @@ function computeCrowd(s: SceneState) {
       x: m.x,
       y: m.y,
       r: 2.2 + 2.2 * lit,
-      alpha: appear * (0.16 + 0.7 * lit) * dim,
+      alpha: appear * (0.16 + 0.7 * lit) * dim * quiet,
       color: lit > 0.03 ? colors.ACCENT : colors.MUTED,
     };
   });
@@ -249,7 +251,7 @@ function TweetCard({ u, reads, dim }: { u: number; reads: number; dim: number })
       <text x={CARD.x + 58} y={CARD.y + 32} fill={colors.TEXT} fontSize={15} fontWeight={600}>
         user_id 123
       </text>
-      <text x={CARD.x + 58} y={CARD.y + 50} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+      <text x={CARD.x + 58} y={CARD.y + 50} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
         tweet_id 987
       </text>
       <text x={CARD.x + 24} y={CARD.y + 86} fill={colors.TEXT} fontSize={19}>
@@ -281,7 +283,8 @@ export function Render({ s }: { s: SceneState }) {
 
   const wH = BARS.maxH * (W_RATE / R_RATE) * barU;
   const rH = BARS.maxH * barU;
-  const faded = 1 - 0.85 * dimU;
+  // the closing panel clears the card, the write trickle and the sparks off the stage
+  const faded = (1 - 0.85 * dimU) * (1 - lawU);
 
   return (
     <>
@@ -310,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
             />
           ))}
 
-        <TweetCard u={cardU} reads={cardN} dim={dimU} />
+        <TweetCard u={cardU * (1 - lawU)} reads={cardN} dim={dimU} />
 
         {/* the crowd of readers */}
         {/* hidden once the bars take the frame: the camera has pushed it off-stage */}

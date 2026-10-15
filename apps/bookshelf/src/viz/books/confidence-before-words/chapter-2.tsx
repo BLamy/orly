@@ -204,7 +204,7 @@ export function buildScene() {
   tl.set(step, 3, B(9) + 5.2);
   tl.set(pktU, 0, B(9) + 5.2);
   to(pktU, 1, B(9) + 5.2, 1.6, ease.linear);
-  to(stationsO, 0.6, B(9) + 5.2, 0.8);
+  to(stationsO, 1, B(9) + 5.2, 0.8);
   tl.hold(B(9) + DUR, 1.6);
 
   return {
@@ -234,14 +234,14 @@ function Station({ i, u }: { i: number; u: number }) {
     <g>
       <rect x={x} y={y} width={ST.w} height={ST.h} rx={10} fill={PANEL} stroke={color} strokeOpacity={0.6} />
       <text x={x + 12} y={y + 22} fill={color} fontFamily={font.ui} fontSize={14} fontWeight={600}>{ROUTES[i].label}</text>
-      <Label x={x + 12} y={y + 42} text={BANDS_TXT[i]} size={12} color={MUTED} />
+      <Label x={x + 12} y={y + 42} text={BANDS_TXT[i]} size={14} color={TEXT} />
       {i === 3 ? (
         <g>{dots(3, x + 130, y + 52, 14, u)}</g>
       ) : i === 2 ? (
         <g>
           {[0, 1, 2].map((d) => {
             const a = seg(u, d * 0.2, d * 0.2 + 0.6);
-            const dx = lerp(x + ST.w + 40, x + 96 + d * 30, a);
+            const dx = lerp(x + ST.w + 40, x + 112 + d * 28, a);
             return (
               <g key={d} opacity={a}>
                 <rect x={dx} y={y + 52} width={22} height={28} rx={3} fill={PANEL} stroke={color} strokeWidth={1.4} />
@@ -252,7 +252,7 @@ function Station({ i, u }: { i: number; u: number }) {
             );
           })}
           <circle cx={x + 70} cy={y + 66} r={6} fill={WARM} opacity={u > 0 ? 1 : 0.25} />
-          <Label x={x + 12} y={y + 90} text="query + documents" size={12} o={seg(u, 0.6, 1)} />
+          <Label x={x + 12} y={y + 90} text="documents" size={14} color={TEXT} o={seg(u, 0.6, 1)} />
         </g>
       ) : i === 1 ? (
         <g>{dots(6, x + 106, y + 46, 9, u)}</g>
@@ -262,7 +262,7 @@ function Station({ i, u }: { i: number; u: number }) {
           <rect x={x + 112} y={lerp(y + 30, y + 52, clamp01(u * 1.5))} width={50} height={24} rx={3} fill={PANEL} stroke={TEXT}
             strokeOpacity={0.8} opacity={clamp01(u * 2)} />
           <circle cx={x + 137} cy={lerp(y + 42, y + 64, clamp01(u * 1.5))} r={4} fill={WARM} opacity={clamp01(u * 2)} />
-          <Label x={x + 12} y={y + 90} text="pending · not solved" size={12} color={TEXT} o={seg(u, 0.6, 1)} />
+          <Label x={x + 12} y={y + 90} text="pending · not solved" size={14} color={TEXT} o={seg(u, 0.6, 1)} />
         </g>
       )}
     </g>
@@ -301,7 +301,7 @@ export function Render({ s }: { s: SceneState }) {
   const track = GEOM.tracks[sel];
   const pkt = pktU >= 0 ? track.point(clamp01(pktU)) : null;
   const beadX = GEOM.sx(RECAP_SCORE);
-  const stepO = (k: number) => (step === k ? 1 : step > k ? 0.45 : 0.2);
+  const stepO = (k: number) => (step === k ? 1 : step > k ? 0.45 : 0.4);
   const railFade = g(scene.railFade);
 
   return (
@@ -310,12 +310,12 @@ export function Render({ s }: { s: SceneState }) {
         <Note x={GEOM.x + GEOM.w} y={GEOM.y - 46} text="confidence score C" anchor="end" size={14} color={MUTED} o={g(scene.railU) * (1 - recapO) * railFade} />
 
         <RouteRail geom={GEOM} reveal={g(scene.railU)} trackU={g(scene.trackU)} score={score} beadO={beadO}
-          whisper={whisper} edgeMarks={g(scene.edgeO)} size={12} o={railFade}
+          whisper={whisper} edgeMarks={g(scene.edgeO)} size={14} o={railFade}
           beadLabel={`C = ${truncated(score, precise ? 4 : 2)}`}>
           {/* stations ride the same selection emphasis as their tracks */}
           {ROUTES.map((r, i) => {
             const on = beadO > 0 && i === sel;
-            const o = stationsO * (on ? 1 : lerp(0.6, 0.15, whisper * clamp01(beadO)));
+            const o = stationsO * (on ? 1 : lerp(0.6, 0.32, whisper * clamp01(beadO)));
             return o > 0 ? (
               <g key={r.key} opacity={o}>
                 <Station i={i} u={g(scene.st[i])} />
@@ -324,7 +324,7 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={GEOM.tracks[i].stationX} y1={ST.y + ST.h} x2={GEOM.tracks[i].stationX} y2={MARK_Y - 10}
                     stroke={r.color} strokeWidth={1.4} strokeDasharray="3 4" />
                   <path d={`M${GEOM.tracks[i].stationX},${MARK_Y - 8} l8,8 l-8,8 l-8,-8 z`} fill={PANEL} stroke={TEXT} strokeWidth={1.4} />
-                  <Label x={GEOM.tracks[i].stationX + 16} y={MARK_Y + 4} text="answer · unverified" size={12} color={TEXT} />
+                  <Label x={GEOM.tracks[i].stationX + 16} y={MARK_Y + 4} text="answer · unverified" size={14} color={TEXT} />
                 </g>
               </g>
             ) : null;
@@ -356,22 +356,22 @@ export function Render({ s }: { s: SceneState }) {
             <rect x={GEOM.sx(MAG.lo)} y={GEOM.y - 4} width={GEOM.sx(BOUNDARY) - GEOM.sx(MAG.lo)} height={8} fill={ROUTES[1].color} />
             <rect x={GEOM.sx(BOUNDARY)} y={GEOM.y - 4} width={GEOM.sx(MAG.hi) - GEOM.sx(BOUNDARY)} height={8} fill={ROUTES[2].color} />
             <rect x={MAG.x - 20} y={MAG.y - 40} width={MAG.w + 40} height={104} rx={10} fill={PANEL} stroke={MUTED} strokeOpacity={0.6} />
-            <Label x={MAG.x - 8} y={MAG.y - 22} text="rail magnified ×100 · Illustrative score" size={12} />
+            <Label x={MAG.x - 8} y={MAG.y - 22} text="rail magnified ×100 · Illustrative score" size={14} color={TEXT} />
             <rect x={MAG.x} y={MAG.y - 3} width={MAG.w / 2} height={6} fill={ROUTES[1].color} fillOpacity={sel === 1 ? 0.95 : 0.3} />
             <rect x={MAG.x + MAG.w / 2} y={MAG.y - 3} width={MAG.w / 2} height={6} fill={ROUTES[2].color} fillOpacity={sel === 2 ? 0.95 : 0.3} />
             {[0.546, 0.548, 0.55, 0.552, 0.554].map((v) => (
               <g key={v}>
                 <line x1={magX(v)} y1={MAG.y - (v === BOUNDARY ? 12 : 6)} x2={magX(v)} y2={MAG.y + (v === BOUNDARY ? 12 : 6)}
                   stroke={TEXT} strokeWidth={v === BOUNDARY ? 1.6 : 0.8} />
-                <Label x={magX(v)} y={MAG.y + 26} text={v.toFixed(3)} anchor="middle" size={12} color={v === BOUNDARY ? TEXT : MUTED} />
+                <Label x={magX(v)} y={MAG.y + 26} text={v.toFixed(3)} anchor="middle" size={14} color={TEXT} weight={v === BOUNDARY ? 700 : undefined} />
               </g>
             ))}
             {/* closed end belongs to retrieval; the larger-model band stops just short */}
             <circle cx={magX(BOUNDARY) - 7} cy={MAG.y} r={3.4} fill={PANEL} stroke={ROUTES[1].color} strokeWidth={1.4} opacity={g(scene.edgeO)} />
             <circle cx={magX(BOUNDARY) + 7} cy={MAG.y} r={3.4} fill={ROUTES[2].color} stroke={TEXT} strokeWidth={0.8} opacity={g(scene.edgeO)} />
             <circle cx={magX(clamp01(score) < MAG.lo ? MAG.lo : score)} cy={MAG.y} r={5.5} fill={PANEL} stroke={ROUTES[sel].color} strokeWidth={2.4} />
-            <Label x={MAG.x - 8} y={MAG.y + 50} text={`C = ${truncated(score, 4)}  →  ${ROUTES[sel].label}`} size={12} color={ROUTES[sel].color} />
-            <Label x={MAG.x + MAG.w + 8} y={MAG.y + 50} text={BANDS_TXT[2]} size={12} anchor="end" color={ROUTES[2].color} o={g(scene.edgeO)} />
+            <Label x={MAG.x - 8} y={MAG.y + 50} text={`C = ${truncated(score, 4)}  →  ${ROUTES[sel].label}`} size={14} color={ROUTES[sel].color} />
+            <Label x={MAG.x + MAG.w + 8} y={MAG.y + 50} text={BANDS_TXT[2]} size={14} anchor="end" color={ROUTES[2].color} o={g(scene.edgeO)} />
           </g>
         ) : null}
 
@@ -386,7 +386,7 @@ export function Render({ s }: { s: SceneState }) {
               <circle cx={EST.x} cy={EST.y} r={22} fill={PANEL} stroke={TEXT} strokeWidth={1.6} />
               <MathLabel tex={'C'} x={EST.x} y={EST.y} fontSize={16} boxWidth={50} />
               <Label x={EST.x + 34} y={EST.y + 5} text="2 · estimate confidence" size={14} color={TEXT} />
-              <path d={`M${EST.x},${EST.y + 24} C${EST.x},${EST.y + 84} ${beadX},${GEOM.y - 100} ${beadX},${GEOM.y - 36}`} fill="none"
+              <path d={`M${EST.x},${EST.y + 24} C${EST.x},${EST.y + 84} ${beadX},${GEOM.y - 100} ${beadX},${GEOM.y - 56}`} fill="none"
                 stroke={TEXT} strokeWidth={1.4} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - clamp01(estU)} />
             </g>
             {/* top-left, clear of the local-model track that drops from the right end of the rail */}
@@ -395,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
         ) : null}
       </Camera>
       {/* screen-fixed qualifier: outside the Camera so no pan can push it off-screen */}
-      <Tag x={48} y={56} text="Illustrative score" size={13} o={beadO * (1 - recapO)} />
+      <Tag x={48} y={56} text="Illustrative score" size={13} color={TEXT} o={beadO * (1 - recapO)} />
     </g>
   );
 }

@@ -60,11 +60,14 @@ const LAD = [
   { x: 880, y0: 400, label: 'category2', rows: 2 },
 ] as const;
 const LAD_ROW_H = 52;
-const LAD_W = 310;
+const LAD_W = SRC.w; // chips are as wide as the source rows, so the frame pads them evenly
 
 const srcPos = (i: number) => ({ x: SRC.x, y: SRC.y0 + i * SRC.rowH });
 const midPos = (i: number) => ({ x: MID.x, y: MID.y0 + i * MID.rowH });
-const ladPos = (c: Chip) => ({ x: LAD[c.ladder].x, y: LAD[c.ladder].y0 + 36 + c.rung * LAD_ROW_H });
+// most sold sits at the top of each leaderboard; rung 0 is the smallest quantity
+const ladPos = (c: Chip) => ({ x: LAD[c.ladder].x, y: LAD[c.ladder].y0 + 16 + (LAD[c.ladder].rows - 1 - c.rung) * LAD_ROW_H });
+// after the reducer merges, the surviving mid rows close up with no gap
+const midCompactY = (i: number) => MID.y0 + (i - CHIPS.slice(0, i).filter((c) => c.mergeInto !== null).length) * MID.rowH;
 
 const CAM_SRC: CameraState = { x: 340, y: 340, k: 1.25 };
 const CAM_MID: CameraState = { x: 560, y: 340, k: 1.25 };
@@ -216,15 +219,16 @@ export function Render({ s }: { s: SceneState }) {
               <text x={SRC.x} y={SRC.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={srcU}>
                 the receipts
               </text>
-              <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={srcU}>
+              <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace" opacity={srcU}>
                 Sales API log · one line per sale
               </text>
             </>
           )}
-          <text x={MID.x} y={MID.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={clamp01(mapU * 3)}>
+          {/* the mid column header retires once its chips have flown to the leaderboards */}
+          <text x={MID.x} y={MID.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={clamp01(mapU * 3) * (1 - clamp01((sortU - 0.2) * 3))}>
             {flipU > 0.5 ? 'after mapper_sort' : sumU > 0.5 ? 'after reducer' : 'after mapper'}
           </text>
-          <text x={MID.x} y={MID.y0 - 16} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 3)}>
+          <text x={MID.x} y={MID.y0 - 16} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 3) * (1 - clamp01((sortU - 0.2) * 3))}>
             {flipU > 0.5
               ? 'yield (category_id, quantity), product_id'
               : sumU > 0.5
@@ -243,7 +247,7 @@ export function Render({ s }: { s: SceneState }) {
               transform={`rotate(-90 ${SRC.x + SRC.w + 34} ${(SRC.y0 - 20 + SRC.y0 + 7.6 * SRC.rowH) / 2})`}
               textAnchor="middle"
               fill={colors.WARM}
-              fontSize={12}
+              fontSize={13}
               fontFamily="ui-monospace, monospace"
             >
               within_past_week(timestamp)
@@ -251,12 +255,22 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
-        {/* ---- empty log slots: each receipt was read, the log itself still has them ---- */}
+        {/* ---- log slots: each receipt was read, the log keeps its line once the chip leaves ---- */}
         {sortU < 0.5 && (
-          <g opacity={srcU * dimAll * 0.5}>
-            {CHIPS.map((_, i) => {
+          <g opacity={srcU * dimAll * 0.75}>
+            {CHIPS.map((c, i) => {
               const p = srcPos(i);
-              return <rect key={i} x={p.x} y={p.y} width={SRC.w} height={SRC.rowH - 14} rx={8} fill="none" stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 4" />;
+              return (
+                <g key={i}>
+                  <rect x={p.x} y={p.y} width={SRC.w} height={SRC.rowH - 14} rx={8} fill="none" stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 4" />
+                  {/* the log line shows once its chip has left, so it never sits under the chip */}
+                  {mapU * 1.9 - i * 0.15 > 0 && (
+                    <text x={p.x + 12} y={p.y + 26} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                      {c.raw}
+                    </text>
+                  )}
+                </g>
+              );
             })}
           </g>
         )}
@@ -270,10 +284,23 @@ export function Render({ s }: { s: SceneState }) {
         </g>
         {/* the bouncer's verdict, once the old row has been turned away */}
         {sortU < 0.5 && (
-          <text x={SRC.x + 12} y={SRC.y0 + 6 * SRC.rowH + 26} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01((rejectU - 0.7) * 3.3) * dimAll}>
+          <text x={SRC.x + 12} y={SRC.y0 + 6 * SRC.rowH + 26} fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={clamp01((rejectU - 0.7) * 3.3) * dimAll}>
             rejected at the gate · not counted
           </text>
         )}
+
+        {/* ---- the leaderboards: drawn under the chips, so a chip in flight passes over the frame ---- */}
+        <g opacity={ladU * dimAll}>
+          {LAD.map((l, li) => (
+            <g key={li}>
+              <rect x={l.x - 16} y={l.y0} width={LAD_W + 32} height={l.rows * LAD_ROW_H + 22} rx={12} fill="none" stroke={li === 0 ? colors.ACCENT : colors.SECONDARY} strokeWidth={1.4} />
+              {/* the title sits above its frame, so a chip crossing the frame never runs through the words */}
+              <text x={l.x - 16} y={l.y0 - 12} fill={li === 0 ? colors.ACCENT : colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace">
+                {l.label} — most sold first
+              </text>
+            </g>
+          ))}
+        </g>
 
         {/* ---- the six chips ---- */}
         {CHIPS.map((c, i) => {
@@ -296,6 +323,8 @@ export function Render({ s }: { s: SceneState }) {
           }
           const flySort = isMerged ? 0 : clamp01(sortU * 1.9 - i * 0.16);
           if (!isMerged) {
+            // close the gap the merged row leaves, as the reducer finishes
+            y = lerp(y, midCompactY(i), sumU);
             const lp = ladPos(c);
             x = lerp(x, lp.x, flySort);
             y = lerp(y, lp.y, flySort);
@@ -317,7 +346,7 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={i} opacity={op}>
               <rect x={x} y={y} width={SRC.w} height={SRC.rowH - 14} rx={8} fill={colors.PANEL} stroke={keyed ? catColor : colors.GRID} strokeWidth={keyed ? 1.5 : 1.1} />
-              <text x={x + 12} y={y + 26} fill={keyed ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+              <text x={x + 12} y={y + 26} fill={keyed ? colors.TEXT : '#b4c3d8'} fontSize={12} fontFamily="ui-monospace, monospace">
                 {text}
               </text>
               {/* the flip pulse */}
@@ -333,27 +362,16 @@ export function Render({ s }: { s: SceneState }) {
           x={MID.x + SRC.w + 14}
           y={midPos(1).y + 26}
           fill={colors.WARM}
-          fontSize={12}
+          fontSize={13}
           fontFamily="ui-monospace, monospace"
           opacity={clamp01((sumU - 0.5) * 3) * (1 - clamp01(ladU * 6)) * dimAll}
         >
           2 + 1 = 3 (two receipts)
         </text>
 
-        {/* ---- the leaderboards ---- */}
-        <g opacity={ladU * dimAll}>
-          {LAD.map((l, li) => (
-            <g key={li}>
-              <rect x={l.x - 16} y={l.y0} width={LAD_W + 32} height={l.rows * LAD_ROW_H + 52} rx={12} fill="none" stroke={li === 0 ? colors.ACCENT : colors.SECONDARY} strokeWidth={1.4} />
-              <text x={l.x} y={l.y0 + 26} fill={li === 0 ? colors.ACCENT : colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace">
-                {l.label} — sorted by quantity
-              </text>
-            </g>
-          ))}
-        </g>
-
-        {/* ---- closing panel ---- */}
+        {/* ---- closing panel: a solid backing so the fading job underneath cannot show through ---- */}
         <g opacity={closeU}>
+          <rect x={280} y={210} width={720} height={250} rx={16} fill={colors.BG} />
           <rect x={280} y={210} width={720} height={250} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={258} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             the two-step job

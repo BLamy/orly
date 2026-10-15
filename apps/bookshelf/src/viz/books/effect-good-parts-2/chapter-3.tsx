@@ -63,7 +63,7 @@ const CHAIN = [
 
 const CAM_SIG: CameraState = { x: 640, y: 150, k: 1.5 };
 const CAM_KEY: CameraState = { x: 740, y: 230, k: 1.2 };
-const CAM_PROG: CameraState = { x: 430, y: 260, k: 1.28 };
+const CAM_PROG: CameraState = { x: 500, y: 260, k: 1.28 }; // keeps the R slot in frame beside the program
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.04 };
 const CAM_REF: CameraState = { x: 740, y: 200, k: 1.2 };
 const CAM_TEASE: CameraState = { x: 640, y: 350, k: 1.14 };
@@ -203,9 +203,10 @@ export function Render({ s }: { s: SceneState }) {
   const teaseU = s.get(scene.teaseU);
 
   const stageDim = clamp01(teaseU * 1.2); // the signature chip quiets for the teaser
+  const pulse = Math.sin(Math.PI * clamp01(sigU)); // idle pulse on the empty R slot
   // the program, key card and map leave the frame once the Reference card or the teaser takes it
   const oldOp = (1 - clamp01(refU)) * (1 - clamp01(teaseU));
-  const keyOp = keyU * (1 - 0.82 * clamp01(progU)) * oldOp;
+  const keyOp = keyU * (1 - 0.86 * clamp01(progU)) * oldOp; // settles to ~0.14 behind the program
   const progOp = progU * oldOp;
   const mapOp = mapU * oldOp;
   const refOp = refU * (1 - clamp01(teaseU));
@@ -213,9 +214,9 @@ export function Render({ s }: { s: SceneState }) {
   const drain = clamp01(provU * 2 - 0.9); // R slot → never
   const glow = clamp01(provU * 2.2 - 1.2); // program runnable glow
 
-  // ghost key flight: from the yield line into the R slot
-  const gx = lerp(PROG.x + 210, R_SLOT.cx, yieldU);
-  const gy = lerp(PROG.y + 58 + YIELD_LINE * 26, SIG_CY, yieldU);
+  // ghost key flight: from just past the yield line's text into the R slot
+  const gx = lerp(PROG.x + 290, R_SLOT.cx, yieldU);
+  const gy = lerp(PROG.y + 46 + YIELD_LINE * 26 - 6, SIG_CY, yieldU);
 
   const mapTitle = swapU > 0.5 ? 'Context — the test map' : 'Context — a typed map';
   const implLabel = swapU > 0.5 ? 'stub: two fixed rows' : 'Database.of({ query })';
@@ -226,7 +227,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---------------- the live signature ---------------- */}
         {sigU > 0.01 && (
-          <g opacity={sigU}>
+          <g opacity={sigU * (1 - 0.5 * stageDim)}>
             <rect x={SIG.x} y={SIG.y} width={SIG.w} height={SIG.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={SIG.x + 28} y={SIG_CY + 6} fill={colors.TEXT} fontSize={18} fontFamily={MONO}>
               Effect&lt;
@@ -269,9 +270,19 @@ export function Render({ s }: { s: SceneState }) {
               <text x={R_SLOT.cx} y={SIG_CY + 4} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={drain}>
                 never
               </text>
-              {/* idle pulse before anything is demanded */}
+              {/* idle pulse before anything is demanded: a halo hugging the slot */}
               {yieldU < 0.05 && (
-                <circle cx={R_SLOT.cx} cy={SIG_CY} r={34 + 8 * Math.sin(Math.PI * clamp01(sigU))} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.4 * sigU * (1 - keyU)} />
+                <rect
+                  x={R_SLOT.cx - R_SLOT.w / 2 - 4 - 4 * pulse}
+                  y={SIG_CY - 19 - 4 * pulse}
+                  width={R_SLOT.w + 8 + 8 * pulse}
+                  height={38 + 8 * pulse}
+                  rx={11}
+                  fill="none"
+                  stroke={colors.ACCENT}
+                  strokeWidth={1.2}
+                  opacity={0.4 * sigU * (1 - keyU)}
+                />
               )}
             </g>
             <text x={R_SLOT.cx + R_SLOT.w / 2 + 14} y={SIG_CY + 6} fill={colors.TEXT} fontSize={18} fontFamily={MONO}>
@@ -294,10 +305,10 @@ export function Render({ s }: { s: SceneState }) {
             <text x={KEY_CARD.x + 108} y={KEY_CARD.y + 56} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               Context.Service
             </text>
-            <text x={KEY_CARD.x + 22} y={KEY_CARD.y + 84} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+            <text x={KEY_CARD.x + 22} y={KEY_CARD.y + 84} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               &quot;myapp/db/Database&quot;
             </text>
-            <text x={KEY_CARD.x + 22} y={KEY_CARD.y + 106} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={KEY_CARD.x + 22} y={KEY_CARD.y + 106} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               query(sql) → rows | DatabaseError
             </text>
           </g>
@@ -322,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             ))}
             {yieldU > 0.05 && yieldU < 0.98 && <KeyGlyph x={gx} y={gy} w={54} color={colors.ACCENT} opacity={0.9} dashed />}
-            <text x={PROG.x + 24} y={PROG.y + PROG.h - 16} fill={glow > 0.3 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={PROG.x + 24} y={PROG.y + PROG.h - 16} fill={glow > 0.3 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontStyle="italic">
               {glow > 0.3 ? 'runnable — all requirements met' : 'not runnable yet — needs Database'}
             </text>
           </g>
@@ -335,12 +346,12 @@ export function Render({ s }: { s: SceneState }) {
             <text x={MAP.x + 26} y={MAP.y + 32} fill={swapU > 0.5 ? colors.SECONDARY : colors.TEXT} fontSize={14} fontWeight={600}>
               {mapTitle}
             </text>
-            <text x={MAP.x + MAP.w - 24} y={MAP.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={MAP.x + MAP.w - 24} y={MAP.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               type records its keys
             </text>
             {/* the keyed socket */}
             <rect x={SOCKET.x} y={SOCKET.y} width={SOCKET.w} height={SOCKET.h} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.5} strokeDasharray={snap > 0.9 ? undefined : '6 5'} />
-            <text x={SOCKET.x + 12} y={SOCKET.y - 8} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+            <text x={SOCKET.x + 12} y={SOCKET.y - 8} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
               myapp/db/Database
             </text>
             {/* the implementation card snapping in */}
@@ -353,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
                   height={SOCKET.h - 12}
                   rx={7}
                   fill={swapU > 0.5 ? colors.SECONDARY : colors.ACCENT}
-                  opacity={0.28}
+                  opacity={0.5}
                   stroke={swapU > 0.5 ? colors.SECONDARY : colors.ACCENT}
                   strokeWidth={1.5}
                 />
@@ -370,8 +381,8 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             {/* second, unclaimed socket hints the map holds many services */}
-            <rect x={SOCKET.x} y={SOCKET.y + 62} width={170} height={38} rx={10} fill={colors.BG} stroke={colors.GRID} strokeDasharray="6 5" opacity={0.5} />
-            <text x={SOCKET.x + 12} y={SOCKET.y + 86} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.6}>
+            <rect x={SOCKET.x} y={SOCKET.y + 62} width={170} height={38} rx={10} fill={colors.BG} stroke={colors.MUTED} strokeDasharray="6 5" opacity={0.8} />
+            <text x={SOCKET.x + 12} y={SOCKET.y + 86} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               …more keys
             </text>
             {/* the provide pipe: map → program */}
@@ -384,7 +395,8 @@ export function Render({ s }: { s: SceneState }) {
                   strokeWidth={2}
                   strokeDasharray="7 5"
                 />
-                <text x={(MAP.x + PROG.x + PROG.w) / 2 - 26} y={PROG.y + PROG.h / 2 - 12} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
+                {/* sits above the horizontal run, left of the vertical run */}
+                <text x={PROG.x + PROG.w + 74} y={PROG.y + PROG.h / 2 - 10} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                   provide
                 </text>
               </g>
@@ -396,7 +408,7 @@ export function Render({ s }: { s: SceneState }) {
         {refOp > 0.01 && (
           <g opacity={refOp} transform={`translate(0 ${8 * (1 - refU)})`}>
             <rect x={REF.x} y={REF.y} width={REF.w} height={REF.h} rx={14} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.5} />
-            <text x={REF.x + 22} y={REF.y + 30} fill={colors.TEAL} fontSize={13.5} fontFamily={MONO} fontWeight={600}>
+            <text x={REF.x + 22} y={REF.y + 30} fill={colors.TEAL} fontSize={14} fontFamily={MONO} fontWeight={600}>
               Context.Reference
             </text>
             <text x={REF.x + 22} y={REF.y + 56} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
@@ -405,7 +417,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={REF.x + 22} y={REF.y + 80} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               defaultValue: () =&gt; false
             </text>
-            <text x={REF.x + REF.w - 20} y={REF.y + 80} textAnchor="end" fill={colors.TEAL} fontSize={12}fontStyle="italic">
+            <text x={REF.x + REF.w - 20} y={REF.y + 80} textAnchor="end" fill={colors.TEAL} fontSize={13} fontStyle="italic">
               never enters R
             </text>
           </g>
@@ -426,7 +438,7 @@ export function Render({ s }: { s: SceneState }) {
                   {i < CHAIN.length - 1 && (
                     <g opacity={clamp01(u * 2 - 1)}>
                       <line x1={640} y1={c.y + 26} x2={640} y2={c.y + 68} stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="3 5" />
-                      <text x={658} y={c.y + 54} fill={colors.MUTED} fontSize={12}fontStyle="italic">
+                      <text x={658} y={c.y + 54} fill={colors.MUTED} fontSize={13} fontStyle="italic">
                         needs
                       </text>
                     </g>

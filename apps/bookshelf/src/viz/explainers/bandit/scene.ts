@@ -136,12 +136,12 @@ export function snapAt(run: Snap[], f: number): Snap {
 
 export const ARM_X = [170, 380, 590];
 export const ARM_Y = 150;
-export const BAR_Y0 = 520; // baseline of the estimate bars
-export const BAR_H = 260; // bar height for estimate = 1
+export const BAR_Y0 = 440; // baseline of the estimate bars
+export const BAR_H = 220; // bar height for estimate = 1
 export const BAR_W = 96;
 
 export const regretX: ScaleLinear<number, number> = scaleLinear().domain([0, T_TOTAL]).range([790, 1220]);
-export const regretY: ScaleLinear<number, number> = scaleLinear().domain([0, 320]).range([540, 130]);
+export const regretY: ScaleLinear<number, number> = scaleLinear().domain([0, 320]).range([480, 130]);
 
 export const CAM_ARMS: CameraState = { x: 385, y: 330, k: 1.28 };
 export const CAM_CHART: CameraState = { x: 950, y: 330, k: 1.22 };

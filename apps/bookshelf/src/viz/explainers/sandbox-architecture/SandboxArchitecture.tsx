@@ -42,6 +42,8 @@ const APP_X = 180;
 const SB_X = 820;
 const CAM_BRIDGE: CameraState = { x: 620, y: 360, k: 1.1 };
 const CAM_ORIGIN: CameraState = { x: 640, y: 340, k: 1.18 };
+// what sits in the in-memory filesystem (shown in the app box, copied across)
+const APP_FILES = ['/index.ts', '/package.json', '/src/main.ts'];
 
 interface Scene {
   tl: Timeline;
@@ -163,8 +165,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const introFade = 1 - 0.85 * clamp01(boxesU * 2.5);
+  // the intro panels give way fully to the boxes; the close card stands alone
+  const mainOp = 1 - dimU;
+  const introFade = 1 - clamp01(boxesU * 2.5);
 
   return (
     <>
@@ -188,7 +191,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={234} y={278} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
                 → __sw__.js    (service worker)
               </text>
-              <text x={234} y={300} fill={colors.MUTED} fontSize={11}>
+              <text x={234} y={300} fill={colors.MUTED} fontSize={12}>
                 deploy to a DIFFERENT origin
               </text>
             </g>
@@ -207,7 +210,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={704} y={256} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                 no sandbox, no opt-in → throws
               </text>
-              <text x={704} y={288} fill={colors.MUTED} fontSize={11}>
+              <text x={704} y={288} fill={colors.MUTED} fontSize={12}>
                 “dangerouslyAllowSameOrigin” is the only bypass
               </text>
             </g>
@@ -220,22 +223,36 @@ function Frame({ s }: { s: SceneState }) {
               <text x={APP_X + 140} y={250} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700}>
                 your app
               </text>
-              <text x={APP_X + 140} y={274} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={APP_X + 140} y={274} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 SandboxRuntime + VirtualFS
               </text>
+              {/* the in-memory filesystem the snapshot is taken from */}
+              {APP_FILES.map((f, i) => (
+                <text key={f} x={APP_X + 30} y={322 + i * 24} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                  {f}
+                </text>
+              ))}
               <rect x={SB_X} y={220} width={280} height={280} rx={14} fill={colors.PANEL} opacity={0.92} stroke={colors.SECONDARY} strokeWidth={1.5} />
               <text x={SB_X + 140} y={250} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
                 hidden iframe
               </text>
-              <text x={SB_X + 140} y={274} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={SB_X + 140} y={274} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 credentialless · sandbox origin
               </text>
-              <text x={SB_X + 140} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={SB_X + 140} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 Runtime + VFS.fromSnapshot
               </text>
+              {/* the copy that the snapshot mails across */}
+              <g opacity={msgU > 0 ? clamp01(msgU * 2) : 0}>
+                {APP_FILES.map((f, i) => (
+                  <text key={f} x={SB_X + 30} y={322 + i * 24} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+                    {f}
+                  </text>
+                ))}
+              </g>
               {/* the wall */}
               <line x1={640} y1={210} x2={640} y2={510} stroke={colors.NEGATIVE} strokeWidth={3.5} strokeDasharray="10 7" />
-              <text x={640} y={200} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700}>
+              <text x={640} y={200} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
                 same-origin wall
               </text>
 
@@ -257,10 +274,12 @@ function Frame({ s }: { s: SceneState }) {
                         strokeWidth={2}
                       />
                       <circle cx={inbound ? SB_X - 6 : APP_X + 286} cy={y} r={4} fill={m.color} />
-                      <text x={640} y={y - 8} textAnchor="middle" fill={m.color} fontSize={11.5} fontFamily="monospace" fontWeight={700}>
+                      {/* knock the wall and the arrow out behind the label */}
+                      <rect x={640 - 96} y={y - 19} width={192} height={38} rx={6} fill={colors.PANEL} />
+                      <text x={640} y={y - 5} textAnchor="middle" fill={m.color} fontSize={13} fontFamily="monospace" fontWeight={700}>
                         {m.t}
                       </text>
-                      <text x={640} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">
+                      <text x={640} y={y + 14} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">
                         {m.payload}
                       </text>
                     </g>
@@ -270,9 +289,26 @@ function Frame({ s }: { s: SceneState }) {
               {/* origin check badge */}
               {originU > 0 && (
                 <g opacity={originU}>
-                  <rect x={520} y={512} width={240} height={40} rx={8} fill={colors.PANEL} opacity={0.97} stroke={colors.POSITIVE} />
-                  <text x={640} y={537} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily="monospace" fontWeight={700}>
+                  <rect x={480} y={512} width={320} height={40} rx={8} fill={colors.PANEL} opacity={0.97} stroke={colors.POSITIVE} />
+                  <text x={640} y={537} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace" fontWeight={700}>
                     if (origin !== sandboxOrigin) return
+                  </text>
+                </g>
+              )}
+
+              {/* the service worker, inside the sandbox origin's side of the wall */}
+              {swU > 0 && (
+                <g opacity={swU}>
+                  <line x1={SB_X + 140} y1={200} x2={SB_X + 140} y2={220} stroke={colors.WARM} strokeWidth={2} strokeDasharray="4 4" />
+                  <rect x={SB_X} y={126} width={280} height={74} rx={10} fill={colors.PANEL} opacity={0.97} stroke={colors.WARM} />
+                  <text x={SB_X + 16} y={150} fill={colors.WARM} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
+                    __sw__.js
+                  </text>
+                  <text x={SB_X + 16} y={172} fill={colors.TEXT} fontSize={12}>
+                    intercepts the sandbox’s fetches
+                  </text>
+                  <text x={SB_X + 16} y={190} fill={colors.MUTED} fontSize={12}>
+                    serves a dev server, no socket
                   </text>
                 </g>
               )}
@@ -280,25 +316,6 @@ function Frame({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
-
-      {/* service worker note — screen space */}
-      {swU > 0 && (
-        <g opacity={swU * mainOp}>
-          <rect x={860} y={110} width={370} height={120} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.WARM} />
-          <text x={884} y={140} fill={colors.WARM} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
-            __sw__.js
-          </text>
-          <text x={884} y={168} fill={colors.MUTED} fontSize={12}>
-            intercepts the sandbox’s fetches
-          </text>
-          <text x={884} y={190} fill={colors.MUTED} fontSize={12}>
-            serves a dev server with no socket
-          </text>
-          <text x={884} y={216} fill={colors.MUTED} fontSize={11}>
-            (the previous almostnode book’s doorman)
-          </text>
-        </g>
-      )}
 
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>

@@ -191,7 +191,7 @@ function Frame({ s }: { s: SceneState }) {
             x={xScale(0.4)}
             y={yScale(1.15) - 36}
             textAnchor="middle"
-            fill={colors.MUTED}
+            fill={colors.TEXT}
             fontSize={17}
             fontStyle="italic"
           >
@@ -201,7 +201,7 @@ function Frame({ s }: { s: SceneState }) {
             x={xScale(2.2)}
             y={yScale(0.08)}
             textAnchor="middle"
-            fill={colors.MUTED}
+            fill={colors.TEXT}
             fontSize={17}
             fontStyle="italic"
           >
@@ -281,11 +281,12 @@ function Frame({ s }: { s: SceneState }) {
           />
           <MathLabel
             tex="\theta_0"
-            x={xScale(START[0]) + 36}
-            y={yScale(START[1]) + 8}
+            x={xScale(START[0]) - 16}
+            y={yScale(START[1]) - 24}
+            anchor="end"
             fontSize={19}
             opacity={startU}
-            boxWidth={110}
+            boxWidth={60}
           />
         </g>
 
@@ -388,7 +389,7 @@ function Frame({ s }: { s: SceneState }) {
             xTicks={4}
             yTicks={4}
             xLabel="step"
-            fontSize={11}
+            fontSize={13}
           />
           <FunctionPlot
             x={xPanel}

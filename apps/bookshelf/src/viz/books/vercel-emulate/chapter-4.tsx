@@ -55,7 +55,7 @@ const BADGE = { x: 1016, y: 520, w: 148, h: 34 } as const;
 const CARRY_PATH = [
   { x: TRAY.x + TRAY.w - 10, y: 168 },
   { x: 640, y: 168 },
-  { x: CB.x + 10, y: 168 },
+  { x: CB.x - 14, y: 168 },
 ] as const;
 const XCHG_PATH = [
   { x: CB.x + 40, y: CB.y + CB.h + 12 },
@@ -128,6 +128,7 @@ export function buildScene() {
     dur: 5.8,
     text: 'The browser is bounced back to your app’s callback address, carrying the code and the state it left with.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 13.9, dur: 1.3, ease: ease.move });
   tl.tween(carryU, 1, { at: 14.9, dur: 2.2, ease: ease.move });
   tl.tween(timerU, 0.955, { at: 13.7, dur: 5.4, ease: ease.linear });
   tl.hold(19.5, 0.5);
@@ -147,6 +148,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'First the emulator checks the client secret — compared in constant time, the same defensive habit real providers have.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 26.5, dur: 1.2, ease: ease.move });
   tl.tween(secretU, 1, { at: 27.5, dur: 2.4, ease: ease.move });
   tl.hold(32.7, 0.6);
 
@@ -156,6 +158,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'Then the code is looked up and destroyed. One code, one use. Replay it and you get the same error text the real provider would send you.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 33.5, dur: 1.2, ease: ease.move });
   tl.tween(burnU, 1, { at: 35.0, dur: 1.4, ease: ease.move });
   tl.hold(39.7, 0.5);
 
@@ -165,6 +168,7 @@ export function buildScene() {
     dur: 6.6,
     text: 'In its place a fresh access token is struck — and written into the token map, pointing at octocat, carrying the scopes the request asked for.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 40.4, dur: 1.3, ease: ease.move });
   tl.tween(coinU, 1, { at: 41.6, dur: 1.6, ease: ease.move });
   tl.hold(46.8, 0.5);
 
@@ -182,6 +186,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'Your app spends the token once on the user endpoint. The middleware looks it up in the map, and the seeded profile comes back as plain data.',
   });
+  tl.tween(cam, CAM_WIDE, { at: 54.1, dur: 1.3, ease: ease.move });
   tl.tween(spendU, 1, { at: 54.9, dur: 1.8, ease: ease.move });
   tl.tween(profileU, 1, { at: 57.1, dur: 1.4, ease: ease.move });
   tl.hold(60.3, 0.5);
@@ -203,6 +208,7 @@ export function buildScene() {
     text: 'And that is the whole injection: a seed entry became a picker button, the button became a code, the code became a token, and the token became a session. The dashboard greets octocat.',
   });
   tl.tween(dimU, 1, { at: 68.6, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAM_WIDE, { at: 68.6, dur: 1.4, ease: ease.move });
   tl.tween(recapU, 1, { at: 70.0, dur: 2.8, ease: ease.move });
   tl.hold(75.8, 1.6);
 
@@ -235,6 +241,20 @@ const scene = buildScene();
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const RECAP = ['seed entry', 'picker click', 'one-time code', 'access token', 'session cookie'] as const;
 
+// A packet's label sits on a solid pill so zone borders and arrows never run through the words.
+const TAG_CH = 7.8; // advance of one 13px monospace glyph
+function Tag({ x, y, text, color }: { x: number; y: number; text: string; color: string }) {
+  const w = text.length * TAG_CH + 12;
+  return (
+    <g>
+      <rect x={x - w / 2} y={y - 14} width={w} height={20} rx={6} fill={colors.BG} />
+      <text x={x} y={y} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const zonesU = s.get(scene.zonesU);
@@ -252,7 +272,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
 
-  const floorOp = 1 - 0.88 * dimU;
+  // the closing panel sits on a clean stage: old content fades all the way out
+  const floorOp = 1 - dimU;
   const pc = along(CARRY_PATH, carryU);
   const px = along(XCHG_PATH, xchgU);
   const pk = along(COIN_PATH, clamp01(spendU)); // the coin rides out on the spend
@@ -276,10 +297,19 @@ export function Render({ s }: { s: SceneState }) {
             <text x={TRAY.x + 16} y={TRAY.y + 26} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               pending codes — one use each
             </text>
+            {/* the click from the picker, before its code is stamped */}
+            {codeU < 1 && (
+              <g opacity={1 - codeU}>
+                <rect x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="4 4" />
+                <text x={CHIP.x + 16} y={CHIP.y + 26} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                  picker click → octocat
+                </text>
+              </g>
+            )}
             {/* the code chip; burns on use */}
             <g opacity={codeOp}>
               <rect x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h} rx={9} fill={colors.BG} stroke={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.5} />
-              <text x={CHIP.x + 16} y={CHIP.y + 26} fill={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} fontSize={14} fontFamily={MONO}>
+              <text x={CHIP.x + 16} y={CHIP.y + 26} fill={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} fontSize={14} fontFamily={MONO} opacity={clamp01(1 - burnU * 3)}>
                 code 3f9a1c… → octocat
               </text>
             </g>
@@ -290,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
             )}
             {burnU > 0.9 && (
               <text x={CHIP.x + 16} y={CHIP.y + 26} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={burnU}>
-                (empty — replay gets an error)
+                (empty — a replay is refused)
               </text>
             )}
           </g>
@@ -360,7 +390,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* profile JSON → folds into the cookie */}
-          <g opacity={profileU * (1 - foldU)}>
+          <g opacity={Math.max(profileU, clamp01(spendU * 2)) * (1 - foldU)}>
             <rect x={PROFILE.x} y={PROFILE.y} width={PROFILE.w} height={PROFILE.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
             <text x={PROFILE.x + 16} y={PROFILE.y + 26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               GET /user · Authorization: Bearer gho_Zk4…
@@ -416,25 +446,20 @@ export function Render({ s }: { s: SceneState }) {
           {carryU > 0.01 && carryU < 1 && (
             <g>
               <circle cx={pc.x} cy={pc.y} r={8} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pc.x} y={pc.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
-                ?code&state
-              </text>
+              {/* the label stays in the corridor, clear of the callback box */}
+              <Tag x={Math.min(pc.x, CB.x - 60)} y={pc.y - 14} text="?code&state" color={colors.WARM} />
             </g>
           )}
           {xchgU > 0.01 && xchgU < 1 && (
             <g>
               <circle cx={px.x} cy={px.y} r={8} fill={colors.SECONDARY} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={px.x} y={px.y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
-                POST /login/oauth/access_token
-              </text>
+              <Tag x={px.x} y={px.y - 14} text="POST /login/oauth/access_token" color={colors.SECONDARY} />
             </g>
           )}
           {spendU > 0.01 && spendU < 1 && (
             <g>
               <circle cx={pk.x} cy={pk.y} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pk.x} y={pk.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
-                Bearer gho_Zk4…
-              </text>
+              <Tag x={pk.x} y={pk.y + 22} text="Bearer gho_Zk4…" color={colors.WARM} />
             </g>
           )}
         </g>

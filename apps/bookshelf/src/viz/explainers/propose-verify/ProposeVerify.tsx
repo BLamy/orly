@@ -12,7 +12,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -160,14 +159,21 @@ const BIN_LABELS = ['1–2', '3–9', '10–29', '30–99', '100–299', '300–
 // Layout.
 // ---------------------------------------------------------------------------
 
+// Loop row: three boxes of equal width with equal gaps, centred on x 600.
 const LOOP_Y = 250;
-const CAM_LOOP: CameraState = { x: 560, y: 330, k: 1.12 };
+const BOX_W = 220;
+const GAP = 130;
+const X_PROP = 140;
+const X_KERN = X_PROP + BOX_W + GAP; // 490
+const X_STATE = X_KERN + BOX_W + GAP; // 840
+const CAM_LOOP: CameraState = { x: 600, y: 330, k: 1.12 };
+// Histogram sits under the loop, so both read in one frame and clear the caption band (y > 630).
 const HIST_X = 200;
-const HIST_Y = 560;
+const HIST_Y = 420;
 const HIST_W = 880;
-const HIST_H = 150;
+const HIST_H = 130;
 const BAR_W = HIST_W / (BINS.length - 1);
-const CAM_HIST: CameraState = { x: 640, y: 470, k: 1.18 };
+const CAM_HIST: CameraState = { x: 620, y: 400, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -298,8 +304,12 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the old scene dims, then clears completely under the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const nTrace = Math.floor(traceU * TRACE.length);
+  // the histogram steps aside when the single guided search takes the frame
+  const histOp = 1 - clamp01(traceU * 3);
+  const KERN_CX = X_KERN + BOX_W / 2;
 
   return (
     <>
@@ -307,72 +317,86 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
+          {/* beat 1: the kernel alone, on the title's fade-in; the loop draws it in place at 7.8s */}
+          {titleU * (1 - loopU) > 0 && (
+            <g opacity={titleU * (1 - loopU)}>
+              <rect x={X_KERN} y={LOOP_Y - 40} width={BOX_W} height={86} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.SECONDARY} />
+              <text x={KERN_CX} y={LOOP_Y - 6} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
+                kernel
+              </text>
+              <text x={KERN_CX} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                checks proofs — cannot find them
+              </text>
+            </g>
+          )}
+
           {/* the loop diagram */}
           {loopU > 0 && (
             <g opacity={loopU}>
-              <rect x={150} y={LOOP_Y - 40} width={250} height={86} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.ACCENT} />
-              <text x={275} y={LOOP_Y - 6} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={700}>
+              <rect x={X_PROP} y={LOOP_Y - 40} width={BOX_W} height={86} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.ACCENT} />
+              <text x={X_PROP + BOX_W / 2} y={LOOP_Y - 6} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={700}>
                 proposer
               </text>
-              <text x={275} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={X_PROP + BOX_W / 2} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 a model — free to be wrong
               </text>
-              <rect x={560} y={LOOP_Y - 40} width={250} height={86} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.SECONDARY} />
-              <text x={685} y={LOOP_Y - 6} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
+              <rect x={X_KERN} y={LOOP_Y - 40} width={BOX_W} height={86} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.SECONDARY} />
+              <text x={KERN_CX} y={LOOP_Y - 6} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700}>
                 kernel
               </text>
-              <text x={685} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={KERN_CX} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 reruns the rule — never wrong
               </text>
-              <line x1={400} y1={LOOP_Y - 12} x2={552} y2={LOOP_Y - 12} stroke={colors.GRID} strokeWidth={2} markerEnd="none" />
-              <text x={476} y={LOOP_Y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
-                candidate step →
-              </text>
-              <line x1={552} y1={LOOP_Y + 16} x2={400} y2={LOOP_Y + 16} stroke={colors.GRID} strokeWidth={2} />
-              <text x={476} y={LOOP_Y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
-                ← accept / reject
-              </text>
-              <rect x={860} y={LOOP_Y - 40} width={190} height={86} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.POSITIVE} />
-              <text x={955} y={LOOP_Y - 6} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontWeight={700}>
+              <rect x={X_STATE} y={LOOP_Y - 40} width={BOX_W} height={86} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.POSITIVE} />
+              <text x={X_STATE + BOX_W / 2} y={LOOP_Y - 6} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={700}>
                 proof state
               </text>
-              <text x={955} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={X_STATE + BOX_W / 2} y={LOOP_Y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 accepted lines only
               </text>
-              <line x1={810} y1={LOOP_Y - 12} x2={852} y2={LOOP_Y - 12} stroke={colors.POSITIVE} strokeWidth={2} opacity={0.7} />
+              {/* forward: candidate step; back: accept / reject */}
+              <line x1={X_PROP + BOX_W} y1={LOOP_Y - 12} x2={X_KERN} y2={LOOP_Y - 12} stroke={colors.MUTED} strokeWidth={2} opacity={0.7} />
+              <text x={X_PROP + BOX_W + GAP / 2} y={LOOP_Y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                candidate step →
+              </text>
+              <line x1={X_KERN} y1={LOOP_Y + 16} x2={X_PROP + BOX_W} y2={LOOP_Y + 16} stroke={colors.MUTED} strokeWidth={2} opacity={0.7} />
+              <text x={X_PROP + BOX_W + GAP / 2} y={LOOP_Y + 36} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                ← accept / reject
+              </text>
+              <line x1={X_KERN + BOX_W} y1={LOOP_Y - 12} x2={X_STATE} y2={LOOP_Y - 12} stroke={colors.POSITIVE} strokeWidth={2} opacity={0.7} />
               <path
-                d={`M 955 ${LOOP_Y + 46} C 955 ${LOOP_Y + 110}, 275 ${LOOP_Y + 110}, 275 ${LOOP_Y + 46}`}
+                d={`M ${X_STATE + BOX_W / 2} ${LOOP_Y + 46} C ${X_STATE + BOX_W / 2} ${LOOP_Y + 116}, ${X_PROP + BOX_W / 2} ${LOOP_Y + 116}, ${X_PROP + BOX_W / 2} ${LOOP_Y + 46}`}
                 fill="none"
-                stroke={colors.GRID}
+                stroke={colors.MUTED}
                 strokeWidth={2}
                 strokeDasharray="6 5"
+                opacity={0.6}
               />
-              <text x={615} y={LOOP_Y + 104} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={600} y={LOOP_Y + 120} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 the proposer conditions on the state
               </text>
-              <MathLabel tex="\text{goal:}\; A \wedge B \to B \wedge A" x={150} y={130} fontSize={17} color={colors.WARM} opacity={1} />
             </g>
           )}
 
           {/* the guided trace tape */}
           {traceU > 0 && (
             <g>
-              <text x={150} y={LOOP_Y + 158} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
+              <text x={X_PROP} y={LOOP_Y + 158} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 one guided search (seed 1000) — {TRACE.length} proposals
               </text>
               {TRACE.map((p, i) => {
                 if (i >= nTrace) return null;
                 return (
-                  <g key={i} transform={`translate(${150 + (i % 20) * 46}, ${LOOP_Y + 176 + Math.floor(i / 20) * 40})`}>
+                  <g key={i} transform={`translate(${X_PROP + (i % 20) * 46}, ${LOOP_Y + 176 + Math.floor(i / 20) * 40})`}>
                     <rect width={40} height={32} rx={5} fill={p.ok ? colors.POSITIVE : colors.NEGATIVE} opacity={p.ok ? 0.8 : 0.45} />
-                    <text x={20} y={21} textAnchor="middle" fill={colors.BG} fontSize={9.5} fontFamily="monospace" fontWeight={700}>
+                    <text x={20} y={21} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily="monospace" fontWeight={700}>
                       {p.rule === 'assume' ? 'asm' : p.rule === 'andEL' ? '∧eL' : p.rule === 'andER' ? '∧eR' : p.rule === 'andI' ? '∧i' : '→i'}
                     </text>
                   </g>
                 );
               })}
               {statU > 0 && (
-                <text x={150} y={LOOP_Y + 176 + Math.ceil(TRACE.length / 20) * 40 + 22} fill={colors.WARM} fontSize={13} fontFamily="monospace" fontWeight={700} opacity={statU}>
+                <text x={X_PROP} y={LOOP_Y + 176 + Math.ceil(TRACE.length / 20) * 40 + 22} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={statU}>
                   {TRACE.filter((p) => p.ok).length} accepted · {TRACE.filter((p) => !p.ok).length} rejected · proof found ✓
                 </text>
               )}
@@ -380,15 +404,15 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* the histograms */}
-          {(uniU > 0 || guiU > 0) && (
-            <g>
+          {(uniU > 0 || guiU > 0) && histOp > 0 && (
+            <g opacity={histOp}>
               <line x1={HIST_X} y1={HIST_Y + HIST_H} x2={HIST_X + HIST_W} y2={HIST_Y + HIST_H} stroke={colors.GRID} strokeWidth={1.5} opacity={Math.max(uniU, guiU)} />
               {BIN_LABELS.map((L, i) => (
-                <text key={L} x={HIST_X + i * BAR_W + BAR_W / 2} y={HIST_Y + HIST_H + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace" opacity={Math.max(uniU, guiU)}>
+                <text key={L} x={HIST_X + i * BAR_W + BAR_W / 2} y={HIST_Y + HIST_H + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.max(uniU, guiU)}>
                   {L}
                 </text>
               ))}
-              <text x={HIST_X + HIST_W / 2} y={HIST_Y + HIST_H + 40} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={Math.max(uniU, guiU)}>
+              <text x={HIST_X + HIST_W / 2} y={HIST_Y + HIST_H + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={Math.max(uniU, guiU)}>
                 proposals until the kernel accepts a complete proof (200 seeded searches each)
               </text>
               {H_UNI.map((v, i) => {
@@ -405,13 +429,13 @@ function Frame({ s }: { s: SceneState }) {
               })}
               <g opacity={uniU}>
                 <rect x={HIST_X} y={HIST_Y - 32} width={12} height={12} fill={colors.NEGATIVE} opacity={0.75} />
-                <text x={HIST_X + 20} y={HIST_Y - 21} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={HIST_X + 20} y={HIST_Y - 21} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                   uniform proposer
                 </text>
               </g>
               <g opacity={guiU}>
                 <rect x={HIST_X + 220} y={HIST_Y - 32} width={12} height={12} fill={colors.POSITIVE} opacity={0.85} />
-                <text x={HIST_X + 240} y={HIST_Y - 21} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={HIST_X + 240} y={HIST_Y - 21} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                   state-conditioned proposer
                 </text>
               </g>
@@ -422,18 +446,18 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* the numbers — screen space */}
       {numsU > 0 && (
-        <g opacity={numsU * mainOp * (1 - 0.85 * clamp01(traceU * 3))}>
-          <rect x={880} y={96} width={368} height={130} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
-          <text x={904} y={126} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+        <g opacity={numsU * mainOp * (1 - clamp01(traceU * 3))}>
+          <rect x={880} y={290} width={368} height={130} rx={12} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
+          <text x={904} y={320} fill={colors.TEXT} fontSize={15} fontWeight={600}>
             computed, 200 runs each
           </text>
-          <text x={904} y={152} fill={colors.NEGATIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={904} y={346} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
             uniform: median {UNIFORM.median} · {UNIFORM.rejectPct.toFixed(1)}% rejected · {UNIFORM.fails} DNF
           </text>
-          <text x={904} y={176} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace">
+          <text x={904} y={370} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
             policy:  median {GUIDED.median} · {GUIDED.rejectPct.toFixed(1)}% rejected · {GUIDED.fails} DNF
           </text>
-          <text x={904} y={202} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={396} fill={colors.MUTED} fontSize={13}>
             same kernel, same theorem, same budget
           </text>
         </g>
@@ -445,10 +469,17 @@ function Frame({ s }: { s: SceneState }) {
         </text>
       </g>
 
+      {/* the goal, pinned under the title so it never tracks the camera */}
+      {loopU > 0 && (
+        <text x={40} y={84} fill={colors.WARM} fontSize={18} fontFamily="serif" opacity={loopU * mainOp}>
+          goal: A ∧ B → B ∧ A
+        </text>
+      )}
+
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
           <text x={640} y={268} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The model proposes. The kernel disposes.
           </text>

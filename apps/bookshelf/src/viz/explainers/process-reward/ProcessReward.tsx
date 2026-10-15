@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -63,7 +63,7 @@ function Frame({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimU}>
           {/* the chain pool (whisper once curves take over) */}
-          <g opacity={Math.max(0.12, 1 - 0.9 * axU)}>
+          <g opacity={Math.max(0, 1 - axU)}>
             {SHOW.chains.map((c, row) => {
               const u = clamp01(poolU * 1.6 - row * 0.1);
               if (u <= 0) return null;
@@ -81,14 +81,8 @@ function Frame({ s }: { s: SceneState }) {
                         width={CELL_W}
                         height={CELL_H}
                         rx={5}
-                        fill={
-                          graded && stepU > 0
-                            ? st
-                              ? colors.POSITIVE
-                              : colors.NEGATIVE
-                            : colors.PANEL
-                        }
-                        opacity={graded && stepU > 0 ? 0.8 : 1}
+                        fill={graded && stepU > 0 ? (st ? colors.POSITIVE : colors.NEGATIVE) : colors.MUTED}
+                        opacity={graded && stepU > 0 ? 0.8 : 0.22}
                         stroke={colors.GRID}
                       />
                     );
@@ -101,9 +95,9 @@ function Frame({ s }: { s: SceneState }) {
                         cy={poolY(row)}
                         r={14}
                         fill={c.ansOK ? colors.POSITIVE : colors.MUTED}
-                        opacity={c.ansOK ? 0.9 : 0.35}
+                        opacity={c.ansOK ? 0.9 : 0.6}
                       />
-                      <text x={cellX(L) + 34} y={poolY(row) + 5} textAnchor="middle" fill={colors.BG} fontSize={12.5} fontWeight={700}>
+                      <text x={cellX(L) + 34} y={poolY(row) + 5} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={700}>
                         {c.ansOK ? '✓' : '✗'}
                       </text>
                     </g>
@@ -112,7 +106,7 @@ function Frame({ s }: { s: SceneState }) {
                   {isOrm && (
                     <g opacity={ormU}>
                       <rect x={cellX(0) - 10} y={poolY(row) - CELL_H / 2 - 6} width={cellX(L) + 58 - cellX(0)} height={CELL_H + 12} rx={9} fill="none" stroke={colors.WARM} strokeWidth={2.5} />
-                      <text x={cellX(L) + 66} y={poolY(row) + 5} fill={colors.WARM} fontSize={12.5} fontWeight={640}>
+                      <text x={cellX(L) + 80} y={poolY(row) + 5} fill={colors.WARM} fontSize={14} fontWeight={640}>
                         outcome pick — lucky, broken
                       </text>
                     </g>
@@ -120,7 +114,7 @@ function Frame({ s }: { s: SceneState }) {
                   {isPrm && (
                     <g opacity={prmU}>
                       <rect x={cellX(0) - 10} y={poolY(row) - CELL_H / 2 - 6} width={cellX(L) + 58 - cellX(0)} height={CELL_H + 12} rx={9} fill="none" stroke={colors.ACCENT} strokeWidth={2.5} />
-                      <text x={cellX(L) + 66} y={poolY(row) + 5} fill={colors.ACCENT} fontSize={12.5} fontWeight={640}>
+                      <text x={cellX(L) + 80} y={poolY(row) + 5} fill={colors.ACCENT} fontSize={14} fontWeight={640}>
                         process pick — solid
                       </text>
                     </g>
@@ -129,7 +123,7 @@ function Frame({ s }: { s: SceneState }) {
               );
             })}
             {poolU > 0.5 && (
-              <text x={cellX(0)} y={poolY(0) - 44} fill={colors.MUTED} fontSize={13} opacity={poolU}>
+              <text x={cellX(0)} y={poolY(0) - 44} fill={colors.MUTED} fontSize={14} opacity={poolU}>
                 six sampled chains · five steps each · stamp = final answer
               </text>
             )}
@@ -141,17 +135,17 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(NS.length - 1) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(1.02)} stroke={colors.GRID} />
               {NS.map((n, i) => (
-                <text key={n} x={chX(i)} y={CH_Y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text key={n} x={chX(i)} y={CH_Y0 + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                   {n}
                 </text>
               ))}
-              <text x={chX(3.5)} y={CH_Y0 + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(3.5)} y={CH_Y0 + 48} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 chains sampled per problem →
               </text>
-              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 1.0
               </text>
-              <text x={CH_X0 - 18} y={chY(0.33) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(0.33) + 4} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 0.33
               </text>
               <line x1={CH_X0 - 8} y1={chY(0.33)} x2={chX(NS.length - 1) + 10} y2={chY(0.33)} stroke={colors.GRID} strokeDasharray="4 5" />
@@ -161,7 +155,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={curvePath('orm', siO)} fill="none" stroke={colors.WARM} strokeWidth={3} />
               <circle cx={chX(siO)} cy={chY(nowO.orm)} r={5} fill={colors.WARM} />
-              <text x={chX(siO) + 8} y={chY(nowO.orm) + 22} fill={colors.WARM} fontSize={13}>
+              <text x={chX(siO) + 8} y={chY(nowO.orm) + 22} fill={colors.WARM} fontSize={14}>
                 {`outcome judge: ${(nowO.orm * 100).toFixed(0)}%`}
               </text>
             </g>
@@ -170,7 +164,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <path d={curvePath('prm', siP)} fill="none" stroke={colors.ACCENT} strokeWidth={3} />
               <circle cx={chX(siP)} cy={chY(nowP.prm)} r={5} fill={colors.ACCENT} />
-              <text x={chX(siP) - 8} y={chY(nowP.prm) - 12} textAnchor="end" fill={colors.ACCENT} fontSize={13}>
+              <text x={chX(siP) - 8} y={chY(nowP.prm) - 12} textAnchor="end" fill={colors.ACCENT} fontSize={14}>
                 {`process judge: ${(nowP.prm * 100).toFixed(1)}%`}
               </text>
             </g>
@@ -178,15 +172,10 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel
-        tex={'\\text{score}(c) = \\min_i \\mathrm{PRM}(s_i)'}
-        x={1040}
-        y={70}
-        fontSize={18}
-        color={colors.ACCENT}
-        opacity={s.get(scene.mathU)}
-      />
+      {/* screen-fixed formula (plain SVG text: no KaTeX, so no doubled glyphs) */}
+      <text x={1240} y={70} textAnchor="end" fill={colors.ACCENT} fontSize={18} opacity={s.get(scene.mathU)}>
+        score(c) = min over steps of PRM(sᵢ)
+      </text>
 
       {/* clean ending card */}
       {endU > 0 && (
@@ -195,15 +184,13 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Process vs Outcome
           </text>
-          <MathLabel
-            tex={`\\text{outcome}: \\to ${(FINAL.orm * 100).toFixed(0)}\\%\\ \\text{(ceiling)} \\qquad \\text{process}: \\to ${(FINAL.prm * 100).toFixed(1)}\\%`}
-            x={640}
-            y={340}
-            fontSize={19}
-            color={colors.TEXT}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={460} y={346} textAnchor="middle" fill={colors.WARM} fontSize={24} fontWeight={650}>
+            {`outcome judge: ${(FINAL.orm * 100).toFixed(0)}% (ceiling)`}
+          </text>
+          <text x={820} y={346} textAnchor="middle" fill={colors.ACCENT} fontSize={24} fontWeight={650}>
+            {`process judge: ${(FINAL.prm * 100).toFixed(1)}%`}
+          </text>
+          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={18}>
             luck and logic look identical from the outside — read the steps
           </text>
         </g>

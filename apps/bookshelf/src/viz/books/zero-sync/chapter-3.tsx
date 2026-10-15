@@ -36,13 +36,15 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // ---------------------------------------------------------------------------
 
 // the replica wall: every cell is a row of the issue table
-const GRID = { x0: 400, y0: 118, cols: 16, rows: 8, cw: 46, ch: 36, w: 40, h: 28 } as const;
+// the wall is centred in the zone (zone centre x = 779, wall centre x = 779)
+const GRID = { x0: 424, y0: 118, cols: 16, rows: 8, cw: 46, ch: 36, w: 40, h: 28 } as const;
 const ZONE = { x: 366, y: 76, w: 826, h: 372 } as const;
 const DEVICE = { x: 168, y: 500 };
-const LEDGER = { x: 928, y: 470, w: 300, h: 148 } as const;
+const LEDGER = { x: 880, y: 470, w: 360, h: 148 } as const;
 const TAPE_IN = { x: 320, y: 250 }; // where chapter 2's tape enters
 
-const QUERY_TEXT = "z.query.issue.where('status', 'open').limit(20)";
+// the query, broken over two lines so the chip reads at full size
+const QUERY_LINES = ["z.query.issue.where('status', 'open')", '.limit(20)'];
 
 // which rows match the query — 20 cells, seeded
 const rand = mulberry32(20260716);
@@ -68,12 +70,11 @@ const cellPos = (i: number) => ({
 // six representative packets for the row stream (targets among MATCHES)
 const STREAMERS = MATCHES.filter((_, k) => k % 4 === 0).slice(0, 6);
 
-const CAM_GRID: CameraState = { x: 780, y: 280, k: 1.3 };
-const CAM_LEDGER: CameraState = { x: 950, y: 470, k: 1.5 };
-const CAM_NEW: CameraState = (() => {
-  const p = cellPos(NEW_CELL);
-  return { x: p.x + 60, y: p.y + 40, k: 1.7 };
-})();
+// each framing keeps the device, the wall and the ledger inside the stage and above the caption (y < 630)
+const CAM_GRID: CameraState = { x: 655, y: 360, k: 1.05 };
+const CAM_LEDGER: CameraState = { x: 662, y: 395, k: 1.05 };
+// the close-up on the new row keeps the whole wall in frame; the device and ledger fade out (see Render)
+const CAM_NEW: CameraState = { x: 760, y: 280, k: 1.3 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -236,7 +237,12 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-const POKE_LABELS = ['pokeStart', 'pokePart · rowsPatch', 'pokeEnd'];
+// the poke's three parts, shown as a legend under the wall so the packets stay unlabelled
+const POKE_STEPS = [
+  { label: 'pokeStart', x: 390, w: 104 },
+  { label: 'pokePart · rowsPatch', x: 508, w: 196 },
+  { label: 'pokeEnd', x: 718, w: 92 },
+];
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -259,6 +265,8 @@ export function Render({ s }: { s: SceneState }) {
   const faded = 1 - 0.87 * dimU;
   // the stencil's sweep line, in grid rows
   const sweepRow = stencilU * GRID.rows;
+  // 0 when the camera shows the device and ledger, 1 on the close-up of the new row
+  const focus = clamp01((cam.k - 1.05) / 0.2);
 
   return (
     <>
@@ -286,14 +294,14 @@ export function Render({ s }: { s: SceneState }) {
                 height={GRID.h}
                 rx={4}
                 fill={on > 0.02 ? (isNew ? colors.POSITIVE : colors.ACCENT) : colors.PANEL}
-                opacity={appear * (0.22 + 0.7 * on)}
-                stroke={on > 0.02 ? (isNew ? colors.POSITIVE : colors.ACCENT) : colors.GRID}
-                strokeWidth={on > 0.02 ? 1.4 : 0.6}
+                opacity={appear * (0.45 + 0.55 * on)}
+                stroke={on > 0.02 ? (isNew ? colors.POSITIVE : colors.ACCENT) : colors.MUTED}
+                strokeWidth={on > 0.02 ? 1.4 : 0.8}
               />
             );
           })}
           <g opacity={gridU}>
-            <text x={GRID.x0 + (GRID.cols * GRID.cw) / 2} y={ZONE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={ZONE.x + ZONE.w / 2} y={ZONE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               the replica — every row, dim until asked for
             </text>
           </g>
@@ -310,31 +318,35 @@ export function Render({ s }: { s: SceneState }) {
                 fill={colors.WARM}
                 opacity={0.85}
               />
-              <text x={GRID.x0 + GRID.cols * GRID.cw + 24} y={GRID.y0 + sweepRow * GRID.ch + 4} fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+              <text x={GRID.x0 + GRID.cols * GRID.cw + 12} y={GRID.y0 + sweepRow * GRID.ch + 5} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                 where(…)
               </text>
             </g>
           )}
 
           {/* the device */}
-          <g opacity={devU}>
+          <g opacity={devU * (1 - focus)}>
             <ServiceNode x={DEVICE.x} y={DEVICE.y} kind="client" label="device" sublabel="zero-client" />
             {cacheN > 0 && (
               <text x={DEVICE.x} y={DEVICE.y + 64} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700} fontFamily="ui-monospace, monospace">
                 cache: {Math.floor(cacheN)} rows
               </text>
             )}
-            {/* the query chip */}
-            <g opacity={queryU * (1 - sendU)}>
-              <rect x={DEVICE.x - 150} y={DEVICE.y - 106} width={330} height={30} rx={15} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-              <text x={DEVICE.x + 15} y={DEVICE.y - 86} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily="ui-monospace, monospace">
-                {QUERY_TEXT}
-              </text>
+            {/* the query chip, sitting above the device until it rides up */}
+            <g opacity={queryU * (1 - Math.min(1, sendU * 8))}>
+              <rect x={20} y={DEVICE.y - 128} width={318} height={52} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+              {QUERY_LINES.map((line, k) => (
+                <text key={line} x={179} y={DEVICE.y - 128 + 22 + k * 20} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+                  {line}
+                </text>
+              ))}
             </g>
           </g>
 
           {/* the socket up to zero-cache */}
-          <Connection from={{ x: DEVICE.x + 40, y: DEVICE.y - 30 }} to={{ x: ZONE.x + 40, y: ZONE.y + ZONE.h - 10 }} u={devU} color={colors.GRID} dashed label="socket" labelSize={10} dim={0.35} />
+          <g opacity={1 - focus}>
+            <Connection from={{ x: DEVICE.x + 40, y: DEVICE.y - 30 }} to={{ x: ZONE.x + 40, y: ZONE.y + ZONE.h - 10 }} u={devU} color={colors.GRID} dashed label="socket" labelSize={14} dim={0.5} />
+          </g>
           {/* the query riding up */}
           <Packet
             from={{ x: DEVICE.x + 40, y: DEVICE.y - 40 }}
@@ -343,7 +355,7 @@ export function Render({ s }: { s: SceneState }) {
             r={7}
             color={colors.ACCENT}
             label={sendU > 0.15 && sendU < 0.98 ? 'changeDesiredQueries' : undefined}
-            labelSize={10}
+            labelSize={14}
           />
 
           {/* matched rows streaming down to the device */}
@@ -366,28 +378,28 @@ export function Render({ s }: { s: SceneState }) {
             })}
 
           {/* the ledger — the client view record */}
-          <g opacity={ledgerU}>
+          <g opacity={ledgerU * (1 - focus)}>
             <rect x={LEDGER.x} y={LEDGER.y} width={LEDGER.w} height={LEDGER.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-            <text x={LEDGER.x + LEDGER.w / 2} y={LEDGER.y + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontWeight={700}>
+            <text x={LEDGER.x + LEDGER.w / 2} y={LEDGER.y + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontWeight={700}>
               client view record
             </text>
-            <text x={LEDGER.x + LEDGER.w / 2} y={LEDGER.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={LEDGER.x + LEDGER.w / 2} y={LEDGER.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
               cvr: queries · desires · rows — ZERO_CVR_DB
             </text>
             {/* tally marks: one per row the client holds */}
             {Array.from({ length: Math.min(21, Math.floor(ledgerN)) }, (_, k) => (
               <rect
                 key={k}
-                x={LEDGER.x + 18 + (k % 11) * 25}
+                x={LEDGER.x + 18 + (k % 11) * 28}
                 y={LEDGER.y + 60 + Math.floor(k / 11) * 30}
-                width={18}
+                width={20}
                 height={22}
                 rx={3}
                 fill={k === 20 ? colors.POSITIVE : colors.SECONDARY}
                 opacity={0.8}
               />
             ))}
-            <text x={LEDGER.x + LEDGER.w - 16} y={LEDGER.y + LEDGER.h - 12} textAnchor="end" fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <text x={LEDGER.x + LEDGER.w - 16} y={LEDGER.y + LEDGER.h - 12} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
               {Math.floor(ledgerN)} rows held
             </text>
           </g>
@@ -395,8 +407,9 @@ export function Render({ s }: { s: SceneState }) {
           {/* the tape chip from chapter 2 */}
           {chipU > 0 && chipU < 1 && (
             <g>
-              <rect x={TAPE_IN.x - 200 + 260 * chipU} y={TAPE_IN.y - 12} width={96} height={24} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
-              <text x={TAPE_IN.x - 152 + 260 * chipU} y={TAPE_IN.y + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+              {/* rides in from the left and stops short of the wall's edge */}
+              <rect x={20 + 220 * chipU} y={TAPE_IN.y - 14} width={124} height={28} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
+              <text x={82 + 220 * chipU} y={TAPE_IN.y + 5} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace">
                 insert · issue
               </text>
             </g>
@@ -404,34 +417,49 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the three-part poke */}
           {pokeU > 0 && pokeU < 1 &&
-            POKE_LABELS.map((lbl, k) => {
+            POKE_STEPS.map((_, k) => {
               const u = clamp01(pokeU * 1.9 - k * 0.28);
               if (u <= 0 || u >= 1) return null;
               return (
                 <Packet
-                  key={lbl}
+                  key={k}
                   from={{ x: ZONE.x + 60, y: ZONE.y + ZONE.h - 20 }}
                   to={{ x: DEVICE.x + 40, y: DEVICE.y - 40 }}
                   u={u}
                   r={k === 1 ? 7 : 5}
                   color={k === 1 ? colors.POSITIVE : colors.MUTED}
-                  label={lbl}
-                  labelSize={10}
                 />
               );
             })}
+          {/* the poke legend: the active part lights up, finished parts stay readable */}
+          {pokeU > 0 && (
+            <g opacity={Math.min(1, pokeU * 6)}>
+              {POKE_STEPS.map((step, k) => {
+                const active = pokeU < 1 && k === Math.min(2, Math.floor(pokeU * 3));
+                const color = active ? colors.POSITIVE : colors.MUTED;
+                return (
+                  <g key={step.label} opacity={pokeU >= 1 || active || k < Math.floor(pokeU * 3) ? 1 : 0.45}>
+                    <rect x={step.x} y={524} width={step.w} height={30} rx={15} fill={colors.PANEL} stroke={color} strokeWidth={active ? 1.8 : 1.2} />
+                    <text x={step.x + step.w / 2} y={544} textAnchor="middle" fill={color} fontSize={14} fontFamily="ui-monospace, monospace">
+                      {step.label}
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+          )}
         </g>
 
         {/* closing panel */}
         <g opacity={closeU}>
           <rect x={330} y={215} width={620} height={200} rx={18} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={280} textAnchor="middle" fill={colors.ACCENT} fontSize={24} fontWeight={800} letterSpacing={1}>
+          <text x={640} y={280} textAnchor="middle" fill={colors.ACCENT} fontSize={26} fontWeight={800} letterSpacing={1}>
             the query is the unit of sync
           </text>
-          <text x={640} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+          <text x={640} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             ask for twenty rows, sync twenty rows — then only the diffs
           </text>
-          <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             query → stencil → client view record → poke
           </text>
         </g>

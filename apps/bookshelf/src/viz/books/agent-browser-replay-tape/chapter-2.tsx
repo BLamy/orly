@@ -20,13 +20,14 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const CONSOLE = { x: 100, y: 96, w: 560, h: 364 };
-const TAPE = { x: 100, y: 540, w: 1080, h: 24 };
-const LEGEND = { x: 100, y: 478 };
+const CARD = { x: 700, y: 112, w: 480, h: 190 };
+const TAPE = { x: 200, y: 540, w: 980, h: 30 };
+const LEGEND = { x: 700, y: 330 };
 
 const CAM_CONSOLE: CameraState = { x: 380, y: 262, k: 1.24 };
 // Pushed toward the tape but still framing the console's top edge (y 96).
-const CAM_TAPE: CameraState = { x: 640, y: 380, k: 1.1 };
-const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
+const CAM_TAPE: CameraState = { x: 640, y: 400, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
 /** agent-browser's own command vocabulary, in a plausible run order. */
@@ -58,7 +59,7 @@ const CMDS: Cmd[] = (() => {
   return spec.map(([emit, cmd, kind, label]) => ({ emit, cmd, kind, label, at: 0.03 + emit * 0.93 }));
 })();
 
-const POINTS: RecordingPoint[] = CMDS.map((c) => ({ at: c.at, kind: c.kind, label: c.label }));
+const POINTS: RecordingPoint[] = CMDS.map((c) => ({ at: c.at, kind: c.kind }));
 
 const LEGEND_ROWS: { kind: RecordingPointKind; label: string }[] = [
   { kind: 'interaction', label: 'clicks, fills, key presses' },
@@ -74,7 +75,6 @@ export function buildScene() {
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const consoleE = tl.channel('consoleE', 0);
   const runP = tl.channel('runP', 0); // console line reveal + tape reveal, one clock
-  const cmdP = tl.channel('cmdP', 0); // early console reveal, so beat 1 shows real commands
   const legendU = tl.channel('legendU', 0);
   const dimU = tl.channel('dimU', 0);
 
@@ -86,7 +86,6 @@ export function buildScene() {
     text: 'This is what an agent actually sends: one command line at a time — open, snapshot, click, fill.',
   });
   tl.tween(consoleE, 1, { at: t - 4.8, dur: 0.7, ease: ease.enter });
-  tl.tween(cmdP, 0.16, { at: t - 4.2, dur: 3.6, ease: ease.linear });
   tl.tween(cam, CAM_CONSOLE, { at: t - 4.4, dur: 1.3, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -147,13 +146,15 @@ export function buildScene() {
   tl.tween(dimU, 1, { at: t - 5.2, dur: 1.2, ease: ease.move });
   tl.hold(t, 1.0);
 
-  return { tl, cam, consoleE, runP, cmdP, legendU, dimU };
+  return { tl, cam, consoleE, runP, legendU, dimU };
 }
 
 const scene = buildScene();
 
 /* -------------------------------------------- per-frame particle compute */
 const FLIGHT = 0.06;
+// Console reveal once the console has entered: the first three commands (emit ≤ 0.16).
+const EARLY_CMD_P = 0.16;
 
 const PTS: ParticlePoint[] = CMDS.map(() => ({ x: 0, y: 0, r: 3, alpha: 0, color: colors.MUTED }));
 const OUT: ParticlePoint[] = [];
@@ -167,12 +168,14 @@ function computeParticles(s: SceneState): ParticlePoint[] {
     const u = (p - c.emit) / FLIGHT;
     if (u <= 0 || u >= 1) continue;
     const uu = ease.move(clamp01(u));
-    const fx = CONSOLE.x + CONSOLE.w - 24;
+    // Leave from the console's right edge, arc through the gutter below the
+    // legend, and land on the tape — never across the console's text.
+    const fx = CONSOLE.x + CONSOLE.w + 6;
     const fy = CONSOLE.y + 56 + i * 20;
     const tx = TAPE.x + c.at * TAPE.w;
     const ty = TAPE.y + TAPE.h / 2;
-    const mx = (fx + tx) / 2 + 30;
-    const my = Math.min(fy, ty) - 50;
+    const mx = CONSOLE.x + CONSOLE.w + 40;
+    const my = ty - 40;
     const a = 1 - uu;
     const pt = PTS[i];
     pt.x = a * a * fx + 2 * a * uu * mx + uu * uu * tx;
@@ -198,7 +201,7 @@ function Console({ enter, runP, dim }: { enter: number; runP: number; dim: numbe
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <rect x={14} y={12} width={w - 28} height={26} rx={13} fill={colors.BG} opacity={0.6} />
       <circle cx={30} cy={25} r={4} fill={colors.ACCENT} opacity={0.9} />
-      <text x={44} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={44} y={30} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         agent-browser session
       </text>
       {CMDS.slice(0, shown).map((c, i) => {
@@ -209,7 +212,7 @@ function Console({ enter, runP, dim }: { enter: number; runP: number; dim: numbe
             x={20}
             y={62 + i * 20}
             fill={c.kind === 'exception' ? colors.NEGATIVE : colors.TEXT}
-            fontSize={12.5}
+            fontSize={14}
             fontFamily={mono}
             opacity={rowU}
           >
@@ -219,11 +222,44 @@ function Console({ enter, runP, dim }: { enter: number; runP: number; dim: numbe
       })}
       {CMDS.slice(0, shown).map((c, i) =>
         c.kind === 'exception' ? (
-          <text key={`note-${i}`} x={228} y={62 + i * 20} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={clamp01((runP - c.emit) * 20)}>
+          <text key={`note-${i}`} x={228} y={62 + i * 20} fill={colors.NEGATIVE} fontSize={14} fontFamily={mono} opacity={clamp01((runP - c.emit) * 20)}>
             ← the one failure
           </text>
         ) : null,
       )}
+    </g>
+  );
+}
+
+/** The one failed event, written out as the record the tape keeps for it. */
+function EventCard({ runP, dim }: { runP: number; dim: number }) {
+  // Appears as the failing point lands on the tape, so the picture names it.
+  const uu = clamp01((runP - 0.85) * 20);
+  if (uu <= 0) return null;
+  const { x, y, w, h } = CARD;
+  const rows: [string, string][] = [
+    ['kind', 'network · request failed'],
+    ['url', 'https://app.example.com/results'],
+    ['trigger', 'click @e7'],
+    ['reason', 'no response from the server'],
+    ['dom', 'snapshot taken at the next render'],
+  ];
+  return (
+    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
+      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={POINT_COLOR.exception} strokeWidth={1.5} />
+      <text x={20} y={30} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+        one recorded event
+      </text>
+      {rows.map(([k, v], i) => (
+        <g key={k} transform={`translate(20, ${62 + i * 26})`}>
+          <text x={0} y={0} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+            {k}
+          </text>
+          <text x={84} y={0} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+            {v}
+          </text>
+        </g>
+      ))}
     </g>
   );
 }
@@ -233,11 +269,11 @@ function Legend({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(${LEGEND.x}, ${LEGEND.y})`} opacity={uu * (1 - 0.6 * dim)}>
+    <g transform={`translate(${LEGEND.x}, ${LEGEND.y})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
       {LEGEND_ROWS.map((r, i) => {
         const ru = clamp01(uu * 5 - i);
         return (
-          <g key={r.kind} transform={`translate(${i * 260}, 0)`} opacity={ru}>
+          <g key={r.kind} transform={`translate(0, ${i * 26})`} opacity={ru}>
             <circle cx={6} cy={-4} r={5} fill={POINT_COLOR[r.kind]} />
             <text x={18} y={0} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               {r.label}
@@ -253,25 +289,39 @@ function Legend({ u, dim }: { u: number; dim: number }) {
 function renderFrame(s: SceneState) {
   const dim = clamp01(s.get(scene.dimU));
   const runP = s.get(scene.runP);
-  // Console lines follow the early beat-1 reveal, then the tape clock.
-  const consoleP = Math.max(runP, s.get(scene.cmdP));
+  // Beat 1 shows the first commands as the console enters; then the tape clock takes over.
+  const consoleP = Math.max(runP, s.get(scene.consoleE) * EARLY_CMD_P);
   return (
     <>
       <Console enter={s.get(scene.consoleE)} runP={consoleP} dim={dim} />
+      <EventCard runP={runP} dim={dim} />
       <Legend u={s.get(scene.legendU)} dim={dim} />
 
       <ParticleCloud state={s} compute={computeParticles} />
 
-      <RecordingStrip
-        x={TAPE.x}
-        y={TAPE.y}
-        w={TAPE.w}
-        h={TAPE.h}
-        points={POINTS}
-        reveal={runP}
-        title="the tape — every command, as agent-browser runs it"
-        dim={dim}
-      />
+      <RecordingStrip x={TAPE.x} y={TAPE.y} w={TAPE.w} h={TAPE.h} points={POINTS} reveal={runP} title="" />
+      {/* the strip's own labels and title are 10–12px; these match its marker order at 14px */}
+      {runP > 0 && (
+        <text x={100} y={TAPE.y + TAPE.h / 2 + 5} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+          the tape
+        </text>
+      )}
+      {CMDS.map((c, i) =>
+        c.label ? (
+          <text
+            key={`tl-${i}`}
+            x={TAPE.x + c.at * TAPE.w}
+            y={TAPE.y + TAPE.h + 18}
+            textAnchor="middle"
+            fill={colors.MUTED}
+            fontSize={14}
+            fontFamily={mono}
+            opacity={clamp01(runP * (CMDS.length + 2) - (i + 2))}
+          >
+            {c.label}
+          </text>
+        ) : null,
+      )}
     </>
   );
 }

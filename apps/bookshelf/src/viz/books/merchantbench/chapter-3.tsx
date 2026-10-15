@@ -79,7 +79,7 @@ const scene = buildScene();
 function ToolGroup({ x, group, u, glow }: { x: number; group: typeof GROUPS[number]; u: number; glow: number }) {
   return <g opacity={clamp01(u)}>
     <rect x={x} y={138} width={266} height={314} rx={20} fill={colors.PANEL} stroke={group.color} strokeWidth={1.5 + glow * 2.5} />
-    <text x={x + 133} y={169} textAnchor="middle" fill={group.color} fontSize={12} fontWeight={800} letterSpacing="0.08em">{group.title}</text>
+    <text x={x + 133} y={169} textAnchor="middle" fill={group.color} fontSize={14} fontWeight={800} letterSpacing="0.08em">{group.title}</text>
     {group.tools.map((tool, i) => <g key={tool} opacity={clamp01(u * group.tools.length - i)}>
       <rect x={x + 18} y={187 + i * 30} width={230} height={23} rx={8} fill={group.color} opacity={0.08 + glow * 0.12} />
       <text x={x + 28} y={203 + i * 30} fill={glow > 0.3 ? group.color : colors.TEXT} fontSize={12} fontFamily={MONO}>{tool}</text>
@@ -98,8 +98,9 @@ export function Render({ s }: { s: SceneState }) {
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim * s.get(scene.frameU)}>
-        <rect x={62} y={101} width={1156} height={504} rx={28} fill="none" stroke={colors.GRID} strokeWidth={2} />
+        <rect x={62} y={101} width={1156} height={520} rx={28} fill="none" stroke={colors.GRID} strokeWidth={2} />
         <text x={94} y={126} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>agent decision window · every 12 hours</text>
+        {GROUPS.map((group, i) => <rect key={`slot-${group.title}`} x={76 + i * 286} y={138} width={266} height={314} rx={20} fill="none" stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="8 7" opacity={0.5} />)}
       </g>
       <g opacity={dim}>
         {GROUPS.map((group, i) => <ToolGroup key={group.title} x={76 + i * 286} group={group} u={clamp01(toolsU * 4 - i)} glow={[s.get(scene.sourceU), s.get(scene.shelfU), s.get(scene.financeU), s.get(scene.memoryU)][i]} />)}
@@ -128,16 +129,16 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={s.get(scene.memoryU)} transform="translate(950 478)">
           <rect width={250} height={92} rx={16} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
           <text x={125} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>memory_doc</text>
-          <text x={18} y={50} fill={colors.TEXT} fontSize={12}>lesson persists</text>
-          <text x={18} y={72} fill={colors.NEGATIVE} fontSize={12}>truth not guaranteed</text>
+          <text x={18} y={52} fill={colors.TEXT} fontSize={14}>lesson persists</text>
+          <text x={18} y={76} fill={colors.NEGATIVE} fontSize={14}>truth not guaranteed</text>
         </g>
 
         <g opacity={s.get(scene.loopU)}>
-          <path d="M215 590 C215 620 1065 620 1065 590" fill="none" stroke={colors.ACCENT} strokeWidth={4} strokeDasharray="10 9" />
-          <circle cx={215 + 850 * s.get(scene.loopU)} cy={615} r={9} fill={colors.ACCENT} />
-          <text x={640} y={603} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>next hour</text>
+          <path d="M215 580 Q640 620 1065 580" fill="none" stroke={colors.ACCENT} strokeWidth={4} strokeDasharray="10 9" />
+          <circle cx={215 + 850 * s.get(scene.loopU)} cy={580 + 80 * s.get(scene.loopU) * (1 - s.get(scene.loopU))} r={9} fill={colors.ACCENT} />
+          <text x={640} y={588} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>next hour</text>
         </g>
-        <g opacity={s.get(scene.closeU)} transform="translate(1000 80)">
+        <g opacity={s.get(scene.closeU)} transform="translate(1080 14)">
           <circle cx={22} cy={24} r={18} fill={colors.POSITIVE} opacity={0.16} />
           <path d="M12 24 L19 31 L32 17" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
           <text x={48} y={29} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>end_of_step</text>
@@ -145,6 +146,7 @@ export function Render({ s }: { s: SceneState }) {
       </g>
     </Camera>
     <g opacity={s.get(scene.endU)}>
+      <rect x={164} y={224} width={952} height={218} rx={28} fill={colors.BG} />
       <rect x={164} y={224} width={952} height={218} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={35} fontWeight={850}>The tool call is not the loop</text>
       <text x={640} y={344} textAnchor="middle" fill={colors.ACCENT} fontSize={18}>observe · decide · mutate · close</text>

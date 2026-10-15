@@ -100,9 +100,9 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={68} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>Context as research state</text>
-          <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>paper mechanism · update_context(h⁽ᵏ⁾ₜ) → z⁽ᵏ⁾ₜ</text>
+          <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>paper mechanism · update_context(h⁽ᵏ⁾ₜ) → z⁽ᵏ⁾ₜ</text>
 
-          <g opacity={1 - foldU * 0.88}>
+          <g opacity={(1 - foldU * 0.88) * (1 - 0.8 * s.get(scene.appendU))}>
             {RAW.map(([label, fate], i) => {
               const u = clamp01(rawU * 8 - i / 2.4);
               const row = Math.floor(i / 6);
@@ -114,7 +114,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} transform={`translate(${x} ${y + fall})`} opacity={u * (dropping ? 1 - Math.max(0, noiseU - 1) : 1)}>
                   <rect width={176} height={74} rx={11} fill={colors.PANEL} stroke={dropping ? colors.NEGATIVE : colors.POSITIVE} strokeOpacity={0.65} />
-                  <text x={13} y={27} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{label}</text>
+                  <text x={13} y={27} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label}</text>
                   <text x={13} y={52} fill={dropping ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily={MONO}>{dropping ? 'superseded / redundant' : 'decision-relevant'}</text>
                 </g>
               );
@@ -133,7 +133,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={foldU}>
               <path d={`M 170 355 C 310 ${470 - foldU * 180} 360 ${315 + foldU * 20} 475 250`} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 7" />
               <path d={`M 1110 355 C 970 ${470 - foldU * 180} 920 ${315 + foldU * 20} 805 250`} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 7" />
-              <rect x={455} y={135} width={370} height={390} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
+              <rect x={455} y={135} width={370} height={362} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
               <text x={640} y={171} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={MONO}>ribbon → refreshed context state</text>
               {STATE.map((item, i) => {
                 // The first state item rides the fold itself, so the panel is never empty mid-fold.
@@ -155,8 +155,8 @@ export function Render({ s }: { s: SceneState }) {
               {[0, 1, 2].map((i) => (
                 <g key={i} transform={`translate(${982 + i * 76} 438)`}>
                   <rect width={70} height={60} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-                  <text x={35} y={27} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>{['action', 'observe', 'plan'][i]}</text>
-                  <text x={35} y={46} textAnchor="middle" fill={colors.MUTED} fontSize={12}>fresh</text>
+                  <text x={35} y={27} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>{['action', 'observe', 'plan'][i]}</text>
+                  <text x={35} y={46} textAnchor="middle" fill={colors.MUTED} fontSize={14}>fresh</text>
                 </g>
               ))}
             </g>
@@ -164,20 +164,20 @@ export function Render({ s }: { s: SceneState }) {
 
           {s.get(scene.repeatU) > 0 && (
             <g opacity={s.get(scene.repeatU)}>
-              <path d="M 1115 415 C 1195 345 1195 245 1115 180" fill="none" stroke={colors.WARM} strokeWidth={2.5} strokeDasharray="7 6" />
-              <path d="M 1115 180 l 7 16 l -18 -4 z" fill={colors.WARM} />
-              <text x={1208} y={300} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} transform="rotate(-90 1208 300)">invoke again when state changes</text>
+              <path d="M 1115 430 C 1200 350 1200 240 1115 160" fill="none" stroke={colors.WARM} strokeWidth={2.5} strokeDasharray="7 6" />
+              <path d="M 1115 160 l 7 16 l -18 -4 z" fill={colors.WARM} />
+              <text x={1208} y={295} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} transform="rotate(-90 1208 295)">invoke again when state changes</text>
             </g>
           )}
 
-          {s.get(scene.boundaryU) > 0 && (
-            <g opacity={s.get(scene.boundaryU)}>
-              <rect x={95} y={565} width={1090} height={42} rx={10} fill={colors.NEGATIVE} fillOpacity={0.07} stroke={colors.NEGATIVE} strokeOpacity={0.55} />
-              <text x={640} y={591} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>paper update_context ≠ public quickstart EXTRACTOR_PROMPT page summary</text>
-            </g>
-          )}
         </g>
       </Camera>
+      {s.get(scene.boundaryU) > 0 && (
+        <g opacity={s.get(scene.boundaryU)}>
+          <rect x={95} y={565} width={1090} height={42} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeOpacity={0.7} />
+          <text x={640} y={591} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>paper update_context ≠ public quickstart EXTRACTOR_PROMPT page summary</text>
+        </g>
+      )}
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
           <rect x={225} y={235} width={830} height={202} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} />

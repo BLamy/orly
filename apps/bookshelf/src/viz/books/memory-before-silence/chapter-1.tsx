@@ -40,7 +40,6 @@ export function buildScene() {
   tl.tween(wordsP, 7, { at: 13.7, dur: 0.8, ease: ease.linear });
   tl.tween(replaceU, 1, { at: 14.5, dur: 1.1, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: 16.7, dur: 1.2, ease: ease.move });
-  tl.tween(replaceU, 0, { at: 26.0, dur: 0.6, ease: ease.move });
 
   tl.caption({ at: 19.6, dur: 6.4, text: 'At two hundred milliseconds of silence, the system wagers that the turn is probably finished.' });
   tl.tween(silenceU, 0.67, { at: 20.2, dur: 2.8, ease: ease.linear });
@@ -60,7 +59,6 @@ export function buildScene() {
   tl.tween(cam, CAMERA_HOME, { at: 36.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 38.9, dur: 6.4, text: 'On the clean path, the wager survives. The retrieval tray fills before the three-hundred-millisecond mark.' });
-  tl.tween(cancelU, 0, { at: 38.9, dur: 0.4, ease: ease.move });
   tl.tween(replayU, 1, { at: 39.4, dur: 0.5, ease: ease.pop });
   tl.tween(silenceU, 1, { at: 39.6, dur: 2.7, ease: ease.linear });
   tl.tween(searchP, 1, { at: 40.8, dur: 1.2, ease: ease.linear });
@@ -82,7 +80,9 @@ export function Render({ s }: { s: SceneState }) {
   const silence = s.get(scene.silenceU);
   const search = s.get(scene.searchP);
   const memoryP = s.get(scene.memoryP);
-  const cancel = s.get(scene.cancelU);
+  const cancelRaw = s.get(scene.cancelU);
+  // barge-in clears once the clean replay starts (replayU), so no extra cancel-off tween is needed
+  const cancel = cancelRaw * (1 - s.get(scene.replayU));
   const runnerX = 430 + 540 * search;
 
   return <Camera {...s.get(scene.cam)}>
@@ -114,9 +114,9 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="94" y="398" width="312" height="82" rx="22" fill="#111d31" stroke={cancel ? colors.NEGATIVE : colors.SECONDARY} strokeWidth="3" />
         <text x="250" y="430" textAnchor="middle" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>classify → search</text>
         <text x="250" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="14">local embedding · no network</text>
-        <circle cx={runnerX} cy="439" r="14" fill={cancel ? colors.NEGATIVE : colors.POSITIVE} opacity={1 - cancel * 0.7} />
-        <path d={`M406 439 H${runnerX}`} stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" opacity={0.45} />
-        <g opacity={s.get(scene.replaceU)} transform="translate(410 378)">
+        <circle cx={runnerX} cy="439" r="14" fill={cancel ? colors.NEGATIVE : colors.POSITIVE} opacity={1 - cancel} />
+        <path d={`M406 439 H${runnerX}`} stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" opacity={0.45 * (1 - cancel)} />
+        <g opacity={s.get(scene.replaceU) * (1 - cancelRaw)} transform="translate(600 384)">
           <rect x="-124" y="-17" width="248" height="34" rx="17" fill="#2a1d0c" stroke={colors.WARM} />
           <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>cancel stale asyncio task</text>
         </g>
@@ -137,7 +137,7 @@ export function Render({ s }: { s: SceneState }) {
         <text y="-12" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>Turn.memory</text>
         {Array.from({ length: 5 }, (_, i) => {
           const u = clamp01(memoryP - i);
-          return <rect key={i} x={-82 + i * 34} y={18 + (1 - u) * 28} width="24" height="58" rx="7" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.2 + u * 0.8} />;
+          return <rect key={i} x={-82 + i * 34} y={6 + (1 - u) * 20} width="24" height="50" rx="7" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.2 + u * 0.8} />;
         })}
         <text y="94" textAnchor="middle" fill={colors.MUTED} fontSize="14">top five ready</text>
       </g>

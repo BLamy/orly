@@ -160,12 +160,12 @@ function renderFrame(s: SceneState) {
 
       {/* forward value packets (sky) and backward gradient packets (rose) */}
       {EDGES.map((e, i) => (
-        <Packet key={`f${i}`} from={e.a} to={e.b} u={s.get(scene.fwd[i])} color={colors.ACCENT} label={fLabels[i]} labelSize={13} r={7} />
+        <Packet key={`f${i}`} from={e.a} to={e.b} u={s.get(scene.fwd[i])} color={colors.ACCENT} label={fLabels[i]} labelSize={14} r={7} />
       ))}
       {BWD_EDGES.map((ei, j) => {
         const e = EDGES[ei];
         return (
-          <Packet key={`b${j}`} from={e.b} to={e.a} u={s.get(scene.bwd[j])} color={colors.NEGATIVE} label={bLabels[j]} labelSize={13} r={6.5} />
+          <Packet key={`b${j}`} from={e.b} to={e.a} u={s.get(scene.bwd[j])} color={colors.NEGATIVE} label={bLabels[j]} labelSize={14} r={6.5} />
         );
       })}
 
@@ -180,7 +180,7 @@ function renderFrame(s: SceneState) {
       {SUBS.map(({ id, text }) => {
         const n = NODES[NODE_INDEX[id]];
         return (
-          <text key={`sub${id}`} x={n.x} y={n.y + CIRC_R + 18} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.9 * s.get(scene.nodesU[NODE_INDEX[id]])}>
+          <text key={`sub${id}`} x={n.x} y={n.y + CIRC_R + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={0.95 * s.get(scene.nodesU[NODE_INDEX[id]])}>
             {text}
           </text>
         );
@@ -192,15 +192,15 @@ function renderFrame(s: SceneState) {
       ))}
 
       {/* stage math: the loss, then the update rule */}
-      <MathLabel tex={LOSS_TEX} x={1000} y={230} fontSize={19} opacity={s.get(scene.lossTexU)} />
-      <MathLabel tex={UPDATE_TEX.rule} x={430} y={100} fontSize={22} opacity={updTexOp} />
-      <MathLabel tex={UPDATE_TEX.w1} x={430} y={152} fontSize={20} color={colors.POSITIVE} opacity={updTexOp} />
-      <MathLabel tex={UPDATE_TEX.w2} x={430} y={198} fontSize={20} color={colors.POSITIVE} opacity={updTexOp} />
+      <MathLabel tex={LOSS_TEX} x={640} y={112} fontSize={19} opacity={s.get(scene.lossTexU)} />
+      <MathLabel tex={UPDATE_TEX.rule} x={560} y={80} fontSize={22} opacity={updTexOp} />
+      <MathLabel tex={UPDATE_TEX.w1} x={560} y={118} fontSize={20} color={colors.POSITIVE} opacity={updTexOp} />
+      <MathLabel tex={UPDATE_TEX.w2} x={560} y={156} fontSize={20} color={colors.POSITIVE} opacity={updTexOp} />
 
       {/* corner plot: loss vs step, swept as the updates land */}
       {plotOp > 0.002 && (
         <g>
-          <Axes x={plotX} y={plotY} reveal={plotOp} grid={false} xTicks={3} yTicks={2} xLabel="step" yLabel="loss" fontSize={12} opacity={plotOp} />
+          <Axes x={plotX} y={plotY} reveal={plotOp} grid={false} xTicks={3} yTicks={2} xLabel="step" yLabel="loss" fontSize={14} opacity={plotOp} />
           <FunctionPlot x={plotX} y={plotY} f={lossAt} domain={[0, Math.max(0.02, prog)]} samples={64} color={colors.ACCENT} width={2.5} opacity={plotOp} />
           {LOSSES.map((L, k) => {
             const du = clamp01((prog - (k - 0.12)) / 0.12);

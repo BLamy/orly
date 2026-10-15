@@ -59,18 +59,20 @@ const HALF: number[] = G.map((g) => Math.log(0.5) / g);
 // Layout
 // ---------------------------------------------------------------------------
 
-const CELL = 30;
+const CELL = 34;
 const GRID_A = { x: 130, y: 220 }; // scalar decay
 const GRID_B = { x: 480, y: 220 }; // channel-wise decay
 
-const PLOT_X = scaleLinear().domain([0, T_MAX]).range([840, 1230]);
-const PLOT_Y = scaleLinear().domain([0, 1.02]).range([560, 210]);
+const PLOT_X = scaleLinear().domain([0, T_MAX]).range([840, 1180]);
+const PLOT_Y = scaleLinear().domain([0, 1.02]).range([560, 250]);
 
-const GATE_X = scaleLinear().domain([-6, 6]).range([130, 520]);
-const GATE_Y = scaleLinear().domain([-0.05, 1.1]).range([560, 400]);
+const GATE_X = scaleLinear().domain([-6, 6]).range([130, 800]);
+const GATE_Y = scaleLinear().domain([-0.05, 1.1]).range([560, 290]);
 
-const CAM_GRIDS: CameraState = { x: 420, y: 340, k: 1.18 };
-const CAM_PLOT: CameraState = { x: 900, y: 380, k: 1.08 };
+// both grids framed together; the plot framed with its legend
+const CAM_GRIDS: CameraState = { x: 441, y: 350, k: 1.2 };
+// the legend sits clear of the equations at the top; the x-axis clears the caption
+const CAM_PLOT: CameraState = { x: 1000, y: 371, k: 1.1 };
 
 // stored pattern: one bright column per grid (the memory we watch fade)
 const PATTERN: number[][] = Array.from({ length: D }, (_, i) =>
@@ -206,7 +208,7 @@ function FadingGrid({
       <text x={x} y={y - 42} fill={colors.TEXT} fontSize={17}>
         {label}
       </text>
-      <text x={x} y={y - 20} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+      <text x={x} y={y - 20} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
         {sub}
       </text>
       {PATTERN.map((row, i) =>
@@ -235,7 +237,7 @@ function FadingGrid({
               y={y + D * CELL + 18}
               textAnchor="middle"
               fill={colors.MUTED}
-              fontSize={9}
+              fontSize={12}
               fontFamily="monospace"
             >
               {a.toFixed(2)}
@@ -260,7 +262,11 @@ function Frame({ s }: { s: SceneState }) {
   const scalarU = s.get(scene.scalarU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the gate curve leaves once the grids take over; the grids leave for the plot
+  const gateOp = Math.max(0, (gateU - 0.12) / 0.88);
+  const gridOp = gridsU * (1 - plotU);
+  // old content fades to 0.1 so the closing panel reads on its own
+  const mainOp = 1 - 0.9 * closeU;
   const tCur = Math.max(0.5, curveT * T_MAX);
 
   const fGate = (x: number): number => sigmoid(x);
@@ -273,9 +279,9 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the gate curve, morphing sigmoid -> decay-after-12-steps */}
-          {gateU > 0 && (
-            <g opacity={gateU}>
-              <Axes x={GATE_X} y={GATE_Y} reveal={gateU} xTicks={4} yTicks={2} xLabel="pre-activation" fontSize={11} />
+          {gateOp > 0 && (
+            <g opacity={gateOp}>
+              <Axes x={GATE_X} y={GATE_Y} reveal={gateU} xTicks={4} yTicks={2} xLabel="pre-activation" fontSize={13} />
               <FunctionPlot
                 x={GATE_X}
                 y={GATE_Y}
@@ -286,9 +292,30 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.TEAL}
                 width={2.8}
               />
-              <text x={130} y={382} fill={colors.TEAL} fontSize={13}>
-                {gateMorph > 0.5 ? 'retention after twelve steps, per channel' : 'sigmoid gate, per channel'}
+              {/* one dot per channel: each channel's own gate value on the sigmoid */}
+              <g opacity={1 - gateMorph}>
+                {PRE.map((z, j) => (
+                  <circle key={j} cx={GATE_X(z)} cy={GATE_Y(sigmoid(z))} r={6} fill={colors.heat(0.25 + (0.65 * j) / (D - 1))} stroke={colors.TEAL} strokeWidth={1.5} />
+                ))}
+              </g>
+              <text x={130} y={268} fill={colors.TEAL} fontSize={15}>
+                {gateMorph > 0.5 ? 'retention after twelve steps, per channel' : 'sigmoid gate, one dot per channel'}
               </text>
+              {/* the softplus named on screen, so the decay line has a definition to land on */}
+              <g opacity={gateMorph}>
+                <text x={850} y={330} fill={colors.TEXT} fontSize={20} fontWeight={600}>
+                  softplus(x) = log(1 + exp(x))
+                </text>
+                <text x={850} y={362} fill={colors.MUTED} fontSize={15}>
+                  a smooth ramp that is always above zero
+                </text>
+                <text x={850} y={388} fill={colors.MUTED} fontSize={15}>
+                  so −exp(a) · softplus(x) stays below zero
+                </text>
+                <text x={850} y={414} fill={colors.MUTED} fontSize={15}>
+                  and each step multiplies the state by α &lt; 1
+                </text>
+              </g>
             </g>
           )}
 
@@ -299,7 +326,7 @@ function Frame({ s }: { s: SceneState }) {
             perChannel={false}
             label="head-wise scalar decay"
             sub={`alpha = ${ALPHA_SCALAR.toFixed(3)} for every channel`}
-            u={gridsU}
+            u={gridOp}
           />
           <FadingGrid
             x={GRID_B.x}
@@ -308,10 +335,10 @@ function Frame({ s }: { s: SceneState }) {
             perChannel
             label="channel-wise decay"
             sub="alpha per channel, printed below"
-            u={gridsU}
+            u={gridOp}
           />
-          {gridsU > 0 && (
-            <text x={GRID_A.x} y={GRID_A.y + D * CELL + 44} fill={colors.MUTED} fontSize={13} opacity={gridsU}>
+          {gridOp > 0 && (
+            <text x={GRID_A.x} y={GRID_A.y + D * CELL + 44} fill={colors.MUTED} fontSize={14} opacity={gridOp}>
               t = {Math.round(timeT)} steps
             </text>
           )}
@@ -319,10 +346,10 @@ function Frame({ s }: { s: SceneState }) {
           {/* the retention family */}
           {plotU > 0 && (
             <g opacity={plotU}>
-              <text x={840} y={180} fill={colors.TEXT} fontSize={16}>
-                retention per channel over time
+              <text x={840} y={162} fill={colors.TEXT} fontSize={16}>
+                retention per channel over time (in steps)
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={4} xLabel="steps" fontSize={11} />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={4} yTicks={4} fontSize={13} />
               {G.map((g, j) => (
                 <FunctionPlot
                   key={j}
@@ -335,16 +362,21 @@ function Frame({ s }: { s: SceneState }) {
                   width={2}
                 />
               ))}
-              {curveT > 0.98 && (
-                <g>
-                  <text x={PLOT_X(T_MAX) + 4} y={PLOT_Y(retention(G[0], T_MAX))} fill={colors.MUTED} fontSize={11}>
-                    half-life ≈ {Math.round(HALF[0])} steps
-                  </text>
-                  <text x={PLOT_X(T_MAX) + 4} y={PLOT_Y(retention(G[D - 1], T_MAX)) - 4} fill={colors.MUTED} fontSize={11}>
-                    ≈ {Math.round(HALF[D - 1])} steps
-                  </text>
-                </g>
-              )}
+              {/* legend: the two ends of the family, and the scalar baseline */}
+              <g>
+                <line x1={840} x2={862} y1={179} y2={179} stroke={colors.heat(0.25)} strokeWidth={3} />
+                <text x={870} y={184} fill={colors.TEXT} fontSize={14}>
+                  slowest channel: half-life ≈ {Math.round(HALF[0])} steps
+                </text>
+                <line x1={840} x2={862} y1={197} y2={197} stroke={colors.heat(0.9)} strokeWidth={3} />
+                <text x={870} y={202} fill={colors.TEXT} fontSize={14}>
+                  fastest channel: half-life ≈ {Math.round(HALF[D - 1])} steps
+                </text>
+                <line x1={840} x2={862} y1={215} y2={215} stroke={colors.TEXT} strokeWidth={2} strokeDasharray="6 4" />
+                <text x={870} y={220} fill={colors.TEXT} fontSize={14}>
+                  dashed, head-wise scalar: half-life ≈ {Math.round(Math.log(0.5) / G_SCALAR)} steps
+                </text>
+              </g>
               {scalarU > 0 && (
                 <g opacity={scalarU}>
                   <FunctionPlot
@@ -357,9 +389,6 @@ function Frame({ s }: { s: SceneState }) {
                     width={2.2}
                     dash
                   />
-                  <text x={PLOT_X(T_MAX * 0.55)} y={PLOT_Y(retention(G_SCALAR, T_MAX * 0.55)) - 10} fill={colors.TEXT} fontSize={12}>
-                    head-wise scalar
-                  </text>
                 </g>
               )}
             </g>
@@ -378,18 +407,18 @@ function Frame({ s }: { s: SceneState }) {
       </g>
       <MathLabel
         tex="b_t = \sigma(W_b x_t) \quad w_t = \sigma(W_w x_t)"
-        x={660}
+        x={1240}
         y={64}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.TEAL}
         opacity={eqU * mainOp}
       />
       <MathLabel
         tex="\alpha_t = \exp(-\exp(a) \odot \mathrm{softplus}(W_f x_t + \delta))"
-        x={660}
+        x={1240}
         y={104}
-        anchor="start"
+        anchor="end"
         fontSize={19}
         color={colors.WARM}
         opacity={eqU * mainOp}
@@ -397,7 +426,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Three knobs per channel: erase, write, decay.
           </text>

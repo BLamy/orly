@@ -88,8 +88,6 @@ export interface Scene {
   trimU: ChannelRef<number>;
   detailDim: ChannelRef<number>;
   dimAll: ChannelRef<number>;
-  planU: ChannelRef<number>;
-  planLabelU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
 
@@ -112,8 +110,6 @@ export function buildScene(): Scene {
   const trimU = tl.channel('trimU', 0);
   const detailDim = tl.channel('detailDim', 1);
   const dimAll = tl.channel('dimAll', 1);
-  const planU = tl.channel('planU', 1);
-  const planLabelU = tl.channel('planLabelU', 1);
   const closeU = tl.channel('closeU', 0);
 
   // — Beat 1 · the rule: overbuild the floor —
@@ -142,8 +138,6 @@ export function buildScene(): Scene {
     text: 'Where the frame crosses a riser, it is held by three-inch galvanized lag bolts in pre-drilled, counterbored holes, so the heads sit below the surface. Everywhere else: three-inch exterior screws, always pre-drilled.',
   });
   tl.tween(cam, CAM_DETAIL, { at: 14.3, dur: 1.5, ease: ease.move });
-  tl.tween(planLabelU, 0, { at: 14.3, dur: 0.8, ease: ease.move });
-  tl.tween(planU, 0, { at: 14.3, dur: 1.2, ease: ease.move });
   tl.tween(detailU, 1, { at: 14.8, dur: 0.9, ease: ease.enter });
   tl.tween(boltU, 1, { at: 16.4, dur: 2.2, ease: ease.move });
   tl.hold(21.1, 0.5);
@@ -156,8 +150,6 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, CAM_FRAME, { at: 21.8, dur: 1.5, ease: ease.move });
   tl.tween(detailDim, 0, { at: 21.8, dur: 1.0, ease: ease.move });
-  tl.tween(planU, 1, { at: 21.8, dur: 1.2, ease: ease.move });
-  tl.tween(planLabelU, 1, { at: 22.0, dur: 1.0, ease: ease.move });
   tl.tween(outerU, 1, { at: 22.4, dur: 2.4, ease: ease.draw });
   tl.tween(lapU, 1, { at: 25.4, dur: 0.8, ease: ease.pop });
   tl.hold(27.8, 0.5);
@@ -248,8 +240,6 @@ export function buildScene(): Scene {
     trimU,
     detailDim,
     dimAll,
-    planU,
-    planLabelU,
     closeU,
   };
 }
@@ -303,32 +293,34 @@ export function Render({ s }: { s: SceneState }) {
   const trimU = s.get(scene.trimU);
   const detailDim = s.get(scene.detailDim);
   const dimAll = s.get(scene.dimAll);
-  const planU = s.get(scene.planU);
-  const planLabelU = s.get(scene.planLabelU);
   const closeU = s.get(scene.closeU);
 
+  // the plan steps aside while the fastening inset is up, and comes back as the inset dims out
+  const planOn = 1 - detailU * detailDim;
+
   const PT = '#6f9c6a'; // pressure-treated green
+  const PT_TEXT = '#9cc796'; // the same green, lifted so labels read on the dark stage
   const JOIST = colors.WARM;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll * planU}>
+        <g opacity={dimAll * planOn}>
           {/* faint footprint + 16-in tick grid */}
           <g opacity={gridU}>
-            <rect x={px(0)} y={py(0)} width={96 * PX} height={96 * PX} fill="none" stroke={colors.GRID} strokeDasharray="4 6" />
+            <rect x={px(0)} y={py(0)} width={96 * PX} height={96 * PX} fill="none" stroke={colors.MUTED} strokeOpacity={0.5} strokeDasharray="4 6" />
             {JOISTS_IN.map((x) => (
-              <line key={x} x1={px(x)} y1={py(0)} x2={px(x)} y2={py(96)} stroke={colors.GRID} strokeWidth={0.8} opacity={0.5} />
+              <line key={x} x1={px(x)} y1={py(0)} x2={px(x)} y2={py(96)} stroke={colors.MUTED} strokeWidth={1} opacity={0.45} />
             ))}
             {/* plan labels step aside while the camera is on the fastening inset */}
-            <g opacity={planLabelU}>
-              <text x={px(48)} y={py(0) - 34} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <g opacity={planOn}>
+              <text x={px(48)} y={py(0) - 34} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 the platform, from above — joists on 16 in centers
               </text>
               {/* 16-in dimension between first two lines */}
               <line x1={px(16)} y1={py(-2.5)} x2={px(32)} y2={py(-2.5)} stroke={colors.MUTED} strokeWidth={1} />
-              <text x={px(24)} y={py(-4)} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={px(24)} y={py(-4)} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 16 in
               </text>
             </g>
@@ -349,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
           {INNER.map((b, i) => boardRect(b, clamp01(innerU * 4 - i * 0.75), PT, i))}
           {OUTER.map((b, i) => boardRect(b, clamp01(outerU * 4 - i * 0.75), PT, i + 10))}
           {innerU > 0.9 && (
-            <text x={px(0) - 14} y={py(48)} textAnchor="end" fill={PT} fontSize={12.5} opacity={clamp01(innerU * 4 - 3) * planLabelU}>
+            <text x={px(0) - 14} y={py(48)} textAnchor="end" fill={PT_TEXT} fontSize={14} opacity={clamp01(innerU * 4 - 3) * planOn}>
               2x6 PT · doubled
             </text>
           )}
@@ -359,7 +351,7 @@ export function Render({ s }: { s: SceneState }) {
               {[[0, 0], [96, 0], [96, 96], [0, 96]].map(([cx, cy], i) => (
                 <circle key={i} cx={px(cx)} cy={py(cy)} r={17} fill="none" stroke={colors.ACCENT} strokeWidth={1.8} opacity={clamp01(lapU * 3 - i * 0.5)} />
               ))}
-              <text x={px(96) + 26} y={py(0) + 4} fill={colors.ACCENT} fontSize={12}>
+              <text x={px(96) + 26} y={py(0) + 4} fill={colors.ACCENT} fontSize={14}>
                 lapped
               </text>
             </g>
@@ -370,8 +362,12 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={diagU}>
               <line x1={px(0)} y1={py(0)} x2={px(96)} y2={py(96)} stroke={colors.ACCENT} strokeWidth={1.6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - diagU} />
               <line x1={px(96)} y1={py(0)} x2={px(0)} y2={py(96)} stroke={colors.SECONDARY} strokeWidth={1.6} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - diagU} />
-              <text x={px(48)} y={py(48) - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} stroke={colors.BG} strokeWidth={5} paintOrder="stroke">
+              {/* labels sit clear of the crossing: the lines pass near the corners, not the middle */}
+              <text x={px(48)} y={py(84)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} stroke={colors.BG} strokeWidth={5} paintOrder="stroke">
                 equal diagonals
+              </text>
+              <text x={px(48)} y={py(91)} textAnchor="middle" fill={colors.TEXT} fontSize={12} stroke={colors.BG} strokeWidth={5} paintOrder="stroke">
+                unequal = racked, and the door binds later
               </text>
             </g>
           )}
@@ -395,9 +391,20 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {hangerU > 0.7 && (
-            <text x={px(96) + 26} y={py(92.8) + 4} fill={colors.ACCENT} fontSize={12} opacity={clamp01(hangerU * 3 - 2)}>
+            <text x={px(96) + 26} y={py(92.8) + 4} fill={colors.ACCENT} fontSize={14} opacity={clamp01(hangerU * 3 - 2)}>
               joist hangers, nailed
             </text>
+          )}
+          {/* the walls' studs, for comparison: 24 in, so the floor's 16 in is the tighter grid */}
+          {hangerU > 0.7 && (
+            <g opacity={clamp01(hangerU * 3 - 2) * 0.8}>
+              {[0, 24, 48, 72, 96].map((x) => (
+                <line key={x} x1={px(x)} y1={py(99.5)} x2={px(x)} y2={py(99.5) + 7} stroke={colors.MUTED} strokeWidth={1.4} />
+              ))}
+              <text x={px(0) - 14} y={py(86)} textAnchor="end" fill={colors.MUTED} fontSize={14}>
+                studs, walls: 24 in
+              </text>
+            </g>
           )}
 
           {/* joists slide down into their saddles */}
@@ -424,12 +431,12 @@ export function Render({ s }: { s: SceneState }) {
           {GAPS.map((g, i) => {
             const u = clamp01(blockU * 3.4 - i * 0.4);
             if (u <= 0) return null;
-            const off = (i % 2 === 0 ? -1 : 1) * 2.2;
+            // every block sits on the seam where the two deck sheets meet
             return (
               <rect
                 key={g}
                 x={px(g - 6.4)}
-                y={py(48 + off) - BOARD / 2}
+                y={py(48) - BOARD / 2}
                 width={12.8 * PX}
                 height={BOARD}
                 fill={JOIST}
@@ -440,7 +447,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {blockU > 0.7 && (
-            <text x={px(96) + 14} y={py(48) + 4} fill={JOIST} fontSize={12} opacity={clamp01(blockU * 3 - 2)}>
+            <text x={px(96) + 14} y={py(48) + 4} fill={JOIST} fontSize={14} opacity={clamp01(blockU * 3 - 2)}>
               blocking — toe-screwed
             </text>
           )}
@@ -455,15 +462,9 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          {deckU > 0.8 && (
-            <g opacity={clamp01(deckU * 3 - 2)}>
-              <text x={px(48)} y={py(24) + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={600} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">
-                4 × 8 sheet — 23/32 in T&amp;G OSB
-              </text>
-              <text x={px(48)} y={py(72) + 5} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={600} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">
-                4 × 8 sheet
-              </text>
-            </g>
+          {/* the seam where the two sheets meet, drawn once the deck is down */}
+          {deckU > 0.9 && (
+            <line x1={px(0)} y1={py(48)} x2={px(96)} y2={py(48)} stroke={colors.TEXT} strokeWidth={1} opacity={0.5 * clamp01(deckU * 5 - 4)} />
           )}
 
           {/* screws rain in along rims + joist lines */}
@@ -474,9 +475,23 @@ export function Render({ s }: { s: SceneState }) {
               return <circle key={sc.k} cx={px(sc.x)} cy={py(sc.y)} r={1.9} fill={colors.TEXT} opacity={0.7 * u} />;
             })}
           {screwU > 0.6 && (
-            <text x={px(0) - 14} y={py(72)} textAnchor="end" fill={colors.MUTED} fontSize={12} opacity={clamp01(screwU * 3 - 2)}>
+            <text x={px(0) - 14} y={py(72)} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={clamp01(screwU * 3 - 2)}>
               screws every 8 in
             </text>
+          )}
+
+          {/* sheet labels sit on solid chips, drawn after the screws so no dot lands on a word */}
+          {deckU > 0.8 && (
+            <g opacity={clamp01(deckU * 3 - 2)}>
+              <rect x={px(48) - 130} y={py(24) - 15} width={260} height={24} rx={5} fill={colors.BG} opacity={0.85} />
+              <text x={px(48)} y={py(24) + 4} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                4 × 8 sheet — 23/32 in T&amp;G OSB
+              </text>
+              <rect x={px(48) - 56} y={py(72) - 15} width={112} height={24} rx={5} fill={colors.BG} opacity={0.85} />
+              <text x={px(48)} y={py(72) + 4} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                4 × 8 sheet
+              </text>
+            </g>
           )}
 
           {/* the overhanging tongue, sawn flush */}
@@ -502,7 +517,7 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={Math.min(1, trimU * 2) * (1 - clamp01(trimU * 2 - 1.6))}
               />
               {trimU > 0.25 && trimU < 0.95 && (
-                <text x={px(96) + 12} y={py(48 + 48 * clamp01(trimU * 1.4)) } fill={colors.NEGATIVE} fontSize={11.5}>
+                <text x={px(96) + 14} y={py(72)} fill={colors.NEGATIVE} fontSize={14} opacity={Math.min(1, (trimU - 0.25) * 4) * (1 - clamp01((trimU - 0.8) * 6))}>
                   circular saw — trim the tongue
                 </text>
               )}
@@ -520,12 +535,12 @@ export function Render({ s }: { s: SceneState }) {
           <g transform="translate(150 0)">
             {/* riser post */}
             <rect x={960} y={230} width={70} height={190} fill={colors.WARM} opacity={0.75} stroke={colors.GRID} />
-            <text x={995} y={444} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+            <text x={995} y={218} textAnchor="middle" fill={colors.WARM} fontSize={14}>
               riser
             </text>
             {/* rim board against it */}
             <rect x={912} y={230} width={48} height={190} fill={PT} opacity={0.85} stroke={colors.GRID} />
-            <text x={936} y={444} textAnchor="middle" fill={PT} fontSize={12}>
+            <text x={936} y={218} textAnchor="middle" fill={PT_TEXT} fontSize={14}>
               rim 2x6
             </text>
             {/* counterbore pocket */}
@@ -540,19 +555,23 @@ export function Render({ s }: { s: SceneState }) {
           </g>
           {boltU > 0 && (
             <g opacity={clamp01(boltU * 2)}>
-              <text x={730} y={262} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={730} y={262} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                 5/16 × 3 in lag bolt
               </text>
-              <text x={730} y={282} fill={colors.MUTED} fontSize={12}>
+              <text x={730} y={282} fill={colors.MUTED} fontSize={14}>
                 pre-drilled · counterbored
               </text>
-              <text x={730} y={298} fill={colors.MUTED} fontSize={12}>
+              <text x={730} y={300} fill={colors.MUTED} fontSize={14}>
                 head sits below the surface
               </text>
             </g>
           )}
-          <text x={730} y={404} fill={colors.MUTED} fontSize={12}>
-            everywhere else: 3 in exterior screws, pre-drilled
+          {/* two lines so the text clears the rim at x 1062 */}
+          <text x={730} y={390} fill={colors.MUTED} fontSize={14}>
+            everywhere else:
+          </text>
+          <text x={730} y={410} fill={colors.TEXT} fontSize={14}>
+            3 in exterior screws, pre-drilled
           </text>
         </g>
 

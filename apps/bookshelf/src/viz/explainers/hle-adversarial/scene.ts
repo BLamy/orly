@@ -57,8 +57,8 @@ export const ADV_THRESHOLD = abilityOf(0) + Math.log(3) / 1.6; // b where p = 0.
 // score-curve stage mapping
 export const X0 = 170;
 export const X1 = 1110;
-export const Y0 = 560;
-export const Y1 = 140;
+export const Y0 = 520;
+export const Y1 = 130;
 export const gx = (gi: number): number => X0 + (gi / (GENS - 1)) * (X1 - X0);
 export const sy = (score: number): number => Y0 + (score / 100) * (Y1 - Y0);
 

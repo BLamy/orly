@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { Axes, FunctionPlot } from '../../primitives';
 import overrides from './overrides.json';
@@ -90,12 +90,13 @@ function Frame({ s }: { s: SceneState }) {
           />
           {truthU > 0.05 && (
             <text
-              x={xScale(-0.72)}
-              y={yScale(TRUE_F(-0.72)) - 22}
-              fill={colors.MUTED}
+              x={xScale(0.5)}
+              y={yScale(-0.82)}
+              textAnchor="middle"
+              fill={colors.TEXT}
               fontSize={16}
               fontStyle="italic"
-              opacity={Math.min(1, truthU)}
+              opacity={0.8 * Math.min(1, truthU)}
             >
               the hidden truth
             </text>
@@ -229,7 +230,7 @@ function Frame({ s }: { s: SceneState }) {
               test
             </text>
           </g>
-          <Axes x={xDeg} y={yErr} reveal={panelU} xTicks={6} yTicks={4} xLabel="degree" fontSize={11} />
+          <Axes x={xDeg} y={yErr} reveal={panelU} xTicks={6} yTicks={4} xLabel="degree" fontSize={14} />
           <FunctionPlot
             x={xDeg}
             y={yErr}
@@ -297,17 +298,22 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       )}
 
-      {/* clean ending — opaque-ish closing card over the dimmed stage */}
+      {/* clean ending — a solid card so the closing words sit clear of the dimmed stage */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <MathLabel
-            tex="\text{train error} \downarrow \quad\quad \text{test error} \cup"
-            x={STAGE_W / 2}
-            y={300}
-            fontSize={30}
-            color={colors.TEXT}
+          <rect
+            x={STAGE_W / 2 - 400}
+            y={236}
+            width={800}
+            height={168}
+            rx={14}
+            fill={colors.PANEL}
+            stroke={colors.GRID}
           />
-          <text x={STAGE_W / 2} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={21}>
+          <text x={STAGE_W / 2} y={302} textAnchor="middle" fill={colors.TEXT} fontSize={30}>
+            train error falls, test error makes a U
+          </text>
+          <text x={STAGE_W / 2} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={21}>
             learning is judged on the data you haven't seen
           </text>
         </g>

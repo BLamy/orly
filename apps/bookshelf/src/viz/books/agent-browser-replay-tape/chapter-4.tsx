@@ -145,7 +145,7 @@ function CmdLog({ enter, line, dim }: { enter: number; line: number; dim: number
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={CMDS.length * 30 + 32} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={20} y={26} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text x={20} y={26} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         agent-browser session
       </text>
       {/* prompt cursor: waits on the first line until the first command is typed in */}
@@ -181,7 +181,7 @@ function FilmStrip({ enter, frames, dim }: { enter: number; frames: number; dim:
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={16} y={-14} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text x={16} y={-14} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         ./demo.webm — capturing
       </text>
       {Array.from({ length: N_FRAMES }, (_, i) => {
@@ -224,15 +224,31 @@ function FileCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={92} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-      <text x={18} y={30} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text x={18} y={30} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         record stop →
       </text>
-      <text x={18} y={56} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>
+      <text x={18} y={56} fill={colors.TEXT} fontSize={16} fontWeight={700} fontFamily={mono}>
         demo.webm
       </text>
-      <text x={18} y={78} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>
+      <text x={18} y={78} fill={colors.SECONDARY} fontSize={14} fontFamily={mono}>
         VP8/VP9 WebM
       </text>
+    </g>
+  );
+}
+
+/** The arrow from the finished file into the message it gets attached to. */
+function AttachArrow({ u }: { u: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  const { x, y, w } = FILE;
+  const x0 = x + w + 8;
+  const x1 = MSG.x - 10;
+  const yy = y + 46;
+  return (
+    <g opacity={uu} stroke={colors.ACCENT} strokeWidth={2} fill={colors.ACCENT}>
+      <line x1={x0} y1={yy} x2={x1 - 6} y2={yy} />
+      <path d={`M ${x1 - 8} ${yy - 6} L ${x1} ${yy} L ${x1 - 8} ${yy + 6} Z`} stroke="none" />
     </g>
   );
 }
@@ -242,31 +258,31 @@ function Recap({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g opacity={uu * (1 - 0.3 * clamp01(dim))}>
-      <text x={640} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+    <g opacity={uu}>
+      <text x={640} y={240} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontFamily={mono} opacity={1 - 0.3 * clamp01(dim)}>
         one run · two witnesses
       </text>
-      <g transform="translate(360, 300)">
-        <rect width={260} height={110} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-        <text x={18} y={30} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
+      <g transform="translate(330, 280)">
+        <rect width={300} height={150} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+        <text x={20} y={40} fill={colors.ACCENT} fontSize={16} fontWeight={700} fontFamily={mono}>
           Replay recording
         </text>
-        <text x={18} y={56} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        <text x={20} y={72} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           uploaded to the cloud
         </text>
-        <text x={18} y={78} fill={colors.TEXT} fontSize={12.5}>
+        <text x={20} y={112} fill={colors.TEXT} fontSize={15}>
           for a debugger — any moment, later
         </text>
       </g>
-      <g transform="translate(660, 300)">
-        <rect width={260} height={110} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-        <text x={18} y={30} fill={colors.SECONDARY} fontSize={14} fontWeight={700} fontFamily={mono}>
+      <g transform="translate(650, 280)">
+        <rect width={300} height={150} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
+        <text x={20} y={40} fill={colors.SECONDARY} fontSize={16} fontWeight={700} fontFamily={mono}>
           local WebM
         </text>
-        <text x={18} y={56} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        <text x={20} y={72} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
           on disk, easy to attach
         </text>
-        <text x={18} y={78} fill={colors.TEXT} fontSize={12.5}>
+        <text x={20} y={112} fill={colors.TEXT} fontSize={15}>
           for a person — watch it now
         </text>
       </g>
@@ -293,6 +309,7 @@ function renderFrame(s: SceneState) {
         u={1}
         enter={s.get(scene.msgU) * (1 - recap)}
       />
+      <AttachArrow u={s.get(scene.msgU) * (1 - recap)} />
       <Recap u={recap} dim={dim} />
     </>
   );

@@ -63,7 +63,10 @@ const RECAP = [
 ];
 const RECAP_Y = 300;
 const RECAP_W = 212;
-const recapX = (i: number) => 640 + (i - 2) * 226;
+const recapX = (i: number) => 640 + (i - 2) * 232;
+
+/** The Replay tool queries the recording is interrogated with (beat 5). */
+const QUERIES = ['exceptions', 'network', 'console', 'any moment'];
 
 // Each camera keeps its card's bottom edge above the caption pill (stage y < 630).
 const CAM_LEFT: CameraState = { x: 330, y: 340, k: 1.28 };
@@ -85,7 +88,6 @@ export interface Scene {
   findU: ChannelRef<number>; // a finding lands, cited to a point
   xcheckU: ChannelRef<number>; // cross-examination chip
   leftDim: ChannelRef<number>;
-  leftOut: ChannelRef<number>; // the reviewer card leaves the frame while the critic is in focus
   dimU: ChannelRef<number>;
   recapU: ChannelRef<number>;
   closeU: ChannelRef<number>;
@@ -103,7 +105,6 @@ export function buildScene(): Scene {
   const findU = tl.channel('findU', 0);
   const xcheckU = tl.channel('xcheckU', 0);
   const leftDim = tl.channel('leftDim', 0);
-  const leftOut = tl.channel('leftOut', 0);
   const dimU = tl.channel('dimU', 0);
   const recapU = tl.channel('recapU', 0);
   const closeU = tl.channel('closeU', 0);
@@ -135,7 +136,6 @@ export function buildScene(): Scene {
     text: 'The reviewer cannot see the run. It cannot see the hunk the evidence never exercised, the test feeding on its own golden values, or the stream server left warm from development. None of that is in the text.',
   });
   tl.hold(21.5, 0.5);
-  tl.tween(leftOut, 1, { at: 21.6, dur: 0.8, ease: ease.move });
 
   // — Beat 4 · the critic holds the session —
   tl.caption({
@@ -182,7 +182,6 @@ export function buildScene(): Scene {
     text: 'That is the whole argument. A passive reviewer grades the story of the change. An adversarial critic re-executes the change and tries to break it — and only one of those catches the defect the diff never mentions.',
   });
   tl.tween(cam, CAM_SPLIT, { at: 53.2, dur: 1.5, ease: ease.move });
-  tl.tween(leftOut, 0, { at: 53.2, dur: 1.2, ease: ease.move });
   tl.tween(leftDim, 1, { at: 54.7, dur: 1.4, ease: ease.move });
   tl.hold(59.5, 0.5);
 
@@ -208,7 +207,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, leftU, eyeU, stampU, rightU, sweepU, armsU, findU,
-    xcheckU, leftDim, leftOut, dimU, recapU, closeU,
+    xcheckU, leftDim, dimU, recapU, closeU,
   };
 }
 
@@ -227,14 +226,17 @@ export function Render({ s }: { s: SceneState }) {
   const findU = s.get(scene.findU);
   const xcheckU = s.get(scene.xcheckU);
   const leftDim = s.get(scene.leftDim);
-  const leftOut = s.get(scene.leftOut);
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
   const closeU = s.get(scene.closeU);
 
-  // the dimmed critic world clears completely behind the closing panel
-  const worldOp = (1 - 0.88 * dimU) * (1 - 0.9 * closeU);
+  // the dimmed critic world clears completely behind the recap frames and the closing panel
+  const worldOp = (1 - 0.88 * dimU) * (1 - 0.85 * recapU) * (1 - 0.9 * closeU);
   const eyeY = LEFT.y + 96 + eyeU * (DIFF_LINES.length - 1) * 30;
+  // the query chips show while the recording is swept, and give way to the six arms
+  const armsGone = clamp01(armsU * 5);
+  // the reviewer card leaves the frame as the camera travels to the critic, and returns with the split view
+  const leftOut = clamp01((cam.x - CAM_SPLIT.x) / (CAM_RIGHT.x - CAM_SPLIT.x));
 
   return (
     <>
@@ -306,9 +308,23 @@ export function Render({ s }: { s: SceneState }) {
                 u={sweepU}
                 title="Replay recording — watch it, or query it, at any moment"
               />
-              <text x={RIGHT.x + 24} y={RIGHT.y + 150} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={sweepU > 0.2 ? 1 : 0}>
+              <text x={RIGHT.x + 24} y={RIGHT.y + 150} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={sweepU > 0.2 ? 1 : 0}>
                 + durable-stream logs · digests (deterministic)
               </text>
+              {/* the Replay queries that interrogate the recording */}
+              {QUERIES.map((q, k) => {
+                const u = clamp01((sweepU - 0.45) * 2.5 - k * 0.1) * (1 - armsGone);
+                if (u <= 0) return null;
+                const x = RIGHT.x + 24 + k * 108;
+                return (
+                  <g key={q} opacity={u}>
+                    <rect x={x} y={RIGHT.y + 166} width={100} height={30} rx={15} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+                    <text x={x + 50} y={RIGHT.y + 186} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                      {q}
+                    </text>
+                  </g>
+                );
+              })}
               {/* the six attack arms */}
               {armsU > 0 &&
                 ARMS.map((a, i) => {
@@ -317,14 +333,14 @@ export function Render({ s }: { s: SceneState }) {
                   const col = i % 2;
                   const row = Math.floor(i / 2);
                   const x = RIGHT.x + 24 + col * 222;
-                  const y = RIGHT.y + 170 + row * 62;
+                  const y = RIGHT.y + 164 + row * 60;
                   return (
                     <g key={a.label} opacity={u} transform={`translate(0 ${(1 - u) * 8})`}>
                       <rect x={x} y={y} width={210} height={52} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
-                      <text x={x + 12} y={y + 21} fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
+                      <text x={x + 12} y={y + 21} fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                         {a.label}
                       </text>
-                      <text x={x + 12} y={y + 38} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                      <text x={x + 12} y={y + 38} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                         {a.sub}
                       </text>
                     </g>
@@ -332,14 +348,14 @@ export function Render({ s }: { s: SceneState }) {
                 })}
               {/* a finding lands, cited */}
               {findU > 0 && (
-                <g opacity={findU} transform={`translate(${RIGHT.x + 24} ${RIGHT.y + RIGHT.h - 52})`}>
+                <g opacity={findU} transform={`translate(${RIGHT.x + 24} ${RIGHT.y + RIGHT.h - 74})`}>
                   <rect width={RIGHT.w - 48} height={30} rx={8} fill={colors.PANEL} stroke={xcheckU > 0.5 ? colors.POSITIVE : colors.WARM} strokeWidth={1.4} />
-                  <text x={12} y={19} fill={xcheckU > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={10.5} fontFamily={MONO}>
-                    {xcheckU > 0.5 ? 'finding survived cross-examination → the judge' : 'finding: prediction · observed · citation — a point anyone can jump to'}
+                  <text x={12} y={19} fill={xcheckU > 0.5 ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
+                    {xcheckU > 0.5 ? 'finding survived cross-examination → the judge' : 'finding: prediction · observed · citation'}
                   </text>
                 </g>
               )}
-              <text x={RIGHT.x + 24} y={RIGHT.y + RIGHT.h - 8} fill={colors.MUTED} fontSize={10} fontStyle="italic" opacity={armsU > 0.9 ? 0.9 : 0}>
+              <text x={RIGHT.x + 24} y={RIGHT.y + RIGHT.h - 24} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={armsU > 0.9 ? 0.9 : 0}>
                 verify-task — six arms, then cross-examine, then the verdict
               </text>
             </g>
@@ -348,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- recap frames ---- */}
         {recapU > 0 && (
-          <g>
+          <g opacity={1 - 0.85 * closeU}>
             {RECAP.map((r, i) => {
               const u = clamp01(recapU * (RECAP.length + 1.2) - i);
               if (u <= 0) return null;
@@ -359,7 +375,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x} y={RECAP_Y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
                     {r.label}
                   </text>
-                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < RECAP.length - 1 && u > 0.9 && (

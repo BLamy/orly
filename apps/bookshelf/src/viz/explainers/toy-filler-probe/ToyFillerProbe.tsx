@@ -103,6 +103,8 @@ const LENS: number[][][] = [RUN.X, RUN.H, RUN.O].map((M) =>
 const LENS_MAX = 13;
 
 const TOK_LABELS = ['A = 7', 'B = 6', '.', '.', '.', 'Q'];
+// after layer 1 the two dots start empty; their slot values appear as the copy arcs land
+const L1_CELLS = ['A = 7', 'B = 6', '', '', '.', 'Q'];
 
 // ---------------------------------------------------------------------------
 // Layout
@@ -115,12 +117,13 @@ const TOK_Y = 150;
 const L1_Y = 300;
 const L2_Y = 450;
 
-const LENS_X0 = 880;
+const LENS_X0 = 940;
 const LENS_Y0 = 170;
 const LENS_CELL = 34;
 
+// each camera frames the subject it is moving to, clear of the caption pill (y > 630)
 const CAM_NET: CameraState = { x: 470, y: 320, k: 1.2 };
-const CAM_LENS: CameraState = { x: 940, y: 330, k: 1.25 };
+const CAM_LENS: CameraState = { x: 640, y: 336, k: 1.1 };
 
 const rowY = (layer: number): number => [TOK_Y, L1_Y, L2_Y][layer];
 
@@ -243,18 +246,20 @@ function Arc({ from, to, y0, y1, w, color, u }: { from: number; to: number; y0: 
   );
 }
 
-function TokenRow({ y, label, u }: { y: number; label: string; u: number }) {
+function TokenRow({ y, label, u, cells = TOK_LABELS }: { y: number; label: string; u: number; cells?: string[] }) {
   return (
     <g opacity={u}>
-      <text x={TOK_X0 - 24} y={y + 24} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+      <text x={TOK_X0 - 24} y={y + 24} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
-      {TOK_LABELS.map((t, i) => (
+      {cells.map((t, i) => (
         <g key={i}>
           <rect x={tokX(i)} y={y} width={TOK_W} height={38} rx={7} fill={colors.PANEL} stroke={i >= 2 && i <= 4 ? colors.WARM : colors.GRID} />
-          <text x={tokX(i) + TOK_W / 2} y={y + 24} textAnchor="middle" fill={i >= 2 && i <= 4 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily="monospace">
-            {t}
-          </text>
+          {t && (
+            <text x={tokX(i) + TOK_W / 2} y={y + 24} textAnchor="middle" fill={i >= 2 && i <= 4 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily="monospace">
+              {t}
+            </text>
+          )}
         </g>
       ))}
     </g>
@@ -273,7 +278,8 @@ function Frame({ s }: { s: SceneState }) {
   const probeEqU = s.get(scene.probeEqU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  const mainOp = 1 - closeU;
+  const showMain = mainOp > 0.02;
   const layerIdx = Math.round(clamp01(lensLayer / 2) * 2);
   const lens = LENS[layerIdx];
 
@@ -281,23 +287,31 @@ function Frame({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={mainOp} display={showMain ? undefined : 'none'}>
         <Camera {...cam}>
           {/* the three residual rows */}
           <TokenRow y={TOK_Y} label="embedding" u={tokU} />
-          <TokenRow y={L1_Y} label="after layer 1" u={tokU * Math.max(arc1U, 0.35)} />
-          <TokenRow y={L2_Y} label="after layer 2" u={tokU * Math.max(arc2U, 0.35)} />
+          <TokenRow y={L1_Y} label="after layer 1" u={tokU * Math.max(arc1U, 0.6)} cells={L1_CELLS} />
+          <TokenRow y={L2_Y} label="after layer 2" u={tokU * Math.max(arc2U, 0.6)} />
+
+          {/* what the arrows carry: thickness is the softmax weight */}
+          <g opacity={tokU}>
+            <line x1={TOK_X0} y1={112} x2={TOK_X0 + 40} y2={112} stroke={colors.MUTED} strokeWidth={5} />
+            <text x={TOK_X0 + 52} y={117} fill={colors.MUTED} fontSize={14}>
+              arrows = softmax attention weights (thicker = more)
+            </text>
+          </g>
 
           {/* layer 1 attention: filler1 <- A, filler2 <- B (real weights) */}
           {arc1U > 0 && (
             <g>
               <Arc from={0} to={2} y0={TOK_Y + 38} y1={L1_Y} w={RUN.a1A[2][0]} color={colors.ACCENT} u={arc1U} />
               <Arc from={1} to={3} y0={TOK_Y + 38} y1={L1_Y} w={RUN.a1B[3][1]} color={colors.SECONDARY} u={arc1U} />
-              <text x={tokX(2) + TOK_W / 2} y={L1_Y + 56} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace" opacity={arc1U}>
-                slot A = {(RUN.H[2][7] * SCALE).toFixed(2)}
+              <text x={tokX(2) + TOK_W / 2} y={L1_Y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace" opacity={arc1U}>
+                {`A = ${(RUN.H[2][7] * SCALE).toFixed(2)}`}
               </text>
-              <text x={tokX(3) + TOK_W / 2} y={L1_Y + 72} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace" opacity={arc1U}>
-                slot B = {(RUN.H[3][8] * SCALE).toFixed(2)}
+              <text x={tokX(3) + TOK_W / 2} y={L1_Y + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" opacity={arc1U}>
+                {`B = ${(RUN.H[3][8] * SCALE).toFixed(2)}`}
               </text>
             </g>
           )}
@@ -307,7 +321,7 @@ function Frame({ s }: { s: SceneState }) {
             <g>
               <Arc from={2} to={5} y0={L1_Y + 38} y1={L2_Y} w={RUN.a2[5][2]} color={colors.POSITIVE} u={arc2U} />
               <Arc from={3} to={5} y0={L1_Y + 38} y1={L2_Y} w={RUN.a2[5][3]} color={colors.POSITIVE} u={arc2U} />
-              <text x={tokX(5) + TOK_W / 2 + 8} y={(L1_Y + L2_Y) / 2 + 24} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={arc2U}>
+              <text x={tokX(5) + TOK_W + 12} y={(L1_Y + L2_Y) / 2 + 24} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" opacity={arc2U}>
                 0.50 / 0.50
               </text>
             </g>
@@ -327,12 +341,12 @@ function Frame({ s }: { s: SceneState }) {
               <text x={LENS_X0} y={LENS_Y0 - 40} fill={colors.TEXT} fontSize={16}>
                 logit lens readout
               </text>
-              <text x={LENS_X0} y={LENS_Y0 - 20} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={LENS_X0} y={LENS_Y0 - 20} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 {['at embedding', 'after layer 1', 'after layer 2'][layerIdx]}
               </text>
               {lens.map((row, r) => (
                 <g key={r}>
-                  <text x={LENS_X0 - 10} y={LENS_Y0 + r * LENS_CELL + 22} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+                  <text x={LENS_X0 - 10} y={LENS_Y0 + r * LENS_CELL + 22} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                     {LENS_LABELS[r]}
                   </text>
                   {row.map((v, c) => (
@@ -351,7 +365,7 @@ function Frame({ s }: { s: SceneState }) {
                           y={LENS_Y0 + r * LENS_CELL + 20}
                           textAnchor="middle"
                           fill={colors.BG}
-                          fontSize={11}
+                          fontSize={12}
                           fontWeight={700}
                           fontFamily="monospace"
                         >
@@ -369,7 +383,7 @@ function Frame({ s }: { s: SceneState }) {
                   y={LENS_Y0 + 4 * LENS_CELL + 16}
                   textAnchor="middle"
                   fill={colors.MUTED}
-                  fontSize={10}
+                  fontSize={12}
                   fontFamily="monospace"
                 >
                   {t.split(' ')[0]}
@@ -400,7 +414,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Known intermediates, read at every layer and position.
           </text>

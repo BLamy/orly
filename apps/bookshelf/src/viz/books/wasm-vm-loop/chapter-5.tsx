@@ -60,6 +60,7 @@ const UNSEEN = ['sign-extend bug in a register', 'buffer that grows unbounded', 
 
 // Panels sit at y 110..530; these framings keep their bottoms clear of the caption pill (y > 630).
 const CAM_LEFT: CameraState = { x: 330, y: 340, k: 1.28 };
+const CAM_RIGHT: CameraState = { x: 700, y: 340, k: 0.95 };
 const CAM_SPLIT: CameraState = { x: 640, y: 300, k: 1.05 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
@@ -80,7 +81,6 @@ export interface Scene {
   sabotageU: ChannelRef<number>;
   leftDim: ChannelRef<number>;
   dimU: ChannelRef<number>;
-  unseenU: ChannelRef<number>;
   recapU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
@@ -98,7 +98,6 @@ export function buildScene(): Scene {
   const sabotageU = tl.channel('sabotageU', 0);
   const leftDim = tl.channel('leftDim', 0);
   const dimU = tl.channel('dimU', 0);
-  const unseenU = tl.channel('unseenU', 0);
   const recapU = tl.channel('recapU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -128,7 +127,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The reviewer cannot see the run. It cannot see the register that failed to sign extend, the buffer that grew unbounded, or the branch that never executed. None of that is in the text.',
   });
-  tl.tween(unseenU, 1, { at: 16.0, dur: 2.0, ease: ease.draw });
   tl.hold(21.5, 0.5);
 
   // — Beat 4 · the critic runs —
@@ -137,8 +135,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The critic starts from the other end. It does not read about the run — it holds the run, and replays it to any moment it likes.',
   });
-  tl.tween(cam, CAM_SPLIT, { at: 22.2, dur: 1.4, ease: ease.move });
-  tl.tween(leftDim, 1, { at: 22.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_RIGHT, { at: 22.2, dur: 1.4, ease: ease.move });
   tl.tween(rightU, 1, { at: 22.6, dur: 2.0, ease: ease.draw });
   tl.tween(sweepU, 1, { at: 25.0, dur: 3.0, ease: ease.linear });
   tl.hold(28.5, 0.5);
@@ -168,6 +165,8 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'That is the whole argument. A passive reviewer grades the story of the change. An adversarial critic re-executes the change and tries to break it — and only one of those catches the edge case nobody wrote down.',
   });
+  tl.tween(cam, CAM_SPLIT, { at: 44.7, dur: 1.5, ease: ease.move });
+  tl.tween(leftDim, 1, { at: 46.2, dur: 1.4, ease: ease.move });
   tl.hold(51.0, 0.5);
 
   // — Beat 8 · recap —
@@ -193,7 +192,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, leftU, eyeU, stampU, rightU, sweepU, chaosU, cloneU,
-    sabotageU, leftDim, dimU, unseenU, recapU, closeU,
+    sabotageU, leftDim, dimU, recapU, closeU,
   };
 }
 
@@ -215,7 +214,6 @@ export function Render({ s }: { s: SceneState }) {
   const sabotageU = s.get(scene.sabotageU);
   const leftDim = s.get(scene.leftDim);
   const dimU = s.get(scene.dimU);
-  const unseenU = s.get(scene.unseenU);
   const recapU = s.get(scene.recapU);
   const closeU = s.get(scene.closeU);
 
@@ -229,7 +227,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={worldOp}>
           {/* ---- LEFT: the passive reviewer ---- */}
           {leftU > 0 && (
-            <g opacity={Math.min(1, leftU * 2) * (1 - 0.8 * leftDim)}>
+            <g opacity={Math.min(1, leftU * 2) * (1 - 0.5 * leftDim)}>
               <rect x={LEFT.x} y={LEFT.y} width={LEFT.w} height={LEFT.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={LEFT.x + 20} y={LEFT.y + 34} fill={colors.TEXT} fontSize={16} fontWeight={700}>
                 passive review
@@ -258,8 +256,9 @@ export function Render({ s }: { s: SceneState }) {
                   <circle r={4} fill={colors.ACCENT} />
                 </g>
               )}
-              {unseenU > 0 && (
-                <g opacity={unseenU}>
+              {/* the list lands under the stamp: the reviewer's blind spots, on the stamp's window */}
+              {stampU > 0 && (
+                <g opacity={stampU}>
                   {UNSEEN.map((t, i) => (
                     <text key={i} x={LEFT.x + 24} y={LEFT.y + 284 + i * 18} fill={colors.MUTED} fontSize={13}>
                       <tspan fill={colors.WARM} fontWeight={700}>? </tspan>
@@ -274,7 +273,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text y={-8} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
                     “looks good to me”
                   </text>
-                  <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                     agree / disagree — with the story
                   </text>
                 </g>
@@ -302,6 +301,11 @@ export function Render({ s }: { s: SceneState }) {
                 u={sweepU}
                 title="rr replay — any moment, after the fact"
               />
+              {sweepU > 0 && (
+                <text x={RIGHT.x + 24} y={RIGHT.y + 148} fill={colors.TEXT} fontSize={13} fontFamily={MONO} opacity={Math.min(1, sweepU * 4)}>
+                  replay cursor · {Math.round(sweepU * 100)}% of the run
+                </text>
+              )}
               {/* chaos runs fan out */}
               {chaosU > 0 && (
                 <g>
@@ -373,7 +377,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x} y={RECAP_Y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
                     {r.label}
                   </text>
-                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < RECAP.length - 1 && u > 0.9 && (

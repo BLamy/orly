@@ -23,6 +23,9 @@ scene.tl.applyOverrides(overrides as TimelineOverrides);
 
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+/** a background halo so labels stay legible where contour rings pass behind them */
+const halo = { stroke: colors.BG, strokeWidth: 4, paintOrder: 'stroke' } as const;
+
 /** an ellipse at ±2σ for a diagonal Gaussian */
 function qEllipse(
   [mx, my, sx0, sy0]: [number, number, number, number],
@@ -66,10 +69,10 @@ function renderFrame(s: SceneState) {
       {/* the true posterior */}
       <ContourField f={DENS} x={px} y={py} thresholds={9} gridN={90} reveal={fieldU} color={colors.ACCENT} />
       <g opacity={clamp01(fieldU * 3)}>
-        <text x={px(MODES[0].x)} y={py(MODES[0].y) - 90} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+        <text x={px(MODES[0].x)} y={py(MODES[0].y) - 150} textAnchor="middle" fill={colors.TEXT} fontSize={14} {...halo}>
           65% of the mass
         </text>
-        <text x={px(MODES[1].x)} y={py(MODES[1].y) + 84} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+        <text x={px(MODES[1].x)} y={py(MODES[1].y) + 104} textAnchor="middle" fill={colors.TEXT} fontSize={14} {...halo}>
           35% of the mass
         </text>
       </g>
@@ -79,7 +82,7 @@ function renderFrame(s: SceneState) {
       {/* the hedging alternative */}
       {qEllipse(WIDE_Q, colors.NEGATIVE, wideU, true, 'wide')}
       <g opacity={wideU}>
-        <text x={px(0)} y={py(WIDE_Q[3] * 2) - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+        <text x={px(0)} y={py(WIDE_Q[3] * 2) - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} {...halo}>
           hedge: KL = {KL_WIDE.toFixed(2)}
         </text>
       </g>
@@ -87,7 +90,7 @@ function renderFrame(s: SceneState) {
       {/* missed-mode marker */}
       <g opacity={missU}>
         <circle cx={px(MODES[1].x)} cy={py(MODES[1].y)} r={54} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="6 6" />
-        <text x={px(MODES[1].x)} y={py(MODES[1].y) - 64} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+        <text x={px(MODES[1].x)} y={py(MODES[1].y) - 96} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} {...halo}>
           assigned ≈ 0 by q
         </text>
       </g>
@@ -111,7 +114,8 @@ function renderFrame(s: SceneState) {
       {curveU > 0.01 && (
         <g opacity={curveU}>
           <circle cx={kx(Math.min(iterT, N_ITERS))} cy={ky(kl)} r={6} fill={colors.WARM} />
-          <text x={kx(Math.min(iterT, N_ITERS))} y={ky(kl) - 14} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+          {/* hidden while the hedge comparison is on screen: its committing label sits here */}
+          <text x={kx(Math.min(iterT, N_ITERS))} y={ky(kl) - 14} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={1 - wideU} {...halo}>
             {kl.toFixed(2)}
           </text>
         </g>
@@ -119,10 +123,10 @@ function renderFrame(s: SceneState) {
       {/* commit-vs-hedge comparison line */}
       <g opacity={wideU}>
         <line x1={kx(0)} y1={ky(KL_WIDE)} x2={kx(N_ITERS)} y2={ky(KL_WIDE)} stroke={colors.NEGATIVE} strokeWidth={1.5} strokeDasharray="5 6" />
-        <text x={kx(N_ITERS)} y={ky(KL_WIDE) - 10} textAnchor="end" fill={colors.NEGATIVE} fontSize={13}>
+        <text x={kx(N_ITERS)} y={ky(KL_WIDE) - 10} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} {...halo}>
           hedging: {KL_WIDE.toFixed(2)}
         </text>
-        <text x={kx(N_ITERS)} y={ky(KL_FINAL) - 10} textAnchor="end" fill={colors.WARM} fontSize={13}>
+        <text x={kx(N_ITERS)} y={ky(KL_FINAL) - 10} textAnchor="end" fill={colors.WARM} fontSize={14} {...halo}>
           committing: {KL_FINAL.toFixed(2)}
         </text>
       </g>

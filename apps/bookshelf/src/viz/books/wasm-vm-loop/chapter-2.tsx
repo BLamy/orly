@@ -84,7 +84,6 @@ export interface Scene {
   puffFade: ChannelRef<number>;
   recU: ChannelRef<number>;
   sweepU: ChannelRef<number>;
-  diffU: ChannelRef<number>;
   evU: ChannelRef<number>;
   logU: ChannelRef<number>;
   statusU: ChannelRef<number>;
@@ -106,7 +105,6 @@ export function buildScene(): Scene {
   const puffFade = tl.channel('puffFade', 0);
   const recU = tl.channel('recU', 0);
   const sweepU = tl.channel('sweepU', 0);
-  const diffU = tl.channel('diffU', 0);
   const evU = tl.channel('evU', 0);
   const logU = tl.channel('logU', 0);
   const statusU = tl.channel('statusU', 0);
@@ -183,7 +181,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And the recorded run has to count. Every behavior the diff changes should actually execute during it, because the critic will hold this tape against the diff, line by line.',
   });
-  tl.tween(diffU, 1, { at: 38.0, dur: 1.2, ease: ease.move });
   tl.hold(44.1, 0.5);
 
   // — Beat 7 · the evidence freezes —
@@ -219,7 +216,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, railU, tokU, g0, g1, g2, g3, arcU, puffsU, puffFade,
-    recU, sweepU, diffU, evU, logU, statusU, dimU, closeU,
+    recU, sweepU, evU, logU, statusU, dimU, closeU,
   };
 }
 
@@ -239,7 +236,6 @@ export function Render({ s }: { s: SceneState }) {
   const puffFade = s.get(scene.puffFade);
   const recU = s.get(scene.recU);
   const sweepU = s.get(scene.sweepU);
-  const diffU = s.get(scene.diffU);
   const evU = s.get(scene.evU);
   const logU = s.get(scene.logU);
   const statusU = s.get(scene.statusU);
@@ -331,12 +327,12 @@ export function Render({ s }: { s: SceneState }) {
                 title="one deterministic tape of the whole process"
               />
               {/* the diff's behaviors, bracketed on the tape */}
-              <g opacity={diffU}>
+              <g opacity={sweepU}>
                 <rect
                   x={TAPE.x + TAPE.w * 0.18}
-                  y={TAPE.y - 6}
+                  y={TAPE.y - 3}
                   width={TAPE.w * 0.44}
-                  height={TAPE.h + 12}
+                  height={TAPE.h + 6}
                   rx={9}
                   fill="none"
                   stroke={colors.WARM}

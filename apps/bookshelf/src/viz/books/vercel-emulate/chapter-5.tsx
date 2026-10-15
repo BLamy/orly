@@ -206,7 +206,7 @@ function Lane({
 }) {
   const px = packetX(stepU);
   return (
-    <g opacity={(1 - 0.85 * dim) * lanesU}>
+    <g opacity={(1 - dim) * lanesU}>
       <line x1={APP.x + 70} y1={y} x2={1180} y2={y} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="1 0" opacity={0.8} />
       <text x={APP.x + 70} y={y - 46} fill={color} fontSize={14} fontWeight={600}>
         {label}
@@ -219,7 +219,7 @@ function Lane({
             <text x={st.x} y={y - 20} textAnchor="middle" fill={passed ? colors.TEXT : colors.MUTED} fontSize={14}>
               {st.label}
             </text>
-            <text x={st.x} y={y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={passed ? 0.9 : 0.45}>
+            <text x={st.x} y={y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={passed ? 0.95 : 0.6}>
               {st.sub}
             </text>
           </g>
@@ -243,7 +243,8 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const endU = s.get(scene.endU);
 
-  const floorOp = 1 - 0.88 * dimU;
+  // the old picture fades out completely, so the closing panel sits on clean stage
+  const floorOp = 1 - dimU;
 
   return (
     <>
@@ -257,6 +258,7 @@ export function Render({ s }: { s: SceneState }) {
             kind="server"
             label="your app"
             sublabel="same code, both worlds"
+            w={220}
             u={lanesU}
             glow={appGlowU}
           />
@@ -270,7 +272,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the quirk chip at the token station */}
         <g opacity={quirkU * floorOp}>
           <rect x={STATIONS[2].x - 200} y={336} width={400} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-          <text x={STATIONS[2].x} y={357} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={STATIONS[2].x} y={357} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
             Accept: application/x-www-form-urlencoded
           </text>
           <text x={STATIONS[2].x} y={378} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
@@ -355,7 +357,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={640} y={388} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} opacity={endU}>
+          <text x={640} y={388} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={endU}>
             same dance, tamer partner — the signed-in test, without the login
           </text>
         </g>

@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -64,35 +64,45 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
-          {/* ballots (fade to a whisper once the curves take over) */}
-          <g opacity={Math.max(0.12, 1 - 0.9 * axU)}>
-            {VOTE_PICK.votes.map((v, i) => {
-              const u = clamp01(balU * 1.8 - i * 0.09);
-              if (u <= 0) return null;
-              return (
-                <g key={i} opacity={u}>
-                  <rect x={BAL_X - 130} y={BAL_Y0 + i * BAL_DY - 16} width={280} height={34} rx={8} fill={colors.PANEL} stroke={voteColor(v)} strokeWidth={1.3} />
-                  <text x={BAL_X - 114} y={BAL_Y0 + i * BAL_DY + 6} fill={colors.MUTED} fontSize={12}>
-                    {`sample ${i + 1}`}
+          {/* ballots: a pile of samples that deals into the vote, then fades out for the curves */}
+          {axU < 0.99 && (
+            <g opacity={1 - axU}>
+              <text x={BAL_X - 130} y={BAL_Y0 - 28} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+                sampled answers
+              </text>
+              {VOTE_PICK.votes.map((_, i) => {
+                const u = clamp01(balU * 1.8 - i * 0.09);
+                if (u >= 1) return null;
+                return <rect key={`pile${i}`} x={BAL_X - 130 + (i % 3) * 8} y={BAL_Y0 - 16 + i * 5} width={280} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={1 - u} />;
+              })}
+              {VOTE_PICK.votes.map((v, i) => {
+                const u = clamp01(balU * 1.8 - i * 0.09);
+                if (u <= 0) return null;
+                return (
+                  <g key={i} opacity={u}>
+                    <rect x={BAL_X - 130} y={BAL_Y0 + i * BAL_DY - 16} width={280} height={34} rx={8} fill={colors.PANEL} stroke={voteColor(v)} strokeWidth={1.3} />
+                    <text x={BAL_X - 114} y={BAL_Y0 + i * BAL_DY + 6} fill={colors.MUTED} fontSize={13}>
+                      {`sample ${i + 1}`}
+                    </text>
+                    <text x={BAL_X + 134} y={BAL_Y0 + i * BAL_DY + 6} textAnchor="end" fill={voteColor(v)} fontSize={13.5} fontWeight={620}>
+                      {voteLabel(v)}
+                    </text>
+                  </g>
+                );
+              })}
+              {tallyU > 0 && (
+                <g opacity={tallyU}>
+                  <rect x={BAL_X - 130} y={BAL_Y0 + 9 * BAL_DY} width={280} height={50} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+                  <text x={BAL_X + 10} y={BAL_Y0 + 9 * BAL_DY + 22} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={650}>
+                    {`the trap wins: ${trapVotes} of 9 votes`}
                   </text>
-                  <text x={BAL_X + 134} y={BAL_Y0 + i * BAL_DY + 6} textAnchor="end" fill={voteColor(v)} fontSize={12.5} fontWeight={620}>
-                    {voteLabel(v)}
+                  <text x={BAL_X + 10} y={BAL_Y0 + 9 * BAL_DY + 41} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                    {`true correctness rate: ${(VOTE_PICK.p * 100).toFixed(0)}%`}
                   </text>
                 </g>
-              );
-            })}
-            {tallyU > 0 && (
-              <g opacity={tallyU}>
-                <rect x={BAL_X - 130} y={BAL_Y0 + 9 * BAL_DY} width={280} height={46} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-                <text x={BAL_X + 10} y={BAL_Y0 + 9 * BAL_DY + 21} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} fontWeight={650}>
-                  {`the trap wins: ${trapVotes} of 9 votes`}
-                </text>
-                <text x={BAL_X + 10} y={BAL_Y0 + 9 * BAL_DY + 39} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-                  {`true correctness rate of this problem: ${(VOTE_PICK.p * 100).toFixed(0)}%`}
-                </text>
-              </g>
-            )}
-          </g>
+              )}
+            </g>
+          )}
 
           {/* curves */}
           {axU > 0 && (
@@ -100,17 +110,20 @@ function Frame({ s }: { s: SceneState }) {
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(NS.length - 1) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(1.02)} stroke={colors.GRID} />
               {NS.map((n, i) => (
-                <text key={n} x={chX(i)} y={CH_Y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text key={n} x={chX(i)} y={CH_Y0 + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {n}
                 </text>
               ))}
-              <text x={chX(3.5)} y={CH_Y0 + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(3.5)} y={CH_Y0 + 48} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 samples per problem →
               </text>
-              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 8} y={chY(1.02) - 6} textAnchor="start" fill={colors.TEXT} fontSize={14}>
+                accuracy
+              </text>
+              <text x={CH_X0 - 18} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 1.0
               </text>
-              <text x={CH_X0 - 18} y={chY(0.5) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 18} y={chY(0.5) + 4} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 0.5
               </text>
             </g>
@@ -149,19 +162,17 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Best-of-N vs Self-Consistency
           </text>
-          <MathLabel
-            tex={`\\text{vote}: 49\\% \\to ${(FINAL.vote * 100).toFixed(0)}\\%\\ \\text{(plateau)} \\qquad \\text{verified}: \\to ${(FINAL.passN * 100).toFixed(0)}\\%`}
-            x={640}
-            y={340}
-            fontSize={19}
-            color={colors.TEXT}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={336} textAnchor="middle" fill={colors.SECONDARY} fontSize={20}>
+            {`majority vote: ${(CURVE[0].vote * 100).toFixed(0)}% → ${(FINAL.vote * 100).toFixed(0)}% (plateau)`}
+          </text>
+          <text x={640} y={370} textAnchor="middle" fill={colors.POSITIVE} fontSize={20}>
+            {`verified pass at N: ${(CURVE[0].passN * 100).toFixed(0)}% → ${(FINAL.passN * 100).toFixed(0)}%`}
+          </text>
+          <text x={640} y={406} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             the ceiling is set by your checker, not your sampler
           </text>
         </g>

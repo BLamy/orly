@@ -156,8 +156,8 @@ const METER = { x0: 300, lin: 520, log: 130, yS: 330, yT1: 400, yT2: 440, yP: 48
 const linW = (q: number): number => q * METER.lin;
 const logW = (logq: number): number => -logq * METER.log;
 
-// λ dial
-const DIAL = { cx: 1040, cy: 340, r: 72, max: 1.5 } as const;
+// λ dial (enlarged so the weight reads at a glance beside the plot)
+const DIAL = { cx: 1040, cy: 330, r: 100, max: 1.5 } as const;
 const dialAngle = (lam: number): number => Math.PI - (lam / DIAL.max) * Math.PI;
 const dialPt = (lam: number, r: number): { x: number; y: number } => ({
   x: DIAL.cx + r * Math.cos(dialAngle(lam)),
@@ -165,12 +165,12 @@ const dialPt = (lam: number, r: number): { x: number; y: number } => ({
 });
 
 // measured plot (beats 4–8)
-const PLOT = { x0: 210, x1: 740, y0: 495, y1: 270 } as const; // axis labels + source chip end above y 550
+const PLOT = { x0: 210, x1: 740, y0: 545, y1: 260 } as const; // scaled to fill the canvas; x-axis title + chip end above y 620
 const X = scaleLinear().domain([0, 1.5]).range([PLOT.x0, PLOT.x1]);
 const Y = scaleLinear().domain([31.2, 33.1]).range([PLOT.y0, PLOT.y1]);
 
 // gradient schematic (beat 8)
-const GRAD_PANEL = { x: 780, y: 400, w: 400, h: 145, unit: 40 } as const; // right edge 1180, bottom 545
+const GRAD_PANEL = { x: 764, y: 392, w: 436, h: 150, unit: 40 } as const; // clear of the plot's last point (x 740); right edge 1200, bottom 542
 const BADGE_X = 1060;
 
 // recap miniatures (beat 9)
@@ -206,7 +206,7 @@ const SOURCES = [
   'paper Table 11 · λ = 0 is the Strict full baseline, 32.86',
   'paper Table 11 · λ = 1.5 → 31.84 · points are reported values, segments only connect them',
   'paper §3.2 · Tables 11–13 — three pairs, 18 positive-weight settings',
-  'paper §5 · Table 6 — strict-only checkpoints, medians over replay units',
+  'paper §5 · Table 6 — strict-only checkpoints, step 0 → 100: cos 0.030 → −0.021, span/strict norm 0.294 → 1.942',
   'paper §§2–5 · released source: strict and top-k byte-aligned algorithms',
 ] as const;
 
@@ -225,7 +225,8 @@ function narrate(tl: Timeline): ChannelRef<number> {
 // ---------------------------------------------------------------------------
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  // starts framed on the tape (vertical middle), so no beat-0 camera move is needed
+  const cam = tl.channel<CameraState>('cam', { x: 640, y: 260, k: 1 }, cameraInterp);
   const beat = narrate(tl);
   const tapeU = tl.channel('tapeU', 0); // the chapter-1 tape returns (quiet)
   const spanU = tl.channel('spanU', 0); // amber span emphasis
@@ -250,7 +251,6 @@ export function buildScene() {
 
   // BEAT 0 — the skipped span returns
   let t = CAPTION_AT(0);
-  tl.tween(cam, { x: 640, y: 260, k: 1 }, { at: 0, dur: 1.4, ease: ease.move }); // pan the tape to the vertical middle of the frame
   tl.tween(tapeU, 1, { at: t + 0.2, dur: 1.4, ease: ease.draw });
   tl.tween(spanU, 1, { at: t + 2.0, dur: 0.8, ease: ease.pop });
 
@@ -548,20 +548,22 @@ export function Render({ s }: { s: SceneState }) {
         {/* ----------------------------------------- the measured plot (beats 4–8) */}
         <g opacity={clamp01(plot * 3) * keep}>
           <Axes x={X} y={Y} reveal={plot} xTicks={6} yTicks={5} fontSize={15} />
-          <Txt x={PLOT.x0 - 12} y={PLOT.y1 - 24} size={18} fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>Full-average accuracy (%)</Txt>
-          {/* x-axis title on its own row below the tick labels and the Table 11 chip, clear of the data labels */}
-          <Txt x={PLOT.x1} y={PLOT.y0 + 68} size={18} anchor="end" fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>span-MSE weight λ</Txt>
-          <Chip x={PLOT.x0} y={PLOT.y0 + 40} text="Paper Table 11 · Qwen→Llama · step 100" color={INK.mismatch} size={15} anchor="start" opacity={clamp01(plot * 2 - 1)} />
-          <Txt x={PLOT.x0 + 8} y={PLOT.y1 + 2} size={13} fill={INK.muted} opacity={clamp01(plot * 2 - 1)}>
+          {/* title and notes stack in the empty band above the plot, left-aligned, clear of the top gridline */}
+          <Txt x={PLOT.x0 - 12} y={PLOT.y1 - 40} size={18} fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>Full-average accuracy (%)</Txt>
+          <Txt x={PLOT.x0 - 12} y={PLOT.y1 - 20} size={14} fill={INK.muted} opacity={clamp01(plot * 2 - 1)}>
             full = mean of the Math and Code domain means
           </Txt>
+          <Txt x={PLOT.x0 - 12} y={PLOT.y1 - 4} size={14} fill={INK.muted} opacity={tags}>7 reported points · segments only connect them · not monotonic</Txt>
+          {/* x-axis title and source chip share one row below the tick labels, at opposite ends, clear of the caption pill */}
+          <Txt x={PLOT.x1} y={PLOT.y0 + 64} size={18} anchor="end" fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>span-MSE weight λ</Txt>
+          <Chip x={PLOT.x0} y={PLOT.y0 + 44} text="Table 11 · Qwen→Llama · step 100" color={INK.mismatch} size={14} anchor="start" opacity={clamp01(plot * 2 - 1)} />
           {/* baseline */}
           <g opacity={base}>
             <line x1={X(0)} y1={Y(BASELINE)} x2={lerp(X(0), X(1.5), base)} y2={Y(BASELINE)} stroke={INK.strict} strokeWidth={2} strokeDasharray="7 5" />
             <Txt x={X(1.5) + 10} y={Y(BASELINE) + 6} size={18} fill={INK.strict} weight={600} opacity={clamp01(base * 2 - 1)}>
               {`Strict full ${BASELINE.toFixed(2)}`}
             </Txt>
-            <Txt x={X(0) + 12} y={Y(BASELINE) + 22} size={16} mono fill={INK.strict} opacity={clamp01(base * 2 - 1)}>
+            <Txt x={X(0) + 12} y={Y(BASELINE) - 12} size={16} mono fill={INK.strict} opacity={clamp01(base * 2 - 1)}>
               {`λ = 0 · ${BASELINE.toFixed(2)}%`}
             </Txt>
           </g>
@@ -587,7 +589,6 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={X(1.5) + 10} y={Y(FINAL) + 6} size={18} fill={INK.teacher} weight={600}>{`λ = 1.5 → ${FINAL.toFixed(2)}`}</Txt>
               <Txt x={X(1.5) + 10} y={Y(FINAL) + 30} size={16} mono fill={INK.bad}>{`Δ ${DELTA_PP.toFixed(2)} pp vs baseline`}</Txt>
             </g>
-            <Txt x={PLOT.x0 + 8} y={PLOT.y1 + 20} size={13} fill={INK.muted} opacity={tags}>7 reported points · segments only connect them · not monotonic</Txt>
           </g>
         </g>
 
@@ -598,10 +599,10 @@ export function Render({ s }: { s: SceneState }) {
             { text: '18/18 positive weights lower', color: INK.bad },
             { text: 'span log-probability MSE', color: INK.mismatch },
           ].map((bd, i) => (
-            <Chip key={bd.text} x={BADGE_X} y={440 + i * 44} text={bd.text} color={bd.color} size={16}
+            <Chip key={bd.text} x={BADGE_X} y={492 + i * 44} text={bd.text} color={bd.color} size={16}
               opacity={clamp01(badge * 3 - i) * win(b, 7, 7)} />
           ))}
-          <Txt x={BADGE_X} y={566} size={14} anchor="middle" fill={INK.muted} opacity={clamp01(badge * 3 - 2) * win(b, 7, 7)}>
+          <Txt x={1250} y={616} size={14} anchor="end" fill={INK.muted} opacity={clamp01(badge * 3 - 2) * win(b, 7, 7)}>
             Tables 11–13 · not a verdict on every mismatch objective
           </Txt>
         </g>
@@ -611,14 +612,14 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={on(b, 8) * clamp01(grad * 2) * keep}>
             <rect x={GRAD_PANEL.x} y={GRAD_PANEL.y} width={GRAD_PANEL.w} height={GRAD_PANEL.h} rx={8} fill={INK.panel} fillOpacity={0.9} stroke={colors.ink.axis} />
             {/* two short title lines; two compact columns (arrows at the left edge of each, stats to their right) */}
-            <Txt x={GRAD_PANEL.x + 12} y={GRAD_PANEL.y + 18} size={12} mono fill={INK.mismatch}>
+            <Txt x={GRAD_PANEL.x + 12} y={GRAD_PANEL.y + 18} size={14} mono fill={INK.mismatch}>
               schematic from reported summaries · Table 6
             </Txt>
-            <Txt x={GRAD_PANEL.x + 12} y={GRAD_PANEL.y + 34} size={12} mono fill={INK.mismatch}>
-              strict-only checkpoints
+            <Txt x={GRAD_PANEL.x + 12} y={GRAD_PANEL.y + 36} size={14} mono fill={INK.mismatch}>
+              strict-only · ratio ‖span‖/‖strict‖
             </Txt>
             {GRAD.map((g, i) => {
-              const ox = GRAD_PANEL.x + 15 + i * 190; // column origin: 795, 985
+              const ox = GRAD_PANEL.x + 12 + i * 212; // column origin: 776, 988
               const ax = ox + 20; // arrow origin
               const oy = GRAD_PANEL.y + GRAD_PANEL.h - 16;
               const d = gradDir(g.cos);
@@ -631,15 +632,15 @@ export function Render({ s }: { s: SceneState }) {
               const labelLeft = endY < GRAD_PANEL.y + 100;
               return (
                 <g key={g.step}>
-                  <Txt x={ox + 36} y={GRAD_PANEL.y + 58} size={14} mono fill={INK.text}>{`step ${g.step}`}</Txt>
-                  <Txt x={ox + 36} y={GRAD_PANEL.y + 76} size={12} mono fill={INK.muted}>{`cos ${g.cos.toFixed(3)}`}</Txt>
-                  <Txt x={ox + 36} y={GRAD_PANEL.y + 92} size={12} mono fill={INK.muted}>{`‖span‖/‖strict‖ ${g.ratio.toFixed(3)}`}</Txt>
+                  <Txt x={ox + 36} y={GRAD_PANEL.y + 60} size={14} mono fill={INK.text}>{`step ${g.step}`}</Txt>
+                  <Txt x={ox + 36} y={GRAD_PANEL.y + 80} size={14} mono fill={INK.muted}>{`cos ${g.cos.toFixed(3)}`}</Txt>
+                  <Txt x={ox + 36} y={GRAD_PANEL.y + 100} size={14} mono fill={INK.muted}>{`ratio ${g.ratio.toFixed(3)}`}</Txt>
                   <line x1={ax} y1={oy} x2={ax + strictL} y2={oy} stroke={INK.strict} strokeWidth={3} strokeLinecap="round" />
                   <polygon points={`${ax + strictL},${oy} ${ax + strictL - 9},${oy - 5} ${ax + strictL - 9},${oy + 5}`} fill={INK.strict} />
                   <line x1={ax} y1={oy} x2={endX} y2={endY} stroke={INK.mismatch} strokeWidth={3} strokeLinecap="round" />
                   <circle cx={endX} cy={endY} r={4} fill={INK.mismatch} />
-                  <Txt x={ax + strictL + 14} y={oy + 5} size={13} fill={INK.strict}>strict</Txt>
-                  <Txt x={labelLeft ? endX - 10 : endX + 10} y={endY + 4} size={13} fill={INK.mismatch} anchor={labelLeft ? 'end' : 'start'}>span</Txt>
+                  <Txt x={ax + strictL + 14} y={oy + 5} size={14} fill={INK.strict}>strict</Txt>
+                  <Txt x={labelLeft ? endX - 10 : endX + 10} y={endY + 4} size={14} fill={INK.mismatch} anchor={labelLeft ? 'end' : 'start'}>span</Txt>
                 </g>
               );
             })}

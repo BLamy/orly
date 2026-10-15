@@ -200,7 +200,7 @@ const SOURCES = [
   'reverse_kl_div.py — torch.log_softmax(…, dtype=torch.float32) on the reduced rows',
   'reverse_kl_div.py `compute_reverse_kl_div` — (student_probs * (student_log_probs − teacher_log_probs)).sum(-1)',
   'paper §4 · Table 5 — probability-mass probe before distillation',
-  'paper Table 5 — k = 16, mean over scorable strict positions, three pairs',
+  'paper §4 · Table 5 — k = 16, mean over scorable strict positions, three pairs',
   'paper Table 2 — Qwen2.5-7B-Instruct → Llama-3.2-3B-Instruct, full-average accuracy (%)',
   'run/topk_byte_align_ctkd/qwen25_7b_to_llama32_3b_topk_byte_align_ctkd.sh · ctkd_topk default 128',
 ] as const;
@@ -417,6 +417,11 @@ export function Render({ s }: { s: SceneState }) {
           );
         })()}
 
+        {/* beat 0 — names the strict position the caption describes (fades as beat 1 starts) */}
+        <Txt x={640} y={206} size={18} anchor="middle" fill={INK.text} opacity={win(b, 0, 0) * clamp01(comb * 3)}>
+          strict position: both models predict the next token
+        </Txt>
+
         {/* beat 1–3 code chips */}
         <Chip x={COMB.x0} y={COMB.yS - COMB.hMax - 42} text="student_overlap_token_ids" color={INK.student} size={16} anchor="start" opacity={win(b, 1, 3) * mask} />
         <Chip x={COMB.x0} y={COMB.yT + COMB.hMax + 60} text="teacher_overlap_token_ids" color={INK.teacher} size={16} anchor="start" opacity={win(b, 1, 3) * mask} />
@@ -435,10 +440,10 @@ export function Render({ s }: { s: SceneState }) {
         <Txt x={COMB.x0} y={STRIP_Y + 30} size={16} fill={INK.muted} opacity={win(b, 4, 4) * clamp01(norm * 3)}>
           K = 16 kept entries · each row is rescaled so its kept values add up to one
         </Txt>
-        <Txt x={COMB.x1 + 14} y={COMB.yS - 10} size={20} mono fill={INK.student} opacity={on(b, 4) * clamp01(norm * 2 - 1) * (1 - fade)}>
+        <Txt x={COMB.x1 + 14} y={COMB.yS - 10} size={20} mono fill={INK.student} opacity={on(b, 4) * clamp01(norm * 2 - 1) * (1 - fade) * combDim}>
           {`Σ = ${sumS.toFixed(3)}`}
         </Txt>
-        <Txt x={COMB.x1 + 14} y={COMB.yT + 24} size={20} mono fill={INK.teacher} opacity={on(b, 4) * clamp01(norm * 2 - 1) * (1 - fade)}>
+        <Txt x={COMB.x1 + 14} y={COMB.yT + 24} size={20} mono fill={INK.teacher} opacity={on(b, 4) * clamp01(norm * 2 - 1) * (1 - fade) * combDim}>
           {`Σ = ${sumT.toFixed(3)}`}
         </Txt>
 
@@ -460,7 +465,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ------------------------------ paper-data inset (beats 6–9) */}
         {inset > 0.003 && (
           <g opacity={insetO}>
-            <rect x={INSET.x} y={insetY} width={INSET.w} height={INSET.h} rx={10} fill={INK.panel} fillOpacity={0.96} stroke={colors.ink.axis} />
+            <rect x={INSET.x} y={insetY} width={INSET.w} height={INSET.h} rx={10} fill={INK.panel} fillOpacity={1} stroke={colors.ink.axis} />
             <Txt x={INSET.x + 18} y={insetY + 24} size={16} mono fill={INK.mismatch} opacity={win(b, 6, 7)}>
               PAPER DATA · Table 5 · before distillation · raw full-vocabulary mass
             </Txt>
@@ -501,7 +506,7 @@ export function Render({ s }: { s: SceneState }) {
               {[
                 { v: ACC_BASE, label: 'Base', color: INK.muted, dy: -22 },
                 { v: ACC_TOP16, label: 'top-16', color: INK.student, dy: -22 },
-                { v: ACC_STRICT_FULL, label: 'Strict full', color: INK.strict, dy: -46 },
+                { v: ACC_STRICT_FULL, label: 'Strict full', color: INK.strict, dy: -52 },
               ].map((m) => (
                 <g key={m.label} opacity={clamp01(tab2 * 1.5 - (m.v - AXIS2.lo) / (AXIS2.hi - AXIS2.lo))}>
                   <circle cx={axis2X(m.v)} cy={insetY + 110} r={7} fill={m.color} />

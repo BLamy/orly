@@ -36,7 +36,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 const META_Y = 150;
 const META_X0 = 300;
-const CELL_W = 76;
+const CELL_W = 80;
 const CELL_H = 46;
 const cellX = (i: number): number => META_X0 + i * CELL_W;
 
@@ -67,8 +67,8 @@ const AGENT_B = { x: 1080, y: 200 } as const;
 const TREE_P = { x: 860, y: 420, w: 250, h: 150 } as const;
 
 // both framings keep agent A, the tape labels and agent B inside the stage
-const CAM_FILE: CameraState = { x: 640, y: 270, k: 1.12 };
-const CAM_WATCH: CameraState = { x: 660, y: 300, k: 1.12 };
+const CAM_FILE: CameraState = { x: 620, y: 270, k: 1.12 };
+const CAM_WATCH: CameraState = { x: 620, y: 300, k: 1.12 };
 const CAM_TOWER: CameraState = { x: 640, y: 380, k: 1.0 };
 
 // the tower (finale) — bottom-up
@@ -82,6 +82,27 @@ const TOWER = [
 const SLAB_W = 560;
 const SLAB_H = 56;
 const slabY = (i: number): number => 556 - i * 68;
+
+// the watch subscription curve: from agent B back to the end of the metadata tape
+const WATCH_CURVE = [
+  [AGENT_B.x - 6, AGENT_B.y - 44],
+  [AGENT_B.x - 60, META_Y + 30],
+  [cellX(META_EVENTS.length) + 60, META_Y + 20],
+  [cellX(META_EVENTS.length) + 6, META_Y],
+] as const;
+const bezierAt = (p: readonly (readonly [number, number])[], u: number): [number, number] => {
+  const q = 1 - u;
+  const a = q * q * q;
+  const b = 3 * q * q * u;
+  const c = 3 * q * u * u;
+  const d = u * u * u;
+  return [
+    a * p[0][0] + b * p[1][0] + c * p[2][0] + d * p[3][0],
+    a * p[0][1] + b * p[1][1] + c * p[2][1] + d * p[3][1],
+  ];
+};
+// right end of notes.md's content rail: where the stale write hits the tape
+const BOUNCE = { x: 524, y: 276 } as const;
 
 // ---------------------------------------------------------------------------
 // Timeline — ~66s, 10 captions.
@@ -169,9 +190,9 @@ export function buildScene() {
     dur: 3.4,
     text: "Now step back, because you've seen the whole machine.",
   });
-  // the whole machine stays on screen through the "step back" line, then fades
-  tl.tween(quietU, 1, { at: 43.4, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, CAM_TOWER, { at: 43.4, dur: 1.6, ease: ease.move });
+  // the machine fades and the camera pulls back while the "step back" line plays
+  tl.tween(quietU, 1, { at: 41.4, dur: 1.4, ease: ease.enter });
+  tl.tween(cam, CAM_TOWER, { at: 41.6, dur: 1.6, ease: ease.move });
 
   // — beat 8 · the tower —
   tl.caption({
@@ -239,11 +260,19 @@ export function Render({ s }: { s: SceneState }) {
   const sweepU = s.get(scene.sweepU);
   const endU = s.get(scene.endU);
 
-  const fsOp = railU * (1 - quietU * 0.92); // whole filesystem world fades for the tower
+  // the filesystem world dims for the tower, leaving a ghost that clears once the first slab lands
+  const fsOp = railU * (1 - quietU * 0.92) * (1 - clamp01(towerU));
   const foldCount = Math.floor(metaN);
   // conflict packets: A's write (wins) and B's stale write (bounces)
   const confOut = clamp01(confU * 1.8);
   const confBack = clamp01(confU * 1.8 - 1);
+  // the rejection label stays up until the retry starts, then clears
+  const failOp = clamp01((confU * 1.8 - 1.1) * 3) * (1 - clamp01((retryU - 0.3) * 2));
+  // B's stale write chip: out to the notes.md rail, then rebounds halfway
+  const staleF = clamp01(confOut - confBack * 0.5);
+  const staleX = AGENT_B.x - 60 + (BOUNCE.x + 72 - (AGENT_B.x - 60)) * staleF;
+  const staleY = AGENT_B.y - 20 + (BOUNCE.y - (AGENT_B.y - 20)) * staleF;
+  const [dotX, dotY] = bezierAt(WATCH_CURVE, 1 - chgU);
 
   return (
     <>
@@ -260,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={META_X0 - 14} y={META_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               /_metadata
             </text>
-            <line x1={META_X0 - 8} y1={META_Y + CELL_H / 2 + 8} x2={META_X0 + (cellX(META_EVENTS.length) - META_X0 + 24) * railU} y2={META_Y + CELL_H / 2 + 8} stroke={colors.GRID} strokeWidth={2} />
+            <line x1={META_X0 - 8} y1={META_Y + CELL_H / 2 + 8} x2={META_X0 + (cellX(META_EVENTS.length) - META_X0 + 24) * railU} y2={META_Y + CELL_H / 2 + 8} stroke={colors.MUTED} strokeOpacity={0.6} strokeWidth={2} />
             {META_EVENTS.map((e, i) => {
               const u = clamp01(metaN - i);
               if (u <= 0.01) return null;
@@ -270,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={cellX(i) + (CELL_W - 8) / 2} y={META_Y - 2} textAnchor="middle" fill={e.color} fontSize={14} fontFamily={MONO}>
                     {e.label}
                   </text>
-                  <text x={cellX(i) + (CELL_W - 8) / 2} y={META_Y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                  <text x={cellX(i) + (CELL_W - 8) / 2} y={META_Y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {e.path.split('/').pop()}
                   </text>
                 </g>
@@ -284,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
               const n = 6 * u;
               return (
                 <g key={rail.id} opacity={clamp01(u * 3)}>
-                  <text x={META_X0 - 14} y={rail.y + 4} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                  <text x={META_X0 - 14} y={rail.y + 4} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {rail.id}
                   </text>
                   <line x1={META_X0 - 8} y1={rail.y + 14} x2={META_X0 + 6 * 34 + 16} y2={rail.y + 14} stroke={colors.GRID} strokeWidth={1.5} />
@@ -303,8 +332,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* createFile call chip */}
             {cont1U > 0.05 && cont1U < 1 && (
               <g opacity={Math.sin(Math.PI * cont1U)}>
-                <rect x={130} y={330} width={340} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-                <text x={300} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                <rect x={110} y={330} width={380} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
+                <text x={300} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
                   fs.createFile("/notes.md", "# My Notes")
                 </text>
               </g>
@@ -334,8 +363,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* stat chip */}
             {statU > 0.01 && (
               <g opacity={statU}>
-                <rect x={TREE_P.x - 150} y={TREE_P.y + TREE_P.h / 2 + 10} width={300} height={30} rx={8} fill={colors.BG} stroke={colors.TEAL} />
-                <text x={TREE_P.x} y={TREE_P.y + TREE_P.h / 2 + 30} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
+                <rect x={TREE_P.x - 170} y={TREE_P.y + TREE_P.h / 2 + 10} width={340} height={30} rx={8} fill={colors.BG} stroke={colors.TEAL} />
+                <text x={TREE_P.x} y={TREE_P.y + TREE_P.h / 2 + 30} textAnchor="middle" fill={colors.TEAL} fontSize={14} fontFamily={MONO}>
                   fs.stat("/notes.md") → from the fold
                 </text>
               </g>
@@ -344,15 +373,15 @@ export function Render({ s }: { s: SceneState }) {
             {/* watch subscription + event queue at B */}
             {watchU > 0.01 && (
               <g opacity={watchU}>
-                <path d={`M${AGENT_B.x - 6} ${AGENT_B.y - 44} C ${AGENT_B.x - 60} ${META_Y + 30}, ${cellX(META_EVENTS.length) + 60} ${META_Y + 20}, ${cellX(META_EVENTS.length) + 6} ${META_Y}`} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="3 5" />
-                <text x={1000} y={300} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+                <path d={`M${WATCH_CURVE[0][0]} ${WATCH_CURVE[0][1]} C ${WATCH_CURVE[1][0]} ${WATCH_CURVE[1][1]}, ${WATCH_CURVE[2][0]} ${WATCH_CURVE[2][1]}, ${WATCH_CURVE[3][0]} ${WATCH_CURVE[3][1]}`} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="3 5" />
+                <text x={1000} y={300} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                   watch({'{ recursive: true }'})
                 </text>
                 {/* received events queue */}
                 {META_EVENTS.slice(0, Math.min(foldCount, 4)).map((e, i) => (
                   <g key={i} opacity={win(watchU, 4, i, 1.5)}>
-                    <rect x={AGENT_B.x - 68} y={AGENT_B.y + 50 + i * 30} width={136} height={24} rx={6} fill={colors.BG} stroke={e.color} strokeOpacity={0.8} />
-                    <text x={AGENT_B.x} y={AGENT_B.y + 67 + i * 30} textAnchor="middle" fill={e.color} fontSize={13} fontFamily={MONO}>
+                    <rect x={AGENT_B.x - 75} y={AGENT_B.y + 50 + i * 30} width={150} height={24} rx={6} fill={colors.BG} stroke={e.color} strokeOpacity={0.8} />
+                    <text x={AGENT_B.x} y={AGENT_B.y + 67 + i * 30} textAnchor="middle" fill={e.color} fontSize={14} fontFamily={MONO}>
                       {e.label} {e.path.split('/').pop()}
                     </text>
                   </g>
@@ -361,28 +390,27 @@ export function Render({ s }: { s: SceneState }) {
             )}
             {/* the change event flying to B (beat 4) */}
             {chgU > 0.05 && chgU < 0.95 && (
-              <circle cx={cellX(3) + 20 + (AGENT_B.x - 60 - cellX(3) - 20) * chgU} cy={META_Y - 40 - Math.sin(Math.PI * chgU) * 40 + 40 * chgU} r={7} fill={colors.WARM} opacity={0.95} />
+              <circle cx={dotX} cy={dotY} r={7} fill={colors.WARM} opacity={0.95} />
             )}
 
-            {/* conflict: two writes converge on /notes.md */}
+            {/* conflict: A's write lands on the metadata tape; B's stale write hits notes.md's content tape */}
             {confU > 0.02 && (
               <g>
                 {/* A's winning write */}
                 <circle cx={AGENT_A.x + 50 + (cellX(4) - AGENT_A.x - 50) * confOut} cy={AGENT_A.y - 30 - Math.sin(Math.PI * confOut) * 50} r={7.5} fill={colors.POSITIVE} opacity={confOut < 1 ? 0.95 : 0} />
-                {/* B's stale write: reaches the tape, bounces back */}
-                <circle
-                  cx={AGENT_B.x - 50 - (AGENT_B.x - 50 - cellX(4) - 60) * (confOut - confBack * 0.5)}
-                  cy={AGENT_B.y - 30 - Math.sin(Math.PI * clamp01(confOut - confBack * 0.5)) * 40}
-                  r={7.5}
-                  fill={colors.BG}
-                  stroke={colors.NEGATIVE}
-                  strokeWidth={2}
-                  opacity={confU < 0.98 ? 0.95 : 0}
-                />
-                {confBack > 0.1 && confU < 0.98 && (
-                  <g opacity={Math.sin(Math.PI * confBack)}>
-                    <rect x={cellX(4) + 40} y={META_Y - 96} width={216} height={28} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                    <text x={cellX(4) + 148} y={META_Y - 77} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+                {/* B's stale write: a chip flies to the rail, bounces back */}
+                <g opacity={confU < 0.9 ? 1 : clamp01((0.98 - confU) / 0.08)}>
+                  <rect x={staleX - 70} y={staleY - 13} width={140} height={26} rx={6} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+                  <text x={staleX} y={staleY + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
+                    change notes.md
+                  </text>
+                </g>
+                {/* the rejection, pinned to the rail where the write bounced */}
+                {failOp > 0.01 && (
+                  <g opacity={failOp}>
+                    <path d={`M${BOUNCE.x} ${BOUNCE.y + 4} L${BOUNCE.x + 16} ${BOUNCE.y + 16}`} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+                    <rect x={BOUNCE.x + 12} y={BOUNCE.y + 16} width={236} height={28} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+                    <text x={BOUNCE.x + 12 + 118} y={BOUNCE.y + 35} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
                       PreconditionFailedError
                     </text>
                   </g>

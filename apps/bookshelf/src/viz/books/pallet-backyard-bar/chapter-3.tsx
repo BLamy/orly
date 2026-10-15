@@ -26,7 +26,9 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 // ---------------------------------------------------------------------------
-// Same plan geometry as chapter two. 1 in = 6.4 px, y grows toward the customer.
+// Same plan scale as chapter two. 1 in = 6.4 px, y grows toward the customer.
+// The U is 57 in outside to outside: a 47 in front pallet sits between two side
+// pallets, each 5 in thick. Add 4 in of overhang on each end and you get 65.
 // ---------------------------------------------------------------------------
 
 const PX = 6.4;
@@ -34,6 +36,9 @@ const FRONT_LEN = 47;
 const THICK = 5;
 const SIDE_CUT = 24;
 const FRONT_Y = SIDE_CUT;
+const BAR_X0 = THICK; // the front pallet starts just inside the left side pallet
+const BAR_X1 = THICK + FRONT_LEN; // and ends just inside the right one
+const BAR_W = BAR_X1 + THICK; // outside to outside of the U
 
 const TOP_LEN = 65; // in — the shelf that becomes the front top
 const TOP_DEEP = 17.5; // in
@@ -41,35 +46,44 @@ const SIDE_TOP_W = 9.5; // in — the purchased board, cut in half
 const OVER_SIDE = 4; // in — overhang past each side
 const OVER_FRONT = 8; // in — overhang past the bar face
 
-const ORIGIN = { x: 640 - (FRONT_LEN * PX) / 2, y: 300 };
+const ORIGIN = { x: 640 - (BAR_W * PX) / 2, y: 300 };
 const X = (x: number): number => ORIGIN.x + x * PX;
 const Y = (y: number): number => ORIGIN.y + y * PX;
 
 const WOOD = '#7d5a34';
 const WOOD_LIT = '#a3763f';
 const TOP_WOOD = '#b98346';
+const SEAM = '#2a1f13';
 
-// The 65-inch derivation, laid out left to right across the face.
+// Where the purchased board waits, off to the right, and where it sits.
+const BOARD_X = BAR_W + 12;
+const BOARD_Y = -14;
+
+// The 65-inch derivation, laid out left to right under the shelf:
+// 4 + 5 + 47 + 5 + 4 = 65, which the caption then says as 47 + 10 + 8.
 const TICKS: { from: number; to: number; label: string; color: string }[] = [
   { from: -OVER_SIDE, to: 0, label: '4', color: colors.WARM },
   { from: 0, to: THICK, label: '5', color: colors.SECONDARY },
-  { from: THICK, to: FRONT_LEN - THICK, label: '37', color: colors.ACCENT },
-  { from: FRONT_LEN - THICK, to: FRONT_LEN, label: '5', color: colors.SECONDARY },
-  { from: FRONT_LEN, to: FRONT_LEN + OVER_SIDE, label: '4', color: colors.WARM },
+  { from: BAR_X0, to: BAR_X1, label: '47', color: colors.ACCENT },
+  { from: BAR_X1, to: BAR_W, label: '5', color: colors.SECONDARY },
+  { from: BAR_W, to: BAR_W + OVER_SIDE, label: '4', color: colors.WARM },
 ];
 
 // Where screws can go: through the top into a stringer (solid) or into a gap.
 const SCREW_TARGETS = [
-  { x: THICK / 2, good: true },
-  { x: FRONT_LEN / 2, good: true },
-  { x: FRONT_LEN - THICK / 2, good: true },
+  { x: BAR_X0 + THICK / 2, good: true },
+  { x: BAR_X0 + FRONT_LEN / 2, good: true },
+  { x: BAR_X1 - THICK / 2, good: true },
 ];
-const BAD_SCREW = { x: FRONT_LEN * 0.3 };
+const BAD_SCREW = { x: BAR_X0 + FRONT_LEN * 0.3 };
 
 const CAM_WIDE: CameraState = { x: 640, y: 390, k: 1.2 };
 const CAM_FACE: CameraState = { x: 640, y: 400, k: 1.32 };
 const CAM_XRAY: CameraState = { x: 560, y: 380, k: 1.7 };
 const CAM_RACK: CameraState = { x: 640, y: 360, k: 1.3 };
+
+// The shelf turns see-through in the x-ray beat.
+const XRAY_ALPHA = 0.25;
 
 export interface Scene {
   tl: Timeline;
@@ -242,6 +256,35 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
+// A small label on a solid chip, so it stays readable over the see-through shelf.
+function Pill({
+  x,
+  y,
+  text,
+  color,
+  opacity,
+  align = 'middle',
+}: {
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  opacity: number;
+  align?: 'middle' | 'end';
+}) {
+  if (opacity <= 0) return null;
+  const w = text.length * 8 + 16;
+  const left = align === 'end' ? x - w : x - w / 2;
+  return (
+    <g opacity={opacity}>
+      <rect x={left} y={y - 15} width={w} height={21} rx={4} fill={colors.BG} fillOpacity={0.88} />
+      <text x={left + w / 2} y={y} textAnchor="middle" fill={color} fontSize={14} fontWeight={600}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const carcassU = s.get(scene.carcassU);
@@ -265,11 +308,15 @@ export function Render({ s }: { s: SceneState }) {
   // the top floats down from above as topU goes 0 -> 1
   const drop = (1 - topU) * 74;
   const topY = Y(FRONT_Y + THICK - TOP_DEEP + OVER_FRONT);
-  const topOpacity = topU * lerp(1, 0.38, xrayU);
+  const topOpacity = topU * lerp(1, XRAY_ALPHA, xrayU);
+  // side tops lie on the wings, above the front top
+  const sideTopY = Y(FRONT_Y - SIDE_CUT);
+  // the derivation ruler sits under the finished shelf, clear of it
+  const rulerY = Y(FRONT_Y + THICK + OVER_FRONT) + 28;
 
   const wings = [
     { x: 0, sign: -1 },
-    { x: FRONT_LEN - THICK, sign: 1 },
+    { x: BAR_X1, sign: 1 },
   ];
 
   return (
@@ -291,7 +338,7 @@ export function Render({ s }: { s: SceneState }) {
                     height={SIDE_CUT * PX}
                     rx={2}
                     fill={WOOD}
-                    stroke="#2a1f13"
+                    stroke={SEAM}
                     strokeWidth={1.2}
                   />
                   {Array.from({ length: 3 }, (_, k) => (
@@ -301,7 +348,7 @@ export function Render({ s }: { s: SceneState }) {
                       y1={Y(FRONT_Y - SIDE_CUT + ((k + 1) * SIDE_CUT) / 4)}
                       x2={X(w.x + THICK)}
                       y2={Y(FRONT_Y - SIDE_CUT + ((k + 1) * SIDE_CUT) / 4)}
-                      stroke="#2a1f13"
+                      stroke={SEAM}
                       strokeWidth={0.9}
                       opacity={0.6}
                     />
@@ -311,11 +358,11 @@ export function Render({ s }: { s: SceneState }) {
             })}
 
             {/* the front pallet, with its gaps showing for the x-ray beat */}
-            <rect x={X(0)} y={Y(FRONT_Y)} width={FRONT_LEN * PX} height={THICK * PX} rx={2} fill={WOOD_LIT} stroke="#2a1f13" strokeWidth={1.2} />
+            <rect x={X(BAR_X0)} y={Y(FRONT_Y)} width={FRONT_LEN * PX} height={THICK * PX} rx={2} fill={WOOD_LIT} stroke={SEAM} strokeWidth={1.2} />
             {Array.from({ length: 7 }, (_, i) => {
-              const f = ((i + 1) / 8) * FRONT_LEN;
+              const f = BAR_X0 + ((i + 1) / 8) * FRONT_LEN;
               return (
-                <line key={i} x1={X(f)} y1={Y(FRONT_Y)} x2={X(f)} y2={Y(FRONT_Y + THICK)} stroke="#2a1f13" strokeWidth={0.9} opacity={0.6} />
+                <line key={i} x1={X(f)} y1={Y(FRONT_Y)} x2={X(f)} y2={Y(FRONT_Y + THICK)} stroke={SEAM} strokeWidth={0.9} opacity={0.6} />
               );
             })}
             {/* stringers — the solid wood a screw wants to find */}
@@ -328,33 +375,43 @@ export function Render({ s }: { s: SceneState }) {
                   width={14}
                   height={THICK * PX}
                   fill={colors.POSITIVE}
-                  opacity={0.28 * xrayU}
+                  opacity={0.35 * xrayU}
                 />
               ))}
-            {xrayU > 0 && (
-              <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y + THICK) + 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600} opacity={xrayU * (1 - lockU)}>
-                stringer: solid wood
-              </text>
-            )}
           </g>
 
-          {/* ---- the purchased board, cut in half ---- */}
+          {/* ---- the purchased board, cut down the middle ---- */}
           {boardU > 0 && splitU < 1 && (
             <g opacity={boardU * (1 - splitU * 0.85)}>
-              {[0, 1].map((i) => (
-                <rect
-                  key={i}
-                  x={X(FRONT_LEN + 16) + i * splitU * 26}
-                  y={Y(-14) + i * (SIDE_TOP_W * PX + splitU * 14)}
-                  width={TOP_DEEP * PX}
-                  height={SIDE_TOP_W * PX}
-                  rx={2}
-                  fill={TOP_WOOD}
-                  stroke="#2a1f13"
-                />
-              ))}
-              <text x={X(FRONT_LEN + 16)} y={Y(-19)} fill={colors.MUTED} fontSize={14}>
-                the one board bought · cut in half
+              {[0, 1].map((i) => {
+                const dx = i === 0 ? -splitU * 10 : splitU * 10;
+                return (
+                  <rect
+                    key={i}
+                    x={X(BOARD_X) + i * SIDE_TOP_W * PX + dx}
+                    y={Y(BOARD_Y)}
+                    width={SIDE_TOP_W * PX}
+                    height={TOP_DEEP * PX}
+                    rx={2}
+                    fill={TOP_WOOD}
+                    stroke={SEAM}
+                  />
+                );
+              })}
+              <line
+                x1={X(BOARD_X) + SIDE_TOP_W * PX}
+                y1={Y(BOARD_Y) - 4}
+                x2={X(BOARD_X) + SIDE_TOP_W * PX}
+                y2={Y(BOARD_Y) + TOP_DEEP * PX + 4}
+                stroke={colors.WARM}
+                strokeWidth={2}
+                strokeDasharray="6 5"
+              />
+              <text x={X(BOARD_X)} y={Y(BOARD_Y) - 14} fill={colors.TEXT} fontSize={14}>
+                the one board · cut down the middle
+              </text>
+              <text x={X(BOARD_X) + SIDE_TOP_W * PX} y={Y(BOARD_Y) + TOP_DEEP * PX + 22} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                two pieces, 9.5 × 17.5 in
               </text>
             </g>
           )}
@@ -363,19 +420,19 @@ export function Render({ s }: { s: SceneState }) {
           {wings.map((w, i) => {
             const u = clamp01(sideTopU * 2 - i * 0.3);
             if (u <= 0) return null;
-            const x0 = w.sign < 0 ? X(-OVER_SIDE) : X(FRONT_LEN + OVER_SIDE - SIDE_TOP_W);
+            const x0 = w.sign < 0 ? X(-OVER_SIDE) : X(BAR_W + OVER_SIDE - SIDE_TOP_W);
             return (
               <rect
                 key={i}
                 x={x0}
-                y={topY - (1 - u) * 60}
+                y={sideTopY}
                 width={SIDE_TOP_W * PX}
                 height={TOP_DEEP * PX}
                 rx={2}
                 fill={TOP_WOOD}
-                stroke="#2a1f13"
+                stroke={SEAM}
                 strokeWidth={1.2}
-                opacity={u * lerp(1, 0.38, xrayU)}
+                opacity={u * lerp(1, XRAY_ALPHA, xrayU)}
               />
             );
           })}
@@ -390,74 +447,69 @@ export function Render({ s }: { s: SceneState }) {
                 height={TOP_DEEP * PX}
                 rx={3}
                 fill={TOP_WOOD}
-                stroke="#2a1f13"
+                stroke={SEAM}
                 strokeWidth={1.4}
               />
-              <text x={X(FRONT_LEN / 2)} y={topY - drop + TOP_DEEP * PX * 0.55} textAnchor="middle" fill="#2a1f13" fontSize={14} fontWeight={700} opacity={0.75 * (1 - xrayU)}>
+              <text x={X(BAR_W / 2)} y={topY - drop + TOP_DEEP * PX * 0.2} textAnchor="middle" fill={SEAM} fontSize={14} fontWeight={700} opacity={0.9 * (1 - xrayU)}>
                 65 × 17.5 in shelf
               </text>
             </g>
           )}
 
-          {/* ---- the 65-inch derivation ---- */}
+          {/* the stringer label sits above the see-through top */}
+          <Pill
+            x={X(BAR_X0 + FRONT_LEN / 2)}
+            y={Y(FRONT_Y + THICK) + 20}
+            text="stringer: solid wood"
+            color={colors.POSITIVE}
+            opacity={xrayU * (1 - lockU)}
+          />
+
+          {/* ---- the 65-inch derivation, under the shelf ---- */}
           {tickU > 0 && (
-            <g opacity={tickU}>
+            <g opacity={tickU * (1 - kneeU)}>
               {TICKS.map((t, i) => {
                 const u = clamp01(tickU * 5 - i * 0.8);
                 if (u <= 0) return null;
-                const yy = Y(FRONT_Y + THICK) + 40;
                 return (
                   <g key={i} opacity={u}>
-                    <line x1={X(t.from)} y1={yy} x2={X(lerp(t.from, t.to, u))} y2={yy} stroke={t.color} strokeWidth={2.4} />
-                    <line x1={X(t.from)} y1={yy - 6} x2={X(t.from)} y2={yy + 6} stroke={t.color} strokeWidth={2} />
-                    <line x1={X(t.to)} y1={yy - 6} x2={X(t.to)} y2={yy + 6} stroke={t.color} strokeWidth={2} opacity={u} />
-                    <text x={X((t.from + t.to) / 2)} y={yy + 24} textAnchor="middle" fill={t.color} fontSize={14} fontWeight={700}>
+                    <line x1={X(t.from)} y1={rulerY} x2={X(lerp(t.from, t.to, u))} y2={rulerY} stroke={t.color} strokeWidth={2.4} />
+                    <line x1={X(t.from)} y1={rulerY - 6} x2={X(t.from)} y2={rulerY + 6} stroke={t.color} strokeWidth={2} />
+                    <line x1={X(t.to)} y1={rulerY - 6} x2={X(t.to)} y2={rulerY + 6} stroke={t.color} strokeWidth={2} opacity={u} />
+                    <text x={X((t.from + t.to) / 2)} y={rulerY + 24} textAnchor="middle" fill={t.color} fontSize={14} fontWeight={700}>
                       {t.label}
                     </text>
                   </g>
                 );
               })}
               {sumU > 0 && (
-                <text
-                  x={X(FRONT_LEN / 2)}
-                  y={Y(FRONT_Y + THICK) + 96}
-                  textAnchor="middle"
-                  fill={colors.POSITIVE}
-                  fontSize={22}
-                  fontWeight={700}
-                  opacity={sumU * (1 - kneeU)}
-                >
-                  4 + 5 + 37 + 5 + 4 = 65 in
+                <text x={X(BAR_W / 2)} y={rulerY + 58} textAnchor="middle" fill={colors.POSITIVE} fontSize={22} fontWeight={700} opacity={sumU}>
+                  47 + 10 + 8 = 65 in
                 </text>
               )}
             </g>
           )}
 
-          {/* ---- the 8-inch front overhang, and what it is for ---- */}
+          {/* ---- the 8-inch front overhang, measured beside the shelf edge ---- */}
           {overFrontU > 0 && (
             <g opacity={overFrontU}>
-              <line
-                x1={X(FRONT_LEN + 8)}
-                y1={Y(FRONT_Y + THICK)}
-                x2={X(FRONT_LEN + 8)}
-                y2={Y(FRONT_Y + THICK) + OVER_FRONT * PX * overFrontU}
-                stroke={colors.WARM}
-                strokeWidth={2.4}
-              />
-              <text x={X(FRONT_LEN + 11)} y={Y(FRONT_Y + THICK) + OVER_FRONT * PX * 0.7} fill={colors.WARM} fontSize={15} fontWeight={700}>
+              <line x1={X(BAR_W + 6)} y1={Y(FRONT_Y + THICK)} x2={X(BAR_W + 6)} y2={Y(FRONT_Y + THICK) + OVER_FRONT * PX * overFrontU} stroke={colors.WARM} strokeWidth={2.4} />
+              <line x1={X(BAR_W + 4.5)} y1={Y(FRONT_Y + THICK)} x2={X(BAR_W + 7.5)} y2={Y(FRONT_Y + THICK)} stroke={colors.WARM} strokeWidth={2} />
+              <line x1={X(BAR_W + 4.5)} y1={Y(FRONT_Y + THICK + OVER_FRONT)} x2={X(BAR_W + 7.5)} y2={Y(FRONT_Y + THICK + OVER_FRONT)} stroke={colors.WARM} strokeWidth={2} />
+              <text x={X(BAR_W + 9)} y={Y(FRONT_Y + THICK + OVER_FRONT / 2) + 5} fill={colors.WARM} fontSize={15} fontWeight={700}>
                 8 in
               </text>
             </g>
           )}
           {kneeU > 0 && (
             <g opacity={kneeU}>
-              {[FRONT_LEN * 0.3, FRONT_LEN * 0.7].map((x, i) => (
+              {[BAR_X0 + FRONT_LEN * 0.3, BAR_X0 + FRONT_LEN * 0.7].map((x, i) => (
                 <g key={i}>
                   <circle cx={X(x)} cy={Y(FRONT_Y + THICK + OVER_FRONT + 7)} r={13} fill="none" stroke={colors.SECONDARY} strokeWidth={2.2} />
                   <line x1={X(x)} y1={Y(FRONT_Y + THICK + OVER_FRONT + 7) - 13} x2={X(x)} y2={Y(FRONT_Y + THICK) + 4} stroke={colors.SECONDARY} strokeWidth={2.2} strokeDasharray="4 4" />
                 </g>
               ))}
-              <text x={X(FRONT_LEN * 0.7) + 24} y={Y(FRONT_Y + THICK + OVER_FRONT + 7) + 5} fill={colors.SECONDARY} fontSize={14}>
+              <text x={X(BAR_X0 + FRONT_LEN * 0.7) + 24} y={Y(FRONT_Y + THICK + OVER_FRONT + 7) + 5} fill={colors.SECONDARY} fontSize={14}>
                 stools pull in under the overhang
               </text>
             </g>
@@ -468,11 +520,15 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={badU * Math.max(0, 1 - lockU * 3)}>
               <circle cx={X(BAD_SCREW.x)} cy={Y(FRONT_Y + THICK / 2)} r={5.5} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.4} />
               <line x1={X(BAD_SCREW.x) - 7} y1={Y(FRONT_Y + THICK / 2) - 7} x2={X(BAD_SCREW.x) + 7} y2={Y(FRONT_Y + THICK / 2) + 7} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <text x={X(BAD_SCREW.x)} y={Y(FRONT_Y) - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600} opacity={Math.max(0, 1 - lockU * 3)}>
-                into a gap
-              </text>
             </g>
           )}
+          <Pill
+            x={X(BAD_SCREW.x)}
+            y={Y(FRONT_Y) - 14}
+            text="into a gap"
+            color={colors.NEGATIVE}
+            opacity={badU * Math.max(0, 1 - lockU * 3)}
+          />
           {goodU > 0 &&
             SCREW_TARGETS.map((t, i) => {
               const u = clamp01(goodU * 3 - i * 0.5);
@@ -483,11 +539,14 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-          {goodU > 0.7 && (
-            <text x={X(FRONT_LEN)} y={Y(FRONT_Y) - 14} fill={colors.POSITIVE} fontSize={14} fontWeight={600} opacity={clamp01(goodU * 3 - 2.1) * Math.max(0, 1 - lockU * 3)}>
-              into solid wood
-            </text>
-          )}
+          <Pill
+            x={X(BAR_X1 - 2)}
+            y={Y(FRONT_Y) - 14}
+            text="into solid wood"
+            color={colors.POSITIVE}
+            opacity={clamp01(goodU * 3 - 2.1) * Math.max(0, 1 - lockU * 3)}
+            align="end"
+          />
 
           {/* ---- rack / lock readout ---- */}
           {(rackU > 0.05 || lockU > 0) && (
@@ -496,23 +555,34 @@ export function Render({ s }: { s: SceneState }) {
                 <>
                   <line
                     x1={X(THICK / 2)}
-                    y1={Y(FRONT_Y - SIDE_CUT + 3)}
-                    x2={X(lerp(THICK / 2, FRONT_LEN - THICK / 2, lockU))}
-                    y2={Y(FRONT_Y - SIDE_CUT + 3)}
+                    y1={Y(-4)}
+                    x2={X(lerp(THICK / 2, BAR_W - THICK / 2, lockU))}
+                    y2={Y(-4)}
                     stroke={colors.POSITIVE}
                     strokeWidth={2}
                     strokeDasharray="8 6"
                   />
-                  <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y - SIDE_CUT) - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} opacity={lockU}>
+                  <text x={X(BAR_W / 2)} y={Y(-4) - 12} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} opacity={lockU}>
                     every joint held at a fixed distance
                   </text>
                 </>
               )}
               {rackU > 0.05 && (
-                <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y - SIDE_CUT) - 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} opacity={rackU}>
+                <text x={X(BAR_W / 2)} y={Y(-4) - 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} opacity={rackU}>
                   the wings swing
                 </text>
               )}
+            </g>
+          )}
+
+          {/* ---- the push that leans the unfinished bar ---- */}
+          {rackU > 0.05 && lockU === 0 && (
+            <g opacity={rackU}>
+              <line x1={X(BAR_W + 12)} y1={Y(6)} x2={X(BAR_W + 5)} y2={Y(6)} stroke={colors.NEGATIVE} strokeWidth={2.4} />
+              <polygon points={`${X(BAR_W + 2.5)},${Y(6)} ${X(BAR_W + 4.7)},${Y(6) - 5} ${X(BAR_W + 4.7)},${Y(6) + 5}`} fill={colors.NEGATIVE} />
+              <text x={X(BAR_W + 12)} y={Y(6) - 10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
+                push
+              </text>
             </g>
           )}
         </g>

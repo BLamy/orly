@@ -18,13 +18,13 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Left: the evidence panel (the recorded delta log, re-read per check).
 const EV = { x: 90, y: 130, w: 500, h: 420 };
 // Right: the finding card — the persistent object that assembles.
-const CARD = { x: 650, y: 96, w: 546, h: 492 };
+const CARD = { x: 650, y: 96, w: 546, h: 444 };
 
 // Three replicas' delta rows for the convergence check.
 const REPLICAS = ['replica a', 'replica b', 'replica c'];
 const RAND = mulberry32(17);
 const REP_DOTS = REPLICAS.map(() => Array.from({ length: 12 }, () => 0.35 + RAND() * 0.5));
-const repY = (r: number) => EV.y + 76 + r * 52;
+const repY = (r: number) => EV.y + 96 + r * 44;
 const repDotX = (i: number) => EV.x + 30 + i * 30;
 const DIGEST_X = EV.x + 412;
 
@@ -44,7 +44,7 @@ const runPos = (i: number) => ({
 const VISIBLE_RUN = 23;
 
 // Causality chain inside the evidence panel.
-const CHAIN_Y = EV.y + 390;
+const CHAIN_Y = EV.y + 396;
 const CHAIN = [
   { x: EV.x + 70, label: 'write' },
   { x: EV.x + 210, label: 'diff' },
@@ -88,8 +88,9 @@ const CARD_FOOTER: CardLine[] = [
 const FINAL_L = { x: 190, y: 260, w: 400, h: 180 };
 const FINAL_R = { x: 690, y: 260, w: 400, h: 180 };
 
-const CAM_EV: CameraState = { x: 400, y: 300, k: 1.3 };
-const CAM_CARD: CameraState = { x: 880, y: 330, k: 1.28 };
+// Both panels in frame above the caption band (content stays y < 630 on screen).
+const CAM_EV: CameraState = { x: 640, y: 340, k: 1.1 };
+const CAM_CARD: CameraState = { x: 650, y: 350, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 export function buildScene() {
@@ -178,16 +179,16 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
   return (
     <g opacity={e * fade}>
       <rect x={EV.x} y={EV.y} width={EV.w} height={EV.h} rx={14} fill="rgba(13,19,33,0.72)" stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={EV.x + 18} y={EV.y + 28} fontSize={11.5} fill={colors.MUTED} fontFamily={mono}>
+      <text x={EV.x + 18} y={EV.y + 30} fontSize={13} fill={colors.MUTED} fontFamily={mono}>
         evidence — the recorded delta log
       </text>
       {/* convergence: three replica rows + digests */}
-      <text x={EV.x + 18} y={EV.y + 54} fontSize={10.5} fill={cv > 0 ? colors.TEAL : colors.MUTED} fontFamily={mono} opacity={cv > 0 ? 1 : 0.5}>
+      <text x={EV.x + 18} y={EV.y + 62} fontSize={13} fill={cv > 0 ? colors.TEAL : colors.TEXT} fontFamily={mono} opacity={cv > 0 ? 1 : 0.75}>
         convergence
       </text>
       {REPLICAS.map((name, r) => (
         <g key={r}>
-          <text x={EV.x + 18} y={repY(r) - 14} fontSize={9.5} fill={colors.MUTED} fontFamily={mono}>
+          <text x={EV.x + 18} y={repY(r) - 14} fontSize={12} fill={colors.MUTED} fontFamily={mono}>
             {name}
           </text>
           {REP_DOTS[r].map((o, i) => {
@@ -197,7 +198,7 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
           {cv > 0.75 && (
             <g opacity={clamp01((cv - 0.75) * 4)}>
               <rect x={DIGEST_X - 34} y={repY(r) - 11} width={68} height={22} rx={11} fill={matched ? 'rgba(52,211,153,0.14)' : 'rgba(148,163,184,0.1)'} stroke={matched ? colors.POSITIVE : colors.GRID} strokeWidth={1.2} />
-              <text x={DIGEST_X} y={repY(r) + 4} textAnchor="middle" fontSize={10} fill={matched ? colors.POSITIVE : colors.TEXT} fontFamily={mono}>
+              <text x={DIGEST_X} y={repY(r) + 4} textAnchor="middle" fontSize={12} fill={matched ? colors.POSITIVE : colors.TEXT} fontFamily={mono}>
                 a94f2c
               </text>
             </g>
@@ -205,7 +206,7 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
         </g>
       ))}
       {/* delivery scan */}
-      <text x={EV.x + 18} y={SCAN_Y - 22} fontSize={10.5} fill={sc > 0 ? colors.TEAL : colors.MUTED} fontFamily={mono} opacity={sc > 0 ? 1 : 0.5}>
+      <text x={EV.x + 18} y={SCAN_Y - 22} fontSize={13} fill={sc > 0 ? colors.TEAL : colors.TEXT} fontFamily={mono} opacity={sc > 0 ? 1 : 0.75}>
         delivery
       </text>
       {Array.from({ length: SCAN_N }, (_, i) => {
@@ -216,7 +217,7 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
           <g key={i}>
             <rect x={scanX(i) - 5} y={SCAN_Y - 5} width={10} height={10} rx={2} transform={`rotate(45 ${scanX(i)} ${SCAN_Y})`} fill={dupLit > 0 ? colors.NEGATIVE : lit > 0 ? colors.TEAL : colors.MUTED} opacity={lit > 0 ? 0.45 + 0.55 * lit : 0.25} />
             {dupLit > 0 && (
-              <text x={scanX(i)} y={SCAN_Y - 16} textAnchor="middle" fontSize={9} fill={colors.NEGATIVE} fontFamily={mono} opacity={dupLit}>
+              <text x={scanX(i)} y={SCAN_Y - 16} textAnchor="middle" fontSize={12} fill={colors.NEGATIVE} fontFamily={mono} opacity={dupLit}>
                 ×2
               </text>
             )}
@@ -224,7 +225,7 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
         );
       })}
       {/* recompute meter: 40 cells, one visible */}
-      <text x={EV.x + 18} y={EV.y + 302} fontSize={10.5} fill={rn > 0 ? colors.TEAL : colors.MUTED} fontFamily={mono} opacity={rn > 0 ? 1 : 0.5}>
+      <text x={EV.x + 18} y={EV.y + 302} fontSize={13} fill={rn > 0 ? colors.TEAL : colors.TEXT} fontFamily={mono} opacity={rn > 0 ? 1 : 0.75}>
         recompute cost — 40 runs / 1 visible change
       </text>
       {Array.from({ length: RUNS }, (_, i) => {
@@ -246,13 +247,13 @@ function EvidencePanel({ u, conv, scan, dup, runs, chain, fade }: { u: number; c
             return lit > 0 ? (
               <g key={i} opacity={lit}>
                 <rect x={c.x - 44} y={CHAIN_Y - 13} width={88} height={26} rx={13} fill="rgba(251,191,36,0.12)" stroke={colors.WARM} strokeWidth={1.2} />
-                <text x={c.x} y={CHAIN_Y + 4} textAnchor="middle" fontSize={10.5} fill={colors.WARM} fontFamily={mono}>
+                <text x={c.x} y={CHAIN_Y + 4} textAnchor="middle" fontSize={12} fill={colors.WARM} fontFamily={mono}>
                   {c.label}
                 </text>
               </g>
             ) : null;
           })}
-          <text x={EV.x + 18} y={CHAIN_Y - 22} fontSize={10.5} fill={colors.TEAL} fontFamily={mono} opacity={Math.min(1, ch * 3)}>
+          <text x={EV.x + 18} y={CHAIN_Y - 22} fontSize={13} fill={colors.TEAL} fontFamily={mono} opacity={Math.min(1, ch * 3)}>
             causality
           </text>
         </g>
@@ -269,7 +270,7 @@ function CardLines({ lines, x, y, u }: { lines: CardLine[]; x: number; y: number
   return (
     <g opacity={e} transform={`translate(0, ${(1 - e) * 6})`}>
       {lines.map((l, i) => (
-        <text key={i} x={x + (l.indent ? 14 : 0)} y={y + i * 19} fontSize={11} fill={l.color ? lineColor(l.color) : l.bold ? colors.TEXT : colors.MUTED} fontFamily={mono} fontWeight={l.bold ? 700 : 400}>
+        <text key={i} x={x + (l.indent ? 14 : 0)} y={y + i * 20} fontSize={13} fill={l.color ? lineColor(l.color) : l.indent ? colors.MUTED : colors.TEXT} fontFamily={mono} fontWeight={l.bold ? 700 : 400}>
           {l.text}
         </text>
       ))}
@@ -287,7 +288,7 @@ function FindingCard({ u, l1, l2, l3, l4, foot, fade }: { u: number; l1: number;
     <g opacity={e * fade} transform={`translate(0, ${(1 - e) * 10})`}>
       <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <rect x={CARD.x} y={CARD.y} width={CARD.w} height={34} rx={14} fill="rgba(56,189,248,0.1)" />
-      <text x={CARD.x + 16} y={CARD.y + 22} fontSize={12} fill={colors.ACCENT} fontFamily={mono} fontWeight={700}>
+      <text x={CARD.x + 16} y={CARD.y + 23} fontSize={14} fill={colors.ACCENT} fontFamily={mono} fontWeight={700}>
         SyncEngineInsights
       </text>
       <CardLines lines={CARD_HEADER} x={CARD.x + 20} y={CARD.y + 62} u={e} />
@@ -327,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
         <EvidencePanel u={s.get(scene.evU)} conv={s.get(scene.convU)} scan={s.get(scene.scanU)} dup={s.get(scene.dupU)} runs={s.get(scene.runsU)} chain={s.get(scene.chainU)} fade={fade} />
         <FindingCard u={s.get(scene.cardU)} l1={s.get(scene.line1U)} l2={s.get(scene.line2U)} l3={s.get(scene.line3U)} l4={s.get(scene.line4U)} foot={s.get(scene.footU)} fade={fade} />
         {ask > 0 && fin < 1 && (
-          <text x={640} y={620} textAnchor="middle" fontSize={17} fill={colors.TEXT} fontWeight={600} opacity={ask * (1 - fin)}>
+          <text x={640} y={600} textAnchor="middle" fontSize={17} fill={colors.TEXT} fontWeight={600} opacity={ask * (1 - fin)}>
             record the dataflow → every sync bug becomes a query over evidence
           </text>
         )}

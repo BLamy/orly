@@ -85,7 +85,7 @@ const ESCALATION = ['Federation', 'Sharding', 'Denormalization', 'SQL Tuning'] a
 
 const CAM_DIAL: CameraState = { x: 420, y: 260, k: 1.3 };
 const CAM_ARCH: CameraState = { x: 640, y: 270, k: 1.12 };
-const CAM_PANEL: CameraState = { x: 640, y: 500, k: 1.3 };
+const CAM_PANEL: CameraState = { x: 600, y: 390, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -210,7 +210,6 @@ export function buildScene(): Scene {
     text: "And the object store? Twelve point seven gigabytes of new content a month barely registers. Some parts of a design simply refuse to be the bottleneck.",
   });
   tl.tween(expU, 0, { at: 46.6, dur: 0.8, ease: ease.move });
-  tl.tween(cam, CAM_ARCH, { at: 46.4, dur: 1.6, ease: ease.move });
   tl.tween(storeU, 1, { at: 47.4, dur: 1.0, ease: ease.pop });
 
   // — Beat 9 · the whole answer —
@@ -231,7 +230,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: "That's the URL shortener, solved. Interviewers aren't asking you to memorize boxes — they want exactly this: size the load, split the data, cache the reads, and know what breaks first.",
   });
-  tl.tween(archDim, 0.06, { at: 60.4, dur: 1.4, ease: ease.move });
+  tl.tween(archDim, 0, { at: 60.4, dur: 1.4, ease: ease.move });
   tl.tween(closeU, 1, { at: 61.8, dur: 1.0, ease: ease.enter });
   tl.hold(66.6, 1.6);
 
@@ -288,6 +287,13 @@ export function Render({ s }: { s: SceneState }) {
 
   const loopFade = clamp01(1 - archU * 1.2);
   const needleAngle = -120 + 210 * dial; // dial from ×1 to ×10
+  // the architecture clears before a panel draws over it, so they never overprint
+  const archFade = 1 - clamp01(Math.max(mrU, expU) / 0.3);
+  const mrPanel = clamp01((mrU - 0.3) / 0.7);
+  const expPanel = clamp01((expU - 0.3) / 0.7);
+  // the escalation shelf leaves as the camera pans toward the panels, before its right edge is cropped
+  const shelfFade = 1 - clamp01((cam.y - CAM_ARCH.y) / 60);
+  const DIAL = { x: 120, y: 110, r: 44 };
 
   return (
     <>
@@ -320,18 +326,18 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the traffic dial ---- */}
         {archU > 0 && (
-          <g opacity={archU * archDim * (1 - panelOff * 0.5) * (1 - Math.max(mrU, expU))}>
-            <circle cx={170} cy={110} r={52} fill={colors.PANEL} stroke={colors.GRID} />
+          <g opacity={archU * archDim * (1 - panelOff * 0.5) * archFade}>
+            <circle cx={DIAL.x} cy={DIAL.y} r={DIAL.r} fill={colors.PANEL} stroke={colors.GRID} />
             <line
-              x1={170}
-              y1={110}
-              x2={170 + Math.cos((needleAngle * Math.PI) / 180) * 38}
-              y2={110 + Math.sin((needleAngle * Math.PI) / 180) * 38}
+              x1={DIAL.x}
+              y1={DIAL.y}
+              x2={DIAL.x + Math.cos((needleAngle * Math.PI) / 180) * 34}
+              y2={DIAL.y + Math.sin((needleAngle * Math.PI) / 180) * 34}
               stroke={dial > 0.6 ? colors.NEGATIVE : colors.WARM}
               strokeWidth={3.5}
               strokeLinecap="round"
             />
-            <text x={170} y={182} textAnchor="middle" fill={dial > 0.6 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontWeight={700}>
+            <text x={DIAL.x} y={DIAL.y + DIAL.r + 20} textAnchor="middle" fill={dial > 0.6 ? colors.NEGATIVE : colors.MUTED} fontSize={14} fontWeight={700}>
               traffic ×{Math.max(1, Math.round(1 + dial * 9))}
             </text>
           </g>
@@ -339,7 +345,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the architecture ---- */}
         {archU > 0 && (
-          <g opacity={archDim * (1 - Math.max(mrU, expU))}>
+          <g opacity={archDim * archFade}>
             <ServiceNode x={N.client.x} y={N.client.y} kind="client" label="Client" u={archU} />
             <ServiceNode x={N.cdn.x} y={N.cdn.y} kind="cdn" label="CDN" u={clamp01(archU * 1.4 - 0.2)} />
             {lbU > 0 && <ServiceNode x={N.lb.x} y={N.lb.y} kind="lb" label="Load Balancer" u={lbU} />}
@@ -388,27 +394,27 @@ export function Render({ s }: { s: SceneState }) {
               dashed
               arrow
               label="logs"
-              labelSize={12}
+              labelSize={13}
             />
           </g>
         )}
 
         {/* ---- the write escalation shelf ---- */}
         {escU > 0 && (
-          <g opacity={archDim * (1 - panelOff) * (1 - mrU) * (1 - expU)}>
+          <g opacity={archDim * (1 - panelOff) * shelfFade * (1 - mrU) * (1 - expU)}>
             {ESCALATION.map((e, i) => {
               const u = clamp01(escU * 4 - i * 0.8);
               if (u <= 0) return null;
               return (
                 <g key={e} opacity={u}>
-                  <rect x={1064} y={250 + i * 34} width={140} height={26} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-                  <text x={1134} y={268 + i * 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+                  <rect x={1064} y={250 + i * 34} width={124} height={26} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
+                  <text x={1126} y={268 + i * 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
                     {e}
                   </text>
                 </g>
               );
             })}
-            <text x={1134} y={240} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(escU * 2)}>
+            <text x={1126} y={240} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={clamp01(escU * 2)}>
               if writes ever grow
             </text>
           </g>
@@ -416,13 +422,13 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- MapReduce panel ---- */}
         {mrU > 0 && (
-          <g opacity={mrU}>
+          <g opacity={mrPanel}>
             <rect x={330} y={430} width={620} height={180} rx={12} fill={colors.BG} />
             <rect x={330} y={430} width={620} height={180} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={348} y={456} fill={colors.TEXT} fontSize={15}>
               MapReduce over the raw logs
             </text>
-            <text x={932} y={456} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={932} y={456} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               class HitCounts(MRJob)
             </text>
             {/* raw log lines */}
@@ -453,10 +459,10 @@ export function Render({ s }: { s: SceneState }) {
                 </text>
               );
             })}
-            <text x={520} y={598} fill={colors.MUTED} fontSize={12}>
+            <text x={520} y={598} fill={colors.MUTED} fontSize={13}>
               mapper — (month, url), 1
             </text>
-            <text x={756} y={598} fill={colors.MUTED} fontSize={12}>
+            <text x={756} y={598} fill={colors.MUTED} fontSize={13}>
               reducer — sum per key
             </text>
           </g>
@@ -464,13 +470,13 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- expiry sweep panel ---- */}
         {expU > 0 && (
-          <g opacity={expU}>
+          <g opacity={expPanel}>
             <rect x={390} y={430} width={500} height={176} rx={12} fill={colors.BG} />
             <rect x={390} y={430} width={500} height={176} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={408} y={456} fill={colors.TEXT} fontSize={15}>
               the janitor — delete where expired
             </text>
-            <text x={872} y={456} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+            <text x={872} y={456} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
               created_at + expiration &lt; now
             </text>
             {EXP_ROWS.map((r, i) => {
@@ -524,14 +530,14 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing ---- */}
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={310} y={230} width={660} height={180} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+            <rect x={310} y={270} width={660} height={180} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <text x={640} y={322} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
               size the load · split the data · cache the reads
             </text>
-            <text x={640} y={318} textAnchor="middle" fill={colors.ACCENT} fontSize={19} fontWeight={700}>
+            <text x={640} y={358} textAnchor="middle" fill={colors.ACCENT} fontSize={19} fontWeight={700}>
               know what breaks first
             </text>
-            <text x={640} y={368} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+            <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               System Design, Solved · №1 — the URL shortener
             </text>
           </g>

@@ -56,7 +56,7 @@ const STATE_ROWS = [
   { idx: '[3]', label: 'Ticket type', value: '"Round trip"' },
   { idx: '[4]', label: 'Search', value: '' },
 ];
-const SVC = { x: 470, y: 190, w: 180, h: 150 };
+const SVC = { x: 460, y: 180, w: 200, h: 170 };
 const LANE = { x: 720, w: 520, h: 96, y0: 100, pitch: 118 };
 // illustrative probabilities — each lane sums to 1
 const LANES = [
@@ -70,11 +70,11 @@ const laneY = (i: number) => LANE.y0 + i * LANE.pitch;
 // select_target is hidden (not dimmed) whenever the zoomed camera would crop it under the captions
 const LIT = [
   [1, 1, 1, 1],
-  [0.15, 1, 0.15, 0],
-  [1, 1, 0.15, 0],
-  [0.15, 0.15, 1, 0],
+  [0.3, 1, 0.3, 0],
+  [1, 1, 0.3, 0],
+  [0.3, 0.3, 1, 0],
   [1, 1, 0.5, 0.5],
-  [0.15, 1, 0, 0],
+  [0.3, 1, 0, 0],
   [0, 1, 0, 0],
   [1, 1, 0, 0],
 ];
@@ -174,7 +174,6 @@ export function buildScene() {
   /* — beat 6 · validate the selected answer — */
   b = AT[5];
   tl.tween(focus, 5, { at: b + 0.2, dur: 0.7, ease: ease.enter });
-  tl.tween(svcOff, 1, { at: b + 0.2, dur: 0.5, ease: ease.enter });
   tl.tween(armU, 0, { at: b + 0.2, dur: 0.5, ease: ease.enter });
   tl.tween(cam, CAM_VALID, { at: b + 0.3, dur: 1.3, ease: ease.move });
   tl.tween(checkVis, 1, { at: b + 1.0, dur: 0.6, ease: ease.enter });
@@ -312,14 +311,15 @@ export function Render({ s }: { s: SceneState }) {
       )}
 
       {/* the remote service — drawn opaque on purpose */}
+      {/* hidden from validation (focus 5) through the mapping beat; returns with the trips reveal */}
       {svcU > 0.002 && (
-        <g opacity={svcU * (1 - 0.85 * svcDim) * (1 - svcOff)}>
+        <g opacity={svcU * (1 - 0.5 * svcDim) * Math.max(1 - svcOff, tripsU) * (1 - clamp01((focus - 4.5) * 2) * (1 - tripsU))}>
           <rect x={SVC.x} y={SVC.y} width={SVC.w} height={SVC.h} rx={14} fill="#15122e" stroke={ROLE.MODEL} strokeWidth={1.8} />
-          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 34} text="TypeSafe" size={19} weight={800} anchor="middle" />
-          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 56} text="remote service" size={13} anchor="middle" color={colors.MUTED} />
-          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 84} text="POST /v1/systemone" size={12.5} mono anchor="middle" color={ROLE.MODEL} />
+          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 38} text="TypeSafe" size={22} weight={800} anchor="middle" />
+          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 62} text="remote service" size={15} anchor="middle" color={colors.MUTED} />
+          <Txt x={SVC.x + SVC.w / 2} y={SVC.y + 94} text="POST /v1/systemone" size={14} mono anchor="middle" color={ROLE.MODEL} />
           {range(5).map((i) => (
-            <line key={i} x1={SVC.x + 20 + i * 30} y1={SVC.y + 136} x2={SVC.x + 50 + i * 30} y2={SVC.y + 102} stroke={ROLE.MODEL} strokeWidth={5} opacity={0.12 + 0.5 * opaqueU} />
+            <line key={i} x1={SVC.x + 22 + i * 32} y1={SVC.y + SVC.h - 14} x2={SVC.x + 48 + i * 32} y2={SVC.y + SVC.h - 50} stroke={ROLE.MODEL} strokeWidth={5} opacity={0.12 + 0.5 * opaqueU} />
           ))}
         </g>
       )}
@@ -400,7 +400,7 @@ export function Render({ s }: { s: SceneState }) {
               {i > 0 && <Txt x={c.x - 16} y={378} text="→" size={16} anchor="middle" color={colors.MUTED} u={clamp01(chainU - i)} />}
             </g>
           ))}
-          <line x1={LANE.x + 254} y1={laneY(1) + 86} x2={LANE.x + 60} y2={360} stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="5 4" opacity={clamp01(chainU)} />
+          <line x1={LANE.x + 254} y1={laneY(1) + 86} x2={CHAIN[1].x + 24} y2={360} stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="5 4" opacity={clamp01(chainU)} />
           <g opacity={clamp01(chainU - 3)}>
             <Txt x={720} y={436} text="To" size={13} color={colors.MUTED} />
             <rect x={720} y={444} width={330} height={46} rx={8} fill="#0d1526" stroke={colors.WARM} strokeWidth={2.6} />

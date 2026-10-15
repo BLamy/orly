@@ -15,7 +15,9 @@ const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 type Pt = { x: number; y: number };
 
 const LOCAL: Pt = { x: 154, y: 356 };
-const TABLE_ORIGIN = { x: 356, y: 208 };
+// The table panel sits between the consumer and provider; its grid origin is
+// placed so the highlighted row (index 2) centres on the flow line at y = 356.
+const TABLE_ORIGIN = { x: 434, y: 188 };
 const PROVIDER: Pt = { x: 1080, y: 356 };
 const TABLE_VALUES = [
   [0.9, 0.2, 0.15],
@@ -27,7 +29,7 @@ const TABLE_VALUES = [
 const ROWS = ['type', 'service_name', 'keys', 'labels', 'load'];
 const COLS = ['announce', 'interest', 'catalog'];
 
-function Chip({ x, y, text, color = colors.MUTED, opacity = 1, w, fontSize = 11 }: { x: number; y: number; text: string; color?: string; opacity?: number; w?: number; fontSize?: number }) {
+function Chip({ x, y, text, color = colors.MUTED, opacity = 1, w, fontSize = 12 }: { x: number; y: number; text: string; color?: string; opacity?: number; w?: number; fontSize?: number }) {
   const width = w ?? Math.max(62, text.length * fontSize * 0.62 + 18);
   return (
     <g opacity={clamp01(opacity)}>
@@ -58,10 +60,10 @@ function AnnouncementCard({ u, selected, opacity = 1 }: { u: number; selected: n
     <g opacity={uu * opacity}>
       <rect x={846} y={140} width={374} height={112} rx={18} fill={colors.PANEL} stroke={selected > 0.2 ? colors.WARM : colors.SECONDARY} strokeWidth={selected > 0.2 ? 2.3 : 1.4} />
       <text x={1033} y={170} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={740}>ServiceAnnounce</text>
-      <text x={1033} y={193} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>signed routing hint · never authorization</text>
-      <Chip x={916} y={226} text="mcp" color={colors.ACCENT} w={64} />
-      <Chip x={1002} y={226} text="code-reviewer" color={colors.SECONDARY} w={118} fontSize={10} />
-      <Chip x={1130} y={226} text="review_pr" color={colors.WARM} w={96} fontSize={10} />
+      <text x={1033} y={193} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>signed routing hint · never authorization</text>
+      <Chip x={914} y={226} text="mcp" color={colors.ACCENT} w={64} />
+      <Chip x={1017} y={226} text="code-reviewer" color={colors.SECONDARY} w={118} />
+      <Chip x={1136} y={226} text="review_pr" color={colors.WARM} w={96} />
     </g>
   );
 }
@@ -74,7 +76,7 @@ function ResultCard({ u, opacity = 1 }: { u: number; opacity?: number }) {
       <rect x={846} y={470} width={374} height={108} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
       <text x={1033} y={502} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={720}>gossipToolRows</text>
       <text x={1033} y={532} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>mcp://code-reviewer/review_pr</text>
-      <text x={1033} y={557} textAnchor="middle" fill={colors.MUTED} fontSize={10}>peer identity · service · tool name</text>
+      <text x={1033} y={557} textAnchor="middle" fill={colors.MUTED} fontSize={12}>peer identity · service · tool name</text>
     </g>
   );
 }
@@ -151,7 +153,7 @@ export function buildScene() {
 const scene = buildScene();
 
 export function Render({ s }: { s: SceneState }) {
-  const mainOpacity = 1 - 0.9 * s.get(scene.dimU);
+  const mainOpacity = 1 - 0.95 * s.get(scene.dimU);
   const tableOpacity = s.get(scene.tableU);
   const fastOpacity = s.get(scene.fastU);
   const fanOpacity = s.get(scene.fanU);
@@ -162,51 +164,52 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>Interest finds the tool</text>
-        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>ServiceAnnounce · Discovery.Ensure · find_remote_tools · list_local_services</text>
+        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>ServiceAnnounce · Discovery.Ensure · find_remote_tools · list_local_services</text>
 
-        <Connection from={{ x: LOCAL.x + 84, y: LOCAL.y }} to={{ x: TABLE_ORIGIN.x - 26, y: 356 }} u={tableOpacity} flow={s.get(scene.interestU)} color={colors.ACCENT} label="interest" />
-        <Connection from={{ x: TABLE_ORIGIN.x + 3 * 49 + 28, y: 356 }} to={{ x: PROVIDER.x - 96, y: PROVIDER.y }} u={tableOpacity} flow={catalogOpacity} color={colors.SECONDARY} label="provider rows" />
+        <Connection from={{ x: LOCAL.x + 84, y: LOCAL.y }} to={{ x: TABLE_ORIGIN.x - 110, y: 356 }} u={tableOpacity} flow={s.get(scene.interestU)} color={colors.ACCENT} label="interest" />
+        <Connection from={{ x: TABLE_ORIGIN.x + 182, y: 356 }} to={{ x: PROVIDER.x - 96, y: PROVIDER.y }} u={tableOpacity} flow={catalogOpacity} color={colors.SECONDARY} label="provider rows" />
 
         <NodeBadge x={LOCAL.x} y={LOCAL.y} w={168} h={72} label="sam-node" sublabel="consumer" color={colors.ACCENT} u={tableOpacity} glow={s.get(scene.interestU)} />
         <NodeBadge x={PROVIDER.x} y={PROVIDER.y} w={192} h={72} label="provider" sublabel="remote service" color={colors.SECONDARY} u={tableOpacity} glow={s.get(scene.selectedU)} />
 
+        {/* Flows run under the opaque table panel so lines never cross its cells or labels. */}
+        <InterestBeam u={s.get(scene.interestU)} highlight={s.get(scene.highlightU)} />
+        <Packet from={LOCAL} to={{ x: TABLE_ORIGIN.x - 110, y: 356 }} u={s.get(scene.interestU)} color={colors.WARM} r={6} />
+        <RequestFlow path={[LOCAL, { x: 640, y: 356 }, PROVIDER]} u={Math.max(fastOpacity, fanOpacity)} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label={fastOpacity > 0.5 ? 'gossip' : 'catalog'} responseLabel="" hold />
+        <text x={PROVIDER.x} y={432} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={Math.max(fastOpacity, fanOpacity)}>tool row ↩</text>
+
         <g transform={`translate(${TABLE_ORIGIN.x} ${TABLE_ORIGIN.y})`} opacity={tableOpacity}>
-          <rect x={-30} y={-40} width={394} height={304} rx={20} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={166} y={-12} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={740}>provider table</text>
+          <rect x={-104} y={-40} width={278} height={392} rx={20} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
+          <text x={35} y={-12} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={740}>provider table</text>
           <MatrixGrid
             x={0}
             y={28}
             values={TABLE_VALUES}
             cell={40}
-            gap={7}
+            gap={20}
             cellU={(i, j) => clamp01(tableOpacity * 15 - (i * 3 + j) * 0.24)}
             rowLabels={ROWS}
             colLabels={COLS}
             highlight={{ row: s.get(scene.interestU) > 0.2 ? 2 : undefined, color: colors.WARM, u: s.get(scene.highlightU) }}
-            labelSize={10}
+            labelSize={12}
             opacity={0.95}
           />
-          <text x={166} y={244} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>Provider · Keys · Load · LastSeen</text>
+          <text x={35} y={330} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Provider · Keys · Load · LastSeen</text>
         </g>
 
         <AnnouncementCard u={s.get(scene.announceU)} selected={s.get(scene.selectedU)} />
         <ResultCard u={s.get(scene.selectedU)} />
-        <InterestBeam u={s.get(scene.interestU)} highlight={s.get(scene.highlightU)} />
-
-        <Packet from={LOCAL} to={{ x: TABLE_ORIGIN.x + 120, y: 356 }} u={s.get(scene.interestU)} color={colors.WARM} r={6} label="Ensure" />
-        <RequestFlow path={[LOCAL, { x: 640, y: 356 }, PROVIDER]} u={Math.max(fastOpacity, fanOpacity)} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label={fastOpacity > 0.5 ? 'gossip' : 'catalog'} responseLabel="" hold />
-        <text x={PROVIDER.x} y={432} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={Math.max(fastOpacity, fanOpacity)}>tool row ↩</text>
 
         <g opacity={fastOpacity}>
-          <Chip x={510} y={142} text="gossipToolRows" color={colors.POSITIVE} w={132} />
-          <Chip x={652} y={142} text="fast path" color={colors.POSITIVE} w={96} />
+          <Chip x={450} y={126} text="gossipToolRows" color={colors.POSITIVE} w={132} />
+          <Chip x={572} y={126} text="fast path" color={colors.POSITIVE} w={96} />
         </g>
         <g opacity={fanOpacity}>
-          <Chip x={520} y={596} text="DiscoverRemoteServices" color={colors.SECONDARY} w={174} fontSize={10} />
-          <Chip x={720} y={596} text="fanOutFetch" color={colors.SECONDARY} w={112} />
+          <Chip x={520} y={600} text="DiscoverRemoteServices" color={colors.SECONDARY} w={174} />
+          <Chip x={720} y={600} text="fanOutFetch" color={colors.SECONDARY} w={112} />
         </g>
         <g opacity={catalogOpacity}>
-          <Chip x={940} y={618} text="fetchRemoteToolCatalogue" color={colors.POSITIVE} w={198} fontSize={10} />
+          <Chip x={940} y={600} text="fetchRemoteToolCatalogue" color={colors.POSITIVE} w={198} />
         </g>
       </g>
 
@@ -216,7 +219,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={31} fontWeight={800}>Search becomes a route</text>
           <text x={640} y={334} textAnchor="middle" fill={colors.POSITIVE} fontSize={17}>interest key · fresh hint · selected provider</text>
           <text x={640} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={14}>discovery narrows the mesh before authorization begins</text>
-          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>mcp://code-reviewer/review_pr</text>
+          <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>mcp://code-reviewer/review_pr</text>
         </g>
       )}
     </>

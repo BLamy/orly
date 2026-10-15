@@ -46,8 +46,17 @@ const PX = 260;
 const PY = 180;
 const PW = 620;
 const PH = 340;
-const sx = (u: number) => PX + u * PW; // usefulness 0..1
+// Usefulness is zoomed to 92..100 so the four reported points (94–100) separate.
+const U_MIN = 0.92;
+const sx = (u: number) => PX + ((u - U_MIN) / (1 - U_MIN)) * PW;
 const sy = (v: number) => PY + PH - v * PH; // safety 0..1
+const U_TICKS = [0.92, 0.94, 0.96, 0.98, 1];
+const Y_TICKS = [0, 0.25, 0.5, 0.75, 1];
+// The pushback note and the shelf bridge share one spot in the free right gutter.
+const NOTE_X = 900;
+const NOTE_Y = 236;
+const NOTE_W = 340;
+const NOTE_H = 168;
 const CAM_PLOT: CameraState = { x: 600, y: 360, k: 1.1 };
 
 interface Scene {
@@ -165,7 +174,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The closing panel stands alone: the chart and its notes clear fully.
+  const mainOp = 1 - dimU;
   // reveal protocols progressively via ptsU thresholds
   const shown = PROTOCOLS.map((_, i) => {
     const thresholds = [0.2, 0.7, 0.7, 1.0];
@@ -183,22 +193,24 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={axesU}>
               <line x1={PX} y1={PY} x2={PX} y2={PY + PH} stroke={colors.GRID} strokeWidth={1.5} />
               <line x1={PX} y1={PY + PH} x2={PX + PW} y2={PY + PH} stroke={colors.GRID} strokeWidth={1.5} />
-              {[0, 0.25, 0.5, 0.75, 1].map((v) => (
+              {Y_TICKS.map((v) => (
                 <g key={v}>
                   <line x1={PX - 5} y1={sy(v)} x2={PX + PW} y2={sy(v)} stroke={colors.GRID} strokeWidth={0.5} opacity={0.3} />
-                  <text x={PX - 12} y={sy(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
-                    {(v * 100).toFixed(0)}
-                  </text>
-                  <text x={sx(v)} y={PY + PH + 22} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={PX - 12} y={sy(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {(v * 100).toFixed(0)}
                   </text>
                 </g>
               ))}
-              <text x={PX - 44} y={PY + PH / 2} fill={colors.POSITIVE} fontSize={13.5} fontWeight={600} textAnchor="middle" transform={`rotate(-90 ${PX - 44} ${PY + PH / 2})`}>
+              {U_TICKS.map((u) => (
+                <text key={u} x={sx(u)} y={PY + PH + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  {(u * 100).toFixed(0)}
+                </text>
+              ))}
+              <text x={PX - 44} y={PY + PH / 2} fill={colors.POSITIVE} fontSize={14} fontWeight={600} textAnchor="middle" transform={`rotate(-90 ${PX - 44} ${PY + PH / 2})`}>
                 safety (%)
               </text>
-              <text x={PX + PW / 2} y={PY + PH + 46} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontWeight={600}>
-                usefulness (%)
+              <text x={PX + PW / 2} y={PY + PH + 46} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={600}>
+                usefulness (%, axis from 92)
               </text>
             </g>
           )}
@@ -209,10 +221,10 @@ function Frame({ s }: { s: SceneState }) {
             return (
               <g key={p.name}>
                 <circle cx={sx(p.useful)} cy={sy(p.safety)} r={9} fill={p.color} />
-                <text x={sx(p.useful) - 16} y={sy(p.safety) + 4} textAnchor="end" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+                <text x={sx(p.useful) - 16} y={sy(p.safety) + 4} textAnchor="end" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                   {p.name}
                 </text>
-                <text x={sx(p.useful) - 16} y={sy(p.safety) + 22} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                <text x={sx(p.useful) - 16} y={sy(p.safety) + 22} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                   {(p.safety * 100).toFixed(0)}% safe · {(p.useful * 100).toFixed(0)}% useful
                 </text>
               </g>
@@ -228,27 +240,55 @@ function Frame({ s }: { s: SceneState }) {
           <text x={904} y={138} fill={colors.WARM} fontSize={13} fontWeight={700}>
             REPORTED — not simulated here
           </text>
-          <text x={904} y={162} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={162} fill={colors.MUTED} fontSize={12}>
             Greenblatt, Shlegeris, Sachan, Roger
           </text>
-          <text x={904} y={182} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={182} fill={colors.MUTED} fontSize={12}>
             2023 · APPS backdoors · 2% audit budget
           </text>
         </g>
       )}
 
-      {/* pushback note */}
+      {/* pushback note — hands over to the shelf bridge at bridgeU */}
       {pushU > 0 && (
-        <g opacity={pushU * mainOp}>
-          <rect x={210} y={110} width={560} height={96} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
-          <text x={234} y={140} fill={colors.SECONDARY} fontSize={13.5} fontWeight={700}>
-            reported pushback — distributed attacks (2026)
+        <g opacity={pushU * (1 - bridgeU) * mainOp}>
+          <rect x={NOTE_X} y={NOTE_Y} width={NOTE_W} height={NOTE_H} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.SECONDARY} />
+          <text x={NOTE_X + 20} y={NOTE_Y + 32} fill={colors.SECONDARY} fontSize={13.5} fontWeight={700}>
+            reported pushback — distributed attacks
           </text>
-          <text x={234} y={166} fill={colors.MUTED} fontSize={12}>
-            a backdoor split across many small changes evades a single weak monitor —
+          <text x={NOTE_X + 20} y={NOTE_Y + 60} fill={colors.TEXT} fontSize={13}>
+            a backdoor split across many small changes
           </text>
-          <text x={234} y={186} fill={colors.MUTED} fontSize={12}>
-            an ensemble of monitors reportedly recovers much of the lost detection.
+          <text x={NOTE_X + 20} y={NOTE_Y + 80} fill={colors.TEXT} fontSize={13}>
+            evades a single weak monitor. An ensemble of
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 100} fill={colors.TEXT} fontSize={13}>
+            monitors reportedly recovers much of the loss.
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 132} fill={colors.MUTED} fontSize={12}>
+            evaluation not named in this book — directional only
+          </text>
+        </g>
+      )}
+
+      {/* shelf bridge — same spot, shown once the pushback has been read */}
+      {bridgeU > 0 && (
+        <g opacity={bridgeU * mainOp}>
+          <rect x={NOTE_X} y={NOTE_Y} width={NOTE_W} height={NOTE_H} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.ACCENT} />
+          <text x={NOTE_X + 20} y={NOTE_Y + 32} fill={colors.ACCENT} fontSize={13.5} fontWeight={700}>
+            the shelf’s rule
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 64} fill={colors.TEXT} fontSize={15}>
+            an agent’s claim is cheap to make
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 86} fill={colors.TEXT} fontSize={15}>
+            and expensive to trust.
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 118} fill={colors.POSITIVE} fontSize={16} fontWeight={700}>
+            so verify it.
+          </text>
+          <text x={NOTE_X + 20} y={NOTE_Y + 142} fill={colors.MUTED} fontSize={12}>
+            control: same rule, assuming it may deceive you
           </text>
         </g>
       )}
@@ -271,7 +311,7 @@ function Frame({ s }: { s: SceneState }) {
           </text>
           {bridgeU > 0 &&
             LOOP_BOOKS.map((b, i) => (
-              <text key={b} x={280 + i * 360} y={344} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily="monospace" opacity={0.9}>
+              <text key={b} x={280 + i * 360} y={344} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="monospace" opacity={0.9}>
                 {b}
               </text>
             ))}

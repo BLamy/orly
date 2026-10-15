@@ -39,6 +39,13 @@ function arcPath(i: number, j: number, lift: number): string {
 // decay curve points (closed form)
 const DECAY = Array.from({ length: 51 }, (_, d) => ({ d, v: survive(d) }));
 
+// decay inset geometry: x runs over distance d = 0..50, y over survival 1..0
+const INSET_X0 = 90;
+const INSET_DX = 4.8;
+const INSET_Y0 = 130; // survival 1
+const INSET_Y1 = 205; // survival 0
+const insetY = (v: number): number => INSET_Y1 - v * (INSET_Y1 - INSET_Y0);
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const tokU = s.get(scene.tokU);
@@ -69,9 +76,9 @@ function Frame({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={u}>
                 <rect
-                  x={tokX(i) - 42}
+                  x={tokX(i) - 40}
                   y={TOK_Y - 20}
-                  width={84}
+                  width={80}
                   height={40}
                   rx={9}
                   fill={colors.PANEL}
@@ -109,19 +116,21 @@ function Frame({ s }: { s: SceneState }) {
                 fill={colors.NEGATIVE}
                 opacity={0.35 + 0.65 * relaySignal}
               />
-              <text
-                x={tokX(DEP_FROM + relayHop)}
-                y={TOK_Y - 54}
-                textAnchor="middle"
-                fill={colors.NEGATIVE}
-                fontSize={13}
-              >
-                {`${(relaySignal * 100).toFixed(0)}%`}
-              </text>
+              {relayU < DEP_HOPS - 0.05 && (
+                <text
+                  x={tokX(DEP_FROM + relayHop)}
+                  y={TOK_Y - 54}
+                  textAnchor="middle"
+                  fill={colors.NEGATIVE}
+                  fontSize={14}
+                >
+                  {`${(relaySignal * 100).toFixed(0)}%`}
+                </text>
+              )}
             </g>
           )}
           {relayU >= DEP_HOPS - 0.05 && (
-            <text x={tokX(DEP_TO)} y={TOK_Y - 74} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+            <text x={tokX(DEP_TO)} y={TOK_Y - 54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
               {`${(DEP_SURVIVE * 100).toFixed(0)}% arrives`}
             </text>
           )}
@@ -167,10 +176,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* the parallelism race */}
           {raceU > 0 && (
             <g>
-              <text x={120} y={470} fill={colors.NEGATIVE} fontSize={14}>
+              {/* lanes sit inside the race camera's view, clear of the caption pill */}
+              <text x={120} y={380} fill={colors.NEGATIVE} fontSize={14}>
                 recurrence — one step per tick
               </text>
-              <text x={120} y={560} fill={colors.ACCENT} fontSize={14}>
+              <text x={120} y={460} fill={colors.ACCENT} fontSize={14}>
                 attention — every position, tick one
               </text>
               {Array.from({ length: RACE_STEPS }, (_, i) => {
@@ -181,7 +191,7 @@ function Frame({ s }: { s: SceneState }) {
                   <g key={i}>
                     <rect
                       x={140 + i * 82}
-                      y={482}
+                      y={392}
                       width={70}
                       height={26}
                       rx={6}
@@ -191,7 +201,7 @@ function Frame({ s }: { s: SceneState }) {
                     />
                     <rect
                       x={140 + i * 82}
-                      y={572}
+                      y={472}
                       width={70}
                       height={26}
                       rx={6}
@@ -203,12 +213,12 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {raceU > 1.2 && (
-                <text x={1130} y={560} fill={colors.ACCENT} fontSize={14} opacity={clamp01(raceU - 1.2)}>
+                <text x={1130} y={460} fill={colors.ACCENT} fontSize={14} opacity={clamp01(raceU - 1.2)}>
                   done
                 </text>
               )}
               {raceU >= RACE_STEPS - 0.05 && (
-                <text x={1130} y={470} fill={colors.NEGATIVE} fontSize={14}>
+                <text x={1130} y={380} fill={colors.NEGATIVE} fontSize={14}>
                   done
                 </text>
               )}
@@ -217,10 +227,10 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
+      {/* screen-fixed math, centred in the space right of the inset */}
       <MathLabel
         tex={'0.9^{9} \\approx 0.39 \\qquad 0.9^{50} \\approx 0.005 \\qquad 0.9^{1} = 0.9'}
-        x={985}
+        x={815}
         y={70}
         fontSize={19}
         color={colors.WARM}
@@ -230,23 +240,31 @@ function Frame({ s }: { s: SceneState }) {
       {/* decay curve inset */}
       {decayU > 0 && (
         <g opacity={decayU * dimU}>
-          <rect x={62} y={64} width={270} height={150} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <rect x={50} y={50} width={300} height={170} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
           <polyline
             points={DECAY.slice(0, Math.max(2, Math.ceil(decayU * DECAY.length)))
-              .map((p) => `${80 + p.d * 4.7},${192 - p.v * 108}`)
+              .map((p) => `${INSET_X0 + p.d * INSET_DX},${insetY(p.v)}`)
               .join(' ')}
             fill="none"
             stroke={colors.NEGATIVE}
             strokeWidth={2.5}
           />
-          <line x1={80} y1={192 - 0.9 * 108} x2={315} y2={192 - 0.9 * 108} stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="5 5" />
-          <text x={197} y={86} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+          <line
+            x1={INSET_X0}
+            y1={insetY(0.9)}
+            x2={INSET_X0 + 50 * INSET_DX}
+            y2={insetY(0.9)}
+            stroke={colors.ACCENT}
+            strokeWidth={2}
+            strokeDasharray="5 5"
+          />
+          <text x={200} y={78} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             signal vs distance
           </text>
-          <text x={230} y={102} fill={colors.ACCENT} fontSize={11.5}>
+          <text x={INSET_X0 + 50 * INSET_DX} y={insetY(0.9) + 19} textAnchor="end" fill={colors.ACCENT} fontSize={14}>
             attention: always one hop
           </text>
-          <text x={230} y={190} fill={colors.NEGATIVE} fontSize={11.5}>
+          <text x={INSET_X0 + 50 * INSET_DX} y={insetY(0) - 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
             recurrence
           </text>
         </g>

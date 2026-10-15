@@ -175,7 +175,7 @@ function PersonNode({ x, y, label, color, u }: { x: number; y: number; label: st
       <circle cx={x} cy={y} r={26} fill={colors.PANEL} stroke={color} strokeWidth={2} />
       <circle cx={x} cy={y - 6} r={7} fill={color} opacity={0.85} />
       <path d={`M${x - 12},${y + 14} a12 10 0 0 1 24 0`} fill={color} opacity={0.85} />
-      <text x={x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
     </g>
@@ -206,7 +206,7 @@ function Frame({ s }: { s: SceneState }) {
           <JsonDoc
             layout={LAYOUT}
             reveal={jsonU}
-            opacity={1 - 0.7 * clamp01(outU * 1.5)}
+            opacity={1 - 0.55 * clamp01(outU * 1.5)}
             hidden={FOLLOWS.map((_, i) => `tags[${i}][1]`).filter((_, i) => clamp01(outU * FOLLOWS.length - i) > 0)}
             focus={swapU > 0.3 ? ['tags'] : undefined}
             focusU={swapU > 0.3 ? 0.6 : 0}
@@ -228,7 +228,7 @@ function Frame({ s }: { s: SceneState }) {
                   u={u}
                   text={shortHex(f.key, 6, 2)}
                   fill={colors.ACCENT}
-                  fontSize={12}
+                  fontSize={13}
                   lift={i === 1 ? 150 : 70}
                   fadeOut
                 />
@@ -250,9 +250,16 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
 
+          {/* legend for the graph: one p tag, one arrow */}
+          {outU > 0 && (
+            <text x={1000} y={612} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(outU * 1.5) * (1 - clamp01(chainU * 2))}>
+              each p tag is one arrow from you
+            </text>
+          )}
+
           {/* petname note */}
           {petU > 0 && chainU <= 0 && swapU <= 0 && (
-            <text x={760} y={120} fill={colors.MUTED} fontSize={13} opacity={petU}>
+            <text x={760} y={120} fill={colors.MUTED} fontSize={14} opacity={petU}>
               ["p", key, relay, <tspan fill={colors.POSITIVE}>petname</tspan>] — your word, not theirs
             </text>
           )}
@@ -261,10 +268,10 @@ function Frame({ s }: { s: SceneState }) {
           {swapU > 0 && chainU <= 0 && (
             <g opacity={Math.min(1, swapU * 1.5) * (1 - clamp01(chainU * 2))}>
               <rect x={640} y={84} width={430} height={64} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={658} y={110} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <text x={658} y={110} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 new kind 3 = the ENTIRE list, again
               </text>
-              <text x={658} y={132} fill={colors.MUTED} fontSize={12}>
+              <text x={658} y={132} fill={colors.MUTED} fontSize={14}>
                 publish it missing alice → alice is unfollowed
               </text>
             </g>
@@ -284,7 +291,7 @@ function Frame({ s }: { s: SceneState }) {
                       d={`M${david.x + 20},${david.y - 16} Q ${(david.x + erin.x) / 2 + 40},${(david.y + erin.y) / 2 - 60} ${erin.x - 6},${erin.y + 30}`}
                       fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} strokeDasharray="6 5" opacity={u1}
                     />
-                    <text x={1005} y={505} fill={colors.SECONDARY} fontSize={12} opacity={u1}>
+                    <text x={1005} y={505} fill={colors.SECONDARY} fontSize={14} opacity={u1}>
                       david’s list: "erin"
                     </text>
                     {u2 > 0 && (
@@ -305,9 +312,9 @@ function Frame({ s }: { s: SceneState }) {
           {recoverU > 0 && (
             <g opacity={recoverU}>
               <rect x={120} y={470} width={300} height={92} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-              <text x={138} y={498} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>new device</text>
-              <text x={138} y={520} fill={colors.MUTED} fontSize={12} fontFamily="monospace">has: the key</text>
-              <text x={138} y={540} fill={colors.MUTED} fontSize={12} fontFamily="monospace">asks relays: latest kind 3</text>
+              <text x={138} y={498} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>new device</text>
+              <text x={138} y={520} fill={colors.MUTED} fontSize={14} fontFamily="monospace">has: the key</text>
+              <text x={138} y={540} fill={colors.MUTED} fontSize={14} fontFamily="monospace">asks relays: latest kind 3</text>
               <path d={`M${430},${505} Q 560,440 ${YOU.x - 40},${YOU.y + 30}`} fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} opacity={0.8} strokeDasharray="6 5" />
             </g>
           )}

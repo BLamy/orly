@@ -52,6 +52,25 @@ const GRID = { x: 320, y: 130, cell: 34, gap: 5 } as const;
 const gridW = COLS * (GRID.cell + GRID.gap);
 const gridH = ROWS * (GRID.cell + GRID.gap);
 
+// The card band: one slot per card seat, layer by layer (4 seats × 8 layers).
+// Each hot cell flies from its column into its own slot, so none stack.
+const BAND = { x: GRID.x, y: 62, w: gridW, h: 44 } as const;
+const SEATS = ROWS * BUDGET;
+const SEAT_PITCH = BAND.w / SEATS;
+const SEAT_W = SEAT_PITCH - 4;
+const SEAT_H = 26;
+const SLOT: Record<string, number> = {};
+HEAT.forEach((row, i) => {
+  let k = 0;
+  row.forEach((_, j) => {
+    if (isHot(i, j)) SLOT[`${i}-${j}`] = i * BUDGET + k++;
+  });
+});
+
+// The right-hand chips share one column: x, width and centre.
+const CHIP = { x: GRID.x + gridW + 26, w: 230 } as const;
+const CHIP_CX = CHIP.x + CHIP.w / 2;
+
 // token rain columns (which expert each falling token hits, per wave)
 const RAIN_N = 26;
 const rain2 = mulberry32(11);
@@ -203,8 +222,8 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* GPU band above the grid, revealed with the lift */}
           <g opacity={liftU}>
-            <rect x={GRID.x - 14} y={62} width={gridW + 22} height={44} rx={10} fill="none" stroke={colors.ACCENT} strokeWidth={1.4} strokeDasharray="6 4" />
-            <text x={GRID.x - 2} y={54} fill={colors.ACCENT} fontSize={13}>
+            <rect x={BAND.x - 14} y={BAND.y} width={BAND.w + 22} height={BAND.h} rx={10} fill="none" stroke={colors.ACCENT} strokeWidth={1.4} strokeDasharray="6 4" />
+            <text x={BAND.x - 2} y={BAND.y - 8} fill={colors.ACCENT} fontSize={14}>
               on the card · 4 experts × every layer
             </text>
           </g>
@@ -215,19 +234,24 @@ export function Render({ s }: { s: SceneState }) {
               const cellIn = clamp01(gridU * total * 1.15 - (i * COLS + j)) ;
               const hot = isHot(i, j);
               const heat = heatU * v;
-              const x = GRID.x + j * (GRID.cell + GRID.gap);
+              const homeX = GRID.x + j * (GRID.cell + GRID.gap);
               const homeY = GRID.y + i * (GRID.cell + GRID.gap);
-              // hot cells lift toward the band, keeping column, compressing rows
-              const liftY = hot ? homeY - (homeY - 70) * liftU : homeY;
-              const dimCold = !hot ? skewU * 0.55 + liftU * 0.15 : 0;
+              // hot cells fly into their card seat: column → seat, cell → seat size
+              const seatX = hot ? GRID.x + SLOT[`${i}-${j}`] * SEAT_PITCH + (SEAT_PITCH - SEAT_W) / 2 : homeX;
+              const seatY = BAND.y + (BAND.h - SEAT_H) / 2;
+              const x = homeX + (seatX - homeX) * liftU;
+              const y = hot ? homeY + (seatY - homeY) * liftU : homeY;
+              const w = hot ? GRID.cell + (SEAT_W - GRID.cell) * liftU : GRID.cell;
+              const h = hot ? GRID.cell + (SEAT_H - GRID.cell) * liftU : GRID.cell;
+              const dimCold = !hot ? skewU * 0.4 + liftU * 0.1 : 0;
               const c = heat > 0.5 ? colors.WARM : heat > 0.25 ? colors.SECONDARY : colors.MUTED;
               return (
                 <rect
                   key={`${i}-${j}`}
                   x={x}
-                  y={liftY}
-                  width={GRID.cell}
-                  height={GRID.cell * (hot ? 1 - liftU * 0.5 : 1)}
+                  y={y}
+                  width={w}
+                  height={h}
                   rx={5}
                   fill={c}
                   opacity={cellIn * (0.12 + 0.78 * heat) * (1 - dimCold)}
@@ -240,13 +264,13 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* row/col labels */}
           <g opacity={gridU}>
-            <text x={GRID.x - 20} y={GRID.y + 8} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+            <text x={GRID.x - 20} y={GRID.y + 8} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               layer 1
             </text>
-            <text x={GRID.x - 20} y={GRID.y + gridH - 22} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+            <text x={GRID.x - 20} y={GRID.y + gridH - 22} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               layer 58
             </text>
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={1 - liftU * 0.6}>
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={1 - liftU * 0.6}>
               experts → (256 per layer in DeepSeek-V3; 16 shown)
             </text>
           </g>
@@ -262,38 +286,41 @@ export function Render({ s }: { s: SceneState }) {
               return <circle key={k} cx={x} cy={yTop + (yHit - yTop) * u} r={4} fill={colors.WARM} opacity={0.8 * (1 - u * 0.5)} />;
             })}
 
-          {/* budget chip + per-row cut ticks */}
+          {/* budget chip */}
           <g opacity={budgetU}>
-            <rect x={GRID.x + gridW + 26} y={GRID.y + 10} width={200} height={58} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 34} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+            <rect x={CHIP.x} y={GRID.y + 10} width={CHIP.w} height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+            <text x={CHIP_CX} y={GRID.y + 36} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               --kt-num-gpu-experts 4
             </text>
-            <text x={GRID.x + gridW + 126} y={GRID.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={CHIP_CX} y={GRID.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               per MoE layer
             </text>
           </g>
 
           {/* VRAM meter */}
           <g opacity={vramU}>
-            <rect x={GRID.x + gridW + 26} y={GRID.y + 96} width={200} height={94} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 118} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+            <rect x={CHIP.x} y={GRID.y + 92} width={CHIP.w} height={110} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={CHIP_CX} y={GRID.y + 116} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               video memory
             </text>
-            <rect x={GRID.x + gridW + 46} y={GRID.y + 132} width={160} height={13} rx={5} fill={colors.BG} stroke={colors.GRID} />
-            <rect x={GRID.x + gridW + 46} y={GRID.y + 132} width={160 * (0.45 + 0.3 * liftU)} height={13} rx={5} fill={colors.ACCENT} opacity={0.85} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 166} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <rect x={CHIP.x + 20} y={GRID.y + 130} width={CHIP.w - 40} height={13} rx={5} fill={colors.BG} stroke={colors.GRID} />
+            <rect x={CHIP.x + 20} y={GRID.y + 130} width={(CHIP.w - 40) * (0.45 + 0.3 * liftU)} height={13} rx={5} fill={colors.ACCENT} opacity={0.85} />
+            <text x={CHIP_CX} y={GRID.y + 168} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
               more experts → lower latency
             </text>
-            <text x={GRID.x + gridW + 126} y={GRID.y + 182} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
-              too many → OOM at boot
+            <text x={CHIP_CX} y={GRID.y + 188} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+              too many → may run out of memory
             </text>
           </g>
 
           {/* ratio flag chip */}
           <g opacity={ratioU}>
-            <rect x={GRID.x - 14} y={GRID.y + gridH + 34} width={gridW + 22} height={32} rx={9} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 55} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, monospace">
-              --kt-gpu-experts-ratio 0.1   (10% of all experts, overrides the per-layer count)
+            <rect x={GRID.x - 14} y={GRID.y + gridH + 34} width={gridW + 22} height={46} rx={9} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 54} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace">
+              --kt-gpu-experts-ratio 0.1
+            </text>
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 72} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              10% of all experts · overrides the per-layer count
             </text>
           </g>
         </g>
@@ -304,13 +331,13 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             the budget is set. who gets the seats?
           </text>
-          <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             routing is skewed — a few experts carry most tokens
           </text>
-          <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             the card seats a chosen few; four strategies pick them
           </text>
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             --kt-num-gpu-experts · --kt-gpu-experts-ratio
           </text>
         </g>

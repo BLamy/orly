@@ -206,7 +206,7 @@ export function buildScene() {
   tl.hold(B(5) + 7, 0.8);
 
   // 6 — s: 57 → 61: the four oldest recent beads leave; the sink never moves
-  to(capLbl, 0.15, B(6));
+  to(capLbl, 0.55, B(6)); // stays readable: the 5 + 44 = 49 budget is what this beat is about
   to(phase, 3, B(6) + 1.0, 1.7, ease.move);
   to(trimLbl, 1, B(6) + 2.9);
   tl.hold(B(6) + 7, 0.8);
@@ -224,6 +224,7 @@ export function buildScene() {
   // 8 — close on the boundary: keys re-rotate, values translate, content IDs keep counting
   to(horizonLbl, 0, B(8));
   // the beat-7 framing holds: the boundary stays at the right, the sink end stays in frame
+  tl.tween(cam, { x: 610, y: 330, k: 1.2 }, { at: B(8), dur: 1.3, ease: ease.move });
   to(badgeO, 1, B(8) + 1.0);
   to(phase, 5, B(8) + 1.8, 1.7, ease.move);
   to(rotLbl, 1, B(8) + 3.0);
@@ -276,11 +277,11 @@ function Note({ x, y, text, o = 1, color = MUTED, size = 13, anchor = 'start' }:
 
 function Chip({ x, text, o, color = MUTED }: { x: number; text: string; o: number; color?: string }) {
   if (o <= 0) return null;
-  const w = text.length * 6.7 + 18;
+  const w = text.length * 7.2 + 18;
   return (
     <g opacity={o}>
       <rect x={x} y={88} width={w} height={24} rx={12} fill={PANEL} stroke={color} strokeOpacity={0.6} />
-      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={11} textAnchor="middle">
+      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={12} textAnchor="middle">
         {text}
       </text>
     </g>
@@ -429,11 +430,11 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.legendO)}>
           {/* legend rows sit between the start() line and the upper ruler, right of the "0" tick label */}
           <rect x={X0 + 240} y={TAPE_Y - 100} width={BEAD_W} height={12} rx={2.5} fill={ACCENT} fillOpacity={0.55} stroke={ACCENT} />
-          <Code x={X0 + 260} y={TAPE_Y - 90} text="R  image tokens (K/V)" color={ACCENT} size={11} />
+          <Code x={X0 + 260} y={TAPE_Y - 90} text="R  image tokens (K/V)" color={ACCENT} size={12} />
           <rect x={X0 + 240} y={TAPE_Y - 84} width={BEAD_W} height={12} rx={2.5} fill={SECONDARY} fillOpacity={0.55} stroke={SECONDARY} />
-          <Code x={X0 + 260} y={TAPE_Y - 74} text="G  geometry tokens (K/V) — one unit per frame" color={SECONDARY} size={11} />
-          <rect x={X0 - 8} y={TAPE_Y + 100} width={150} height={24} rx={6} fill={PANEL} stroke={MUTED} strokeOpacity={0.5} />
-          <Code x={X0 + 67} y={TAPE_Y + 116} text="text context · separate" color={MUTED} size={10} anchor="middle" />
+          <Code x={X0 + 260} y={TAPE_Y - 74} text="G  geometry tokens (K/V) — one unit per frame" color={SECONDARY} size={12} />
+          <rect x={X0 - 8} y={TAPE_Y + 100} width={184} height={24} rx={6} fill={PANEL} stroke={MUTED} strokeOpacity={0.5} />
+          <Code x={X0 + 84} y={TAPE_Y + 116} text="text context · separate" color={MUTED} size={12} anchor="middle" />
         </g>
 
         {/* ---------------- beat 3 ---------------- */}
@@ -442,20 +443,20 @@ export function Render({ s }: { s: SceneState }) {
           <Note x={CUR.x0 - 20} y={TAPE_Y - 80} text="reads the completed history; writes nothing into it" size={12} anchor="end" />
           <Note x={CUR.x1} y={TAPE_Y + 48} text="4 latent frames · outside the cache" color={POSITIVE} size={12} anchor="end" />
         </g>
-        {/* count chip sits in the gap between the tape and the lower ruler, clear of its tick labels */}
+        {/* count chip sits in the gap between the tray's bottom edge and the lower ruler, clear of both */}
         <g opacity={g(scene.countO)}>
-          <rect x={640 - 90} y={TAPE_Y + 20} width={180} height={22} rx={6} fill={PANEL} stroke={ACCENT} strokeOpacity={0.6} />
-          <Code x={640} y={TAPE_Y + 35} text={`retained frames: ${retainedCount}`} color={ACCENT} size={12} anchor="middle" />
+          <rect x={640 - 90} y={TAPE_Y + 34} width={180} height={22} rx={6} fill={PANEL} stroke={ACCENT} strokeOpacity={0.6} />
+          <Code x={640} y={TAPE_Y + 49} text={`retained frames: ${retainedCount}`} color={ACCENT} size={12} anchor="middle" />
         </g>
 
         {/* ---------------- beat 4 ---------------- */}
         <g opacity={g(scene.commitLbl)}>
-          <Code x={X0} y={TAPE_Y - 84} text="commit(clean, condition) · record=True → frame_ids += 1…4; _trim" color={ACCENT} size={12} />
+          <Code x={X0} y={TAPE_Y - 104} text="commit(clean, condition) · record=True → frame_ids += 1…4; _trim" color={ACCENT} size={12} />
           <Note x={X0} y={TAPE_Y + 48} text="R and G keys/values of the clean block become history for the next block" size={12} />
         </g>
 
         {/* ---------------- beat 5 ---------------- */}
-        <Note x={640} y={TAPE_Y - 84} text="… thirteen more commits · next_frame s = 57" color={MUTED} size={13} anchor="middle" o={g(scene.ffLbl)} />
+        <Note x={640} y={TAPE_Y - 104} text="… thirteen more commits · next_frame s = 57" color={MUTED} size={13} anchor="middle" o={g(scene.ffLbl)} />
         {braceU > 0 && (
           <g>
             {/* shallow braces so their labels end above the lower ruler line (y = 392) */}
@@ -467,14 +468,15 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.capLbl)}>
           <MathLabel tex={'\\text{capacity} = \\text{sink\\_frames} + \\text{history\\_frames} = 5 + 44 = 49'} x={X0} y={TAPE_Y + 118} fontSize={15} color={TEXT}
             anchor="start" boxWidth={620} />
-          <Code x={X0} y={TAPE_Y + 152} text="StreamPolicy(block_frames=4, sink_frames=5, history_frames=44, train_frames=61)" color={MUTED} size={11} />
+          <Code x={X0} y={TAPE_Y + 152} text="StreamPolicy(block_frames=4, sink_frames=5, history_frames=44, train_frames=61)" color={MUTED} size={12} />
           <Note x={CUR.x1} y={TAPE_Y + 122} text="current block: outside the retained budget" color={POSITIVE} size={12} anchor="end" />
         </g>
 
         {/* ---------------- beat 6 ---------------- */}
         <g opacity={g(scene.trimLbl)}>
-          <Code x={X0} y={TAPE_Y - 84} text={`_trim: kept = range(5) + range(${sNow - 44}, ${sNow}) · frame-major retain of R and G together`} color={ACCENT} size={12} />
-          <Note x={slotX(5)} y={TAPE_Y + 48} text={`oldest recent (${sNow - 48}…${sNow - 45}) left with their geometry tokens`} color={NEGATIVE} size={12} />
+          <Code x={X0} y={TAPE_Y - 104} text={`_trim: kept = range(5) + range(${sNow - 44}, ${sNow}) · frame-major retain of R and G together`} color={ACCENT} size={12} />
+          {/* the leaving beads sit just above their slots, clear of the brace labels below the tape */}
+          <Note x={slotX(5)} y={TAPE_Y - 40} text={`oldest recent (${sNow - 48}…${sNow - 45}) leave with their geometry tokens`} color={NEGATIVE} size={12} />
           <Note x={slotX(0)} y={TAPE_Y - 40} text="sink stays" color={WARM} size={12} />
         </g>
 
@@ -488,6 +490,12 @@ export function Render({ s }: { s: SceneState }) {
           <Note x={900} y={TAPE_Y - 110} text="57 → 61 → 65" size={12} />
           <Note x={900} y={TAPE_Y - 92} text="57 → 57 → 57" color={WARM} size={12} />
           <Note x={slotX(5)} y={TAPE_Y + 48} text={diverged ? `recent IDs ${sNow - 44}…${sNow - 1} → positions 13…56` : 'positions = frame IDs until the horizon'} color={WARM} size={12} />
+          {/* the training horizon on the rotary ruler: the block's last position (60) ends at H = 61 */}
+          <line x1={1130} y1={RULER_DN - 6} x2={1130} y2={RULER_DN + 6} stroke={WARM} strokeWidth={2} />
+          <Note x={CUR.x1} y={RULER_DN - 12} text="training horizon H = 61" color={WARM} size={12} anchor="end" />
+          {/* positions 5–12 are never used: a leader from the gap between the sink's 4 and the recent 13 */}
+          <line x1={182} y1={RULER_DN + 6} x2={182} y2={RULER_DN + 26} stroke={WARM} strokeOpacity={0.8} />
+          <Note x={X0} y={RULER_DN + 36} text="5–12 skipped: sink ends at 4, recent resumes at 13" color={WARM} size={12} />
         </g>
 
         {/* ---------------- beat 8 ---------------- */}
@@ -522,7 +530,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* HUD — outside the camera transform */}
       <text x={48} y={64} fill={TEXT} fontFamily={font.ui} fontSize={24} fontWeight={600}>A bounded memory for a long stream</text>
       <Chip x={48} text="Illustrative values; no model inference" o={g(scene.chipO)} color={WARM} />
-      <Chip x={330} text="exact StreamPolicy arithmetic · defaults" o={g(scene.chipO)} color={MUTED} />
+      <Chip x={372} text="exact StreamPolicy arithmetic · defaults" o={g(scene.chipO)} color={MUTED} />
     </g>
   );
 }

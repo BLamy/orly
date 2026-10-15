@@ -331,11 +331,11 @@ function MemoryRibbon({ reveal, discoveries, crystal, dim }: { reveal: number; d
         const u = clamp01(discoveries * 4.4 - i * 0.9) * (1 - c);
         if (u <= 0) return null;
         const point = points[item.index];
-        const w = item.label.length * 7.4 + 22;
+        const w = item.label.length * 8 + 24;
         return (
           <g key={item.label} transform={`translate(${point.x}, ${point.y + 30 + (1 - u) * 8})`} opacity={u}>
-            <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
-            <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+            <rect x={-w / 2} y={-14} width={w} height={28} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
+            <text y={4.5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               {item.label}
             </text>
           </g>
@@ -366,10 +366,10 @@ function JourneyCatalog({ catalog, versions, update, dim }: { catalog: number; v
   if (headU <= 0) return null;
   return (
     <g opacity={1 - 0.78 * dim}>
-      <text x={90} y={140} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO} fontWeight={800} opacity={headU}>
+      <text x={90} y={140} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO} fontWeight={800} opacity={headU}>
         journey_versions
       </text>
-      <text x={628} y={140} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={headU}>
+      <text x={628} y={140} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={headU}>
         immutable saved specifications
       </text>
       {JOURNEYS.map((journey, i) => {
@@ -382,24 +382,24 @@ function JourneyCatalog({ catalog, versions, update, dim }: { catalog: number; v
             <text x={18} y={28} fill={colors.TEXT} fontSize={14} fontWeight={750}>
               {journey.label}
             </text>
-            <text x={18} y={49} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={18} y={49} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
               {journey.id}
             </text>
             <g transform={`translate(188, 34) scale(${0.82 + 0.18 * vu})`} opacity={vu}>
-              <rect x={-25} y={-14} width={50} height={28} rx={14} fill={colors.ACCENT} opacity={0.15} />
-              <rect x={-25} y={-14} width={50} height={28} rx={14} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} />
-              <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+              <rect x={-27} y={-14} width={54} height={28} rx={14} fill={colors.ACCENT} opacity={0.15} />
+              <rect x={-27} y={-14} width={54} height={28} rx={14} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} />
+              <text y={4.5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO} fontWeight={700}>
                 v1
               </text>
             </g>
             {i === 0 && update > 0 && (
               <g transform={`translate(250, 34) scale(${0.78 + 0.22 * update})`} opacity={update}>
-                <rect x={-25} y={-14} width={50} height={28} rx={14} fill={colors.WARM} opacity={0.15} />
-                <rect x={-25} y={-14} width={50} height={28} rx={14} fill="none" stroke={colors.WARM} strokeWidth={1.4} />
-                <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={800}>
+                <rect x={-27} y={-14} width={54} height={28} rx={14} fill={colors.WARM} opacity={0.15} />
+                <rect x={-27} y={-14} width={54} height={28} rx={14} fill="none" stroke={colors.WARM} strokeWidth={1.4} />
+                <text y={4.5} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={800}>
                   v2
                 </text>
-                <text x={45} y={4} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                <text x={46} y={4.5} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                   appended · v1 retained
                 </text>
               </g>
@@ -425,12 +425,12 @@ function ScheduleLinks({ u, dim }: { u: number; dim: number }) {
   if (u <= 0) return null;
   return (
     <g opacity={1 - 0.8 * dim}>
-      <g transform="translate(714, 126)" opacity={clamp01(u * 2)}>
-        <rect x={-60} y={-20} width={120} height={40} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-        <text y={-2} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+      <g transform="translate(700, 126)" opacity={clamp01(u * 2)}>
+        <rect x={-60} y={-22} width={120} height={44} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+        <text y={-3} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
           auto-schedule
         </text>
-        <text y={14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+        <text y={14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
           exact version
         </text>
       </g>
@@ -457,7 +457,7 @@ function TestRunCatalog({ u, dim }: { u: number; dim: number }) {
   if (headU <= 0) return null;
   return (
     <g opacity={1 - 0.78 * dim}>
-      <text x={784} y={126} fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO} fontWeight={800} opacity={headU}>
+      <text x={784} y={126} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} fontWeight={800} opacity={headU}>
         test_runs
       </text>
       {RUNS.map((run, i) => {
@@ -466,14 +466,14 @@ function TestRunCatalog({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={run.id} transform={`translate(782, ${run.y + (1 - p) * 10}) scale(${0.96 + 0.04 * p})`} opacity={p}>
             <rect width={410} height={68} rx={11} fill={colors.PANEL} stroke={i === 3 ? colors.WARM : colors.POSITIVE} strokeWidth={1.3} />
-            <text x={15} y={25} fill={i === 3 ? colors.WARM : colors.POSITIVE} fontSize={12} fontFamily={MONO} fontWeight={750}>
+            <text x={15} y={25} fill={i === 3 ? colors.WARM : colors.POSITIVE} fontSize={13} fontFamily={MONO} fontWeight={750}>
               {run.id} · {run.version}
             </text>
-            <text x={15} y={49} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={15} y={49} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
               replay_recording_id · {run.recording}
             </text>
-            <rect x={318} y={20} width={74} height={24} rx={12} fill={colors.POSITIVE} opacity={0.12} />
-            <text x={355} y={36} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
+            <rect x={318} y={19} width={76} height={26} rx={13} fill={colors.POSITIVE} opacity={0.12} />
+            <text x={356} y={36.5} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
               recorded
             </text>
           </g>
@@ -499,9 +499,9 @@ function RunTape({ reveal, sweep, provenance, dim }: { reveal: number; sweep: nu
         title="journey run · send-message@v1 · execution proof"
       />
       {provenance > 0 && (
-        <g transform={`translate(760, 88) scale(${0.9 + 0.1 * provenance})`} opacity={provenance}>
-          <rect x={-108} y={-14} width={216} height={28} rx={14} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+        <g transform={`translate(768, 88) scale(${0.9 + 0.1 * provenance})`} opacity={provenance}>
+          <rect x={-120} y={-15} width={240} height={30} rx={15} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+          <text y={4.5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
             origin, not certification
           </text>
         </g>
@@ -516,7 +516,7 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
   const target = { x: 640, y: 420 };
   return (
     <g opacity={1 - 0.9 * dim}>
-      <rect x={142} y={132} width={996} height={430} rx={20} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} opacity={0.97} />
+      <rect x={64} y={132} width={1152} height={430} rx={20} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
       <text x={640} y={174} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={750}>
         How a later exploration starts today
       </text>
@@ -524,7 +524,7 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
         const p = clamp01(uu * 4.5 - i * 0.85);
         if (p <= 0) return null;
         const x = 260 + i * 252;
-        const w = Math.max(128, label.length * 7.6 + 30);
+        const w = Math.max(128, label.length * 8 + 30);
         const from = { x, y: 256 };
         const path = `M ${from.x} ${from.y + 18} C ${from.x} 330, ${target.x} 338, ${target.x} ${target.y - 27}`;
         return (
@@ -532,7 +532,7 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
             <path d={path} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - p} opacity={0.55} />
             <g transform={`translate(${x}, ${256 + (1 - p) * -9})`} opacity={p}>
               <rect x={-w / 2} y={-18} width={w} height={36} rx={18} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-              <text y={4.5} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+              <text y={4.5} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                 {label}
               </text>
             </g>
@@ -548,10 +548,10 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
       {boundary > 0 && (
         <g transform={`translate(640, ${507 + (1 - boundary) * 10})`} opacity={boundary}>
           <rect x={-364} y={-30} width={728} height={60} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-          <text y={-6} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO} fontWeight={750}>
+          <text y={-6} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={750}>
             public LoopQA MCP tool list → inspect the catalog
           </text>
-          <text y={17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text y={17} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             start exploration → UI / REST / project chat / local Replay QA MCP UI
           </text>
         </g>

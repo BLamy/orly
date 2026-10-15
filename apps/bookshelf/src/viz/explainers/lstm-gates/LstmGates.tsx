@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -34,6 +34,9 @@ function trace(points: number[], upTo: number): string {
     .join('');
 }
 
+/** Secondary label colour: the text colour at a softer opacity, so it reads on the dark stage. */
+const SOFT = { fill: colors.TEXT, opacity: 0.72 };
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const cellU = s.get(scene.cellU);
@@ -43,10 +46,11 @@ function Frame({ s }: { s: SceneState }) {
   const readU = s.get(scene.readU);
   const dimU = s.get(scene.dimU);
   const endU = s.get(scene.endU);
+  const eqU = s.get(scene.eqU);
 
   const ri = Math.min(N, Math.max(0, runU));
-  const fGlow = gateHi >= 0.5 && gateHi < 1.5 ? 1 : 0.35;
-  const iGlow = gateHi >= 1.5 ? 1 : 0.35;
+  const fGlow = gateHi >= 0.5 && gateHi < 1.5 ? 1 : 0.75;
+  const iGlow = gateHi >= 1.5 ? 1 : 0.75;
   // the belt: cell state value at the playhead
   const cNow = LSTM.c[Math.floor(ri)];
 
@@ -68,7 +72,7 @@ function Frame({ s }: { s: SceneState }) {
               strokeWidth={5}
               opacity={0.9}
             />
-            <text x={CELL_CX - 330} y={CELL_CY - 16} fill={colors.ACCENT} fontSize={14}>
+            <text x={CELL_CX - 330} y={CELL_CY - 34} fill={colors.ACCENT} fontSize={15}>
               cell state — the conveyor belt
             </text>
             {/* forget gate: a multiply sitting ON the belt */}
@@ -77,7 +81,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={CELL_CX - 130} y={CELL_CY + 6} textAnchor="middle" fill={colors.WARM} fontSize={18}>
                 ×
               </text>
-              <text x={CELL_CX - 130} y={CELL_CY + 46} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={CELL_CX - 130} y={CELL_CY + 46} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 forget gate ≈ 0.998
               </text>
             </g>
@@ -95,7 +99,7 @@ function Frame({ s }: { s: SceneState }) {
                 stroke={colors.POSITIVE}
                 strokeWidth={2.5}
               />
-              <text x={CELL_CX + 110} y={CELL_CY + 98} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              <text x={CELL_CX + 110} y={CELL_CY + 98} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 input gate — shut for noise, open for the marker
               </text>
             </g>
@@ -103,7 +107,7 @@ function Frame({ s }: { s: SceneState }) {
             {runU > 0 && (
               <g>
                 <circle cx={CELL_CX + 250} cy={CELL_CY} r={13} fill={colors.ACCENT} opacity={0.4 + 0.6 * Math.abs(cNow)} />
-                <text x={CELL_CX + 250} y={CELL_CY - 22} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                <text x={CELL_CX + 250} y={CELL_CY - 22} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {`c = ${cNow.toFixed(2)}`}
                 </text>
               </g>
@@ -114,10 +118,10 @@ function Frame({ s }: { s: SceneState }) {
           <g opacity={cellU}>
             <line x1={stepX(0)} y1={stateY(0)} x2={stepX(N)} y2={stateY(0)} stroke={colors.GRID} />
             <line x1={stepX(0)} y1={stateY(1)} x2={stepX(N)} y2={stateY(1)} stroke={colors.GRID} strokeDasharray="4 6" />
-            <text x={stepX(0) - 10} y={stateY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={stepX(0) - 10} y={stateY(1) + 5} textAnchor="end" fill={colors.TEXT} opacity={0.72} fontSize={14}>
               1
             </text>
-            <text x={stepX(0) - 10} y={stateY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={stepX(0) - 10} y={stateY(0) + 5} textAnchor="end" fill={colors.TEXT} opacity={0.72} fontSize={14}>
               0
             </text>
             {/* the marker + noise inputs as ticks */}
@@ -133,13 +137,14 @@ function Frame({ s }: { s: SceneState }) {
                   opacity={cellU}
                 />
                 {MARKS[t] === 1 && (
-                  <text x={stepX(t + 0.5)} y={stateY(0) - 54} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+                  // set left of the tick so the rising trace never crosses the word
+                  <text x={stepX(t) - 6} y={stateY(0) - 54} textAnchor="end" fill={colors.WARM} fontSize={14}>
                     the clue
                   </text>
                 )}
               </g>
             ))}
-            <text x={stepX(N / 2)} y={stateY(0) + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={stepX(N / 2)} y={stateY(0) + 36} textAnchor="middle" {...SOFT} fontSize={14}>
               sixteen steps of noise
             </text>
           </g>
@@ -150,7 +155,7 @@ function Frame({ s }: { s: SceneState }) {
               <path d={trace(LSTM.c, ri)} fill="none" stroke={colors.ACCENT} strokeWidth={3.5} />
               <circle cx={stepX(ri)} cy={stateY(LSTM.c[Math.min(N, Math.round(ri))])} r={7} fill={colors.ACCENT} />
               {runU >= N - 0.2 && (
-                <text x={stepX(N) + 8} y={stateY(LSTM_FINAL) + 4} fill={colors.ACCENT} fontSize={14}>
+                <text x={stepX(N) + 8} y={stateY(LSTM_FINAL) + 5} fill={colors.ACCENT} fontSize={14}>
                   {LSTM_FINAL.toFixed(2)}
                 </text>
               )}
@@ -162,7 +167,7 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={Math.min(1, rnnU * 1.4)}>
               <path d={trace(RNN_STATE, rnnU * N)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.5} opacity={0.9} />
               {rnnU >= 0.99 && (
-                <text x={stepX(N) + 8} y={stateY(RNN_FINAL) + 4} fill={colors.NEGATIVE} fontSize={14}>
+                <text x={stepX(N) + 8} y={stateY(RNN_FINAL) + 5} fill={colors.NEGATIVE} fontSize={14}>
                   {RNN_FINAL.toFixed(2)}
                 </text>
               )}
@@ -172,14 +177,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* final read-out comparison */}
           {readU > 0 && (
             <g opacity={readU}>
-              <rect x={905} y={470} width={300} height={104} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-              <text x={925} y={500} fill={colors.ACCENT} fontSize={15}>
+              <rect x={880} y={466} width={300} height={92} rx={12} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+              <text x={900} y={492} fill={colors.ACCENT} fontSize={15}>
                 {`gated memory   ${LSTM_FINAL.toFixed(2)} — recalls`}
               </text>
-              <text x={925} y={530} fill={colors.NEGATIVE} fontSize={15}>
+              <text x={900} y={518} fill={colors.NEGATIVE} fontSize={15}>
                 {`plain recurrence ${RNN_FINAL.toFixed(2)} — noise`}
               </text>
-              <text x={925} y={558} fill={colors.MUTED} fontSize={13}>
+              <text x={900} y={543} fill={colors.TEXT} opacity={0.72} fontSize={14}>
                 same sequence, same seventeen steps
               </text>
             </g>
@@ -187,32 +192,35 @@ function Frame({ s }: { s: SceneState }) {
         </g>
       </Camera>
 
-      {/* screen-fixed math */}
-      <MathLabel
-        tex={'c_t = f_t\\,c_{t-1} + i_t\\,\\tilde{c}_t \\qquad f_t \\approx 0.998'}
-        x={985}
-        y={70}
-        fontSize={20}
-        color={colors.WARM}
-        opacity={s.get(scene.eqU)}
-      />
+      {/* screen-fixed equation, top centre so it clears the belt at every camera */}
+      <g opacity={eqU}>
+        <text x={640} y={56} textAnchor="middle" fill={colors.WARM} fontSize={22}>
+          c<tspan fontSize={15} dy={5}>t</tspan>
+          <tspan dy={-5}> = f</tspan>
+          <tspan fontSize={15} dy={5}>t</tspan>
+          <tspan dy={-5}> c</tspan>
+          <tspan fontSize={15} dy={5}>t−1</tspan>
+          <tspan dy={-5}> + i</tspan>
+          <tspan fontSize={15} dy={5}>t</tspan>
+          <tspan dy={-5}> c̃</tspan>
+          <tspan fontSize={15} dy={5}>t</tspan>
+          <tspan dy={-5}>{'  f'}</tspan>
+          <tspan fontSize={15} dy={5}>t</tspan>
+          <tspan dy={-5}> ≈ 0.998</tspan>
+        </text>
+      </g>
 
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Gated Memory
           </text>
-          <MathLabel
-            tex={'\\text{multiplied chain} \\;\\to\\; \\text{additive belt} + \\text{learned locks}'}
-            x={640}
-            y={340}
-            fontSize={20}
-            color={colors.ACCENT}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={340} textAnchor="middle" fill={colors.ACCENT} fontSize={20}>
+            multiplied chain  →  additive belt + learned locks
+          </text>
+          <text x={640} y={398} textAnchor="middle" fill={colors.TEXT} opacity={0.72} fontSize={17}>
             after 17 noisy steps: the LSTM holds 0.95 — the plain RNN holds -0.10
           </text>
         </g>

@@ -39,7 +39,9 @@ const LAYOUT = layoutJson(INFO, {
 });
 
 const RELAY_NODE = { x: 1010, y: 170 };
-const URL_POS = { x: 1010, y: 96 };
+// the address sits above the relay node (node top ≈ y 142); the Accept pill
+// sits between the address and the node, so nothing touches the node's edge
+const URL_POS = { x: 1010, y: 74 };
 
 // supported_nips badges: values fly out of the array to a right-side column.
 const NIP_BADGES = INFO.supported_nips.map((n, i) => ({
@@ -55,6 +57,10 @@ const GATES = [
   { key: 'limitation.max_message_length', label: 'message bytes', val: '≤ 131072' },
   { key: 'limitation.auth_required', label: 'auth lock', val: 'open' },
 ];
+
+// rows of the badge grid and the gate column share one left edge (x 848)
+const BADGE_LABEL_Y = 272;
+const GATE_TOP_Y = 412;
 
 // the document frame also keeps the relay node and its Accept header on
 // screen (x ≈ 1090), so the request and the document read as one picture
@@ -181,14 +187,17 @@ export function Render({ s }: { s: SceneState }) {
 
   // while the camera is parked on the right column, keep the document in a
   // focus dim so its off-camera identity fields never clip at full opacity
+  // unfocused tokens stay readable (0.4) so the document reads as text, not
+  // texture; during the gates beat they recede (0.14) behind the gate column
+  const DOC_DIM = gatesU > 0 ? 0.14 : 0.4;
   let focus: string[] | undefined;
   let focusU = 0;
   if (whoU > 0) {
     focus = ['name', 'description', 'pubkey'];
     focusU = whoU;
   } else if (nipsU > 0) {
-    // gates beat: the subject is the right-column chips — sink the whole
-    // document to near-nothing so no off-camera token clips visibly
+    // gates beat: the subject is the right-column chips — the rest of the
+    // document recedes so the gate column carries the frame
     focus = gatesU > 0 ? ['(nothing)'] : ['supported_nips'];
     focusU = clamp01(nipsU * 3);
   }
@@ -208,8 +217,8 @@ export function Render({ s }: { s: SceneState }) {
               </text>
               {flipU > 0 && (
                 <g opacity={Math.min(1, flipU * 1.4)}>
-                  <rect x={790} y={122} width={300} height={26} rx={7} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
-                  <text x={940} y={139} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+                  <rect x={790} y={92} width={300} height={28} rx={7} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
+                  <text x={940} y={111} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                     Accept: application/nostr+json
                   </text>
                 </g>
@@ -217,7 +226,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          <JsonDoc layout={LAYOUT} reveal={docU} focus={focus} focusU={focusU} dim={gatesU > 0 ? 0.06 : 0.22} />
+          <JsonDoc layout={LAYOUT} reveal={docU} focus={focus} focusU={focusU} dim={DOC_DIM} />
 
           {/* supported_nips badges */}
           {NIP_BADGES.map((b, i) => {
@@ -242,7 +251,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {nipsU >= 1 && (
-            <text x={880 - 32} y={280} fill={colors.MUTED} fontSize={12} opacity={Math.min(1, (nipsU - 0.9) * 10)}>
+            <text x={880 - 32} y={BADGE_LABEL_Y} fill={colors.TEXT} fontSize={14} opacity={Math.min(1, (nipsU - 0.9) * 10)}>
               what this relay speaks
             </text>
           )}
@@ -251,12 +260,12 @@ export function Render({ s }: { s: SceneState }) {
           {GATES.map((gate, i) => {
             const u = clamp01(gatesU * GATES.length - i);
             if (u <= 0) return null;
-            const y = 400 + i * 40;
+            const y = GATE_TOP_Y + i * 40;
             return (
               <g key={gate.key} opacity={u}>
                 <rect x={848} y={y - 18} width={330} height={32} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={866} y={y + 3} fill={colors.TEXT} fontSize={13}>{gate.label}</text>
-                <text x={1160} y={y + 3} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+                <text x={866} y={y + 4} fill={colors.TEXT} fontSize={14}>{gate.label}</text>
+                <text x={1160} y={y + 4} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
                   {gate.val}
                 </text>
               </g>
@@ -264,7 +273,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
           {honestU > 0 && (
-            <text x={330} y={560} fill={colors.NEGATIVE} fontSize={14} opacity={honestU}>
+            <text x={330} y={558} fill={colors.NEGATIVE} fontSize={14} opacity={honestU}>
               self-reported — a sign on a door, not a contract
             </text>
           )}
@@ -280,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={347} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             identity · supported extensions · machine-readable house rules
           </text>
-          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-11 · GET https://…  Accept: application/nostr+json
           </text>
         </g>

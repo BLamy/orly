@@ -103,8 +103,8 @@ function StepRail({ x, y, u, failAt, fail, pass }: { x: number; y: number; u: nu
       return <g key={label} transform={`translate(0 ${i * 34})`}>
         {i < STEPS.length - 1 && <line x1="10" y1="12" x2="10" y2="34" stroke={colors.GRID} strokeWidth="2" />}
         <circle cx="10" cy="10" r={9 + (isFail ? fail * 3 : 0)} fill="#13233a" stroke={c} strokeWidth="2.5" />
-        <text x="10" y="14" textAnchor="middle" fill={c} fontSize="10" fontWeight="700">{i + 1}</text>
-        <text x="30" y="14" fill={reached > 0 ? colors.TEXT : colors.MUTED} fontSize="12">{label}</text>
+        <text x="10" y="14" textAnchor="middle" fill={c} fontSize="12" fontWeight="700">{i + 1}</text>
+        <text x="30" y="15" fill={reached > 0 ? colors.TEXT : colors.MUTED} fontSize="14">{label}</text>
       </g>;
     })}
   </g>;
@@ -136,30 +136,30 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={laptop} transform={`translate(${LAPTOP.x} ${LAPTOP.y})`}>
         <rect x="-150" y="-100" width="300" height="196" rx="18" fill="#0d1727" stroke={colors.MUTED} strokeWidth="2.5" />
         <rect x="-190" y="98" width="380" height="14" rx="7" fill="#1b2a44" stroke={colors.MUTED} strokeWidth="1.5" />
-        <text x="0" y="-74" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">YOUR LAPTOP</text>
+        <text x="0" y="-74" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontWeight="700" letterSpacing="1.5">YOUR LAPTOP</text>
         <rect x="-130" y="-58" width="260" height="46" rx="10" fill="#102033" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="0" y="-38" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontWeight="700">the app · working copy</text>
-        <text x="0" y="-21" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>http://localhost:3000</text>
+        <text x="0" y="-38" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="700">the app · working copy</text>
+        <text x="0" y="-21" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>http://localhost:3000</text>
         <g opacity={cmd}>
           <rect x="-130" y="0" width="260" height="80" rx="10" fill="#0a0e1a" stroke={colors.GRID} strokeWidth="1.5" />
-          <text x="-118" y="18" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy \</text>
-          <text x="-118" y="34" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>    --project prj_7c1 \</text>
-          <text x="-118" y="50" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io</text>
-          <text x="-118" y="69" fill={connected > 0 ? colors.POSITIVE : colors.WARM} fontSize="11" fontFamily={colors.font.mono}>{connected > 0 ? '✓ tunnel ready · leave this running' : 'waiting for the tunnel…'}</text>
+          <text x="-118" y="18" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy \</text>
+          <text x="-118" y="34" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>    --project prj_7c1 \</text>
+          <text x="-118" y="50" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io</text>
+          <text x="-118" y="69" fill={connected > 0 ? colors.POSITIVE : colors.WARM} fontSize="12" fontWeight="700" fontFamily={colors.font.mono}>{connected > 0 ? '✓ tunnel ready · keep it running' : 'waiting for the tunnel…'}</text>
         </g>
       </g>
 
       {/* Fix lands on the laptop */}
       <g opacity={fix} transform={`translate(${LAPTOP.x - 170} ${LAPTOP.y + 126 + (1 - fix) * 10})`}>
         <rect width="340" height="52" rx="10" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="12" y="20" fill={colors.NEGATIVE} fontSize="11" fontFamily={colors.font.mono}>- const total = cart.total.toFixed(2)</text>
-        <text x="12" y="40" fill={colors.POSITIVE} fontSize="11" fontFamily={colors.font.mono}>+ const total = (cart.total ?? 0).toFixed(2)</text>
+        <text x="12" y="20" fill={colors.NEGATIVE} fontSize="12" fontFamily={colors.font.mono}>- const total = cart.total.toFixed(2)</text>
+        <text x="12" y="40" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>+ const total = (cart.total ?? 0).toFixed(2)</text>
       </g>
 
       {/* QA side: project card */}
       <g opacity={laptop} transform={`translate(${QA.x} ${QA.y})`}>
         <rect x="-160" y="-100" width="320" height="200" rx="18" fill="#0d1727" stroke={colors.ACCENT} strokeWidth="2.5" />
-        <text x="0" y="-74" textAnchor="middle" fill={colors.ACCENT} fontSize="11" fontWeight="700" letterSpacing="1.5">REPLAY QA · PROJECT</text>
+        <text x="0" y="-74" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontWeight="700" letterSpacing="1.5">REPLAY QA · PROJECT</text>
         <g opacity={paused}>
           <rect x="-130" y="-60" width="260" height="56" rx="10" fill="#1b2a44" stroke={colors.MUTED} strokeWidth="1.5" />
           <text x="-118" y="-38" fill={colors.MUTED} fontSize="13" fontWeight="700">Awaiting start</text>
@@ -176,38 +176,44 @@ export function Render({ s }: { s: SceneState }) {
         </g>
         <g opacity={localEnv} transform={`translate(-130 ${48 + (1 - localEnv) * 8})`}>
           <rect width="260" height="44" rx="10" fill="#102033" stroke={colors.ACCENT} strokeWidth="2" />
-          <text x="12" y="17" fill={colors.ACCENT} fontSize="11" fontWeight="700" letterSpacing="1.5">LOCAL</text>
-          <text x="12" y="35" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>kind: local · trigger: manual</text>
+          <text x="12" y="17" fill={colors.ACCENT} fontSize="12" fontWeight="700" letterSpacing="1.5">LOCAL</text>
+          <text x="12" y="35" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>kind: local · trigger: manual</text>
         </g>
       </g>
 
       {/* Tunnel between them */}
       <g opacity={tunnel}>
-        <rect x={LAPTOP.x + 190} y={QA.y - 22} width={(QA.x - 160 - LAPTOP.x - 190) * tunnel} height="44" rx="22" fill="rgba(56,189,248,0.06)" stroke={colors.ACCENT} strokeWidth="2" strokeDasharray="10 8" />
-        <text x={(LAPTOP.x + QA.x) / 2 + 15} y={QA.y - 34} textAnchor="middle" fill={colors.ACCENT} fontSize="11" fontFamily={colors.font.mono} opacity={clamp01(tunnel * 2 - 1)}>tunnel · outbound from your laptop</text>
-        {/* traffic */}
+        <rect x={LAPTOP.x + 190} y={QA.y - 32} width={(QA.x - 160 - LAPTOP.x - 190) * tunnel} height="64" rx="32" fill="rgba(56,189,248,0.06)" stroke={colors.ACCENT} strokeWidth="2" strokeDasharray="10 8" />
+        <text x={640} y={QA.y - 46} textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono} opacity={clamp01(tunnel * 2 - 1)}>tunnel · outbound from your laptop</text>
+        <text x={640} y={QA.y - 7} textAnchor="middle" fill={colors.TEXT} fontSize="13" fontFamily={colors.font.mono} opacity={clamp01(tunnel * 2 - 1)}>qa.replay.io ↔ localhost:3000</text>
+        {/* traffic: requests run out to the laptop, responses run back over the same pill */}
         {railU > 0 && railU < 1 && [0, 1, 2].map((k) => {
           const u = (railU * 3 + k / 3) % 1;
-          const x = lerp(QA.x - 160, LAPTOP.x + 190, u);
-          return <circle key={k} cx={x} cy={QA.y} r="5" fill={colors.ACCENT} opacity={0.9} />;
+          const x = lerp(QA.x - 190, LAPTOP.x + 220, u);
+          return <circle key={`req${k}`} cx={x} cy={QA.y + 13} r="4" fill={colors.ACCENT} opacity={0.9} />;
+        })}
+        {railU > 0 && railU < 1 && [0, 1].map((k) => {
+          const u = (railU * 2 + k / 2) % 1;
+          const x = lerp(LAPTOP.x + 220, QA.x - 190, u);
+          return <circle key={`res${k}`} cx={x} cy={QA.y + 24} r="4" fill={colors.POSITIVE} opacity={0.9} />;
         })}
       </g>
 
       {/* The journey rail */}
       <g opacity={clamp01(run * 4)} transform="translate(560 430)">
-        <text x="0" y="0" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">{rerun > 0 ? 'GUEST CHECKOUT · RERUN' : 'GUEST CHECKOUT · RUN 1'}</text>
+        <text x="0" y="0" fill={colors.MUTED} fontSize="13" fontWeight="700" letterSpacing="1.5">{rerun > 0 ? 'GUEST CHECKOUT · RERUN' : 'GUEST CHECKOUT · RUN 1'}</text>
         <StepRail x={0} y={16} u={railU} failAt={2} fail={fail} pass={pass} />
       </g>
       {/* Bug card and rerun card share one footprint; the bug card stays up through the rerun and the rerun card covers it once it passes */}
       <g opacity={clamp01(fail * 2 + rerun * 4) * (1 - fix * 0.6) * (1 - pass)} transform="translate(760 452)">
         <rect width="340" height="140" rx="12" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2" />
-        <text x="14" y="24" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">BUG · LOCAL</text>
+        <text x="14" y="24" fill={colors.NEGATIVE} fontSize="13" fontWeight="700" letterSpacing="1.5">BUG · LOCAL</text>
         <text x="14" y="50" fill={colors.TEXT} fontSize="13">Coupon step throws before the total renders</text>
         <RecordingStrip x={14} y={84} w={312} h={26} points={REC_POINTS} u={rec} title="recording" />
       </g>
       <g opacity={pass} transform="translate(760 452)">
         <rect width="340" height="140" rx="12" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2.5" />
-        <text x="14" y="24" fill={colors.POSITIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">RERUN · PASSED</text>
+        <text x="14" y="24" fill={colors.POSITIVE} fontSize="13" fontWeight="700" letterSpacing="1.5">RERUN · PASSED</text>
         <text x="14" y="50" fill={colors.TEXT} fontSize="13">4 of 4 steps · the fix held, on the recording</text>
         <RecordingStrip x={14} y={84} w={312} h={26} points={REC_POINTS.filter((p) => p.kind !== 'exception')} u={pass} title="rerun" />
       </g>

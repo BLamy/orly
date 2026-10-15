@@ -12,6 +12,7 @@ const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const TOKENS = Array.from({ length: 48 }, (_, i) => i);
 const TILE = Array.from({ length: 8 }, (_, row) => Array.from({ length: 8 }, (_, col) => col <= row));
+const STATE_STEPS = ['read S', 'forget a little', 'write new information'];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -85,11 +86,11 @@ function DecayCurve({ boundU, riskU }: { boundU: number; riskU: number }) {
       <line x1={170} y1={370} x2={170} y2={550} stroke={colors.MUTED} />
       <line x1={170} y1={541} x2={520} y2={541} stroke={colors.NEGATIVE} strokeDasharray="6 6" opacity={boundU} />
       <polyline points={pts} fill="none" stroke={boundU > 0.5 ? colors.ACCENT : colors.NEGATIVE} strokeWidth={4} />
-      <text x={190} y={370} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>log-decay g</text>
-      <text x={440} y={506} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>input z</text>
-      <text x={138} y={614} fill={colors.MUTED} fontSize={13}>log-decay g: how much old state survives each step (g ≤ 0)</text>
-      <text x={182} y={535} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={boundU}>g_min = -5</text>
-      <text x={348} y={392} textAnchor="middle" fill={boundU > 0.5 ? colors.ACCENT : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+      <text x={190} y={370} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>log-decay g</text>
+      <text x={440} y={506} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>input z</text>
+      <text x={138} y={612} fill={colors.MUTED} fontSize={13}>Each step keeps e^g of old state; rescaling divides by products.</text>
+      <text x={182} y={535} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={boundU}>g_min = -5</text>
+      <text x={348} y={392} textAnchor="middle" fill={boundU > 0.5 ? colors.ACCENT : colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
         {boundU > 0.5 ? 'scaled sigmoid · bounded' : 'negative Softplus · unbounded'}
       </text>
     </g>
@@ -111,9 +112,24 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={750}>Lower-bounded Kimi Delta Attention</text>
-        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>3 × KDA → 1 × Gated MLA · g_min=-5 · 16-token tiles</text>
+        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>3 × KDA → 1 × Gated MLA · g_min=-5 · 16-token tiles</text>
         <text x={640} y={226} textAnchor="middle" fill={colors.MUTED} fontSize={16} opacity={tapeU * (1 - stateU) * (1 - rhythmU)}>every token × every token = 10⁶ × 10⁶ pairs</text>
         <text x={640} y={300} textAnchor="middle" fill={colors.ACCENT} fontSize={16} opacity={stateU * Math.max(0, 1 - 4 * chunkU)}>state S: read → forget a little → write new information</text>
+        <g opacity={stateU * Math.max(0, 1 - 4 * chunkU)}>
+          {STATE_STEPS.map((label, i) => {
+            const active = clamp01(stateU * 3 - i);
+            const x = 316 + i * 224;
+            return (
+              <g key={label}>
+                <rect x={x} y={324} width={200} height={44} rx={10} fill={colors.ACCENT} opacity={0.12 + 0.3 * active} stroke={colors.ACCENT} strokeOpacity={0.35 + 0.65 * active} />
+                <text x={x + 100} y={352} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label}</text>
+              </g>
+            );
+          })}
+          {[0, 1].map((i) => (
+            <text key={i} x={540 + i * 224} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={18}>→</text>
+          ))}
+        </g>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -127,7 +143,7 @@ export function Render({ s }: { s: SceneState }) {
             {chunkU > 0 && [0, 1, 2].map((i) => (
               <g key={i} opacity={chunkU}>
                 <rect x={i * 352 - 8} y={-12} width={344} height={62} rx={10} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
-                <text x={i * 352 + 164} y={70} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>chunk {i + 1}</text>
+                <text x={i * 352 + 164} y={72} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>chunk {i + 1}</text>
               </g>
             ))}
             {chunkU > 0 && (
@@ -148,8 +164,8 @@ export function Render({ s }: { s: SceneState }) {
               const fill = !on ? colors.PANEL : diagonal && tensorU < 0.5 ? colors.WARM : colors.ACCENT;
               return <rect key={`${r}-${c}`} x={c * 38} y={r * 38} width={32} height={32} rx={4} fill={fill} opacity={!on ? 0.18 : 0.24 + 0.58 * chunkU} stroke={on ? fill : colors.GRID} />;
             }))}
-            <text x={152} y={330} textAnchor="middle" fill={tensorU > 0.5 ? colors.ACCENT : colors.WARM} fontSize={12} fontFamily={MONO}>
-              {tensorU > 0.5 ? 'all causal tiles → Tensor Core' : 'diagonal → position-pair path'}
+            <text x={152} y={330} textAnchor="middle" fill={tensorU > 0.5 ? colors.ACCENT : colors.WARM} fontSize={14} fontFamily={MONO}>
+              {tensorU > 0.5 ? 'all causal tiles → Tensor Core' : 'orange diagonal → special position-pair path'}
             </text>
           </g>
 
@@ -158,13 +174,15 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {rhythmU > 0 && (
-            <g opacity={rhythmU} transform="translate(170 360)">
+            <g opacity={rhythmU * (1 - s.get(scene.dimU))} transform="translate(218 360)">
               {['KDA', 'KDA', 'KDA', 'Gated MLA'].map((label, i) => (
                 <g key={label + i} transform={`translate(${i * 220} 0)`}>
                   <rect width={185} height={48} rx={10} fill={i === 3 ? colors.SECONDARY : colors.ACCENT} opacity={0.17} stroke={i === 3 ? colors.SECONDARY : colors.ACCENT} />
-                  <text x={92.5} y={30} textAnchor="middle" fill={i === 3 ? colors.SECONDARY : colors.ACCENT} fontSize={13} fontFamily={MONO}>{label}</text>
+                  <text x={92.5} y={30} textAnchor="middle" fill={i === 3 ? colors.SECONDARY : colors.ACCENT} fontSize={14} fontFamily={MONO}>{label}</text>
                 </g>
               ))}
+              <text x={312.5} y={76} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>3 × delta attention: efficient mixing</text>
+              <text x={752.5} y={76} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>1 × global attention: distant content</text>
             </g>
           )}
         </g>
@@ -174,7 +192,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={230} y={245} width={820} height={174} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
           <text x={640} y={308} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={750}>Carry state, not the whole square</text>
           <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={16}>bounded decay · parallel chunks · periodic global attention</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>KDA · Eq. 5 · Figure 3</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>KDA · Eq. 5 · Figure 3</text>
         </g>
       )}
     </>

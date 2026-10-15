@@ -9,8 +9,10 @@ const FIELD = [
   [0, 2, 0, 1, 0, 2, 0],
   [2, 0, 1, 0, 2, 0, 1],
 ];
+// The unguided route runs through the gaps between cells, so no dashes cross a label.
 const UNGUIDED = [
-  [250, 384], [360, 300], [470, 468], [582, 300], [694, 468], [805, 300], [916, 468], [1030, 384],
+  [250, 446], [375, 446], [375, 330], [487, 330], [487, 446], [599, 446], [599, 330],
+  [711, 330], [711, 446], [823, 446], [823, 330], [935, 330], [935, 504],
 ] as const;
 const GUIDED = [
   [250, 384], [382, 384], [514, 384], [646, 384], [778, 384], [910, 384], [1030, 384],
@@ -110,6 +112,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="90" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">what does the agent know before it starts?</text>
       <AgentBlock x={160} label="Mθ" sublabel="reason · plan · act" u={s.get(scene.stackU)} color={colors.SECONDARY} />
       <AgentBlock x={380} label="H" sublabel="tools · memory · checks" u={s.get(scene.stackU)} color={colors.ACCENT} />
+      <text x="270" y="178" textAnchor="middle" fill={colors.MUTED} fontSize="26" opacity={s.get(scene.stackU)}>+</text>
       {knowledge < 1 && <g opacity={missing * (1 - knowledge)}>
         <rect x="492" y="126" width="184" height="88" rx="24" fill="#241d10" stroke={colors.WARM} strokeWidth="3" strokeDasharray="8 7" />
         <text x="584" y="165" textAnchor="middle" fill={colors.WARM} fontSize="22" fontWeight="800">K ?</text>
@@ -120,11 +123,10 @@ export function Render({ s }: { s: SceneState }) {
         <text x="584" y="165" textAnchor="middle" fill={colors.POSITIVE} fontSize="22" fontWeight="800">K</text>
         <text x="584" y="192" textAnchor="middle" fill={colors.TEXT} fontSize="14">capability + usage policy</text>
       </g>}
-      <MathLabel tex={'A=(M_\\theta,H)'} x={700} y={140} anchor="start" fontSize={25} opacity={s.get(scene.stackU) * (1 - knowledge)} />
-      <MathLabel tex={'A_{res}=(M_\\theta,H,K)'} x={700} y={140} anchor="start" fontSize={25} opacity={knowledge} />
+      <MathLabel tex={knowledge < 0.5 ? 'A=(M_\\theta,H)' : 'A_{res}=(M_\\theta,H,K)'} x={700} y={140} anchor="start" fontSize={25} opacity={s.get(scene.stackU)} />
 
       <g opacity={field}>
-        <rect x="190" y="254" width="900" height="270" rx="34" fill={colors.PANEL} stroke={colors.GRID} strokeWidth="2" />
+        <rect x="170" y="254" width="940" height="270" rx="34" fill={colors.PANEL} stroke={colors.GRID} strokeWidth="2" />
         {FIELD.flatMap((row, r) => row.map((kind, c) => <g key={`${r}-${c}`} opacity={0.25 + unknown * 0.7}>
           <rect x={280 + c * 112} y={282 + r * 58} width="78" height="38" rx="12" fill={kind === 0 ? '#152234' : kind === 1 ? '#2b1c28' : '#25210f'} stroke={kind === 0 ? colors.ACCENT : kind === 1 ? colors.NEGATIVE : colors.WARM} />
           <text x={319 + c * 112} y={307 + r * 58} textAnchor="middle" fill={colors.TEXT} fontSize="14">{['method', 'package', 'setting'][kind]}</text>
@@ -133,7 +135,7 @@ export function Render({ s }: { s: SceneState }) {
         <text x="1058" y="434" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>goal g</text>
         <polyline points={unguidedPath} fill="none" stroke={colors.NEGATIVE} strokeWidth="5" strokeDasharray="9 9" strokeDashoffset={-28 * s.get(scene.flowU)} opacity={wander * (1 - guided) * 0.9} />
         <polyline points={guidedPath} fill="none" stroke={colors.POSITIVE} strokeWidth="7" strokeLinecap="round" strokeDasharray="18 8" strokeDashoffset={-28 * s.get(scene.flowU)} opacity={guided * 0.95} />
-        {wander > 0 && guided < 0.01 && <circle cx={wp.x} cy={wp.y} r="13" fill={colors.NEGATIVE} />}
+        {wander > 0 && guided < 0.01 && <circle cx={wp.x} cy={wp.y} r="10" fill={colors.NEGATIVE} stroke={colors.BG} strokeWidth="3" />}
         {guided > 0 && <circle cx={gp.x} cy={gp.y} r="13" fill={colors.POSITIVE} />}
         <g transform="translate(640 548)">
           <rect x="-230" y="-16" width="460" height="24" rx="12" fill="#1b2231" />
@@ -141,8 +143,8 @@ export function Render({ s }: { s: SceneState }) {
           <text y="32" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>execution budget</text>
         </g>
       </g>
-      <g opacity={s.get(scene.skillU)} transform={`translate(1000 208) rotate(${-4 + 4 * s.get(scene.skillU)})`}>
-        <rect x="-105" y="-53" width="210" height="106" rx="18" fill="#13281f" stroke={colors.POSITIVE} strokeWidth="3" />
+      <g opacity={s.get(scene.skillU)} transform={`translate(1130 204) rotate(${-4 + 4 * s.get(scene.skillU)})`}>
+        <rect x="-90" y="-46" width="180" height="92" rx="18" fill="#13281f" stroke={colors.POSITIVE} strokeWidth="3" />
         <text y="-18" textAnchor="middle" fill={colors.POSITIVE} fontSize="21" fontWeight="800">SKILL.md</text>
         <text y="10" textAnchor="middle" fill={colors.TEXT} fontSize="14">references/</text>
         <text y="32" textAnchor="middle" fill={colors.TEXT} fontSize="14">scripts/</text>

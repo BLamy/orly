@@ -220,8 +220,10 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
-  const introFade = 1 - 0.85 * clamp01(axesU * 2.5);
+  // the plot clears fully behind the closing panel, so no faded labels show through it
+  const mainOp = 1 - dimU;
+  // the intro boxes clear completely once the plot takes the frame
+  const introFade = 1 - clamp01(axesU * 2.5);
 
   return (
     <>
@@ -236,14 +238,14 @@ function Frame({ s }: { s: SceneState }) {
               <text x={210} y={206} fill={colors.WARM} fontSize={17} fontWeight={700}>
                 the judge
               </text>
-              <text x={210} y={230} fill={colors.MUTED} fontSize={12.5}>
+              <text x={210} y={230} fill={colors.MUTED} fontSize={14}>
                 a model scoring the argument
               </text>
               {readsU > 0 &&
                 JUDGE_READS.map((r, i) => (
                   <g key={r.f} opacity={clamp01(readsU * 4 - i)}>
                     <rect x={210} y={248 + i * 26} width={r.w * 300} height={16} rx={4} fill={r.f === 'actual validity' ? colors.POSITIVE : colors.WARM} opacity={0.55} />
-                    <text x={220 + r.w * 300} y={261 + i * 26} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                    <text x={220 + r.w * 300} y={261 + i * 26} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                       {r.f} · {(r.w * 100).toFixed(0)}%
                     </text>
                   </g>
@@ -252,15 +254,18 @@ function Frame({ s }: { s: SceneState }) {
               <text x={710} y={206} fill={colors.SECONDARY} fontSize={17} fontWeight={700}>
                 the kernel
               </text>
-              <text x={710} y={230} fill={colors.MUTED} fontSize={12.5}>
+              <text x={710} y={230} fill={colors.MUTED} fontSize={14}>
                 thirty lines rerunning rules
               </text>
               {readsU > 0 &&
                 KERNEL_READS.map((r) => (
                   <g key={r.f} opacity={readsU}>
                     <rect x={710} y={248} width={r.w * 300} height={16} rx={4} fill={colors.POSITIVE} opacity={0.75} />
-                    <text x={710} y={287} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
-                      {r.f} · 100% — no other input exists
+                    <text x={710} y={287} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+                      {r.f} · 100%
+                    </text>
+                    <text x={710} y={307} fill={colors.MUTED} fontSize={13}>
+                      no other input exists
                     </text>
                   </g>
                 ))}
@@ -275,19 +280,19 @@ function Frame({ s }: { s: SceneState }) {
               {[0, 0.25, 0.5, 0.75, 1].map((v) => (
                 <g key={v}>
                   <line x1={PLOT_X - 5} y1={py(v)} x2={PLOT_X + PLOT_W} y2={py(v)} stroke={colors.GRID} strokeWidth={0.5} opacity={0.4} />
-                  <text x={PLOT_X - 12} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={PLOT_X - 12} y={py(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {(v * 100).toFixed(0)}%
                   </text>
                 </g>
               ))}
-              <text x={PLOT_X + PLOT_W / 2} y={PLOT_Y + PLOT_H + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={PLOT_X + PLOT_W / 2} y={PLOT_Y + PLOT_H + 34} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 adversary persuasion skill → (10 pressure steps, 2,000 flawed proofs each)
               </text>
               <text
                 x={PLOT_X - 52}
                 y={PLOT_Y + PLOT_H / 2}
                 fill={colors.MUTED}
-                fontSize={12}
+                fontSize={13}
                 textAnchor="middle"
                 transform={`rotate(-90 ${PLOT_X - 52} ${PLOT_Y + PLOT_H / 2})`}
               >
@@ -300,7 +305,7 @@ function Frame({ s }: { s: SceneState }) {
                   {JUDGE_CURVE.map((v, i) =>
                     clamp01(judgeU * STEPS - i) > 0 ? <circle key={i} cx={px(i)} cy={py(v)} r={4} fill={colors.WARM} /> : null
                   )}
-                  <text x={px(STEPS - 1) + 12} y={py(JUDGE_LAST)} fill={colors.WARM} fontSize={12.5} fontFamily="monospace" fontWeight={700} opacity={clamp01(judgeU * 4 - 3)}>
+                  <text x={px(STEPS - 1) + 12} y={py(JUDGE_LAST)} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={clamp01(judgeU * 4 - 3)}>
                     judge: {(JUDGE_FIRST * 100).toFixed(0)}% → {(JUDGE_LAST * 100).toFixed(0)}%
                   </text>
                 </g>
@@ -309,7 +314,7 @@ function Frame({ s }: { s: SceneState }) {
               {kernelU > 0 && (
                 <g>
                   <path d={curvePath(KERNEL_CURVE, kernelU)} fill="none" stroke={colors.POSITIVE} strokeWidth={3.5} />
-                  <text x={px(STEPS - 1) + 12} y={py(0) - 8} fill={colors.POSITIVE} fontSize={12.5} fontFamily="monospace" fontWeight={700} opacity={clamp01(kernelU * 3 - 2)}>
+                  <text x={px(STEPS - 1) + 12} y={py(0) - 8} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={clamp01(kernelU * 3 - 2)}>
                     kernel: 0% at every step
                   </text>
                 </g>
@@ -320,32 +325,33 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       {/* the structural why — screen space */}
+      {/* the why and trusted-core notes leave with the close, so the final panel stands alone */}
       {whyU > 0 && (
-        <g opacity={whyU * mainOp}>
-          <rect x={880} y={110} width={370} height={160} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
-          <text x={904} y={142} fill={colors.TEXT} fontSize={14} fontWeight={600}>
+        <g opacity={whyU * mainOp * (1 - dimU)}>
+          <rect x={880} y={72} width={370} height={150} rx={12} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <text x={904} y={104} fill={colors.TEXT} fontSize={15} fontWeight={600}>
             why the lines differ in KIND
           </text>
-          <text x={904} y={172} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+          <text x={904} y={130} fill={colors.WARM} fontSize={13} fontFamily="monospace">
             judge input: text — adversary-writable
           </text>
-          <text x={904} y={196} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+          <text x={904} y={152} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
             kernel input: recomputation — not
           </text>
-          <text x={904} y={228} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={182} fill={colors.MUTED} fontSize={13}>
             to move the kernel’s output you must
           </text>
-          <text x={904} y={246} fill={colors.MUTED} fontSize={11.5}>
+          <text x={904} y={200} fill={colors.MUTED} fontSize={13}>
             change what is true
           </text>
         </g>
       )}
       {tcbU > 0 && (
-        <g opacity={tcbU * mainOp}>
-          <text x={880} y={310} fill={colors.SECONDARY} fontSize={13.5} fontFamily="monospace" fontWeight={700}>
+        <g opacity={tcbU * mainOp * (1 - dimU)}>
+          <text x={880} y={310} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace" fontWeight={700}>
             trusted core: ~30 lines
           </text>
-          <text x={880} y={334} fill={colors.MUTED} fontSize={12}>
+          <text x={880} y={334} fill={colors.MUTED} fontSize={13}>
             audited once · everything else untrusted
           </text>
         </g>
@@ -354,6 +360,10 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={titleU * mainOp}>
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           A judge you cannot charm
+        </text>
+        {/* disclosure: the judge curve is a built-in stub, not a measured model */}
+        <text x={40} y={76} fill={colors.MUTED} fontSize={13} opacity={clamp01(axesU * 2)}>
+          simulated judge (seeded stub): persuasion weight is built in. A miniature, not a measured LLM.
         </text>
       </g>
 

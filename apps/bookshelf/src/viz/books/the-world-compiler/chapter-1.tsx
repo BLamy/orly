@@ -11,7 +11,7 @@ const ASSETS = [
   { name: 'overhead_wire_pole', x: 808, y: 306, w: 24, h: 250, color: colors.MUTED },
   { name: 'red_phone_booth', x: 514, y: 370, w: 76, h: 112, color: colors.NEGATIVE },
   { name: 'utility_cabinet', x: 566, y: 378, w: 86, h: 88, color: colors.WARM },
-  { name: 'flower_planter_trio', x: 944, y: 414, w: 116, h: 50, color: colors.POSITIVE },
+  { name: 'flower_planter_trio', x: 1066, y: 414, w: 116, h: 50, color: colors.POSITIVE },
 ];
 const FAILURES = ['asset_overlap', 'off_platform_asset', 'platform_too_narrow', 'under_lit', 'camera_too_close', 'occluding_foreground'];
 // Asset labels sit in two rows below the floor bar, so they never sit on top of an object or each other.
@@ -21,7 +21,7 @@ const LABELS: Record<string, { x: number; y: number }> = {
   red_phone_booth: { x: 500, y: 532 },
   utility_cabinet: { x: 560, y: 506 },
   overhead_wire_pole: { x: 800, y: 506 },
-  flower_planter_trio: { x: 944, y: 532 },
+  flower_planter_trio: { x: 1000, y: 532 },
 };
 
 export function buildScene() {
@@ -108,11 +108,11 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.fuzzyU)} transform="translate(102 108)">
         <rect width="214" height="124" rx="24" fill="#111a2b" stroke={colors.MUTED} strokeWidth="2" />
         <path d="M28 88 C66 44 102 96 142 48 S188 76 194 38" fill="none" stroke={colors.SECONDARY} strokeWidth="7" opacity="0.7" />
-        <text x="107" y="111" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>CLIP score: plausible</text>
+        <text x="107" y="111" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>CLIP score: plausible</text>
       </g>
 
       <g opacity={plan} transform="translate(72 250)">
-        <rect width="236" height="230" rx="24" fill="#102033" stroke={colors.ACCENT} strokeWidth="3" />
+        <rect width="236" height="252" rx="24" fill="#102033" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="118" y="36" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>fresh scene payload</text>
         {ASSETS.slice(0, 5).map((asset, i) => <g key={asset.name} opacity={clamp01(plan * 4 - i * 0.45)}>
           <circle cx="28" cy={70 + i * 38} r="5" fill={asset.color} />
@@ -126,6 +126,7 @@ export function Render({ s }: { s: SceneState }) {
         <line x1="352" y1="460" x2="1128" y2="460" stroke={colors.WARM} strokeWidth="4" strokeDasharray="18 12" opacity="0.7" />
         {ASSETS.map((asset, i) => <Asset key={asset.name} asset={asset} u={importP - i} repair={repair} />)}
 
+        {ASSETS.map((asset) => <rect key={`plan-${asset.name}`} x={asset.x - asset.w / 2} y={asset.y - asset.h / 2} width={asset.w} height={asset.h} rx="8" fill="none" stroke={asset.color} strokeWidth="2" strokeDasharray="6 5" opacity={plan * (1 - clamp01(importP)) * 0.7} />)}
         <g opacity={s.get(scene.fuzzyU) * (1 - plan)}>
           <rect x="1088" y="200" width="20" height="230" rx="6" fill="none" stroke={colors.NEGATIVE} strokeWidth="3" strokeDasharray="8 6" />
           <text x="1098" y="186" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>hidden wall</text>
@@ -151,11 +152,11 @@ export function Render({ s }: { s: SceneState }) {
         </g>}
         <g opacity={s.get(scene.overlapU)}>
           <circle cx="540" cy="374" r="58" fill={colors.NEGATIVE} fillOpacity="0.12" stroke={colors.NEGATIVE} strokeWidth="5" strokeDasharray="10 7" />
-          <text x="540" y="304" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13" fontWeight="750">asset_overlap</text>
+          <text x="540" y="304" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="750">asset_overlap</text>
         </g>
         <g opacity={s.get(scene.offPlatformU)}>
-          <path d="M892 458 H1110" stroke={colors.NEGATIVE} strokeWidth="7" />
-          <text x="1001" y="374" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13" fontWeight="750">off_platform_asset</text>
+          <path d="M1000 458 H1124" stroke={colors.NEGATIVE} strokeWidth="7" strokeLinecap="round" />
+          <text x="1066" y="372" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="750">off_platform_asset</text>
         </g>
         <g opacity={s.get(scene.passU)} transform="translate(744 274)">
           <circle r="52" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="5" />
@@ -171,14 +172,14 @@ export function Render({ s }: { s: SceneState }) {
       <g transform="translate(338 354)">
         <rect x="-104" y="-70" width="208" height="140" rx="26" fill="#13233a" stroke={colors.ACCENT} strokeWidth="3" />
         <text y="-8" textAnchor="middle" fill={colors.ACCENT} fontSize="18">scene plan</text>
-        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>objects · transforms</text>
+        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>objects · transforms</text>
       </g>
       <path d="M454 354 H584" stroke={colors.WARM} strokeWidth="7" strokeLinecap="round" />
       <polygon points="584,354 560,340 560,368" fill={colors.WARM} />
       <g transform="translate(700 354)">
         <rect x="-92" y="-70" width="184" height="140" rx="26" fill="#221c35" stroke={colors.SECONDARY} strokeWidth="3" />
         <text y="-8" textAnchor="middle" fill={colors.SECONDARY} fontSize="18">Unity</text>
-        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="13">execute · check</text>
+        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="14">execute · check</text>
       </g>
       <path d="M794 354 H900" stroke={colors.POSITIVE} strokeWidth="7" strokeLinecap="round" />
       <polygon points="900,354 876,340 876,368" fill={colors.POSITIVE} />

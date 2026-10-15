@@ -36,6 +36,9 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 
 const DSP = { x: 470, y: 330 } as const;
+const ANS_X = DSP.x - 60; // the answer card docks above the dispatcher
+const ANS_Y = DSP.y - 92;
+const ERR_Y = 176; // the catch block sits above the inbox rail, clear of the dispatcher
 const SW = { x: DSP.x + 88, y: DSP.y } as const; // the switch throat
 
 interface Branch {
@@ -47,7 +50,7 @@ interface Branch {
 const BR_X = 950;
 const BRANCHES: Branch[] = [
   { y: 150, color: colors.ACCENT, type: 'researcher', registered: true },
-  { y: 330, color: colors.TEAL, type: '?', registered: false },
+  { y: 330, color: colors.TEAL, type: 'wizard', registered: false },
   { y: 500, color: colors.SECONDARY, type: 'coder', registered: true },
 ];
 
@@ -268,11 +271,11 @@ const scene = buildScene();
 
 function Chip({ x, y, text, color, u }: { x: number; y: number; text: string; color: string; u: number }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.4 + 24;
+  const w = text.length * 8.4 + 24;
   return (
     <g opacity={u}>
-      <rect x={x - w / 2} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={12.5} fontFamily={MONO}>
+      <rect x={x - w / 2} y={y - 16} width={w} height={30} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.8} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -322,7 +325,7 @@ export function Render({ s }: { s: SceneState }) {
   const msgs = [
     { u: m1U, cls: classU[0], queue: 2, branch: BRANCHES[0], kind: 'research', color: colors.ACCENT },
     { u: m2U, cls: classU[1], queue: 1, branch: BRANCHES[2], kind: 'coding', color: colors.SECONDARY },
-    { u: m3U, cls: classU[2], queue: 0, branch: null as Branch | null, kind: 'unknown', color: colors.NEGATIVE },
+    { u: m3U, cls: classU[2], queue: 0, branch: null as Branch | null, kind: 'wizard', color: colors.NEGATIVE },
   ];
 
   return (
@@ -330,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---------------- status strip + counter ---------------- */}
-        <g opacity={(0.4 + 0.6 * dim) * railU}>
+        <g opacity={dim * railU}>
           {STATUS.map((st, i) => {
             const active = Math.abs(statusIdx - i) < 0.5;
             const w = st.length * 8.5 + 26;
@@ -346,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={active ? colors.WARM : colors.GRID}
                   strokeWidth={active ? 1.8 : 1}
                 />
-                <text x={ST_X[i]} y={64} textAnchor="middle" fill={active ? colors.WARM : colors.MUTED} fontSize={13} fontFamily={MONO}>
+                <text x={ST_X[i]} y={64} textAnchor="middle" fill={active ? colors.WARM : colors.TEXT} opacity={active ? 1 : 0.6} fontSize={14} fontFamily={MONO}>
                   {st}
                 </text>
               </g>
@@ -367,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.GRID}
             strokeWidth={2.5}
           />
-          <text x={INBOX_X0} y={DSP.y - 16} fill={colors.MUTED} fontSize={13} opacity={railU}>
+          <text x={INBOX_X0} y={DSP.y - 16} fill={colors.MUTED} fontSize={14} opacity={railU}>
             inbox
           </text>
           {BRANCHES.map((b, i) => (
@@ -410,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={BR_X + 5} y={b.y - 3} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600} opacity={done ? 0.55 : 1}>
                 {b.type}
               </text>
-              <text x={BR_X + 5} y={b.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={BR_X + 5} y={b.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 spawned on demand
               </text>
               {done && (
@@ -422,8 +425,8 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
         {/* the unregistered middle track end */}
-        <g opacity={0.75 * railU * dim}>
-          <rect x={BR_X - 70} y={BRANCHES[1].y - 26} width={150} height={52} rx={12} fill="none" stroke={colors.GRID} strokeDasharray="5 5" />
+        <g opacity={railU * dim * (endU > 0.5 ? 0 : 1)}>
+          <rect x={BR_X - 70} y={BRANCHES[1].y - 26} width={150} height={52} rx={12} fill="none" stroke={colors.MUTED} strokeOpacity={0.6} strokeDasharray="5 5" />
           <text x={BR_X + 5} y={BRANCHES[1].y + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             unregistered
           </text>
@@ -440,7 +443,7 @@ export function Render({ s }: { s: SceneState }) {
             <g key={i}>
               <circle cx={p.x} cy={p.y} r={6.5} fill={b.color} />
               <circle cx={p.x} cy={p.y} r={11} fill="none" stroke={b.color} strokeOpacity={0.5} />
-              <text x={p.x} y={p.y - 16} textAnchor="middle" fill={b.color} fontSize={12} fontFamily={MONO}>
+              <text x={p.x} y={p.y - 16} textAnchor="middle" fill={b.color} fontSize={13} fontFamily={MONO}>
                 runFinished
               </text>
             </g>
@@ -473,12 +476,12 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
 
-        {/* the forwarded answer exits stage left */}
-        {fwd1U > 0.01 && fwd1U < 1 && (
+        {/* the answer docks above the dispatcher on the wake, then exits stage left */}
+        {(bolt1U > 0.95 || fwd1U > 0.01) && fwd1U < 1 && (
           <g opacity={1 - 0.3 * fwd1U}>
-            <rect x={DSP.x - 118 - (DSP.x + 40) * fwd1U} y={DSP.y - 60} width={96} height={34} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-            <text x={DSP.x - 70 - (DSP.x + 40) * fwd1U} y={DSP.y - 38} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5}>
-              answer ↖
+            <rect x={ANS_X - (ANS_X + 200) * fwd1U} y={ANS_Y} width={168} height={34} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
+            <text x={ANS_X + 84 - (ANS_X + 200) * fwd1U} y={ANS_Y + 22} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+              researcher answer
             </text>
           </g>
         )}
@@ -511,7 +514,21 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- chips ---------------- */}
         <Chip x={640} y={116} text={'dispatch({ type, systemPrompt, task })'} color={colors.ACCENT} u={dispChipU} />
         <Chip x={640} y={116} text={'started — I will continue when it finishes'} color={colors.WARM} u={retChipU} />
-        <Chip x={640} y={116} text={'validate the type, or catch the spawn error'} color={colors.NEGATIVE} u={errChipU} />
+        {/* the guard the dispatcher runs before it spawns anything */}
+        {errChipU > 0.01 && (
+          <g opacity={errChipU}>
+            <rect x={60} y={ERR_Y} width={330} height={70} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} strokeOpacity={0.8} />
+            <text x={76} y={ERR_Y + 24} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+              {'if (!registered.has(type)) → validate'}
+            </text>
+            <text x={76} y={ERR_Y + 46} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+              {'try { spawn(type) } catch → error'}
+            </text>
+            <text x={76} y={ERR_Y + 62} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+              {'an unknown track is a wreck'}
+            </text>
+          </g>
+        )}
 
         {/* ---------------- closing card: an opaque panel over the faded scene ---------------- */}
         {endU > 0.01 && (
@@ -528,8 +545,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---------------- the stream tape ---------------- */}
         {rows > 0.05 && (
-          <g>
-            <text x={TAPE_X0} y={TAPE_Y - 12} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <g opacity={dim}>
+            <text x={TAPE_X0} y={TAPE_Y - 12} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               the dispatcher&apos;s stream — append only
             </text>
             <line x1={TAPE_X0} y1={TAPE_Y + 46} x2={TAPE_X0 + 720} y2={TAPE_Y + 46} stroke={colors.GRID} strokeWidth={2} />
@@ -542,11 +559,11 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={i} opacity={u} transform={`translate(0 ${6 * (1 - u)})`}>
-                    <rect x={cx} y={TAPE_Y} width={c.w} height={38} rx={7} fill={colors.PANEL} stroke={c.c} strokeOpacity={0.55} />
-                    <text x={cx + c.w / 2} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                    <rect x={cx} y={TAPE_Y} width={c.w} height={38} rx={7} fill={colors.PANEL} stroke={c.c} strokeOpacity={0.7} />
+                    <text x={cx + c.w / 2} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                       {c.a}
                     </text>
-                    <text x={cx + c.w / 2} y={TAPE_Y + 31} textAnchor="middle" fill={c.c} fontSize={12} fontFamily={MONO}>
+                    <text x={cx + c.w / 2} y={TAPE_Y + 31} textAnchor="middle" fill={c.c} fontSize={13} fontFamily={MONO}>
                       {c.b}
                     </text>
                   </g>

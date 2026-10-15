@@ -29,7 +29,9 @@ const loopPath = (tau: number): [number, number, number] => {
 const LOOP_ROOTS = trackRoots(loopPath, LOOP_N);
 
 /* ---------------------------------------------------------------- layout */
-const FACT = { x: 70, y: 76, w: 620, h: 62 };
+const FACT = { x: 70, y: 76, w: 620, h: 84 };
+// how far a dimmed (ghosted) picture fades: ~0.12 opacity at full dim
+const GHOST = 0.95;
 const SPLANE = { x: 660, y: 168, w: 540, h: 430 };
 const SP_CX = SPLANE.x + SPLANE.w / 2;
 // the header (title, chip, cubic) sits above the plane so no root can reach it
@@ -225,11 +227,14 @@ const lerpQuad = (a: Quad, b: Quad, u: number): Quad => a.map((p, i) => [lerp(p[
 function FactorCard({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - GHOST * clamp01(dim));
   return (
     <g opacity={a} transform={`translate(${FACT.x}, ${FACT.y + (1 - uu) * 10})`}>
       <rect width={FACT.w} height={FACT.h} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'F_3 \\;=\\; 2x - 3x^2y - x^3z \\;=\\; -\\,x\\,(x^2 z + 3xy - 2)'} x={20} y={14} fontSize={15} color={colors.TEXT} opacity={uu} />
+      <MathLabel anchor="start" tex={'F_3 \\;=\\; 2x - 3x^2y - x^3z \\;=\\; -\\,x\\,(x^2 z + 3xy - 2)'} x={20} y={22} fontSize={15} color={colors.TEXT} opacity={uu} />
+      {/* name the two pieces the caption says the product is made of */}
+      <MathLabel anchor="start" tex={'x = 0 \\;\\text{(the plane)}'} x={20} y={58} fontSize={14} color={colors.ACCENT} opacity={uu} />
+      <MathLabel anchor="start" tex={'x^2 z + 3xy - 2 = 0 \\;\\text{(the surface)}'} x={250} y={58} fontSize={14} color={colors.SECONDARY} opacity={uu} />
     </g>
   );
 }
@@ -238,7 +243,7 @@ function FactorCard({ u, dim }: { u: number; dim: number }) {
 function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: number; formula: number; fiber: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - GHOST * clamp01(dim));
   const cu = clamp01(crush);
   const fu = clamp01(fiber);
   const plane = lerpQuad(PLANE_Q, PLANE_FLAT, cu);
@@ -299,7 +304,7 @@ function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: num
           {riser(R2, 1)}
           {riser(R3, 2)}
           {fu > 0.9 && (
-            <text x={QPT.x - 120} y={QPT.y + 44} fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={mono} opacity={(fu - 0.9) * 10}>
+            <text x={430} y={414} fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={mono} opacity={(fu - 0.9) * 10}>
               fiber = 1 + 2 = 3 points
             </text>
           )}
@@ -313,14 +318,15 @@ function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: num
 function RootDance({ u, sub, tau, on, count, dim }: { u: number; sub: number; tau: number; on: number; count: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - GHOST * clamp01(dim));
   const tt = tau % 1;
   const [ta, tb, tc] = loopPath(tt);
   const roots = rootsAt(LOOP_ROOTS, tt);
   const px = (re: number) => SP_CX + re * SP_SCALE;
   const py = (im: number) => SP_CY - im * SP_SCALE;
   const rootColors = [colors.ACCENT, colors.SECONDARY, colors.WARM];
-  const onU = clamp01(on);
+  // the cubic's roots appear with the cubic itself (sub), then start dancing
+  const onU = clamp01(Math.max(on, sub));
   // short trails from the precomputed samples
   const trailFor = (ri: number) => {
     const steps = 26;
@@ -335,7 +341,7 @@ function RootDance({ u, sub, tau, on, count, dim }: { u: number; sub: number; ta
   return (
     <g opacity={a}>
       <rect x={SPLANE.x} y={SPLANE.y} width={SPLANE.w} height={SPLANE.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.8} />
-      <text x={SPLANE.x + 18} y={SPLANE.y + 26} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={SPLANE.x + 18} y={SPLANE.y + 26} fill={colors.MUTED} fontSize={14} fontWeight={700} fontFamily={mono}>
         the complex s plane · one dot per preimage
       </text>
       {/* axes + unit circle */}
@@ -390,15 +396,21 @@ function TeaseCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(${360}, ${290 + (1 - uu) * 12})`} opacity={uu}>
-      <rect width={560} height={140} rx={14} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
-      <text x={26} y={44} fill={colors.SECONDARY} fontSize={16} fontWeight={700} fontFamily={mono}>
+    <g transform={`translate(${360}, ${270 + (1 - uu) * 12})`} opacity={uu}>
+      <rect width={560} height={176} rx={14} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
+      <text x={26} y={40} fill={colors.SECONDARY} fontSize={16} fontWeight={700} fontFamily={mono}>
         a 3-sheeted cover of ℂ³ · no folds anywhere
       </text>
-      <text x={26} y={78} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+      <text x={26} y={74} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
         but ℂ³ is simply connected — covers like this cannot exist…
       </text>
-      <text x={26} y={108} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+      <text x={26} y={106} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+        simply connected: every loop can be shrunk to a point.
+      </text>
+      <text x={26} y={128} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+        a cover: the whole space, copied sheet by sheet.
+      </text>
+      <text x={26} y={156} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
         …unless the sheets can leak. next: the escape to infinity
       </text>
     </g>

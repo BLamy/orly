@@ -145,8 +145,8 @@ export function buildScene() {
     dur: 6.0,
     text: 'By turn ten, the uncached run has billed one hundred seventy five thousand token units of input. The cached run: about fifty three thousand.',
   });
-  // lands on turn 10 before the caption's midpoint, so the odometers show the narrated totals
-  tl.tween(turnU, 10, { at: 35.0, dur: 2.6, ease: ease.linear });
+  // the clock reaches turn 10 as the caption closes, so the odometers settle on the narrated totals
+  tl.tween(turnU, 10, { at: 35.0, dur: 5.0, ease: ease.linear });
 
   // — beat 7 · seventy percent —
   tl.caption({
@@ -209,7 +209,7 @@ function Odometer({ x, y, value, label, color, opacity }: { x: number; y: number
       <text x={x} y={y} textAnchor="end" fill={color} fontSize={30} fontFamily={MONO} fontWeight={600}>
         {Math.round(value).toLocaleString('en-US')}
       </text>
-      <text x={x} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+      <text x={x} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={13}>
         {label}
       </text>
     </g>
@@ -262,8 +262,8 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily={MONO}>
             turn {Math.max(1, turnLabel)} of {TURNS}
           </text>
-          <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-            same agent, same ten turns — two billing meters
+          <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            modeled ten-turn run · illustrative token units
           </text>
 
           {/* ─ lane one: no caching ─ */}
@@ -272,9 +272,9 @@ export function Render({ s }: { s: SceneState }) {
           </text>
           <ContextBar x={LANE_X} y={TOP_Y} w={BAR_W} h={BAR_H} capacity={CAPACITY} segments={topSegments} reveal={lanesU} title="context — re-read in full every turn" />
           {/* full-width read flash: every token at full price */}
-          <rect x={LANE_X} y={TOP_Y} width={promptW} height={BAR_H} rx={6} fill={colors.NEGATIVE} opacity={0.5 * pulse} />
+          <rect x={LANE_X} y={TOP_Y} width={promptW} height={BAR_H} rx={6} fill={colors.NEGATIVE} fillOpacity={0.2 * pulse} stroke={colors.NEGATIVE} strokeWidth={1.5} strokeOpacity={pulse} />
           {pulse > 0.05 && (
-            <text x={LANE_X + promptW} y={TOP_Y + BAR_H + 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={pulse}>
+            <text x={LANE_X + promptW} y={TOP_Y + BAR_H + 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={pulse}>
               × 1.0 all of it
             </text>
           )}
@@ -286,10 +286,10 @@ export function Render({ s }: { s: SceneState }) {
           </text>
           <ContextBar x={LANE_X} y={BOT_Y} w={BAR_W} h={BAR_H} capacity={CAPACITY} segments={botSegments} reveal={lanesU} title="context — prefix read from cache" />
           {/* prefix shimmer (cheap read) + suffix flash (the only full-price part) */}
-          <rect x={LANE_X} y={BOT_Y} width={Math.max(0, promptW - suffixW)} height={BAR_H} rx={6} fill={colors.ACCENT} opacity={0.35 * pulse} />
-          <rect x={LANE_X + Math.max(0, promptW - suffixW)} y={BOT_Y} width={Math.min(suffixW, promptW)} height={BAR_H} rx={3} fill={colors.WARM} opacity={0.6 * pulse} />
+          <rect x={LANE_X} y={BOT_Y} width={Math.max(0, promptW - suffixW)} height={BAR_H} rx={6} fill={colors.ACCENT} fillOpacity={0.15 * pulse} stroke={colors.ACCENT} strokeWidth={1.5} strokeOpacity={pulse} />
+          <rect x={LANE_X + Math.max(0, promptW - suffixW)} y={BOT_Y} width={Math.min(suffixW, promptW)} height={BAR_H} rx={3} fill={colors.WARM} fillOpacity={0.25 * pulse} stroke={colors.WARM} strokeWidth={2} strokeOpacity={pulse} />
           {pulse > 0.05 && (
-            <text x={LANE_X + promptW} y={BOT_Y + BAR_H + 18} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={pulse}>
+            <text x={LANE_X + promptW} y={BOT_Y + BAR_H + 18} textAnchor="end" fill={colors.ACCENT} fontSize={13} fontFamily={MONO} opacity={pulse}>
               × 0.1 prefix · × 1.25 new
             </text>
           )}
@@ -309,15 +309,15 @@ export function Render({ s }: { s: SceneState }) {
             <text x={960} y={328} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontWeight={700}>
               ≈ 70% saved
             </text>
-            <text x={960} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-              53,150 vs 175,000
+            <text x={960} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              modeled: 53,150 vs 175,000
             </text>
           </g>
 
           {/* the tool runner's accounting */}
           <g opacity={booksU}>
             <rect x={LANE_X} y={548} width={720} height={34} rx={9} fill={colors.BG} stroke={colors.GRID} />
-            <text x={LANE_X + 14} y={570} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={LANE_X + 14} y={570} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               total = input_tokens + cache_creation_input_tokens + cache_read_input_tokens
             </text>
           </g>
@@ -339,10 +339,10 @@ export function Render({ s }: { s: SceneState }) {
             ] as const
           ).map((g2, i) => {
             const u = clamp01(glyphsU * 4 - i);
-            const gx = 310 + i * 170;
+            const gx = 305 + i * 170;
             return (
               <g key={i} opacity={u} transform={`translate(${gx}, 280)`}>
-                <rect width={150} height={96} rx={12} fill={colors.BG} stroke={colors.GRID} />
+                <rect width={160} height={96} rx={12} fill={colors.BG} stroke={colors.GRID} />
                 <g transform="translate(10, 0)">
                 {i === 0 && (
                   <g>
@@ -376,7 +376,7 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 )}
                 </g>
-                <text x={75} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={80} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   {g2.label}
                 </text>
               </g>

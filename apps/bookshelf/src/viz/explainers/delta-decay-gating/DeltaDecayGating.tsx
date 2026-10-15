@@ -74,6 +74,12 @@ const recallByPos = (states: Mat[]): number[] =>
 const RECALL_NO = recallByPos(NO_DECAY);
 const RECALL_DEC = recallByPos(DECAY);
 
+// Illustrative per-channel gate for one token (schematic, not the measured run).
+const gateRand = mulberry32(20260713);
+const GATES: number[][] = Array.from({ length: T }, () =>
+  Array.from({ length: D }, () => 0.35 + 0.6 * gateRand()),
+);
+
 const avg = (a: number[]): number => a.reduce((x, y) => x + y, 0) / a.length;
 const NO_RECENT = avg(RECALL_NO.slice(T - 4)); // 0.70
 const NO_OLD = avg(RECALL_NO.slice(0, 4)); // 0.59
@@ -101,13 +107,14 @@ const matAt = (states: Mat[], u: number): Mat => {
 const CELL = 12;
 const GRID_NO_X = 170;
 const GRID_DEC_X = 480;
-const GRID_Y = 170;
+const GRID_Y = 200;
 
 const PLOT_X = scaleLinear().domain([0, T - 1]).range([820, 1200]);
 const PLOT_Y = scaleLinear().domain([-0.45, 1.05]).range([560, 200]);
 
+// The plot view keeps both memories in frame, so "interrogate both" is literal.
 const CAM_GRIDS: CameraState = { x: 470, y: 300, k: 1.3 };
-const CAM_PLOT: CameraState = { x: 990, y: 380, k: 1.25 };
+const CAM_PLOT: CameraState = { x: 685, y: 380, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -237,7 +244,7 @@ function StateGrid({ S, x, y, u }: { S: Mat; x: number; y: number; u: number }) 
             height={CELL - 1.5}
             rx={2}
             fill={colors.heat(clamp01(0.5 + v / (2 * HEAT_SCALE)))}
-            opacity={clamp01(u * D * D - (i * D + j)) * 0.95}
+            opacity={clamp01(u * D * D - (i * D + j)) * 0.95 * (0.25 + 0.75 * Math.min(1, Math.abs(v) * 2))}
           />
         )),
       )}
@@ -258,7 +265,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
+  const tokIdx = Math.max(0, Math.min(T - 1, Math.round(tok) - 1));
   const gridW = D * CELL;
   const curT = Math.max(0.5, curveU * (T - 1));
 
@@ -292,7 +300,7 @@ function Frame({ s }: { s: SceneState }) {
             <rect x={GRID_DEC_X - 5} y={GRID_Y - 5} width={gridW + 8} height={gridW + 8} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.5} opacity={0.7} />
           </g>
 
-          <text x={GRID_NO_X} y={GRID_Y + gridW + 30} fill={colors.MUTED} fontSize={13} opacity={noU}>
+          <text x={GRID_NO_X} y={GRID_Y + gridW + 30} fill={colors.MUTED} fontSize={14} opacity={noU}>
             writes: {Math.round(Math.min(T, tok))} / {T}
           </text>
 
@@ -302,7 +310,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={820} y={168} fill={colors.TEXT} fontSize={16}>
                 final recall, by write position
               </text>
-              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={3} xLabel="write position (old → new)" fontSize={10} />
+              <Axes x={PLOT_X} y={PLOT_Y} reveal={plotU} xTicks={5} yTicks={3} xLabel="write position (old → new)" fontSize={12} />
               <FunctionPlot
                 x={PLOT_X}
                 y={PLOT_Y}
@@ -323,27 +331,12 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.POSITIVE}
                 width={2.4}
               />
-              {curveU > 0.98 && (
-                <g>
-                  <text x={PLOT_X(T - 1) + 4} y={PLOT_Y(RECALL_NO[T - 1])} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
-                    {NO_RECENT.toFixed(2)}
-                  </text>
-                  <text x={PLOT_X(T - 1) + 4} y={PLOT_Y(RECALL_DEC[T - 1]) - 14} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
-                    {DEC_RECENT.toFixed(2)}
-                  </text>
-                  <text x={PLOT_X(0) - 4} y={PLOT_Y(RECALL_DEC[0]) + 18} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
-                    {DEC_OLD.toFixed(2)}
-                  </text>
-                  <text x={PLOT_X(0) - 4} y={PLOT_Y(RECALL_NO[0]) - 10} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
-                    {NO_OLD.toFixed(2)}
-                  </text>
-                </g>
-              )}
-              <text x={830} y={600} fill={colors.NEGATIVE} fontSize={13}>
-                α = 1 — crowded
+              {/* key, above the curves: newest four vs oldest four */}
+              <text x={840} y={188} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+                {`α = 1 crowded: newest ${NO_RECENT.toFixed(2)}, oldest ${NO_OLD.toFixed(2)}`}
               </text>
-              <text x={1010} y={600} fill={colors.POSITIVE} fontSize={13}>
-                α = 0.85 — recency
+              <text x={840} y={204} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+                {`α = 0.85 recency: newest ${DEC_RECENT.toFixed(2)}, oldest ${DEC_OLD.toFixed(2)}`}
               </text>
             </g>
           )}
@@ -351,9 +344,25 @@ function Frame({ s }: { s: SceneState }) {
           {/* gating note */}
           {gateU > 0 && (
             <g opacity={gateU}>
-              <text x={170} y={620} fill={colors.MUTED} fontSize={14}>
-                gating: α becomes a per-channel, per-token decision — the input chooses what survives
+              {/* one bar per channel: this token's α (schematic) */}
+              <text x={GRID_DEC_X} y={GRID_Y + gridW + 48} fill={colors.TEXT} fontSize={14}>
+                {`token ${tokIdx + 1}: α per channel (schematic)`}
               </text>
+              <line x1={GRID_DEC_X - 6} y1={GRID_Y + gridW + 150} x2={GRID_DEC_X + gridW} y2={GRID_Y + gridW + 150} stroke={colors.GRID} strokeWidth={1} />
+              <text x={GRID_DEC_X - 12} y={GRID_Y + gridW + 154} fill={colors.MUTED} fontSize={12} textAnchor="end">0</text>
+              <text x={GRID_DEC_X - 12} y={GRID_Y + gridW + 70} fill={colors.MUTED} fontSize={12} textAnchor="end">1</text>
+              {GATES[tokIdx].map((a, c) => (
+                <rect
+                  key={c}
+                  x={GRID_DEC_X + c * CELL}
+                  y={GRID_Y + gridW + 150 - 80 * a}
+                  width={CELL - 3}
+                  height={80 * a}
+                  rx={2}
+                  fill={colors.TEAL}
+                  opacity={0.85}
+                />
+              ))}
             </g>
           )}
         </Camera>
@@ -375,7 +384,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Forgetting is a feature.
           </text>

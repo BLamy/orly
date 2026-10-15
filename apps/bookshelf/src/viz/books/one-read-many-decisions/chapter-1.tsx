@@ -60,7 +60,7 @@ const CACHE = { y: 356, row: 22 };
 const CACHE_BOTTOM = CACHE.y + LAYERS * CACHE.row;
 const OUT_X = colX(N_IN);
 
-const CAM_NOTE: CameraState = { x: 400, y: 150, k: 1.3 };
+const CAM_NOTE: CameraState = { x: 645, y: 150, k: 1.08 }; // frames the note and both field cards together
 const CAM_HOME: CameraState = { x: 640, y: 360, k: 1 };
 const CAM_PUSH: CameraState = { x: 640, y: 315, k: 1.04 };
 
@@ -143,7 +143,7 @@ export function buildScene() {
   tl.tween(reachU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(winU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(outLblU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
-  tl.tween(cacheU, 0.3, { at: b + 0.2, dur: 0.7, ease: ease.move });
+  tl.tween(cacheU, 0.5, { at: b + 0.2, dur: 0.7, ease: ease.move });
   tl.tween(decU, 1, { at: b + 0.9, dur: 0.7, ease: ease.pop });
   tl.tween(decTagU, 1, { at: b + 1.3, dur: 0.5, ease: ease.enter });
   tl.tween(synU, 1, { at: b + 3.6, dur: 0.8, ease: ease.enter });
@@ -205,7 +205,7 @@ function FieldCard({ x, y, w, field, u }: { x: number; y: number; w: number; fie
       <text x={14} y={24} fill={colors.TEXT} fontSize={16} fontWeight={650}>
         {field.name}
       </text>
-      <text x={w - 14} y={24} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+      <text x={w - 14} y={24} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         permitted answers
       </text>
       {field.choices.map((c, i) => (
@@ -265,8 +265,8 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* span labels */}
       <Label x={53} y={218} text="INPUT · the note as 13 pieces" u={s.get(scene.inLblU) * tapeDim} size={15} color={ROLE.OBSERVE} />
-      <Label x={53} y={198} text="schematic pieces · not real tokenization" u={s.get(scene.inLblU) * tapeDim * (1 - closeU)} size={13} color={ROLE.PENDING} mono />
-      <Label x={1227} y={218} anchor="end" text="OUTPUT · one piece per model step" u={s.get(scene.outLblU)} size={15} color={ROLE.MODEL} />
+      <Label x={53} y={198} text="schematic pieces · not real tokenization" u={s.get(scene.inLblU) * tapeDim * (1 - closeU)} size={14} color={ROLE.PENDING} mono />
+      <Label x={1227} y={160} anchor="end" text="OUTPUT · one piece per model step" u={s.get(scene.outLblU)} size={15} color={ROLE.MODEL} />
 
       {/* the decoder cache: one column per piece, on the tape's own scale */}
       {cacheU > 0.002 && (
@@ -373,7 +373,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
           <Label x={53} y={320} text="valid structure ✓ — still one step per piece" size={18} weight={650} />
           <StatusTag x={53} y={540} kind="CURRENT" text="browser prototype: grammar-constrained generation" />
-          <Label x={OUT_X} y={318} text="● permitted   ┄ masked · illustrative scores" size={13} color={colors.MUTED} mono />
+          <Label x={OUT_X} y={318} text="● permitted   ┄ masked · illustrative scores" size={14} color={colors.MUTED} mono />
         </g>
       )}
 

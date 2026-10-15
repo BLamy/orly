@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -89,26 +89,27 @@ function Frame({ s }: { s: SceneState }) {
         <g opacity={dimU}>
           {/* the rail */}
           <line x1={RAIL_X0} y1={RAIL_Y} x2={RAIL_X0 + (RAIL_X1 - RAIL_X0) * railU} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={2.5} />
+          {/* station labels sit under the rail so the claim card never crosses them */}
           {ST_X.map((x, i) => (
             <g key={i} opacity={clamp01(railU * 3 - i)}>
               <circle cx={x} cy={RAIL_Y} r={7} fill={colors.BG} stroke={ST_COLOR[i]} strokeWidth={2.5} />
-              <text x={x} y={RAIL_Y - 18} textAnchor="middle" fill={ST_COLOR[i]} fontSize={13.5}>
+              <text x={x} y={RAIL_Y + 32} textAnchor="middle" fill={ST_COLOR[i]} fontSize={14}>
                 {ST_TITLES[i]}
               </text>
             </g>
           ))}
 
-          {/* the claim card */}
+          {/* the claim card rides above the rail and fades in as the rail draws */}
           {cardU > 0 && (
-            <g>
-              <rect x={cx - 74} y={RAIL_Y - 76} width={148} height={52} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
-              <text x={cx} y={RAIL_Y - 54} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={650}>
+            <g opacity={clamp01(railU * 2)}>
+              <rect x={cx - 92} y={RAIL_Y - 80} width={184} height={54} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
+              <text x={cx} y={RAIL_Y - 58} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={650}>
                 the claim
               </text>
-              <text x={cx} y={RAIL_Y - 34} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+              <text x={cx} y={RAIL_Y - 37} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 “the metric went up: +1”
               </text>
-              <line x1={cx} y1={RAIL_Y - 24} x2={cx} y2={RAIL_Y - 8} stroke={colors.WARM} strokeWidth={2} />
+              <line x1={cx} y1={RAIL_Y - 26} x2={cx} y2={RAIL_Y - 9} stroke={colors.WARM} strokeWidth={2} />
             </g>
           )}
 
@@ -131,7 +132,7 @@ function Frame({ s }: { s: SceneState }) {
                   opacity={0.9}
                 />
               ))}
-              <text x={ST_X[0]} y={PANEL_Y + 172} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={ST_X[0]} y={PANEL_Y + 172} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13.5}>
                 1000 paired reruns, n = 100
               </text>
             </g>
@@ -141,20 +142,20 @@ function Frame({ s }: { s: SceneState }) {
           <StationPanel i={1} u={st2U} stamp={stamp2} verdict={`fresh error ${FRESH_ERR.toFixed(2)}, was 0.00`}>
             <g>
               <rect x={ST_X[1] - 130} y={PANEL_Y + 70} width={120} height={64} rx={8} fill={colors.BG} stroke={colors.GRID} />
-              <text x={ST_X[1] - 70} y={PANEL_Y + 96} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              <text x={ST_X[1] - 70} y={PANEL_Y + 96} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 leaked test
               </text>
               <text x={ST_X[1] - 70} y={PANEL_Y + 120} textAnchor="middle" fill={colors.POSITIVE} fontSize={17} fontWeight={650}>
                 0.000
               </text>
               <rect x={ST_X[1] + 10} y={PANEL_Y + 70} width={120} height={64} rx={8} fill={colors.BG} stroke={colors.GRID} />
-              <text x={ST_X[1] + 70} y={PANEL_Y + 96} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+              <text x={ST_X[1] + 70} y={PANEL_Y + 96} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
                 fresh test
               </text>
               <text x={ST_X[1] + 70} y={PANEL_Y + 120} textAnchor="middle" fill={colors.NEGATIVE} fontSize={17} fontWeight={650}>
                 {FRESH_ERR.toFixed(2)}
               </text>
-              <text x={ST_X[1]} y={PANEL_Y + 164} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={ST_X[1]} y={PANEL_Y + 164} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13.5}>
                 where did the questions come from?
               </text>
             </g>
@@ -167,7 +168,7 @@ function Frame({ s }: { s: SceneState }) {
                 <polyline
                   key={key}
                   points={PRESSURE[key]
-                    .map((v, k) => `${(ST_X[2] - 130 + (k / (PRESSURE.p.length - 1)) * 260).toFixed(1)},${(PANEL_Y + 158 - v * 34).toFixed(1)}`)
+                    .map((v, k) => `${(ST_X[2] - 130 + (k / (PRESSURE.p.length - 1)) * 260).toFixed(1)},${(PANEL_Y + 146 - v * 34).toFixed(1)}`)
                     .join(' ')}
                   fill="none"
                   stroke={key === 'p' ? colors.ACCENT : colors.POSITIVE}
@@ -175,7 +176,7 @@ function Frame({ s }: { s: SceneState }) {
                   opacity={0.9}
                 />
               ))}
-              <text x={ST_X[2]} y={PANEL_Y + 182} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={ST_X[2]} y={PANEL_Y + 168} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={13.5}>
                 400 steps of optimizing the metric
               </text>
             </g>
@@ -186,19 +187,19 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={200} y={200} width={880} height={250} rx={16} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          {/* solid veil so the faded gauntlet cannot show around the card */}
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+          <rect x={200} y={200} width={880} height={250} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             The Expensive Claim
           </text>
-          <MathLabel
-            tex={'\\text{“it broke”} \\to \\text{cheap} \\qquad \\text{“it works”} \\to \\text{prove it survived attack}'}
-            x={640}
-            y={330}
-            fontSize={19}
-            color={colors.WARM}
-            opacity={endU}
-          />
-          <text x={640} y={392} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={430} y={330} textAnchor="middle" fill={colors.WARM} fontSize={19}>
+            “it broke” → cheap
+          </text>
+          <text x={850} y={330} textAnchor="middle" fill={colors.WARM} fontSize={19}>
+            “it works” → prove it survived attack
+          </text>
+          <text x={640} y={392} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={17}>
             reruns, fresh questions, adversarial pressure — hostility is the method
           </text>
         </g>

@@ -17,7 +17,8 @@ const GATES = [
   { key: 'T4', title: 'news badge', sub: '+ re-encode' },
   { key: 'T5', title: 'all combined', sub: 'all four changes' },
 ];
-const X = [124, 324, 524, 724, 924, 1124];
+// Gate centres span 140–1140, so the row sits centred on the 1280-wide stage.
+const X = [140, 340, 540, 740, 940, 1140];
 // One gentle, fixed push that keeps every gate and the title on stage.
 const PUSH = { x: 640, y: 360, k: 1.05 };
 
@@ -25,17 +26,17 @@ function ProcessedClip({ x, y, p, u }: { x: number; y: number; p: number; u: num
   const q = clamp01(u); if (q <= 0.002) return null;
   const stage = Math.min(5, Math.floor(p + 0.08));
   const small = stage === 2 || stage === 5;
-  const w = small ? 98 : 132, h = small ? 62 : 82;
+  const w = small ? 116 : 136, h = small ? 62 : 82;
   const frames = stage === 3 || stage === 5 ? 8 : 16;
   return <g transform={`translate(${x} ${y})`} opacity={q}>
     <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
     <path d={`M${-w / 2 + 10} ${h / 2 - 11} L${-w / 4} 0 L0 ${h / 4} L${w / 5} ${-h / 4} L${w / 2 - 10} ${h / 2 - 11} Z`} fill={colors.ACCENT} opacity={0.32} />
     <circle cx={w / 4} cy={-h / 4} r={5} fill={colors.WARM} />
-    {(stage === 4 || stage === 5) && <g><rect x={-w / 2 + 5} y={h / 2 - 26} width={w - 10} height={20} fill={colors.NEGATIVE} opacity={0.9} /><text y={h / 2 - 11} textAnchor="middle" fill="white" fontSize={small ? 10 : 11} fontWeight={700}>BREAKING NEWS</text></g>}
+    {(stage === 4 || stage === 5) && <g><rect x={-w / 2 + 5} y={h / 2 - 26} width={w - 10} height={20} fill={colors.NEGATIVE} opacity={0.9} /><text y={h / 2 - 11} textAnchor="middle" fill="white" fontSize={12} fontWeight={700}>BREAKING NEWS</text></g>}
     <g transform={`translate(${-w / 2} ${h / 2 + 11})`}>
       {Array.from({ length: frames }, (_, i) => <rect key={i} x={i * (w / frames)} width={Math.max(2, w / frames - 2)} height={5} fill={stage >= 3 ? colors.WARM : colors.MUTED} opacity={0.75} />)}
     </g>
-    <text y={h / 2 + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{stage >= 1 ? 'H.264' : 'standardized'}</text>
+    <text y={h / 2 + 34} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{stage >= 1 ? 'H.264' : 'standardized'}</text>
   </g>;
 }
 
@@ -60,16 +61,21 @@ export function buildScene() {
 
   tl.caption({ at: 11.0, dur: 5.0, text: 'Condition one encodes with V P nine, then transcodes to H two sixty-four.' });
   tl.tween(processP, 1, { at: 11.4, dur: 1.5, ease: ease.move });
+  tl.tween(clipU, 1, { at: 11.4, dur: 1.4, ease: ease.move });
   tl.caption({ at: 16.5, dur: 4.8, text: 'Condition two first halves the spatial size, then runs that codec chain.' });
   tl.tween(processP, 2, { at: 16.9, dur: 1.5, ease: ease.move });
+  tl.tween(clipU, 1, { at: 16.9, dur: 1.4, ease: ease.move });
 
   tl.caption({ at: 21.8, dur: 4.8, text: 'Condition three converts the clip to eight frames per second before transcoding.' });
   tl.tween(processP, 3, { at: 22.2, dur: 1.5, ease: ease.move });
+  tl.tween(clipU, 1, { at: 22.2, dur: 1.4, ease: ease.move });
   tl.caption({ at: 27.0, dur: 4.8, text: 'Condition four adds a news badge, then repeats the codec chain.' });
   tl.tween(processP, 4, { at: 27.4, dur: 1.5, ease: ease.move });
+  tl.tween(clipU, 1, { at: 27.4, dur: 1.4, ease: ease.move });
 
   tl.caption({ at: 32.2, dur: 5.3, text: 'Condition five combines downsampling, eight-frame playback, the badge, and transcoding.' });
   tl.tween(processP, 5, { at: 32.6, dur: 1.7, ease: ease.move });
+  tl.tween(clipU, 1, { at: 32.6, dur: 1.5, ease: ease.move });
   tl.tween(identityU, 1, { at: 35.6, dur: 0.8, ease: ease.enter });
 
   tl.caption({ at: 38.0, dur: 5.8, text: 'The track repeats six conditions across one hundred fifty anchors and all nine benchmark sources.' });
@@ -93,40 +99,43 @@ export function Render({ s }: { s: SceneState }) {
   const x = X[Math.floor(Math.min(5, p))] + (X[Math.min(5, Math.ceil(p))] - X[Math.floor(Math.min(5, p))]) * (p - Math.floor(p));
   return <Camera {...s.get(scene.cam)}>
     <g opacity={dim}>
-      <text x={74} y={72} fill={colors.TEXT} fontSize={25} fontWeight={700}>six trips through the last mile</text>
+      <text x={640} y={84} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>six trips through the last mile</text>
       <path d={`M${X[0]} 342 L${X[5]} 342`} stroke={colors.MUTED} strokeWidth={3} opacity={s.get(scene.gatesU) * 0.42} />
       {GATES.map((g, i) => <g key={g.key} opacity={s.get(scene.gatesU)}>
         <rect x={X[i] - 78} y={166} width={156} height={100} rx={15} fill={colors.PANEL} stroke={p >= i ? colors.ACCENT : colors.MUTED} strokeWidth={p >= i ? 2 : 1} />
-        <text x={X[i]} y={194} textAnchor="middle" fill={p >= i ? colors.ACCENT : colors.MUTED} fontSize={14} fontWeight={800} fontFamily={MONO}>{g.key}</text>
-        <text x={X[i]} y={222} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{g.title}</text>
-        <text x={X[i]} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{g.sub}</text>
+        <text x={X[i]} y={194} textAnchor="middle" fill={p >= i ? colors.ACCENT : colors.TEXT} opacity={p >= i ? 1 : 0.6} fontSize={14} fontWeight={800} fontFamily={MONO}>{g.key}</text>
+        <text x={X[i]} y={222} textAnchor="middle" fill={colors.TEXT} opacity={p >= i ? 1 : 0.7} fontSize={14} fontFamily={MONO}>{g.title}</text>
+        <text x={X[i]} y={248} textAnchor="middle" fill={colors.TEXT} opacity={0.7} fontSize={13}>{g.sub}</text>
       </g>)}
+      {/* The identity thread hangs from the T0 card and follows the clip along the track. */}
+      <path d={`M${X[0]} 268 C${X[0]} 300 ${x} 296 ${x} 340`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="6 5" opacity={s.get(scene.clipU) * 0.8} />
       <ProcessedClip x={x} y={365} p={p} u={s.get(scene.clipU)} />
       <g opacity={s.get(scene.identityU)}>
         <path d={`M${X[0]} 470 C${X[0]} 520 ${X[5]} 520 ${X[5]} 470`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="8 6" />
-        <text x={640} y={526} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>same norm_clip_id through T0 … T5</text>
+        <text x={640} y={526} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>same norm_clip_id through T0 … T5</text>
       </g>
       <g opacity={s.get(scene.scaleU)}>
-        <rect x={70} y={554} width={250} height={66} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} />
-        <text x={195} y={582} textAnchor="middle" fill={colors.SECONDARY} fontSize={23} fontWeight={750}>150 anchors</text>
-        <text x={195} y={607} textAnchor="middle" fill={colors.TEXT} fontSize={13}>nine sources · six conditions</text>
+        <rect x={62} y={548} width={250} height={74} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} />
+        <text x={187} y={579} textAnchor="middle" fill={colors.SECONDARY} fontSize={23} fontWeight={750}>150 anchors</text>
+        <text x={187} y={607} textAnchor="middle" fill={colors.TEXT} fontSize={14}>nine sources · six conditions</text>
       </g>
       <g opacity={s.get(scene.matrixU)}>
-        {Array.from({ length: 6 }, (_, row) => Array.from({ length: 9 }, (_, col) => <rect key={`${row}-${col}`} x={450 + col * 38} y={552 + row * 12} width={30} height={8} rx={3} fill={colors.heat((row + col) / 14)} opacity={0.75} />))}
-        <text x={791} y={616} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>condition × source</text>
+        <text x={436} y={540} fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>condition × source</text>
+        {Array.from({ length: 6 }, (_, row) => <text key={`lab-${row}`} x={424} y={548 + row * 14 + 8} textAnchor="end" fill={colors.TEXT} opacity={0.8} fontSize={13} fontFamily={MONO}>{GATES[row].key}</text>)}
+        {Array.from({ length: 6 }, (_, row) => Array.from({ length: 9 }, (_, col) => <rect key={`${row}-${col}`} x={436 + col * 38} y={548 + row * 14} width={30} height={10} rx={3} fill={colors.heat((row + col) / 14)} opacity={0.8} />))}
       </g>
       <g opacity={s.get(scene.difficultyU)}>
-        <path d="M860 570 C920 548 975 552 1020 578 C1060 602 1100 614 1190 618" fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
-        <path d="M1178 610 L1190 618 L1176 623" fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
-        <text x={1020} y={544} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>detection gets harder</text>
+        <path d="M820 572 C880 550 935 556 980 580 C1020 602 1100 614 1206 618" fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
+        <path d="M1194 610 L1206 618 L1192 623" fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
+        <text x={1013} y={544} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>detection gets harder</text>
       </g>
     </g>
     {s.get(scene.payoffU) > 0 && <g opacity={s.get(scene.payoffU)}>
-      <rect x={190} y={206} width={900} height={256} rx={26} fill="#0a0e1a" stroke={colors.POSITIVE} strokeWidth={2} />
-      <text x={640} y={272} textAnchor="middle" fill={colors.MUTED} fontSize={15} letterSpacing="0.15em">THE ANCHOR TEST</text>
-      <text x={640} y={326} textAnchor="middle" fill={colors.POSITIVE} fontSize={34} fontWeight={760}>real evidence held fixed</text>
-      <text x={640} y={371} textAnchor="middle" fill={colors.TEXT} fontSize={18}>nine sources · five judgments · six conditions</text>
-      <text x={640} y={418} textAnchor="middle" fill={colors.ACCENT} fontSize={16}>RA-Bench · arXiv:2608.14391</text>
+      <rect x={190} y={150} width={900} height={330} rx={26} fill="#0a0e1a" stroke={colors.POSITIVE} strokeWidth={2} />
+      <text x={640} y={222} textAnchor="middle" fill={colors.MUTED} fontSize={15} letterSpacing="0.15em">THE ANCHOR TEST</text>
+      <text x={640} y={286} textAnchor="middle" fill={colors.POSITIVE} fontSize={34} fontWeight={760}>real evidence held fixed</text>
+      <text x={640} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={18}>nine sources · five judgments · six conditions</text>
+      <text x={640} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={16}>RA-Bench · arXiv:2608.14391</text>
     </g>}
   </Camera>;
 }

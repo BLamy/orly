@@ -177,7 +177,7 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={1 - 0.7 * clamp01(cardsU * 1.5)} focus={cardsU > 0 ? ['tags'] : undefined} focusU={cardsU > 0 ? 0.55 : 0} />
+          <JsonDoc layout={LAYOUT} reveal={jsonU} opacity={1 - 0.5 * clamp01(cardsU * 1.5)} focus={cardsU > 0 ? ['tags'] : undefined} focusU={cardsU > 0 ? 0.55 : 0} />
 
           {PLATFORMS.map((p, i) => {
             const u = clamp01(cardsU * PLATFORMS.length - i);
@@ -192,13 +192,13 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={CARD_X + 16} y={p.y + 26} fill={colors.ACCENT} fontSize={14} fontWeight={600} fontFamily="monospace">
                     {p.name}
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 50} fill={colors.MUTED} fontSize={13}>
+                  <text x={CARD_X + 16} y={p.y + 50} fill={colors.MUTED} fontSize={14}>
                     {p.detail}
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 72} fill={colors.TEXT} fontSize={12.5} fontStyle="italic">
+                  <text x={CARD_X + 16} y={p.y + 72} fill={colors.TEXT} fontSize={14} fontStyle="italic">
                     “Verifying that I control the following
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 92} fill={colors.TEXT} fontSize={12.5} fontStyle="italic">
+                  <text x={CARD_X + 16} y={p.y + 92} fill={colors.TEXT} fontSize={14} fontStyle="italic">
                     Nostr public key: <tspan fill={colors.SECONDARY} fontFamily="monospace">{`${NPUB.slice(0, 16)}…`}</tspan>”
                   </text>
                 </g>
@@ -209,10 +209,10 @@ function Frame({ s }: { s: SceneState }) {
                     fill="none" stroke={colors.MUTED} strokeWidth={1.6} strokeDasharray="6 5" opacity={0.8 * lu}
                   />
                 )}
-                {/* proof → key arrow back */}
+                {/* proof → key arrow back: lands just past the tag's right edge, never across its text */}
                 {lu >= 1 && (
                   <path
-                    d={`M${CARD_X + 30},${p.y + CARD_H} Q 600,${p.y + CARD_H + 40} ${a.x + 60},${a.cy + 22}`}
+                    d={`M${CARD_X + 30},${p.y + CARD_H} Q ${a.x + a.w + 60},${p.y + CARD_H + 30} ${a.x + a.w + 10},${a.cy + 10}`}
                     fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.6}
                   />
                 )}
@@ -227,7 +227,7 @@ function Frame({ s }: { s: SceneState }) {
           })}
 
           {cautionU > 0 && (
-            <text x={CARD_X} y={612} fill={colors.WARM} fontSize={13} opacity={cautionU}>
+            <text x={CARD_X + CARD_W} y={612} textAnchor="end" fill={colors.WARM} fontSize={14} opacity={cautionU}>
               proofs live on other people’s platforms — witnesses, not the identity
             </text>
           )}
@@ -238,7 +238,7 @@ function Frame({ s }: { s: SceneState }) {
       {stackU > 0 && (
         <g>
           {/* opaque-ish wash so the faded claim cards do not show through the stack */}
-          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.9 * stackU} />
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={stackU} />
           {LAYERS.map((l, i) => {
             const u = clamp01(stackU * LAYERS.length - i);
             if (u <= 0) return null;
@@ -258,7 +258,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={640} y={STACK_Y + LAYERS.length * 62 + 32} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 {shortHex(PUBKEY, 20, 12)}
               </text>
-              <text x={640} y={STACK_Y + LAYERS.length * 62 + 53} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={640} y={STACK_Y + LAYERS.length * 62 + 53} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 the key — unchanged since chapter one
               </text>
             </g>

@@ -64,6 +64,8 @@ export interface Scene {
   photoU: ChannelRef<number>;
   tailU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  breathU: ChannelRef<number>;
+  workU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -77,6 +79,8 @@ export function buildScene(): Scene {
   const photoU = tl.channel('photoU', 0); // photo/thumbnail packets
   const tailU = tl.channel('tailU', 0); // warehouse/nosql/sharding chips
   const closeU = tl.channel('closeU', 0);
+  const breathU = tl.channel('breathU', 0); // fleet breathing frame
+  const workU = tl.channel('workU', 0); // workers box
 
   // — Beat 1 · the shape of a day —
   tl.caption({
@@ -104,6 +108,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Watch the fleet breathe. As the morning load climbs, monitoring triggers fire on processor load and latency, and new instances wink into existence to meet the wave.',
   });
+  tl.tween(breathU, 1, { at: 14.7, dur: 1.4, ease: ease.enter });
   tl.tween(dayT, 0.56, { at: 15.2, dur: 5.4, ease: ease.linear });
   tl.tween(trigU, 1, { at: 16.0, dur: 0.9, ease: ease.pop });
   tl.hold(21.5, 0.5);
@@ -123,7 +128,8 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'Growth also changes what runs where. Anything that need not happen during the request moves behind a queue. Upload a photo, and the thumbnails are made later, by workers, while the response has already gone home.',
   });
-  tl.tween(qU, 1, { at: 29.8, dur: 1.2, ease: ease.enter });
+  tl.tween(qU, 1, { at: 29.2, dur: 1.4, ease: ease.enter });
+  tl.tween(workU, 1, { at: 29.8, dur: 1.2, ease: ease.enter });
   tl.tween(photoU, 1, { at: 31.2, dur: 3.8, ease: ease.linear });
   tl.hold(37.0, 0.5);
 
@@ -146,7 +152,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 46.8, dur: 1.6, ease: ease.move });
   tl.hold(54.5, 1.5);
 
-  return { tl, cam, axesU, dayT, fleetU, trigU, qU, photoU, tailU, closeU };
+  return { tl, cam, axesU, dayT, fleetU, trigU, qU, photoU, tailU, closeU, breathU, workU };
 }
 
 const scene = buildScene();
@@ -165,8 +171,10 @@ export function Render({ s }: { s: SceneState }) {
   const photoU = s.get(scene.photoU);
   const tailU = s.get(scene.tailU);
   const closeU = s.get(scene.closeU);
+  const breathU = s.get(scene.breathU);
+  const workU = s.get(scene.workU);
 
-  const dimAll = 1 - closeU * 0.95;
+  const dimAll = 1 - closeU;
   const load = dayAt(dayT);
   const want = Math.round(MIN_INST + (MAX_INST - MIN_INST) * clamp01((load - 0.14) / 0.86));
 
@@ -175,14 +183,22 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the day curve ---- */}
-        <g opacity={axesU * dimAll * (1 - tailU * 0.85)}>
+        <g opacity={axesU * dimAll * (1 - tailU)}>
           <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x0 + PLOT.w} y2={PLOT.y0} stroke={colors.GRID} strokeWidth={1.4} />
           <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x0} y2={PLOT.y0 - PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
           {['midnight', 'noon', 'midnight'].map((t, i) => (
-            <text key={i} x={PLOT.x0 + (i / 2) * PLOT.w} y={PLOT.y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text key={i} x={PLOT.x0 + (i / 2) * PLOT.w} y={PLOT.y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               {t}
             </text>
           ))}
+          {/* the whole day, faint, so the rising curve has a shape to grow into */}
+          <path
+            d={DAY.map((v, i) => `${i === 0 ? 'M' : 'L'} ${PLOT.x0 + (i / N_SAMPLES) * PLOT.w} ${PLOT.y0 - v * PLOT.h}`).join(' ')}
+            fill="none"
+            stroke={colors.GRID}
+            strokeWidth={1.5}
+            strokeDasharray="4 6"
+          />
           {/* curve up to dayT */}
           <path
             d={DAY.slice(0, Math.max(2, Math.round(dayT * N_SAMPLES)))
@@ -194,67 +210,71 @@ export function Render({ s }: { s: SceneState }) {
           />
           {/* now marker */}
           <circle cx={PLOT.x0 + dayT * PLOT.w} cy={PLOT.y0 - load * PLOT.h} r={6} fill={colors.WARM} />
-          <text x={PLOT.x0 - 8} y={PLOT.y0 - PLOT.h + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+          <text x={PLOT.x0 - 8} y={PLOT.y0 - PLOT.h + 4} textAnchor="end" fill={colors.MUTED} fontSize={14}>
             traffic
           </text>
         </g>
 
         {/* ---- the breathing fleet ---- */}
-        <g opacity={fleetU * dimAll}>
+        <g opacity={fleetU * dimAll * (1 - tailU * 0.7)}>
+          <rect x={FLEET_X - 14} y={104} width={258} height={436} rx={12} fill="none" stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="6 6" opacity={breathU * 0.6} />
           <text x={FLEET_X} y={118} fill={colors.TEXT} fontSize={14}>
             autoscaling group
           </text>
-          <text x={FLEET_X} y={138} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={FLEET_X} y={138} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             min {MIN_INST} · max {MAX_INST} · multi-az
           </text>
           {Array.from({ length: MAX_INST }, (_, i) => {
             const on = i < want;
             const winking = i === want - 1 || i === want; // soft edge
             return (
-              <g key={i} opacity={on ? 1 : 0.16}>
+              <g key={i} opacity={on ? 1 : 0.34}>
                 <rect x={FLEET_X} y={instY(i)} width={230} height={40} rx={9} fill={colors.PANEL} stroke={on ? (winking ? colors.WARM : colors.POSITIVE) : colors.GRID} strokeWidth={on ? 1.5 : 1} />
-                <text x={FLEET_X + 14} y={instY(i) + 25} fill={on ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={FLEET_X + 14} y={instY(i) + 25} fill={on ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
                   web-{i + 1} · {i % 2 === 0 ? 'az-1' : 'az-2'} {on ? '' : '· off'}
                 </text>
               </g>
             );
           })}
           <g opacity={trigU}>
-            <text x={FLEET_X} y={instY(MAX_INST - 1) + 62} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={FLEET_X} y={instY(MAX_INST - 1) + 62} fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
               CloudWatch triggers
             </text>
-            <text x={FLEET_X} y={instY(MAX_INST - 1) + 80} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={FLEET_X} y={instY(MAX_INST - 1) + 82} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
               CPU · latency · network · time of day
             </text>
           </g>
         </g>
 
         {/* ---- queue + workers ---- */}
-        <g opacity={qU * dimAll * (1 - tailU * 0.25)}>
-          <rect x={330} y={150} width={150} height={50} rx={10} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={1.3} />
-          <text x={405} y={180} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+        <g opacity={qU * dimAll * (1 - tailU * 0.5)}>
+          {/* the packet is drawn under the boxes, so it hides inside the queue while it waits */}
+          <line x1={390} y1={175} x2={430} y2={175} stroke={colors.GRID} strokeWidth={1.3} />
+          {photoU > 0 && photoU < 1 && (
+            <Packet from={{ x: 390, y: 175 }} to={{ x: 610, y: 175 }} u={photoU} r={6} color={colors.SECONDARY} />
+          )}
+          <rect x={230} y={150} width={160} height={50} rx={10} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={1.3} />
+          <text x={310} y={180} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             upload photo
           </text>
-          <rect x={540} y={150} width={130} height={50} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-          <text x={605} y={175} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
+          <rect x={430} y={150} width={140} height={50} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
+          <text x={500} y={175} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
             Queue
           </text>
-          <text x={605} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={500} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             SQS
           </text>
-          <rect x={730} y={150} width={140} height={50} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-          <text x={800} y={175} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
-            Workers
-          </text>
-          <text x={800} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
-            create thumbnails
-          </text>
-          <line x1={480} y1={175} x2={540} y2={175} stroke={colors.GRID} strokeWidth={1.3} />
-          <line x1={670} y1={175} x2={730} y2={175} stroke={colors.GRID} strokeWidth={1.3} />
-          {photoU > 0 && photoU < 1 && (
-            <Packet from={{ x: 480, y: 175 }} to={{ x: 730, y: 175 }} u={photoU} r={6} color={colors.SECONDARY} />
-          )}
-          <text x={405} y={226} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontStyle="italic" opacity={photoU}>
+          <g opacity={workU}>
+            <line x1={570} y1={175} x2={610} y2={175} stroke={colors.GRID} strokeWidth={1.3} />
+            <rect x={610} y={150} width={180} height={50} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
+            <text x={700} y={175} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+              Workers
+            </text>
+            <text x={700} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
+              create thumbnails
+            </text>
+          </g>
+          <text x={310} y={226} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontStyle="italic" opacity={photoU}>
             response already returned
           </text>
         </g>
@@ -268,8 +288,8 @@ export function Render({ s }: { s: SceneState }) {
             'DynamoDB — NoSQL for the heaviest keys',
           ].map((t, i) => (
             <g key={i}>
-              <rect x={140} y={252 + i * 44} width={430} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={355} y={274 + i * 44} textAnchor="middle" fill={i === 2 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <rect x={120} y={252 + i * 44} width={520} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={380} y={274 + i * 44} textAnchor="middle" fill={i === 2 ? colors.WARM : colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                 {t}
               </text>
             </g>
@@ -279,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
           <rect x={250} y={185} width={780} height={300} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={234} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <text x={640} y={234} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
             one box → a city of millions
           </text>
           {[
@@ -289,15 +309,15 @@ export function Render({ s }: { s: SceneState }) {
             ['4', 'breathe: autoscaling, queues and workers, warehouse and shards'],
           ].map(([k, v], i) => (
             <g key={k}>
-              <text x={390} y={282 + i * 40} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
+              <text x={390} y={282 + i * 40} textAnchor="end" fill={colors.ACCENT} fontSize={16} fontFamily="ui-monospace, monospace">
                 {k}
               </text>
-              <text x={418} y={282 + i * 40} fill={colors.MUTED} fontSize={13}>
+              <text x={418} y={282 + i * 40} fill={colors.TEXT} fontSize={15}>
                 {v}
               </text>
             </g>
           ))}
-          <text x={640} y={452} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={452} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             benchmark · profile · fix the real bottleneck · repeat
           </text>
         </g>

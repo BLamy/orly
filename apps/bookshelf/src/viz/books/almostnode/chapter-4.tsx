@@ -54,7 +54,7 @@ const cardPos = (u: number): number => {
   return lerp(marks[i], marks[i + 1], f - i);
 };
 
-const PANEL = { x: 250, y: 246, w: 780, h: 216 } as const;
+const PANEL = { x: 250, y: 246, w: 780, h: 232 } as const;
 
 // the four states of ONE file, /src/App.tsx (verbatim transform outputs)
 type CodeLine = { text: string; hot?: boolean };
@@ -358,7 +358,8 @@ export function Render({ s }: { s: SceneState }) {
   const cssOutU = s.get(scene.cssOutU);
   const convOp = s.get(scene.convOp);
   const dimU = s.get(scene.dimU);
-  const machineOp = 1 - 0.88 * dimU;
+  // act two fades fully before the closer, so no old content sits under its text
+  const machineOp = 1 - dimU;
 
   // which panel blend is active?
   const blend =
@@ -386,7 +387,7 @@ export function Render({ s }: { s: SceneState }) {
 
   // packets in the HMR act
   const writeP = { x: lerp(ED.x + ED.w, VFS_B.x - 66, writeU), y: lerp(ED.y + 90, VFS_B.y, writeU) };
-  const updP = { x: lerp(SRV_B.x + 66, PREV.x + 20, updU), y: lerp(SRV_B.y, PREV.y + 100, updU) };
+  const updP = { x: lerp(SRV_B.x + 75, PREV.x + 14, updU), y: lerp(SRV_B.y, PREV.y + 100, updU) };
   const btnColor = applyU > 0.5 ? colors.POSITIVE : colors.ACCENT;
 
   return (
@@ -398,6 +399,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* the rail */}
           <line x1={RAIL_X0} y1={RAIL_Y} x2={lerp(RAIL_X0, RAIL_X1, railU)} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={2} />
 
+          {/* the request, arriving from the iframe; it hands off to the rail card */}
+          <g opacity={panelU * (1 - clamp01(cardX * 20))}>
+            <rect x={PANEL.x + PANEL.w / 2 - 160} y={PANEL.y - 58} width={320} height={34} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
+            <text x={PANEL.x + PANEL.w / 2} y={PANEL.y - 36} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              {'GET /src/App.tsx · from preview iframe'}
+            </text>
+          </g>
+
           {/* the stations */}
           {STATIONS.map((st, i) => {
             const u = clamp01(archU * 3 - i);
@@ -406,10 +415,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={st.label} opacity={u}>
                 <rect x={st.x - 105} y={RAIL_Y - 62} width={210} height={46} rx={10} fill={colors.PANEL} stroke={st.color} strokeWidth={active ? 2.4 : 1.4} />
-                <text x={st.x} y={RAIL_Y - 42} textAnchor="middle" fill={st.color} fontSize={13.5} fontFamily={MONO}>
+                <text x={st.x} y={RAIL_Y - 42} textAnchor="middle" fill={st.color} fontSize={14} fontFamily={MONO}>
                   {st.label}
                 </text>
-                <text x={st.x} y={RAIL_Y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                <text x={st.x} y={RAIL_Y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                   {st.sub}
                 </text>
                 <line x1={st.x} y1={RAIL_Y - 16} x2={st.x} y2={RAIL_Y - 4} stroke={st.color} strokeWidth={1.5} opacity={0.7} />
@@ -419,9 +428,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the request card */}
           {cardVisible && (
-            <g>
+            <g opacity={clamp01(cardX * 20)}>
               <rect x={cx - 82} y={RAIL_Y + 12} width={164} height={32} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
-              <text x={cx} y={RAIL_Y + 33} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+              <text x={cx} y={RAIL_Y + 33} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                 GET /src/App.tsx
               </text>
             </g>
@@ -430,12 +439,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* THE code panel — one file, mutating in place */}
           <g opacity={panelU}>
             <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={PANEL.x + 18} y={PANEL.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={PANEL.x + 18} y={PANEL.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               /src/App.tsx · one file, transformed in place
             </text>
             <CodeBlend from={blend.from} to={blend.to} u={blend.u} />
             {/* what station three actually does, stated on the file itself */}
-            <text x={PANEL.x + 22} y={PANEL.y + PANEL.h - 14} fill={colors.WARM} fontSize={12.5} fontFamily={MONO} opacity={st3U}>
+            <text x={PANEL.x + 22} y={PANEL.y + PANEL.h - 14} fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={st3U}>
               {"bare 'react' → /_npm/react — the service worker routes that path"}
             </text>
           </g>
@@ -443,14 +452,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* the stylesheet aside */}
           <g opacity={cssU}>
             <rect x={CSS.x} y={CSS.y} width={CSS.w} height={CSS.h} rx={10} fill={colors.PANEL} stroke={colors.TEAL ?? colors.ACCENT} strokeWidth={1.2} />
-            <text x={CSS.x + 16} y={CSS.y + 26} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+            <text x={CSS.x + 16} y={CSS.y + 26} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               GET /src/style.css · sec-fetch-dest: script
             </text>
             <g opacity={cssOutU}>
-              <text x={CSS.x + 16} y={CSS.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={CSS.x + 16} y={CSS.y + 52} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 {"→ style.setAttribute('data-vite-dev-id', '/src/style.css')"}
               </text>
-              <text x={CSS.x + 16} y={CSS.y + 74} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={CSS.x + 16} y={CSS.y + 74} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 {'→ document.head.appendChild(style); export default css'}
               </text>
             </g>
@@ -462,29 +471,29 @@ export function Render({ s }: { s: SceneState }) {
           {/* the editor */}
           <g opacity={edU}>
             <rect x={ED.x} y={ED.y} width={ED.w} height={ED.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={ED.x + 16} y={ED.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={ED.x + 16} y={ED.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               editor · /src/App.tsx
             </text>
-            <text x={ED.x + 18} y={ED.y + 36} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={ED.x + 18} y={ED.y + 36} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'<button style={{'}
             </text>
             <g>
-              <text x={ED.x + 34} y={ED.y + 64} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+              <text x={ED.x + 34} y={ED.y + 64} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 color:
               </text>
-              <text x={ED.x + 92} y={ED.y + 64} fill={colors.ACCENT} fontSize={13} fontFamily={MONO} opacity={1 - editU}>
+              <text x={ED.x + 92} y={ED.y + 64} fill={colors.ACCENT} fontSize={14} fontFamily={MONO} opacity={1 - editU}>
                 'blue'
               </text>
-              <text x={ED.x + 92} y={ED.y + 64} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={editU}>
+              <text x={ED.x + 92} y={ED.y + 64} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={editU}>
                 'green'
               </text>
             </g>
-            <text x={ED.x + 18} y={ED.y + 92} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={ED.x + 18} y={ED.y + 92} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'}}>{count}</button>'}
             </text>
             <g opacity={editU}>
               <rect x={ED.x + 18} y={ED.y + 124} width={92} height={28} rx={7} fill="none" stroke={colors.POSITIVE} />
-              <text x={ED.x + 64} y={ED.y + 143} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+              <text x={ED.x + 64} y={ED.y + 143} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
                 saved ⌘S
               </text>
             </g>
@@ -499,21 +508,22 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* the write packet */}
-          {writeU > 0 && writeU < 1 && (
-            <g>
+          {/* the write packet lands at the VFS and stays until the server reacts */}
+          {writeU > 0 && (
+            <g opacity={1 - clamp01(updU * 4)}>
               <circle cx={writeP.x} cy={writeP.y} r={7} fill={colors.POSITIVE} stroke={colors.BG} strokeWidth={1.5} />
-              {/* the label sits in the gap between editor and VFS, never on the packet's path */}
-              <text x={(ED.x + ED.w + VFS_B.x - 75) / 2} y={VFS_B.y - 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              {/* the label sits in the gap between editor and VFS, above the connector */}
+              <text x={432} y={VFS_B.y - 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 writeFileSync
               </text>
             </g>
           )}
 
-          {/* the HMRUpdate packet */}
-          {updU > 0 && updU < 1 && (
-            <g>
+          {/* the HMRUpdate packet: it lands inside the iframe, then the hot swap consumes it */}
+          {updU > 0 && (
+            <g opacity={1 - applyU}>
               <circle cx={updP.x} cy={updP.y} r={8} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={updP.x} y={updP.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+              <text x={PREV.x} y={PREV.y + PREV.h + 28} fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={clamp01(updU * 4)}>
                 {"{ type: 'update', path: '/src/App.tsx' }"}
               </text>
             </g>
@@ -522,18 +532,18 @@ export function Render({ s }: { s: SceneState }) {
           {/* the preview iframe */}
           <g opacity={prevU}>
             <rect x={PREV.x} y={PREV.y} width={PREV.w} height={PREV.h} rx={12} fill={colors.PANEL} stroke={applyU > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4 + applyU} />
-            <text x={PREV.x + 16} y={PREV.y - 10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={PREV.x + 16} y={PREV.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               preview iframe · import.meta.hot
             </text>
             <rect x={PREV.x + 16} y={PREV.y + 18} width={PREV.w - 32} height={20} rx={5} fill={colors.GRID} opacity={0.35} />
             {/* the counter button — color swaps, count stays */}
             <rect x={PREV.x + 70} y={PREV.y + 78} width={150} height={48} rx={10} fill="none" stroke={btnColor} strokeWidth={2.2} />
-            <text x={PREV.x + 145} y={PREV.y + 108} textAnchor="middle" fill={btnColor} fontSize={17} fontFamily={MONO}>
+            <text x={PREV.x + 145} y={PREV.y + 108} textAnchor="middle" fill={btnColor} fontSize={18} fontFamily={MONO}>
               count: 3
             </text>
             <g opacity={keepU}>
-              <rect x={PREV.x + 58} y={PREV.y + 146} width={174} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-              <text x={PREV.x + 145} y={PREV.y + 166} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+              <rect x={PREV.x + 50} y={PREV.y + 146} width={190} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
+              <text x={PREV.x + 145} y={PREV.y + 166} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
                 state kept — no reload
               </text>
             </g>
@@ -542,7 +552,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the full-reload contrast chip */}
           <g opacity={fullU * 0.9}>
             <rect x={490} y={470} width={330} height={34} rx={8} fill={colors.BG} stroke={colors.GRID} />
-            <text x={655} y={492} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={655} y={492} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               {"index.html changed → { type: 'full-reload' }"}
             </text>
           </g>

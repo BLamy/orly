@@ -8,8 +8,10 @@
 import { CAMERA_HOME, Camera, Player, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState, TimelineOverrides } from '../../core';
 import { hexToBits, shortHex } from '../../primitives';
-import { PUBKEY } from './chapter-1';
 import overrides from './chapter-2.overrides.json';
+
+// The same key chapter 1 introduces. Kept local so this scene carries only its own narration.
+const PUBKEY = '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
@@ -270,7 +272,7 @@ function Frame({ s }: { s: SceneState }) {
                 );
               })}
               {regroupU > 0 && (
-                <text x={490} y={BITS.y - 14} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={regroupU}>
+                <text x={490} y={BITS.y - 14} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={regroupU}>
                   …re-cut 5 bits at a time → 52 words
                 </text>
               )}
@@ -287,7 +289,7 @@ function Frame({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <rect x={x} y={WORD_Y - 20} width={50} height={28} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-                    <text x={x + 25} y={WORD_Y} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                    <text x={x + 25} y={WORD_Y} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                       {w}
                     </text>
                     <text x={x + 25} y={WORD_Y + 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily="monospace" opacity={u}>
@@ -303,7 +305,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* the real npub */}
           {npubU > 0 && !tlvPhase && (
             <g opacity={npubU}>
-              <text x={120} y={NPUB_Y - 18} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={120} y={NPUB_Y - 18} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 npub — bech32, computed from the bits above
               </text>
               <text x={120} y={NPUB_Y + 4} fontSize={15} fontFamily="monospace">
@@ -315,7 +317,7 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 4} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={600}>
                     {NPUB.slice(-6)}
                   </text>
-                  <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 26} fill={colors.WARM} fontSize={12}>
+                  <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 26} fill={colors.WARM} fontSize={14}>
                     checksum
                   </text>
                 </g>
@@ -325,21 +327,21 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* TLV / nprofile */}
           {tlvU > 0 && (
-            <g>
-              <text x={330} y={196} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={tlvU}>
+            <g opacity={1 - clamp01(bounceU * 2)}>
+              <text x={330} y={196} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={tlvU}>
                 nprofile — typed boxes, then the same alphabet
               </text>
               {TLV.map((t, i) => {
                 const u = clamp01(tlvU * TLV.length - i);
                 if (u <= 0) return null;
-                const x = 330 + i * 250 - packU * i * 46;
+                const x = 330 + i * 250 - packU * i * 26;
                 return (
                   <g key={i} opacity={u}>
-                    <rect x={x} y={230} width={224 - packU * 40} height={64} rx={9} fill={colors.PANEL} stroke={t.color} />
-                    <text x={x + 12} y={252} fill={t.color} fontSize={12} fontFamily="monospace">
+                    <rect x={x} y={230} width={224 - packU * 16} height={64} rx={9} fill={colors.PANEL} stroke={t.color} />
+                    <text x={x + 12} y={252} fill={t.color} fontSize={14} fontFamily="monospace">
                       type {t.t} · {t.label}
                     </text>
-                    <text x={x + 12} y={276} fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                    <text x={x + 12} y={276} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                       {t.value}
                     </text>
                   </g>
@@ -357,10 +359,10 @@ function Frame({ s }: { s: SceneState }) {
           {bounceU > 0 && (
             <g>
               <rect x={820} y={420} width={330} height={110} rx={10} fill={colors.PANEL} stroke={colors.GRID} opacity={Math.min(1, bounceU * 2)} />
-              <text x={838} y={448} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.min(1, bounceU * 2)}>
+              <text x={838} y={448} fill={colors.MUTED} fontSize={14} fontFamily="monospace" opacity={Math.min(1, bounceU * 2)}>
                 {'{ "pubkey": _______ , … }'}
               </text>
-              <text x={838} y={478} fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={clamp01(bounceU * 3 - 2)}>
+              <text x={838} y={478} fill={colors.WARM} fontSize={14} fontFamily="monospace" opacity={clamp01(bounceU * 3 - 2)}>
                 {shortHex(PUBKEY, 12, 6)} ✓ hex
               </text>
               {(() => {
@@ -371,11 +373,11 @@ function Frame({ s }: { s: SceneState }) {
                 const y = 560 - 60 * Math.sin(Math.PI * fwd);
                 return (
                   <g>
-                    <text x={x} y={y} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" opacity={0.9}>
+                    <text x={x} y={y} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" opacity={0.9}>
                       npub180cvv0…
                     </text>
                     {t > 0.45 && t < 0.75 && (
-                      <text x={990} y={545} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={1 - Math.abs(t - 0.6) * 6}>
+                      <text x={990} y={548} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={1 - Math.abs(t - 0.6) * 6}>
                         ✕ not on the wire
                       </text>
                     )}
@@ -396,7 +398,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             npub for humans · TLV for context · hex on the wire
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-19 · bech32 (BIP-173) · nprofile TLV 0/1/2/3
           </text>
         </g>

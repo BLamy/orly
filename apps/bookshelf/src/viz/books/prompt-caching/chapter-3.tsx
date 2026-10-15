@@ -123,7 +123,6 @@ export function buildScene() {
     text: 'On the wire it is one tiny field, type ephemeral, sitting on the last block of the prefix you want remembered.',
   });
   tl.tween(codeU, 1, { at: 8.4, dur: 0.7, ease: ease.enter });
-  tl.tween(codeU, 0, { at: 13.6, dur: 0.5, ease: ease.enter }); // clear the tape for beat 9's note
 
   // — beat 3 · the write —
   tl.caption({
@@ -194,7 +193,6 @@ export function buildScene() {
     text: 'You can pin up to four markers in one request — after the tools, after the system prompt, deep in the history — so a late change still reuses everything before the last surviving marker.',
   });
   tl.tween(cam, CAM_TAPE, { at: 54.8, dur: 1.3, ease: ease.move });
-  tl.tween(hourU, 0, { at: 53.6, dur: 0.6, ease: ease.enter }); // the 1h panel leaves before the tape camera returns
   tl.tween(coldU, 0, { at: 54.8, dur: 0.5, ease: ease.enter });
   tl.tween(flagsU, 1, { at: 55.6, dur: 1.8, ease: ease.move });
 
@@ -262,6 +260,10 @@ export function Render({ s }: { s: SceneState }) {
 
   const machineOp = tapeU * (1 - 0.88 * dimU);
   const flagX = cellX(N - 1) + CELL_W + 4;
+  // the shelf and its fuse step back once the four-breakpoint beat takes over
+  const shelfFade = 1 - 0.85 * flagsU;
+  // the single flag hands off to the last slot of the four-breakpoint row
+  const flagHandoff = flagU * (1 - clamp01(flagsU * 4 - 3));
 
   const hits: number[] = [];
   if (hit1 > 0 && hit1 < 1) hits.push(hit1);
@@ -273,7 +275,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={machineOp}>
           {/* the request tape */}
-          <text x={TAPE_X} y={TAPE_Y - 46} fill={colors.MUTED} fontSize={13}>
+          <text x={TAPE_X} y={TAPE_Y - 46} fill={colors.MUTED} fontSize={14}>
             the request — tools, system, history
           </text>
           {Array.from({ length: N }, (_, i) => (
@@ -281,24 +283,25 @@ export function Render({ s }: { s: SceneState }) {
           ))}
 
           {/* the cache_control flag on the last prefix block */}
-          <g opacity={flagU} transform={`translate(${flagX}, ${TAPE_Y - 26 * flagU})`}>
+          <g opacity={flagHandoff} transform={`translate(${flagX}, ${TAPE_Y - 26 * flagU})`}>
             <line x1={0} y1={26} x2={0} y2={CELL_H + 26} stroke={colors.POSITIVE} strokeWidth={2.5} />
-            <path d={'M 0 26 h 80 l -10 11 l 10 11 h -80 z'} fill={colors.POSITIVE} opacity={0.9} />
-            <text x={6} y={41} fill={colors.BG} fontSize={12} fontFamily={MONO} fontWeight={700}>
+            <path d={'M 0 26 h 108 l -10 11 l 10 11 h -108 z'} fill={colors.POSITIVE} opacity={0.9} />
+            <text x={6} y={41} fill={colors.BG} fontSize={14} fontFamily={MONO} fontWeight={700}>
               breakpoint
             </text>
           </g>
 
           {/* the ephemeral chip */}
-          <g opacity={codeU}>
-            <rect x={TAPE_X + 340} y={TAPE_Y + 52} width={330} height={34} rx={9} fill={colors.BG} stroke={colors.POSITIVE} />
-            <text x={TAPE_X + 356} y={TAPE_Y + 74} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+          {/* the chip lets go as the prefix lifts onto the shelf */}
+          <g opacity={codeU * (1 - liftU)}>
+            <rect x={TAPE_X + 340} y={TAPE_Y + 52} width={364} height={36} rx={9} fill={colors.BG} stroke={colors.POSITIVE} />
+            <text x={TAPE_X + 356} y={TAPE_Y + 75} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
               cache_control: {'{'} type: 'ephemeral' {'}'}
             </text>
           </g>
 
           {/* the shelf */}
-          <g opacity={clamp01(liftU * 3)}>
+          <g opacity={clamp01(liftU * 3) * shelfFade}>
             <rect
               x={SHELF.x}
               y={SHELF.y}
@@ -312,7 +315,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SHELF.x + 16} y={SHELF.y + 26} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
               the prompt cache
             </text>
-            <text x={SHELF.x + SHELF.w - 16} y={SHELF.y + 26} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={SHELF.x + SHELF.w - 16} y={SHELF.y + 26} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               key = the whole prefix
             </text>
           </g>
@@ -340,19 +343,19 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* write receipt chip */}
           <g opacity={writeU * (1 - dissolveU)}>
-            <rect x={SHELF.x} y={SHELF.y + SHELF.h + 10} width={356} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={SHELF.x + 14} y={SHELF.y + SHELF.h + 30} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+            <rect x={SHELF.x} y={SHELF.y + SHELF.h + 10} width={408} height={34} rx={8} fill={colors.BG} stroke={colors.WARM} />
+            <text x={SHELF.x + 14} y={SHELF.y + SHELF.h + 32} fill={colors.WARM} fontSize={13.5} fontFamily={MONO}>
               cache_creation_input_tokens: 18,000 — the write
             </text>
           </g>
 
           {/* the five-minute fuse */}
-          <g opacity={arcU}>
+          <g opacity={arcU * shelfFade}>
             <TimerArc cx={ARC.cx} cy={ARC.cy} r={ARC.r} u={fuse} color={fuse < 0.25 ? colors.NEGATIVE : colors.WARM} width={5} />
-            <text x={ARC.cx} y={ARC.cy + 5} textAnchor="middle" fill={fuse < 0.25 ? colors.NEGATIVE : colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={ARC.cx} y={ARC.cy + 5} textAnchor="middle" fill={fuse < 0.25 ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily={MONO}>
               {fmtClock(fuse, 300)}
             </text>
-            <text x={ARC.cx} y={ARC.cy + ARC.r + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <text x={ARC.cx} y={ARC.cy + ARC.r + 20} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
               ttl: '5m'
             </text>
           </g>
@@ -361,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
           {hits.map((u, i) => (
             <g key={i}>
               <circle cx={lerp(1010, SHELF.x + SHELF.w - 30, u)} cy={lerp(300, SHELF.y + SHELF.h - 14, u)} r={8} fill={colors.ACCENT} />
-              <text x={lerp(1010, SHELF.x + SHELF.w - 30, u)} y={lerp(300, SHELF.y + SHELF.h - 14, u) - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+              <text x={lerp(1010, SHELF.x + SHELF.w - 30, u)} y={lerp(300, SHELF.y + SHELF.h - 14, u) - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 request
               </text>
             </g>
@@ -369,29 +372,30 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* expiry aftermath */}
           <g opacity={coldU}>
-            <rect x={SHELF.x + 100} y={SHELF.y + 30} width={SHELF.w - 200} height={40} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-            <text x={SHELF.x + SHELF.w / 2} y={SHELF.y + 55} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+            <rect x={SHELF.x + 90} y={SHELF.y + 40} width={SHELF.w - 180} height={40} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+            <text x={SHELF.x + SHELF.w / 2} y={SHELF.y + 65} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO}>
               expired — next request pays the write again
             </text>
           </g>
 
           {/* the one-hour tier */}
-          <g opacity={hourU}>
+          {/* the panel fades as the four-breakpoint beat takes the stage */}
+          <g opacity={hourU * (1 - flagsU)}>
             <rect x={HOUR.x} y={HOUR.y} width={HOUR.w} height={HOUR.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={HOUR.x + 16} y={HOUR.y + 28} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
               the patient tier
             </text>
             <TimerArc cx={HOUR.x + 52} cy={HOUR.y + 86} r={24} u={hourFuse} color={colors.SECONDARY} width={4.5} />
-            <text x={HOUR.x + 52} y={HOUR.y + 91} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+            <text x={HOUR.x + 52} y={HOUR.y + 91} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               {fmtClock(hourFuse, 3600)}
             </text>
-            <text x={HOUR.x + 96} y={HOUR.y + 76} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+            <text x={HOUR.x + 96} y={HOUR.y + 76} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               ttl: '1h'
             </text>
-            <text x={HOUR.x + 96} y={HOUR.y + 98} fill={colors.MUTED} fontSize={12}>
+            <text x={HOUR.x + 96} y={HOUR.y + 100} fill={colors.MUTED} fontSize={13.5}>
               write costs 2×
             </text>
-            <text x={HOUR.x + 96} y={HOUR.y + 118} fill={colors.MUTED} fontSize={12}>
+            <text x={HOUR.x + 96} y={HOUR.y + 122} fill={colors.MUTED} fontSize={13.5}>
               reads still 0.1×
             </text>
           </g>
@@ -407,7 +411,7 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={cellX(0)} y={TAPE_Y + CELL_H + 26} fill={colors.POSITIVE} fontSize={12.5}>
+            <text x={cellX(0)} y={TAPE_Y + CELL_H + 30} fill={colors.POSITIVE} fontSize={14}>
               up to 4 breakpoints per request — a partial match lands on the nearest one
             </text>
           </g>
@@ -428,10 +432,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={400} y={348} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
             cache_read_input_tokens: 0
           </text>
-          <text x={400} y={382} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={400} y={382} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
             cache_creation: {'{'} ephemeral_5m_input_tokens: 18,000,
           </text>
-          <text x={400} y={404} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+          <text x={400} y={406} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
             {'  '}ephemeral_1h_input_tokens: 0 {'}'}
           </text>
         </g>

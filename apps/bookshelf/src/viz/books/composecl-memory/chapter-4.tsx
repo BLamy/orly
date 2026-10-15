@@ -14,12 +14,18 @@ const CANDIDATES = Array.from({ length: 90 }, (_, i) => ({
   y: 128 + Math.floor(i / 15) * 34,
   color: [colors.ACCENT, colors.SECONDARY, colors.WARM][i % 3],
 }));
-// Factorial grid sits right of centre so the result cards keep the left column.
+// Factorial grid is centred on the stage (x 350..930); the result cards keep the left column.
 const CELLS = Array.from({ length: 16 }, (_, i) => ({
   i,
-  x: 470 + (i % 4) * 150,
-  y: 166 + Math.floor(i / 4) * 86,
+  x: 350 + (i % 4) * 150,
+  y: 196 + Math.floor(i / 4) * 80,
 }));
+const SWITCHES = [
+  { label: 'SI', name: 'synaptic intelligence', c: colors.WARM, x: 303 },
+  { label: 'SD', name: 'self-distill', c: colors.SECONDARY, x: 549 },
+  { label: 'R', name: 'replay', c: colors.ACCENT, x: 719 },
+  { label: 'M', name: 'low-rank merge', c: colors.POSITIVE, x: 830 },
+];
 const RESULTS = [
   { label: 'Symbol-QA', value: 18.5, rank: 'rank 2 of 16', color: colors.ACCENT },
   { label: 'LLM-QA', value: 41.8, rank: 'rank 1 of 16', color: colors.SECONDARY },
@@ -145,7 +151,11 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         <g opacity={factorial * gridFade}>
-          <text x="760" y="140" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>2⁴ factorial · FACTORS = si, sd, replay, merge</text>
+          <text x="640" y="140" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>2⁴ factorial · FACTORS = si, sd, replay, merge</text>
+          {SWITCHES.map((sw) => <g key={sw.label} opacity={factorial}>
+            <circle cx={sw.x} cy="166" r="7" fill={sw.c} />
+            <text x={sw.x + 14} y="171" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}><tspan fontWeight="800">{sw.label}</tspan> {sw.name}</text>
+          </g>)}
           {CELLS.map((cell) => {
             const u = clamp01(factors * 17 - cell.i);
             const active = cell.i === 15;
@@ -155,7 +165,7 @@ export function Render({ s }: { s: SceneState }) {
                 const on = (cell.i & (1 << bit)) !== 0;
                 return <g key={label} transform={`translate(${23 + bit * 28} 22)`}>
                   <circle r="9" fill={on ? [colors.WARM, colors.SECONDARY, colors.ACCENT, colors.POSITIVE][bit] : '#202b3e'} />
-                  <text y="32" textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize="12">{label}</text>
+                  <text y="32" textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize="13">{label}</text>
                 </g>;
               })}
             </g>;
@@ -164,32 +174,32 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={results}>
             {RESULTS.map((r, i) => {
               const u = clamp01(results - i);
-              return <g key={r.label} transform={`translate(150 ${170 + i * 112})`} opacity={u}>
+              return <g key={r.label} transform={`translate(150 ${196 + i * 104})`} opacity={u}>
                 <rect width="170" height="100" rx="24" fill="#101827" stroke={r.color} strokeWidth="3" />
                 <text x="85" y="28" textAnchor="middle" fill={r.color} fontSize="14" fontWeight="800">{r.label}</text>
                 <text x="85" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="900">{r.value}%</text>
-                <text x="85" y="87" textAnchor="middle" fill={colors.MUTED} fontSize="12">{r.rank}</text>
+                <text x="85" y="87" textAnchor="middle" fill={colors.MUTED} fontSize="13">{r.rank}</text>
               </g>;
             })}
           </g>
 
           <g opacity={clamp01(compare)}>
-            <rect x="130" y="520" width="360" height="96" rx="26" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
-            <text x="150" y="542" fill={colors.MUTED} fontSize="13">average final retention</text>
-            <text x="150" y="572" fill={colors.NEGATIVE} fontSize="14">naive 1.2%</text>
-            <text x="150" y="608" fill={colors.POSITIVE} fontSize="14">composed 34.9%</text>
-            <rect x="290" y="558" width={5.5 * clamp01(compare)} height="16" rx="8" fill={colors.NEGATIVE} />
-            <rect x="290" y="594" width={160 * clamp01(compare - 1)} height="16" rx="8" fill={colors.POSITIVE} />
+            <rect x="150" y="520" width="360" height="96" rx="26" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
+            <text x="170" y="542" fill={colors.MUTED} fontSize="14">average final retention</text>
+            <text x="170" y="572" fill={colors.NEGATIVE} fontSize="14">naive 1.2%</text>
+            <text x="170" y="608" fill={colors.POSITIVE} fontSize="14">composed 34.9%</text>
+            <rect x="310" y="558" width={5.5 * clamp01(compare)} height="16" rx="8" fill={colors.NEGATIVE} />
+            <rect x="310" y="594" width={160 * clamp01(compare - 1)} height="16" rx="8" fill={colors.POSITIVE} />
           </g>
           <g opacity={s.get(scene.interactionU)}>
-            <path d="M540 570 C600 520 920 520 1000 570" fill="none" stroke={colors.WARM} strokeWidth="5" />
-            <circle cx="540" cy="570" r="14" fill={colors.ACCENT} />
-            <circle cx="1000" cy="570" r="14" fill={colors.POSITIVE} />
-            <text x="540" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">replay</text>
-            <text x="1000" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">merge</text>
-            <circle cx="770" cy="540" r="22" fill={colors.WARM} />
-            <text x="770" y="545" textAnchor="middle" fill={colors.BG} fontSize="12" fontWeight="900">SUPER</text>
-            <text x="770" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">replay × merge · all three datasets</text>
+            <path d="M540 580 C600 540 920 540 1000 580" fill="none" stroke={colors.WARM} strokeWidth="5" />
+            <circle cx="540" cy="580" r="14" fill={colors.ACCENT} />
+            <circle cx="1000" cy="580" r="14" fill={colors.POSITIVE} />
+            <text x="540" y="612" textAnchor="middle" fill={colors.MUTED} fontSize="14">replay</text>
+            <text x="1000" y="612" textAnchor="middle" fill={colors.MUTED} fontSize="14">merge</text>
+            <circle cx="770" cy="550" r="9" fill={colors.WARM} />
+            <text x="770" y="528" textAnchor="middle" fill={colors.WARM} fontSize="15" fontWeight="800">super-additive: together beats the sum</text>
+            <text x="770" y="612" textAnchor="middle" fill={colors.MUTED} fontSize="14">replay × merge · all three datasets</text>
           </g>
         </g>
 

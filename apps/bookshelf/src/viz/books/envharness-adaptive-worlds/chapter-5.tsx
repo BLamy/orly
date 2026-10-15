@@ -35,26 +35,33 @@ export function buildScene() {
 
   tl.caption({ at: 7.1, dur: 6.5, text: 'On ALFWorld, the average rises from sixty-two point four to sixty-eight point three, with a nine-point held-out gain.' });
   tl.tween(benchmarkP, 1, { at: 7.7, dur: 1.2, ease: ease.enter });
+  tl.tween(cam, { x: 400, y: 360, k: 1.08 }, { at: 8.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 14.0, dur: 6.4, text: 'The web benchmark rises from thirty-eight point five to forty-one point six under the same policy and extraction protocol.' });
   tl.tween(benchmarkP, 2, { at: 14.6, dur: 1.2, ease: ease.enter });
+  tl.tween(cam, { x: 500, y: 360, k: 1.08 }, { at: 15.5, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 20.8, dur: 6.7, text: 'Software tasks improve twice: success reaches fifty-two point five eight, while average steps fall from fifty-five point zero one to forty-nine point six one.' });
   tl.tween(benchmarkP, 3, { at: 21.4, dur: 1.2, ease: ease.enter });
   tl.tween(stepsU, 1, { at: 22.6, dur: 1.0, ease: ease.enter });
+  tl.tween(cam, { x: 660, y: 360, k: 1.08 }, { at: 22.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 27.9, dur: 6.6, text: 'Office question answering and spreadsheet work also move upward, so the interface survives very different domains.' });
   tl.tween(benchmarkP, 5, { at: 28.5, dur: 2.0, ease: ease.enter });
+  tl.tween(cam, CAMERA_HOME, { at: 31.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 34.9, dur: 6.5, text: 'The reshaped worlds are a real optimization signal too. Reinforcement learning lifts ALFWorld in-distribution success from eighty-one point four to eighty-seven point nine.' });
   tl.tween(rlU, 1, { at: 35.5, dur: 1.0, ease: ease.enter });
+  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: 36.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 41.8, dur: 6.7, text: 'At three hundred training environments, co-evolution reaches fifty-four point seven nine, ahead of both original and generated worlds.' });
   tl.tween(scaleU, 1, { at: 42.4, dur: 1.2, ease: ease.draw });
   tl.tween(learnerU, 1, { at: 43.3, dur: 3.8, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 44.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.9, dur: 6.8, text: "Each accepted lesson moves the learner's boundary, so the next diagnosis can expose a weakness that was invisible before." });
   tl.tween(recapP, 5, { at: 49.5, dur: 2.6, ease: ease.enter });
+  tl.tween(cam, CAMERA_HOME, { at: 52.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 56.1, dur: 7.1, text: 'Freeze the benchmark, reshape its interface, validate the lesson, and keep moving the boundary with the learner.' });
   tl.tween(close, 1, { at: 59.8, dur: 1.0, ease: ease.move });
@@ -86,8 +93,8 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.axesU)}>
         <path d="M130 500 H1180 M130 170 V500" stroke={colors.MUTED} strokeWidth="2" />
         {[0, 20, 40, 60].map(v => <g key={v}><path d={`M130 ${chartY(v)} H1180`} stroke={colors.GRID} /><text x="116" y={chartY(v) + 5} textAnchor="end" fill={colors.MUTED} fontSize="14">{v}</text></g>)}
-        <rect x="880" y="136" width="16" height="16" fill={colors.MUTED} /><text x="904" y="150" fill={colors.MUTED} fontSize="14">Original Envs</text>
-        <rect x="1040" y="136" width="16" height="16" fill={colors.POSITIVE} /><text x="1064" y="150" fill={colors.MUTED} fontSize="14">EnvHarness Envs</text>
+        <rect x="380" y="136" width="16" height="16" fill={colors.MUTED} /><text x="404" y="150" fill={colors.MUTED} fontSize="14">Original Envs</text>
+        <rect x="540" y="136" width="16" height="16" fill={colors.POSITIVE} /><text x="564" y="150" fill={colors.MUTED} fontSize="14">EnvHarness Envs</text>
       </g>
 
       {BENCHMARKS.map((b, i) => {
@@ -115,7 +122,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
       </g>
 
-      <g opacity={s.get(scene.rlU)}>
+      {/* Alone on stage the RL panel sits centred; it slides left once the environment-scaling panel arrives. */}
+      <g opacity={s.get(scene.rlU)} transform={`translate(${300 * (1 - clamp01(s.get(scene.scaleU)))} 0)`}>
         <rect x="70" y="118" width="540" height="442" rx="28" fill="#111827" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="100" y="150" fill={colors.SECONDARY} fontSize="17" fontWeight="700">reinforcement learning</text>
         <rect x="170" y="193" width="120" height="277" rx="6" fill={colors.MUTED} opacity="0.7" />
@@ -143,10 +151,10 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(s.get(scene.recapP) - i);
           const x = 140 + i * 250;
           return <g key={label} opacity={u}>
-            {i < 4 && <path d={`M${x + 55} 350 H${x + 195}`} stroke={colors.ACCENT} strokeWidth="4" />}
-            <circle cx={x} cy="350" r="31" fill="#111827" stroke={i === 4 ? colors.POSITIVE : colors.ACCENT} strokeWidth="3" />
-            <text x={x} y="355" textAnchor="middle" fill={colors.TEXT} fontSize="14">{i + 1}</text>
-            <text x={x} y="407" textAnchor="middle" fill={colors.MUTED} fontSize="14">{label}</text>
+            {i < 4 && <path d={`M${x + 45} 350 H${x + 205}`} stroke={colors.ACCENT} strokeWidth="5" />}
+            <circle cx={x} cy="350" r="38" fill="#111827" stroke={i === 4 ? colors.POSITIVE : colors.ACCENT} strokeWidth="4" />
+            <text x={x} y="358" textAnchor="middle" fill={colors.TEXT} fontSize="22" fontWeight="700">{i + 1}</text>
+            <text x={x} y="420" textAnchor="middle" fill={colors.TEXT} fontSize="18">{label}</text>
           </g>;
         })}
       </g>

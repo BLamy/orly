@@ -29,6 +29,10 @@ const CLOUD_C = { x: 640, y: 408 };
 const TAPE = { x: 720, y: 452, w: 460, rows: 3, pitch: 4.6, rowGap: 9 };
 const PROJ_CARD = { x: 110, y: 430, w: 400, h: 118 };
 const CHIP = { x: 950, y: 530 };
+/** Claim text sits high in its card so the stamp can sit inside the lower-right corner. */
+const CLAIM_TEXT_Y = 40;
+/** Stamps sit fully inside the card's lower-right corner (rotated extent is about ±27 px). */
+const STAMP_IN = { x: 320, y: 64 };
 
 // Both claim cards must stay on stage at every rest position: at k=1.1 the
 // visible world width is ~1164, so cx in [588, 692] keeps x 110..1170 in frame.
@@ -310,11 +314,11 @@ function ClaimCard({
   const e = clamp01(enter);
   if (e <= 0) return null;
   return (
-    <g transform={`translate(${box.x}, ${box.y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * dim)}>
+    <g transform={`translate(${box.x}, ${box.y + (1 - e) * 12})`} opacity={e * (1 - 0.9 * dim)}>
       <rect width={box.w} height={box.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <text
         x={box.w / 2}
-        y={box.h / 2 + 7}
+        y={CLAIM_TEXT_Y}
         textAnchor="middle"
         fill={colors.TEXT}
         fontSize={21}
@@ -345,8 +349,8 @@ function Stamp({
   if (uu <= 0) return null;
   const w = label.length * 11 + 36;
   return (
-    <g transform={`translate(${x}, ${y}) rotate(-7) scale(${0.7 + 0.3 * uu})`} opacity={uu * (1 - 0.85 * dim)}>
-      <rect x={-w / 2} y={-19} width={w} height={38} rx={6} fill={colors.BG} opacity={0.55} />
+    <g transform={`translate(${x}, ${y}) rotate(-7) scale(${0.7 + 0.3 * uu})`} opacity={uu * (1 - 0.9 * dim)}>
+      <rect x={-w / 2} y={-19} width={w} height={38} rx={6} fill={colors.BG} opacity={0.75} />
       <rect x={-w / 2} y={-19} width={w} height={38} rx={6} fill="none" stroke={color} strokeWidth={3} />
       <text y={6} textAnchor="middle" fill={color} fontSize={17} fontWeight={800} letterSpacing={2.5} fontFamily={mono}>
         {label}
@@ -361,18 +365,18 @@ function ProjectCard({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   const { x, y, w, h } = PROJ_CARD;
   return (
-    <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.85 * dim)}>
-      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} opacity={0.95} />
-      <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+    <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.9 * dim)}>
+      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+      <text x={20} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         project
       </text>
       <text x={20} y={56} fill={colors.TEXT} fontSize={17} fontWeight={700}>
         Acme Online Store
       </text>
-      <text x={20} y={80} fill={colors.ACCENT} fontSize={12.5} fontFamily={mono}>
+      <text x={20} y={80} fill={colors.ACCENT} fontSize={13} fontFamily={mono}>
         target_url: https://acme-store.example.com
       </text>
-      <text x={20} y={100} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={20} y={100} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         id: proj-acme-store
       </text>
     </g>
@@ -384,12 +388,12 @@ function RecordingChip({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const label = 'replay_recording_id: b5f2a3c1-7d4e…';
-  const w = label.length * 6.6 + 28;
+  const w = label.length * 7.6 + 40;
   return (
     <g transform={`translate(${CHIP.x}, ${CHIP.y + (1 - uu) * 8})`} opacity={uu}>
-      <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
-      <circle cx={-w / 2 + 14} r={4} fill={colors.NEGATIVE} />
-      <text x={7} y={4.5} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+      <rect x={-w / 2} y={-14} width={w} height={28} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+      <circle cx={-w / 2 + 16} r={4} fill={colors.NEGATIVE} />
+      <text x={-w / 2 + 28} y={4.5} fill={colors.SECONDARY} fontSize={12.5} fontWeight={700} fontFamily={mono}>
         {label}
       </text>
     </g>
@@ -408,16 +412,16 @@ function renderFrame(s: SceneState) {
       <ClaimCard box={BROKEN} text={'“The checkout is broken.”'} enter={s.get(scene.brokenE)} dim={dim} />
       <ClaimCard box={WORKS} text={'“The checkout works.”'} enter={s.get(scene.worksE)} dim={dim} />
       <Stamp
-        x={BROKEN.x + BROKEN.w - 66}
-        y={BROKEN.y + BROKEN.h - 12}
+        x={BROKEN.x + STAMP_IN.x}
+        y={BROKEN.y + STAMP_IN.y}
         label="BELIEVED"
         color={colors.POSITIVE}
         u={s.get(scene.acceptU)}
         dim={dim}
       />
       <Stamp
-        x={WORKS.x + WORKS.w - 70}
-        y={WORKS.y + WORKS.h - 12}
+        x={WORKS.x + STAMP_IN.x}
+        y={WORKS.y + STAMP_IN.y}
         label="UNPROVEN"
         color={colors.WARM}
         u={s.get(scene.unprovenU)}
@@ -441,7 +445,7 @@ function renderFrame(s: SceneState) {
             strokeWidth={1.5 + tapeGlow}
             opacity={0.5 + 0.5 * tapeGlow}
           />
-          <text x={TAPE.x - 12} y={TAPE.y - 22} fill={colors.MUTED} fontSize={12}>
+          <text x={TAPE.x - 12} y={TAPE.y - 22} fill={colors.TEXT} opacity={0.8} fontSize={14}>
             the recording — every moment, in order
           </text>
         </g>

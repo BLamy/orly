@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -74,7 +74,7 @@ function Frame({ s }: { s: SceneState }) {
               opacity={0.25}
               stroke={colors.GRID}
             />
-            <text x={OX + 24} y={OY - 14} fill={colors.MUTED} fontSize={13}>
+            <text x={OX + 24} y={OY + 24} fill={colors.MUTED} fontSize={14}>
               the meaning circle (a wedge of it)
             </text>
           </g>
@@ -91,7 +91,7 @@ function Frame({ s }: { s: SceneState }) {
                 <text x={dirX(d.deg, R * 1.02)} y={dirY(d.deg, R * 1.02)} fill={DOC_COLOR[i]} fontSize={14} fontWeight={600}>
                   {d.name}
                 </text>
-                <text x={dirX(d.deg, R * 1.02)} y={dirY(d.deg, R * 1.02) + 19} fill={colors.MUTED} fontSize={12.5}>
+                <text x={dirX(d.deg, R * 1.02)} y={dirY(d.deg, R * 1.02) + 19} fill={colors.MUTED} fontSize={14}>
                   {d.fact}
                 </text>
               </g>
@@ -103,7 +103,17 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={qU}>
               <line x1={OX} y1={OY} x2={dirX(q.deg, R * 0.8)} y2={dirY(q.deg, R * 0.8)} stroke={colors.WARM} strokeWidth={4} strokeDasharray="10 6" />
               <circle cx={dirX(q.deg, R * 0.8)} cy={dirY(q.deg, R * 0.8)} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />
-              <text x={dirX(q.deg, R * 0.55) - 10} y={dirY(q.deg, R * 0.55) - 14} fill={colors.WARM} fontSize={14.5} fontWeight={600}>
+              <text
+                x={dirX(q.deg, R * 0.62)}
+                y={dirY(q.deg, R * 0.62) - 16}
+                textAnchor="middle"
+                fill={colors.WARM}
+                fontSize={15}
+                fontWeight={600}
+                stroke={colors.BG}
+                strokeWidth={6}
+                paintOrder="stroke"
+              >
                 {`“${q.text}”`}
               </text>
             </g>
@@ -118,6 +128,23 @@ function Frame({ s }: { s: SceneState }) {
           <text x={PIPE_X + 152} y={PIPE_Y0 - 10} fill={colors.TEXT} fontSize={15} fontWeight={650}>
             retriever → reader
           </text>
+          {simU < 1 && (
+            <g opacity={1 - simU}>
+              {[
+                { label: 'retriever', x: PIPE_X + 152 },
+                { label: 'reader', x: PIPE_X + 296 },
+              ].map((b) => (
+                <g key={b.label}>
+                  <rect x={b.x} y={PIPE_Y0 + 30} width={100} height={36} rx={8} fill={colors.BG} stroke={colors.GRID} />
+                  <text x={b.x + 50} y={PIPE_Y0 + 53} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                    {b.label}
+                  </text>
+                </g>
+              ))}
+              <line x1={PIPE_X + 254} y1={PIPE_Y0 + 48} x2={PIPE_X + 290} y2={PIPE_Y0 + 48} stroke={colors.MUTED} strokeWidth={2} />
+              <path d={`M${PIPE_X + 284} ${PIPE_Y0 + 42} L${PIPE_X + 292} ${PIPE_Y0 + 48} L${PIPE_X + 284} ${PIPE_Y0 + 54}`} fill="none" stroke={colors.MUTED} strokeWidth={2} />
+            </g>
+          )}
           {simU > 0 &&
             ranking.map((r0, pos) => {
               const d = DOCS[r0.idx];
@@ -126,7 +153,7 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={PIPE_X + 152} y={PIPE_Y0 + 22 + pos * 28} fill={pos === 0 ? DOC_COLOR[r0.idx] : colors.MUTED} fontSize={14} fontWeight={pos === 0 ? 650 : 400}>
                     {`${pos === 0 ? '▶ ' : '   '}${d.name}`}
                   </text>
-                  <text x={PIPE_X + 392} y={PIPE_Y0 + 22 + pos * 28} fill={pos === 0 ? DOC_COLOR[r0.idx] : colors.MUTED} fontSize={13.5}>
+                  <text x={PIPE_X + 392} y={PIPE_Y0 + 22 + pos * 28} fill={pos === 0 ? DOC_COLOR[r0.idx] : colors.MUTED} fontSize={14}>
                     {r0.sim.toFixed(4)}
                   </text>
                 </g>
@@ -135,7 +162,7 @@ function Frame({ s }: { s: SceneState }) {
           {ansU > 0 && (
             <g opacity={ansU}>
               <rect x={PIPE_X + 152} y={PIPE_Y0 + 112} width={286} height={54} rx={10} fill={colors.BG} stroke={DOC_COLOR[top.idx]} strokeWidth={2} />
-              <text x={PIPE_X + 168} y={PIPE_Y0 + 134} fill={colors.MUTED} fontSize={12.5}>
+              <text x={PIPE_X + 168} y={PIPE_Y0 + 134} fill={colors.MUTED} fontSize={14}>
                 the reader answers, confidently:
               </text>
               <text x={PIPE_X + 168} y={PIPE_Y0 + 156} fill={DOC_COLOR[top.idx]} fontSize={16} fontWeight={650}>
@@ -149,18 +176,13 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             RAG's Fine Print
           </text>
-          <MathLabel
-            tex={'\\text{nearest neighbor} \\;\\ne\\; \\text{answers the question}'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
+          <text x={640} y={346} textAnchor="middle" fill={colors.NEGATIVE} fontSize={24} fontWeight={600}>
+            nearest neighbor ≠ answers the question
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             semantically close, factually irrelevant — the reader believes whatever it is handed
           </text>

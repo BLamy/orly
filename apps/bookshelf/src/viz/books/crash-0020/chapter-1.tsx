@@ -16,16 +16,18 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const TAPE = { x: 120, y: 100, w: 720 };
-const CHILD = { x: 890, y: 72, w: 268, h: 56 };
-const STACK = { x: 110, y: 200, w: 330, rowH: 52, gap: 10 };
+const CHILD = { x: 890, y: 72, w: 300, h: 56 };
+const STACK = { x: 110, y: 200, w: 300, rowH: 52, gap: 10 };
 const ENGINE = { x: 520, y: 220, w: 640, h: 300 };
-const BAND = { x: 560, y: 430, w: 560, cells: 12, cellW: 46, cellH: 40 };
-const REPORT = { x: 380, y: 170, w: 560, h: 300 };
+const BAND = { x: 566, y: 430, w: 560, cells: 12, cellW: 46, cellH: 40 };
+const REPORT = { x: 430, y: 170, w: 460, h: 300 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_TAPE: CameraState = { x: 620, y: 160, k: 1.05 };
-const CAM_STACK: CameraState = { x: 420, y: 340, k: 1.1 };
-const CAM_ENGINE: CameraState = { x: 810, y: 370, k: 1.15 };
+// the stack, the tape and the PauseChild badge all stay on stage together
+const CAM_STACK: CameraState = { x: 635, y: 300, k: 1.05 };
+// the bottom of the stack and the whole engine interior stay on stage together
+const CAM_ENGINE: CameraState = { x: 635, y: 345, k: 1.05 };
 const CAM_REPORT: CameraState = { x: 660, y: 330, k: 1.08 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.96 };
 
@@ -142,7 +144,7 @@ export function buildScene() {
     text: 'The crash report names the exact instruction and the exact address that faulted. Hold on to that address — it is about to become the whole case.',
   });
   tl.tween(cam, CAM_REPORT, { at: t - 6.2, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 0.8, { at: t - 5.8, dur: 0.8, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 5.8, dur: 0.8, ease: ease.move });
   tl.tween(reportU, 1, { at: t - 5.2, dur: 0.9, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
@@ -181,7 +183,7 @@ function RecordingTape({ u, mark, child, dim }: { u: number; mark: number; child
         const show = clamp01(uu * 26 - i);
         return <line key={i} x1={tx} y1={y - 6} x2={tx} y2={y + 6} stroke={colors.GRID} strokeWidth={1} opacity={0.8 * show} />;
       })}
-      <text x={x} y={y - 24} fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={uu}>
+      <text x={x} y={y - 24} fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={uu}>
         recordingId d0f06ada — a recorded browser session
       </text>
       {mark > 0 && (
@@ -202,10 +204,10 @@ function RecordingTape({ u, mark, child, dim }: { u: number; mark: number; child
           />
           <g transform={`translate(${CHILD.x}, ${CHILD.y + (1 - c) * 8})`}>
             <rect width={CHILD.w} height={CHILD.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-            <text x={16} y={23} fill={colors.TEXT} fontSize={13} fontWeight={700} fontFamily={mono}>
+            <text x={16} y={23} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>
               PauseChild
             </text>
-            <text x={16} y={42} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+            <text x={16} y={42} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
               processId 362 · answers questions
             </text>
           </g>
@@ -223,7 +225,7 @@ function CallStack({ n, token, dim }: { n: number; token: number; dim: number })
   const rowY = (i: number) => y + i * (rowH + gap);
   return (
     <g opacity={a}>
-      <text x={x} y={y - 16} fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={clamp01(n)}>
+      <text x={x} y={y - 16} fill={colors.MUTED} fontSize={13} fontFamily={mono} opacity={clamp01(n)}>
         Pause.getObjectPreview — the dive
       </text>
       {FRAMES.map((f, i) => {
@@ -234,7 +236,7 @@ function CallStack({ n, token, dim }: { n: number; token: number; dim: number })
         return (
           <g key={i} transform={`translate(${x}, ${rowY(i) + (1 - u) * 10})`} opacity={u}>
             <rect width={w} height={rowH} rx={9} fill={colors.PANEL} stroke={stroke} strokeWidth={last ? 2 : 1.4} />
-            <text x={14} y={rowH / 2 + 4.5} fill={last ? colors.WARM : colors.TEXT} fontSize={12} fontWeight={last ? 700 : 400} fontFamily={mono}>
+            <text x={14} y={rowH / 2 + 5} fill={last ? colors.WARM : colors.TEXT} fontSize={14} fontWeight={last ? 700 : 400} fontFamily={mono}>
               {f}
             </text>
           </g>
@@ -267,24 +269,24 @@ function EngineInterior({
   return (
     <g opacity={a}>
       <rect x={x} y={y} width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.75} />
-      <text x={x + 18} y={y + 26} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x + 18} y={y + 26} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         inside recordreplay::CommandCallback
       </text>
       <g opacity={clamp01(reg)}>
         <rect x={x + 18} y={y + 40} width={w - 36} height={30} rx={7} fill={colors.BG} opacity={0.7} />
-        <text x={x + 28} y={y + 60} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+        <text x={x + 28} y={y + 60} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
           {'%r15 ← isolate->context()'}
         </text>
       </g>
       <g opacity={clamp01(ins)}>
         <rect x={x + 18} y={y + 78} width={w - 36} height={30} rx={7} fill={colors.BG} opacity={0.7} />
-        <text x={x + 28} y={y + 98} fill={cr > 0.3 ? colors.NEGATIVE : colors.WARM} fontSize={13} fontWeight={700} fontFamily={mono}>
+        <text x={x + 28} y={y + 98} fill={cr > 0.3 ? colors.NEGATIVE : colors.WARM} fontSize={14} fontWeight={700} fontFamily={mono}>
           {'CommandCallback+233:  mov 0x93(%r15), %ecx'}
         </text>
       </g>
       {/* heap band */}
       <g opacity={b}>
-        <text x={BAND.x} y={BAND.y - 10} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={BAND.x} y={BAND.y - 10} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
           heap memory
         </text>
         {Array.from({ length: BAND.cells }, (_, i) => {
@@ -306,13 +308,13 @@ function EngineInterior({
                 strokeWidth={isCtx || (isFault && rd > 0.9) ? 2 : 1}
               />
               {isCtx && (
-                <text x={cellX(i) + (BAND.cellW - 4) / 2} y={BAND.y + BAND.cellH + 16} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontWeight={700} fontFamily={mono}>
+                <text x={cellX(i) + (BAND.cellW - 4) / 2} y={BAND.y + BAND.cellH + 16} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
                   ctx
                 </text>
               )}
-              {isFault && rd > 0.9 && (
-                <text x={cellX(i) + (BAND.cellW - 4) / 2} y={BAND.y + BAND.cellH + 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
-                  +0x93
+              {isFault && rd > 0 && (
+                <text x={cellX(i) + (BAND.cellW - 4) / 2} y={BAND.y + BAND.cellH + 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono} opacity={rd}>
+                  +0x93 · 147 B
                 </text>
               )}
             </g>
@@ -339,7 +341,7 @@ function EngineInterior({
             {cr > 0 && (
               <g opacity={cr}>
                 <circle cx={faultX} cy={BAND.y + BAND.cellH / 2} r={26 + 10 * cr} fill={colors.NEGATIVE} opacity={0.18} />
-                <text x={faultX} y={BAND.y - 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
+                <text x={faultX} y={BAND.y - 62} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
                   SIGSEGV
                 </text>
               </g>
@@ -359,15 +361,15 @@ function CrashReport({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 14})`} opacity={uu}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
-      <text x={22} y={34} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
+      <text x={22} y={34} fill={colors.NEGATIVE} fontSize={15} fontWeight={700} fontFamily={mono}>
         crash-0020 · crash report core
       </text>
       {REPORT_ROWS.map(([k, v, c], i) => (
         <g key={k} transform={`translate(22, ${66 + i * 44})`}>
-          <text fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+          <text fill={colors.MUTED} fontSize={13} fontFamily={mono}>
             {k}
           </text>
-          <text y={19} fill={c} fontSize={14.5} fontWeight={700} fontFamily={mono}>
+          <text y={19} fill={c} fontSize={15} fontWeight={700} fontFamily={mono}>
             {v}
           </text>
         </g>

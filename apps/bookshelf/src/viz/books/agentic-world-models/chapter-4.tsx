@@ -61,14 +61,22 @@ const PANEL = { x: 90, y: 150, w: 1100, h: 460 };
 const N_TOK = 12;
 const TOK_X0 = 210;
 const TOK_DX = 68;
-const TOK_BASE_Y = 300;
+const TOK_BASE_Y = 400;
 const TOK_W = 36;
+const BAR_H = 150; // tallest bar; the row sits in the middle of the panel
 
 const rng = mulberry32(20260717);
 const ENTROPY = Array.from({ length: N_TOK }, () => rng());
 const SORTED_DESC = [...ENTROPY].sort((a, b) => b - a);
 const KEEP_N = Math.round(N_TOK * 0.75); // alpha = 0.75
 const THRESH = SORTED_DESC[KEEP_N - 1];
+
+// the three knobs, shown as cards while the panel is still empty (before station A)
+const INTRO = [
+  { x: 160, n: '1', name: 'entropy filter', detail: 'keep the uncertain actions', color: colors.ACCENT },
+  { x: 500, n: '2', name: 'clipped loss', detail: 'stop pushing on confident tokens', color: colors.WARM },
+  { x: 840, n: '3', name: 'λ dial', detail: 'balance the weight per group', color: colors.SECONDARY },
+];
 
 // — station B: clipped loss curve —
 const RHO = 0.2;
@@ -94,7 +102,7 @@ function arcPath(r: number, a0: number, a1: number): string {
 }
 
 // camera marks
-const CAM_ENTROPY: CameraState = { x: 628, y: 300, k: 1.34 };
+const CAM_ENTROPY: CameraState = { x: 628, y: 340, k: 1.34 };
 const CAM_LOSS: CameraState = { x: 420, y: 450, k: 1.55 };
 const CAM_DIAL: CameraState = { x: 950, y: 430, k: 1.5 };
 
@@ -111,10 +119,8 @@ export function buildScene() {
   const threshU = tl.channel('threshU', 0); // threshold sweep line
   const keepU = tl.channel('keepU', 0); // dim the dropped bottom 25%
   const policyNoteU = tl.channel('policyNoteU', 0); // "policy loss: every action" chip
-  const stationAU = tl.channel('stationAU', 1); // entropy row, cleared before the dial
 
-  const axesU = tl.channel('axesU', 0);
-  const stationBU = tl.channel('stationBU', 1); // loss plot, cleared before the dial
+  const axesU = tl.channel('axesU', 0); // station B axes; also clears station A's row
   const ceU = tl.channel('ceU', 0); // cross-entropy curve reveal
   const morphU = tl.channel('morphU', 0); // CE -> clipped MAE
   const rhoLineU = tl.channel('rhoLineU', 0); // rho threshold marker
@@ -180,7 +186,6 @@ export function buildScene() {
     dur: 6.8,
     text: 'The second intervention changes the shape of that supervision itself, swapping plain cross-entropy for a clipped loss.',
   });
-  tl.tween(stationAU, 0, { at: 38.0, dur: 0.6, ease: ease.enter });
   tl.tween(cam, CAM_LOSS, { at: 38.8, dur: 1.6, ease: ease.move });
   tl.tween(axesU, 1, { at: 39.6, dur: 1.0, ease: ease.draw });
   tl.tween(ceU, 1, { at: 40.4, dur: 2.0, ease: ease.draw });
@@ -210,7 +215,6 @@ export function buildScene() {
     dur: 5.8,
     text: 'The third intervention is a dial, not a filter — one that turns per group of rollouts.',
   });
-  tl.tween(stationBU, 0, { at: 61.8, dur: 0.8, ease: ease.enter });
   tl.tween(cam, CAM_DIAL, { at: 62.8, dur: 1.6, ease: ease.move });
   tl.tween(dialU, 1, { at: 63.6, dur: 1.4, ease: ease.draw });
   tl.hold(68.6, 0.5);
@@ -274,9 +278,7 @@ export function buildScene() {
     threshU,
     keepU,
     policyNoteU,
-    stationAU,
     axesU,
-    stationBU,
     ceU,
     morphU,
     rhoLineU,
@@ -330,9 +332,7 @@ export function Render({ s }: { s: SceneState }) {
   const threshU = s.get(scene.threshU);
   const keepU = s.get(scene.keepU);
   const policyNoteU = s.get(scene.policyNoteU);
-  const stationAU = s.get(scene.stationAU);
   const axesU = s.get(scene.axesU);
-  const stationBU = s.get(scene.stationBU);
   const ceU = s.get(scene.ceU);
   const morphU = s.get(scene.morphU);
   const rhoLineU = s.get(scene.rhoLineU);
@@ -344,7 +344,7 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const fade = 1 - 0.9 * endU;
-  const threshY = TOK_BASE_Y - THRESH * 92 - 6;
+  const threshY = TOK_BASE_Y - THRESH * BAR_H - 6;
   const needlePt = needlePoint(needleDeg, DIAL.r - 14);
 
   return (
@@ -363,20 +363,34 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.GRID}
             strokeWidth={1.6}
           />
+          {/* the three knobs, named up front; they clear as station A's bars rise */}
+          <g opacity={clamp01(1 - entropyU * 4)}>
+            {INTRO.map((k) => (
+              <g key={k.n}>
+                <rect x={k.x} y={478} width={280} height={80} rx={10} fill={colors.BG} stroke={k.color} strokeOpacity={0.7} />
+                <text x={k.x + 18} y={508} fill={k.color} fontSize={18} fontFamily={MONO}>
+                  {k.n} · {k.name}
+                </text>
+                <text x={k.x + 18} y={534} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                  {k.detail}
+                </text>
+              </g>
+            ))}
+          </g>
         </g>
 
         {/* ---------------- station A: action-entropy selection ---------------- */}
-        <g opacity={fade * stationAU}>
-          <text x={TOK_X0} y={TOK_BASE_Y - 118} fill={colors.MUTED} fontSize={14} opacity={entropyU}>
+        <g opacity={fade * (1 - axesU)}>
+          <text x={TOK_X0} y={TOK_BASE_Y - BAR_H - 34} fill={colors.MUTED} fontSize={14} opacity={entropyU}>
             action-token entropy
           </text>
           {ENTROPY.map((e, i) => {
             const u = win(entropyU, N_TOK, i, 1.6);
             if (u <= 0) return null;
             const x = TOK_X0 + i * TOK_DX;
-            const h = e * 92 * u;
+            const h = e * BAR_H * u;
             const kept = e >= THRESH;
-            const dim = kept ? 1 : lerp(1, 0.22, keepU);
+            const dim = kept ? 1 : lerp(1, 0.4, keepU);
             const color = kept ? colors.ACCENT : colors.MUTED;
             return (
               <g key={i} opacity={u}>
@@ -399,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={color}
                   strokeOpacity={0.6 * dim}
                 />
-                <text x={x} y={TOK_BASE_Y + 16} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO} opacity={dim}>
+                <text x={x} y={TOK_BASE_Y + 16} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO} opacity={dim}>
                   a{i + 1}
                 </text>
                 {keepU > 0.4 && !kept && (
@@ -443,7 +457,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------------- station B: the clipped loss curve ---------------- */}
-        <g opacity={fade * stationBU}>
+        <g opacity={fade * (1 - dialU)}>
           <Axes x={LOSS_X} y={LOSS_Y} reveal={axesU} xTicks={5} yTicks={4} fontSize={15} />
           <text x={(LOSS_X.range()[0] + LOSS_X.range()[1]) / 2} y={LOSS_Y.range()[0] + 48} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={MONO} opacity={axesU}>
             predicted probability of the observed token
@@ -480,8 +494,8 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.6}
                 strokeDasharray="5 5"
               />
-              <text x={LOSS_X(0.8) + 12} y={LOSS_Y(2.7)} fill={colors.WARM} fontSize={18} fontFamily={MONO}>
-                ρ = 0.2
+              <text x={LOSS_X(0.8) - 10} y={LOSS_Y(2.7)} textAnchor="end" fill={colors.WARM} fontSize={16} fontFamily={MONO}>
+                1 − p = ρ = 0.2
               </text>
             </g>
           )}
@@ -530,11 +544,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- generalization strip ---------------- */}
         {genU > 0.01 && (
           <g opacity={genU * fade}>
-            <rect x={DIAL.x - 220} y={PANEL.y + PANEL.h - 70} width={440} height={58} rx={8} fill={colors.BG} stroke={colors.GRID} />
-            <text x={DIAL.x} y={PANEL.y + PANEL.h - 46} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+            <rect x={DIAL.x - 220} y={558} width={440} height={50} rx={8} fill={colors.BG} stroke={colors.GRID} />
+            <text x={DIAL.x} y={578} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               GRPO · GIGPO · multiple model families
             </text>
-            <text x={DIAL.x} y={PANEL.y + PANEL.h - 24} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+            <text x={DIAL.x} y={598} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               strongest under sparse reward
             </text>
           </g>
@@ -556,6 +570,21 @@ export function Render({ s }: { s: SceneState }) {
           <text x={STAGE_W / 2} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             three knobs on one co-training recipe
           </text>
+          {[
+            { x: 320, word: 'select', line: 'filter the uncertain actions', color: colors.ACCENT },
+            { x: 640, word: 'clip', line: 'bound the loss on each token', color: colors.WARM },
+            { x: 960, word: 'dial', line: 'balance the weight per group', color: colors.SECONDARY },
+          ].map((k) => (
+            <g key={k.word}>
+              <rect x={k.x - 130} y={380} width={260} height={76} rx={10} fill={colors.PANEL} stroke={k.color} strokeOpacity={0.7} />
+              <text x={k.x} y={414} textAnchor="middle" fill={k.color} fontSize={20} fontFamily={MONO}>
+                {k.word}
+              </text>
+              <text x={k.x} y={440} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                {k.line}
+              </text>
+            </g>
+          ))}
         </g>
       )}
     </>

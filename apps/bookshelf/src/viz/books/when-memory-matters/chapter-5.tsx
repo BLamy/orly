@@ -9,7 +9,8 @@
 //     profile_refs []
 //   paper §6 (pooled Recency Hit@5 = 95.9%, n = 1,477 with gold), Table 4
 //     (2.2% on n = 404 memory-bearing), Table 8 + Appendix A.3, E.1
-//     (proportional, recorded: +0.004 and +0.104)
+//     (proportional, recorded: +0.004 and +0.104; the 96% share is derived
+//     here as 0.104 / 0.108, not read from a table cell)
 //
 // Machine: an evidence comb. Its two real gold teeth are scored against an
 // ILLUSTRATIVE one-item submission (labeled as such) with the scorer's exact
@@ -17,7 +18,7 @@
 // Hit@5 contrast, and finally into the two-part reported gain. The public
 // scorer covers chat and qa only; the paper numbers are attributed, not
 // reproduced, and Hit@5 (paper) is kept distinct from recall (scorer).
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Brace } from '../../primitives';
 import {
@@ -48,7 +49,7 @@ const MRR = (() => {
   const i = RANKED.findIndex((x) => GOLD.includes(x));
   return i < 0 ? 0 : 1 / (i + 1);
 })();
-const asTex = (v: number): string => (v === 0.5 ? '\\tfrac{1}{2}' : String(v));
+const asText = (v: number): string => (v === 0.5 ? '½' : String(v));
 
 // paper-reported figures
 const HIT_ALL = 95.9; // §6, pooled, n = 1,477 with gold
@@ -77,7 +78,7 @@ const LIST = { x: 640, y: 288, w: 160, h: 34 } as const;
 const RANKS = { x: 200, y: 440, pitch: 34, n: 20 } as const;
 const cutX = (k: number): number => RANKS.x + RANKS.pitch * k - 4;
 
-const WELL = { x: 960 } as const;
+const WELL = { x: 1000 } as const;
 const BAR = { x: 190, w: 900, y: 300, h: 24 } as const;
 const GAIN_SPLIT = (BAR.w * GAIN_MEMORY) / GAIN_TOTAL;
 const END_TAPE_Y = 165;
@@ -105,7 +106,7 @@ const NOTES = [
   'score/__init__.py, judge_records · README.md',
   'paper §6, pooled retrieval',
   'paper Table 4, Recency / All items · §6',
-  'paper Table 8, Appendix A.3, Appendix E.1',
+  'paper Table 8 · 0.104 ÷ 0.108 ≈ 96%',
   'paper §§4–6 · public scorer',
 ] as const;
 
@@ -225,7 +226,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         {/* submission record strip */}
         <g opacity={lerp(1, 0.12, on(b, 6)) * (1 - on(b, 9))}>
-          <Txt x={STRIP.x} y={STRIP.y - 12} size={12} mono fill={INK.muted} opacity={clamp01(strip * 6)}>
+          <Txt x={STRIP.x} y={STRIP.y - 12} size={14} mono fill={INK.muted} opacity={clamp01(strip * 6)}>
             TRACKS = (chat, qa)
           </Txt>
           {FIELDS.map((f, i) => {
@@ -235,7 +236,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={f} opacity={o}>
                 <rect x={STRIP.x + i * STRIP.w + 2} y={STRIP.y} width={STRIP.w - 4} height={STRIP.h} rx={5} fill={INK.panel} stroke={hot ? INK.thread : INK.muted} strokeOpacity={hot ? 0.9 : 0.5} />
-                <Txt x={cellMid(i)} y={STRIP.y + 25} size={12.5} mono anchor="middle" fill={hot ? INK.thread : INK.text}>
+                <Txt x={cellMid(i)} y={STRIP.y + 25} size={14} mono anchor="middle" fill={hot ? INK.thread : INK.text}>
                   {f}
                 </Txt>
               </g>
@@ -255,17 +256,17 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={tooth.list}>
                   <line x1={tooth.x} y1={COMB.y} x2={tooth.x} y2={COMB.y + len} stroke={tooth.color} strokeWidth={tooth.empty ? 2 : 5} strokeLinecap="round" strokeDasharray={tooth.empty ? '3 4' : undefined} />
-                  <Txt x={tooth.x} y={COMB.y - 12} size={12} mono anchor="middle" fill={INK.muted} opacity={union}>
+                  <Txt x={tooth.x} y={COMB.y - 12} size={14} mono anchor="middle" fill={INK.muted} opacity={union}>
                     {tooth.list}
                   </Txt>
-                  <Txt x={tooth.x} y={tooth.empty ? COMB.y + 34 : COMB.y + 86} size={12} mono anchor="middle" fill={tooth.color} opacity={tooth.empty ? union : clamp01(comb * 3 - 2)}>
+                  <Txt x={tooth.x} y={tooth.empty ? COMB.y + 34 : COMB.y + 86} size={14} mono anchor="middle" fill={tooth.color} opacity={tooth.empty ? union : clamp01(comb * 3 - 2)}>
                     {tooth.id}
                   </Txt>
                   {!tooth.empty && (
                     <circle cx={tooth.x} cy={COMB.y + COMB.tooth} r={10} fill="none" stroke={got ? INK.ok : INK.bad} strokeWidth={1.6} strokeDasharray={got ? undefined : '3 3'} opacity={clamp01(capture * 2 - 1)} />
                   )}
                   {!tooth.empty && !got && (
-                    <Txt x={tooth.x} y={COMB.y + 104} size={12} anchor="middle" fill={INK.bad} opacity={clamp01(capture * 2 - 1) * (1 - on(b, 6))}>
+                    <Txt x={tooth.x} y={COMB.y + 104} size={14} anchor="middle" fill={INK.bad} opacity={clamp01(capture * 2 - 1) * (1 - on(b, 6))}>
                       not retrieved
                     </Txt>
                   )}
@@ -283,16 +284,16 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={early}>
           <g opacity={list}>
             <rect x={LIST.x} y={LIST.y} width={LIST.w} height={LIST.h} rx={6} fill={INK.panel} stroke={INK.thread} />
-            <Txt x={LIST.x + LIST.w / 2} y={LIST.y + 22} size={13} mono anchor="middle" fill={INK.thread}>
+            <Txt x={LIST.x + LIST.w / 2} y={LIST.y + 22} size={14} mono anchor="middle" fill={INK.thread}>
               [day8-150]
             </Txt>
-            <Txt x={LIST.x} y={LIST.y + 56} size={12} fill={INK.claim}>
+            <Txt x={LIST.x} y={LIST.y + 56} size={14} fill={INK.claim}>
               Illustrative submission, real gold IDs
             </Txt>
           </g>
           <Tether x1={LIST.x} y1={LIST.y + 26} x2={TEETH[2].x + 12} y2={COMB.y + COMB.tooth - 4} u={capture} color={INK.ok} width={1.6} />
           <Tether x1={cellMid(3)} y1={STRIP.y + STRIP.h} x2={cellMid(3)} y2={LIST.y} u={clamp01(strip * 2 - 1)} color={INK.thread} opacity={0.7} />
-          <Txt x={cellMid(3) - 8} y={244} size={12} anchor="end" fill={INK.thread} opacity={win(b, 5, 5) * reply}>
+          <Txt x={cellMid(3) - 8} y={244} size={14} anchor="end" fill={INK.thread} opacity={win(b, 5, 5) * reply}>
             deterministic
           </Txt>
 
@@ -301,7 +302,7 @@ export function Render({ s }: { s: SceneState }) {
             <Tether x1={cellMid(4)} y1={STRIP.y + STRIP.h} x2={cellMid(4)} y2={232} u={reply * 1.6} color={INK.muted} />
             <g opacity={clamp01(reply * 3 - 1.6)}>
               <line x1={cellMid(4) - 44} y1={236} x2={cellMid(4) + 44} y2={236} stroke={INK.claim} strokeWidth={3} strokeLinecap="round" />
-              <Txt x={cellMid(4)} y={258} size={12.5} mono anchor="middle" fill={INK.claim}>
+              <Txt x={cellMid(4)} y={258} size={14} mono anchor="middle" fill={INK.claim}>
                 --corpus DIR --judge
               </Txt>
             </g>
@@ -321,15 +322,19 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={k} opacity={o}>
                   <line x1={cutX(k)} y1={RANKS.y - 17} x2={cutX(k)} y2={RANKS.y + 22} stroke={INK.text} strokeWidth={1.4} />
-                  <Txt x={cutX(k) - 6} y={RANKS.y + 30} size={12} anchor="end" fill={INK.muted}>
+                  <Txt x={cutX(k) - 6} y={RANKS.y + 30} size={14} anchor="end" fill={INK.muted}>
                     {`rank ${k}`}
                   </Txt>
-                  <MathLabel tex={`\\text{r@${k}} = ${asTex(recallAt(k))}`} x={k === 1 ? RANKS.x : cutX(k)} anchor={k === 1 ? 'start' : 'middle'} y={RANKS.y + 62} fontSize={16} boxWidth={200} />
+                  <Txt x={k === 1 ? RANKS.x : cutX(k)} y={RANKS.y + 62} size={16} mono weight={600} fill={INK.text}>
+                    {`r@${k} = ${asText(recallAt(k))}`}
+                  </Txt>
                 </g>
               );
             })}
-            <MathLabel tex={`\\text{mrr} = ${asTex(MRR)}`} x={1010} y={RANKS.y + 62} fontSize={18} boxWidth={160} />
-            <Txt x={RANKS.x + RANKS.n * RANKS.pitch - 8} y={RANKS.y - 22} size={12}mono anchor="end" fill={INK.muted} opacity={clamp01(ruler * 4)}>
+            <Txt x={RANKS.x} y={RANKS.y + 100} size={18} mono weight={600} fill={INK.text}>
+          {`mrr = ${asText(MRR)}`}
+        </Txt>
+            <Txt x={RANKS.x + RANKS.n * RANKS.pitch - 8} y={RANKS.y - 22} size={14} mono anchor="end" fill={INK.muted} opacity={clamp01(ruler * 4)}>
               CUTS = (1, 5, 20)
             </Txt>
           </g>
@@ -337,23 +342,23 @@ export function Render({ s }: { s: SceneState }) {
           {/* abstention well: an empty target is scored differently */}
           <g opacity={on(b, 4)}>
             <line x1={WELL.x} y1={285} x2={WELL.x + 150 * clamp01(well * 2)} y2={285} stroke={INK.muted} strokeWidth={2} strokeDasharray="5 5" />
-            <Txt x={WELL.x} y={272} size={12} fill={INK.muted} opacity={clamp01(well * 2)}>
+            <Txt x={WELL.x} y={272} size={14} fill={INK.muted} opacity={clamp01(well * 2)}>
               empty gold set
             </Txt>
-            <Txt x={WELL.x} y={312} size={12} mono fill={INK.text} opacity={clamp01(well * 3 - 1)}>
+            <Txt x={WELL.x} y={312} size={14} mono fill={INK.text} opacity={clamp01(well * 3 - 1)}>
               abstention_on_controls
             </Txt>
             <g opacity={clamp01(well * 3 - 2)}>
-              <Txt x={WELL.x} y={350} size={12} mono fill={INK.text}>
+              <Txt x={WELL.x} y={350} size={14} mono fill={INK.text}>
                 coverage
               </Txt>
               {Array.from({ length: 8 }, (_, i) => (
                 <rect key={i} x={WELL.x + i * 20} y={360} width={14} height={14} rx={3} fill={i < 5 ? INK.thread : 'none'} fillOpacity={0.5} stroke={i < 5 ? INK.thread : INK.muted} strokeDasharray={i < 5 ? undefined : '3 2'} />
               ))}
-              <Txt x={WELL.x} y={392} size={12} fill={INK.muted}>
+              <Txt x={WELL.x} y={392} size={14} fill={INK.muted}>
                 unsubmitted stay outlined
               </Txt>
-              <Txt x={WELL.x} y={407} size={12} fill={INK.claim}>
+              <Txt x={WELL.x} y={407} size={14} fill={INK.claim}>
                 Rule illustration
               </Txt>
             </g>
@@ -372,7 +377,7 @@ export function Render({ s }: { s: SceneState }) {
               {[0, 50, 100].map((v) => (
                 <g key={v}>
                   <line x1={BAR.x + BAR.w * (v / 100)} y1={BAR.y + 14} x2={BAR.x + BAR.w * (v / 100)} y2={BAR.y + 20} stroke={INK.muted} />
-                  <Txt x={BAR.x + BAR.w * (v / 100)} y={BAR.y + 34} size={12} anchor="middle" fill={INK.muted}>
+                  <Txt x={BAR.x + BAR.w * (v / 100)} y={BAR.y + 34} size={14} anchor="middle" fill={INK.muted}>
                     {`${v}%`}
                   </Txt>
                 </g>
@@ -385,7 +390,7 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={BAR.x} y={236} size={17} weight={600}>
                 Paper §6: Recency Hit@5 = 95.9%
               </Txt>
-              <Txt x={BAR.x} y={258} size={12} fill={INK.muted}>
+              <Txt x={BAR.x} y={258} size={14} fill={INK.muted}>
                 n=1,477 with gold · pooled, both strata
               </Txt>
             </g>
@@ -393,11 +398,11 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={BAR.x} y={236} size={17} weight={600}>
                 Paper Table 4: Recency Hit@5 = 2.2%
               </Txt>
-              <Txt x={BAR.x} y={258} size={12} fill={INK.muted}>
+              <Txt x={BAR.x} y={258} size={14} fill={INK.muted}>
                 n=404 memory-bearing · a subset comparison, not a natural rate
               </Txt>
               <line x1={BAR.x + (BAR.w * HIT_ALL) / 100} y1={BAR.y - 18} x2={BAR.x + (BAR.w * HIT_ALL) / 100} y2={BAR.y + 18} stroke={INK.thread} strokeDasharray="3 3" opacity={0.5} />
-              <Txt x={BAR.x + (BAR.w * HIT_ALL) / 100} y={BAR.y - 24} size={12} anchor="middle" fill={INK.thread} opacity={0.6}>
+              <Txt x={BAR.x + (BAR.w * HIT_ALL) / 100} y={BAR.y - 24} size={14} anchor="middle" fill={INK.thread} opacity={0.6}>
                 95.9%
               </Txt>
             </g>
@@ -407,7 +412,7 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={BAR.x} y={236} size={17} weight={600}>
                 Reported context contrast
               </Txt>
-              <Txt x={BAR.x} y={258} size={12} fill={INK.muted}>
+              <Txt x={BAR.x} y={258} size={14} fill={INK.muted}>
                 proportional, recorded · Paper Table 8
               </Txt>
               <Txt x={BAR.x} y={BAR.y - 20} size={14} mono weight={600} fill={INK.distant}>
@@ -419,13 +424,13 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={BAR.x + BAR.w} y={BAR.y - 20} size={14} mono weight={600} anchor="end">
                 ≈ +0.108
               </Txt>
-              <Txt x={BAR.x} y={BAR.y + 32} size={12.5} fill={INK.distant}>
+              <Txt x={BAR.x} y={BAR.y + 32} size={14} fill={INK.distant}>
                 memory-bearing probes
               </Txt>
-              <Txt x={BAR.x + 200} y={BAR.y + 32} size={12.5} fill={INK.thread}>
+              <Txt x={BAR.x + 200} y={BAR.y + 32} size={14} fill={INK.thread}>
                 {`probes labeled as needing no distant memory: ${REST_SHARE}% of the gain`}
               </Txt>
-              <Txt x={BAR.x} y={BAR.y + 54} size={12}fill={INK.muted}>
+              <Txt x={BAR.x} y={BAR.y + 54} size={14} fill={INK.muted}>
                 C2 vs C1 also changes heading
               </Txt>
             </g>

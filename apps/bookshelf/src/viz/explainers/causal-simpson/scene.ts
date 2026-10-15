@@ -57,7 +57,9 @@ export const FIT_B: Fit = lsq(DATA.filter((p) => p.g === 1)); // slope ≈ +0.77
 export const FIT_POOLED: Fit = lsq(DATA); // slope ≈ −0.84
 
 export const sx: ScaleLinear<number, number> = scaleLinear().domain([-0.2, 4.4]).range([120, 1160]);
-export const sy: ScaleLinear<number, number> = scaleLinear().domain([-1.2, 4.6]).range([620, 100]);
+// Headroom above the top data point keeps the verdict chip clear of the points;
+// the bottom sits high enough that the camera's zoom keeps the −1 tick above the caption pill.
+export const sy: ScaleLinear<number, number> = scaleLinear().domain([-1.2, 5.2]).range([560, 100]);
 
 export const CAM_MID: CameraState = { x: 640, y: 350, k: 1.12 };
 

@@ -72,14 +72,16 @@ const COT_Y = 170;
 const COT_W = 560;
 const COT_LINE_H = 44;
 
-const GRID_X = 760;
+const GRID_X = 840; // clears the CoT score column (ends at x=658) and its group labels
 const GRID_Y = 170;
 const DOT_R = 8;
 const DOT_GAP = 24;
 const COLS = 9; // per group: ceil(27/9)=3 rows, ceil(33/9)=4 rows
 
 const CAM_COT: CameraState = { x: COT_X + COT_W / 2, y: 290, k: 1.35 };
-const CAM_GRID: CameraState = { x: GRID_X + 150, y: 330, k: 1.25 };
+// frames the split grid, its group labels and its rate readouts while keeping the
+// CoT's left edge on stage; the content stays above the caption pill
+const CAM_GRID: CameraState = { x: 690, y: 300, k: 1.1 };
 
 function dotPos(group: 0 | 1, i: number): { x: number; y: number } {
   const gy = group === 0 ? GRID_Y : GRID_Y + 150;
@@ -228,31 +230,17 @@ function Frame({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const mainOp = 1 - 0.85 * dimU;
+  // once the old picture has faded out, unmount it so the closing panel sits on a clean stage
+  const showMain = dimU < 1;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {showMain && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* the two steps banner */}
-          {stepsU > 0 && (
-            <g opacity={stepsU * (1 - 0.7 * hypU)}>
-              <rect x={110} y={96} width={280} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={250} y={122} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontWeight={600}>
-                1 · read the chain of thought
-              </text>
-              <rect x={410} y={96} width={300} height={40} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={560} y={122} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontWeight={600}>
-                2 · intervene on the world
-              </text>
-              <text x={730} y={122} fill={colors.MUTED} fontSize={13}>
-                ⟲ iterate
-              </text>
-            </g>
-          )}
-
-          {/* the CoT trace */}
+          {/* the CoT trace: ghosts while the camera is on the split grid, returns for the hypothesis */}
           {COT.map((line, i) => {
             const u = clamp01(cotU * COT.length - i);
             if (u <= 0) return null;
@@ -262,7 +250,7 @@ function Frame({ s }: { s: SceneState }) {
             const shade = scoreU * Math.min(1, Math.abs(sc) / 0.12);
             const tint = sc > 0 ? colors.NEGATIVE : colors.POSITIVE;
             return (
-              <g key={i} opacity={u}>
+              <g key={i} opacity={u * (1 - 0.8 * splitU * (1 - hypU))}>
                 <rect
                   x={COT_X}
                   y={y}
@@ -286,8 +274,8 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           {hlU > 0 && (
-            <text x={COT_X} y={COT_Y + COT.length * COT_LINE_H + 22} fill={colors.NEGATIVE} fontSize={13} opacity={hlU}>
-              resampling score +11.4pp — reported in the paper, top quartile of all sentences
+            <text x={COT_X} y={COT_Y + COT.length * COT_LINE_H + 22} fill={colors.NEGATIVE} fontSize={14} opacity={hlU * (1 - 0.8 * splitU * (1 - hypU))}>
+              resampling score +11.4pp — measured on the real model in the paper (the causal evidence)
             </text>
           )}
 
@@ -297,8 +285,8 @@ function Frame({ s }: { s: SceneState }) {
               <text x={GRID_X} y={GRID_Y - 40} fill={colors.TEXT} fontSize={15}>
                 toy agent · 60 seeded rollouts
               </text>
-              <text x={GRID_X} y={GRID_Y - 20} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-                ours, toy scale — not the paper's model
+              <text x={GRID_X} y={GRID_Y - 20} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                ours, toy scale — the rates are built in, not measured
               </text>
               {ROLLOUTS.map((r, i) => {
                 const u = clamp01(dotsU * N_ROLLOUTS - i);
@@ -327,10 +315,10 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {splitU > 0.3 && (
                 <g opacity={(splitU - 0.3) / 0.7}>
-                  <text x={GRID_X - 16} y={GRID_Y + 8} textAnchor="end" fill={colors.TEXT} fontSize={13}>
+                  <text x={GRID_X - 16} y={GRID_Y + 8} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                     sentence present
                   </text>
-                  <text x={GRID_X - 16} y={GRID_Y + 158} textAnchor="end" fill={colors.TEXT} fontSize={13}>
+                  <text x={GRID_X - 16} y={GRID_Y + 158} textAnchor="end" fill={colors.TEXT} fontSize={14}>
                     sentence absent
                   </text>
                 </g>
@@ -340,8 +328,14 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={GRID_X + 250} y={GRID_Y + 30} fill={colors.NEGATIVE} fontSize={17} fontFamily={MONO}>
                     9/27 ≈ {(RATE_WITH * 100).toFixed(0)}%
                   </text>
+                  <text x={GRID_X + 250} y={GRID_Y + 52} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    built in at 24%
+                  </text>
                   <text x={GRID_X + 250} y={GRID_Y + 180} fill={colors.POSITIVE} fontSize={17} fontFamily={MONO}>
                     2/33 ≈ {(RATE_NO * 100).toFixed(0)}%
+                  </text>
+                  <text x={GRID_X + 250} y={GRID_Y + 202} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+                    built in at 2%
                   </text>
                 </g>
               )}
@@ -351,25 +345,27 @@ function Frame({ s }: { s: SceneState }) {
           {/* hypothesis card */}
           {hypU > 0 && (
             <g opacity={hypU}>
-              <rect x={240} y={430} width={800} height={130} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
-              <text x={264} y={464} fill={colors.WARM} fontSize={15} fontWeight={600} fontFamily={MONO}>
+              <rect x={240} y={484} width={800} height={130} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
+              <text x={264} y={518} fill={colors.WARM} fontSize={15} fontWeight={600} fontFamily={MONO}>
                 Hypothesis v1
               </text>
-              <text x={264} y={494} fill={colors.TEXT} fontSize={15}>
+              <text x={264} y={548} fill={colors.TEXT} fontSize={15}>
                 Not confused — the model understands the errors should be fixed.
               </text>
-              <text x={264} y={520} fill={colors.TEXT} fontSize={15}>
+              <text x={264} y={574} fill={colors.TEXT} fontSize={15}>
                 It takes workarounds from a disposition toward less tedious actions.
               </text>
-              <text x={264} y={546} fill={colors.MUTED} fontSize={13}>
+              <text x={264} y={600} fill={colors.MUTED} fontSize={14}>
                 status: untested — a story that fits, waiting for step two
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {/* screen-fixed */}
+      {showMain && (
       <g opacity={titleU * mainOp}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Read the thought, then edit the world
@@ -378,10 +374,28 @@ function Frame({ s }: { s: SceneState }) {
           arXiv:2606.26071 · §4, §6.1
         </text>
       </g>
+      )}
+
+      {/* the two-step banner is a fixed HUD, so camera pans never drag it over the title */}
+      {showMain && stepsU > 0 && (
+        <g opacity={stepsU * (1 - 0.7 * hypU) * mainOp}>
+          <rect x={110} y={96} width={280} height={40} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
+          <text x={250} y={122} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontWeight={600}>
+            1 · read the chain of thought
+          </text>
+          <rect x={410} y={96} width={300} height={40} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
+          <text x={560} y={122} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontWeight={600}>
+            2 · intervene on the world
+          </text>
+          <text x={730} y={122} fill={colors.MUTED} fontSize={14}>
+            ⟲ iterate
+          </text>
+        </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} opacity={0.95} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             The chain of thought proposes; it never convicts
           </text>

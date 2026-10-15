@@ -18,12 +18,12 @@ function RowCard({ x, y, u, bad }: { x: number; y: number; u: number; bad?: bool
   const c = bad ? colors.NEGATIVE : colors.ACCENT;
   return <g transform={`translate(${x} ${y})`} opacity={p}>
     <rect x={-244} y={-42} width={488} height={84} rx={14} fill={colors.PANEL} stroke={c} strokeWidth={1.7} />
-    <text x={-218} y={-14} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>item_id</text>
-    <text x={-218} y={12} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>source::norm_clip_id</text>
-    <text x={55} y={-14} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>fake_score</text>
-    <text x={55} y={12} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>0.891</text>
-    <text x={152} y={-14} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>prediction</text>
-    <text x={152} y={12} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>generated</text>
+    <text x={-218} y={-14} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>item_id</text>
+    <text x={-218} y={12} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>source::norm_clip_id</text>
+    <text x={55} y={-14} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>fake_score</text>
+    <text x={55} y={12} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>0.891</text>
+    <text x={152} y={-14} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>prediction</text>
+    <text x={152} y={12} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>generated</text>
   </g>;
 }
 
@@ -82,17 +82,17 @@ export function Render({ s }: { s: SceneState }) {
         <rect x={498} y={265} width={284} height={44} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
         <text x={640} y={293} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>read_predictions()</text>
       </g>
-      <g opacity={s.get(scene.rejectU)} transform={`translate(${830 + s.get(scene.rejectU) * 60} 285)`}>
+      <g opacity={s.get(scene.rejectU)} transform={`translate(${880 + s.get(scene.rejectU) * 60} 285)`}>
         <rect x={-88} y={-22} width={176} height={44} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-        <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>duplicate item_id</text>
+        <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>duplicate item_id</text>
       </g>
       <g opacity={s.get(scene.pairU) * (1 - s.get(scene.countsU) * 0.65)}>
         <path d="M640 310 C640 326 466 322 466 340" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="6 5" />
         <path d="M640 310 C640 326 814 322 814 340" fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="6 5" />
         <rect x={342} y={340} width={248} height={48} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} />
         <rect x={690} y={340} width={248} height={48} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} />
-        <text x={466} y={369} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>generated::norm_clip_id</text>
-        <text x={814} y={369} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>real::norm_clip_id</text>
+        <text x={466} y={369} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>generated::norm_clip_id</text>
+        <text x={814} y={369} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>real::norm_clip_id</text>
       </g>
       {SOURCES.map(([name, count], i) => {
         const x = 116 + i * 132;
@@ -102,14 +102,14 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={name}>
           <rect x={x - 34} y={560 - h} width={28} height={h} rx={5} fill={colors.MUTED} opacity={0.4 * u} />
           <rect x={x + 6} y={560 - metricH} width={28} height={metricH} rx={5} fill={colors.ACCENT} opacity={s.get(scene.sourceMetricsU)} />
-          <text x={x} y={580} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={Math.max(u, s.get(scene.sourceMetricsU))}>{name}</text>
-          <text x={x} y={598} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={u}>{count}</text>
+          <text x={x} y={580} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO} opacity={Math.max(u, s.get(scene.sourceMetricsU))}>{name}</text>
+          <text x={x} y={598} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO} opacity={u}>{count}</text>
         </g>;
       })}
-      <text x={1206} y={404} textAnchor="end" fontSize={12} fontFamily={MONO} opacity={Math.max(s.get(scene.countsU), s.get(scene.sourceMetricsU))}>
+      <text x={1206} y={404} textAnchor="end" fontSize={14} fontFamily={MONO} opacity={Math.max(s.get(scene.countsU), s.get(scene.sourceMetricsU))}>
         <tspan fill={colors.MUTED}>■ clips</tspan><tspan fill={colors.ACCENT}>{'   ■ metric'}</tspan>
       </text>
-      <g opacity={s.get(scene.poolLean) * (1 - s.get(scene.meanU) * 0.8)} transform={`translate(${640 + s.get(scene.poolLean) * 34} 418)`}>
+      <g opacity={s.get(scene.poolLean) * (1 - s.get(scene.meanU))} transform={`translate(${640 + s.get(scene.poolLean) * 34} 418)`}>
         <line x1={-210} y1={0} x2={210} y2={0} stroke={colors.NEGATIVE} strokeWidth={3} strokeLinecap="round" />
         <text y={-10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>pooled clips lean toward larger sources</text>
       </g>
@@ -119,9 +119,10 @@ export function Render({ s }: { s: SceneState }) {
         <text x={640} y={452} textAnchor="middle" fill={colors.WARM} fontSize={17} fontFamily={MONO}>mean(source metrics)</text>
       </g>
       <g opacity={s.get(scene.coverageU)}>
-        <rect x={194} y={70} width={892} height={66} rx={16} fill={colors.PANEL} stroke={colors.SECONDARY} />
-        <text x={238} y={110} fill={colors.TEXT} fontSize={17}><tspan fill={colors.SECONDARY}>public-media</tspan> 11,579 pairs</text>
-        <text x={742} y={110} fill={colors.TEXT} fontSize={17}><tspan fill={colors.WARM}>full</tspan> 16,056 pairs</text>
+        <rect x={194} y={70} width={892} height={66} rx={16} fill={colors.PANEL} stroke={colors.WARM} />
+        <rect x={194} y={70} width={892 * 11579 / 16056} height={66} rx={16} fill={colors.SECONDARY} opacity={0.22} stroke={colors.SECONDARY} />
+        <text x={218} y={110} fill={colors.TEXT} fontSize={17}><tspan fill={colors.SECONDARY}>public-media</tspan> 11,579 pairs</text>
+        <text x={1062} y={110} textAnchor="end" fill={colors.TEXT} fontSize={17}><tspan fill={colors.WARM}>full</tspan> 16,056 pairs</text>
       </g>
     </g>
     {s.get(scene.payoffU) > 0 && <g opacity={s.get(scene.payoffU)}>

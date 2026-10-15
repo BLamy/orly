@@ -40,9 +40,12 @@ const FORMATS = [
 // 671B parameters at each width (GB) — simple real arithmetic.
 const sizeGB = (bits: number): number => (671e9 * bits) / 8 / 1e9;
 
-const RULER = { x: 200, y: 210, w: 760, h: 46 } as const;
+const RULER = { x: 200, y: 190, w: 760, h: 46 } as const;
 // 1024 wide so the menu sits centred under the camera's 1.25× view.
-const MENU = { x: 128, y: 330 } as const;
+const MENU = { x: 128, y: 370 } as const;
+// the size gauge runs to 1400 GB, past the 1342 GB full-precision model
+const GAUGE_GB = 1400;
+const WORKSTATION_GB = 512;
 
 const CAM_RULER: CameraState = { x: 640, y: 250, k: 1.35 };
 const CAM_MENU: CameraState = { x: 640, y: 420, k: 1.25 };
@@ -155,7 +158,7 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-const N_BYTES = 32; // byte cells drawn for the 16-bit slab
+const N_BYTES = 16; // one cell per bit of the 16-bit weight
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
@@ -184,9 +187,9 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the byte ruler ---- */}
           <g opacity={rulerU}>
             <text x={RULER.x} y={RULER.y - 40} fill={colors.TEXT} fontSize={14}>
-              one expert weight tensor, as bytes
+              one expert weight, one cell per bit
             </text>
-            <text x={RULER.x} y={RULER.y - 18} fill={FORMATS[liveK].color} fontSize={12} fontFamily="ui-monospace, monospace">
+            <text x={RULER.x} y={RULER.y - 18} fill={FORMATS[liveK].color} fontSize={14} fontFamily="ui-monospace, monospace">
               --kt-method {FORMATS[liveK].key} · {FORMATS[liveK].bits} bits / weight
             </text>
             {/* full-width ghost (the BF16 outline, always visible) */}
@@ -210,45 +213,71 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {/* size readout */}
-            <text x={RULER.x + RULER.w} y={RULER.y + RULER.h + 26} textAnchor="end" fill={colors.TEXT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+            <text x={RULER.x + RULER.w} y={RULER.y + RULER.h + 26} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
               671B params × {bits.toFixed(0)} bit ≈ {gb.toFixed(0)} GB
             </text>
             <g opacity={fitU}>
-              <text x={RULER.x} y={RULER.y + RULER.h + 26} fill={colors.POSITIVE} fontSize={12}>
-                {gb < 512 ? '✓ fits a 512 GB workstation' : '✗ needs the terabyte class'}
+              <text x={RULER.x} y={RULER.y + RULER.h + 26} fill={colors.POSITIVE} fontSize={14}>
+                {gb < WORKSTATION_GB ? '✓ fits a 512 GB workstation' : '✗ needs the terabyte class'}
               </text>
             </g>
+            {/* the same size as a gauge, with the workstation's memory marked */}
+            <text x={RULER.x} y={RULER.y + RULER.h + 50} fill={colors.MUTED} fontSize={14}>
+              total model size, gigabytes
+            </text>
+            <rect x={RULER.x} y={RULER.y + RULER.h + 60} width={RULER.w} height={14} rx={7} fill={colors.GRID} opacity={0.35} />
+            <rect
+              x={RULER.x}
+              y={RULER.y + RULER.h + 60}
+              width={RULER.w * Math.min(1, gb / GAUGE_GB)}
+              height={14}
+              rx={7}
+              fill={gb < WORKSTATION_GB ? colors.POSITIVE : colors.WARM}
+              opacity={0.8}
+            />
+            <line
+              x1={RULER.x + (RULER.w * WORKSTATION_GB) / GAUGE_GB}
+              x2={RULER.x + (RULER.w * WORKSTATION_GB) / GAUGE_GB}
+              y1={RULER.y + RULER.h + 54}
+              y2={RULER.y + RULER.h + 80}
+              stroke={colors.TEXT}
+              strokeWidth={1.5}
+              strokeDasharray="3 3"
+            />
+            <text x={RULER.x + (RULER.w * WORKSTATION_GB) / GAUGE_GB} y={RULER.y + RULER.h + 100} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              512 GB workstation
+            </text>
           </g>
 
           {/* ---- the menu ---- */}
           <g opacity={menuU}>
             {/* column headers */}
-            <text x={MENU.x + 16} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>format</text>
-            <text x={MENU.x + 240} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>bits</text>
+            <text x={MENU.x + 16} y={MENU.y - 12} fill={colors.MUTED} fontSize={14}>format</text>
+            <text x={MENU.x + 240} y={MENU.y - 12} fill={colors.MUTED} fontSize={14}>bits</text>
             <g opacity={reqU}>
-              <text x={MENU.x + 448} y={MENU.y - 12} fill={colors.TEXT} fontSize={12}>hardware it needs</text>
+              <text x={MENU.x + 448} y={MENU.y - 12} fill={colors.MUTED} fontSize={14}>hardware it needs</text>
             </g>
-            <text x={MENU.x + 700} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>what it trades</text>
+            <text x={MENU.x + 700} y={MENU.y - 12} fill={colors.MUTED} fontSize={14}>what it trades</text>
             {FORMATS.map((f, i) => {
               const rowU = clamp01(menuU * FORMATS.length * 1.1 - i);
               const live = i === liveK ? 1 : 0;
               return (
                 <g key={f.key} opacity={rowU}>
                   <rect x={MENU.x} y={MENU.y + i * 44} width={1024} height={38} rx={9} fill={live ? colors.PANEL : 'none'} stroke={live ? f.color : colors.GRID} strokeWidth={live ? 1.6 : 0.9} />
-                  <text x={MENU.x + 16} y={MENU.y + 24 + i * 44} fill={f.color} fontSize={13} fontFamily="ui-monospace, monospace">
+                  <text x={MENU.x + 16} y={MENU.y + 24 + i * 44} fill={f.color} fontSize={14} fontFamily="ui-monospace, monospace">
                     {f.key}
                   </text>
                   {/* bits bar */}
-                  <rect x={MENU.x + 240} y={MENU.y + 10 + i * 44} width={(120 * f.bits) / 16} height={18} rx={5} fill={f.color} opacity={0.7} />
-                  <text x={MENU.x + 372} y={MENU.y + 24 + i * 44} fill={colors.MUTED} fontSize={13}>
+                  <rect x={MENU.x + 240} y={MENU.y + 10 + i * 44} width={(120 * f.bits) / 16} height={18} rx={5} fill={f.color} opacity={0.85} />
+                  <text x={MENU.x + 372} y={MENU.y + 24 + i * 44} fill={colors.TEXT} fontSize={14}>
                     {f.bits === 4.5 ? '~4.5' : f.bits} bit
                   </text>
                   <g opacity={reqU}>
-                    <text x={MENU.x + 448} y={MENU.y + 24 + i * 44} fill={colors.TEXT} fontSize={13}>
+                    <text x={MENU.x + 448} y={MENU.y + 24 + i * 44} fill={colors.TEXT} fontSize={14}>
                       {f.cpu}
                     </text>
                   </g>
-                  <text x={MENU.x + 700} y={MENU.y + 24 + i * 44} fill={i === 3 && warnU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13}>
+                  <text x={MENU.x + 700} y={MENU.y + 24 + i * 44} fill={i === 3 && warnU > 0.3 ? colors.NEGATIVE : colors.TEXT} fontSize={14}>
                     {f.note}
                   </text>
                 </g>
@@ -259,17 +288,17 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* close */}
         <g opacity={closeU}>
-          <rect x={340} y={238} width={600} height={186} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+          <rect x={300} y={262} width={680} height={186} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             bytes for fidelity — a menu, not a dogma
           </text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             sixteen → eight → four bits: 1342 → 671 → 336 gigabytes
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             what makes the cheap bits fast: the matrix tiles, next
           </text>
-          <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={420} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             BF16 · FP8 · FP8_PERCHANNEL · AMXINT8 · AMXINT4 · RAWINT4 · LLAMAFILE
           </text>
         </g>

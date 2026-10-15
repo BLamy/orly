@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -78,13 +78,20 @@ function Frame({ s }: { s: SceneState }) {
           <line x1={lx(TH_MIN)} y1={ly(0)} x2={lx(TH_MAX)} y2={ly(0)} stroke={colors.GRID} opacity={trueU} />
           {trueU > 0 && <path d={landPath(LAND_TRUE, trueU)} fill="none" stroke={colors.POSITIVE} strokeWidth={3} opacity={0.9} />}
           {trueU > 0.9 && (
-            <text x={lx(0.85)} y={ly(1.08)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={clamp01((trueU - 0.9) * 10)}>
-              true quality
-            </text>
+            <g opacity={clamp01((trueU - 0.9) * 10)}>
+              <line x1={lx(1)} y1={ly(1) + 12} x2={lx(1)} y2={ly(0)} stroke={colors.POSITIVE} strokeDasharray="3 4" opacity={0.5} />
+              <circle cx={lx(1)} cy={ly(1)} r={5} fill={colors.POSITIVE} />
+              <text x={lx(0.85)} y={ly(1.12)} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} paintOrder="stroke" stroke={colors.BG} strokeWidth={5}>
+                true quality
+              </text>
+              <text x={lx(1)} y={ly(0) + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+                the best model
+              </text>
+            </g>
           )}
           {proxyU > 0 && <path d={landPath(LAND_PROXY, proxyU)} fill="none" stroke={colors.ACCENT} strokeWidth={3} opacity={0.9} />}
           {proxyU > 0.9 && (
-            <text x={lx(3.3)} y={ly(2.9)} textAnchor="middle" fill={colors.ACCENT} fontSize={14} opacity={clamp01((proxyU - 0.9) * 10)}>
+            <text x={lx(3.3)} y={ly(2.9)} textAnchor="middle" fill={colors.ACCENT} fontSize={14} paintOrder="stroke" stroke={colors.BG} strokeWidth={5} opacity={clamp01((proxyU - 0.9) * 10)}>
               the benchmark
             </text>
           )}
@@ -92,7 +99,7 @@ function Frame({ s }: { s: SceneState }) {
           {flawU > 0 && (
             <g opacity={flawU}>
               <rect x={lx(2.0)} y={ly(3.1)} width={lx(TH_MAX) - lx(2.0)} height={ly(0) - ly(3.1)} fill={colors.WARM} opacity={0.07} />
-              <text x={lx(3.0)} y={ly(-0.16)} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={lx(3.0)} y={ly(-0.16)} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 the exploitable flaw
               </text>
             </g>
@@ -111,7 +118,7 @@ function Frame({ s }: { s: SceneState }) {
           {chartU > 0 && (
             <g opacity={chartU}>
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X1 + 8} y2={CH_Y0} stroke={colors.GRID} />
-              <text x={CH_X0} y={CH_Y0 + 22} fill={colors.MUTED} fontSize={13}>
+              <text x={CH_X0} y={CH_Y0 + 22} fill={colors.MUTED} fontSize={14}>
                 gradient steps on the proxy →
               </text>
               {runP > 0 && (
@@ -125,17 +132,26 @@ function Frame({ s }: { s: SceneState }) {
               {peakU > 0 && (
                 <g opacity={peakU}>
                   <circle cx={cx(PEAK_STEP)} cy={cy(PATH[PEAK_STEP].t)} r={8} fill="none" stroke={colors.WARM} strokeWidth={2.5} />
-                  <text x={cx(PEAK_STEP)} y={cy(PATH[PEAK_STEP].t) - 16} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+                  <text
+                    x={cx(PEAK_STEP)}
+                    y={cy(PATH[PEAK_STEP].t) - 18}
+                    textAnchor="middle"
+                    fill={colors.WARM}
+                    fontSize={14}
+                    paintOrder="stroke"
+                    stroke={colors.BG}
+                    strokeWidth={5}
+                  >
                     quality peaks: 1.000
                   </text>
                 </g>
               )}
               {runP >= N_STEPS - 1 && (
                 <g>
-                  <text x={CH_X1 + 4} y={cy(FINAL.p)} fill={colors.ACCENT} fontSize={13}>
+                  <text x={CH_X1 + 4} y={cy(FINAL.p)} fill={colors.ACCENT} fontSize={14}>
                     {FINAL.p.toFixed(2)}
                   </text>
-                  <text x={CH_X1 + 4} y={cy(FINAL.t) + 12} fill={colors.POSITIVE} fontSize={13}>
+                  <text x={CH_X1 + 4} y={cy(FINAL.t) + 14} fill={colors.POSITIVE} fontSize={14}>
                     {FINAL.t.toFixed(3)}
                   </text>
                 </g>
@@ -146,30 +162,21 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed math */}
-      <MathLabel
-        tex={'\\text{when a measure becomes a target...}'}
-        x={985}
-        y={70}
-        fontSize={18}
-        color={colors.WARM}
-        opacity={s.get(scene.mathU)}
-      />
+      <text x={1240} y={70} textAnchor="end" fill={colors.WARM} fontSize={18} opacity={s.get(scene.mathU)}>
+        when a measure becomes a target...
+      </text>
 
-      {/* clean ending card */}
+      {/* clean ending card: solid panel so nothing faded shows through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Goodhart's Law
           </text>
-          <MathLabel
-            tex={'\\text{proxy} \\uparrow 2.69 \\qquad \\text{quality} \\downarrow 0.003'}
-            x={640}
-            y={340}
-            fontSize={21}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
+          <text x={640} y={340} textAnchor="middle" fontSize={22} fontWeight={600}>
+            <tspan fill={colors.ACCENT}>proxy ↑ 2.69</tspan>
+            <tspan dx={40} fill={colors.NEGATIVE}>quality ↓ 0.003</tspan>
+          </text>
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             optimization pressure flows to wherever the measure and the goal disagree
           </text>

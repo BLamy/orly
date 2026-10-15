@@ -32,6 +32,15 @@ const ARMS = [
   { label: 'fuzz', color: colors.TEAL },
   { label: 'replay-critic', color: colors.ACCENT },
 ];
+/** Plain-words gloss under each arm, so the pill names mean something on screen. */
+const ARM_GLOSS = [
+  'predict, then test',
+  'what actually ran?',
+  'find fake stand-ins',
+  'break it on purpose',
+  'feed it broken input',
+  'check the recording',
+];
 const ARM_SPREAD = 760;
 const ARM_Y = 196;
 const armX = (i: number) => CRITIC.x - ARM_SPREAD / 2 + (ARM_SPREAD / (ARMS.length - 1)) * i;
@@ -88,7 +97,6 @@ export interface Scene {
   verdictU: ChannelRef<number>;
   endDim: ChannelRef<number>;
   endU: ChannelRef<number>;
-  critDim: ChannelRef<number>; // critic + arms step back once the recording takes the bench
 }
 
 export function buildScene(): Scene {
@@ -114,7 +122,6 @@ export function buildScene(): Scene {
   const verdictU = tl.channel('verdictU', 0);
   const endDim = tl.channel('endDim', 0);
   const endU = tl.channel('endU', 0);
-  const critDim = tl.channel('critDim', 0);
 
   // — Beat 1 · a fresh session —
   tl.caption({
@@ -164,7 +171,6 @@ export function buildScene(): Scene {
   });
   tl.tween(predU, 0, { at: 31.7, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_LANES, { at: 31.8, dur: 1.4, ease: ease.move });
-  tl.tween(critDim, 1, { at: 31.6, dur: 0.8, ease: ease.move });
   tl.tween(lanesU, 1, { at: 32.5, dur: 2.2, ease: ease.draw });
   tl.tween(hitsU, 1, { at: 35.0, dur: 2.4, ease: ease.linear });
   tl.hold(38.9, 0.5);
@@ -234,7 +240,7 @@ export function buildScene(): Scene {
   return {
     tl, cam, criticU, armsU, tapeU, predU, sweepU, linkPop, tapeDim,
     lanesU, hitsU, classU, lanesDim, treeU, mutU, redU, greenBadU, fuzzU,
-    treeDim, verdictU, endDim, endU, critDim,
+    treeDim, verdictU, endDim, endU,
   };
 }
 
@@ -264,7 +270,8 @@ export function Render({ s }: { s: SceneState }) {
   const verdictU = s.get(scene.verdictU);
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
-  const critDim = s.get(scene.critDim);
+  // the critic and arms step back as the diff lanes come in (no timing of their own)
+  const critDim = lanesU;
 
   // the world steps out entirely behind the closing panel (no ghost text)
   const worldOp = 1 - endDim;
@@ -300,6 +307,9 @@ export function Render({ s }: { s: SceneState }) {
               <text x={CRITIC.x + 42} y={CRITIC.y + 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 fresh session · goal: refute
               </text>
+              <text x={CRITIC.x} y={CRITIC.y + 62} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={1 - armsU}>
+                reads the spec, the diff and the claim — no memory of writing the code
+              </text>
             </g>
           )}
 
@@ -323,6 +333,9 @@ export function Render({ s }: { s: SceneState }) {
                   <rect x={ax - 62} y={ARM_Y - 14} width={124} height={28} rx={14} fill={colors.PANEL} stroke={arm.color} strokeWidth={1.5} />
                   <text x={ax} y={ARM_Y + 4.5} textAnchor="middle" fill={arm.color} fontSize={12} fontFamily={MONO} fontWeight={700}>
                     {arm.label}
+                  </text>
+                  <text x={ax} y={ARM_Y + 36} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={0.85}>
+                    {ARM_GLOSS[i]}
                   </text>
                 </g>
               );
@@ -348,10 +361,10 @@ export function Render({ s }: { s: SceneState }) {
           {predU > 0 && (
             <g opacity={predU * (1 - tapeDim)} transform={`translate(0 ${(1 - predU) * 10})`}>
               <rect x={TAPE.x} y={TAPE.y + 62} width={430} height={58} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-              <text x={TAPE.x + 14} y={TAPE.y + 84} fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+              <text x={TAPE.x + 14} y={TAPE.y + 84} fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={700}>
                 prediction — written before looking
               </text>
-              <text x={TAPE.x + 14} y={TAPE.y + 104} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+              <text x={TAPE.x + 14} y={TAPE.y + 106} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                 “target digest equals source digest at merge”
               </text>
             </g>
@@ -370,7 +383,7 @@ export function Render({ s }: { s: SceneState }) {
                 scratch worktree — disposable
               </text>
               <text x={WORKTREE.x + WORKTREE.w - 18} y={WORKTREE.y + 28} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-                verify-task · sabotage · isolation: worktree
+                break it on purpose · isolation: worktree
               </text>
               {/* the mutation */}
               <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 56})`}>
@@ -389,6 +402,15 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                 )}
               </g>
+              {/* the suite waits for the mutation, then reacts */}
+              {mutU > 0 && redU < 1 && (
+                <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 160})`} opacity={Math.min(1, mutU * 2) * (1 - redU)}>
+                  <rect width={240} height={44} rx={10} fill="none" stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 4" />
+                  <text x={16} y={27} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+                    test suite — running
+                  </text>
+                </g>
+              )}
               {/* tests react */}
               {redU > 0 && (
                 <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 160})`} opacity={redU}>
@@ -412,8 +434,8 @@ export function Render({ s }: { s: SceneState }) {
               )}
               {/* fuzz volley: its own rows below the tests, never over the mutation */}
               {fuzzU > 0 && (
-                <text x={WORKTREE.x + 40} y={WORKTREE.y + 236} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(fuzzU * 4)}>
-                  own inputs — never the builder’s
+                <text x={WORKTREE.x + 40} y={WORKTREE.y + 236} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={clamp01(fuzzU * 4)}>
+                  fuzz — its own broken inputs, not the builder’s
                 </text>
               )}
               {fuzzU > 0 &&
@@ -441,13 +463,13 @@ export function Render({ s }: { s: SceneState }) {
               <text x={VERDICT.x + 22} y={VERDICT.y + 34} fill={colors.NEGATIVE} fontSize={16} fontFamily={MONO} fontWeight={800}>
                 VERDICT: refuted
               </text>
-              <text x={VERDICT.x + 22} y={VERDICT.y + 64} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+              <text x={VERDICT.x + 22} y={VERDICT.y + 64} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 • refusal path never executed in the recorded run
               </text>
-              <text x={VERDICT.x + 22} y={VERDICT.y + 86} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+              <text x={VERDICT.x + 22} y={VERDICT.y + 88} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 • citation: recording point + log offset …4821
               </text>
-              <text x={VERDICT.x + 22} y={VERDICT.y + 112} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={VERDICT.x + 22} y={VERDICT.y + 118} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 demand: record a run that merges past an advanced target
               </text>
               <text x={VERDICT.x + VERDICT.w - 22} y={VERDICT.y + 34} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>

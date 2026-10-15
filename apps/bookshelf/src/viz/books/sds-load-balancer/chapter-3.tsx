@@ -218,7 +218,8 @@ export function Render({ s }: { s: SceneState }) {
   const costU = s.get(scene.costU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  // the closing panel takes the whole frame: everything behind it fades out
+  const dimAll = 1 - closeU * 0.97;
   const kDns = Math.floor(dnsK + 0.001);
 
   return (
@@ -228,36 +229,45 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the strip: user · edges · origin ---- */}
         <g opacity={stripU * dimAll}>
           <line x1={USER.x} y1={USER.y} x2={ORIGIN.x} y2={ORIGIN.y} stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 7" opacity={0.6} />
+          {/* the distance, drawn as a span over the strip: the caption says it is paid twice */}
+          <g opacity={0.85}>
+            <line x1={USER.x} y1={300} x2={ORIGIN.x} y2={300} stroke={colors.MUTED} strokeWidth={1.2} />
+            <line x1={USER.x} y1={290} x2={USER.x} y2={310} stroke={colors.MUTED} strokeWidth={1.2} />
+            <line x1={ORIGIN.x} y1={290} x2={ORIGIN.x} y2={310} stroke={colors.MUTED} strokeWidth={1.2} />
+            <text x={(USER.x + ORIGIN.x) / 2} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
+              every request pays this distance twice
+            </text>
+          </g>
           {/* user */}
           <circle cx={USER.x} cy={USER.y} r={20} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-          <text x={USER.x} y={USER.y + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
+          <text x={USER.x} y={USER.y + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
             the user
           </text>
           {/* edges */}
           {EDGES.map((e, i) => (
             <g key={i}>
               <rect x={e.x - EDGE_HALF} y={e.y - 28} width={EDGE_HALF * 2} height={56} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={e.x} y={e.y + 4} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+              <text x={e.x} y={e.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 {e.label}
               </text>
               {/* cached copy chip at edge 0, floating above the card */}
               {i === 0 && stickU > 0.05 && (
                 <g opacity={stickU}>
-                  <rect x={e.x - 64} y={e.y - 66} width={120} height={24} rx={5} fill={colors.BG} stroke={staleU > 0.4 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.3} />
-                  <text x={e.x - 4} y={e.y - 50} textAnchor="middle" fill={staleU > 0.4 ? colors.NEGATIVE : colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+                  <rect x={e.x - 78} y={e.y - 66} width={156} height={24} rx={5} fill={colors.BG} stroke={staleU > 0.4 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.3} />
+                  <text x={e.x - 12} y={e.y - 49} textAnchor="middle" fill={staleU > 0.4 ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
                     hero.jpg {staleU > 0.4 ? '· stale?' : ''}
                   </text>
-                  {ttlU > 0.02 && <TtlArc cx={e.x + 74} cy={e.y - 54} r={9} u={ttlU} color={colors.WARM} />}
+                  {ttlU > 0.02 && <TtlArc cx={e.x + 62} cy={e.y - 54} r={8} u={ttlU} color={colors.WARM} />}
                 </g>
               )}
             </g>
           ))}
           {/* origin */}
           <rect x={ORIGIN.x - 70} y={ORIGIN.y - 34} width={140} height={68} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-          <text x={ORIGIN.x} y={ORIGIN.y - 2} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+          <text x={ORIGIN.x} y={ORIGIN.y - 2} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
             your origin
           </text>
-          <text x={ORIGIN.x} y={ORIGIN.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={ORIGIN.x} y={ORIGIN.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             an ocean away
           </text>
         </g>
@@ -265,24 +275,24 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- DNS ladder ---- */}
         <g opacity={dnsU * dimAll}>
           <rect x={190} y={110} width={460} height={150} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-          <text x={210} y={138} fill={colors.TEXT} fontSize={12.5}>
+          <text x={210} y={138} fill={colors.TEXT} fontSize={14}>
             resolving the name
           </text>
           {DNS_STEPS.map((st, i) => {
             const on = i < kDns;
             return (
-              <g key={i} opacity={on ? 1 : 0.2}>
-                <text x={230} y={166 + i * 26} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+              <g key={i} opacity={on ? 1 : 0.35}>
+                <text x={230} y={166 + i * 26} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
                   {st.q}
                 </text>
-                <text x={470} y={166 + i * 26} fill={i === 2 ? colors.POSITIVE : colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={470} y={166 + i * 26} fill={i === 2 ? colors.POSITIVE : colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                   → {st.a}
                 </text>
               </g>
             );
           })}
           <g opacity={cacheDnsU}>
-            <text x={210} y={246} fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={210} y={246} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               cached by browser + OS under a TTL · NS · MX · A · CNAME
             </text>
           </g>
@@ -310,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
         })()}
         {pull2 >= 1 && (
           // sits under the edge card, clear of the hero.jpg chip above it
-          <text x={EDGES[0].x} y={EDGES[0].y + 62} textAnchor="middle" fill={colors.WARM} fontSize={13} fontStyle="italic" opacity={dimAll * (1 - pushU)}>
+          <text x={EDGES[0].x} y={EDGES[0].y + 62} textAnchor="middle" fill={colors.WARM} fontSize={14} fontStyle="italic" opacity={dimAll * (1 - pushU)}>
             stops here — the origin never hears about it
           </text>
         )}
@@ -323,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
             return <circle key={i} cx={lerp(ORIGIN.x - 74, e.x + EDGE_HALF, u)} cy={ORIGIN.y - 12} r={6} fill={colors.SECONDARY} opacity={dimAll} />;
           })}
         {pushU > 0.8 && (
-          <text x={700} y={330} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+          <text x={700} y={330} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace" opacity={dimAll}>
             push: upload on change · rewrite URLs to the CDN
           </text>
         )}
@@ -337,7 +347,7 @@ export function Render({ s }: { s: SceneState }) {
           ].map((t, i) => (
             <g key={i}>
               <rect x={280} y={490 + i * 40} width={720} height={32} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={511 + i * 40} textAnchor="middle" fill={i === 0 ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+              <text x={640} y={511 + i * 40} textAnchor="middle" fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace">
                 {t}
               </text>
             </g>
@@ -360,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={420} y={292 + i * 38} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
                 {k}
               </text>
-              <text x={448} y={292 + i * 38} fill={colors.MUTED} fontSize={13}>
+              <text x={448} y={292 + i * 38} fill={colors.TEXT} fontSize={14}>
                 {v}
               </text>
             </g>

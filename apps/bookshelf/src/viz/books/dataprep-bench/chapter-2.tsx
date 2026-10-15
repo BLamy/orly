@@ -11,9 +11,9 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const METHODS = [
-  { name: 'Data-Construction-Skill', color: colors.ACCENT },
-  { name: 'agent baseline', color: colors.SECONDARY },
-  { name: 'DataFlow method', color: colors.WARM },
+  { name: 'Data-Construction-Skill', role: 'constructed by skill', color: colors.ACCENT },
+  { name: 'agent baseline', role: 'constructed by agent', color: colors.SECONDARY },
+  { name: 'DataFlow method', role: 'constructed by DataFlow', color: colors.WARM },
 ];
 const DOMAINS = ['math', 'general', 'science', 'business', 'medicine', 'law'];
 const DOMAIN_COLORS = [colors.ACCENT, colors.TEAL, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.NEGATIVE];
@@ -85,12 +85,12 @@ function MethodCard({ i, u, scoreU }: { i: number; u: number; scoreU: number }) 
   return (
     <g transform={`translate(${360 + scoreU * 270} ${y})`} opacity={uu}>
       <rect x={-128} y={-36} width={256} height={72} rx={12} fill={colors.PANEL} stroke={m.color} strokeWidth={1.5} />
-      <circle cx={-96} cy={0} r={11} fill={m.color} opacity={0.25} />
-      <text x={-78} y={5} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{m.name}</text>
+      <text x={-108} y={-4} fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO}>{m.name}</text>
+      <text x={-108} y={18} fill={m.color} fontSize={14} fontFamily={MONO}>{m.role}</text>
       {scoreU > 0 && (
         <g opacity={scoreU}>
-          <rect x={-42} y={40} width={84} height={26} rx={13} fill={m.color} opacity={0.2} />
-          <text x={0} y={58} textAnchor="middle" fill={m.color} fontSize={12} fontWeight={800}>score</text>
+          <rect x={-46} y={40} width={92} height={26} rx={13} fill={m.color} opacity={0.2} />
+          <text x={0} y={58} textAnchor="middle" fill={m.color} fontSize={14} fontWeight={800}>score</text>
         </g>
       )}
     </g>
@@ -110,7 +110,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={62} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>Downstream training is the judge</text>
-          <text x={640} y={88} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>same sources · same anchor · same training protocol · same evaluations</text>
+          <text x={640} y={90} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>same sources · same anchor · same training protocol · same evaluations</text>
 
           <g opacity={s.get(scene.sourceU)}>
             <rect x={52} y={196} width={130} height={286} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} />
@@ -122,7 +122,7 @@ export function Render({ s }: { s: SceneState }) {
           {METHODS.map((_, i) => <MethodCard key={i} i={i} u={s.get(scene.methodU)} scoreU={s.get(scene.scoreU)} />)}
 
           {s.get(scene.anchorU) > 0 && (
-            <g opacity={s.get(scene.anchorU)} transform="translate(360 500)">
+            <g opacity={s.get(scene.anchorU)} transform="translate(360 530)">
               <rect x={-116} y={-28} width={232} height={56} rx={28} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={0} y={5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>+ Dolly-15k anchor</text>
             </g>
@@ -131,27 +131,28 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.trainU) > 0 && (
             <g opacity={clamp01(s.get(scene.trainU) * 2) * (1 - s.get(scene.scoreU))} transform="translate(620 335)">
               <circle r={82} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-              <circle r={58} fill="none" stroke={colors.SECONDARY} strokeDasharray={`${Math.min(1, s.get(scene.trainU) / 3.2) * 364} 364`} strokeWidth={8} transform="rotate(-90)" />
-              <text y={-8} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>fine-tune</text>
-              <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>3 epochs · cosine</text>
-              <text y={38} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>DeepSpeed ZeRO-3</text>
+              <circle r={60} fill="none" stroke={colors.GRID} strokeWidth={8} />
+              <circle r={60} fill="none" stroke={colors.SECONDARY} strokeDasharray={`${Math.min(1, s.get(scene.trainU) / 3.2) * 377} 377`} strokeWidth={8} transform="rotate(-90)" />
+              <text y={5} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>fine-tune</text>
+              <text y={106} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>3 epochs · cosine</text>
+              <text y={128} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>DeepSpeed ZeRO-3</text>
             </g>
           )}
 
           {wheelU > 0 && (
             <g transform="translate(965 320)" opacity={wheelU}>
-              <circle r={132} fill={colors.PANEL} stroke={colors.GRID} />
-              <circle r={50} fill={colors.BG} stroke={colors.TEXT} opacity={0.95} />
-              <text y={-4} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>downstream</text>
-              <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>evaluation</text>
+              <circle r={140} fill={colors.PANEL} stroke={colors.GRID} />
+              <circle r={54} fill={colors.BG} stroke={colors.TEXT} opacity={0.95} />
+              <text y={-2} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>downstream</text>
+              <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>evaluation</text>
               {DOMAINS.map((d, i) => {
                 const a = -Math.PI / 2 + (i / DOMAINS.length) * Math.PI * 2;
                 const x = Math.cos(a) * 88;
                 const y = Math.sin(a) * 88;
                 return (
                   <g key={d} transform={`translate(${x} ${y})`} opacity={clamp01(wheelU * 8 - i)}>
-                    <circle r={36} fill={DOMAIN_COLORS[i]} opacity={0.16} stroke={DOMAIN_COLORS[i]} />
-                    <text y={4} textAnchor="middle" fill={DOMAIN_COLORS[i]} fontSize={12} fontWeight={700}>{d}</text>
+                    <circle r={40} fill={DOMAIN_COLORS[i]} opacity={0.22} stroke={DOMAIN_COLORS[i]} />
+                    <text y={5} textAnchor="middle" fill={DOMAIN_COLORS[i]} fontSize={14} fontWeight={700}>{d}</text>
                   </g>
                 );
               })}
@@ -171,29 +172,34 @@ export function Render({ s }: { s: SceneState }) {
           {runU > 0 && (
             <g transform="translate(965 512)">
               {pipeline.map((p, i) => (
-                <g key={p} transform={`translate(${-156 + i * 104} 0)`} opacity={i <= phase ? 1 : 0.22}>
+                <g key={p} transform={`translate(${-156 + i * 104} 0)`} opacity={i <= phase ? 1 : 0.5}>
                   <rect x={-46} y={-18} width={92} height={36} rx={8} fill={i <= phase ? colors.POSITIVE : colors.PANEL} opacity={i <= phase ? 0.18 : 1} stroke={i <= phase ? colors.POSITIVE : colors.GRID} />
-                  <text y={4} textAnchor="middle" fill={i <= phase ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={MONO}>{p}</text>
+                  <text y={5} textAnchor="middle" fill={i <= phase ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily={MONO}>{p}</text>
                 </g>
               ))}
             </g>
           )}
 
           {s.get(scene.resultU) > 0 && (
-            <g opacity={s.get(scene.resultU)} transform="translate(640 560)">
+            <g opacity={s.get(scene.resultU)} transform="translate(640 592)">
               <rect x={-275} y={-25} width={550} height={50} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} />
               <text x={0} y={-2} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={750}>Data-Construction-Skill · Finance · Llama-3.1-8B</text>
-              <text x={0} y={17} textAnchor="middle" fill={colors.TEXT} fontSize={13}>nearly +20 points over Dolly-only baseline</text>
+              <text x={0} y={17} textAnchor="middle" fill={colors.TEXT} fontSize={14}>nearly +20 points over Dolly-only baseline</text>
             </g>
           )}
         </g>
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
-          <rect x={235} y={242} width={810} height={174} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-          <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Make the data prove it</text>
-          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>prepare → fine-tune → evaluate → compare</text>
-          <text x={640} y={385} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>quality = downstream training utility</text>
+          <rect x={235} y={226} width={810} height={236} rx={20} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={640} y={290} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Make the data prove it</text>
+          <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={16}>prepare → fine-tune → evaluate → compare</text>
+          <rect x={300} y={362} width={250} height={44} rx={12} fill={colors.BG} stroke={colors.GRID} />
+          <text x={425} y={390} textAnchor="middle" fill={colors.MUTED} fontSize={16}>trained without it</text>
+          <text x={640} y={390} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={700}>→ does more</text>
+          <rect x={730} y={362} width={250} height={44} rx={12} fill={colors.POSITIVE} opacity={0.18} stroke={colors.POSITIVE} />
+          <text x={855} y={390} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>trained on it</text>
+          <text x={640} y={440} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>quality = downstream training utility</text>
         </g>
       )}
     </>

@@ -83,15 +83,17 @@ const accAt = (depth: number): number => {
 // ---------------------------------------------------------------------------
 
 const DOC_X = scaleLinear().domain([0, 99]).range([160, 1120]);
-const DOC_Y = 170;
+const DOC_Y = 190;
 const DOC_H = 40;
 
-const BIAS_Y = scaleLinear().domain([0, 1.5]).range([340, 250]);
+const BIAS_Y = scaleLinear().domain([0, 1.5]).range([330, 262]);
 
 const ACC_Y = scaleLinear().domain([0, 1.05]).range([600, 400]);
 
-const CAM_DOC: CameraState = { x: 640, y: 210, k: 1.3 };
-const CAM_CURVE: CameraState = { x: 640, y: 470, k: 1.25 };
+// Both framings keep the whole picture on stage and above the caption pill:
+// the document card and the U-curve share one overview at the end of beat 3.
+const CAM_DOC: CameraState = { x: 640, y: 200, k: 1.2 };
+const CAM_CURVE: CameraState = { x: 640, y: 418, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -221,7 +223,9 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* document strip */}
           <g opacity={docU}>
-            <text x={160} y={DOC_Y - 26} fill={colors.TEXT} fontSize={17}>
+            {/* the page the needle hides in */}
+            <rect x={136} y={122} width={1008} height={144} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={160} y={DOC_Y - 40} fill={colors.TEXT} fontSize={17}>
               a 100-token document, one needle — a toy, run for real
             </text>
             {Array.from({ length: T }, (_, i) => (
@@ -232,21 +236,19 @@ function Frame({ s }: { s: SceneState }) {
                 width={8}
                 height={DOC_H}
                 rx={2}
-                fill={colors.PANEL}
-                opacity={0.35 + 0.4 * bias(i)}
-                stroke={colors.GRID}
-                strokeWidth={0.4}
+                fill={colors.MUTED}
+                opacity={0.2 + 0.5 * bias(i)}
               />
             ))}
             {/* the needle */}
             <rect x={DOC_X(needle) - 5} y={DOC_Y - 8} width={10} height={DOC_H + 16} rx={3} fill={colors.WARM} />
-            <text x={DOC_X(needle)} y={DOC_Y - 16} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={600}>
+            <text x={DOC_X(needle)} y={DOC_Y - 16} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
               needle
             </text>
-            <text x={160} y={DOC_Y + DOC_H + 24} fill={colors.MUTED} fontSize={12}>
+            <text x={160} y={DOC_Y + DOC_H + 22} fill={colors.MUTED} fontSize={14}>
               depth 0
             </text>
-            <text x={1120} y={DOC_Y + DOC_H + 24} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={1120} y={DOC_Y + DOC_H + 22} textAnchor="end" fill={colors.MUTED} fontSize={14}>
               depth 99
             </text>
           </g>
@@ -264,10 +266,10 @@ function Frame({ s }: { s: SceneState }) {
                 color={colors.SECONDARY}
                 width={2.2}
               />
-              <text x={200} y={BIAS_Y(bias(0)) - 10} fill={colors.SECONDARY} fontSize={12}>
+              <text x={200} y={BIAS_Y(bias(0)) - 10} fill={colors.SECONDARY} fontSize={14}>
                 primacy bump
               </text>
-              <text x={1080} y={BIAS_Y(bias(99)) - 10} textAnchor="end" fill={colors.SECONDARY} fontSize={12}>
+              <text x={1080} y={BIAS_Y(bias(99)) - 10} textAnchor="end" fill={colors.SECONDARY} fontSize={14}>
                 recency bump
               </text>
             </g>
@@ -279,7 +281,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={160} y={ACC_Y(1.05) - 14} fill={colors.TEXT} fontSize={16}>
                 needle recall vs depth — 500 trials per point
               </text>
-              <Axes x={DOC_X} y={ACC_Y} reveal={curveU} xTicks={5} yTicks={3} xLabel="needle depth" fontSize={11} />
+              <Axes x={DOC_X} y={ACC_Y} reveal={curveU} xTicks={5} yTicks={3} xLabel="needle depth" fontSize={14} />
               <FunctionPlot
                 x={DOC_X}
                 y={ACC_Y}
@@ -298,7 +300,7 @@ function Frame({ s }: { s: SceneState }) {
                     textAnchor={sweepDepth > 80 ? 'end' : 'start'}
                     y={ACC_Y(accAt(sweepDepth)) - 10}
                     fill={colors.WARM}
-                    fontSize={13}
+                    fontSize={14}
                     fontWeight={600}
                   >
                     {(accAt(sweepDepth) * 100).toFixed(0)}%
@@ -306,7 +308,7 @@ function Frame({ s }: { s: SceneState }) {
                 </>
               )}
               {sweep > 0.9 && (
-                <text x={DOC_X(50)} y={ACC_Y(accAt(50)) + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={(sweep - 0.9) / 0.1}>
+                <text x={DOC_X(50)} y={ACC_Y(accAt(50)) + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} opacity={(sweep - 0.9) / 0.1}>
                   lost in the middle
                 </text>
               )}

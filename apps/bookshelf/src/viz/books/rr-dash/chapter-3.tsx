@@ -213,7 +213,7 @@ function RecordTape({
   const cw = w / RECORDS.length;
   return (
     <g transform={`translate(${x}, ${y})`} opacity={1 - 0.95 * dim}>
-      <text y={-9} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text y={-9} fill={colors.TEXT} opacity={0.8} fontSize={14} fontFamily={mono}>
         {title}
       </text>
       <rect width={w} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
@@ -245,7 +245,7 @@ function RecordLegend({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={k} transform={`translate(${(i % 3) * 200}, ${Math.floor(i / 3) * 24})`} opacity={ku}>
             <rect width={12} height={12} rx={3} fill={KIND_COLOR[k]} opacity={0.85} />
-            <text x={20} y={11} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+            <text x={20} y={11} fill={colors.TEXT} opacity={0.85} fontSize={14} fontFamily={mono}>
               {label}
             </text>
           </g>
@@ -283,7 +283,7 @@ function LivePage({
   return (
     <g transform={`translate(${PAGE.x}, ${PAGE.y + (1 - e) * 14})`} opacity={e * (1 - 0.95 * dim)}>
       <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.PANEL} stroke={f > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
-      <text x={18} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={18} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         /recordings/trace-demo · LiveTraceView
       </text>
       {/* phase badge */}
@@ -297,37 +297,37 @@ function LivePage({
       </g>
       {/* fold counters */}
       <g transform="translate(18, 56)" fontFamily={mono}>
-        <text fill={colors.TEXT} fontSize={13}>
+        <text fill={colors.TEXT} fontSize={14}>
           linetrace <tspan fill={colors.TEAL} fontWeight={700}>{stats.lt.toLocaleString('en-US')}</tspan> entries
         </text>
-        <text y={26} fill={colors.TEXT} fontSize={13}>
+        <text y={26} fill={colors.TEXT} fontSize={14}>
           stacks <tspan fill={colors.SECONDARY} fontWeight={700}>{stats.stacks}</tspan> samples
         </text>
-        <text y={52} fill={colors.TEXT} fontSize={13}>
+        <text y={52} fill={colors.TEXT} fontSize={14}>
           hits snapshot <tspan fill={colors.WARM} fontWeight={700}>#{Math.max(1, stats.stacks)}</tspan> (last wins)
         </text>
       </g>
       {/* mini source gutter, counts ticking up with each snapshot */}
-      <g transform="translate(240, 52)">
+      <g transform="translate(270, 52)">
         {gutter.map((h, i) => (
           <g key={i} transform={`translate(0, ${i * 26})`}>
             <rect width={44} height={18} rx={4} fill={colors.ACCENT} opacity={0.12 + 0.5 * (h / 128)} />
-            <text x={22} y={13} textAnchor="middle" fill={h > 60 ? '#eaf2ff' : '#8fb4f5'} fontSize={11} fontFamily={mono}>
+            <text x={22} y={13} textAnchor="middle" fill={h > 60 ? '#eaf2ff' : '#8fb4f5'} fontSize={12} fontFamily={mono}>
               {h}
             </text>
             <rect x={52} y={4} width={h > 0 ? 120 : 60} height={10} rx={3} fill={colors.GRID} opacity={0.7} />
           </g>
         ))}
-        <text y={126} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        <text y={112} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           gutter chips tick up
         </text>
       </g>
       {/* offset cursor line */}
       <g transform={`translate(18, ${PAGE.h - 62})`} fontFamily={mono}>
-        <text fill={colors.MUTED} fontSize={12}>
+        <text fill={colors.TEXT} opacity={0.85} fontSize={14}>
           GET /api/recordings/…/live?offset=<tspan fill={colors.ACCENT}>{Math.floor(clockP) * 4}</tspan>
         </text>
-        <text y={20} fill={colors.MUTED} fontSize={12}>
+        <text y={20} fill={colors.TEXT} opacity={0.85} fontSize={14}>
           → {'{ phase, records, offset }'} · pump until empty
         </text>
       </g>
@@ -336,7 +336,7 @@ function LivePage({
         <g opacity={sw}>
           <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.POSITIVE} opacity={0.08 * (1 - Math.abs(sw - 0.5) * 2)} />
           <g transform={`translate(${PAGE.w / 2}, ${PAGE.h - 14})`}>
-            <text textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>
+            <text textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>
               fold → canonical streams · count parity ✓
             </text>
           </g>
@@ -347,7 +347,7 @@ function LivePage({
         <g opacity={f}>
           <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.NEGATIVE} opacity={0.07} />
           <g transform={`translate(${PAGE.w / 2}, ${PAGE.h - 14})`}>
-            <text textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>
+            <text textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={mono}>
               phase:'failed' — the fold freezes, still viewable
             </text>
           </g>
@@ -356,7 +356,7 @@ function LivePage({
       {/* the 1.5s pump clock */}
       <g transform={`translate(${TIMER.cx}, ${TIMER.cy})`}>
         <TimerArc cx={0} cy={0} r={TIMER.r} u={f > 0.5 ? 0 : 1 - tick} color={phaseColor} />
-        <text y={TIMER.r + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        <text y={TIMER.r + 16} textAnchor="middle" fill={colors.TEXT} opacity={0.8} fontSize={14} fontFamily={mono}>
           1.5s
         </text>
       </g>
@@ -374,7 +374,7 @@ function CloseCard({ u }: { u: number }) {
       <text y={-12} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         watchable while it is being made
       </text>
-      <text y={24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text y={24} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         live.ndjson → live-tailer → rec/&lt;id&gt;/live → 1.5s pump → fold → swap
       </text>
     </g>

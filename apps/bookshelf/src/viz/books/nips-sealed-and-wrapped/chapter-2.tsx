@@ -6,7 +6,7 @@
 // a REAL HMAC-SHA256 / HKDF at module scope (the shared x itself is
 // illustrative, since honest scalar multiplication is out of scope for a
 // picture). Two grids, one for each side, settle to an identical pattern.
-import { CAMERA_HOME, Camera, MathLabel, Player, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Player, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState, TimelineOverrides } from '../../core';
 import { BitField, EcCurve, ecPlot, hexToBits, sha256Bytes, shortHex } from '../../primitives';
 import overrides from './chapter-2.overrides.json';
@@ -77,9 +77,10 @@ const A_HOPS = [-1.72, -0.4, 1.3, MEET_X];
 const B_HOPS = [-1.72, 0.7, 1.9, MEET_X];
 
 // the two grids sit symmetrically either side of the centre line (x = 640)
-const GRID_A = { x: 340, y: 480, cell: 7, gap: 2 };
-const GRID_B = { x: 798, y: 480, cell: 7, gap: 2 };
-const GRID_W = 16 * 9 - 2;
+// each grid is 16 cells wide and tall; the pair is centred on x = 640 and
+// sits high enough that its bottom row clears the caption pill
+const GRID_A = { x: 347, y: 466, cell: 6, gap: 2 };
+const GRID_B = { x: 807, y: 466, cell: 6, gap: 2 };
 
 const CAM_CURVE: CameraState = { x: 650, y: 260, k: 1.2 };
 // framed so the shared point (top) and the grids (bottom) both stay on stage
@@ -240,16 +241,28 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           <EcCurve view={CURVE_VIEW} reveal={curveU} />
 
+          {/* the curve's own equation, written once the curve is drawn */}
+          {curveU > 0 && (
+            <text x={CURVE_VIEW.x + CURVE_VIEW.w / 2} y={CURVE_VIEW.y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={20} opacity={curveU}>
+              y² = x³ + 7
+            </text>
+          )}
+
+          {/* each name and its walk sit on the outside edge, clear of the centre line */}
           {keysU > 0 && (
             <g opacity={keysU}>
-              <text x={CURVE_VIEW.x - 190} y={150} fill={colors.ACCENT} fontSize={15} fontWeight={600}>
+              <text x={300} y={140} textAnchor="end" fill={colors.ACCENT} fontSize={16} fontWeight={600}>
                 Alice
               </text>
-              <MathLabel tex={'a \\cdot (b \\cdot G)'} x={CURVE_VIEW.x - 190} y={168} opacity={keysU} />
-              <text x={CURVE_VIEW.x + CURVE_VIEW.w + 60} y={150} fill={colors.POSITIVE} fontSize={15} fontWeight={600}>
+              <text x={300} y={170} textAnchor="end" fill={colors.TEXT} fontSize={22}>
+                a · (b · <tspan fontStyle="italic">G</tspan>)
+              </text>
+              <text x={CURVE_VIEW.x + CURVE_VIEW.w + 60} y={140} fill={colors.POSITIVE} fontSize={16} fontWeight={600}>
                 Bob
               </text>
-              <MathLabel tex={'b \\cdot (a \\cdot G)'} x={CURVE_VIEW.x + CURVE_VIEW.w + 60} y={168} opacity={keysU} />
+              <text x={CURVE_VIEW.x + CURVE_VIEW.w + 60} y={170} fill={colors.TEXT} fontSize={22}>
+                b · (a · <tspan fontStyle="italic">G</tspan>)
+              </text>
             </g>
           )}
 
@@ -282,16 +295,16 @@ function Frame({ s }: { s: SceneState }) {
           {/* elbow: drop from the shared point, run left to the centre line, feed HKDF */}
           {xU > 0 && (
             <g opacity={xU}>
-              <path d={`M${meet.x},${meet.y + 10} V400 H640 V412`} fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 4" />
-              <text x={880} y={392} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+              <path d={`M${meet.x},${meet.y + 10} V400 H640 V404`} fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 4" />
+              <text x={880} y={390} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 shared_x = {shortHex(hex(SHARED_X), 8, 4)} (illustrative point, real pipeline from here)
               </text>
             </g>
           )}
           {hkdfU > 0 && (
             <g opacity={hkdfU}>
-              <rect x={470} y={412} width={340} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={640} y={435} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <rect x={470} y={404} width={340} height={34} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
+              <text x={640} y={426} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
                 hkdf_extract(salt "nip44-v2", shared_x)
               </text>
             </g>
@@ -300,16 +313,16 @@ function Frame({ s }: { s: SceneState }) {
           {/* the two settling grids */}
           {gridU > 0 && (
             <g>
-              <text x={GRID_A.x} y={GRID_A.y - 14} fill={colors.ACCENT} fontSize={13} opacity={gridU}>
+              <text x={GRID_A.x} y={GRID_A.y - 12} fill={colors.ACCENT} fontSize={14} opacity={gridU}>
                 derived on Alice’s machine
               </text>
               <BitField bits={CONV_BITS} x={GRID_A.x} y={GRID_A.y} cell={GRID_A.cell} gap={GRID_A.gap} reveal={gridU} settle={settleU} seed={21} />
-              <text x={GRID_B.x} y={GRID_B.y - 14} fill={colors.POSITIVE} fontSize={13} opacity={gridU}>
+              <text x={GRID_B.x + 126} y={GRID_B.y - 12} textAnchor="end" fill={colors.POSITIVE} fontSize={14} opacity={gridU}>
                 derived on Bob’s machine
               </text>
               <BitField bits={CONV_BITS} x={GRID_B.x} y={GRID_B.y} cell={GRID_B.cell} gap={GRID_B.gap} reveal={gridU} settle={settleU} seed={22} />
               {settleU >= 1 && (
-                <text x={640} y={540} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={gridU}>
+                <text x={640} y={520} textAnchor="middle" fill={colors.TEXT} fillOpacity={0.85} fontSize={14} fontFamily="monospace" opacity={gridU}>
                   conversation_key = {shortHex(CONV_KEY_HEX, 10, 6)}
                 </text>
               )}
@@ -317,7 +330,7 @@ function Frame({ s }: { s: SceneState }) {
           )}
           {sameU > 0 && (
             <g opacity={sameU}>
-              <text x={640} y={566} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
+              <text x={640} y={546} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={600}>
                 0 of 256 bits differ
               </text>
             </g>
@@ -335,7 +348,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             ECDH meets in the middle · HKDF-extract, salted "nip44-v2"
           </text>
-          <text x={640} y={324} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={324} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-44 v2 · conversation_key = hkdf_extract(salt, shared_x)
           </text>
         </g>

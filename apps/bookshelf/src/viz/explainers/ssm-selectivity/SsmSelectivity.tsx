@@ -107,8 +107,10 @@ const PLOT_X = scaleLinear().domain([0, T - 1]).range([120, 620]);
 const PLOT_Y_FIXED = scaleLinear().domain([-0.3, 1.05]).range([300, 160]);
 const PLOT_Y_SEL = scaleLinear().domain([-0.3, 1.05]).range([530, 390]);
 
-const CAM_TOP: CameraState = { x: 480, y: 220, k: 1.3 };
-const CAM_BOT: CameraState = { x: 480, y: 440, k: 1.3 };
+// Both camera stops keep the state strip and the recall meter (x ≈ 790–1100)
+// on the stage, and keep the lane labels clear of the header in the corner.
+const CAM_TOP: CameraState = { x: 560, y: 200, k: 1.15 };
+const CAM_BOT: CameraState = { x: 560, y: 320, k: 1.15 };
 
 // ---------------------------------------------------------------------------
 // Timeline.
@@ -247,7 +249,7 @@ const MOTION = {
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 function Lane({
-  y, tok, H, recall, plotY, label, gates, showGates, color,
+  y, tok, H, recall, plotY, label, gates, showGates, flagOp, meterOp, color,
 }: {
   y: number;
   tok: number;
@@ -257,12 +259,14 @@ function Lane({
   label: string;
   gates: Gate[];
   showGates: number;
+  flagOp: number;
+  meterOp: number;
   color: string;
 }) {
   const curRecall = recallAt(recall, tok);
   return (
     <g>
-      <text x={TOK_X0} y={y - 64} fill={colors.TEXT} fontSize={17}>
+      <text x={TOK_X0} y={y - 88} fill={colors.TEXT} fontSize={17}>
         {label}
       </text>
       {/* token stream */}
@@ -279,17 +283,17 @@ function Lane({
               fill={t === SIG ? colors.WARM : colors.MUTED}
               opacity={consumed ? 0.25 : t === SIG ? 0.95 : 0.55}
             />
-            {showGates > 0 && (
-              <rect
-                x={TOK_X0 + t * TOK_DX}
-                y={y - 20}
-                width={TOK_DX - 6}
-                height={6 * gates[t].b + 1}
-                rx={1}
-                fill={colors.POSITIVE}
-                opacity={showGates * 0.9}
-              />
-            )}
+            {/* write gate: a thin bar is a shut door, a tall bar an open one */}
+            <rect
+              x={TOK_X0 + t * TOK_DX}
+              y={y - 20}
+              width={TOK_DX - 6}
+              height={6 * gates[t].b + 1}
+              rx={1}
+              fill={colors.POSITIVE}
+              opacity={t === SIG ? flagOp * 0.9 : showGates * 0.6}
+            />
+            {/* the flagged token's gate opens on its own beat */}
           </g>
         );
       })}
@@ -308,15 +312,15 @@ function Lane({
           />
         );
       })}
-      <text x={STATE_X} y={y - 52} fill={colors.MUTED} fontSize={12}>
+      <text x={STATE_X} y={y - 52} fill={colors.MUTED} fontSize={14}>
         state (8 numbers)
       </text>
-      {/* recall meter */}
-      <text x={STATE_X + D * CELL + 24} y={y - 30} fill={color} fontSize={16} fontFamily="monospace" fontWeight={600}>
+      {/* recall meter (the verdict takes its place at the end) */}
+      <text x={STATE_X + D * CELL + 24} y={y - 30} fill={color} fontSize={16} fontFamily="monospace" fontWeight={600} opacity={meterOp}>
         recall {curRecall.toFixed(2)}
       </text>
       {/* recall curve */}
-      <Axes x={PLOT_X} y={plotY} reveal={1} xTicks={4} yTicks={2} fontSize={10} />
+      <Axes x={PLOT_X} y={plotY} reveal={1} xTicks={4} yTicks={2} fontSize={12} />
       <FunctionPlot
         x={PLOT_X}
         y={plotY}
@@ -338,7 +342,6 @@ function Frame({ s }: { s: SceneState }) {
   const streamU = s.get(scene.streamU);
   const flagU = s.get(scene.flagU);
   const fixedTok = s.get(scene.fixedTok);
-  const fixedPlotU = s.get(scene.fixedPlotU);
   const selU = s.get(scene.selU);
   const selTok = s.get(scene.selTok);
   const gateU = s.get(scene.gateU);
@@ -347,7 +350,9 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Main content fades fully out for the close, so the closing panel stands alone.
+  const mainOp = 1 - dimU;
+  const flagX = TOK_X0 + SIG * TOK_DX + (TOK_DX - 6) / 2;
 
   return (
     <>
@@ -355,35 +360,29 @@ function Frame({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <g opacity={streamU * fixedPlotU > 0 ? streamU : streamU}>
-            <g opacity={streamU}>
-              <Lane
-                y={LANE_FIXED_Y}
-                tok={fixedTok}
-                H={H_FIXED}
-                recall={RECALL_FIXED}
-                plotY={PLOT_Y_FIXED}
-                label="fixed gates — every token treated the same"
-                gates={GATES_FIXED}
-                showGates={0}
-                color={colors.NEGATIVE}
-              />
-            </g>
-            {/* the flag marker */}
-            <g opacity={flagU * streamU}>
-              <text
-                x={TOK_X0 + SIG * TOK_DX + (TOK_DX - 6) / 2}
-                y={LANE_FIXED_Y - 76}
-                textAnchor="middle"
-                fill={colors.WARM}
-                fontSize={13}
-              >
+          <g opacity={streamU}>
+            <Lane
+              y={LANE_FIXED_Y}
+              tok={fixedTok}
+              H={H_FIXED}
+              recall={RECALL_FIXED}
+              plotY={PLOT_Y_FIXED}
+              label="fixed gates — every token treated the same"
+              gates={GATES_FIXED}
+              showGates={0}
+              flagOp={0}
+              meterOp={1 - verdictU}
+              color={colors.NEGATIVE}
+            />
+            {/* the flag marker sits between the lane label and the token row */}
+            <g opacity={flagU}>
+              <text x={flagX} y={LANE_FIXED_Y - 66} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 remember this one
               </text>
               <line
-                x1={TOK_X0 + SIG * TOK_DX + (TOK_DX - 6) / 2}
-                y1={LANE_FIXED_Y - 70}
-                x2={TOK_X0 + SIG * TOK_DX + (TOK_DX - 6) / 2}
+                x1={flagX}
+                y1={LANE_FIXED_Y - 60}
+                x2={flagX}
                 y2={LANE_FIXED_Y - 48}
                 stroke={colors.WARM}
                 strokeWidth={1.5}
@@ -400,24 +399,26 @@ function Frame({ s }: { s: SceneState }) {
               plotY={PLOT_Y_SEL}
               label="selective gates — the input decides"
               gates={GATES_SEL}
-              showGates={gateU}
+              showGates={selU}
+              flagOp={gateU}
+              meterOp={1 - verdictU}
               color={colors.POSITIVE}
             />
           </g>
 
-          {/* verdict */}
+          {/* verdict: replaces each lane's recall meter, one number per lane */}
           {verdictU > 0 && (
             <g opacity={verdictU}>
-              <text x={1005} y={330} fill={colors.NEGATIVE} fontSize={26} fontFamily="monospace" fontWeight={700}>
+              <text x={STATE_X + D * CELL + 24} y={LANE_FIXED_Y - 30} fill={colors.NEGATIVE} fontSize={26} fontFamily="monospace" fontWeight={700}>
                 0.05
               </text>
-              <text x={1005} y={358} fill={colors.MUTED} fontSize={13}>
+              <text x={STATE_X + D * CELL + 24} y={LANE_FIXED_Y - 6} fill={colors.NEGATIVE} fontSize={14}>
                 fixed gates
               </text>
-              <text x={1005} y={420} fill={colors.POSITIVE} fontSize={26} fontFamily="monospace" fontWeight={700}>
+              <text x={STATE_X + D * CELL + 24} y={LANE_SEL_Y - 30} fill={colors.POSITIVE} fontSize={26} fontFamily="monospace" fontWeight={700}>
                 1.00
               </text>
-              <text x={1005} y={448} fill={colors.MUTED} fontSize={13}>
+              <text x={STATE_X + D * CELL + 24} y={LANE_SEL_Y - 6} fill={colors.POSITIVE} fontSize={14}>
                 selective gates
               </text>
             </g>
@@ -426,6 +427,8 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={titleU * mainOp}>
+        {/* solid header so lanes that pan under the title stay readable */}
+        <rect x={24} y={14} width={300} height={66} rx={10} fill={colors.BG} />
         <text x={40} y={44} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           Selectivity
         </text>
@@ -444,16 +447,38 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={240} y={230} width={800} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
+          <rect x={190} y={190} width={900} height={250} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={240} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={600}>
             Compression you can steer.
           </text>
-          <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={276} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             Fixed gates blend the flag into noise — recall 0.05.
           </text>
-          <text x={640} y={360} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={300} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             Input-controlled gates keep it perfectly — recall 1.00.
           </text>
+          {/* the final 8-number state of each lane: noise versus the flagged value */}
+          {[
+            { label: 'fixed', H: H_FIXED[T - 1], y: 344, color: colors.NEGATIVE },
+            { label: 'selective', H: H_SEL[T - 1], y: 380, color: colors.POSITIVE },
+          ].map((row) => (
+            <g key={row.label}>
+              <text x={520} y={row.y + 16} textAnchor="end" fill={row.color} fontSize={14}>
+                {row.label}
+              </text>
+              {row.H.map((v, i) => (
+                <rect
+                  key={i}
+                  x={552 + i * CELL}
+                  y={row.y}
+                  width={CELL - 3}
+                  height={CELL - 3}
+                  rx={3}
+                  fill={colors.heat(clamp01(0.5 + v * 0.7))}
+                />
+              ))}
+            </g>
+          ))}
         </g>
       )}
     </>

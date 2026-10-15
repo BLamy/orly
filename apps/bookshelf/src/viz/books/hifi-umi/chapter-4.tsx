@@ -69,7 +69,7 @@ export function buildScene() {
   tl.hold(44.0, 0.6);
 
   tl.caption({ at: 44.6, dur: 6.0, text: 'Separately, four thousand hours of U M I pre-training reduce mean action error on ten unseen tasks by forty-one percent.' });
-  tl.tween(figureU, 0.12, { at: 45.1, dur: 0.8, ease: ease.move });
+  tl.tween(figureU, 0, { at: 45.1, dur: 0.8, ease: ease.move });
   tl.tween(curveU, 1, { at: 45.4, dur: 2.0, ease: ease.draw });
   tl.tween(cam, { x: 435, y: 390, k: 1.16 }, { at: 45.7, dur: 1.3, ease: ease.move });
   tl.hold(50.6, 0.6);
@@ -92,12 +92,12 @@ const scene = buildScene();
 
 function Balance({ u, anchorU }: { u: number; anchorU: number }) {
   return (
-    <g opacity={u} transform="translate(150 125)">
+    <g opacity={u} transform="translate(150 200)">
       <line x1={0} y1={80} x2={330} y2={80 + (anchorU - 0.5) * 20} stroke={colors.TEXT} strokeWidth={5} strokeLinecap="round" />
       <line x1={165} y1={80} x2={165} y2={190} stroke={colors.MUTED} strokeWidth={5} />
       <path d="M110 205 L220 205 L165 155 Z" fill={colors.PANEL} stroke={colors.MUTED} />
       <circle cx={45} cy={62} r={31} fill={colors.ACCENT} opacity={0.75} />
-      <text x={45} y={67} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={800}>UMI</text>
+      <text x={45} y={68} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={800}>UMI</text>
       <g opacity={anchorU} transform={`translate(285 ${92 + (1 - anchorU) * 85})`}>
         <path d="M0 -32 C28 -32 28 8 0 8 C-28 8 -28 -32 0 -32 Z M0 8 L0 42" fill="none" stroke={colors.NEGATIVE} strokeWidth={12} strokeLinecap="round" />
         <text y={67} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>teleop anchor</text>
@@ -111,7 +111,8 @@ export function Render({ s }: { s: SceneState }) {
   const transferU = s.get(scene.transferU);
   const curveU = s.get(scene.curveU);
   const limitsU = s.get(scene.limitsU);
-  const mainOpacity = 1 - 0.92 * s.get(scene.dimU);
+  // The closing card takes the stage: the earlier content fades out fully behind it.
+  const mainOpacity = (1 - 0.92 * s.get(scene.dimU)) * (1 - s.get(scene.endU));
   // Bars give way to the curve panel once the next claim starts.
   const barsFade = clamp01(barsU) * (1 - clamp01(curveU * 4));
   // The curve and transfer panels give way to the "does not establish" card.
@@ -123,7 +124,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={750}>Remove the robot anchor</text>
-        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>within-backbone comparisons · UMI-only task post-training · real-robot deployment</text>
+        <text x={640} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>within-backbone comparisons · UMI-only task post-training · real-robot deployment</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -135,11 +136,11 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={label} transform={`translate(0 ${i * 54})`}>
                   <rect width={310} height={38} rx={19} fill={colors.PANEL} stroke={colors.POSITIVE} />
                   <circle cx={20} cy={19} r={7} fill={colors.POSITIVE} />
-                  <text x={40} y={24} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label} · held fixed</text>
+                  <text x={40} y={24} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label} · held fixed</text>
                 </g>
               ))}
               <path d="M340 12 L500 12 L500 230 L340 230" fill="none" stroke={colors.ACCENT} strokeWidth={3} />
-              <text x={420} y={258} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>only data source changes</text>
+              <text x={420} y={258} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>only data source changes</text>
             </g>
           )}
 
@@ -147,40 +148,42 @@ export function Render({ s }: { s: SceneState }) {
             <g transform="translate(120 130)" opacity={barsFade}>
               <g transform="translate(0 -8)">
                 <rect width={14} height={14} rx={3} fill={colors.ACCENT} opacity={0.78} />
-                <text x={22} y={12} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>UMI post-training</text>
-                <rect x={170} width={14} height={14} rx={3} fill={colors.NEGATIVE} opacity={0.62} />
-                <text x={192} y={12} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>teleop post-training</text>
-                <text x={360} y={12} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>gap = UMI − teleop</text>
+                <text x={22} y={12} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>UMI post-training</text>
+                <rect x={200} width={14} height={14} rx={3} fill={colors.NEGATIVE} opacity={0.62} />
+                <text x={222} y={12} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>teleop post-training</text>
+                <text x={430} y={12} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>gap = UMI − teleop</text>
+                <g opacity={s.get(scene.parityU)}>
+                  <rect x={640} y={-8} width={170} height={34} rx={17} fill={colors.PANEL} stroke={colors.POSITIVE} />
+                  <text x={725} y={14} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>approximate parity</text>
+                </g>
               </g>
-              <line x1={0} y1={380} x2={720} y2={380} stroke={colors.GRID} />
+              <line x1={0} y1={380} x2={900} y2={380} stroke={colors.GRID} />
               {RESULTS.map((r, i) => {
                 const u = clamp01(barsU - i);
-                const x = i * 235 + 55;
+                const x = i * 300 + 70;
                 const hUmi = r.umi * 3.6 * u;
                 const hTele = r.tele * 3.6 * u;
                 const gap = Number(r.diff.replace('−', '-'));
                 return (
                   <g key={r.name} opacity={u}>
-                    <rect x={x} y={380 - hUmi} width={58} height={hUmi} rx={7} fill={colors.ACCENT} opacity={0.78} />
-                    <rect x={x + 68} y={380 - hTele} width={58} height={hTele} rx={7} fill={colors.NEGATIVE} opacity={0.62} />
-                    <text x={x + 29} y={370 - hUmi} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>{r.umi}%</text>
-                    <text x={x + 97} y={370 - hTele} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>{r.tele}%</text>
-                    <text x={x + 63} y={405} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{r.name}</text>
-                    <text x={x + 63} y={430} textAnchor="middle" fill={gap > 0 ? colors.POSITIVE : colors.WARM} fontSize={15} fontWeight={800}>{`UMI ${r.diff} pts`}</text>
+                    <rect x={x} y={380 - hUmi} width={80} height={hUmi} rx={7} fill={colors.ACCENT} opacity={0.78} />
+                    <rect x={x + 92} y={380 - hTele} width={80} height={hTele} rx={7} fill={colors.NEGATIVE} opacity={0.62} />
+                    <text x={x + 40} y={370 - hUmi} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>{r.umi}%</text>
+                    <text x={x + 132} y={370 - hTele} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>{r.tele}%</text>
+                    <text x={x + 86} y={405} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{r.name}</text>
+                    <text x={x + 86} y={430} textAnchor="middle" fill={gap > 0 ? colors.POSITIVE : colors.WARM} fontSize={16} fontWeight={800}>{`UMI ${r.diff} pts`}</text>
                   </g>
                 );
               })}
-              <rect x={535} y={-8} width={170} height={34} rx={17} fill={colors.PANEL} stroke={colors.POSITIVE} opacity={s.get(scene.parityU)} />
-              <text x={620} y={14} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={s.get(scene.parityU)}>approximate parity</text>
             </g>
           )}
 
           <Figure
             src="/generated/hifi-umi/figures/fig-15.png"
-            x={890}
+            x={1040}
             y={135}
-            w={280}
-            h={230}
+            w={220}
+            h={180}
             reveal={s.get(scene.figureU)}
             opacity={s.get(scene.figureU)}
             caption="Paper Fig. 9 · VLA results"
@@ -205,41 +208,42 @@ export function Render({ s }: { s: SceneState }) {
                 <g opacity={transferU} transform="translate(790 400)">
                   <rect width={360} height={136} rx={19} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
                   <text x={34} y={44} fill={colors.WARM} fontSize={25} fontWeight={850}>+18.1 pts</text>
-                  <text x={34} y={62} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>aggregate real-robot success</text>
+                  <text x={34} y={62} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>aggregate real-robot success</text>
                   <rect x={34} y={76} width={100} height={18} rx={9} fill={colors.MUTED} opacity={0.42} />
-                  <text x={144} y={90} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>baseline init</text>
+                  <text x={144} y={90} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>baseline init</text>
                   <rect x={34} y={102} width={100 + 100 * transferU} height={18} rx={9} fill={colors.WARM} opacity={0.82} />
-                  <text x={144 + 100 * transferU} y={116} fill={colors.WARM} fontSize={12} fontFamily={MONO}>UMI init</text>
+                  <text x={144 + 100 * transferU} y={116} fill={colors.WARM} fontSize={14} fontFamily={MONO}>UMI init</text>
                 </g>
               )}
             </g>
           )}
 
-          {s.get(scene.limitsU) > 0 && (
-            <g opacity={s.get(scene.limitsU)} transform="translate(250 180)">
-              <rect width={780} height={310} rx={22} fill={colors.BG} stroke={colors.WARM} strokeWidth={2} />
-              <text x={390} y={48} textAnchor="middle" fill={colors.WARM} fontSize={19} fontWeight={750}>What the paper does not establish</text>
-              {[
-                '4 tabletop bimanual tasks · 3 backbones',
-                '40 rollouts per task-policy pair · 2.5 points per success',
-                '3,200 UMI trajectories vs 300 teleoperation trajectories per VLA task',
-                'fidelity validated jointly · no component-by-component ablation',
-              ].map((label, i) => (
-                <g key={label} transform={`translate(70 ${88 + i * 52})`}>
-                  <circle cx={8} cy={-4} r={5} fill={colors.WARM} />
-                  <text x={28} y={0} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{label}</text>
-                </g>
-              ))}
-            </g>
-          )}
         </g>
+        {s.get(scene.limitsU) > 0 && (
+          <g opacity={s.get(scene.limitsU) * (1 - s.get(scene.endU))} transform="translate(250 180)">
+            <rect width={780} height={310} rx={22} fill={colors.BG} stroke={colors.WARM} strokeWidth={2} />
+            <text x={390} y={48} textAnchor="middle" fill={colors.WARM} fontSize={19} fontWeight={750}>What the paper does not establish</text>
+            {[
+              '4 tabletop bimanual tasks · 3 backbones',
+              '40 rollouts per task-policy pair · 2.5 points per success',
+              '3,200 UMI trajectories vs 300 teleoperation trajectories per VLA task',
+              'fidelity validated jointly · no component-by-component ablation',
+            ].map((label, i) => (
+              <g key={label} transform={`translate(70 ${88 + i * 52})`}>
+                <circle cx={8} cy={-4} r={5} fill={colors.WARM} />
+                <text x={28} y={0} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{label}</text>
+              </g>
+            ))}
+          </g>
+        )}
       </Camera>
       {s.get(scene.endU) > 0 && (
         <g opacity={s.get(scene.endU)}>
           <rect x={225} y={234} width={830} height={196} rx={22} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={760}>Fidelity can carry post-training to deployment</text>
-          <text x={640} y={339} textAnchor="middle" fill={colors.MUTED} fontSize={16}>six aligned views · shared-frame motion · simulated replay</text>
-          <text x={640} y={376} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>evidence within this benchmark · not a universal guarantee</text>
+          <text x={640} y={274} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>4 tabletop tasks · 40 rollouts per task-policy pair · no per-component ablation</text>
+          <text x={640} y={300} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>evidence within this benchmark · not a universal guarantee</text>
+          <text x={640} y={346} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={760}>Robot-free data can replace the teleop anchor</text>
+          <text x={640} y={388} textAnchor="middle" fill={colors.MUTED} fontSize={16}>the chapter 1 promise holds: no target robot or teleop rig is required</text>
         </g>
       )}
     </>

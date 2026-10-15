@@ -179,6 +179,13 @@ function Frame({ s }: { s: SceneState }) {
 
   const mainOp = 1 - 0.85 * dimU;
   const orbFade = 1 - 0.6 * clamp01(repostU * 2); // reactions recede for the repost story
+  // the three small signs the beat-1 caption names; they give way to the orbiting ring
+  const chipOp = noteU * (1 - clamp01(orbU * 4));
+  const CHIPS = [
+    { label: '+ like', color: colors.POSITIVE },
+    { label: '🔥 emoji', color: colors.WARM },
+    { label: '↻ boost', color: colors.ACCENT },
+  ];
 
   return (
     <>
@@ -192,7 +199,19 @@ function Frame({ s }: { s: SceneState }) {
               <rect x={NOTE.x - 110} y={NOTE.y - 44} width={220} height={88} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
               <text x={NOTE.x - 94} y={NOTE.y - 18} fill={colors.ACCENT} fontSize={13} fontWeight={600}>alice · kind 1</text>
               <text x={NOTE.x - 94} y={NOTE.y + 4} fill={colors.TEXT} fontSize={13}>just set up my nostr</text>
-              <text x={NOTE.x - 94} y={NOTE.y + 27} fill={colors.MUTED} fontSize={12} fontFamily="monospace">id {shortHex(NOTE_ID, 8, 4)}</text>
+              <text x={NOTE.x - 94} y={NOTE.y + 27} fill={colors.MUTED} fontSize={13} fontFamily="monospace">id {shortHex(NOTE_ID, 8, 4)}</text>
+            </g>
+          )}
+
+          {/* beat-1 chips under the note */}
+          {chipOp > 0 && (
+            <g opacity={chipOp}>
+              {CHIPS.map((c, i) => (
+                <g key={c.label}>
+                  <rect x={247 + i * 106} y={NOTE.y + 66} width={96} height={28} rx={14} fill={colors.PANEL} stroke={c.color} strokeWidth={1.4} />
+                  <text x={295 + i * 106} y={NOTE.y + 85} textAnchor="middle" fill={c.color} fontSize={13}>{c.label}</text>
+                </g>
+              ))}
             </g>
           )}
 
@@ -206,7 +225,7 @@ function Frame({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={Math.min(1, u * 1.5)}>
                   <circle cx={p.x} cy={p.y} r={14} fill={colors.PANEL} stroke={c} strokeWidth={1.6} />
-                  <text x={p.x} y={p.y + 5} textAnchor="middle" fill={c} fontSize={12}>{r.glyph}</text>
+                  <text x={p.x} y={p.y + 5} textAnchor="middle" fill={c} fontSize={14}>{r.glyph}</text>
                 </g>
               );
             })}
@@ -222,12 +241,12 @@ function Frame({ s }: { s: SceneState }) {
                 ).map(([t, v], i) => (
                   <g key={t}>
                     <rect x={92} y={128 + i * 36} width={150} height={28} rx={6} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                    <text x={104} y={146 + i * 36} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
+                    <text x={104} y={146 + i * 36} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                       {t} {v}
                     </text>
                   </g>
                 ))}
-                <text x={92} y={116} fill={colors.MUTED} fontSize={12} fontFamily="monospace">inside one kind-7 event</text>
+                <text x={92} y={116} fill={colors.MUTED} fontSize={13} fontFamily="monospace">inside one kind-7 event</text>
               </g>
             )}
             {/* tallies */}
@@ -244,7 +263,7 @@ function Frame({ s }: { s: SceneState }) {
                     </g>
                   );
                 })}
-                <text x={92} y={398} fill={colors.MUTED} fontSize={12} fontFamily="monospace">tallied by YOUR client</text>
+                <text x={92} y={398} fill={colors.MUTED} fontSize={13} fontFamily="monospace">tallied by YOUR client</text>
               </g>
             )}
           </g>
@@ -253,7 +272,7 @@ function Frame({ s }: { s: SceneState }) {
           {repostU > 0 && (
             <g opacity={clamp01(repostU * 2)}>
               <line x1={LANE_X - 130} y1={110} x2={LANE_X - 130} y2={560} stroke={colors.GRID} strokeWidth={1} opacity={0.7} />
-              <text x={LANE_X} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={LANE_X} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 bob’s followers see
               </text>
             </g>
@@ -267,9 +286,9 @@ function Frame({ s }: { s: SceneState }) {
                 <rect x={-118} y={-64} width={236} height={128} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
                 <text x={-100} y={-40} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>bob · kind 6 repost</text>
                 <rect x={-100} y={-28} width={200} height={60} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1} opacity={0.9} />
-                <text x={-88} y={-7} fill={colors.MUTED} fontSize={12} fontFamily="monospace">content = the whole note,</text>
-                <text x={-88} y={10} fill={colors.MUTED} fontSize={12} fontFamily="monospace">stringified</text>
-                <text x={-100} y={52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                <text x={-88} y={-7} fill={colors.MUTED} fontSize={13} fontFamily="monospace">content = the whole note,</text>
+                <text x={-88} y={10} fill={colors.MUTED} fontSize={13} fontFamily="monospace">stringified</text>
+                <text x={-100} y={52} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                   e {shortHex(NOTE_ID, 6, 2)} wss://relay…
                 </text>
               </g>
@@ -279,7 +298,7 @@ function Frame({ s }: { s: SceneState }) {
             <g opacity={kindsU}>
               <rect x={LANE_X - 110} y={340} width={220} height={48} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={LANE_X} y={360} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">kind 16 — anything else</text>
-              <text x={LANE_X} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">k "30023"</text>
+              <text x={LANE_X} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">k "30023"</text>
             </g>
           )}
 
@@ -290,9 +309,9 @@ function Frame({ s }: { s: SceneState }) {
               <text x={556} y={464} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>carol · kind 1 quote</text>
               <text x={556} y={486} fill={colors.TEXT} fontSize={13}>this is why onboarding matters →</text>
               <rect x={556} y={496} width={190} height={34} rx={6} fill={colors.BG} stroke={colors.ACCENT} opacity={0.9} />
-              <text x={566} y={518} fill={colors.MUTED} fontSize={12} fontFamily="monospace">alice’s note, embedded</text>
+              <text x={566} y={518} fill={colors.MUTED} fontSize={13} fontFamily="monospace">alice’s note, embedded</text>
               <rect x={756} y={496} width={110} height={34} rx={6} fill={colors.BG} stroke={colors.SECONDARY} />
-              <text x={764} y={518} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">q {shortHex(NOTE_ID, 4, 2)}</text>
+              <text x={764} y={518} fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">q {shortHex(NOTE_ID, 4, 2)}</text>
             </g>
           )}
           {gateU > 0 && (
@@ -313,7 +332,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A vocabulary, not a platform
           </text>

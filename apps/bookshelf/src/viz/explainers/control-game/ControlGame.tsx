@@ -144,36 +144,50 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
+  // the old beats fade away under the closing panel (fully gone by the last frame)
   const mainOp = 1 - 0.85 * dimU;
-  const playersFade = 1 - 0.7 * clamp01(metricsU * 2);
+  const fade = mainOp * (1 - closeU);
+  // the players clear the plane when the metrics arrive, so no shape sits on an axis
+  const playersFade = 1 - clamp01(metricsU * 2);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={fade}>
         <Camera {...cam}>
-          {/* the three players */}
-          {playersU > 0 &&
-            PLAYERS.map((p, i) => {
-              const u = clamp01(playersU * PLAYERS.length - i);
-              if (u <= 0) return null;
-              const defect = p.key === 'U' && threatU > 0;
-              return (
-                <g key={p.key} opacity={u * playersFade}>
-                  <circle cx={p.x} cy={330} r={58} fill={colors.PANEL} opacity={0.95} stroke={defect ? colors.NEGATIVE : p.color} strokeWidth={defect ? 2.5 + threatU : 2} />
-                  <text x={p.x} y={342} textAnchor="middle" fill={p.color} fontSize={30} fontWeight={700}>
-                    {p.key}
-                  </text>
-                  <text x={p.x} y={416} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
-                    {p.name}
-                  </text>
-                  <text x={p.x} y={438} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-                    {p.sub}
-                  </text>
-                </g>
-              );
-            })}
+          {/* the three players: faint outlines while the premise is spoken, then filled in */}
+          {PLAYERS.map((p, i) => {
+            const u = clamp01(playersU * PLAYERS.length - i);
+            const ghost = u > 0 ? 0 : 0.5 * titleU * playersFade;
+            const defect = p.key === 'U' && threatU > 0;
+            return (
+              <g key={p.key}>
+                {ghost > 0.01 && (
+                  <g opacity={ghost}>
+                    <circle cx={p.x} cy={330} r={58} fill="none" stroke={p.color} strokeWidth={2} />
+                    <text x={p.x} y={342} textAnchor="middle" fill={p.color} fontSize={30} fontWeight={700}>
+                      {p.key}
+                    </text>
+                  </g>
+                )}
+                {u > 0 && (
+                  <g opacity={u * playersFade}>
+                    <circle cx={p.x} cy={330} r={58} fill={colors.PANEL} opacity={0.95} stroke={defect ? colors.NEGATIVE : p.color} strokeWidth={defect ? 2.5 + threatU : 2} />
+                    <text x={p.x} y={342} textAnchor="middle" fill={p.color} fontSize={30} fontWeight={700}>
+                      {p.key}
+                    </text>
+                    <text x={p.x} y={416} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+                      {p.name}
+                    </text>
+                    <text x={p.x} y={440} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                      {p.sub}
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
 
           {/* the work stream through U */}
           {workU > 0 && playersFade > 0.1 &&
@@ -185,7 +199,7 @@ function Frame({ s }: { s: SceneState }) {
               return <rect key={i} x={x} y={250} width={12} height={12} rx={2} fill={bad ? colors.NEGATIVE : colors.ACCENT} opacity={0.8 * playersFade} />;
             })}
           {workU > 0.1 && (
-            <text x={120} y={238} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace" opacity={clamp01(workU * 2) * playersFade}>
+            <text x={120} y={238} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={clamp01(workU * 2) * playersFade}>
               tasks →
             </text>
           )}
@@ -197,7 +211,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={174} y={498} fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
                 U may DEFECT on a task of its choosing
               </text>
-              <text x={174} y={519} fill={colors.MUTED} fontSize={11.5}>
+              <text x={174} y={519} fill={colors.MUTED} fontSize={12}>
                 subtly-wrong code that passes your tests · one accepted = a loss
               </text>
             </g>
@@ -207,19 +221,19 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* the two metrics — screen space */}
       {metricsU > 0 && (
-        <g opacity={metricsU * mainOp}>
+        <g opacity={metricsU * fade}>
           <line x1={300} y1={520} x2={300} y2={200} stroke={colors.GRID} strokeWidth={1.5} />
           <line x1={300} y1={520} x2={900} y2={520} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={280} y={200} textAnchor="end" fill={colors.POSITIVE} fontSize={13.5} fontWeight={600}>
+          <text x={280} y={200} textAnchor="end" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
             safety ↑
           </text>
-          <text x={900} y={548} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontWeight={600}>
+          <text x={900} y={548} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={600}>
             usefulness →
           </text>
           <circle cx={320} cy={220} r={7} fill={colors.POSITIVE} />
-          <text x={334} y={224} fill={colors.MUTED} fontSize={12}>don’t use U — safe, useless</text>
+          <text x={334} y={225} fill={colors.TEXT} fontSize={13}>don’t use U — safe, useless</text>
           <circle cx={880} cy={500} r={7} fill={colors.NEGATIVE} />
-          <text x={866} y={504} textAnchor="end" fill={colors.MUTED} fontSize={12}>trust U blindly — useful, unsafe</text>
+          <text x={866} y={505} textAnchor="end" fill={colors.TEXT} fontSize={13}>trust U blindly — useful, unsafe</text>
           <text x={600} y={360} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
             every protocol is a point on this plane
           </text>
@@ -228,15 +242,15 @@ function Frame({ s }: { s: SceneState }) {
 
       {/* game badge */}
       {gameU > 0 && (
-        <g opacity={gameU * mainOp}>
+        <g opacity={gameU * fade}>
           <rect x={880} y={110} width={360} height={100} rx={12} fill={colors.PANEL} opacity={0.96} stroke={colors.WARM} />
           <text x={904} y={140} fill={colors.WARM} fontSize={14} fontWeight={700}>
             evaluated as a game
           </text>
-          <text x={904} y={168} fill={colors.MUTED} fontSize={12}>
+          <text x={904} y={168} fill={colors.MUTED} fontSize={13}>
             red team attacks its hardest
           </text>
-          <text x={904} y={190} fill={colors.MUTED} fontSize={12}>
+          <text x={904} y={190} fill={colors.MUTED} fontSize={13}>
             safety = vs the BEST attack found
           </text>
         </g>
@@ -251,7 +265,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* close */}
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={210} width={880} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={272} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Useful work from a model you never trust.
           </text>

@@ -13,7 +13,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   Player,
   STAGE_H,
   STAGE_W,
@@ -59,8 +58,9 @@ const logFlops = (logI: number): number => Math.log10(roofline(10 ** logI));
 const PLOT_X = scaleLinear().domain([LOG_I_MIN, LOG_I_MAX]).range([200, 780]);
 const PLOT_Y = scaleLinear().domain([11.5, 15.3]).range([560, 170]);
 
-const CAM_ROOF: CameraState = { x: 500, y: 360, k: 1.15 };
-const CAM_CAP: CameraState = { x: 880, y: 330, k: 1.2 };
+// Both framings keep the plot's axes and the right-hand panels on the 1280×720 stage.
+const CAM_ROOF: CameraState = { x: 670, y: 375, k: 1.2 };
+const CAM_CAP: CameraState = { x: 720, y: 390, k: 1.15 };
 
 interface Scene {
   tl: Timeline;
@@ -173,7 +173,8 @@ function Frame({ s }: { s: SceneState }) {
   const capU = s.get(scene.capU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * closeU;
+  // the closing panel is drawn over a fully faded picture, so nothing shows through it
+  const mainOp = 1 - closeU;
 
   // the decode point slides up the wall as batch grows 1 -> ridge batch
   const batch = 1 + (BATCH_AT_RIDGE - 1) * batchU;
@@ -198,7 +199,7 @@ function Frame({ s }: { s: SceneState }) {
                 yTicks={3}
                 xLabel="operations per byte (log)"
                 yLabel="attained speed (log)"
-                fontSize={11}
+                fontSize={13}
               />
               <FunctionPlot x={PLOT_X} y={PLOT_Y} f={logFlops} domain={[LOG_I_MIN, LOG_I_MAX]} samples={200} reveal={roofU} color={colors.SECONDARY} width={3} />
               {ridgeU > 0 && (
@@ -211,8 +212,14 @@ function Frame({ s }: { s: SceneState }) {
                     stroke={colors.MUTED}
                     strokeDasharray="5 4"
                   />
-                  <text x={PLOT_X(Math.log10(RIDGE)) + 8} y={PLOT_Y(12.1)} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={PLOT_X(Math.log10(RIDGE)) + 8} y={PLOT_Y(12.1)} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                     ridge ≈ {Math.round(RIDGE)} FLOP/B
+                  </text>
+                  <text x={PLOT_X(1) - 92} y={PLOT_Y(13.9)} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+                    memory-bound
+                  </text>
+                  <text x={PLOT_X(2.3)} y={PLOT_Y(Math.log10(PEAK_FLOPS)) - 14} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
+                    compute-bound
                   </text>
                 </g>
               )}
@@ -220,7 +227,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g opacity={pointU}>
                   <circle cx={px} cy={py} r={8} fill={colors.WARM} />
                   <circle cx={px} cy={py} r={14} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={0.5} />
-                  <text x={px + 18} y={py - 10} fill={colors.WARM} fontSize={13} fontFamily="monospace">
+                  <text x={px + 16} y={py + 26} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                     decode · batch {Math.round(batch)}
                   </text>
                 </g>
@@ -241,10 +248,10 @@ function Frame({ s }: { s: SceneState }) {
               <text x={866} y={274} fill={colors.WARM} fontSize={14} fontFamily="monospace">
                 compute used: {UTIL_PCT}%
               </text>
-              <text x={866} y={304} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={866} y={304} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 3.35 TB/s ÷ 37 GB per token
               </text>
-              <text x={866} y={330} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              <text x={866} y={330} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 ridge needs batch ≈ {BATCH_AT_RIDGE}
               </text>
             </g>
@@ -257,11 +264,11 @@ function Frame({ s }: { s: SceneState }) {
                 the capacity gap
               </text>
               <rect x={840} y={414} width={340 * capU} height={22} rx={5} fill={colors.NEGATIVE} opacity={0.75} />
-              <text x={846} y={430} fill={colors.BG} fontSize={12} fontFamily="monospace" fontWeight={700}>
+              <text x={846} y={430} fill={colors.BG} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 weights: {TOTAL_GB} GB
               </text>
               <rect x={840} y={444} width={340 * (HBM_GB / TOTAL_GB)} height={22} rx={5} fill={colors.ACCENT} opacity={0.9} />
-              <text x={890} y={460} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+              <text x={890} y={460} fill={colors.ACCENT} fontSize={14} fontFamily="monospace">
                 one card: {HBM_GB} GB
               </text>
               <text x={840} y={496} fill={colors.WARM} fontSize={14} fontFamily="monospace">
@@ -281,18 +288,13 @@ function Frame({ s }: { s: SceneState }) {
           arXiv:2607.13068 · roofline, computed
         </text>
       </g>
-      <MathLabel
-        tex="\mathrm{tokens/s} \le \frac{\mathrm{bandwidth}}{\mathrm{active\ bytes}}"
-        x={1020}
-        y={92}
-        fontSize={20}
-        color={colors.WARM}
-        opacity={statU * mainOp}
-      />
+      <text x={1240} y={98} textAnchor="end" fill={colors.WARM} fontSize={20} fontFamily="monospace" opacity={statU * mainOp}>
+        tokens/s ≤ bandwidth ÷ active bytes
+      </text>
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={210} y={230} width={860} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={600}>
             Decoding buys compute and uses memory.
           </text>

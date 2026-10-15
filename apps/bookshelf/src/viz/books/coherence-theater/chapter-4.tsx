@@ -16,7 +16,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -53,13 +52,13 @@ function markerAt(p: number): { x: number; y: number; crossed: boolean; returnin
   return { x, y: crossed ? MAINTENANCE(x) : CORRECTION(x), crossed, returning: true };
 }
 
-// Section 9's five mechanisms, in the paper's order. Short forms so each fits its column.
+// Section 9's five mechanisms, in the paper's order. Each label is two short lines so it fits its column at 14px.
 const MECHANISMS = [
-  'incentives diverge',
-  'coordination fails',
-  'recoded as dysfunction',
-  'baselines distorted',
-  'oversight inherits',
+  ['incentives', 'diverge'],
+  ['coordination', 'fails'],
+  ['recoded as', 'dysfunction'],
+  ['baselines', 'distorted'],
+  ['oversight', 'inherits'],
 ] as const;
 
 // The frame holds the plot and the debt stock together (panel spans x 120–1160).
@@ -224,7 +223,7 @@ export function Render({ s }: { s: SceneState }) {
       </text>
       <Camera {...s.get(scene.cam)}>
         <g opacity={dim}>
-          <rect x={120} y={96} width={1040} height={488} rx={26} fill={colors.PANEL} stroke={colors.GRID} />
+          <rect x={120} y={96} width={1040} height={496} rx={26} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={158} y={134} fill={colors.TEXT} fontSize={16} fontWeight={700}>
             the correction economy
           </text>
@@ -235,27 +234,27 @@ export function Render({ s }: { s: SceneState }) {
           <FunctionPlot x={X} y={Y} f={CORRECTION} reveal={plotU} color={colors.POSITIVE} width={3.5} />
           <FunctionPlot x={X} y={Y} f={MAINTENANCE} reveal={plotU} color={colors.NEGATIVE} width={3.5} />
           {/* labels sit where their line has room: correction above a falling line, maintenance below a rising one */}
-          <text x={X(0.31)} y={Y(CORRECTION(0.31)) - 14} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+          <text x={X(0.31)} y={Y(CORRECTION(0.31)) - 14} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
             correction return
           </text>
-          <text x={X(0.04)} y={Y(MAINTENANCE(0.04)) + 24} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+          <text x={X(0.04)} y={Y(MAINTENANCE(0.04)) + 24} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             maintenance return
           </text>
 
           {/* the two thresholds */}
           <line x1={X(T_UP)} y1={Y(0)} x2={X(T_UP)} y2={Y(0.98)} stroke={colors.WARM} strokeWidth={2} strokeDasharray="8 8" opacity={thresholdU} />
-          <text x={X(T_UP) + 10} y={Y(0.94)} fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={thresholdU}>
+          <text x={X(T_UP) + 10} y={Y(0.94)} fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={thresholdU}>
             crossing (in)
           </text>
           <line x1={X(T_DOWN)} y1={Y(0)} x2={X(T_DOWN)} y2={Y(0.98)} stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="4 8" opacity={loopU} />
-          <text x={X(T_DOWN) + 10} y={Y(0.94)} fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={loopU}>
+          <text x={X(T_DOWN) + 10} y={Y(0.94)} fill={colors.ACCENT} fontSize={14} fontFamily={MONO} opacity={loopU}>
             crossing (out)
           </text>
 
           {/* the enclosed loop = epistemic debt */}
           <path d={loopRegion()} fill={colors.NEGATIVE} opacity={0.16 * clamp01(debtU * 1.4)} stroke={colors.NEGATIVE} strokeWidth={1} strokeOpacity={0.35 * debtU} />
           {debtU > 0.25 && (
-            <text x={X((T_DOWN + T_UP) / 2)} y={Y((CORRECTION(0.4) + MAINTENANCE(0.4)) / 2)} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} fontWeight={700} opacity={clamp01(debtU * 1.6 - 0.4)}>
+            <text x={X((T_DOWN + T_UP) / 2)} y={Y((CORRECTION(0.4) + MAINTENANCE(0.4)) / 2)} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700} opacity={clamp01(debtU * 1.6 - 0.4)}>
               epistemic debt
             </text>
           )}
@@ -269,11 +268,11 @@ export function Render({ s }: { s: SceneState }) {
           {(() => {
             // the marker's label sits on a panel-coloured backing so the crossing lines don't run through it
             const label = m.returning ? (m.crossed ? 'pressure falling — still theater' : 'correction pays again') : m.crossed ? 'theater' : 'recoverable';
-            const w = label.length * 7.4 + 14;
+            const w = label.length * 8.6 + 16;
             return (
               <g>
-                <rect x={X(m.x) - w / 2} y={Y(m.y) - 34} width={w} height={20} rx={6} fill={colors.PANEL} opacity={0.9} />
-                <text x={X(m.x)} y={Y(m.y) - 19} textAnchor="middle" fill={markerColor} fontSize={12} fontFamily={MONO}>
+                <rect x={X(m.x) - w / 2} y={Y(m.y) - 37} width={w} height={23} rx={6} fill={colors.PANEL} />
+                <text x={X(m.x)} y={Y(m.y) - 20} textAnchor="middle" fill={markerColor} fontSize={14} fontFamily={MONO}>
                   {label}
                 </text>
               </g>
@@ -281,15 +280,15 @@ export function Render({ s }: { s: SceneState }) {
           })()}
 
           {/* the debt stock */}
-          <g opacity={clamp01(Math.max(debtU, progressU - 0.45) * 2)}>
+          <g opacity={clamp01(Math.max(debtU, (progressU - 0.6) * 2.5))}>
             <rect x={930} y={136} width={220} height={384} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={1040} y={166} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
               the debt stock
             </text>
-            <rect x={980} y={180} width={120} height={280} rx={10} fill="#101827" stroke={colors.GRID} />
-            <rect x={980} y={180 + 280 * (1 - debtAmount)} width={120} height={280 * debtAmount} rx={10} fill={colors.NEGATIVE} opacity={0.55} />
+            <rect x={960} y={180} width={160} height={280} rx={10} fill="#101827" stroke={colors.GRID} />
+            <rect x={960} y={180 + 280 * (1 - debtAmount)} width={160} height={280 * debtAmount} rx={10} fill={colors.NEGATIVE} opacity={0.55} />
             {['post hoc stories', 'settled claims', 'contradictions'].map((label, i) => (
-              <text key={label} x={1040} y={440 - i * 32} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={clamp01(debtAmount * 3 - i * 0.8)}>
+              <text key={label} x={1040} y={440 - i * 32} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO} opacity={clamp01(debtAmount * 3 - i * 0.8)}>
                 {label}
               </text>
             ))}
@@ -301,24 +300,34 @@ export function Render({ s }: { s: SceneState }) {
           {/* Section 9's five mechanisms: one column each, under the plot */}
           {mechU > 0 && (
             <g opacity={clamp01(mechU * 1.4)}>
-              <text x={190} y={540} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+              <text x={190} y={522} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 why recognition alone does not restore it:
               </text>
-              {MECHANISMS.map((label, i) => (
-                <g key={label} opacity={clamp01(mechU * 6 - i)}>
-                  <circle cx={200 + i * 190} cy={570} r={6} fill={colors.NEGATIVE} />
-                  <text x={214 + i * 190} y={574} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
-                    {label}
+              {MECHANISMS.map(([top, bottom], i) => (
+                <g key={top} opacity={clamp01(mechU * 6 - i)}>
+                  <circle cx={200 + i * 190} cy={543} r={6} fill={colors.NEGATIVE} />
+                  <text x={214 + i * 190} y={548} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+                    {top}
+                  </text>
+                  <text x={214 + i * 190} y={566} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+                    {bottom}
                   </text>
                 </g>
               ))}
             </g>
           )}
 
-          <MathLabel tex={'R_{\\mathrm{correction}} < R_{\\mathrm{maintenance}}'} x={1130} y={122} anchor="end" fontSize={18} color={colors.WARM} opacity={thresholdU} />
+          {/* R_correction < R_maintenance, as plain text with subscripts (one render, no fallback copy) */}
+          <text x={1130} y={122} textAnchor="end" fill={colors.WARM} fontSize={18} opacity={thresholdU}>
+            R<tspan dy={5} fontSize={13}>correction</tspan>
+            <tspan dy={-5}>{' < R'}</tspan>
+            <tspan dy={5} fontSize={13}>maintenance</tspan>
+          </text>
         </g>
       </Camera>
       <g opacity={close}>
+        {/* solid backing so the faded plot never shows through the closing panel */}
+        <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.92} />
         <rect x={156} y={226} width={968} height={224} rx={28} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
         <text x={640} y={290} textAnchor="middle" fill={colors.TEXT} fontSize={33} fontWeight={800}>
           Getting out costs more than getting in

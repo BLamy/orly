@@ -5,10 +5,10 @@ import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const EPISODES = [
-  { x: 350, y: 314, label: 'uneasy', v: -0.45, a: 0.55 },
-  { x: 392, y: 280, label: 'tense', v: -0.32, a: 0.72 },
-  { x: 328, y: 360, label: 'guarded', v: -0.53, a: 0.34 },
-  { x: 430, y: 332, label: 'hesitant', v: -0.22, a: 0.46 },
+  { x: 300, y: 270, label: 'uneasy', v: -0.45, a: 0.55 },
+  { x: 360, y: 220, label: 'tense', v: -0.32, a: 0.72 },
+  { x: 250, y: 370, label: 'guarded', v: -0.53, a: 0.34 },
+  { x: 430, y: 330, label: 'hesitant', v: -0.22, a: 0.46 },
 ];
 
 export function buildScene() {
@@ -70,7 +70,16 @@ function Node({ x, y, r, color, label, sub, u = 1 }: { x: number; y: number; r: 
   return <g opacity={u} transform={`translate(${x} ${y + (1 - u) * 20}) scale(${0.82 + u * 0.18})`}>
     <circle r={r} fill={color} fillOpacity="0.13" stroke={color} strokeWidth="3" />
     <text y="-4" textAnchor="middle" fill={color} fontSize="15" fontWeight="820">{label}</text>
-    <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="13">{sub}</text>
+    <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="14">{sub}</text>
+  </g>;
+}
+
+// A one-line definition card, shown on the free lower-right space while its node kind is introduced
+function Definition({ opacity, color, term, example }: { opacity: number; color: string; term: string; example: string }) {
+  return <g opacity={opacity}>
+    <rect x="712" y="532" width="500" height="66" rx="14" fill="#0e1728" stroke={color} strokeWidth="2" />
+    <text x="736" y="558" fill={color} fontSize="15" fontWeight="820">{term}</text>
+    <text x="736" y="583" fill={colors.TEXT} fontSize="14">{example}</text>
   </g>;
 }
 
@@ -82,6 +91,9 @@ export function Render({ s }: { s: SceneState }) {
   const trait = s.get(scene.traitU);
   const query = s.get(scene.queryU);
   const indep = s.get(scene.independentU);
+  const epCard = clamp01(s.get(scene.episodeP)) * (1 - indep);
+  const indCard = indep * (1 - s.get(scene.leftEntityU));
+  const crossCard = cross * (1 - clamp01(evidenceP));
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
@@ -105,7 +117,7 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={ep.label} opacity={u} transform={`translate(${x} ${y}) scale(${0.78 + u * 0.22})`}>
           <circle r={18 + i * 2} fill={colors.NEGATIVE} fillOpacity="0.22" stroke={colors.NEGATIVE} strokeWidth="3" />
           <circle r={30 + i * 4} fill="none" stroke={colors.NEGATIVE} strokeOpacity="0.2" />
-          <text y={48 + i * 2} textAnchor="middle" fill={colors.MUTED} fontSize="13" stroke={colors.BG} strokeWidth="5" paintOrder="stroke">{ep.label}</text>
+          <text y={48 + i * 2} textAnchor="middle" fill={colors.MUTED} fontSize="14" stroke={colors.BG} strokeWidth="5" paintOrder="stroke">{ep.label}</text>
         </g>;
       })}
 
@@ -114,9 +126,9 @@ export function Render({ s }: { s: SceneState }) {
         <Node x={1060} y={430} r={68} color={colors.ACCENT} label="café" sub="left-brain entity" u={s.get(scene.leftEntityU)} />
         <Node x={790} y={450} r={76} color={colors.WARM} label="uneasy in cafés" sub="cross-entity node" u={cross} />
         <path d={`M${856} 438 C930 388 972 402 994 420`} fill="none" stroke={colors.WARM} strokeWidth={2 + cross * 5} strokeDasharray="10 8" opacity={cross} />
-        <text x="930" y="378" textAnchor="middle" fill={colors.WARM} fontSize="12" opacity={cross} fontFamily={colors.font.mono}>ρv,e</text>
-        <path d="M782 296 V370" stroke={colors.SECONDARY} strokeWidth={2 + trait * 6} opacity={Math.max(indep, trait)} />
-        <text x="808" y="344" fill={colors.MUTED} fontSize="12" opacity={trait}>long horizon</text>
+        <text x="930" y="378" textAnchor="middle" fill={colors.WARM} fontSize="13" opacity={cross} fontFamily={colors.font.mono}>ρv,e</text>
+        <path d={`M782 296 V${296 + 78 * cross}`} stroke={colors.SECONDARY} strokeWidth={2 + trait * 6} opacity={Math.max(indep, trait)} />
+        <text x="808" y="344" fill={colors.MUTED} fontSize="13" opacity={trait}>long horizon</text>
       </g>
 
       <g opacity={cross}>
@@ -135,7 +147,7 @@ export function Render({ s }: { s: SceneState }) {
             <path d={`M13 0 Q${(13 + ex) / 2} 0 ${ex} ${ey}`} fill="none" stroke={colors.NEGATIVE} strokeWidth="2" opacity="0.45" />
           </g>;
         })}
-        <text x="626" y="578" textAnchor="end" fill={colors.MUTED} fontSize="13">linked evidence</text>
+        <text x="612" y="580" textAnchor="end" fill={colors.MUTED} fontSize="14">linked evidence</text>
       </g>
 
       <g opacity={query}>
@@ -146,6 +158,10 @@ export function Render({ s }: { s: SceneState }) {
         <circle cx={490 + 258 * query} cy={91 + 79 * query} r="10" fill={colors.SECONDARY} />
         <circle cx={490 + 256 * query} cy={91 + 317 * query} r="10" fill={colors.WARM} />
       </g>
+
+      <Definition opacity={epCard} color={colors.NEGATIVE} term="node: a persistent memory item that outlives its turn" example="episode: one turn's feeling, e.g. a single frustrated reply" />
+      <Definition opacity={indCard} color={colors.SECONDARY} term="independent node: a tendency that spans topics" example="e.g. a stable response style, not one dramatic turn" />
+      <Definition opacity={crossCard} color={colors.WARM} term="cross-entity node: a feeling tied to a real entity" example="e.g. uneasy in cafés, attached to the café on the left brain" />
     </g>
 
     <g opacity={close}>

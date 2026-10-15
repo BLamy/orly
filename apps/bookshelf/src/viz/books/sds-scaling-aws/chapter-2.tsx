@@ -51,6 +51,14 @@ const FLEET = [
   { x: 600, y: 375, az: 'az-1' },
   { x: 600, y: 495, az: 'az-2' },
 ] as const;
+const FLEET_W = 210;
+
+// the lone box's pressures, drawn beside it in beat 1 ("three tenants, one apartment")
+const METERS = [
+  { label: 'memory', y: BOX.y - 30, level: 0.92 },
+  { label: 'CPU', y: BOX.y, level: 0.85 },
+  { label: 'disk', y: BOX.y + 30, level: 0.78 },
+] as const;
 
 const rand = mulberry32(20260721);
 const N_REQ = 24;
@@ -95,7 +103,7 @@ export function buildScene(): Scene {
   const cdnU = tl.channel('cdnU', 0); // cloudfront
   const trafU = tl.channel('trafU', 0); // traffic through lb + cdn
   const closeU = tl.channel('closeU', 0);
-  const strainU = tl.channel('strainU', 0); // load on the lone box, climbing to timeouts
+  const strainU = tl.channel('strainU', 0); // load on the lone box; no timing window left, so it stays at 0
 
   // — Beat 1 · the diagnosis —
   tl.caption({
@@ -141,7 +149,6 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'Growth continues, and now the load tests show the lone web server buckling at peak hours. Slow responses. Some outright downtime. Vertical scaling already had its turn.',
   });
-  tl.tween(strainU, 1, { at: 29.4, dur: 3.4, ease: ease.linear });
   tl.hold(35.0, 0.5);
 
   // — Beat 6 · horizontal scaling —
@@ -200,11 +207,11 @@ function Node({ x, y, w = 150, h = 56, title, sub, stroke = colors.GRID, opacity
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -225,10 +232,10 @@ export function Render({ s }: { s: SceneState }) {
   const cdnU = s.get(scene.cdnU);
   const trafU = s.get(scene.trafU);
   const closeU = s.get(scene.closeU);
-  const strainU = s.get(scene.strainU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.9;
   const single = 1 - fleetU;
+  const diskLevel = 0.78 + (0.25 - 0.78) * flyU; // user files leave, the disk empties
 
   return (
     <>
@@ -264,15 +271,21 @@ export function Render({ s }: { s: SceneState }) {
               MySQL
             </text>
           </g>
-          {/* load gauge: fills as peak traffic arrives */}
-          <rect x={BOX.x - 80} y={BOX.y + 40} width={160} height={8} rx={4} fill={colors.GRID} />
-          <rect x={BOX.x - 80} y={BOX.y + 40} width={160 * strainU} height={8} rx={4} fill={colors.WARM} />
         </g>
-        {/* timeout tag once the box starts failing */}
-        <g opacity={clamp01((strainU - 0.5) * 4) * single * dimAll}>
-          <text x={BOX.x} y={BOX.y - 88} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
-            503 · timeout
-          </text>
+        {/* beat 1 meters: memory and CPU go to MySQL, disk to user uploads; gone once the database leaves */}
+        <g opacity={boxU * (1 - rdsU) * dimAll}>
+          {METERS.map((m) => {
+            const level = m.label === 'disk' ? diskLevel : m.level;
+            return (
+              <g key={m.label}>
+                <text x={740} y={m.y + 4} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
+                  {m.label}
+                </text>
+                <rect x={810} y={m.y - 4} width={170} height={8} rx={4} fill={colors.GRID} />
+                <rect x={810} y={m.y - 4} width={170 * level} height={8} rx={4} fill={colors.WARM} />
+              </g>
+            );
+          })}
         </g>
 
         {/* ---- assets flying to S3 ---- */}
@@ -284,8 +297,8 @@ export function Render({ s }: { s: SceneState }) {
             const y = lerp(BOX.y - 20, S3.y, u) - Math.sin(u * Math.PI) * 40;
             return (
               <g key={a}>
-                <rect x={x - 42} y={y - 12} width={84} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-                <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+                <rect x={x - 50} y={y - 13} width={100} height={26} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+                <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
                   {a}
                 </text>
               </g>
@@ -306,7 +319,7 @@ export function Render({ s }: { s: SceneState }) {
               {msU > 0 && (
                 <g opacity={msU}>
                   <line x1={x} y1={y + 32} x2={x} y2={y + 110} stroke={colors.GRID} strokeWidth={1.4} />
-                  <Node x={x} y={y + 136} w={190} h={52} title="Failover replica" sub="master-slave" stroke={colors.GRID} />
+                  <Node x={x} y={y + 136} w={190} h={52} title="Failover replica" sub="standby · other zone" stroke={colors.MUTED} />
                 </g>
               )}
             </g>
@@ -322,30 +335,35 @@ export function Render({ s }: { s: SceneState }) {
           if (u <= 0) return null;
           return (
             <g key={i} opacity={u * dimAll}>
-              <Node x={f.x} y={f.y} w={200} h={64} title={splitU > 0.5 ? 'Web + App Server' : 'Web Server'} sub={`${f.az}${splitU > 0.5 ? ' · reverse proxy → api' : ''}`} stroke={colors.TEXT} />
-              <line x1={LB.x + 75} y1={LB.y} x2={f.x - 100} y2={f.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
-              {rdsU > 0.9 && <line x1={f.x + 100} y1={f.y} x2={RDS.x - 95} y2={RDS.y} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />}
+              <Node x={f.x} y={f.y} w={FLEET_W} h={64} title={splitU > 0.5 ? 'Web + App Server' : 'Web Server'} sub={`${f.az}${splitU > 0.5 ? ' · reverse proxy → api' : ''}`} stroke={colors.TEXT} />
+              <line x1={LB.x + 75} y1={LB.y} x2={f.x - FLEET_W / 2} y2={f.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+              {rdsU > 0.9 && <line x1={f.x + FLEET_W / 2} y1={f.y} x2={RDS.x - 95} y2={RDS.y} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />}
             </g>
           );
         })}
 
-        {/* ---- traffic ---- */}
+        {/* ---- traffic: user → load balancer → web server, one continuous path ---- */}
         {REQS.map((r, i) => {
-          const u = clamp01((trafU - r.delay * 0.7) * 2.4);
+          const u = clamp01((trafU - r.delay * 0.7) / 0.3);
           if (u <= 0 || u >= 1) return null;
-          const viaCdn = r.cdn && cdnU > 0.5;
-          const target = viaCdn ? CDN : FLEET[r.lane];
-          const from = { x: 90, y: viaCdn ? CDN.y : LB.y };
-          const mid = viaCdn ? CDN : LB;
-          const edgeX = mid.x - 75;
-          const p = u < 0.5
-            ? { x: lerp(from.x, edgeX, u * 2), y: lerp(from.y, mid.y, u * 2) }
-            : viaCdn
-              ? { x: edgeX, y: mid.y }
-              : { x: lerp(mid.x + 75, target.x - 100, u * 2 - 1), y: lerp(mid.y, target.y, u * 2 - 1) };
-          return <circle key={i} cx={p.x} cy={p.y} r={4.5} fill={viaCdn ? colors.WARM : colors.ACCENT} opacity={0.8} />;
+          const target = FLEET[r.lane];
+          const toLb = { x: LB.x - 75, y: LB.y };
+          const outLb = { x: LB.x + 75, y: LB.y };
+          const p = u < 0.4
+            ? { x: lerp(90, toLb.x, u / 0.4), y: LB.y }
+            : u < 0.6
+              ? { x: lerp(toLb.x, outLb.x, (u - 0.4) / 0.2), y: LB.y }
+              : { x: lerp(outLb.x, target.x - FLEET_W / 2, (u - 0.6) / 0.4), y: lerp(LB.y, target.y, (u - 0.6) / 0.4) };
+          return <circle key={i} cx={p.x} cy={p.y} r={4.5} fill={colors.ACCENT} opacity={0.8} />;
         })}
-        <text x={90} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={trafU > 0 ? 1 : 0}>
+        {/* ---- static traffic: the CDN-bound share leaves for the edge during beat 8 ---- */}
+        {REQS.map((r, i) => {
+          if (!r.cdn) return null;
+          const u = clamp01((cdnU - r.delay * 0.45) / 0.55);
+          if (u <= 0 || u >= 1) return null;
+          return <circle key={`cdn-${i}`} cx={lerp(90, CDN.x - 85, u)} cy={lerp(LB.y, CDN.y, u)} r={4.5} fill={colors.WARM} opacity={0.8} />;
+        })}
+        <text x={90} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={trafU > 0 ? 1 : 0}>
           users
         </text>
 
@@ -358,7 +376,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
           <rect x={280} y={215} width={720} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <text x={640} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             the unbundling, in order
           </text>
           {[
@@ -366,11 +384,11 @@ export function Render({ s }: { s: SceneState }) {
             'database → its own managed box, master + failover',
             'web server → a fleet behind a load balancer, across zones',
           ].map((t, i) => (
-            <text key={i} x={640} y={312 + i * 36} textAnchor="middle" fill={i === 2 ? colors.ACCENT : colors.MUTED} fontSize={13.5}>
+            <text key={i} x={640} y={312 + i * 36} textAnchor="middle" fill={i === 2 ? colors.ACCENT : colors.TEXT} fontSize={15}>
               {t}
             </text>
           ))}
-          <text x={640} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             profiling picked every one of these moves — not fashion
           </text>
         </g>

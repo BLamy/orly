@@ -129,7 +129,7 @@ export function Render({ s }: { s: SceneState }) {
   const focus = s.get(scene.focus);
   const cardOp = (i: number) => {
     const active = clamp01(1 - Math.abs(focus - (i + 1)));
-    return lerp(1, lerp(0.08, 1, active), clamp01(focus));
+    return lerp(1, lerp(0.22, 1, active), clamp01(focus));
   };
   const morphU = s.get(scene.morphU);
   const nativeU = s.get(scene.nativeU);
@@ -143,17 +143,16 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
     <Camera {...s.get(scene.cam)}>
       {/* reference tokens */}
-      <g opacity={refU * dim}>
-        {COLS.map((c) => <g key={c.key} transform={`translate(${c.x} ${REF_Y})`}>
-          <rect width={CARD_W} height={44} rx={22} fill={colors.PANEL} stroke={c.color} strokeWidth={1.8} />
-          <text x={CARD_W / 2} y={28} textAnchor="middle" fill={c.color} fontSize={14.5} fontFamily={mono} fontWeight={700}>{c.ref}</text>
-        </g>)}
-        <text x={640} y={REF_Y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>harness / agent</text>
-      </g>
+      {/* each token lands in turn across the same reveal, so the three mappings read one at a time */}
+      {COLS.map((c, i) => <g key={c.key} opacity={clamp01(refU * 3 - i) * dim} transform={`translate(${c.x} ${REF_Y})`}>
+        <rect width={CARD_W} height={44} rx={22} fill={colors.PANEL} stroke={c.color} strokeWidth={1.8} />
+        <text x={CARD_W / 2} y={28} textAnchor="middle" fill={c.color} fontSize={14.5} fontFamily={mono} fontWeight={700}>{c.ref}</text>
+      </g>)}
+      <text x={640} y={REF_Y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono} opacity={refU * dim}>harness / agent</text>
 
       {decoyU > 0 && <g opacity={decoyU * dim}>
-        <rect x={490} y={160} width={300} height={40} rx={20} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={0.7} />
-        <text x={640} y={185} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={mono}>@random/thing · unrecognized · inert</text>
+        <rect x={460} y={160} width={360} height={40} rx={20} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={0.7} />
+        <text x={640} y={185} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={mono}>@random/thing · unrecognized · inert</text>
       </g>}
 
       {/* morph arrows down */}
@@ -161,12 +160,13 @@ export function Render({ s }: { s: SceneState }) {
         stroke={c.color} strokeWidth={1.6} strokeDasharray="180" strokeDashoffset={180 * (1 - morphU)} opacity={0.6 * dim} />)}
 
       {/* empty file slots: where each native file is about to appear */}
-      {morphU > 0 && COLS.map((c, i) => {
+      {/* faint slots show from the first reference, so the stage is not bare before the morph */}
+      {(refU > 0 || morphU > 0) && COLS.map((c, i) => {
         const u = cardU[i]!;
         if (u >= 1) return null;
-        return <g key={`slot-${c.key}`} opacity={morphU * (1 - u) * 0.6 * dim}>
+        return <g key={`slot-${c.key}`} opacity={Math.max(morphU * 0.6, refU * 0.3) * (1 - u) * dim}>
           <rect x={c.x} y={CARD_Y} width={CARD_W} height={CARD_H} rx={16} fill="none" stroke={c.color} strokeWidth={1.4} strokeDasharray="6 6" />
-          <text x={c.x + 20} y={CARD_Y + 30} fill={c.color} fontSize={13} fontFamily={mono} fontWeight={700}>{c.path}</text>
+          <text x={c.x + 20} y={CARD_Y + 30} fill={c.color} fontSize={14} fontFamily={mono} fontWeight={700}>{c.path}</text>
         </g>;
       })}
 
@@ -176,11 +176,11 @@ export function Render({ s }: { s: SceneState }) {
         if (u <= 0) return null;
         return <g key={c.key} opacity={u * dim * cardOp(i)} transform={`translate(0 ${(1 - u) * 18})`}>
           <rect x={c.x} y={CARD_Y} width={CARD_W} height={CARD_H} rx={16} fill={colors.PANEL} stroke={c.color} strokeWidth={2} />
-          <text x={c.x + 20} y={CARD_Y + 30} fill={c.color} fontSize={13} fontFamily={mono} fontWeight={700}>{c.path}</text>
-          <text x={c.x + 20} y={CARD_Y + 50} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{c.kind}</text>
-          {c.lines.map((line, li) => <text key={li} x={c.x + 20} y={CARD_Y + 84 + li * 24} fill={colors.TEXT} fontSize={12} fontFamily={mono}
+          <text x={c.x + 20} y={CARD_Y + 30} fill={c.color} fontSize={14} fontFamily={mono} fontWeight={700}>{c.path}</text>
+          <text x={c.x + 20} y={CARD_Y + 50} fill={colors.MUTED} fontSize={14} fontFamily={mono}>{c.kind}</text>
+          {c.lines.map((line, li) => <text key={li} x={c.x + 20} y={CARD_Y + 84 + li * 24} fill={colors.TEXT} fontSize={14} fontFamily={mono}
             opacity={clamp01(nativeU > 0 ? 1 : u * 4 - li)}>{line}</text>)}
-          {nativeU > 0.3 && <text x={c.x + CARD_W - 16} y={CARD_Y + CARD_H - 14} textAnchor="end" fill={c.color} fontSize={12} fontFamily={mono}
+          {nativeU > 0.3 && <text x={c.x + CARD_W - 16} y={CARD_Y + CARD_H - 14} textAnchor="end" fill={c.color} fontSize={14} fontFamily={mono}
             opacity={clamp01((nativeU - 0.3) * 3)}>native · unconverted</text>}
         </g>;
       })}
@@ -189,16 +189,19 @@ export function Render({ s }: { s: SceneState }) {
       {convergeU > 0 && <g opacity={convergeU * dim}>
         {COLS.map((c) => <path key={c.key} d={`M ${c.x + CARD_W / 2} ${CARD_Y + CARD_H + 8} C ${c.x + CARD_W / 2} ${CONTRACT_Y - 30}, 640 ${CONTRACT_Y - 40}, 640 ${CONTRACT_Y}`}
           fill="none" stroke={c.color} strokeWidth={1.8} strokeDasharray="260" strokeDashoffset={260 * (1 - convergeU)} opacity={0.75} />)}
-        {contractU <= 0 && <rect x={370} y={CONTRACT_Y} width={540} height={CONTRACT_H} rx={18} fill="none" stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="6 6" opacity={0.5} />}
+        {contractU <= 0 && <g>
+          <rect x={370} y={CONTRACT_Y} width={540} height={CONTRACT_H} rx={18} fill="none" stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="6 6" opacity={0.5} />
+          <text x={640} y={CONTRACT_Y + CONTRACT_H / 2 + 5} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>shared ReviewHarness interface</text>
+        </g>}
       </g>}
 
       {/* shared contract */}
       {contractU > 0 && <g opacity={contractU * dim} transform={`translate(0 ${(1 - contractU) * 14})`}>
         <rect x={370} y={CONTRACT_Y} width={540} height={CONTRACT_H} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
         <text x={640} y={CONTRACT_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={750} fontFamily={mono}>ReviewHarness</text>
-        <text x={640} y={CONTRACT_Y + 58} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>resolveAgent(repositoryPath, agentName, baseSha)</text>
-        <text x={640} y={CONTRACT_Y + 80} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>review(request) → findings, conclusion</text>
-        <text x={640} y={CONTRACT_Y + 112} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>one shape, three harnesses behind it</text>
+        <text x={640} y={CONTRACT_Y + 58} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>resolveAgent(repositoryPath, agentName, baseSha)</text>
+        <text x={640} y={CONTRACT_Y + 84} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={mono}>review(request) → findings, conclusion</text>
+        <text x={640} y={CONTRACT_Y + 114} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>one shape, three harnesses behind it</text>
       </g>}
 
       {closeU > 0 && <g opacity={closeU}>

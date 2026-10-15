@@ -43,11 +43,11 @@ export function buildScene() {
   tl.caption({ at: 12.8, dur: 6.3, text: 'For the main benchmark, the report separates the eight-seed mean from the stronger single seed used in one figure.' });
   tl.tween(meanU, 1, { at: 13.3, dur: 1.5, ease: ease.draw });
   tl.tween(figureU, 1, { at: 15.2, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: 650, y: 210, k: 1.1 }, { at: 16.3, dur: 1.2, ease: ease.move });
-  tl.tween(cam, CAMERA_HOME, { at: 18.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.05 }, { at: 16.3, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 19.1, dur: 6.2, text: 'The same checker reads fresh-generation quality and pass rate from the released Unity-backed result files.' });
   tl.tween(trueGenU, 1, { at: 19.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 23.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 25.3, dur: 6.3, text: 'Transfer rows stay explicit: adaptation raises the reviewer score for held-out Unity, Unreal, and Godot targets in these released evaluations.' });
   tl.tween(transferU, 1, { at: 25.8, dur: 2.0, ease: ease.draw });
@@ -85,34 +85,43 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={s.get(scene.packageU)}>
         <rect x="58" y="104" width="382" height="224" rx="30" fill="#101b2d" stroke={s.get(scene.passU) ? colors.POSITIVE : colors.ACCENT} strokeWidth="3" />
-        <text x="249" y="138" textAnchor="middle" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>FILE_MANIFEST.sha256</text>
+        <text x="249" y="138" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>FILE_MANIFEST.sha256</text>
         <g transform="translate(88 160)">
           {HASHES.map((cell, i) => {
             const u = clamp01(hashesP - i);
             return <rect key={i} x={cell.col * 24} y={cell.row * 24} width="16" height="16" rx="4" fill={u ? colors.POSITIVE : colors.GRID} opacity={0.25 + u * 0.75} />;
           })}
         </g>
-        <text x="249" y="286" textAnchor="middle" fill={colors.MUTED} fontSize="12">52 files</text>
+        <text x="249" y="286" textAnchor="middle" fill={colors.MUTED} fontSize="14">52 files</text>
       </g>
 
       <g opacity={clamp01(scriptsP)}>
         <rect x="58" y="350" width="382" height="176" rx="30" fill="#111b2d" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="249" y="384" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontWeight="780">syntax and release-policy checks</text>
         <g transform="translate(91 410)">{Array.from({ length: 10 }, (_, i) => <rect key={i} x={i * 26} width="18" height="58" rx="6" fill={i < scriptsP ? colors.ACCENT : colors.GRID} opacity={i < scriptsP ? 0.85 : 0.25} />)}</g>
-        <text x="91" y="496" fill={colors.MUTED} fontSize="13">10 Python</text>
+        <text x="91" y="496" fill={colors.MUTED} fontSize="14">10 Python</text>
         <rect x="356" y="410" width="58" height="58" rx="14" fill={scriptsP > 10 ? colors.WARM : colors.GRID} opacity={scriptsP > 10 ? 0.85 : 0.25} />
-        <text x="385" y="496" textAnchor="middle" fill={colors.MUTED} fontSize="13">1 shell</text>
+        <text x="385" y="496" textAnchor="middle" fill={colors.MUTED} fontSize="14">1 shell</text>
+      </g>
+
+      <g opacity={s.get(scene.packageU) * (1 - mean) * (1 - boundary)}>
+        <rect x="474" y="102" width="744" height="200" rx="30" fill="none" stroke={colors.MUTED} strokeWidth="2" strokeDasharray="10 8" />
+        <text x="837" y="140" textAnchor="middle" fill={colors.MUTED} fontSize="16">what the checker reads</text>
+        {[{ x: 520, label: 'result tables' }, { x: 737, label: 'scripts' }, { x: 954, label: 'provenance' }].map((tag) => <g key={tag.label}>
+          <rect x={tag.x} y="170" width="200" height="52" rx="26" fill="#101b2d" stroke={colors.MUTED} strokeWidth="2" />
+          <text x={tag.x + 100} y="202" textAnchor="middle" fill={colors.TEXT} fontSize="16">{tag.label}</text>
+        </g>)}
       </g>
 
       <g opacity={mean * (1 - boundary)}>
         <rect x="474" y="102" width="352" height="200" rx="30" fill="#0f1a2b" stroke={colors.GRID} strokeWidth="2" />
         <text x="650" y="138" textAnchor="middle" fill={colors.TEXT} fontSize="15" fontWeight="780">UnitySceneBench primary</text>
-        <text x="502" y="182" fill={colors.MUTED} fontSize="13">eight-seed mean</text>
+        <text x="502" y="182" fill={colors.MUTED} fontSize="14">eight-seed mean</text>
         <text x="776" y="182" textAnchor="end" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>0.5509 ± 0.0727</text>
         <rect x="502" y="196" width="274" height="28" rx="14" fill={colors.GRID} opacity="0.5" />
         <rect x="502" y="196" width={274 * (0.5509 / 0.7) * mean} height="28" rx="14" fill={colors.POSITIVE} />
         <g opacity={figure}>
-          <text x="502" y="258" fill={colors.MUTED} fontSize="13">Figure 4 source seed 2026070501</text>
+          <text x="502" y="258" fill={colors.MUTED} fontSize="14">Figure 4 source seed 2026070501</text>
           <text x="776" y="258" textAnchor="end" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>0.681</text>
           <rect x="502" y="272" width={274 * (0.681 / 0.7)} height="28" rx="14" fill={colors.WARM} opacity="0.85" />
         </g>
@@ -125,32 +134,39 @@ export function Render({ s }: { s: SceneState }) {
         <text x="1196" y="182" textAnchor="end" fill={colors.TEXT} fontSize="14">quality 0.7934 · pass 0.9375</text>
         <text x="880" y="228" fill={colors.POSITIVE} fontSize="14">full RLHEV</text>
         <text x="1196" y="228" textAnchor="end" fill={colors.TEXT} fontSize="14">quality 0.8197 · pass 0.9688</text>
-        <text x="1035" y="278" textAnchor="middle" fill={colors.MUTED} fontSize="13">128 generated payloads per method</text>
+        <text x="1035" y="278" textAnchor="middle" fill={colors.MUTED} fontSize="14">128 generated payloads per method</text>
       </g>
 
       <g opacity={transfer * (1 - boundary)}>
-        <rect x="474" y="318" width="366" height="178" rx="30" fill="#111a2b" stroke={colors.ACCENT} strokeWidth="3" />
-        <text x="657" y="344" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontWeight="780">target-adapted transfer</text>
-        <text x="657" y="362" textAnchor="middle" fill={colors.MUTED} fontSize="12">grey scratch · green adapted</text>
+        <rect x="474" y="318" width="366" height="196" rx="30" fill="#111a2b" stroke={colors.ACCENT} strokeWidth="3" />
+        <text x="657" y="344" textAnchor="middle" fill={colors.ACCENT} fontSize="16" fontWeight="780">target-adapted transfer</text>
+        <text x="657" y="366" textAnchor="middle" fill={colors.MUTED} fontSize="14">grey scratch · green adapted</text>
         {TRANSFER.map((row, i) => <g key={row.label}>
-          <text x="496" y={384 + i * 36} fill={colors.TEXT} fontSize="12">{row.label}</text>
-          <text x="814" y={384 + i * 36} textAnchor="end" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{row.scratch.toFixed(2)} → {row.adapted.toFixed(2)}</text>
-          <rect x="496" y={390 + i * 36} width={row.scratch * 240} height="8" rx="4" fill={colors.MUTED} />
-          <rect x="496" y={401 + i * 36} width={row.adapted * 240 * transfer} height="8" rx="4" fill={colors.POSITIVE} />
+          <text x="496" y={394 + i * 42} fill={colors.TEXT} fontSize="14">{row.label}</text>
+          <text x="818" y={394 + i * 42} textAnchor="end" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{row.scratch.toFixed(2)} → {row.adapted.toFixed(2)}</text>
+          <rect x="496" y={402 + i * 42} width={row.scratch * 240} height="8" rx="4" fill={colors.MUTED} />
+          <rect x="496" y={411 + i * 42} width={row.adapted * 240 * transfer} height="8" rx="4" fill={colors.POSITIVE} />
         </g>)}
       </g>
 
       <g opacity={embodied * (1 - boundary)}>
-        <rect x="866" y="318" width="352" height="178" rx="30" fill="#18162b" stroke={colors.SECONDARY} strokeWidth="3" />
-        <text x="1042" y="344" textAnchor="middle" fill={colors.SECONDARY} fontSize="15" fontWeight="780">embodied diagnostics</text>
-        <text x="1042" y="362" textAnchor="middle" fill={colors.MUTED} fontSize="12">grey before · purple after</text>
+        <rect x="866" y="318" width="352" height="196" rx="30" fill="#18162b" stroke={colors.SECONDARY} strokeWidth="3" />
+        <text x="1042" y="344" textAnchor="middle" fill={colors.SECONDARY} fontSize="16" fontWeight="780">embodied diagnostics</text>
+        <text x="1042" y="366" textAnchor="middle" fill={colors.MUTED} fontSize="14">grey before · purple after</text>
         {EMBODIED.map((row, i) => <g key={row.label}>
-          <text x="890" y={384 + i * 36} fill={colors.TEXT} fontSize="12">{row.label}</text>
-          <text x="1178" y={384 + i * 36} textAnchor="end" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{row.before.toFixed(2)} → {row.after.toFixed(2)}</text>
-          <rect x="890" y={390 + i * 36} width="270" height="8" rx="4" fill={colors.GRID} opacity="0.45" />
-          <rect x="890" y={390 + i * 36} width={(row.before / row.max) * 270} height="8" rx="4" fill={colors.MUTED} />
-          <rect x="890" y={401 + i * 36} width={(row.after / row.max) * 270 * embodied} height="8" rx="4" fill={colors.SECONDARY} />
+          <text x="890" y={394 + i * 42} fill={colors.TEXT} fontSize="14">{row.label}</text>
+          <text x="1194" y={394 + i * 42} textAnchor="end" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{row.before.toFixed(2)} → {row.after.toFixed(2)}</text>
+          <rect x="890" y={402 + i * 42} width="270" height="8" rx="4" fill={colors.GRID} opacity="0.45" />
+          <rect x="890" y={402 + i * 42} width={(row.before / row.max) * 270} height="8" rx="4" fill={colors.MUTED} />
+          <rect x="890" y={411 + i * 42} width={(row.after / row.max) * 270 * embodied} height="8" rx="4" fill={colors.SECONDARY} />
         </g>)}
+      </g>
+
+      <g opacity={transfer * (1 - boundary)}>
+        <rect x="474" y="536" width="744" height="78" rx="26" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="520" y="590" textAnchor="middle" fill={colors.POSITIVE} fontSize="40" fontWeight="850">3×</text>
+        <text x="600" y="574" fill={colors.TEXT} fontSize="18" fontWeight="780">largest gain: Distribution Unity OOD, 0.25 → 0.75</text>
+        <text x="600" y="600" fill={colors.MUTED} fontSize="15">adapted reviewer score on a held-out Unity target, same released evaluation</text>
       </g>
 
       <g opacity={s.get(scene.passU) * (1 - boundary)} transform="translate(249 574)">
@@ -159,7 +175,7 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={boundary}>
-        <rect x="442" y="90" width="790" height="410" rx="36" fill={colors.BG} fillOpacity="0.96" stroke={colors.WARM} strokeWidth="4" />
+        <rect x="462" y="90" width="750" height="410" rx="36" fill={colors.BG} fillOpacity="0.96" stroke={colors.WARM} strokeWidth="4" />
         <text x="837" y="148" textAnchor="middle" fill={colors.WARM} fontSize="28" fontWeight="850">what this PASS means</text>
         <g transform="translate(604 254)"><circle r="66" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="5" /><path d="M-28 0 L-8 22 L34 -26" fill="none" stroke={colors.POSITIVE} strokeWidth="10" strokeLinecap="round" /><text y="102" textAnchor="middle" fill={colors.POSITIVE} fontSize="15">released files agree</text></g>
         <g transform="translate(1036 254)"><circle r="66" fill="#32141c" stroke={colors.NEGATIVE} strokeWidth="5" /><path d="M-28 -28 L28 28 M28 -28 L-28 28" stroke={colors.NEGATIVE} strokeWidth="10" strokeLinecap="round" /><text y="102" textAnchor="middle" fill={colors.NEGATIVE} fontSize="15">full jobs not rerun</text></g>
@@ -179,7 +195,7 @@ export function Render({ s }: { s: SceneState }) {
       ].map((step, i) => <g key={step.label} transform={`translate(${step.x} 348)`}>
         <circle r="72" fill={step.color} fillOpacity="0.12" stroke={step.color} strokeWidth="5" />
         <text textAnchor="middle" y="-4" fill={step.color} fontSize="17" fontWeight="850">{step.label}</text>
-        <text textAnchor="middle" y="24" fill={colors.MUTED} fontSize="12">{step.sub}</text>
+        <text textAnchor="middle" y="24" fill={colors.MUTED} fontSize="14">{step.sub}</text>
         {i < 3 && <g><path d="M78 0 H150" stroke={colors.GRID} strokeWidth="7" /><polygon points="150,0 132,-12 132,12" fill={colors.GRID} /></g>}
       </g>)}
       <text x="640" y="516" textAnchor="middle" fill={colors.MUTED} fontSize="17">the claim is strongest where every arrow leaves evidence</text>

@@ -64,7 +64,9 @@ const GATE_X = 640;
 const GATE_Y0 = 150;
 const GATE_DY = 105;
 const gateY = (g: number) => GATE_Y0 + g * GATE_DY;
-const TRAY = { x: 980, y: 430 };
+const TRAY = { x: 1000, y: 440 };
+// a candidate card: 204 wide, 32 tall, rows 40 apart in the tray
+const CARD = { w: 204, h: 32 };
 
 // pulled a little left so the JSON document keeps its margin from the stage edge
 const CAM_GATES: CameraState = { x: 620, y: 340, k: 1.1 };
@@ -242,17 +244,33 @@ function Render_({ s }: { s: SceneState }) {
               <g key={g.label} opacity={u}>
                 <line x1={GATE_X - 130} y1={y} x2={GATE_X - 34} y2={y} stroke={hot ? colors.WARM : colors.GRID} strokeWidth={2.5} strokeLinecap="round" />
                 <line x1={GATE_X + 34} y1={y} x2={GATE_X + 130} y2={y} stroke={hot ? colors.WARM : colors.GRID} strokeWidth={2.5} strokeLinecap="round" />
-                <text x={GATE_X + 146} y={y + 5} fill={hot ? colors.WARM : colors.MUTED} fontSize={13} fontFamily="monospace">
+                <text x={GATE_X + 146} y={y + 5} fill={hot ? colors.WARM : colors.TEXT} fontSize={14} fontFamily="monospace">
                   {g.label}
                 </text>
                 {gi < GATES.length - 1 && (
-                  <text x={GATE_X - 160} y={y + GATE_DY / 2 + 4} fill={colors.MUTED} fontSize={12} opacity={0.7}>
+                  <text x={GATE_X - 160} y={y + GATE_DY / 2 + 5} fill={colors.MUTED} fontSize={14} fontWeight={600}>
                     AND
                   </text>
                 )}
               </g>
             );
           })}
+
+          {/* the result tray: a labelled box the survivors land in, one row per result */}
+          {dropU > 0.55 && (
+            <g opacity={clamp01((dropU - 0.55) * 4)}>
+              <rect x={TRAY.x - 150} y={TRAY.y - 66} width={300} height={178} rx={10}
+                fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+              <text x={TRAY.x} y={TRAY.y - 48} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                results — newest first · limit {FILTER.limit}
+              </text>
+              {orderU > 0 && (
+                <text x={TRAY.x} y={TRAY.y - 30} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace" opacity={orderU}>
+                  created_at ↓
+                </text>
+              )}
+            </g>
+          )}
 
           {/* the candidates */}
           {CANDS.map((c, i) => {
@@ -263,46 +281,50 @@ function Render_({ s }: { s: SceneState }) {
             const color = p.dead > 0 ? colors.NEGATIVE : p.landed > 0 ? colors.POSITIVE : colors.TEXT;
             return (
               <g key={i} opacity={op}>
-                <rect x={p.x - 92} y={p.y - 14} width={184} height={28} rx={7}
+                <rect x={p.x - CARD.w / 2} y={p.y - CARD.h / 2} width={CARD.w} height={CARD.h} rx={7}
                   fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-                <text x={p.x} y={p.y + 4} textAnchor="middle" fill={color} fontSize={11} fontFamily="monospace">
+                <text x={p.x} y={p.y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily="monospace">
                   {cardLabel(c)}
                 </text>
               </g>
             );
           })}
 
-          {/* the result tray */}
-          {dropU > 0.55 && (
-            <g opacity={clamp01((dropU - 0.55) * 4)}>
-              <text x={TRAY.x} y={TRAY.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                results — newest first · limit {FILTER.limit}
-              </text>
-              {orderU > 0 && (
-                <text x={TRAY.x} y={TRAY.y - 20} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={orderU}>
-                  created_at ↓
-                </text>
-              )}
-            </g>
-          )}
-
           {/* multiple filters = OR: two stacked copies of the whole filter, outlined
               around the JSON so they never sit on top of a value */}
           {multiU > 0 && (
             <g opacity={multiU}>
               {[0, 1].map((k) => (
-                <g key={k} opacity={0.5}>
-                  <rect x={76 + k * 14} y={158 + k * 14} width={372 + k * 14} height={196 + k * 14} rx={10}
-                    fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="5 4" />
+                <g key={k} opacity={0.8}>
+                  <rect x={66 + k * 14} y={146 + k * 14} width={386 - k * 14} height={218 + k * 14} rx={10}
+                    fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} strokeDasharray="5 4" />
                 </g>
               ))}
-              <text x={262} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+              <text x={262} y={414} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                 filter ‖ filter — OR
               </text>
             </g>
           )}
         </Camera>
       </g>
+
+      {/* the five kinds of condition, shown while the filter is first drawn; gone once the gates appear */}
+      {jsonU > 0 && gatesU < 1 && (
+        <g opacity={jsonU * (1 - gatesU)}>
+          {[
+            ['ids', 'exact event ids'],
+            ['authors', 'pubkeys that wrote it'],
+            ['kinds', 'event kinds, e.g. 1 = note'],
+            ['#t', 'single-letter tags'],
+            ['since · until', 'a time window'],
+          ].map(([name, what], i) => (
+            <g key={name} transform={`translate(0 ${i * 36})`}>
+              <text x={720} y={262} fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">{name}</text>
+              <text x={850} y={262} fill={colors.TEXT} fontSize={14}>{what}</text>
+            </g>
+          ))}
+        </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
@@ -313,7 +335,7 @@ function Render_({ s }: { s: SceneState }) {
           <text x={640} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             set membership and a clock — that is the whole query language
           </text>
-          <text x={640} y={376} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={376} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-01 · ids · authors · kinds · #tag · since/until · limit
           </text>
         </g>

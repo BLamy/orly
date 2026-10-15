@@ -185,7 +185,7 @@ export function buildScene(): Scene {
     dur: 5.6,
     text: 'Dry run, level, sand, glue, wait. With that rhythm established, the bench can start going up one layer at a time.',
   });
-  tl.tween(dimAll, 0.13, { at: 55.5, dur: 1.2, ease: ease.move });
+  tl.tween(dimAll, 0.05, { at: 55.5, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 56.6, dur: 0.9, ease: ease.enter });
   tl.hold(60.7, 1.6);
 
@@ -283,7 +283,7 @@ export function Render({ s }: { s: SceneState }) {
           />
           {partsU > 0.5 && (
             <>
-              <text x={LEFT + RAIL_W * 0.15} y={RAIL_Y - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} opacity={partsU}>
+              <text x={LEFT + RAIL_W * 0.15} y={RAIL_Y - 26} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} opacity={partsU}>
                 48 in
               </text>
               <text x={LEFT - 16} y={RAIL_Y + RAIL_H + LEG_H / 2} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontWeight={700} opacity={partsU}>
@@ -300,7 +300,7 @@ export function Render({ s }: { s: SceneState }) {
           {errU > 0 && fixU < 1 && (
             <g opacity={errU * (1 - fixU)}>
               <line x1={LEFT - 30} y1={RAIL_Y + RAIL_H} x2={LEFT - 30} y2={RAIL_Y + RAIL_H - proud} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <text x={LEFT - 38} y={RAIL_Y + RAIL_H + 6} textAnchor="end" fill={colors.NEGATIVE} fontSize={13.5} fontWeight={700}>
+              <text x={LEFT - 38} y={RAIL_Y + RAIL_H + 6} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 ⅛ in proud
               </text>
             </g>
@@ -309,10 +309,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the level */}
           {levelU > 0 && (
             <g opacity={levelU}>
-              <rect x={CX - 110} y={RAIL_Y - 34} width={220} height={22} rx={4} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <circle cx={bubbleX} cy={RAIL_Y - 23} r={6} fill={bubbleU > 0.9 ? colors.POSITIVE : colors.WARM} />
-              <line x1={CX - 12} y1={RAIL_Y - 34} x2={CX - 12} y2={RAIL_Y - 12} stroke={colors.GRID} />
-              <line x1={CX + 12} y1={RAIL_Y - 34} x2={CX + 12} y2={RAIL_Y - 12} stroke={colors.GRID} />
+              <rect x={CX - 110} y={RAIL_Y - 62} width={220} height={22} rx={4} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <circle cx={bubbleX} cy={RAIL_Y - 51} r={6} fill={bubbleU > 0.9 ? colors.POSITIVE : colors.WARM} />
+              <line x1={CX - 12} y1={RAIL_Y - 62} x2={CX - 12} y2={RAIL_Y - 40} stroke={colors.GRID} />
+              <line x1={CX + 12} y1={RAIL_Y - 62} x2={CX + 12} y2={RAIL_Y - 40} stroke={colors.GRID} />
             </g>
           )}
 
@@ -353,7 +353,7 @@ export function Render({ s }: { s: SceneState }) {
           {screwU > 0 && (
             <g opacity={screwU}>
               {[LEFT + LEG_W / 2, LEFT + RAIL_W - LEG_W / 2].map((x, i) => (
-                <circle key={i} cx={x} cy={RAIL_Y + RAIL_H / 2} r={5} fill={colors.ACCENT} stroke={colors.BG} />
+                <circle key={i} cx={x} cy={RAIL_Y + RAIL_H + 34} r={5} fill={colors.ACCENT} stroke={colors.BG} />
               ))}
             </g>
           )}
@@ -380,7 +380,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={cx} y={cy + 7} textAnchor="middle" fill={colors.WARM} fontSize={26} fontWeight={700}>
                       {Math.round(lerp(0, 24, clockU))}h
                     </text>
-                    <text x={cx} y={cy + r + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    <text x={cx} y={cy + r + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       clamps stay on
                     </text>
                   </>

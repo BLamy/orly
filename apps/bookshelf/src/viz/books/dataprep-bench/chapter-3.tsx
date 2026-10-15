@@ -39,6 +39,10 @@ const PROXY = Array.from({ length: COUNT }, (_, i) => {
 });
 
 const KERNEL_PAIRS = Array.from({ length: 18 }, (_, i) => [i * 2 % COUNT, (i * 7 + 3) % COUNT] as const);
+const PROXY_CENTER = {
+  x: PROXY.reduce((sum, p) => sum + p.x, 0) / COUNT,
+  y: PROXY.reduce((sum, p) => sum + p.y, 0) / COUNT,
+};
 
 export function buildScene() {
   const tl = new Timeline();
@@ -122,13 +126,13 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>Distributional Alignment Score</text>
-          <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>DistflowDataset → OpenAIEmbed → MMDDistance</text>
+          <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>DistflowDataset → OpenAIEmbed → MMDDistance</text>
 
           <g opacity={cloudsU}>
             <rect x={182} y={128} width={420} height={400} rx={20} fill={colors.PANEL} fillOpacity={0.58} stroke={colors.ACCENT} strokeOpacity={0.6} />
             <rect x={678} y={128} width={420} height={400} rx={20} fill={colors.PANEL} fillOpacity={0.58} stroke={colors.SECONDARY} strokeOpacity={0.6} />
-            <text x={210} y={156} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>candidate dataset</text>
-            <text x={706} y={156} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>domain proxy</text>
+            <text x={210} y={156} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>candidate dataset</text>
+            <text x={706} y={156} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>domain proxy</text>
 
             {withinCandidateU > 0 && KERNEL_PAIRS.map(([a, b], i) => {
               const pa = pointPosition(a, alignU);
@@ -149,6 +153,16 @@ export function Render({ s }: { s: SceneState }) {
               return <line key={`x${i}`} x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y} stroke={colors.WARM} strokeWidth={1 + 2 * similarity} opacity={0.34 * similarity * crossU} />;
             })}
 
+            {alignU > 0 && (() => {
+              // The gap the caption names: the dashed span between the two cloud centres
+              // shrinks as the candidate moves toward the proxy.
+              const cx = CANDIDATE.reduce((sum, _, i) => sum + pointPosition(i, alignU).x, 0) / COUNT;
+              const cy = CANDIDATE.reduce((sum, _, i) => sum + pointPosition(i, alignU).y, 0) / COUNT;
+              return (
+                <line x1={cx} y1={cy} x2={PROXY_CENTER.x} y2={PROXY_CENTER.y} stroke={colors.WARM} strokeWidth={2} strokeDasharray="6 5" opacity={0.9 * clamp01(alignU * 3)} />
+              );
+            })()}
+
             {CANDIDATE.map((_, i) => {
               const p = pointPosition(i, alignU);
               const u = clamp01(cloudsU * 9 - i / 6);
@@ -161,17 +175,17 @@ export function Render({ s }: { s: SceneState }) {
 
             {s.get(scene.sampleU) > 0 && (
               <g opacity={s.get(scene.sampleU)}>
-                <text x={392} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>5,000 samples · seed=42</text>
-                <text x={888} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>5,000 samples · seed=42</text>
+                <text x={392} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>5,000 samples · seed=42</text>
+                <text x={888} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>5,000 samples · seed=42</text>
               </g>
             )}
             {s.get(scene.embedU) > 0 && (
-              <text x={640} y={546} textAnchor="middle" fill={colors.POSITIVE} opacity={s.get(scene.embedU)} fontSize={12} fontFamily={MONO}>Qwen3-Embedding-8B · 4096 dimensions · display is a 2D projection</text>
+              <text x={640} y={546} textAnchor="middle" fill={colors.POSITIVE} opacity={s.get(scene.embedU)} fontSize={13} fontFamily={MONO}>Qwen3-Embedding-8B · 4096 dimensions · display is a 2D projection</text>
             )}
             {kernelU > 0 && (
               <g opacity={kernelU}>
-                <rect x={480} y={94} width={320} height={26} rx={13} fill={colors.PANEL} stroke={colors.WARM} />
-                <text x={640} y={112} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>RBF kernel · sigma=1.0 · biased estimator</text>
+                <rect x={470} y={94} width={340} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} />
+                <text x={640} y={113} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>RBF kernel · sigma=1.0 · biased estimator</text>
               </g>
             )}
           </g>
@@ -179,16 +193,16 @@ export function Render({ s }: { s: SceneState }) {
           {/* Plain SVG text instead of KaTeX (MathLabel doubled up on screen).
               The cross term is tinted warm to match the cross-cloud lines. */}
           {s.get(scene.formulaU) > 0 && (
-            <text x={640} y={592} textAnchor="middle" fill={colors.TEXT} opacity={s.get(scene.formulaU)} fontSize={18} fontFamily={MONO}>
+            <text x={640} y={590} textAnchor="middle" fill={colors.TEXT} opacity={s.get(scene.formulaU)} fontSize={19} fontFamily={MONO}>
               MMD² = E[k(x,x′)] + E[k(y,y′)] <tspan fill={colors.WARM}>− 2·E[k(x,y)]</tspan>
             </text>
           )}
 
           {alignU > 0 && (
             <g opacity={clamp01(alignU * 3)}>
-              <rect x={500} y={556} width={280} height={14} rx={7} fill={colors.GRID} />
-              <rect x={500} y={556} width={280 * (1 - 0.78 * alignU)} height={14} rx={7} fill={colors.WARM} />
-              <text x={790} y={568} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>MMD gap</text>
+              <rect x={480} y={556} width={280} height={14} rx={7} fill={colors.GRID} />
+              <rect x={480} y={556} width={280 * (1 - 0.78 * alignU)} height={14} rx={7} fill={colors.WARM} />
+              <text x={772} y={568} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>MMD gap</text>
             </g>
           )}
         </g>
@@ -198,7 +212,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={230} y={238} width={820} height={182} rx={20} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
           <text x={640} y={301} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={750}>Measure the gap between clouds</text>
           <text x={640} y={347} textAnchor="middle" fill={colors.MUTED} fontSize={16}>embed · compare within · compare across · subtract</text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>DAS · training-free estimate of downstream utility</text>
+          <text x={640} y={384} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>DAS · training-free estimate of downstream utility</text>
         </g>
       )}
     </>

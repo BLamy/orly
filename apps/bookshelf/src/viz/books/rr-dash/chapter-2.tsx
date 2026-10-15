@@ -23,10 +23,10 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const LOG = { x: 70, y: 120, w: 350 };
-const FOLD = { x: 70, y: 396 };
-const REC = { x: 70, y: 462, w: 350 };
+const FOLD = { x: 70, y: 384 };
+const REC = { x: 70, y: 466, w: 350 };
 const GRID_POS = { x: 560, y: 130 };
-const CHUNKS = { x: 760, y: 250, w: 620 };
+const CHUNKS = { x: 700, y: 250, w: 620 };
 
 // Each camera keeps the index column (x 70–420) in frame when it can, so no
 // box is sliced by the stage edge.
@@ -70,6 +70,7 @@ const ROW_LABELS = HIT_ROWS.map((r) => `L${r.line}`);
 const CELL = 30;
 
 const REC_STREAMS = ['sources', 'hits', 'points', 'events', 'linetrace', 'stacks'];
+const CHIP_PITCH = 68;
 
 /* -------------------------------------------------------------- timeline */
 export function buildScene() {
@@ -78,15 +79,15 @@ export function buildScene() {
   const logU = tl.channel('logU', 0); // 0..4 entries appended
   const foldU = tl.channel('foldU', 0); // fold beam sweeps + result card
   const tombU = tl.channel('tombU', 0);
-  const recU = tl.channel('recU', 0); // rec/<id>/* rows enter
-  const wipeU = tl.channel('wipeU', 0); // delete→recreate flash
+  const recU = tl.channel('recU', 1); // rec/<id>/* rows are on screen from the start
+  const delU = tl.channel('delU', 0); // rec/<id>/* rows drain (delete)
+  const wipeU = tl.channel('wipeU', 0); // rows refill (recreate)
   const gridP = tl.channel('gridP', 0); // heat cells landing
   const hotU = tl.channel('hotU', 0); // highlight the 128 loop
   const pointU = tl.channel('pointU', 0); // event/ticks chip
   const chunkU = tl.channel('chunkU', 0); // chunk cards enter
   const flattenU = tl.channel('flattenU', 0); // chunks flatten to one tape
   const dimU = tl.channel('dimU', 0);
-  const oldU = tl.channel('oldU', 0); // older beats fade back while the chunks take over
   const closeU = tl.channel('closeU', 0);
 
   /* — beat 1 · setup — */
@@ -97,7 +98,6 @@ export function buildScene() {
     text: 'One recording, seven streams. This chapter is about their shape — because the shape is what makes the whole dashboard cheap to build.',
   });
   tl.tween(cam, CAM_LOG, { at: t - 4.6, dur: 1.4, ease: ease.move });
-  tl.tween(recU, 1, { at: t - 5.0, dur: 1.2, ease: ease.enter }); // the stream row is on screen from the start
   t = tl.hold(t, 0.5);
 
   /* — beat 2 · the index is append-only — */
@@ -134,6 +134,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'For the recording data itself, idempotency is blunter: on re-upload, each per recording stream is deleted and recreated from scratch, then the fresh index entry lands.',
   });
+  tl.tween(delU, 1, { at: t - 5.4, dur: 1.0, ease: ease.move });
   tl.tween(wipeU, 1, { at: t - 3.6, dur: 2.4, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -172,7 +173,6 @@ export function buildScene() {
     text: 'The line trace and the sampled stacks are too long for single messages, so they ship as chunks of up to a thousand entries. Reading them back is just flattening.',
   });
   tl.tween(cam, CAM_CHUNK, { at: t - 5.4, dur: 1.4, ease: ease.move });
-  tl.tween(oldU, 1, { at: t - 5.4, dur: 1.2, ease: ease.move });
   tl.tween(chunkU, 1, { at: t - 4.6, dur: 1.2, ease: ease.enter });
   tl.tween(flattenU, 1, { at: t - 2.8, dur: 2.0, ease: ease.move });
   t = tl.hold(t, 0.5);
@@ -188,7 +188,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: t - 4.0, dur: 0.8, ease: ease.enter });
   tl.hold(t, 1.2);
 
-  return { tl, cam, logU, foldU, tombU, recU, wipeU, gridP, hotU, pointU, chunkU, flattenU, dimU, oldU, closeU };
+  return { tl, cam, logU, foldU, tombU, recU, delU, wipeU, gridP, hotU, pointU, chunkU, flattenU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -198,7 +198,6 @@ const scene = buildScene();
 /** The recordings/index log — appended entries + the fold result. */
 function IndexLog({ logU, foldU, tombU, dim }: { logU: number; foldU: number; tombU: number; dim: number }) {
   const n = clamp01(logU / ENTRIES.length) * ENTRIES.length;
-  if (n <= 0) return null;
   const f = clamp01(foldU);
   const tb = clamp01(tombU);
   return (
@@ -206,14 +205,23 @@ function IndexLog({ logU, foldU, tombU, dim }: { logU: number; foldU: number; to
       <text x={LOG.x} y={LOG.y - 14} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         recordings/index · append-only
       </text>
-      {ENTRIES.map((e, i) => {
+      {/* empty log slot until the first upload lands */}
+      {n < 1 && (
+        <g opacity={1 - n}>
+          <rect x={LOG.x} y={LOG.y} width={LOG.w} height={46} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="4 4" />
+          <text x={LOG.x + LOG.w / 2} y={LOG.y + 27} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+            no entries yet
+          </text>
+        </g>
+      )}
+      {n <= 0 ? null : ENTRIES.map((e, i) => {
         const eu = clamp01(n - i);
         if (eu <= 0) return null;
         const shadow = e.shadowed ? f : 0; // fold dims the stale entry
         const tombed = e.tomb ? tb : 0;
         const y = LOG.y + i * 58;
         return (
-          <g key={i} transform={`translate(${LOG.x}, ${y + (1 - eu) * 10})`} opacity={eu * (1 - 0.6 * shadow)}>
+          <g key={i} transform={`translate(${LOG.x}, ${y + (1 - eu) * 10})`} opacity={eu * (1 - 0.4 * shadow)}>
             <rect
               width={LOG.w}
               height={46}
@@ -229,7 +237,7 @@ function IndexLog({ logU, foldU, tombU, dim }: { logU: number; foldU: number; to
               {e.note}
             </text>
             {shadow > 0.3 && (
-              <line x1={10} y1={23} x2={LOG.w - 10} y2={23} stroke={colors.MUTED} strokeWidth={1.6} opacity={shadow} />
+              <line x1={10} y1={15.5} x2={LOG.w - 10} y2={15.5} stroke={colors.MUTED} strokeWidth={1.6} opacity={shadow} />
             )}
             {tombed > 0.3 && (
               <text x={LOG.w - 14} y={29} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={tombed}>
@@ -259,30 +267,40 @@ function IndexLog({ logU, foldU, tombU, dim }: { logU: number; foldU: number; to
   );
 }
 
-/** rec/<id>/* rows with the delete→recreate wipe. */
-function RecStreams({ u, wipe, dim }: { u: number; wipe: number; dim: number }) {
+/** One recording's seven streams: recordings/index plus the six rec/<id>/* streams,
+ * which drain (delete) and refill (recreate) on re-upload. */
+function RecStreams({ u, del, wipe, dim }: { u: number; del: number; wipe: number; dim: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
   const wp = clamp01(wipe);
   return (
     <g transform={`translate(${REC.x}, ${REC.y})`} opacity={e * (1 - 0.85 * dim)}>
-      <text y={-10} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
-        rec/sample-cachesim-01/* · delete + recreate
+      <text y={-12} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        one recording · seven streams
+      </text>
+      <rect width={64} height={30} rx={6} fill={colors.BG} stroke={colors.MUTED} strokeWidth={1} strokeDasharray="4 3" />
+      <text x={32} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        index
       </text>
       {REC_STREAMS.map((name, i) => {
-        // each row wipes (shrinks to zero) then refills, staggered
-        const w = clamp01(wp * 8 - i);
-        const width = w < 0.5 ? 1 - w * 2 : (w - 0.5) * 2;
+        // each row drains (delete), then refills (recreate), staggered
+        const dd = clamp01(del * 2 - i * 0.2);
+        const refill = clamp01(wp * 8 - i);
+        const fill = wp > 0 ? refill : 1 - dd;
+        const x = (i + 1) * CHIP_PITCH;
         return (
-          <g key={name} transform={`translate(${i * 58}, 0)`}>
-            <rect width={52} height={30} rx={6} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
-            <rect x={3} y={3} width={46 * (wp > 0 ? width : 1)} height={24} rx={4} fill={colors.ACCENT} opacity={0.35} />
-            <text x={26} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={mono}>
+          <g key={name} transform={`translate(${x}, 0)`}>
+            <rect width={64} height={30} rx={6} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
+            <rect x={3} y={3} width={58 * fill} height={24} rx={4} fill={colors.ACCENT} opacity={0.35} />
+            <text x={32} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
               {name}
             </text>
           </g>
         );
       })}
+      <text x={CHIP_PITCH} y={64} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        rec/sample-cachesim-01/* · delete + recreate
+      </text>
     </g>
   );
 }
@@ -318,7 +336,7 @@ function ChunkRibbon({ u, flatten, dim }: { u: number; flatten: number; dim: num
   if (e <= 0) return null;
   const f = ease.move(clamp01(flatten));
   const n = 5;
-  const cw = 90;
+  const cw = 100;
   return (
     <g transform={`translate(${CHUNKS.x}, ${CHUNKS.y})`} opacity={e * (1 - 0.85 * dim)}>
       <text y={-14} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
@@ -337,7 +355,7 @@ function ChunkRibbon({ u, flatten, dim }: { u: number; flatten: number; dim: num
           <g key={i} transform={`translate(${x}, ${y})`} opacity={cu}>
             <rect width={cw} height={22} rx={f > 0.9 ? 2 : 6} fill={colors.ACCENT} opacity={0.3} />
             <rect width={cw} height={22} rx={f > 0.9 ? 2 : 6} fill="none" stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={cw / 2} y={15} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={mono}>
+            <text x={cw / 2} y={15} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={mono}>
               {i < n - 1 ? '1000 entries' : '…'}
             </text>
           </g>
@@ -363,10 +381,10 @@ function CloseCard({ u }: { u: number }) {
       <text y={-14} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         the whole storage engine
       </text>
-      <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         append-only index · latest-per-id fold
       </text>
-      <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+      <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         tombstones · chunked streams
       </text>
     </g>
@@ -376,15 +394,15 @@ function CloseCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
   const dim = clamp01(s.get(scene.dimU));
-  // the older layers (index, streams, grid) fade back for the chunk beat and the close
-  const fade = Math.max(dim, clamp01(s.get(scene.oldU)));
+  // the older layers (index, streams, grid) fade back as the chunks take over, and for the close
+  const fade = Math.max(dim, clamp01(s.get(scene.chunkU)));
   const gp = s.get(scene.gridP);
   const total = HIT_ROWS.length * 2;
   const hot = clamp01(s.get(scene.hotU));
   return (
     <Camera {...s.get(scene.cam)}>
       <IndexLog logU={s.get(scene.logU)} foldU={s.get(scene.foldU)} tombU={s.get(scene.tombU)} dim={fade} />
-      <RecStreams u={s.get(scene.recU)} wipe={s.get(scene.wipeU)} dim={fade} />
+      <RecStreams u={s.get(scene.recU)} del={s.get(scene.delU)} wipe={s.get(scene.wipeU)} dim={fade} />
       {gp > 0 && (
         <g opacity={1 - 0.85 * fade}>
           <text x={GRID_POS.x} y={GRID_POS.y - 34} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
@@ -414,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={GRID_POS.y + i * (CELL + 3) + CELL / 2 + 4}
                   textAnchor="middle"
                   fill={norm(h) > 0.75 ? colors.BG : colors.TEXT}
-                  fontSize={11}
+                  fontSize={12}
                   fontFamily={mono}
                   opacity={cu}
                 >

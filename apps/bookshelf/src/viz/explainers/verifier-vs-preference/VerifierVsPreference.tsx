@@ -2,6 +2,7 @@ import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core'
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
+  CAM_CURVES,
   CH_X0,
   CH_Y0,
   CLOUD_IDX,
@@ -58,6 +59,11 @@ function Frame({ s }: { s: SceneState }) {
   const siV = Math.max(0, Math.min(CURVE.length - 1, sweepV));
   const nowP = CURVE[Math.min(CURVE.length - 1, Math.round(siP))];
   const nowV = CURVE[Math.min(CURVE.length - 1, Math.round(siV))];
+  // the cloud leaves the stage as the camera pans to the curves, so it fades out with that pan
+  const cloudVis = 1 - clamp01((cam.x - STAGE_W / 2) / (CAM_CURVES.x - STAGE_W / 2));
+  // the chart's axes show whenever the camera has the whole chart on stage
+  const screenX = (x: number): number => STAGE_W / 2 + (x - cam.x) * cam.k;
+  const chartOnStage = screenX(CH_X0 - 40) >= 0 && screenX(chX(NS.length - 1) + 14) <= STAGE_W;
 
   return (
     <>
@@ -65,65 +71,75 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
-          {/* candidate cloud */}
-          {CLOUD_IDX.map((i, k) => {
-            const u = clamp01(cloudU * 1.5 - k / CLOUD_IDX.length);
-            if (u <= 0) return null;
-            const loop = LOOP[i];
-            const hot = loop && loopU > 0;
-            const fill = hot
-              ? colors.NEGATIVE
-              : corU > 0 && COR[i]
-                ? colors.POSITIVE
-                : colors.MUTED;
-            return (
-              <circle
-                key={i}
-                cx={cldX(FLU[i])}
-                cy={cldY(PREF[i])}
-                r={hot ? 4.5 : 2.5}
-                fill={fill}
-                opacity={u * (hot ? 0.95 : COR[i] ? 0.55 : 0.3)}
-              />
-            );
-          })}
-          <g opacity={cloudU}>
-            <text x={cldX(0.5)} y={550} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
-              fluency / confidence →
-            </text>
-            <text x={94} y={315} textAnchor="middle" fill={colors.MUTED} fontSize={13} transform="rotate(-90 94 315)">
-              preference score →
-            </text>
+          {/* candidate cloud (a faint ghost is visible before it draws in) */}
+          <g opacity={cloudVis}>
+            {CLOUD_IDX.map((i, k) => {
+              const u = Math.max(0.15, clamp01(cloudU * 1.5 - k / CLOUD_IDX.length));
+              const loop = LOOP[i];
+              const hot = loop && loopU > 0;
+              const fill = hot
+                ? colors.NEGATIVE
+                : corU > 0 && COR[i]
+                  ? colors.POSITIVE
+                  : colors.MUTED;
+              return (
+                <circle
+                  key={i}
+                  cx={cldX(FLU[i])}
+                  cy={cldY(PREF[i])}
+                  r={hot ? 4.5 : 2.5}
+                  fill={fill}
+                  opacity={u * (hot ? 0.95 : COR[i] ? 0.55 : 0.3)}
+                />
+              );
+            })}
+            <g opacity={cloudU}>
+              <text x={cldX(0.5)} y={534} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+                fluency / confidence →
+              </text>
+              <text x={94} y={315} textAnchor="middle" fill={colors.MUTED} fontSize={14} transform="rotate(-90 94 315)">
+                preference score →
+              </text>
+            </g>
+            {corU > 0.4 && (
+              <text x={cldX(0.06)} y={92} fill={colors.POSITIVE} fontSize={14} opacity={corU}>
+                green: actually passes the tests (38%)
+              </text>
+            )}
+            {loopU > 0.5 && (
+              <text x={cldX(0.2)} y={124} fill={colors.NEGATIVE} fontSize={14} opacity={loopU}>
+                confident nonsense: wrong, loved by the judge
+              </text>
+            )}
           </g>
-          {corU > 0.4 && (
-            <text x={cldX(0.06)} y={92} fill={colors.POSITIVE} fontSize={13.5} opacity={corU}>
-              green: actually passes the tests (38%)
-            </text>
-          )}
-          {loopU > 0.5 && (
-            <text x={cldX(0.2)} y={124} fill={colors.NEGATIVE} fontSize={13.5} opacity={loopU}>
-              confident nonsense: wrong, loved by the judge
-            </text>
-          )}
 
-          {/* accuracy vs n */}
-          {axU > 0 && (
-            <g opacity={axU}>
+          {/* accuracy vs n: the axes are visible from the start while on stage, the curves come in later */}
+          {(axU > 0 || chartOnStage) && (
+            <g opacity={0.3 + 0.7 * axU}>
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={chX(NS.length - 1) + 10} y2={CH_Y0} stroke={colors.GRID} />
               <line x1={CH_X0 - 8} y1={CH_Y0} x2={CH_X0 - 8} y2={chY(1.02)} stroke={colors.GRID} />
               {NS.map((n, i) => (
-                <text key={n} x={chX(i)} y={CH_Y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                <text key={n} x={chX(i)} y={CH_Y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {n}
                 </text>
               ))}
-              <text x={chX(4)} y={CH_Y0 + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={chX(4)} y={CH_Y0 + 42} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 n samples (optimization pressure) →
               </text>
-              <text x={CH_X0 - 20} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 20} y={chY(1) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 1.0
               </text>
-              <text x={CH_X0 - 20} y={chY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={CH_X0 - 20} y={chY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 0
+              </text>
+            </g>
+          )}
+          {/* before the sweep: one draw, the base rate, the starting point of both curves */}
+          {axU > 0.5 && sweepP < 0.5 && (
+            <g opacity={clamp01(1 - sweepP * 2) * clamp01((axU - 0.5) * 2)}>
+              <circle cx={chX(0)} cy={chY(CURVE[0].proxy)} r={5} fill={colors.WARM} />
+              <text x={chX(0) + 12} y={chY(CURVE[0].proxy) + 24} fill={colors.WARM} fontSize={13}>
+                {`one draw: ${CURVE[0].proxy.toFixed(2)} correct`}
               </text>
             </g>
           )}
@@ -159,7 +175,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* screen-fixed math */}
       <MathLabel
         tex={'P(\\text{correct}) = 1-(1-p)^n'}
-        x={1050}
+        x={980}
         y={70}
         fontSize={19}
         color={colors.POSITIVE}
@@ -169,7 +185,7 @@ function Frame({ s }: { s: SceneState }) {
       {/* clean ending card */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
+          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Verifiable Rewards
           </text>

@@ -91,7 +91,8 @@ export const DAG = {
 } as const;
 
 export const CAM_DAG: CameraState = { x: 260, y: 300, k: 1.4 };
-export const CAM_PLOT: CameraState = { x: 780, y: 350, k: 1.1 };
+// wide enough that the machine stays on stage beside the plot
+export const CAM_PLOT: CameraState = { x: 690, y: 355, k: 0.95 };
 
 export interface Scene {
   tl: Timeline;

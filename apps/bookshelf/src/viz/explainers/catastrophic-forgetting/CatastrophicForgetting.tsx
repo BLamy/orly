@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -52,6 +52,12 @@ function fnPath(ys: number[], half?: 'left' | 'right'): string {
 const LOG_LO = -4; // loss strip chart is log-scaled 1e-4..1e1
 const lossY = (l: number): number =>
   LOSS_Y0 - clamp01((Math.log10(Math.max(l, 1e-4)) - LOG_LO) / 5) * LOSS_H;
+const LOSS_TICKS: [number, string][] = [
+  [10, '10'],
+  [1, '1'],
+  [0.01, '0.01'],
+  [0.0001, '1e-4'],
+];
 
 function lossPath(trace: number[], upTo: number): string {
   const n = Math.max(2, Math.min(trace.length, Math.ceil(upTo) + 1));
@@ -97,10 +103,11 @@ function Frame({ s }: { s: SceneState }) {
           <g opacity={axU}>
             <line x1={px(X_MIN)} y1={py(0)} x2={px(X_MAX)} y2={py(0)} stroke={colors.GRID} />
             <line x1={px(0)} y1={py(-1.7)} x2={px(0)} y2={py(2.2)} stroke={colors.GRID} strokeDasharray="4 6" />
-            <text x={px(-1)} y={py(-1.85)} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            {/* region labels sit in the empty band above the curves, clear of the panels below */}
+            <text x={px(-1)} y={py(2.0)} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85}>
               task A lives here
             </text>
-            <text x={px(1)} y={py(-1.85)} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={targetBU}>
+            <text x={px(1)} y={py(2.0)} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={0.85 * targetBU}>
               task B lives here
             </text>
           </g>
@@ -126,24 +133,32 @@ function Frame({ s }: { s: SceneState }) {
             <path d={fnPath(fn)} fill="none" stroke={replayMode > 0.5 ? colors.POSITIVE : colors.ACCENT} strokeWidth={3.5} opacity={0.95} />
           )}
 
-          {/* phase label */}
-          <text x={px(X_MIN)} y={110} fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={axU}>
-            {replayMode > 0.5
-              ? `fine-tune on B with replay — step ${Math.round((trainR / (N_SNAPS - 1)) * 3000)}`
-              : trainB > 0
-                ? `fine-tune on B only — step ${Math.round((trainB / (N_SNAPS - 1)) * 3000)}`
-                : `pretraining on A — step ${Math.round((trainA / (RUN.snapsA.length - 1)) * 3000)}`}
-          </text>
         </g>
       </Camera>
+
+      {/* phase label, screen-fixed in the top-left corner so no curve runs through it */}
+      <text x={120} y={62}fill={colors.TEXT} fontSize={17} fontWeight={600} opacity={axU * dimU}>
+        {replayMode > 0.5
+          ? `fine-tune on B with replay — step ${Math.round((trainR / (N_SNAPS - 1)) * 3000)}`
+          : trainB > 0
+            ? `fine-tune on B only — step ${Math.round((trainB / (N_SNAPS - 1)) * 3000)}`
+            : `pretraining on A — step ${Math.round((trainA / (RUN.snapsA.length - 1)) * 3000)}`}
+      </text>
 
       {/* loss-on-A strip chart (screen-fixed, kept above y=630 content-wise) */}
       {lossU > 0 && (
         <g opacity={lossU * dimU}>
-          <rect x={LOSS_X0 - 24} y={LOSS_Y0 - LOSS_H - 34} width={LOSS_W + 48} height={LOSS_H + 52} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-          <text x={LOSS_X0 - 6} y={LOSS_Y0 - LOSS_H - 12} fill={colors.TEXT} fontSize={13} fontWeight={600}>
+          <rect x={LOSS_X0 - 64} y={LOSS_Y0 - LOSS_H - 34} width={LOSS_W + 88} height={LOSS_H + 52} rx={12} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+          <text x={LOSS_X0 - 52} y={LOSS_Y0 - LOSS_H - 12} fill={colors.TEXT} fontSize={13} fontWeight={600}>
             loss on task A (log scale)
           </text>
+          {/* y-axis: decade ticks on the log scale */}
+          <line x1={LOSS_X0 - 6} y1={LOSS_Y0 - LOSS_H} x2={LOSS_X0 - 6} y2={LOSS_Y0} stroke={colors.GRID} />
+          {LOSS_TICKS.map(([v, label]) => (
+            <text key={label} x={LOSS_X0 - 12} y={lossY(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              {label}
+            </text>
+          ))}
           <path
             d={lossPath(lossTrace, lossProg)}
             fill="none"
@@ -157,17 +172,35 @@ function Frame({ s }: { s: SceneState }) {
       {/* stat panel */}
       {statU > 0 && (
         <g opacity={statU * dimU}>
-          <rect x={72} y={470} width={330} height={replayMode > 0.5 ? 116 : 92} rx={12} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
-          <text x={92} y={500} fill={colors.NEGATIVE} fontSize={14.5}>
-            {`B only:   A ${RUN.finalA_afterA.toFixed(4)} → ${RUN.finalA_afterB.toFixed(2)}`}
+          <rect x={72} y={468} width={330} height={replayMode > 0.5 ? 96 : 66} rx={12} fill={colors.PANEL} opacity={0.93} stroke={colors.GRID} />
+          {/* a small table: label column, task A column, task B column */}
+          <text x={196} y={492} fill={colors.MUTED} fontSize={12}>
+            task A loss
           </text>
-          <text x={92} y={528} fill={colors.MUTED} fontSize={14.5}>
-            {`           B ${RUN.finalB_afterB.toFixed(4)}`}
+          <text x={330} y={492} fill={colors.MUTED} fontSize={12}>
+            task B loss
+          </text>
+          <text x={88} y={518} fill={colors.TEXT} fontSize={14.5}>
+            B only
+          </text>
+          <text x={196} y={518} fill={colors.NEGATIVE} fontSize={14.5}>
+            {`${RUN.finalA_afterA.toFixed(4)} → ${RUN.finalA_afterB.toFixed(2)}`}
+          </text>
+          <text x={330} y={518} fill={colors.TEXT} fontSize={14.5}>
+            {RUN.finalB_afterB.toFixed(4)}
           </text>
           {replayMode > 0.5 && (
-            <text x={92} y={556} fill={colors.POSITIVE} fontSize={14.5}>
-              {`replay:  A ${RUN.finalA_afterR.toFixed(3)} · B ${RUN.finalB_afterR.toFixed(3)}`}
-            </text>
+            <g>
+              <text x={88} y={544} fill={colors.POSITIVE} fontSize={14.5}>
+                replay
+              </text>
+              <text x={196} y={544} fill={colors.POSITIVE} fontSize={14.5}>
+                {RUN.finalA_afterR.toFixed(3)}
+              </text>
+              <text x={330} y={544} fill={colors.POSITIVE} fontSize={14.5}>
+                {RUN.finalB_afterR.toFixed(3)}
+              </text>
+            </g>
           )}
         </g>
       )}
@@ -179,15 +212,13 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Catastrophic Forgetting
           </text>
-          <MathLabel
-            tex={'\\text{loss}_A:\\; 0.0002 \\to 3.36 \\;\\;\\text{(B only)} \\qquad 0.010 \\;\\;\\text{(replay)}'}
-            x={640}
-            y={340}
-            fontSize={19}
-            color={colors.NEGATIVE}
-            opacity={endU}
-          />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={336} textAnchor="middle" fill={colors.NEGATIVE} fontSize={19}>
+            {'loss on task A:  0.0002 → 3.36 after B only'}
+          </text>
+          <text x={640} y={366} textAnchor="middle" fill={colors.POSITIVE} fontSize={19}>
+            {'0.010 with replay'}
+          </text>
+          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             shared neurons are the cheapest material for the new task — unless the old one keeps voting
           </text>
         </g>

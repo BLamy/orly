@@ -31,6 +31,9 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 const BUNDLE_COLORS = [colors.SECONDARY, colors.POSITIVE, colors.TEAL, colors.SECONDARY, colors.POSITIVE, colors.TEAL];
 
+/** Dark halo behind lattice numbers so a path line never runs through them. */
+const HALO = { stroke: colors.BG, strokeWidth: 4, paintOrder: 'stroke' } as const;
+
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const latU = s.get(scene.latU);
@@ -51,44 +54,8 @@ function Frame({ s }: { s: SceneState }) {
 
       <Camera {...cam}>
         <g opacity={dimU}>
-          {/* the lattice */}
-          {P.map((row, t) =>
-            row.map((p, sym) => {
-              const u = clamp01(latU * (T_FRAMES + 3) - t);
-              if (u <= 0) return null;
-              const onGreedy = greedyU >= t + 0.5 && GREEDY_PATH[t] === sym;
-              return (
-                <g key={`${t}-${sym}`} opacity={u}>
-                  <circle
-                    cx={latX(t)}
-                    cy={latY(sym)}
-                    r={9 + 34 * p}
-                    fill={onGreedy ? colors.NEGATIVE : colors.PANEL}
-                    opacity={onGreedy ? 0.9 : 0.9}
-                    stroke={onGreedy ? colors.NEGATIVE : colors.GRID}
-                    strokeWidth={1.5}
-                  />
-                  <text x={latX(t)} y={latY(sym) + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
-                    {SYMS[sym]}
-                  </text>
-                  <text x={latX(t)} y={latY(sym) + 34 * p + 24} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-                    {p.toFixed(2)}
-                  </text>
-                </g>
-              );
-            }),
-          )}
-          {/* frame labels */}
-          {Array.from({ length: T_FRAMES }, (_, t) => (
-            <text key={t} x={latX(t)} y={latY(0) - 58} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={latU}>
-              {`frame ${t + 1}`}
-            </text>
-          ))}
-          <text x={latX(0) - 88} y={latY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} opacity={latU}>
-            blank
-          </text>
-
-          {/* greedy trace */}
+          {/* paths and sweep cursor sit under the lattice nodes, so their
+              letters stay readable where a line crosses a node */}
           {greedyU > 0 && (
             <g>
               <polyline
@@ -100,11 +67,6 @@ function Frame({ s }: { s: SceneState }) {
                 strokeWidth={3}
                 opacity={0.8}
               />
-              {greedyU >= T_FRAMES - 0.1 && (
-                <text x={latX(T_FRAMES - 1) + 56} y={latY(0) + 4} fill={colors.NEGATIVE} fontSize={14}>
-                  → ∅
-                </text>
-              )}
             </g>
           )}
 
@@ -126,8 +88,82 @@ function Frame({ s }: { s: SceneState }) {
                 />
               );
             })}
+
+          {/* sweep cursor over the lattice */}
+          {beamU > 0.15 && (
+            <line
+              x1={latX(Math.min(T_FRAMES - 1, beamFrame - 0.5))}
+              y1={latY(0) - 48}
+              x2={latX(Math.min(T_FRAMES - 1, beamFrame - 0.5))}
+              y2={latY(2) + 48}
+              stroke={colors.ACCENT}
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              opacity={0.7}
+            />
+          )}
+
+          {/* the lattice */}
+          {P.map((row, t) =>
+            row.map((p, sym) => {
+              const u = clamp01(latU * (T_FRAMES + 3) - t);
+              if (u <= 0) return null;
+              const onGreedy = greedyU >= t + 0.5 && GREEDY_PATH[t] === sym;
+              return (
+                <g key={`${t}-${sym}`} opacity={u}>
+                  <circle
+                    cx={latX(t)}
+                    cy={latY(sym)}
+                    r={9 + 34 * p}
+                    fill={onGreedy ? colors.NEGATIVE : colors.PANEL}
+                    opacity={onGreedy ? 0.9 : 0.9}
+                    stroke={onGreedy ? colors.NEGATIVE : colors.GRID}
+                    strokeWidth={1.5}
+                  />
+                  <text x={latX(t)} y={latY(sym) + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+                    {SYMS[sym]}
+                  </text>
+                  <text
+                    x={latX(t)}
+                    y={latY(sym) + 34 * p + 24}
+                    textAnchor="middle"
+                    fill={colors.MUTED}
+                    fontSize={12}
+                    {...HALO}
+                  >
+                    {p.toFixed(2)}
+                  </text>
+                </g>
+              );
+            }),
+          )}
+          {/* frame labels */}
+          {Array.from({ length: T_FRAMES }, (_, t) => (
+            <text
+              key={t}
+              x={latX(t)}
+              y={latY(0) - 58}
+              textAnchor="middle"
+              fill={colors.MUTED}
+              fontSize={14}
+              opacity={latU}
+              {...HALO}
+            >
+              {`frame ${t + 1}`}
+            </text>
+          ))}
+          <text x={latX(0) - 88} y={latY(0) + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} opacity={latU}>
+            blank
+          </text>
+
+          {/* greedy end and AB end labels */}
+          {greedyU >= T_FRAMES - 0.1 && (
+            <text x={latX(T_FRAMES - 1) + 56} y={latY(0) + 5} fill={colors.NEGATIVE} fontSize={14}>
+              → ∅
+            </text>
+          )}
           {sumU > 0.8 && (
-            <text x={latX(T_FRAMES - 1) + 56} y={latY(1) + 4} fill={colors.SECONDARY} fontSize={14} opacity={clamp01((sumU - 0.8) * 5) * (sumU > 0.5 ? 1 : 0)}>
+            <text x={latX(T_FRAMES - 1) + 56} y={latY(1) + 5} fill={colors.SECONDARY} fontSize={14} opacity={clamp01((sumU - 0.8) * 5) * (sumU > 0.5 ? 1 : 0)}>
               → A B
             </text>
           )}
@@ -145,7 +181,7 @@ function Frame({ s }: { s: SceneState }) {
                     {label === '' ? '∅' : label.split('').join(' ')}
                   </text>
                   <rect x={1020} y={181 + i * 28} width={p * 900} height={13} rx={3} fill={i === 0 ? colors.POSITIVE : colors.MUTED} opacity={0.8} />
-                  <text x={1030 + p * 900} y={192 + i * 28} fill={colors.MUTED} fontSize={12}>
+                  <text x={1030 + p * 900} y={192 + i * 28} fill={colors.TEXT} fontSize={14}>
                     {p.toFixed(3)}
                   </text>
                 </g>
@@ -154,7 +190,7 @@ function Frame({ s }: { s: SceneState }) {
                 ∅ (greedy)
               </text>
               <rect x={1055} y={181 + 4 * 28} width={P_EMPTY * 900} height={13} rx={3} fill={colors.NEGATIVE} opacity={0.8} />
-              <text x={1065 + P_EMPTY * 900} y={192 + 4 * 28} fill={colors.MUTED} fontSize={12}>
+              <text x={1065 + P_EMPTY * 900} y={192 + 4 * 28} fill={colors.TEXT} fontSize={14}>
                 {P_EMPTY.toFixed(3)}
               </text>
             </g>
@@ -169,26 +205,15 @@ function Frame({ s }: { s: SceneState }) {
               </text>
               {beamRows.map((b, i) => (
                 <g key={i}>
-                  <text x={955} y={434 + i * 30} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={15}>
+                  <text x={955} y={434 + i * 30} fill={i === 0 ? colors.ACCENT : colors.TEXT} fontSize={14}>
                     {b.label === '∅' ? '∅' : b.label.split('').join(' ')}
                   </text>
-                  <rect x={1035} y={423 + i * 30} width={b.p * 380} height={14} rx={3} fill={i === 0 ? colors.ACCENT : colors.MUTED} opacity={0.8} />
-                  <text x={1045 + b.p * 380} y={434 + i * 30} fill={colors.MUTED} fontSize={12}>
+                  <rect x={1035} y={423 + i * 30} width={b.p * 250} height={14} rx={3} fill={i === 0 ? colors.ACCENT : colors.MUTED} opacity={0.8} />
+                  <text x={1043 + b.p * 250} y={434 + i * 30} fill={colors.TEXT} fontSize={14}>
                     {b.p.toFixed(3)}
                   </text>
                 </g>
               ))}
-              {/* sweep cursor over the lattice */}
-              <line
-                x1={latX(Math.min(T_FRAMES - 1, beamFrame - 0.5))}
-                y1={latY(0) - 48}
-                x2={latX(Math.min(T_FRAMES - 1, beamFrame - 0.5))}
-                y2={latY(2) + 48}
-                stroke={colors.ACCENT}
-                strokeWidth={2}
-                strokeDasharray="5 5"
-                opacity={0.7}
-              />
             </g>
           )}
         </g>
@@ -198,29 +223,32 @@ function Frame({ s }: { s: SceneState }) {
       <MathLabel
         tex={`p(\\text{AB}) = ${BEST[1].toFixed(3)} \\;\\approx\\; ${RATIO.toFixed(0)}\\,p(\\varnothing)`}
         x={985}
-        y={70}
+        y={34}
         fontSize={19}
         color={colors.WARM}
         opacity={s.get(scene.mathU)}
       />
 
-      {/* clean ending card */}
+      {/* clean ending card: solid panel, so the faded scene never shows through */}
       {endU > 0 && (
         <g opacity={endU}>
-          <rect x={230} y={214} width={820} height={220} rx={16} fill={colors.PANEL} opacity={0.94} stroke={colors.GRID} />
-          <text x={640} y={284} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
+          <rect x={230} y={200} width={820} height={262} rx={16} fill={colors.PANEL} opacity={1} stroke={colors.GRID} />
+          <text x={640} y={268} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={650}>
             Sum, Then Decide
           </text>
           <MathLabel
             tex={'\\arg\\max_{\\pi} p(\\pi) \\;\\ne\\; \\arg\\max_{y} \\sum_{\\pi \\to y} p(\\pi)'}
             x={640}
-            y={340}
+            y={330}
             fontSize={20}
             color={colors.ACCENT}
             opacity={endU}
           />
-          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
+          <text x={640} y={384} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
             greedy read silence at 0.007 — the summed transcript said A B at 0.128
+          </text>
+          <text x={640} y={428} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+            Long products of factors below one shrink fast — the vanishing-gradient chain.
           </text>
         </g>
       )}

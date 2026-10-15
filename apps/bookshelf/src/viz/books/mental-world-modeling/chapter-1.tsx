@@ -114,7 +114,7 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={800}>The right scene can produce the wrong action</text>
-      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>one world · two coupled state channels</text>
+      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>one world · two coupled state channels</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim * roomU}>
@@ -135,8 +135,8 @@ export function Render({ s }: { s: SceneState }) {
           <text x={22} y={46} fill={colors.TEXT} fontSize={14}>mug position</text>
           <line x1={240} y1={36} x2={834} y2={36} stroke={colors.GRID} strokeWidth={5} strokeLinecap="round" />
           <circle cx={lerp(300, 790, move)} cy={36} r={10} fill={colors.ACCENT} />
-          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>desk</text>
-          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>cabinet</text>
+          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>desk</text>
+          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>cabinet</text>
         </g>
 
         <g transform="translate(140 528)" opacity={mentalU}>
@@ -145,12 +145,12 @@ export function Render({ s }: { s: SceneState }) {
           <text x={22} y={46} fill={colors.TEXT} fontSize={14}>target belief</text>
           <line x1={240} y1={36} x2={834} y2={36} stroke={colors.GRID} strokeWidth={5} strokeLinecap="round" />
           <circle cx={300} cy={36} r={10 + s.get(scene.beliefPulse) * 4} fill={colors.WARM} />
-          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>desk</text>
-          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>cabinet</text>
+          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>desk</text>
+          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>cabinet</text>
         </g>
 
         <path d="M134 478 C95 500 95 538 134 560" fill="none" stroke={colors.POSITIVE} strokeWidth={3} opacity={s.get(scene.coupledU)} />
-        <text x={70} y={523} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={s.get(scene.coupledU)}>WorldState</text>
+        <text x={70} y={523} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={s.get(scene.coupledU)}>WorldState</text>
 
         <SearchDot fromX={640} toX={920} y={188} u={s.get(scene.physicalGuess)} color={colors.NEGATIVE} label="physical-only guess" alpha={1 - s.get(scene.coupledU)} />
         <SearchDot fromX={640} toX={340} y={188} u={s.get(scene.beliefGuess)} color={colors.POSITIVE} label="belief-grounded guess" />
@@ -161,11 +161,12 @@ export function Render({ s }: { s: SceneState }) {
 
         <g opacity={s.get(scene.schemaU)} transform="translate(388 96)">
           <rect width={504} height={46} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={252} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>mentis/schema.py</text>
+          <text x={252} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>mentis/schema.py</text>
           <text x={252} y={38} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>WorldState(physical_state, mental_state)</text>
         </g>
       </g>
     </Camera>
+    <rect width={1280} height={720} fill={colors.BG} opacity={0.9 * s.get(scene.endU)} />
     <g opacity={s.get(scene.endU)}>
       <rect x={190} y={236} width={900} height={196} rx={26} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={302} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={850}>One world state, two coupled truths</text>

@@ -233,12 +233,12 @@ function computeCloud(s: SceneState) {
   return DOTS.map((d, k) => {
     const appear = clamp01(cloudU * 1.6 - (k / N_DOTS) * 0.6);
     const lit = clamp01((wave - d.litAt) * 9) * (1 - cancelU);
-    const settled = 1 - 0.5 * form; // readers sit quieter than the swarm
+    const settled = 1 - 0.2 * form; // readers sit a little quieter than the swarm
     return {
       x: lerp(d.ax, d.bx, form),
       y: lerp(d.ay, d.by, form),
       r: 1.9 + 2.1 * lit,
-      alpha: appear * (0.14 + 0.62 * lit + 0.1 * form) * dim * raceDim * settled,
+      alpha: appear * (0.26 + 0.6 * lit + 0.1 * form) * dim * raceDim * settled,
       color: lit > 0.03 ? colors.WARM : colors.MUTED,
     };
   });
@@ -251,13 +251,13 @@ function MiniStack({ x, y, w, h, gap, items, u, color, label }: {
   if (u <= 0.01) return null;
   return (
     <g opacity={u}>
-      <text x={x + w / 2} y={y - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+      <text x={x + w / 2} y={y - 12} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
         {label}
       </text>
       {items.map((it, i) => (
         <g key={i} opacity={clamp01(u * items.length - i)}>
           <rect x={x} y={y + i * (h + gap)} width={w} height={h} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={1.2} />
-          <text x={x + w / 2} y={y + i * (h + gap) + h / 2 + 4} textAnchor="middle" fill={color} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={x + w / 2} y={y + i * (h + gap) + h / 2 + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily="ui-monospace, monospace">
             {it}
           </text>
         </g>
@@ -294,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the follower murmuration / reader crowd */}
         <ParticleCloud state={s} compute={computeCloud} />
         <g opacity={clamp01(form * 2 - 1) * faded}>
-          <text x={1010} y={578} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={1010} y={578} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             the same crowd — now just readers
           </text>
         </g>
@@ -306,10 +306,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={CELEB.x} y={CELEB.y + 5} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={800}>
             ★
           </text>
-          <text x={CELEB.x} y={CELEB.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <text x={CELEB.x} y={CELEB.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             highly-followed user
           </text>
-          <text x={CELEB.x} y={CELEB.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={CELEB.x} y={CELEB.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
             followers: 5,000,000
           </text>
         </g>
@@ -325,7 +325,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={CELEB.x} y={CELEB.y + 108} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} fontFamily="ui-monospace, monospace">
               {fmt(fanN)}
             </text>
-            <text x={CELEB.x} y={CELEB.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={CELEB.x} y={CELEB.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               inserts… of 5,000,000
             </text>
           </g>
@@ -371,20 +371,20 @@ export function Render({ s }: { s: SceneState }) {
         {/* hybrid zone chip — the many keep fan-out on write */}
         <g opacity={zoneU * faded * (1 - 0.5 * clamp01(mergeU * 3))}>
           <rect x={430} y={95} width={330} height={44} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-          <text x={595} y={113} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
+          <text x={595} y={113} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
             most accounts: fan out on write
           </text>
-          <text x={595} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-            average audience ≈ 10 — cheap, as in chapter two
+          <text x={595} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            average tweet reaches ≈ 10 followers — cheap
           </text>
         </g>
 
         {/* an ordinary account: ten copies, made at write time */}
         <g opacity={zoneU * faded * (1 - 0.5 * clamp01(mergeU * 3))}>
-          <text x={230} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+          <text x={230} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
             an ordinary account
           </text>
-          <text x={230} y={488} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={230} y={488} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             ten copies, made on write
           </text>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
@@ -425,7 +425,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the zipper merge into one time-ordered feed */}
         {mergeU > 0 && (
           <g opacity={faded}>
-            <text x={FEED.x + FEED.w / 2} y={FEED.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+            <text x={FEED.x + FEED.w / 2} y={FEED.y - 26} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
               your feed — merged at serve time
             </text>
             {MERGED.map((c, i) => {
@@ -438,10 +438,10 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={clamp01(u * 4)}>
                   <rect x={x - FEED.w / 2} y={y - FEED.h / 2} width={FEED.w} height={FEED.h} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.4} opacity={0.95} />
-                  <text x={x - FEED.w / 2 + 14} y={y + 4} fill={color} fontSize={12} fontFamily="ui-monospace, monospace">
+                  <text x={x - FEED.w / 2 + 14} y={y + 5} fill={color} fontSize={14} fontWeight={600} fontFamily="ui-monospace, monospace">
                     {c.from === 'celeb' ? '★ ' : ''}{c.time}
                   </text>
-                  <text x={x + FEED.w / 2 - 14} y={y + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+                  <text x={x + FEED.w / 2 - 14} y={y + 4} textAnchor="end" fill={colors.TEXT} fontSize={12} opacity={0.75}>
                     {c.from === 'cache' ? 'cached' : 'merged in'}
                   </text>
                 </g>
@@ -467,7 +467,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={246} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             written once · read relentlessly
           </text>
-          <text x={640} y={284} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+          <text x={640} y={284} textAnchor="middle" fill={colors.ACCENT} fontSize={15}>
             fan out to the many — cache every feed — merge in the few
           </text>
 

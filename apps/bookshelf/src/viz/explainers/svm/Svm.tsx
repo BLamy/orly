@@ -150,8 +150,8 @@ function Frame({ s }: { s: SceneState }) {
           {/* width chip */}
           {streetU > 0.9 && (
             <g opacity={clamp01((streetU - 0.9) * 10)}>
-              <rect x={PLOT.x + 16} y={PLOT.y + 16} width={220} height={34} rx={9} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
-              <text x={PLOT.x + 32} y={PLOT.y + 39} fill={colors.POSITIVE} fontSize={15}>
+              <rect x={PLOT.x} y={PLOT.y - 46} width={220} height={34} rx={9} fill={colors.PANEL} opacity={0.92} stroke={colors.GRID} />
+              <text x={PLOT.x + 16} y={PLOT.y - 23} fill={colors.POSITIVE} fontSize={15}>
                 {`street width = ${SOLVED.marg.toFixed(2)}`}
               </text>
             </g>
@@ -178,7 +178,7 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
           {deleteU > 0.2 && deleteU < 0.98 && (
-            <text x={sx(POINTS[FAR_IDX].x)} y={sy(POINTS[FAR_IDX].y) - 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={1 - deleteU}>
+            <text x={sx(POINTS[FAR_IDX].x)} y={sy(POINTS[FAR_IDX].y) - 16} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={1 - deleteU}>
               deleted
             </text>
           )}
@@ -199,8 +199,8 @@ function Frame({ s }: { s: SceneState }) {
                         key={idx}
                         x={XPLOT.x + c * XCELL}
                         y={XPLOT.y + r * XCELL}
-                        width={XCELL + 0.5}
-                        height={XCELL + 0.5}
+                        width={XCELL + 1}
+                        height={XCELL + 1}
                         fill={col}
                         opacity={0.08 + 0.2 * conf}
                       />
@@ -235,7 +235,7 @@ function Frame({ s }: { s: SceneState }) {
                 <g key={i}>
                   <circle cx={xxs(p.x)} cy={xys(p.y)} r={10} fill={p.c === 1 ? POS : NEG} stroke={colors.BG} strokeWidth={1.5} />
                   {liftU > 0.6 && (
-                    <text x={xxs(p.x)} y={xys(p.y) - 18} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={liftU}>
+                    <text x={xxs(p.x)} y={xys(p.y) - 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={liftU}>
                       {p.c === 1 ? '+1' : '−1'}
                     </text>
                   )}
@@ -254,7 +254,7 @@ function Frame({ s }: { s: SceneState }) {
         fontSize={18}
         opacity={texU}
       />
-      <MathLabel tex={"k(x, x') = (x \\cdot x' + 1)^2"} x={XPLOT.x + XPLOT.w / 2} y={XPLOT.y + XPLOT.h + 34} fontSize={17} opacity={s.get(scene.liftU) * dimU} />
+      <MathLabel tex={"k(x, x') = (x \\cdot x' + 1)^2"} x={XPLOT.x + XPLOT.w / 2} y={XPLOT.y + XPLOT.h + 34} fontSize={17} opacity={s.get(scene.liftU) * dimU * (1 - endU)} />
 
       {/* clean ending card */}
       {endU > 0 && (

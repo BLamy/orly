@@ -51,7 +51,7 @@ const ST_H = 42;
 const CLIENT = { x: 170, y: 300 } as const;
 const ELECTRIC = { x: 930, y: 300 } as const;
 
-const TAPE = { x0: 140, x1: 1140, y: 540, h: 24 } as const;
+const TAPE = { x0: 140, x1: 1140, y: 500, h: 24 } as const;
 const SEG_W = 54;
 const segX = (i: number): number => TAPE.x0 + 28 + i * (SEG_W + 5);
 
@@ -79,9 +79,9 @@ const playheadX = (p: number): number => {
 };
 
 // camera marks
-const CAM_RAIL: CameraState = { x: 640, y: 170, k: 1.25 };
-const CAM_TAPE: CameraState = { x: 640, y: 460, k: 1.25 };
-const CAM_PAIR: CameraState = { x: 560, y: 330, k: 1.08 };
+const CAM_RAIL: CameraState = { x: 640, y: 300, k: 1.1 };
+const CAM_TAPE: CameraState = { x: 640, y: 380, k: 1.1 };
+const CAM_PAIR: CameraState = { x: 560, y: 344, k: 1.08 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -321,7 +321,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const stageDim = 1 - 0.87 * dimU;
+  const stageDim = 1 - 0.97 * dimU;
   const phX = playheadX(playU);
   const headX = segX(N_OLD - 1 + 2 * growU) + SEG_W; // tape head while growing
   const nearest = [ST_INITIAL, ST_SYNCING, ST_LIVE, ST_ERROR].reduce((a, b) =>
@@ -335,31 +335,31 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={stageDim}>
           {/* ------------------------------------------------ the state rail */}
           <g opacity={railU}>
-            <text x={ST_INITIAL.x - ST_W / 2} y={RAIL_Y - 42} fill={colors.MUTED} fontSize={11.5}>
+            <text x={ST_INITIAL.x - ST_W / 2} y={RAIL_Y + ST_H / 2 + 30} fill={colors.MUTED} fontSize={13}>
               the shape stream state machine
             </text>
             <line x1={ST_INITIAL.x + ST_W / 2} y1={RAIL_Y} x2={ST_SYNCING.x - ST_W / 2} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={1.4} />
             <line x1={ST_SYNCING.x + ST_W / 2} y1={RAIL_Y} x2={ST_LIVE.x - ST_W / 2} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={(ST_INITIAL.x + ST_SYNCING.x) / 2} y={RAIL_Y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={(ST_INITIAL.x + ST_SYNCING.x) / 2} y={RAIL_Y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               response
             </text>
-            <text x={(ST_SYNCING.x + ST_LIVE.x) / 2} y={RAIL_Y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={(ST_SYNCING.x + ST_LIVE.x) / 2} y={RAIL_Y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               up-to-date
             </text>
             <Station at={ST_INITIAL} label="Initial" active={nearest === ST_INITIAL} />
             <Station at={ST_SYNCING} label="Syncing" active={nearest === ST_SYNCING} />
             <Station at={ST_LIVE} label="Live" active={nearest === ST_LIVE} />
             {/* the error satellite */}
-            <g opacity={0.4 + 0.6 * clamp01(backoffU)}>
-              <rect x={ST_ERROR.x - 62} y={ST_ERROR.y - 16} width={124} height={32} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeDasharray="4 4" />
-              <text x={ST_ERROR.x} y={ST_ERROR.y + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+            <g opacity={0.75 + 0.25 * clamp01(backoffU)}>
+              <rect x={ST_ERROR.x - 105} y={ST_ERROR.y - 16} width={210} height={32} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeDasharray="4 4" />
+              <text x={ST_ERROR.x - 24} y={ST_ERROR.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 Error · retry
               </text>
-              {/* backoff pulses: 3 dots with widening spacing */}
+              {/* backoff pulses: 3 dots with widening spacing, inside the box */}
               {[0, 1, 2].map((i) => {
                 const u = clamp01(backoffU - i);
                 return u > 0 && u < 1 ? (
-                  <circle key={i} cx={ST_ERROR.x + 74 + i * 22} cy={ST_ERROR.y} r={4 + 2 * Math.sin(Math.PI * u)} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.3} opacity={1 - u} />
+                  <circle key={i} cx={ST_ERROR.x + 50 + i * 18} cy={ST_ERROR.y} r={4 + 2 * Math.sin(Math.PI * u)} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.3} opacity={1 - u} />
                 ) : null;
               })}
             </g>
@@ -372,12 +372,12 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.5}
                 strokeDasharray="5 4"
               />
-              <text x={(ST_INITIAL.x + ST_LIVE.x) / 2} y={RAIL_Y - 60} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+              <text x={(ST_INITIAL.x + ST_LIVE.x) / 2} y={RAIL_Y - 70} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 markMustRefetch → offset reset
               </text>
             </g>
-            {/* the token */}
-            <circle cx={tokenX} cy={tokenY} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />
+            {/* the token rides above its station's top-right corner, clear of the labels */}
+            <circle cx={tokenX + 60} cy={tokenY - 33} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={2} />
           </g>
 
           {/* ------------------------------------------------ client · link · Electric */}
@@ -406,7 +406,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={offlineU}>
               <line x1={540} y1={CLIENT.y - 18} x2={572} y2={CLIENT.y + 18} stroke={colors.NEGATIVE} strokeWidth={2.4} />
               <line x1={572} y1={CLIENT.y - 18} x2={540} y2={CLIENT.y + 18} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <text x={556} y={CLIENT.y + 40} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+              <text x={556} y={CLIENT.y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                 offline
               </text>
             </g>
@@ -419,8 +419,8 @@ export function Render({ s }: { s: SceneState }) {
                 const x = CLIENT.x + 80 + (ELECTRIC.x - CLIENT.x - 200) * reconU;
                 return (
                   <g>
-                    <rect x={x - 108} y={CLIENT.y - 46} width={216} height={24} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-                    <text x={x} y={CLIENT.y - 29} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+                    <rect x={x - 140} y={CLIENT.y - 62} width={280} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+                    <text x={x} y={CLIENT.y - 44} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                       handle=62488107-… offset=1912_0
                     </text>
                   </g>
@@ -435,8 +435,8 @@ export function Render({ s }: { s: SceneState }) {
             const x = ELECTRIC.x - 90 - (ELECTRIC.x - CLIENT.x - 170) * u;
             return (
               <g key={gseg.off}>
-                <rect x={x - 34} y={CLIENT.y + 16} width={68} height={20} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
-                <text x={x} y={CLIENT.y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>
+                <rect x={x - 40} y={CLIENT.y + 14} width={80} height={24} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
+                <text x={x} y={CLIENT.y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                   {gseg.off}
                 </text>
               </g>
@@ -449,8 +449,8 @@ export function Render({ s }: { s: SceneState }) {
                 const x = ELECTRIC.x - 90 - (ELECTRIC.x - CLIENT.x - 200) * Math.min(nineU, 0.85) / 0.85;
                 return (
                   <g>
-                    <rect x={x - 92} y={CLIENT.y - 50} width={184} height={26} rx={12} fill="rgba(251,113,133,0.12)" stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                    <text x={x} y={CLIENT.y - 32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+                    <rect x={x - 124} y={CLIENT.y - 72} width={248} height={30} rx={12} fill="rgba(251,113,133,0.12)" stroke={colors.NEGATIVE} strokeWidth={1.5} />
+                    <text x={x} y={CLIENT.y - 52} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                       409 · control: must-refetch
                     </text>
                   </g>
@@ -460,18 +460,18 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {/* offset reset + expired-handle note */}
           <g opacity={resetU}>
-            <rect x={CLIENT.x - 64} y={CLIENT.y + 58} width={200} height={24} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={CLIENT.x + 36} y={CLIENT.y + 75} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+            <rect x={CLIENT.x - 64} y={CLIENT.y + 58} width={250} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+            <text x={CLIENT.x + 61} y={CLIENT.y + 76} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               offset: -1 · expired: 62488107
             </text>
           </g>
 
           {/* ------------------------------------------------ the tape */}
           <g opacity={nodesU}>
-            <text x={TAPE.x0} y={TAPE.y - 12} fill={colors.MUTED} fontSize={11.5}>
+            <text x={TAPE.x0} y={TAPE.y - 12} fill={colors.MUTED} fontSize={13}>
               the shape log
             </text>
-            <text x={TAPE.x1} y={TAPE.y - 12} textAnchor="end" fill={respoolU > 0.3 ? colors.POSITIVE : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={TAPE.x1} y={TAPE.y - 12} textAnchor="end" fill={respoolU > 0.3 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={MONO}>
               {respoolU > 0.3 ? NEW_HANDLE : OLD_HANDLE}
             </text>
             <rect x={TAPE.x0} y={TAPE.y} width={TAPE.x1 - TAPE.x0} height={TAPE.h} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
@@ -483,7 +483,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={seg.off} transform={`translate(${tearU * (120 + i * 30)}, 0)`}>
                     <rect x={segX(i)} y={TAPE.y + 3} width={SEG_W} height={TAPE.h - 6} rx={4} fill={c.fill} stroke={c.stroke} strokeWidth={1} />
-                    <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 15} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+                    <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       {seg.off}
                     </text>
                   </g>
@@ -495,7 +495,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={seg.off} transform={`translate(${tearU * (200 + i * 30)}, ${(1 - u) * -40})`} opacity={u}>
                     <rect x={segX(N_OLD + i)} y={TAPE.y + 3} width={SEG_W} height={TAPE.h - 6} rx={4} fill="rgba(251,191,36,0.2)" stroke={colors.WARM} strokeWidth={1} />
-                    <text x={segX(N_OLD + i) + SEG_W / 2} y={TAPE.y + TAPE.h + 15} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+                    <text x={segX(N_OLD + i) + SEG_W / 2} y={TAPE.y + TAPE.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       {seg.off}
                     </text>
                   </g>
@@ -506,7 +506,7 @@ export function Render({ s }: { s: SceneState }) {
             {/* expiry hatch over the tape when the log is gone */}
             <g opacity={expireU * (1 - respoolU)}>
               <rect x={TAPE.x0} y={TAPE.y} width={TAPE.x1 - TAPE.x0} height={TAPE.h} rx={6} fill="rgba(251,113,133,0.08)" stroke={colors.NEGATIVE} strokeDasharray="6 5" />
-              <text x={(TAPE.x0 + TAPE.x1) / 2} y={TAPE.y - 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11}>
+              <text x={(TAPE.x0 + TAPE.x1) / 2} y={TAPE.y + TAPE.h + 46} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                 log gone — reboot lost the in-flight shape
               </text>
             </g>
@@ -519,13 +519,13 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <rect x={segX(i)} y={TAPE.y + 3} width={SEG_W * u} height={TAPE.h - 6} rx={4} fill="rgba(52,211,153,0.18)" stroke={colors.POSITIVE} strokeWidth={1} />
-                    <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 15} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+                    <text x={segX(i) + SEG_W / 2} y={TAPE.y + TAPE.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       {`0_${i}`}
                     </text>
                   </g>
                 );
               })}
-              <text x={segX(0)} y={TAPE.y - 12} fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO} opacity={clamp01(respoolU * 3 - 0.4)}>
+              <text x={TAPE.x0} y={TAPE.y + TAPE.h + 46} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} opacity={clamp01(respoolU * 3 - 0.4)}>
                 a new tape — same shape, new handle
               </text>
             </g>
@@ -537,7 +537,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g>
                     <path d={`M ${x - 7} ${TAPE.y - 15} L ${x + 7} ${TAPE.y - 15} L ${x} ${TAPE.y - 3} Z`} fill={colors.WARM} />
-                    <text x={x} y={TAPE.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+                    <text x={x} y={TAPE.y - 22} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                       offset
                     </text>
                   </g>
@@ -548,12 +548,12 @@ export function Render({ s }: { s: SceneState }) {
             {/* the gap brace */}
             <g opacity={gapU}>
               <path
-                d={`M ${phX} ${TAPE.y + TAPE.h + 24} C ${phX} ${TAPE.y + TAPE.h + 38}, ${headX} ${TAPE.y + TAPE.h + 38}, ${headX} ${TAPE.y + TAPE.h + 24}`}
+                d={`M ${phX} ${TAPE.y + TAPE.h + 26} C ${phX} ${TAPE.y + TAPE.h + 38}, ${headX} ${TAPE.y + TAPE.h + 38}, ${headX} ${TAPE.y + TAPE.h + 26}`}
                 fill="none"
                 stroke={colors.NEGATIVE}
                 strokeWidth={1.5}
               />
-              <text x={(phX + headX) / 2} y={TAPE.y + TAPE.h + 58} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+              <text x={(phX + headX) / 2} y={TAPE.y + TAPE.h + 56} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                 everything it missed
               </text>
             </g>
@@ -561,7 +561,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ------------------------------------------------ the recap vignettes */}
-        <g opacity={recapU * (1 - 0.35 * closeU)}>
+        <g opacity={recapU * (1 - 0.85 * closeU)}>
           {[
             { label: 'a stencil cuts the shape', n: 'one' },
             { label: 'a snapshot spools the tape', n: 'two' },
@@ -569,7 +569,7 @@ export function Render({ s }: { s: SceneState }) {
             { label: 'a held request delivers it', n: 'four' },
           ].map((v, i) => {
             const u = win(recapU, 4, i, 1.8);
-            const x = 120 + i * 275;
+            const x = 108 + i * 275;
             const y = 150;
             return (
               <g key={v.label} opacity={u}>
@@ -606,7 +606,7 @@ export function Render({ s }: { s: SceneState }) {
                     <circle cx={x + 200} cy={y + 60} r={5} fill={colors.ACCENT} />
                   </g>
                 )}
-                <text x={x + 120} y={y + 122} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+                <text x={x + 120} y={y + 122} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {v.label}
                 </text>
               </g>

@@ -32,6 +32,7 @@ const THICK = 1.5; // in
 const PXI = 26; // px per inch of thickness — the stack is drawn tall
 const BASE_Y = 470;
 const LAYER_H = THICK * PXI;
+const LEG_H = 120; // px — keeps the legs clear of the caption pill
 
 interface Course {
   label: string;
@@ -231,7 +232,21 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll * (1 - 0.92 * gaugeU)}>
+        <g opacity={dimAll * (1 - gaugeU)}>
+          {/* clamps sit behind the stack so their bars do not cross the screws */}
+          {clampU > 0 &&
+            [L + 60, CX, L + WIDE - 60].map((x, i) => {
+              const u = clamp01(clampU * 3 - i * 0.5);
+              if (u <= 0) return null;
+              return (
+                <g key={i} opacity={u}>
+                  <line x1={x} y1={topY - 26} x2={x} y2={BASE_Y + 19} stroke={colors.SECONDARY} strokeWidth={3} />
+                  <rect x={x - 14} y={topY - 26} width={28} height={13} rx={3} fill={colors.SECONDARY} />
+                  <rect x={x - 14} y={BASE_Y + 6} width={28} height={13} rx={3} fill={colors.SECONDARY} />
+                </g>
+              );
+            })}
+
           {/* ---- the stack, course by course ---- */}
           {COURSES.map((c, i) => {
             const u = clamp01(layerU - i);
@@ -243,9 +258,9 @@ export function Render({ s }: { s: SceneState }) {
                 {/* legs, drawn once under the base course */}
                 {i === 0 && (
                   <>
-                    <rect x={L} y={BASE_Y} width={44} height={168} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} />
-                    <rect x={L + WIDE - 44} y={BASE_Y} width={44} height={168} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} />
-                    <text x={L - 14} y={BASE_Y + 96} textAnchor="end" fill={colors.SECONDARY} fontSize={13} fontWeight={700}>
+                    <rect x={L} y={BASE_Y} width={44} height={LEG_H} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} />
+                    <rect x={L + WIDE - 44} y={BASE_Y} width={44} height={LEG_H} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} />
+                    <text x={L - 14} y={BASE_Y + LEG_H / 2 + 5} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
                       18 in
                     </text>
                   </>
@@ -276,7 +291,7 @@ export function Render({ s }: { s: SceneState }) {
                     />
                   </g>
                 )}
-                <text x={c.x + c.width + 14} y={y - drift + LAYER_H / 2 + 4} fill={colors.MUTED} fontSize={14}>
+                <text x={c.x + c.width + 14} y={y - drift + LAYER_H / 2 + 4} fill={colors.TEXT} fontSize={14}>
                   {c.label}
                 </text>
               </g>
@@ -298,20 +313,6 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             </g>
           )}
-
-          {/* clamps on the finished stack */}
-          {clampU > 0 &&
-            [L + 60, CX, L + WIDE - 60].map((x, i) => {
-              const u = clamp01(clampU * 3 - i * 0.5);
-              if (u <= 0) return null;
-              return (
-                <g key={i} opacity={u}>
-                  <rect x={x - 14} y={topY - 26} width={28} height={13} rx={3} fill={colors.SECONDARY} />
-                  <rect x={x - 14} y={BASE_Y + 6} width={28} height={13} rx={3} fill={colors.SECONDARY} />
-                  <line x1={x} y1={topY - 26} x2={x} y2={BASE_Y + 19} stroke={colors.SECONDARY} strokeWidth={3} />
-                </g>
-              );
-            })}
 
         </g>
         <g opacity={dimAll}>

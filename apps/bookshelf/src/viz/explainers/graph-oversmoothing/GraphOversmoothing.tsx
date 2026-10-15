@@ -30,6 +30,42 @@ function renderFrame(s: SceneState) {
           node features · after {Math.round(depth)} layer{Math.round(depth) === 1 ? '' : 's'}
         </text>
       </g>
+      {/* community halos and the gap between their centers: both shrink with depth */}
+      {(() => {
+        const pts = Array.from({ length: N }, (_, i) => featAt(i, depth));
+        const cen = (lo: number, hi: number) => {
+          let x = 0;
+          let y = 0;
+          for (let i = lo; i < hi; i++) {
+            x += pts[i][0];
+            y += pts[i][1];
+          }
+          return [x / (hi - lo), y / (hi - lo)] as const;
+        };
+        const c0 = cen(0, 5);
+        const c1 = cen(5, N);
+        const halo = (lo: number, hi: number, c: readonly [number, number], color: string) => {
+          let r = 0;
+          for (let i = lo; i < hi; i++) r = Math.max(r, Math.hypot(pts[i][0] - c[0], pts[i][1] - c[1]));
+          return <circle cx={fx(c[0])} cy={fy(c[1])} r={fx(c[0] + r) - fx(c[0]) + 6} fill={color} fillOpacity={0.12} />;
+        };
+        return (
+          <g opacity={dotU}>
+            {halo(0, 5, c0, colors.NEGATIVE)}
+            {halo(5, N, c1, colors.ACCENT)}
+            <line
+              x1={fx(c0[0])}
+              y1={fy(c0[1])}
+              x2={fx(c1[0])}
+              y2={fy(c1[1])}
+              stroke={colors.MUTED}
+              strokeWidth={1.5}
+              strokeDasharray="5 5"
+              opacity={0.8}
+            />
+          </g>
+        );
+      })()}
       {Array.from({ length: N }, (_, i) => {
         const [a, b] = featAt(i, depth);
         const u = clamp01(dotU * N - i * 0.5);
@@ -38,9 +74,9 @@ function renderFrame(s: SceneState) {
             key={i}
             cx={fx(a)}
             cy={fy(b)}
-            r={9 * u}
+            r={11 * u}
             fill={i < 5 ? colors.NEGATIVE : colors.ACCENT}
-            fillOpacity={0.85}
+            fillOpacity={0.9}
             stroke="#0a0e1a"
             strokeWidth={1.5}
           />
@@ -66,10 +102,10 @@ function renderFrame(s: SceneState) {
 
       {/* the contraction note */}
       <MathLabel
-        tex="H^{(k+1)} = D^{-1} A\, H^{(k)} \;\xrightarrow{k\to\infty}\; \text{one point}"
+        tex="H^{(k+1)} = D^{-1} A\, H^{(k)}"
         x={970}
         y={580}
-        fontSize={18}
+        fontSize={20}
         color={colors.MUTED}
         opacity={noteU}
       />

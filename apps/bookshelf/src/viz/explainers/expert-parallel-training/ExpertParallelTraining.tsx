@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, STAGE_H, STAGE_W, colors } from '../../core';
+import { Camera, Player, STAGE_H, STAGE_W, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import overrides from './overrides.json';
 import {
@@ -61,7 +61,7 @@ function Frame({ s }: { s: SceneState }) {
             <text x={ROUTER.x} y={ROUTER.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontWeight={640}>
               learned router · top-2 of 8
             </text>
-            <text x={ROUTER.x} y={ROUTER.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={ROUTER.x} y={ROUTER.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               4096 tokens per batch
             </text>
           </g>
@@ -73,7 +73,7 @@ function Frame({ s }: { s: SceneState }) {
             return (
               <g key={e} opacity={u}>
                 <rect x={devX(e) - 48} y={DEV_Y - 34} width={96} height={68} rx={10} fill={colors.PANEL} stroke={e === hotIdx && barU > 0 && balU < 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={e === hotIdx && barU > 0 && balU < 0.5 ? 2 : 1.2} />
-                <text x={devX(e)} y={DEV_Y - 12} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                <text x={devX(e)} y={DEV_Y - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                   {`device ${e}`}
                 </text>
                 <text x={devX(e)} y={DEV_Y + 10} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontWeight={640}>
@@ -108,11 +108,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* capacity panel */}
           {capU > 0 && (
             <g opacity={capU}>
-              <rect x={64} y={64} width={330} height={64} rx={11} fill={colors.BG} stroke={colors.POSITIVE} strokeDasharray="5 4" />
-              <text x={229} y={90} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={630}>
+              <rect x={120} y={64} width={300} height={64} rx={11} fill={colors.BG} stroke={colors.POSITIVE} strokeDasharray="5 4" />
+              <text x={270} y={90} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={630}>
                 {`total: ${(TOTAL_P / 1e9).toFixed(1)}B params`}
               </text>
-              <text x={229} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={270} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 {`active per token: ${(ACTIVE_P / 1e9).toFixed(1)}B (${(TOTAL_P / ACTIVE_P).toFixed(1)}× capacity)`}
               </text>
             </g>
@@ -121,19 +121,19 @@ function Frame({ s }: { s: SceneState }) {
           {/* load bars */}
           {barU > 0 && (
             <g opacity={barU}>
+              <line x1={devX(0) - 40} y1={LB_Y0 - lbH(MEAN_LOAD)} x2={devX(E - 1) + 40} y2={LB_Y0 - lbH(MEAN_LOAD)} stroke={colors.TEXT} strokeDasharray="6 5" opacity={0.7} />
               {counts.map((c, e) => (
                 <g key={e}>
                   <rect x={devX(e) - 26} y={LB_Y0 - lbH(c)} width={52} height={lbH(c)} rx={4} fill={c > MEAN_LOAD * 1.6 ? colors.NEGATIVE : colors.ACCENT} opacity={0.8} />
-                  <text x={devX(e)} y={LB_Y0 - lbH(c) - 8} textAnchor="middle" fill={colors.TEXT} fontSize={11.5}>
+                  <text x={devX(e)} y={LB_Y0 - lbH(c) - 8} textAnchor="middle" fill={colors.TEXT} fontSize={13} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">
                     {Math.round(c)}
                   </text>
                 </g>
               ))}
-              <line x1={devX(0) - 40} y1={LB_Y0 - lbH(MEAN_LOAD)} x2={devX(E - 1) + 40} y2={LB_Y0 - lbH(MEAN_LOAD)} stroke={colors.TEXT} strokeDasharray="6 5" opacity={0.7} />
-              <text x={devX(E - 1) + 48} y={LB_Y0 - lbH(MEAN_LOAD) + 4} fill={colors.MUTED} fontSize={11.5}>
+              <text x={devX(E - 1) + 48} y={LB_Y0 - lbH(MEAN_LOAD) + 4} fill={colors.MUTED} fontSize={13}>
                 fair share: {MEAN_LOAD}
               </text>
-              <text x={devX(0) - 40} y={LB_Y0 + 24} fill={colors.MUTED} fontSize={12.5}>
+              <text x={devX(0) - 40} y={LB_Y0 + 24} fill={colors.MUTED} fontSize={13}>
                 {`tokens routed per expert · ${balU > 0.5 ? 'with load-balancing loss' : 'unconstrained router'}`}
               </text>
             </g>
@@ -166,14 +166,9 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             ZeRO → gathers · experts → the batch itself
           </text>
-          <MathLabel
-            tex={'\\text{training at scale} = \\text{choosing which bill to pay}'}
-            x={640}
-            y={404}
-            fontSize={19}
-            color={colors.WARM}
-            opacity={endU}
-          />
+          <text x={640} y={404} textAnchor="middle" fill={colors.WARM} fontSize={19} fontWeight={600}>
+            training at scale = choosing which bill to pay
+          </text>
         </g>
       )}
     </>

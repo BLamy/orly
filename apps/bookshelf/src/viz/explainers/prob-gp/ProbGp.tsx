@@ -1,4 +1,4 @@
-import { Camera, MathLabel, Player, colors } from '../../core';
+import { Camera, Player, colors } from '../../core';
 import type { SceneState, TimelineOverrides } from '../../core';
 import { Axes, FunctionPlot } from '../../primitives';
 import overrides from './overrides.json';
@@ -41,6 +41,8 @@ const BAND_PATH = (() => {
   return `M ${up.join(' L ')} L ${dn.join(' L ')} Z`;
 })();
 
+const PRIOR_BAND = `M ${sx(0)},${sy(2)} L ${sx(4)},${sy(2)} L ${sx(4)},${sy(-2)} L ${sx(0)},${sy(-2)} Z`;
+
 const PRIOR_COLORS = [colors.SECONDARY, colors.TEAL, colors.MUTED];
 
 function renderFrame(s: SceneState) {
@@ -64,6 +66,13 @@ function renderFrame(s: SceneState) {
       <path d={BAND_PATH} fill={colors.ACCENT} fillOpacity={0.16 * bandU} stroke="none" />
       <FunctionPlot x={sx} y={sy} f={upF} domain={[0, 4]} reveal={bandU} color={colors.ACCENT} width={1} opacity={0.5} />
       <FunctionPlot x={sx} y={sy} f={dnF} domain={[0, 4]} reveal={bandU} color={colors.ACCENT} width={1} opacity={0.5} />
+
+      {/* prior ±2σ envelope: the prior has σ = 1 everywhere, so it is a flat strip */}
+      <g opacity={axU * priorFade}>
+        <path d={PRIOR_BAND} fill={colors.MUTED} fillOpacity={0.08} stroke="none" />
+        <line x1={sx(0)} y1={sy(2)} x2={sx(4)} y2={sy(2)} stroke={colors.MUTED} strokeWidth={1} strokeDasharray="4 5" opacity={0.5} />
+        <line x1={sx(0)} y1={sy(-2)} x2={sx(4)} y2={sy(-2)} stroke={colors.MUTED} strokeWidth={1} strokeDasharray="4 5" opacity={0.5} />
+      </g>
 
       {/* prior samples */}
       {priorFs.map((f, k) => (
@@ -108,27 +117,32 @@ function renderFrame(s: SceneState) {
       {/* pinch-vs-balloon annotation */}
       <g opacity={pinchU}>
         <line x1={sx(2.2)} y1={sy(meanF(2.2) - 2 * SD_GAP)} x2={sx(2.2)} y2={sy(meanF(2.2) + 2 * SD_GAP)} stroke={colors.NEGATIVE} strokeWidth={2.5} />
-        <text x={sx(2.2) + 12} y={sy(meanF(2.2))} fill={colors.NEGATIVE} fontSize={14}>
+        {/* labels sit just above each band's top edge, with a dark halo so the band line never cuts through them */}
+        <text x={sx(2.2) + 8} y={sy(meanF(2.2) + 2 * SD_GAP) - 10} fill={colors.NEGATIVE} fontSize={14} stroke="#0a0e1a" strokeWidth={4} paintOrder="stroke">
           σ = {SD_GAP.toFixed(2)}
         </text>
         <line x1={sx(1.0)} y1={sy(meanF(1.0) - 2 * SD_OBS)} x2={sx(1.0)} y2={sy(meanF(1.0) + 2 * SD_OBS)} stroke={colors.POSITIVE} strokeWidth={2.5} />
-        <text x={sx(1.0) - 12} y={sy(meanF(1.0)) - 14} textAnchor="end" fill={colors.POSITIVE} fontSize={14}>
+        <text x={sx(1.0)} y={sy(meanF(1.0) + 2 * SD_OBS) - 10} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} stroke="#0a0e1a" strokeWidth={4} paintOrder="stroke">
           σ = {SD_OBS.toFixed(2)}
         </text>
       </g>
 
-      {/* kernel chip */}
-      <g opacity={kernU * priorFade}>
+      {/* kernel chip, faded out once the cost chip or the closing text takes its slot */}
+      <g opacity={kernU * priorFade * (1 - costU) * (1 - closeU)}>
         <text x={640} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
           length scale ℓ = 0.5 · noise σ² = 0.005
         </text>
       </g>
 
-      {/* cost chip */}
-      <MathLabel tex="(K + \sigma^2 I)^{-1} \;\text{— one row per observation}" x={640} y={90} fontSize={18} color={colors.MUTED} opacity={costU} />
+      {/* cost chip: plain text, so no KaTeX fallback copy can double up beside it */}
+      <text x={640} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={18} opacity={costU}>
+        (K + σ²I)⁻¹ — one row per observation
+      </text>
 
+      {/* closing text on a solid panel, so no half-faded chart content shows through */}
       <g opacity={closeU}>
-        <text x={640} y={86} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+        <rect x={500} y={68} width={280} height={44} rx={6} fill="#0a0e1a" fillOpacity={0.9} />
+        <text x={640} y={96} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
           small data, exact doubt
         </text>
       </g>

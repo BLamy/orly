@@ -189,7 +189,7 @@ export function buildScene(): Scene {
     text: 'Now harden the judge: add hidden held-out tests the policy has never seen. The exploit still memorizes the public three, but hidden inputs catch it — its pass rate drops to five percent.',
   });
   tl.tween(hiddenU, 1, { at: 31.1, dur: 1.2, ease: ease.enter });
-  tl.tween(weakDim, 0.22, { at: 34.3, dur: 1.0, ease: ease.move });
+  tl.tween(weakDim, 0.3, { at: 34.3, dur: 1.0, ease: ease.move });
   tl.tween(sweepS, T_STEPS, { at: 35.9, dur: 6.5, ease: ease.move });
   tl.caption({
     at: 35.9,
