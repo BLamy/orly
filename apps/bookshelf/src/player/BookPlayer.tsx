@@ -4,7 +4,7 @@ import { BlogPanel } from './BlogPanel';
 import { BookSources } from './BookSources';
 import { ScoreCard, useBookScore } from './ScoreCard';
 import { PlayerSheet } from './PlayerSheet';
-import { PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
+import { COMPACT_MQ, PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
 import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
@@ -74,11 +74,8 @@ export function fmtDur(s?: number): string {
  * "sidebar disappears" and "drawer appears" — the two used to be decided by
  * different conditions (React checked portrait-only; a separate CSS rule
  * hid the sidebar in landscape too), which left landscape phones with
- * neither.
+ * neither. (COMPACT_MQ, in ./useMediaQuery, shared with FilmPlayer.)
  */
-const COMPACT_MQ =
-  '(max-width: 720px) and (orientation: portrait), (max-width: 1000px) and (orientation: landscape) and (max-height: 520px)';
-
 // The drawer itself is portrait-only — in landscape there isn't enough
 // vertical room for a bottom sheet without it swallowing the video, so
 // landscape just shows the video with no way to reach chapters/blog.

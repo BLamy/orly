@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/** the phone portrait layout the players share: video on top, everything else in the bottom sheet */
+/** phones, either way up: the players' compact layout (the video sized by its aspect ratio, no side column) */
+export const COMPACT_MQ =
+  '(max-width: 720px) and (orientation: portrait), (max-width: 1000px) and (orientation: landscape) and (max-height: 520px)';
+/** phones held upright: the compact layout plus the bottom sheet (sideways there is no room for it) */
 export const PORTRAIT_COMPACT_MQ = '(max-width: 720px) and (orientation: portrait)';
 
 /** Reactively track a CSS media query (SSR-safe). */

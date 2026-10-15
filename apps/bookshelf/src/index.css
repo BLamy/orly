@@ -1185,7 +1185,9 @@ body {
        (aspect-ratio with no definite width and no stretch), nowhere near
        full width. max-width still caps it so it doesn't grow taller than
        the viewport; width:100% + max-width lets the smaller one win. */
-    max-width: calc((100dvh - 100px) * 16 / 9);
+    /* the chapter top bar + the controls (~120px), and the navigation stack's bar above them when the player is a
+       pushed screen (--screen-bar-h, inherited from shell/nav.tsx's screens; 0 for a full-page player) */
+    max-width: calc((100dvh - 120px - var(--screen-bar-h, 0px)) * 16 / 9);
     margin: 0 auto;
   }
 }

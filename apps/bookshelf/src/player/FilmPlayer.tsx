@@ -29,7 +29,7 @@ import { CreditsPanel, type CreditsDoc } from './CreditsPanel';
 import { ScoreCard, type Score } from './ScoreCard';
 import { PlayerSheet, type SheetTab } from './PlayerSheet';
 import { PlayIcon } from './icons';
-import { PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
+import { COMPACT_MQ, PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
 import { useVideoAccent } from '../shell/useVideoAccent';
 import './film-player.css';
 
@@ -75,6 +75,11 @@ const clock = (s: number) => {
 };
 
 /** onEject: leave the VCR (the shelf's navigation stack pops this screen); without it, EJECT loads the shelf */
+/** iPhone / iPad (iPadOS reports a Mac, with touch): every browser there is WebKit */
+const IOS =
+  typeof navigator !== 'undefined' &&
+  (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+
 /** can this browser decode a stem with Web Audio? (Safari's decodeAudioData rejects AAC in MP4: "Decoding failed") */
 async function canDecode(url: string): Promise<boolean> {
   try {
@@ -255,8 +260,10 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
       // Safari can't decode the stems (decodeAudioData rejects AAC in an MP4 container): when the film also ships
       // its mastered mix per chapter, play that through the <audio> element instead, as books play their MP3s
       const sliced = (manifest?.chapters ?? []).some((c) => c.audio);
-      if (sliced && fa.clips[0] && !(await canDecode(base + fa.clips[0].url))) {
-        console.info('[film] this browser cannot decode the soundtrack stems; playing the chapter mix');
+      // On iPhone/iPad always use the chapter mix, as books do: Web Audio there is muted by the ring/silent switch
+      // (an <audio> element is not), and the stems may not decode at all
+      if (sliced && (IOS || (fa.clips[0] && !(await canDecode(base + fa.clips[0].url))))) {
+        console.info(`[film] ${IOS ? 'iOS' : 'this browser cannot decode the soundtrack stems'}: playing the chapter mix`);
         return;
       }
       if (dead) return;
@@ -409,6 +416,9 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
     if (!reel) return;
     if (tRef.current >= duration - 0.05) tRef.current = 0;
     wallRef.current = null;
+    // Safari's Audio Session API: Web Audio as media playback, so the ring/silent switch does not mute it
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+    if (session) session.type = 'playback';
     if (stemsReady && engineRef.current) engineRef.current.play(tRef.current);
     else {
       cueAudio(tRef.current);
@@ -489,9 +499,10 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
     return () => window.clearTimeout(id);
   }, [osd]);
 
-  // phones held upright: the book player's layout (top bar, the picture edge to edge, its controls, the bottom
-  // sheet) instead of the VCR deck
-  const mobile = useMediaQuery(PORTRAIT_COMPACT_MQ);
+  // phones, either way up: the book player's layout (top bar, the picture edge to edge, its controls) instead of
+  // the VCR deck, so turning the phone never swaps layouts (and remounts the player); upright adds the bottom sheet
+  const mobile = useMediaQuery(COMPACT_MQ);
+  const upright = useMediaQuery(PORTRAIT_COMPACT_MQ);
   const mainRef = useRef<HTMLDivElement | null>(null);
   const [videoBottom, setVideoBottom] = useState(0);
   useEffect(() => {
@@ -696,7 +707,7 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
             )}
           </div>
         </div>
-        {!full && videoBottom > 0 && (
+        {!full && upright && videoBottom > 0 && (
           <PlayerSheet label="Chapters, score, sources and music" top={videoBottom} tabs={sheetTabs} tab={sheetTab} onTab={setSheetTab} />
         )}
         <audio ref={audioRef} preload="auto" onEnded={onEnded} />
