@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "neural-networks-already-clean",
+      "title": "Already Clean",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=neural-networks-already-clean",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Refocus the Microscope",
+          "duration": 101.75
+        },
+        {
+          "number": 2,
+          "title": "Read the Gate",
+          "duration": 114.754
+        },
+        {
+          "number": 3,
+          "title": "Follow the Branch",
+          "duration": 89.815
+        },
+        {
+          "number": 4,
+          "title": "Squeeze the Layer",
+          "duration": 121.208
+        },
+        {
+          "number": 5,
+          "title": "Scale the Investigation",
+          "duration": 126.595
+        }
+      ],
+      "createdAt": "2026-10-15T18:00:31.597Z"
+    },
+    {
       "slug": "jeva-fresh-decisions",
       "title": "Jeva: Fresh Decisions",
       "subtitle": "Fixed options, set-aware judgment, and reusable memory",
