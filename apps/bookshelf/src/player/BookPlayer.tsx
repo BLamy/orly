@@ -141,9 +141,17 @@ export function BookPlayer({
     const el = mainRef.current;
     if (!el) return;
     // the video block's BOTTOM edge, not just its height: inside the shelf's navigation stack a bar sits above it
-    const ro = new ResizeObserver(() => setVideoH(Math.round(el.getBoundingClientRect().bottom)));
+    // measured a frame later: setting state inside the observer callback re-lays out within the same loop
+    let raf = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setVideoH(Math.round(el.getBoundingClientRect().bottom)));
+    });
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
     // `.bp-main` doesn't exist until `manifest` has loaded (there's an early
     // `if (!manifest) return <loading/>` before this JSX) — depending on
     // `drawerable` alone meant this ran once against a null ref on the very

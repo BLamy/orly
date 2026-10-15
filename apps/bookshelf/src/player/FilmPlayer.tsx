@@ -509,9 +509,17 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
     if (!mobile) return;
     const el = mainRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => setVideoBottom(Math.round(el.getBoundingClientRect().bottom)));
+    // measured a frame later: setting state inside the observer callback re-lays out within the same loop
+    let raf = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setVideoBottom(Math.round(el.getBoundingClientRect().bottom)));
+    });
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
   }, [mobile, reel]);
   const [sheetTab, setSheetTab] = useState('chapters');
   const videoAccent = useVideoAccent();
