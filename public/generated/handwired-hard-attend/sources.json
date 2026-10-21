@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "slug": "handwired-hard-attend",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Closer Wins",
+      "claims": [
+        {
+          "id": "c1-items",
+          "claim": "Three items, Aster worth 10, Banyan 20 and Cobalt 30, sit in a row, and the lab reads the value of the one nearest the query.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "item table: Aster", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "12-13", "quote": "value: 10," },
+            { "label": "item table: Banyan", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "18-19", "quote": "value: 20," },
+            { "label": "item table: Cobalt", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "24-25", "quote": "value: 30," },
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "highest at the item nearest the query" }
+          ]
+        },
+        {
+          "id": "c1-teaching-page",
+          "claim": "The lab is a teaching page of plain web code, not a numeric program, and it turns nearness into scores before picking exactly.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "A page of plain JavaScript, not a numeric program" }
+          ]
+        },
+        {
+          "id": "c1-keys",
+          "claim": "Each item gets a key of two numbers, twice its position and minus its position squared; Banyan, at position one, gets (2, -1).",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "keyFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "51", "quote": "return [2 * itemIndex, -itemIndex * itemIndex]" },
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "Item j has the key (2j, -j²)" }
+          ]
+        },
+        {
+          "id": "c1-dot-product",
+          "claim": "The query is the pair (query, 1), and their dot product is 2 × query × position minus position squared.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "the query is (query, 1)" },
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c1-park-at-one",
+          "claim": "Evaluating the score line with the query at one gives Aster 0, Banyan 1 and Cobalt 0, so Banyan is tallest and is the nearest item.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" },
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "is highest at the item nearest the query" }
+          ]
+        },
+        {
+          "id": "c1-parabola",
+          "claim": "Inferred from the algebra: 2qj minus j squared equals q squared minus (j minus q) squared, so across the positions the scores trace a parabola that peaks at the query.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" },
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "is highest at the item nearest the query" }
+          ]
+        },
+        {
+          "id": "c1-query-zero",
+          "claim": "Evaluating the score line with the query at zero gives Aster 0, Banyan minus 1 and Cobalt minus 4, so Aster leads.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c1-query-two",
+          "claim": "Evaluating the score line with the query at two gives Aster 0, Banyan 3 and Cobalt 4, so Cobalt leads.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c1-query-quarter",
+          "claim": "Evaluating the score line at one and a quarter gives Aster 0, Banyan 1.5 and Cobalt 1, so Banyan is still nearest.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c1-tie-half",
+          "claim": "Evaluating the score line at one half gives Aster and Banyan both 0 and Cobalt minus 2, so the scores alone do not name a single winner.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "One Winner, Two Reads",
+      "claims": [
+        {
+          "id": "c2-winner",
+          "claim": "The lab picks one winner, the index of the highest score, under a tie rule fixed in the code.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "58-71", "quote": "function winnerIndexFor(scores: readonly number[]) {" }
+          ]
+        },
+        {
+          "id": "c2-walk",
+          "claim": "The walk starts with the first item as leader and challenges that leader with each later item.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "60-62", "quote": "let winnerScore = scores[0]" }
+          ]
+        },
+        {
+          "id": "c2-strict",
+          "claim": "A challenger takes over only if its score is strictly greater, so an equal score leaves the earlier item in front.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "65", "quote": "if (score > winnerScore) {" }
+          ]
+        },
+        {
+          "id": "c2-ties-left-half",
+          "claim": "Evaluating the score line at one half gives Aster and Banyan both 0; the strict test keeps Aster, so ties go left.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "65", "quote": "if (score > winnerScore) {" },
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c2-ties-left-one-and-half",
+          "claim": "Evaluating the score line at one and a half gives Banyan and Cobalt both 2, and the strict test keeps Banyan, so Banyan wins.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "65", "quote": "if (score > winnerScore) {" },
+            { "label": "scoreFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "47", "quote": "return 2 * queryIndex * itemIndex - itemIndex * itemIndex" }
+          ]
+        },
+        {
+          "id": "c2-onehot",
+          "claim": "The one-hot read puts a one at the winner's position and zeros everywhere else.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "one-hot bits", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "136", "quote": "const onehot = items.map(item => item.index === winner.index ? 1 : 0)" }
+          ]
+        },
+        {
+          "id": "c2-onehot-sum",
+          "claim": "Multiplying each bit by its item's value and adding gives zero, one, zero against ten, twenty, thirty, which is twenty.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "one-hot sum", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "141", "quote": "return sum + bit * item.value" }
+          ]
+        },
+        {
+          "id": "c2-direct-read",
+          "claim": "The direct read takes the value at the winner's position, and the page prints Banyan's twenty under the label hardAttend.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "direct read formula", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "177", "quote": "values[${winner.index}] = ${winner.value} (${winner.name})" },
+            { "label": "hardAttend eyebrow", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.html", "lines": "52", "quote": "<p class=\"eyebrow\">hardAttend</p>" }
+          ]
+        },
+        {
+          "id": "c2-agree",
+          "claim": "Inferred from the code: the two reads agree at every query by construction, since both start from the same winner, so this checks the bookkeeping and discovers nothing new.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "winner", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "134", "quote": "const winner = items[winnerIndex]" },
+            { "label": "one-hot bits", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "136", "quote": "const onehot = items.map(item => item.index === winner.index ? 1 : 0)" },
+            { "label": "direct read formula", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "177", "quote": "values[${winner.index}] = ${winner.value} (${winner.name})" }
+          ]
+        },
+        {
+          "id": "c2-cost",
+          "claim": "The one-hot sum reduces over every item, while the toolkit's index read copies one entry in a single operation at any table size, for an index range strictly inside ±2^24.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "one-hot reduce", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "138-141", "quote": "const onehotValue = items.reduce((sum, item, index) => {" },
+            { "label": "lab status: index reads", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "9", "quote": "copy `candidates[floor(index)]` in 1 operation at any table size, for an index range strictly inside ±2^24" }
+          ]
+        },
+        {
+          "id": "c2-hard-attention",
+          "claim": "Hard attention here is score, take the leftmost highest, read the winner, with no blending anywhere.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "a direct gather, which reads the value at the winner's index" },
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "58-71", "quote": "function winnerIndexFor(scores: readonly number[]) {" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Soft Versus Exact",
+      "claims": [
+        {
+          "id": "c3-softmax",
+          "claim": "The page's third read is softmax: it turns every score into a weight, the weights sum to one, and the value is the blend of the three items.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "softmax", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "73-77", "quote": "return weights.map(weight => weight / total)" },
+            { "label": "soft value", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "146", "quote": "return sum + weight * item.value" }
+          ]
+        },
+        {
+          "id": "c3-slider",
+          "claim": "The sharpness slider runs from one half to fourteen and scales the score gaps before the exponential, so turning it up makes the weights spikier.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "sharpness slider", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.html", "lines": "61", "quote": "min=\"0.5\" max=\"14\"" },
+            { "label": "softmax exponential", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "75", "quote": "Math.exp((score - maxScore) * beta)" }
+          ]
+        },
+        {
+          "id": "c3-quarter-sharp",
+          "claim": "Evaluating the softmax lines at one quarter and sharpness fourteen gives weights about 0.9991, 0.0009 and 0, and a blend about 10.01: close to ten, never exactly ten.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "softmax weights", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "75", "quote": "Math.exp((score - maxScore) * beta)" },
+            { "label": "soft value", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "146", "quote": "return sum + weight * item.value" }
+          ]
+        },
+        {
+          "id": "c3-three-quarter-sharp",
+          "claim": "Evaluating the same lines at three quarters gives weights about 0.0009, 0.9991 and 0, and a blend about 19.99: near Banyan's twenty but not equal to it.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "softmax weights", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "75", "quote": "Math.exp((score - maxScore) * beta)" },
+            { "label": "soft value", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "146", "quote": "return sum + weight * item.value" }
+          ]
+        },
+        {
+          "id": "c3-tie-split",
+          "claim": "Away from ties, more sharpness pulls the blend toward the exact value; at a tie, Aster and Banyan split the weight evenly at any sharpness, giving fifteen.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "softmax weights", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "75", "quote": "Math.exp((score - maxScore) * beta)" },
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "3", "quote": "whose weights move toward the one-hot bits as the sharpness slider goes up" }
+          ]
+        },
+        {
+          "id": "c3-one-and-half",
+          "claim": "At one and a half, the even split gives twenty-five where the exact rule gives twenty: softmax averages the tie, and the strict rule picks the left.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "soft value", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "146", "quote": "return sum + weight * item.value" },
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "65", "quote": "if (score > winnerScore) {" }
+          ]
+        },
+        {
+          "id": "c3-contrast",
+          "claim": "Inferred from the two results above: softmax only approaches the exact read away from ties, and exact picking needs an explicit tie rule.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "softmax weights", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "75", "quote": "Math.exp((score - maxScore) * beta)" },
+            { "label": "winnerIndexFor", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "65", "quote": "if (score > winnerScore) {" }
+          ]
+        },
+        {
+          "id": "c3-no-tests",
+          "claim": "The folder has no tests, and the page needs a browser because it touches the document at load, so it cannot run in a terminal.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab README", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/README.md", "lines": "7", "quote": "The folder has no tests." },
+            { "label": "mustQuery", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/hard-attend/hard-attend.ts", "lines": "29-30", "quote": "const element = document.querySelector<T>(selector)" }
+          ]
+        },
+        {
+          "id": "c3-indexed-half",
+          "claim": "The old plan's indexed half, reading at a chosen position, is now covered by index reads; gather lowering found hard attention after a selection was made but learned no scoring.",
+          "caption": 8,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab status: Revisit hardAttend", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "257", "quote": "Its indexed retrieval half, reading one candidate at an already chosen index, predates `circuit.indexRead` and gather lowering, which now cover it" },
+            { "label": "reassessment: gather lowering", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/reassessment-2026-09-03.md", "lines": "121", "quote": "It neither learned query/key scoring" }
+          ]
+        },
+        {
+          "id": "c3-scored-half-open",
+          "claim": "The scored half, learning a shared scoring rule from changing data, stays open; the notes warn that exact selection has no useful gradient, so training would go through soft mixtures.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab status: Revisit hardAttend", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "257", "quote": "exact selection has no useful gradient with respect to the winner, so training goes through soft mixtures" }
+          ]
+        },
+        {
+          "id": "c3-open-question",
+          "claim": "Inferred from the notes: whether a circuit can learn those scores is still an open question, since the scored half is listed as the experiment decision 8 recommends, not as a result.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab status: Revisit hardAttend", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "257", "quote": "is the experiment that [decision 8](ui-exploration/guide/review-and-decisions.md#8-what-should-the-next-learning-experiment-be) recommends" }
+          ]
+        }
+      ]
+    }
+  ]
+}

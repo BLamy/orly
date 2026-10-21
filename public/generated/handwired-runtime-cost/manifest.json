@@ -1,0 +1,76 @@
+{
+  "format": 3,
+  "slug": "handwired-runtime-cost",
+  "title": "Runtime Cost",
+  "subtitle": "What a CPU pays to run a handwired circuit: allocation, copying, and layers",
+  "animal": "animal.webp",
+  "accent": "#e0457b",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three ways to run one circuit",
+      "blurb": "Reference, full-array and reusable-buffer evaluation, and what each call allocates.",
+      "scene": "books/handwired-runtime-cost/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.935,
+        23.487,
+        34.33,
+        44.593,
+        53.185,
+        60.185,
+        71.261,
+        82.906,
+        93.332,
+        103.189
+      ],
+      "duration": 113.08
+    },
+    {
+      "number": 2,
+      "title": "What a layer costs by itself",
+      "blurb": "Sixteen thousand sums in three layer counts isolate the cost of a layer.",
+      "scene": "books/handwired-runtime-cost/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.288,
+        21.211,
+        32.949,
+        41.331,
+        53.092,
+        63.576,
+        74.198,
+        85.774,
+        94.005,
+        105.476,
+        116.622
+      ],
+      "duration": 128.128
+    },
+    {
+      "number": 3,
+      "title": "Real circuits, honest limits",
+      "blurb": "The window manager's layer shape, the smaller circuits, and the lab's status.",
+      "scene": "books/handwired-runtime-cost/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.008,
+        20.329,
+        29.07,
+        39.647,
+        53.579,
+        65.595,
+        76.23,
+        86.993,
+        101.366,
+        113.185
+      ],
+      "duration": 127.012
+    }
+  ],
+  "sources": "sources.json"
+}

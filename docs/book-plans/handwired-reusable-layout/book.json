@@ -1,0 +1,63 @@
+{
+  "slug": "handwired-reusable-layout",
+  "title": "Reusable Layout",
+  "subtitle": "One 121-parameter rule picks every photo's width, taught by a slow search, close on short captions and behind on long ones.",
+  "animal": "weaver bird",
+  "accent": "#d6b82e",
+  "chapters": [
+    {
+      "title": "One Rule for Every Photo",
+      "blurb": "Eight numbers go in, twelve relu units compute, and one preferred width comes out for each photo.",
+      "captions": [
+        "A gallery has to decide how wide each photo should be, and the right answer shifts with the screen, the caption and how many photos share the page.",
+        "This lab trains one small function to propose that width. The same parameters are reused for every photo and every collection, so there is one rule, not one per page.",
+        "For each photo it reads eight numbers: viewport width, aspect ratio, caption width, importance, photo count, mean aspect ratio, reading position and mean importance.",
+        "Notice what's missing. No photo identifier enters the function, so it has no ID to key on. It only sees numbers that describe the situation.",
+        "Twelve hidden units each take a weighted sum of those eight numbers, plus a bias. That's ninety-six multiplications feeding twelve sums.",
+        "Each sum goes through relu, which keeps positive values and zeroes the rest. One more weighted sum of the twelve results, times four hundred, is a width in pixels.",
+        "Count the parts: a hundred and twenty-one parameters, a hundred and thirty-three operations, five layers deep. It's the kind of circuit the first book built, now with learned weights.",
+        "Try six photos on a nine-hundred-pixel screen. The rule answers about 161 pixels for the narrow portrait, 276 for a wide crop, and 233 for a wide one that matters less.",
+        "The cards take those widths and wrap into rows. Row breaks and caption measuring are ordinary web code. The network only proposes widths.",
+        "The same twelve units run once per photo, and only the eight inputs change. Shuffle how the photos are stored, or rename their identifiers, and the layout comes out the same.",
+        "So here's the question. Can one cheap rule behave like an expensive search that tunes every page separately? First, what is that search trying to please?"
+      ]
+    },
+    {
+      "title": "A Teacher That Searches",
+      "blurb": "A slow coordinate search, scored by an authored objective, produces the widths the network learns to imitate.",
+      "captions": [
+        "To train the rule you need right answers. They come from a teacher: a slow search that tunes one layout at a time against a written-down objective.",
+        "That objective is the lab's own invention. The code calls it an authored preference, not a model of human taste. No people, examples or click logs are involved.",
+        "First preference: a photo's area should follow its importance. Target area is twenty-two thousand square pixels times point seven plus one point five times importance.",
+        "Second, a caption longer than three lines is penalized, squared. Third, a small charge for unused row width. Photo terms are averaged; the row charge is added once per layout.",
+        "Take the wide photo with aspect ratio 2.6 and importance about a half. Its target area is about 31,800 square pixels, so area alone asks for roughly 287 pixels of width.",
+        "Search starts every photo at 224 pixels. Then it tries ten widths, from 128 to 416, and keeps any that lowers the loss. It makes two such passes.",
+        "Then it nudges each photo by plus or minus sixteen, eight, four, two and one pixel. Here it settles at 290 pixels, close to that area-only answer.",
+        "That costs thirty evaluations per photo, plus one: 181 for six photos, 361 for twelve, 481 for sixteen. And it's coordinate search, with no promise of the global best.",
+        "Now the student learns to imitate. Training uses sixteen collections of four or eight photos at three widths, short captions only: 96 layouts, 576 photo examples.",
+        "Each example pairs eight features with the search's width. An optimizer called Adam adjusts the 121 parameters over 160 passes, shrinking the squared error.",
+        "For seed 17, the normalized loss falls from about 0.0091 to 0.00008 in under a second of training. Training is seeded, so the saved model reproduces exactly.",
+        "Now the fair test: held-out scenes with new collections, counts and widths. Does a student that never saw them land near its teacher?"
+      ]
+    },
+    {
+      "title": "Close, and Where It Slips",
+      "blurb": "On short captions the shared rule nearly matches its teacher; on longer captions it falls behind, and every method reflows abruptly.",
+      "captions": [
+        "The held-out test has two sets of 96 layouts: six or twelve photos at four new widths. Lower preference loss is better. Short captions first.",
+        "Ordinary wrapping at a fixed 224 pixels scores 0.3727. Per-layout search scores 0.0229. The shared rule, across three training seeds, scores 0.0259 to 0.0266.",
+        "So the one-shot rule stays close to its teacher, a little worse, and far better than wrapping. That's measured on the lab's own objective and its twelve photos.",
+        "It's cheaper too. In one saved run, the shared rule takes a median of 18 microseconds on short captions and search takes 317. Other seeds put search at 350 and 421.",
+        "Now change the test: longer captions and new crops, with aspect ratios from 0.55 to 2.6. The rule never trained on either.",
+        "Wrapping scores 1.0530 and search 0.1987. The shared rule scores 0.2854 to 0.3079: far ahead of wrapping, but clearly behind its teacher. The README names this as where it loses ground.",
+        "One limit it names: the network gets a caption's total width, not each word's width, so it can't predict exactly where lines break.",
+        "The safety checks hold everywhere. Across all 192 held-out layouts, all three methods keep every photo in reading order, with zero text overflow, zero horizontal overflow and zero overlap.",
+        "Resizing is a separate test. Sweep every pixel width from 360 to 1180, for short and long captions: 1,640 one-pixel steps per method. Count the steps where photos jump more than ten pixels.",
+        "In the saved model, wrapping has 6 such jumps, the shared rule 35, search 53. The worst wrapping step moves photos 939 pixels on average. The README says it plainly: all three methods reflow abruptly.",
+        "What isn't shown: that a network is necessary, or that it beats a carefully tuned responsive formula. The 224-pixel wrapper isn't tuned, and no human ratings are involved.",
+        "The status is narrowed. The result is current, but limited to this objective, these counts and widths, and one photo set. The long-caption gap is recorded, not fixed.",
+        "So: one rule of 121 parameters, taught by a slow search. Close on short captions, behind on long ones, abrupt on resize, and learned sizing inside a fixed flow layout."
+      ]
+    }
+  ]
+}

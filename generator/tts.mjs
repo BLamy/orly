@@ -16,6 +16,11 @@ export function sanitizeSpoken(text) {
     .trim()
     // Pronunciation only: preserve the displayed narration contract.
     .replace(/\brrweb\b/gi, 'r r web')
+    .replace(/\bREADME\b/g, 'read me')
+    .replace(/\bJavaScript\b/g, 'Javascript')
+    .replace(/\bTypeScript\b/g, 'Typescript')
+    .replace(/\bRegExp\b/g, 'reg ex')
+    .replace(/\bJSON\b/g, 'Jason')
     // em/en dash and double-hyphen read as a breath: "a — b" → "a, b"
     .replace(/\s*(?:—|–|--)\s*/g, ', ')
     // curly quotes/apostrophes → straight

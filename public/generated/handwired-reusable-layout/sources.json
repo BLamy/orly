@@ -1,0 +1,701 @@
+{
+  "version": 1,
+  "slug": "handwired-reusable-layout",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Rule for Every Photo",
+      "claims": [
+        {
+          "id": "c1-one-small-function",
+          "claim": "The experiment learns one small function that proposes a photo's width from changing content and viewport features.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, opening paragraph",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "3",
+              "quote": "This experiment learns one small function that proposes a photo's width from changing content and viewport features."
+            }
+          ]
+        },
+        {
+          "id": "c1-same-parameters",
+          "claim": "The same parameters are reused for every item and every collection, so there is one rule rather than one per collection.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, opening paragraph",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "3",
+              "quote": "The same parameters are reused for every item and every collection."
+            }
+          ]
+        },
+        {
+          "id": "c1-eight-numbers",
+          "claim": "The function receives eight numbers: viewport width, photo aspect ratio, caption length, importance, item count, mean aspect ratio, reading position and mean importance.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What is learned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "11",
+              "quote": "The function receives eight numbers: viewport width, photo aspect ratio, measured caption length, importance, active item count, mean aspect ratio, reading position, and mean importance."
+            },
+            {
+              "label": "itemFeatures, the eight feature cells",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/model.ts",
+              "lines": "20-29",
+              "quote": "Float32Array.of("
+            }
+          ]
+        },
+        {
+          "id": "c1-no-identifier",
+          "claim": "Stable photo IDs do not enter the learned function.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What is learned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "13",
+              "quote": "Stable IDs do not enter the learned function."
+            }
+          ]
+        },
+        {
+          "id": "c1-hidden-products",
+          "claim": "Reading the loops in model.ts, the hidden layer has twelve units, each a weighted sum of eight features plus a bias, so 96 products feed twelve sums.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "createRule, the hidden-layer products",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/model.ts",
+              "lines": "36-40",
+              "quote": "circuit.multiply(neuron * featureCount + feature, parameterCount + feature)"
+            }
+          ]
+        },
+        {
+          "id": "c1-relu-and-scale",
+          "claim": "Each hidden sum passes through a ReLU, and the output is a weighted sum of the twelve units, multiplied by 400 to give a width in pixels.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "createRule, hidden ReLU",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/model.ts",
+              "lines": "42",
+              "quote": "hidden.push(circuit.reglu([], 1, [[sum, 1]], 0))"
+            },
+            {
+              "label": "createRule, output scaled to pixels",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/model.ts",
+              "lines": "58",
+              "quote": "return evaluate(source)[0]! * 400"
+            }
+          ]
+        },
+        {
+          "id": "c1-121-parameters-133-operations",
+          "claim": "The function has 121 shared parameters, 133 operations and five dependency layers per item in this checkout.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What is learned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "11",
+              "quote": "Its 121 parameters are shared."
+            },
+            {
+              "label": "lab/reusable-layout README, circuit size",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "13",
+              "quote": "133 operations and five dependency layers per item in this checkout."
+            }
+          ]
+        },
+        {
+          "id": "c1-flow-layout-is-ordinary",
+          "claim": "An ordinary deterministic JS flow layout consumes the preferred widths, and rows wrap without reordering items.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What is learned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "15",
+              "quote": "An ordinary deterministic JS flow layout consumes the preferred widths."
+            },
+            {
+              "label": "wrapLayout, caption measuring and wrapping",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "52",
+              "quote": "const text = wrapCaption(item.text, width)"
+            }
+          ]
+        },
+        {
+          "id": "c1-storage-and-ids",
+          "claim": "Storage order and arbitrary IDs do not change the learned layout; reversing storage order or renumbering IDs leaves geometry unchanged.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What is learned",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "13",
+              "quote": "Reversing storage order or renumbering IDs leaves geometry unchanged."
+            },
+            {
+              "label": "layout.test.ts, storage and ID test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.test.ts",
+              "lines": "41",
+              "quote": "storage permutation and arbitrary IDs do not change the learned layout"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A Teacher That Searches",
+      "claims": [
+        {
+          "id": "c2-coordinate-search",
+          "claim": "The training targets come from a per-layout search: it starts from ordinary wrapping, tries widths, then refines them in steps of 16 down to 1 pixel, and is coordinate search with no guarantee of the global optimum.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Where the targets come from",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "23",
+              "quote": "Per-layout search starts from ordinary wrapping, scans ten possible widths for every item twice, then refines each width in steps of 16, 8, 4, 2, and 1 pixel."
+            }
+          ]
+        },
+        {
+          "id": "c2-authored-objective",
+          "claim": "The objective is an authored preference, not a model of human taste, and no human examples or click logs are involved.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Where the targets come from",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "21",
+              "quote": "Targets come from an explicit authored objective, not human examples or click logs."
+            },
+            {
+              "label": "preferenceLoss comment",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "63",
+              "quote": "This is an authored preference, not a model of human taste."
+            }
+          ]
+        },
+        {
+          "id": "c2-target-area",
+          "claim": "The first preference sets a photo's target area to 22,000 square pixels times 0.7 plus 1.5 times its importance.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "preferenceLoss, target area",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "68",
+              "quote": "const targetArea = 22000 * (0.7 + 1.5 * placed.item.importance)"
+            }
+          ]
+        },
+        {
+          "id": "c2-penalties",
+          "claim": "Captions longer than three lines are penalized squared, and unused row width adds a 0.08 charge once per layout, while the photo terms are averaged.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "preferenceLoss, excess-line penalty",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "70",
+              "quote": "const excessLines = Math.max(0, placed.lines.length - 3)"
+            },
+            {
+              "label": "preferenceLoss, averaging and row charge",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "73",
+              "quote": "return total / layout.items.length + 0.08 * layout.unusedRowFraction"
+            }
+          ]
+        },
+        {
+          "id": "c2-wide-photo-target",
+          "claim": "For the wide 2.6 photo at importance about 0.5, the target area is about 31,800 square pixels, which gives about 287 pixels of width if area alone decides.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "preferenceLoss, target area formula",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "68",
+              "quote": "const targetArea = 22000 * (0.7 + 1.5 * placed.item.importance)"
+            }
+          ]
+        },
+        {
+          "id": "c2-search-start-and-widths",
+          "claim": "Search starts every photo at 224 pixels, then tries widths from 128 to 416 in two passes, keeping any width that lowers the loss.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "optimizeInstance, starting preference",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "76-77",
+              "quote": "return scene.items.map(() => 224)"
+            },
+            {
+              "label": "widthChoices, 128 to 416 in ten steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "8",
+              "quote": "export const widthChoices = [128, 160, 192, 224, 256, 288, 320, 352, 384, 416]"
+            },
+            {
+              "label": "optimizeInstance, two passes",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "85",
+              "quote": "for (let pass = 0; pass < 2; pass++) {"
+            }
+          ]
+        },
+        {
+          "id": "c2-nudges",
+          "claim": "After the width passes, each photo is nudged by plus or minus 16, 8, 4, 2 and 1 pixels.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "optimizeInstance, refinement steps",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "102",
+              "quote": "for (const step of [16, 8, 4, 2, 1]) {"
+            }
+          ]
+        },
+        {
+          "id": "c2-evaluation-count",
+          "claim": "Reading the loops in layout.ts, each photo costs 30 evaluations (20 from the width passes, 10 from five nudges in two directions), so a layout of n photos costs 1 + 30n evaluations.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "optimizeInstance, evaluation counter",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.ts",
+              "lines": "84",
+              "quote": "let evaluations = 1"
+            }
+          ]
+        },
+        {
+          "id": "c2-training-layouts",
+          "claim": "Training uses collection seeds 1 to 16, four or eight photos, widths 480, 768 and 1080, and short captions: 96 layouts and 576 photo examples.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "trainingExamples, collection seeds and counts",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/study.ts",
+              "lines": "15-17",
+              "quote": "for (let seed = 1; seed <= 16; seed++) {"
+            },
+            {
+              "label": "lab/reusable-layout README, Train and test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "29",
+              "quote": "That produces 96 layouts and 576 item examples."
+            }
+          ]
+        },
+        {
+          "id": "c2-adam-160-epochs",
+          "claim": "Adam adjusts the 121 parameters for 160 epochs while minimizing squared prediction error.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Train and test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "29",
+              "quote": "Adam runs for 160 epochs"
+            },
+            {
+              "label": "trainRule, default epochs",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/model.ts",
+              "lines": "71",
+              "quote": "export function trainRule(examples: readonly TrainingExample[], seed: number, epochs = 160) {"
+            }
+          ]
+        },
+        {
+          "id": "c2-seed-17-loss",
+          "claim": "For seed 17 the normalized training error falls from 0.0091 to 0.00008, in under a second of training, and the saved model is seed 17, selected before looking at held-out results.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Train and test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "29",
+              "quote": "The saved demo model is seed 17, selected before looking at held-out results, not the best observed run."
+            },
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "45",
+              "quote": "The initial normalized training error fell from 0.0091 to 0.000080 for seed 17."
+            }
+          ]
+        },
+        {
+          "id": "c2-heldout-scenes",
+          "claim": "The held-out test uses seeds 101 to 112, six or twelve photos, and widths 420, 620, 900 and 1180, with new collections, counts and widths.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "heldOutScenes, seeds and counts",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/study.ts",
+              "lines": "29-31",
+              "quote": "for (let seed = 101; seed <= 112; seed++) {"
+            },
+            {
+              "label": "lab/reusable-layout README, Train and test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "31",
+              "quote": "Both held-out sets use seeds 101-112, six or twelve items, and widths 420/620/900/1180: 96 layouts per set."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Close, and Where It Slips",
+      "claims": [
+        {
+          "id": "c3-lower-is-better",
+          "claim": "Each held-out set has 96 layouts, and lower preference loss is better.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "37",
+              "quote": "Lower preference loss is better."
+            }
+          ]
+        },
+        {
+          "id": "c3-short-caption-scores",
+          "claim": "On short held-out captions, wrapping at 224 pixels scores 0.3727, per-layout search 0.0229, and the shared rule 0.0259 to 0.0266 across three seeds.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "41-43",
+              "quote": "| Ordinary 224-pixel wrapping | 0.3727 | 1.0530 |"
+            },
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "42",
+              "quote": "| Per-layout search | 0.0229 | 0.1987 |"
+            },
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "43",
+              "quote": "| Shared learned rule | 0.0259-0.0266 | 0.2854-0.3079 |"
+            }
+          ]
+        },
+        {
+          "id": "c3-easier-set-verdict",
+          "claim": "On the easier held-out set the shared rule transferred substantially better than ordinary wrapping and stayed close to the search objective.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "45",
+              "quote": "The shared rule transferred substantially better than ordinary wrapping, stayed close to the search objective on the easier set"
+            }
+          ]
+        },
+        {
+          "id": "c3-search-timing",
+          "claim": "In the saved seed-17 run the median CPU time on short captions is 18.3 microseconds for the shared rule and 317 for per-layout search; seeds 41 and 73 put search at about 350 and 421 microseconds.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, CPU timing table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "52-53",
+              "quote": "| Shared rule | 18.3 / 14.0 microseconds | 35.1 / 16.0 microseconds | 1204 / 1543 px |"
+            },
+            {
+              "label": "results.json, per-instance median, seed 17",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/results.json",
+              "lines": "32",
+              "quote": "\"medianMicroseconds\": 317.4170000000913,"
+            },
+            {
+              "label": "results.json, per-instance median, seed 41",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/results.json",
+              "lines": "151",
+              "quote": "\"medianMicroseconds\": 350.41699999965203,"
+            },
+            {
+              "label": "results.json, per-instance median, seed 73",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/results.json",
+              "lines": "270",
+              "quote": "\"medianMicroseconds\": 421.04099999960454,"
+            }
+          ]
+        },
+        {
+          "id": "c3-longer-captions-set",
+          "claim": "The harder held-out set uses longer captions and crop ratios 0.55, 0.7, 1.15, 1.6, 2.2 and 2.6, which training never used.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Train and test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "31",
+              "quote": "The harder set also uses previously unseen longer captions and crop ratios 0.55/0.7/1.15/1.6/2.2/2.6."
+            },
+            {
+              "label": "createScene, crop ratios by caption length",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/data.ts",
+              "lines": "39",
+              "quote": "const ratios = content === 'short' ? [0.8, 1, 1.4, 1.8] : [0.55, 0.7, 1.15, 1.6, 2.2, 2.6]"
+            }
+          ]
+        },
+        {
+          "id": "c3-long-caption-scores",
+          "claim": "On the harder set, wrapping scores 1.0530, per-layout search 0.1987, and the shared rule 0.2854 to 0.3079.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "41",
+              "quote": "| Ordinary 224-pixel wrapping | 0.3727 | 1.0530 |"
+            },
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "42",
+              "quote": "| Per-layout search | 0.0229 | 0.1987 |"
+            },
+            {
+              "label": "lab/reusable-layout README, results table",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "43",
+              "quote": "| Shared learned rule | 0.0259-0.0266 | 0.2854-0.3079 |"
+            },
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "45",
+              "quote": "and lost ground on the longer-caption/crop shift."
+            }
+          ]
+        },
+        {
+          "id": "c3-total-width-only",
+          "claim": "The current model receives total caption width but not the widths of individual words, so it cannot exactly predict line breaks.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, What to try next",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "71",
+              "quote": "The current model receives total caption width but not the widths of individual words, so it cannot exactly predict line breaks."
+            }
+          ]
+        },
+        {
+          "id": "c3-safety-checks",
+          "claim": "Every method kept every required item and reading order, with zero text overflow, horizontal overflow and overlap across both held-out sets.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "35",
+              "quote": "Every method retained every required item and reading order, with zero measured text overflow, horizontal overflow, and overlap across both held-out sets."
+            },
+            {
+              "label": "layout.test.ts, content and containment test",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/layout.test.ts",
+              "lines": "20",
+              "quote": "all methods retain required content, reading order, captions, and strict containment"
+            }
+          ]
+        },
+        {
+          "id": "c3-resize-sweep",
+          "claim": "The resize sweep covers every integer width from 360 to 1180 for seed 113 with twelve photos, using both caption families: 1,640 transitions per method.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Movement is separate",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "59",
+              "quote": "sweeps every integer width from 360 to 1180 for seed 113 with twelve items, using both caption families: 1,640 transitions per method."
+            }
+          ]
+        },
+        {
+          "id": "c3-jump-counts",
+          "claim": "Transitions with mean movement above 10 pixels: wrapping 6 of 1,640, the shared rule 35, per-layout search 53. The largest mean item movement for wrapping is 939.38 pixels.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, movement table, wrapping row",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "63",
+              "quote": "| Wrapping | 2.01 px | 939.38 px | 6 / 1640 |"
+            },
+            {
+              "label": "lab/reusable-layout README, movement table, shared and search rows",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "64-65",
+              "quote": "| Shared rule | 3.07 px | 369.55 px | 35 / 1640 |"
+            },
+            {
+              "label": "lab/reusable-layout README, movement verdict",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "67",
+              "quote": "All three methods reflow abruptly."
+            }
+          ]
+        },
+        {
+          "id": "c3-not-shown",
+          "claim": "The study does not establish that a neural network is necessary or better than a hand-written sizing rule, and the 224-pixel wrapping baseline is not a carefully tuned responsive formula.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "47",
+              "quote": "They do not establish that a neural network is necessary or better than a hand-written sizing rule."
+            },
+            {
+              "label": "lab/reusable-layout README, wrapping baseline",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "47",
+              "quote": "The wrapping baseline uses a fixed preferred width of 224 pixels, not a carefully tuned responsive formula"
+            }
+          ]
+        },
+        {
+          "id": "c3-scope-narrowed",
+          "claim": "The long-caption gap is recorded and not fixed: the shared rule's training improvement does not erase the harder held-out gap.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "lab/reusable-layout README, Results",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/reusable-layout/README.md",
+              "lines": "45",
+              "quote": "That training improvement does not erase the harder held-out gap."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

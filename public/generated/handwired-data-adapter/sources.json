@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "slug": "handwired-data-adapter",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Lookup Circuit",
+      "claims": [
+        {
+          "id": "c1-search-finds-lookup",
+          "claim": "An exhaustive search, not training, chooses which rows to read and which arithmetic steps to apply.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "data-adapter README, line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "3", "quote": "exhaustive search chooses which rows to read and which arithmetic steps to apply" }
+          ]
+        },
+        {
+          "id": "c1-no-training",
+          "claim": "Nothing in the experiment trains neural weights.",
+          "caption": 1,
+          "sources": [
+            { "label": "data-adapter README, line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "3", "quote": "Nothing trains neural weights here." }
+          ]
+        },
+        {
+          "id": "c1-twelve-slots",
+          "claim": "The circuit has twelve storage slots, each with an active bit, an integer ID, and left, top, width and height.",
+          "caption": 2,
+          "sources": [
+            { "label": "data-adapter README, line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "9", "quote": "One circuit has 12 storage slots." }
+          ]
+        },
+        {
+          "id": "c1-rows-any-slot",
+          "claim": "The example selects ID 20 from three active rows regardless of their storage order.",
+          "caption": 3,
+          "sources": [
+            { "label": "data-adapter README, line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "13", "quote": "select ID 20 from these active rows, regardless of their storage order" }
+          ]
+        },
+        {
+          "id": "c1-two-ramps",
+          "claim": "Each slot measures the difference between its ID and the wanted ID, then splits it into two ReLU ramps.",
+          "caption": 4,
+          "sources": [
+            { "label": "experiment.ts, lines 132-137", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "132-137", "quote": "const difference = circuit.roundAffine([[slotOffset(slot) + 1, 1], [0, -1]])" }
+          ]
+        },
+        {
+          "id": "c1-tent-exact",
+          "claim": "The tent ReLU(1 minus the distance) is exact for whole-number IDs.",
+          "caption": 5,
+          "sources": [
+            { "label": "data-adapter README, line 74", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "74", "quote": "exact for this integer domain" }
+          ]
+        },
+        {
+          "id": "c1-ask-twenty-by-hand",
+          "claim": "Applied by hand to the README example, ID 20 gets a tent of one and IDs 10 and 30 get zero.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "data-adapter README, lines 13-19 (example table)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "13-19", "quote": "select ID 20 from these active rows" }
+          ]
+        },
+        {
+          "id": "c1-inactive-decoy",
+          "claim": "An inactive row may repeat the wanted ID and carry misleading geometry, so each bit is multiplied by its slot's active bit.",
+          "caption": 7,
+          "sources": [
+            { "label": "data-adapter README, line 11", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "11", "quote": "inactive rows may repeat any ID and contain misleading geometry" },
+            { "label": "experiment.ts, line 142", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "142", "quote": "bit = circuit.multiply(bit, next)" }
+          ]
+        },
+        {
+          "id": "c1-count-and-found",
+          "claim": "The bits add up to a count, and found is the count minus ReLU(count minus one), capped at one.",
+          "caption": 8,
+          "sources": [
+            { "label": "experiment.ts, lines 153-155", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "153-155", "quote": "const count = circuit.roundAffine(bits.map(bit => [bit, 1]))" }
+          ]
+        },
+        {
+          "id": "c1-read-field",
+          "claim": "Reading a field multiplies each slot's value by its bit and sums them, so the selected left edge is 40.",
+          "caption": 9,
+          "sources": [
+            { "label": "data-adapter README, line 28", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "28", "quote": "A read sums that field multiplied by each row's selection bit." },
+            { "label": "data-adapter README, line 21", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "21", "quote": "The selected left is 40" }
+          ]
+        },
+        {
+          "id": "c1-absent-zero",
+          "claim": "An absent ID returns found 0 and value 0, even when the coordinate origins are nonzero.",
+          "caption": 10,
+          "sources": [
+            { "label": "data-adapter README, line 11", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "11", "quote": "even when the coordinate origins are nonzero" },
+            { "label": "data-adapter README, line 21", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "21", "quote": "Selecting absent ID 99 returns" }
+          ]
+        },
+        {
+          "id": "c1-one-hot",
+          "claim": "Duplicate active IDs are rejected, and the active-and-ID bits are declared one-hot, with all zeros allowed.",
+          "caption": 11,
+          "sources": [
+            { "label": "experiment.ts, line 42", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "42", "quote": "throw new Error('active IDs must be unique')" },
+            { "label": "experiment.ts, lines 146-150", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "146-150", "quote": "Only active+ID has a justified one-hot contract for arbitrary slot order." }
+          ]
+        },
+        {
+          "id": "c1-row-test-then-read",
+          "claim": "Every candidate is built by compiling some row tests and then reading a field.",
+          "caption": 12,
+          "sources": [
+            { "label": "experiment.ts, line 121", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "121", "quote": "function compileLookup(circuit: Circuit, predicates: readonly Predicate[]) {" },
+            { "label": "data-adapter README, line 27", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "27", "quote": "Zero, one, or two row predicates: active, same ID, or first storage slot." }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "868 Programs, Twelve Scenes",
+      "claims": [
+        {
+          "id": "c2-given-scenes",
+          "claim": "The search is given example scenes with their right answers and must choose the rows, field and arithmetic.",
+          "caption": 0,
+          "sources": [
+            { "label": "data-adapter README, line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "3", "quote": "Given examples of available rectangles and desired answers" }
+          ]
+        },
+        {
+          "id": "c2-row-tests",
+          "claim": "Row tests come from active, same ID and first storage slot, combined by AND, used none, one or two at a time.",
+          "caption": 1,
+          "sources": [
+            { "label": "data-adapter README, line 27", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "27", "quote": "Multiple predicates are combined with AND." }
+          ]
+        },
+        {
+          "id": "c2-field-four",
+          "claim": "The field read is one of four: left, top, width or height.",
+          "caption": 2,
+          "sources": [
+            { "label": "data-adapter README, line 28", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "28", "quote": "Read one field: left, top, width, or height." }
+          ]
+        },
+        {
+          "id": "c2-steps",
+          "claim": "Zero, one or two arithmetic steps are drawn from five: add width, add height, subtract origin X, subtract origin Y, or multiply by scale.",
+          "caption": 3,
+          "sources": [
+            { "label": "data-adapter README, line 29", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "29", "quote": "Apply zero, one, or two steps: add selected width, add selected height, subtract origin X, subtract origin Y, or multiply by scale." }
+          ]
+        },
+        {
+          "id": "c2-868-programs",
+          "claim": "The 868 programs are each built as a real circuit and run, with no heuristic score.",
+          "caption": 4,
+          "sources": [
+            { "label": "data-adapter README, line 31", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "31", "quote": "Every program runs through the existing" },
+            { "label": "data-adapter README, line 31 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "31", "quote": "There is no heuristic, partial-program score, gradient, or fitted coefficient." }
+          ]
+        },
+        {
+          "id": "c2-eight-targets",
+          "claim": "The eight targets come from a plain find and separate FP32 arithmetic, never from the circuits.",
+          "caption": 5,
+          "sources": [
+            { "label": "data-adapter README, line 33", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "33", "quote": "They do not interpret candidate programs or call the circuit builder." },
+            { "label": "data-adapter README, line 33 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "33", "quote": "separately written FP32 arithmetic" }
+          ]
+        },
+        {
+          "id": "c2-training-twelve",
+          "claim": "Training uses twelve scenes with one to three active rows, present and absent IDs, and integer geometry.",
+          "caption": 6,
+          "sources": [
+            { "label": "data-adapter README, line 66", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "66", "quote": "Training uses seeds 1 and 2, one/two/three active rows, both present and absent IDs, and integer geometry: 12 scenes" }
+          ]
+        },
+        {
+          "id": "c2-first-scene-trace",
+          "claim": "After the first scene, 34 programs still match at least one task, with 8 right candidates and 2 left candidates. The repository does not print this per-scene count; it comes from tracing the same search loop.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "experiment.ts, lines 209-219 (search loop, early rejection)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "209-219", "quote": "if (!possible.some(Boolean)) break" }
+          ]
+        },
+        {
+          "id": "c2-second-scene-trace",
+          "claim": "After the second scene, six tasks are down to one candidate each; top has two left and right has three. Same tracing caveat as the first scene.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "experiment.ts, lines 209-219 (search loop, early rejection)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "209-219", "quote": "for (let task = 0; task < TASKS.length; task++) {" }
+          ]
+        },
+        {
+          "id": "c2-seventh-scene-trace",
+          "claim": "By the seventh scene exactly eight programs remain, one per task, and later scenes eliminate nothing more. Same tracing caveat.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "data-adapter README, line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "5", "quote": "12 training scenes identify one program for each of eight tasks from 868 candidates" }
+          ]
+        },
+        {
+          "id": "c2-997-evaluations",
+          "claim": "Candidates are dropped once no task matches them, so the search runs 997 candidate and scene evaluations rather than 868 times 12, which is 10,416.",
+          "caption": 10,
+          "sources": [
+            { "label": "data-adapter README, line 66", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "66", "quote": "Search evaluates 997 candidate/scene pairs after early rejection." },
+            { "label": "experiment.ts, line 219", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.ts", "lines": "219", "quote": "if (!possible.some(Boolean)) break" }
+          ]
+        },
+        {
+          "id": "c2-survivor-strings",
+          "claim": "Every survivor starts with the same selector, active AND same ID. Right reads left then adds width.",
+          "caption": 11,
+          "sources": [
+            { "label": "data-adapter README, line 46", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "46", "quote": "The recovered common lookup is" },
+            { "label": "data-adapter README, line 39", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "39", "quote": "| Right | Read left, add width |" },
+            { "label": "data-adapter README, line 41", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "41", "quote": "| Local left | Read left, subtract origin X, multiply by scale |" }
+          ]
+        },
+        {
+          "id": "c2-controls",
+          "claim": "Dropping either the active test or the same-ID test leaves zero fitting programs.",
+          "caption": 12,
+          "sources": [
+            { "label": "data-adapter README, line 46", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "46", "quote": "None of the fitting programs omits either predicate." },
+            { "label": "report.ts, lines 31-32", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/report.ts", "lines": "31-32", "quote": "fitsWithoutActivePredicate" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "What the Check Shows",
+      "claims": [
+        {
+          "id": "c3-held-out-only-counts",
+          "claim": "All eight programs agree exactly with an independent JavaScript lookup on 438 held-out scenes.",
+          "caption": 0,
+          "sources": [
+            { "label": "data-adapter README, line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "5", "quote": "All eight programs agree exactly with an independent JavaScript lookup on 438 held-out scenes" }
+          ]
+        },
+        {
+          "id": "c3-216-scenes",
+          "claim": "The held-out set has 216 generated scenes from seeds 1001 to 1024, with counts 0, 4, 6, 9 and 12, new IDs, fractional geometry and scales.",
+          "caption": 1,
+          "sources": [
+            { "label": "data-adapter README, line 68", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "68", "quote": "Held-out data uses seeds 1001-1024 and counts 0, 4, 6, 9, and 12." },
+            { "label": "data-adapter README, line 68 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "68", "quote": "These 216 generated scenes use new IDs, fractional geometry, and fractional positive or negative scales." }
+          ]
+        },
+        {
+          "id": "c3-reversed-438",
+          "claim": "Each scene also runs with reversed storage, adding 216 checks, and six boundary cases bring the total to 438.",
+          "caption": 2,
+          "sources": [
+            { "label": "data-adapter README, line 68 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "68", "quote": "Reversing each scene's storage adds 216 permutation checks." }
+          ]
+        },
+        {
+          "id": "c3-14016",
+          "claim": "Each fitting answer is compared in literal and compiled execution, giving 14,016 scalar comparisons.",
+          "caption": 3,
+          "sources": [
+            { "label": "data-adapter README, line 70", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "70", "quote": "14,016 scalar comparisons" }
+          ]
+        },
+        {
+          "id": "c3-not-independent",
+          "claim": "The 14,016 comparisons are implementation checks, not additional independent samples; only the generated scenes are fresh draws.",
+          "caption": 4,
+          "sources": [
+            { "label": "data-adapter README, line 70", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "70", "quote": "these are implementation comparisons, not additional independent samples" }
+          ]
+        },
+        {
+          "id": "c3-fp32-rounding",
+          "claim": "Inputs are rounded to FP32 and each addition, subtraction and multiplication rounds separately.",
+          "caption": 5,
+          "sources": [
+            { "label": "data-adapter README, line 76", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "76", "quote": "Inputs are rounded to FP32 before arithmetic. Each addition, subtraction, and multiplication rounds separately." }
+          ]
+        },
+        {
+          "id": "c3-one-part-in-16-million",
+          "claim": "Adding about one part in sixteen million to one rounds back to one, so multiplying by three gives exactly three only when the rounding is kept.",
+          "caption": 6,
+          "sources": [
+            { "label": "experiment.test.ts, line 74", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.test.ts", "lines": "74", "quote": "expect(Math.fround((1 + 2 ** -24) * 3)).not.toBe(3)" },
+            { "label": "data-adapter README, line 76", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "76", "quote": "is 3, while rounding only after the multiplication gives a different result" }
+          ]
+        },
+        {
+          "id": "c3-round-affine-keeps-rounding",
+          "claim": "roundAffine keeps the required rounding steps, so later graph construction cannot remove them.",
+          "caption": 7,
+          "sources": [
+            { "label": "data-adapter README, line 76", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "76", "quote": "later graph construction from removing required rounding" },
+            { "label": "numeric-ui-core.ts, lines 414-415", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "414-415", "quote": "Keep this evaluation, term order, and input wires intact, including constants." }
+          ]
+        },
+        {
+          "id": "c3-shared-selector",
+          "claim": "All eight programs share one row selection, computed once, with four distinct field reads feeding the outputs.",
+          "caption": 8,
+          "sources": [
+            { "label": "data-adapter README, line 58", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "58", "quote": "Its row selection is computed once for all eight tasks in the combined circuit." },
+            { "label": "data-adapter README, line 58 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "58", "quote": "Only four distinct fields need retrieval." }
+          ]
+        },
+        {
+          "id": "c3-naming-saves-nothing",
+          "claim": "Naming the shared function saves no graph size: both joint circuits have 200 operations, against 1,118 for eight separate circuits, which measures sharing between separate computations.",
+          "caption": 9,
+          "sources": [
+            { "label": "data-adapter README, line 62", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "62", "quote": "There is also no extra graph-size saving from naming the function." },
+            { "label": "data-adapter README, line 62 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "62", "quote": "Building eight independent circuits constructs 1,118 operations in total" }
+          ]
+        },
+        {
+          "id": "c3-limits",
+          "claim": "The limits are plain: no learned weights, no neural search guide, capacity of twelve slots, no strings or joins, and a vocabulary too small for (left + width − originX) × scale.",
+          "caption": 10,
+          "sources": [
+            { "label": "data-adapter README, line 79", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "79", "quote": "The graph is fixed for a capacity of 12." },
+            { "label": "data-adapter README, line 79 (cont.)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/README.md", "lines": "79", "quote": "The vocabulary does not even contain enough steps" },
+            { "label": "report.ts, line 43", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/report.ts", "lines": "43", "quote": "Not implemented: eight small tasks and 868 candidates do not justify a neural search guide." }
+          ]
+        },
+        {
+          "id": "c3-status",
+          "claim": "The status is that the experiment holds within its scope: eight tests pass and every check matches the plain lookup, but it is a search result, not a learning result, and its predicates and extraction rule are authored.",
+          "caption": 11,
+          "sources": [
+            { "label": "lab/status.md, line 199", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "199", "quote": "Lookup predicates and the rule for extracting a reusable function are authored." },
+            { "label": "experiment.test.ts, line 12", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/data-adapter/experiment.test.ts", "lines": "12", "quote": "suite('bounded data adapters', () => {" }
+          ]
+        },
+        {
+          "id": "c3-open-soft-attention",
+          "claim": "The open next experiment is retrieval by identifier with soft attention and argmax, compared against this exact baseline. It is proposed and has not been run.",
+          "caption": 12,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "lab/status.md, line 187", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "187", "quote": "retrieving an item's rectangle by id, trained with soft attention, run with argmax" }
+          ]
+        }
+      ]
+    }
+  ]
+}

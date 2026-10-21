@@ -163,8 +163,28 @@ export function ChapterPlayer({
   // `state.captions` briefly holds two overlapping entries, but stacking them
   // read as a jumble over the video. Show the most recently started one and
   // let it cut to the next, like real closed captions.
-  const activeCaption =
+  const sampledCaption =
     pb.state.captions.length > 0 ? pb.state.captions[pb.state.captions.length - 1] : null;
+  // With a recording, a line stays up from its cue until the next line's cue. An authored caption's own span can end
+  // while the voice is still reading it (the scene holds after a beat, and the retime stretches the hold), which
+  // blanked the pill mid-sentence; the cues are where the voice really is.
+  const cuedCaptions = useMemo(
+    () => (built && useAudioClock && chapter.cues?.length ? [...built.tl.describe().captions].sort((a, b) => a.at - b.at) : null),
+    [built, useAudioClock, chapter.cues],
+  );
+  const activeCaption: CaptionItem | null = (() => {
+    const cues = chapter.cues;
+    if (!cuedCaptions || !cues?.length || pb.t < cues[0]) return sampledCaption;
+    let i = 0;
+    while (i + 1 < cues.length && cues[i + 1] <= pb.t) i++;
+    const c = cuedCaptions[i];
+    if (!c) return sampledCaption;
+    const end = cues[i + 1] ?? chapter.duration ?? pb.duration;
+    if (pb.t >= end) return null;
+    const fade = 0.25;
+    const u = Math.min(1, (pb.t - cues[i]) / fade, (end - pb.t) / fade);
+    return { id: c.id, text: c.text, tex: c.tex, u: Math.max(0, u) };
+  })();
 
   // No recorded narration → speak the captions with the browser's best voice.
   const speechNarration = !useAudioClock && speechSupported();

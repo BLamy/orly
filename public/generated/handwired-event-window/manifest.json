@@ -1,0 +1,79 @@
+{
+  "format": 3,
+  "slug": "handwired-event-window",
+  "title": "Event Window",
+  "subtitle": "Drag, click and focus as latches and one narrowing ramp, checked against plain code",
+  "animal": "animal.webp",
+  "accent": "#7b61d1",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Latches, Not History",
+      "blurb": "A press writes a record, a four-pixel crossing flips a latch, and only a release commits the window's position.",
+      "scene": "books/handwired-event-window/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.469,
+        25.147,
+        35.968,
+        50.422,
+        63.402,
+        74.397,
+        84.753,
+        93.739,
+        106.661,
+        116.878,
+        130.09
+      ],
+      "duration": 143.221
+    },
+    {
+      "number": 2,
+      "title": "A Ramp That Narrows",
+      "blurb": "One threshold shape, annealed from thirty-two pixels to a quarter pixel, recovers six parameters; held fixed, it drifts and fails.",
+      "scene": "books/handwired-event-window/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.272,
+        24.788,
+        36.909,
+        49.749,
+        61.045,
+        74.362,
+        86.018,
+        97.594,
+        109.308,
+        124.518,
+        135.687,
+        148.353
+      ],
+      "duration": 161.426
+    },
+    {
+      "number": 3,
+      "title": "Exact, Within Limits",
+      "blurb": "The scorecard with each number's scope, the live cost, and what the status file says training did and did not show.",
+      "scene": "books/handwired-event-window/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.227,
+        23.58,
+        37.245,
+        49.668,
+        61.579,
+        73.561,
+        85.159,
+        99.277,
+        111.549,
+        124.923,
+        138.681
+      ],
+      "duration": 151.533
+    }
+  ],
+  "sources": "sources.json"
+}

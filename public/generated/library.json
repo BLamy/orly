@@ -1,41 +1,454 @@
 {
   "books": [
     {
-      "slug": "neural-networks-already-clean",
-      "title": "Already Clean",
-      "subtitle": "",
+      "slug": "handwired-user-effort",
+      "title": "User Effort",
+      "subtitle": "A tiny circuit learns how long a click takes, then picks the faster layout",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
-      "color": "#b0277a",
-      "href": "?bundle=neural-networks-already-clean",
+      "color": "#8a9a5b",
+      "href": "?bundle=handwired-user-effort",
+      "series": "Handwired",
+      "seriesOrder": 13,
       "chapters": [
         {
           "number": 1,
-          "title": "Refocus the Microscope",
-          "duration": 101.75
+          "title": "A Law We Wrote",
+          "duration": 118.933
         },
         {
           "number": 2,
-          "title": "Read the Gate",
-          "duration": 114.754
+          "title": "Fitting It, Then Testing It",
+          "duration": 114.197
         },
         {
           "number": 3,
-          "title": "Follow the Branch",
-          "duration": 89.815
+          "title": "Choosing a Layout",
+          "duration": 151.674
+        }
+      ],
+      "createdAt": "2026-10-21T07:47:30.457Z"
+    },
+    {
+      "slug": "handwired-json-search",
+      "title": "JSON Search",
+      "subtitle": "Can a GPU search a hundred thousand JSON documents faster, one thread each, with the lab's own weighted-sum program?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b23a48",
+      "href": "?bundle=handwired-json-search",
+      "series": "Handwired",
+      "seriesOrder": 16,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Thread Per Document",
+          "duration": 131.007
+        },
+        {
+          "number": 2,
+          "title": "Search Is a Matrix Product",
+          "duration": 125.527
+        },
+        {
+          "number": 3,
+          "title": "Packing the Bits",
+          "duration": 138.438
         },
         {
           "number": 4,
-          "title": "Squeeze the Layer",
-          "duration": 121.208
-        },
-        {
-          "number": 5,
-          "title": "Scale the Investigation",
-          "duration": 126.595
+          "title": "Who Does It Beat",
+          "duration": 135.419
         }
       ],
-      "createdAt": "2026-10-15T18:00:31.597Z"
+      "createdAt": "2026-10-21T07:46:08.898Z"
+    },
+    {
+      "slug": "handwired-runtime-cost",
+      "title": "Runtime Cost",
+      "subtitle": "What a CPU pays to run a handwired circuit: allocation, copying, and layers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e0457b",
+      "href": "?bundle=handwired-runtime-cost",
+      "series": "Handwired",
+      "seriesOrder": 14,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three ways to run one circuit",
+          "duration": 113.08
+        },
+        {
+          "number": 2,
+          "title": "What a layer costs by itself",
+          "duration": 128.128
+        },
+        {
+          "number": 3,
+          "title": "Real circuits, honest limits",
+          "duration": 127.012
+        }
+      ],
+      "createdAt": "2026-10-21T07:44:19.005Z"
+    },
+    {
+      "slug": "handwired-trace-compiler",
+      "title": "Trace Compiler",
+      "subtitle": "Can a real gallery's layout code become exact circuits?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b5532f",
+      "href": "?bundle=handwired-trace-compiler",
+      "series": "Handwired",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Source Becomes Wires",
+          "duration": 125.388
+        },
+        {
+          "number": 2,
+          "title": "One Step Below Seven",
+          "duration": 129.381
+        },
+        {
+          "number": 3,
+          "title": "Five Calculations",
+          "duration": 138.902
+        },
+        {
+          "number": 4,
+          "title": "How Much Is Covered",
+          "duration": 138.949
+        }
+      ],
+      "createdAt": "2026-10-21T07:43:00.637Z"
+    },
+    {
+      "slug": "handwired-reusable-layout",
+      "title": "Reusable Layout",
+      "subtitle": "One 121-parameter rule picks every photo's width, taught by a slow search, close on short captions and behind on long ones.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6b82e",
+      "href": "?bundle=handwired-reusable-layout",
+      "series": "Handwired",
+      "seriesOrder": 11,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Rule for Every Photo",
+          "duration": 121.346
+        },
+        {
+          "number": 2,
+          "title": "A Teacher That Searches",
+          "duration": 140.991
+        },
+        {
+          "number": 3,
+          "title": "Close, and Where It Slips",
+          "duration": 166.533
+        }
+      ],
+      "createdAt": "2026-10-21T07:41:10.038Z"
+    },
+    {
+      "slug": "handwired-ui-exploration",
+      "title": "UI Exploration",
+      "subtitle": "One night, one question: how far can a fixed circuit write a user interface?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#4f7fd8",
+      "href": "?bundle=handwired-ui-exploration",
+      "series": "Handwired",
+      "seriesOrder": 10,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Count, Don't Search",
+          "duration": 141.735
+        },
+        {
+          "number": 2,
+          "title": "One Program, Many Photos",
+          "duration": 137.461
+        },
+        {
+          "number": 3,
+          "title": "What Held, What Narrowed",
+          "duration": 151.534
+        }
+      ],
+      "createdAt": "2026-10-21T07:39:51.313Z"
+    },
+    {
+      "slug": "handwired-knuth-plass",
+      "title": "Knuth-Plass",
+      "subtitle": "Optimal line breaks as a tree of min-plus matrices: one paragraph loses, many can win.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#5b8bd6",
+      "href": "?bundle=handwired-knuth-plass",
+      "series": "Handwired",
+      "seriesOrder": 15,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Cheapest Breaks",
+          "duration": 168.623
+        },
+        {
+          "number": 2,
+          "title": "Chain Or Tree",
+          "duration": 144.381
+        },
+        {
+          "number": 3,
+          "title": "Many At Once",
+          "duration": 158.081
+        }
+      ],
+      "createdAt": "2026-10-21T07:33:42.398Z"
+    },
+    {
+      "slug": "handwired-learned-gallery",
+      "title": "Learned Gallery",
+      "subtitle": "A 244-weight network that lays photos out on your sketch and lines them up with a penalty, not a snap.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#4f7cc8",
+      "href": "?bundle=handwired-learned-gallery",
+      "series": "Handwired",
+      "seriesOrder": 12,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Photos from a sketch",
+          "duration": 135.139
+        },
+        {
+          "number": 2,
+          "title": "Lining up without snapping",
+          "duration": 134.862
+        },
+        {
+          "number": 3,
+          "title": "Taking steps back",
+          "duration": 155.572
+        },
+        {
+          "number": 4,
+          "title": "What held, what didn't",
+          "duration": 155.944
+        }
+      ],
+      "createdAt": "2026-10-21T07:17:45.781Z"
+    },
+    {
+      "slug": "handwired-event-window",
+      "title": "Event Window",
+      "subtitle": "Drag, click and focus as latches and one narrowing ramp, checked against plain code",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7b61d1",
+      "href": "?bundle=handwired-event-window",
+      "series": "Handwired",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Latches, Not History",
+          "duration": 143.221
+        },
+        {
+          "number": 2,
+          "title": "A Ramp That Narrows",
+          "duration": 161.426
+        },
+        {
+          "number": 3,
+          "title": "Exact, Within Limits",
+          "duration": 151.533
+        }
+      ],
+      "createdAt": "2026-10-21T07:01:33.377Z"
+    },
+    {
+      "slug": "handwired-learned-interpreter",
+      "title": "Learned Program",
+      "subtitle": "Training two instructions of a tiny interpreter, what a fixed epsilon broke, and what integer examples cannot say.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#8d5fd3",
+      "href": "?bundle=handwired-learned-interpreter",
+      "series": "Handwired",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Program in 123 Cells",
+          "duration": 121.718
+        },
+        {
+          "number": 2,
+          "title": "Cooling the Reels",
+          "duration": 139.971
+        },
+        {
+          "number": 3,
+          "title": "What Integers Cannot Say",
+          "duration": 149.212
+        }
+      ],
+      "createdAt": "2026-10-21T06:47:53.407Z"
+    },
+    {
+      "slug": "handwired-generative-fields",
+      "title": "Generative Fields",
+      "subtitle": "One fixed layout program, seventy-two numbers, and what searching, climbing and repairing really showed.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7fb33a",
+      "href": "?bundle=handwired-generative-fields",
+      "series": "Handwired",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Seventy-Two Numbers, One Program",
+          "duration": 124.32
+        },
+        {
+          "number": 2,
+          "title": "Scored, Searched, Climbed",
+          "duration": 146.146
+        },
+        {
+          "number": 3,
+          "title": "The Path Between",
+          "duration": 147.54
+        }
+      ],
+      "createdAt": "2026-10-21T06:24:26.596Z"
+    },
+    {
+      "slug": "handwired-data-adapter",
+      "title": "Data Adapter",
+      "subtitle": "Eight rectangle lookups recovered by searching 868 tiny programs",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b5653a",
+      "href": "?bundle=handwired-data-adapter",
+      "series": "Handwired",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Lookup Circuit",
+          "duration": 127.756
+        },
+        {
+          "number": 2,
+          "title": "868 Programs, Twelve Scenes",
+          "duration": 132.446
+        },
+        {
+          "number": 3,
+          "title": "What the Check Shows",
+          "duration": 133.098
+        }
+      ],
+      "createdAt": "2026-10-21T06:16:59.823Z"
+    },
+    {
+      "slug": "handwired-candidate-gallery",
+      "title": "Three Layouts",
+      "subtitle": "One program builds every gallery layout at once, and the worst quality gauge picks the winner",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3fb6a8",
+      "href": "?bundle=handwired-candidate-gallery",
+      "series": "Handwired",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three Layouts at Once",
+          "duration": 99.567
+        },
+        {
+          "number": 2,
+          "title": "The Worst Gauge Wins",
+          "duration": 105.79
+        },
+        {
+          "number": 3,
+          "title": "Everyone Reads the Winner",
+          "duration": 110.573
+        }
+      ],
+      "createdAt": "2026-10-21T05:36:21.675Z"
+    },
+    {
+      "slug": "handwired-cascade-argmax",
+      "title": "Picking Exactly",
+      "subtitle": "An exact sign cascade for argmax on 32-bit floats, its cost, and what training it really shows.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1fa3a8",
+      "href": "?bundle=handwired-cascade-argmax",
+      "series": "Handwired",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Sign Cascade",
+          "duration": 119.674
+        },
+        {
+          "number": 2,
+          "title": "Eight Candidates, One Winner",
+          "duration": 122.043
+        },
+        {
+          "number": 3,
+          "title": "Training It Soft",
+          "duration": 109.598
+        }
+      ],
+      "createdAt": "2026-10-21T05:35:23.971Z"
+    },
+    {
+      "slug": "handwired-hard-attend",
+      "title": "Hard Attend",
+      "subtitle": "Score three items, pick the highest exactly, and read its value two ways that agree.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c58a3d",
+      "href": "?bundle=handwired-hard-attend",
+      "series": "Handwired",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Closer Wins",
+          "duration": 97.616
+        },
+        {
+          "number": 2,
+          "title": "One Winner, Two Reads",
+          "duration": 98.452
+        },
+        {
+          "number": 3,
+          "title": "Soft Versus Exact",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-10-21T05:34:12.079Z"
     },
     {
       "slug": "handwired",
@@ -72,7 +485,46 @@
           "duration": 122.276
         }
       ],
-      "createdAt": "2026-10-15T21:39:17.372Z"
+      "createdAt": "2026-10-15T21:39:17.372Z",
+      "series": "Handwired",
+      "seriesOrder": 1
+    },
+    {
+      "slug": "neural-networks-already-clean",
+      "title": "Already Clean",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=neural-networks-already-clean",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Refocus the Microscope",
+          "duration": 101.75
+        },
+        {
+          "number": 2,
+          "title": "Read the Gate",
+          "duration": 114.754
+        },
+        {
+          "number": 3,
+          "title": "Follow the Branch",
+          "duration": 89.815
+        },
+        {
+          "number": 4,
+          "title": "Squeeze the Layer",
+          "duration": 121.208
+        },
+        {
+          "number": 5,
+          "title": "Scale the Investigation",
+          "duration": 126.595
+        }
+      ],
+      "createdAt": "2026-10-15T18:00:31.597Z"
     },
     {
       "slug": "jeva-fresh-decisions",

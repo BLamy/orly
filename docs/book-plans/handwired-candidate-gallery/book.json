@@ -1,0 +1,58 @@
+{
+  "slug": "handwired-candidate-gallery",
+  "title": "Three Layouts",
+  "subtitle": "One program builds every gallery layout at once, and the worst quality gauge picks the winner",
+  "animal": "bowerbird",
+  "accent": "#3fb6a8",
+  "chapters": [
+    {
+      "title": "Three Layouts at Once",
+      "blurb": "A Handwired gallery cannot skip work, so it builds Cinema, Contact sheet and Story for twelve photos on every frame.",
+      "captions": [
+        "When a gallery's window resizes, twelve photos need a layout. But a Handwired program is fixed weighted sums and relu, which zeroes negatives. It cannot skip work the way an if statement does.",
+        "So this lab builds all the answers. On every frame it computes three complete layouts, and only afterwards decides which one to show.",
+        "Cinema is a hero photo with a rail of thumbnails beside it, two columns wide. The hero is the photo in focus.",
+        "The Contact sheet has no hero: twelve equal thumbnails in four columns and three rows. Story lays the hero across the top, with thumbnails below in three columns.",
+        "Positions are sums of the stage's width, its height and a 14 pixel gap, with clamps along the way. A Contact cell's width is the width minus five gaps, divided by four.",
+        "On a 1,400 by 680 stage, that makes a Contact cell 332 and a half pixels wide and 208 tall.",
+        "Cinema caps its rail at 280 pixels, leaving a hero 1,078 by 652. Story's hero is 394 tall, so its thumbnails get just over 50 pixels of height.",
+        "Drag the stage narrower and every number slides along. Where a subtraction would go negative, a relu pins it at zero, so even a 20 pixel sliver gets finite sizes.",
+        "Nothing is chosen yet. All three layouts, plus the click and focus logic, are 417 operations in 60 layers, and every frame computes every one.",
+        "Building every answer is the price of having no branch. The next question is how to pick one."
+      ]
+    },
+    {
+      "title": "The Worst Gauge Wins",
+      "blurb": "Each layout is scored by its smallest quality gauge, and a tournament of two comparisons lights a single one-hot bit.",
+      "captions": [
+        "A layout is good when its pieces are big enough to see. Each size gets a gauge: the size times a scale, one over a target size, capped at 1.",
+        "A Contact cell targets 240 pixels. At 1,400 by 680 its width gauge is full, but its 208 pixel height reads 0.87.",
+        "Cinema's four gauges all read 1 there. Story's thumbnails are 50 tall against a target of 60, so its weakest gauge reads 0.84.",
+        "A layout is only as good as its worst gauge, so its score is the smallest one. A minimum is the smaller number minus a relu of the difference.",
+        "The picker, argmax, compares two scores at a time: Cinema against Contact, then the survivor against Story. A bias one float step above a half sends exact ties left.",
+        "What leaves the tournament is a one-hot: a 1 for the winner, a 0 for each loser. Here that is 1, 0, 0, and Cinema wins with a score of 1.",
+        "Narrow to 984 by 730. Cinema's hero shrinks to 666 pixels against a 900 target, so its gauge falls to 0.74. Contact wins, 0.94 over Story's 0.93.",
+        "At 610 by 830, Contact's cells are 135 wide, a gauge of 0.56. Its height gauge is a perfect 1, but only the worst gauge counts.",
+        "Story's hero is 439 tall against a 440 target, and its other gauges are full. Story scores 0.998 and takes over.",
+        "The flip is tight. At 517 tall, 760 wide picks Contact, but at 600 wide Story wins, 0.555 against 0.552. A three-way tie, as at 1,280 by 800, goes to Cinema."
+      ]
+    },
+    {
+      "title": "Everyone Reads the Winner",
+      "blurb": "The one-hot multiplies every layout's geometry and sums, so twelve thumbnails and the hero follow the winner, and clicks follow them.",
+      "captions": [
+        "The winner is just a 1 and two 0s. Twelve thumbnails and a hero still need rectangles, and they get them by multiplication, not an if.",
+        "Take thumbnail zero's left edge. Each layout offers a value; multiply each by its own bit and add. Two of the three products are multiplied by zero.",
+        "On the 1,400 by 680 stage, the sum is Cinema's rectangle: left 1,106, top 14, 133 wide, 97 tall. The other two layouts were computed too, then erased by zero.",
+        "Every thumbnail and the hero run the same four sums. The Contact sheet has no hero, so its hero flag is zero.",
+        "At 984 by 730 the bit moves to Contact and thumbnail zero flies to the corner. At 610 by 830 it moves to Story and drops below the hero.",
+        "Declared a one-hot, these products lower to gather reads: 26 in one group, and the stored weights fall from 940 to 848.",
+        "A click uses the same rectangles. Each thumbnail turns the click's distance from its nearest edge into a bit, and the first hit sets that photo's focus cell to 1.",
+        "At 1,400 by 680, a click one pixel inside thumbnail seven hits it. A quarter pixel inside misses, and focus stays put.",
+        "The tests count exactly 14 rounding points: twelve thumbnail hit tests and two argmax comparisons. The rest is plain arithmetic.",
+        "The status is plain: a working demo, moved into the lab folder on September 17, 2026, and a subject of runtime cost measurements. Nothing is learned; the scales are written by hand.",
+        "So the program never branches. It builds every layout, scores each by its worst gauge, and multiplies the losers by zero, every frame."
+      ]
+    }
+  ]
+}
