@@ -1,0 +1,60 @@
+{
+  "slug": "handwired-hard-attend",
+  "title": "Hard Attend",
+  "subtitle": "Score three items, pick the highest exactly, and read its value two ways that agree.",
+  "animal": "meerkat",
+  "accent": "#c58a3d",
+  "chapters": [
+    {
+      "title": "Closer Wins",
+      "blurb": "A two-number key turns \"which item is nearest the query?\" into \"which score is highest?\".",
+      "captions": [
+        "Three items sit on a line: Aster is worth ten, Banyan twenty, Cobalt thirty. A query lands somewhere near them, and you want the value of the nearest one.",
+        "This lab is a teaching page, plain web code rather than a numeric program. It turns that nearness question into scores, then picks exactly.",
+        "Give each item a key of two numbers: twice its position, and minus its position squared. Banyan, at position one, gets two and minus one.",
+        "The query is the pair query and one. Multiply the pairs and add, and the score is twice the query times the position, minus the position squared.",
+        "Park the query at one. Aster scores zero, Banyan scores one, Cobalt scores zero. Banyan is the tallest, and Banyan is the nearest.",
+        "Across the positions, that score is the query squared minus the squared distance to the query. So the scores trace a parabola that peaks at the query.",
+        "Slide the query down to zero. Aster takes the lead with zero, while Banyan falls to minus one and Cobalt to minus four.",
+        "Slide it up to two. Cobalt leads with four, Banyan has three, and Aster has zero.",
+        "In between, the curve slides smoothly. At one and a quarter, Banyan scores one and a half and Cobalt scores one, so Banyan is still nearest.",
+        "At exactly one half, Aster and Banyan are equally near, and both score zero. The scores alone cannot name a single winner there.",
+        "So scoring turns nearest into highest. Next comes the harder part: choosing one winner exactly, even when two scores tie."
+      ]
+    },
+    {
+      "title": "One Winner, Two Reads",
+      "blurb": "The first highest score wins, ties go left, and a one-hot sum and a direct index read return the same value.",
+      "captions": [
+        "Scores are not an answer yet. You need one winner, the position of the highest score, a choice called argmax, plus a tie rule decided in advance.",
+        "The page walks the scores from left to right. It starts with the first item as the leader, then challenges that leader with each item after it.",
+        "A challenger takes over only if its score is strictly greater. Equal is not enough, so the earlier item keeps the lead.",
+        "At a query of one half, Banyan ties Aster at zero, fails to beat it, and Aster wins. Ties go left.",
+        "At one and a half, Banyan and Cobalt both score two. Banyan holds the lead against Cobalt, so Banyan wins.",
+        "Now read the winner's value. The first way is a one-hot list: a one at the winner's position and zeros everywhere else.",
+        "Multiply each bit by its item's value and add them up. With Banyan winning, zero, one, zero against ten, twenty, thirty gives twenty.",
+        "The second way skips the sum and reads the value at the winner's position directly. The page prints Banyan's twenty, and labels this read hard attend.",
+        "The two reads agree at every query. That is by construction, since both start from the same winner, so it checks the bookkeeping rather than discovering anything.",
+        "They differ in cost. The one-hot sum touches every item, while the toolkit's index read copies one entry in a single operation at any table size.",
+        "That is hard attention: score, take the leftmost highest, read the winner. It is exact, with no blending anywhere."
+      ]
+    },
+    {
+      "title": "Soft Versus Exact",
+      "blurb": "Softmax only approaches the exact read, never at a tie, and the scored-selection question stays open.",
+      "captions": [
+        "The page adds a third read, softmax. It turns every score into a weight, the weights add up to one, and the value is the blend of all three items.",
+        "A sharpness slider scales the score gaps before the exponential, from one half up to fourteen. Turning it up makes the weights spikier.",
+        "At a query of one quarter and sharpness fourteen, Aster gets nearly all the weight. The blend is about ten point zero one: close to ten, never exactly ten.",
+        "At three quarters it flips toward Banyan. The blend is about nineteen point nine nine, near the exact answer of twenty but not equal to it.",
+        "Away from ties, more sharpness pulls the blend toward the exact value. At a tie it cannot: at one half, Aster and Banyan split the weight evenly at any sharpness, giving fifteen.",
+        "At one and a half, the same even split gives twenty-five where the exact rule gives twenty. Softmax averages ties; the exact rule picks the left.",
+        "That is the contrast. Softmax only approaches the exact read, and exact picking needs an explicit tie rule.",
+        "The folder has no tests, and the page needs a browser, so it cannot run in a terminal. It is a teaching sketch.",
+        "The old plan's indexed half, reading at a chosen position, is now covered by index reads. Gather lowering found hard attention after a selection was made, but learned no scoring.",
+        "The scored half, learning a shared scoring rule from changing data, stays open. The notes warn exact selection has no useful gradient, so training would go through soft mixtures.",
+        "So the journey: score by closeness, pick the leftmost highest, and read the value two agreeing ways. Whether a circuit can learn those scores is still an open question."
+      ]
+    }
+  ]
+}

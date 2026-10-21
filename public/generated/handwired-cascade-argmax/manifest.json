@@ -1,0 +1,77 @@
+{
+  "format": 3,
+  "slug": "handwired-cascade-argmax",
+  "title": "Picking Exactly",
+  "subtitle": "An exact sign cascade for argmax on 32-bit floats, its cost, and what training it really shows.",
+  "animal": "animal.webp",
+  "accent": "#1fa3a8",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Sign Cascade",
+      "blurb": "Relu of a gap, scaled by two to the twenty-third and clamped, seven times, turns the smallest float difference into exactly one.",
+      "scene": "books/handwired-cascade-argmax/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.567,
+        20.329,
+        29.234,
+        40.739,
+        51.165,
+        61.8,
+        72.225,
+        82.836,
+        92.937,
+        103.63,
+        112.023
+      ],
+      "duration": 119.674
+    },
+    {
+      "number": 2,
+      "title": "Eight Candidates, One Winner",
+      "blurb": "A tournament of those bits picks one winner, beating the production argmax on near-ties at about three and a half times the built operations.",
+      "scene": "books/handwired-cascade-argmax/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.857,
+        21.745,
+        31.277,
+        38.603,
+        49.191,
+        58.328,
+        69.868,
+        78.877,
+        89.384,
+        98.8,
+        110.329
+      ],
+      "duration": 122.043
+    },
+    {
+      "number": 3,
+      "title": "Training It Soft",
+      "blurb": "Soft ramps, annealed gains and hardening fit a 128-cell table to 160 of 160 winners, and the lab says what that does not show.",
+      "scene": "books/handwired-cascade-argmax/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.822,
+        19.261,
+        29.455,
+        36.548,
+        46.788,
+        57.655,
+        65.747,
+        74.663,
+        83.359,
+        93.97,
+        101.134
+      ],
+      "duration": 109.598
+    }
+  ]
+}

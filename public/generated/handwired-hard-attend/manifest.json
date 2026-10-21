@@ -1,0 +1,74 @@
+{
+  "format": 3,
+  "slug": "handwired-hard-attend",
+  "title": "Hard Attend",
+  "subtitle": "Score three items, pick the highest exactly, and read its value two ways that agree.",
+  "animal": "animal.webp",
+  "accent": "#c58a3d",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Closer Wins",
+      "blurb": "A two-number key turns \"which item is nearest the query?\" into \"which score is highest?\".",
+      "scene": "books/handwired-hard-attend/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.275,
+        19.853,
+        29.501,
+        39.242,
+        49.644,
+        57.898,
+        65.84,
+        71.819,
+        81.084,
+        89.71
+      ],
+      "duration": 97.616
+    },
+    {
+      "number": 2,
+      "title": "One Winner, Two Reads",
+      "blurb": "The first highest score wins, ties go left, and a one-hot sum and a direct index read return the same value.",
+      "scene": "books/handwired-hard-attend/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.694,
+        18.402,
+        26.123,
+        34.261,
+        40.785,
+        48.576,
+        61.312,
+        70.994,
+        80.851,
+        90.986
+      ],
+      "duration": 98.452
+    },
+    {
+      "number": 3,
+      "title": "Soft Versus Exact",
+      "blurb": "Softmax only approaches the exact read, never at a tie, and the scored-selection question stays open.",
+      "scene": "books/handwired-hard-attend/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.975,
+        18.541,
+        29.617,
+        37.662,
+        50.282,
+        59.814,
+        66.919,
+        73.398,
+        84.415,
+        95.329
+      ],
+      "duration": 105.743
+    }
+  ]
+}

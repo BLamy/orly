@@ -1,6 +1,132 @@
 {
   "books": [
     {
+      "slug": "handwired-candidate-gallery",
+      "title": "Three Layouts",
+      "subtitle": "One program builds every gallery layout at once, and the worst quality gauge picks the winner",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3fb6a8",
+      "href": "?bundle=handwired-candidate-gallery",
+      "series": "Handwired",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three Layouts at Once",
+          "duration": 99.567
+        },
+        {
+          "number": 2,
+          "title": "The Worst Gauge Wins",
+          "duration": 105.79
+        },
+        {
+          "number": 3,
+          "title": "Everyone Reads the Winner",
+          "duration": 110.573
+        }
+      ],
+      "createdAt": "2026-10-21T05:36:21.675Z"
+    },
+    {
+      "slug": "handwired-cascade-argmax",
+      "title": "Picking Exactly",
+      "subtitle": "An exact sign cascade for argmax on 32-bit floats, its cost, and what training it really shows.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1fa3a8",
+      "href": "?bundle=handwired-cascade-argmax",
+      "series": "Handwired",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Sign Cascade",
+          "duration": 119.674
+        },
+        {
+          "number": 2,
+          "title": "Eight Candidates, One Winner",
+          "duration": 122.043
+        },
+        {
+          "number": 3,
+          "title": "Training It Soft",
+          "duration": 109.598
+        }
+      ],
+      "createdAt": "2026-10-21T05:35:23.971Z"
+    },
+    {
+      "slug": "handwired-hard-attend",
+      "title": "Hard Attend",
+      "subtitle": "Score three items, pick the highest exactly, and read its value two ways that agree.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c58a3d",
+      "href": "?bundle=handwired-hard-attend",
+      "series": "Handwired",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Closer Wins",
+          "duration": 97.616
+        },
+        {
+          "number": 2,
+          "title": "One Winner, Two Reads",
+          "duration": 98.452
+        },
+        {
+          "number": 3,
+          "title": "Soft Versus Exact",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-10-21T05:34:12.079Z"
+    },
+    {
+      "slug": "handwired",
+      "title": "Handwired",
+      "subtitle": "If-else, loops and state as matrix multiply and relu",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=handwired",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Both Branches Run",
+          "duration": 108.623
+        },
+        {
+          "number": 2,
+          "title": "A Switch of Arithmetic",
+          "duration": 106.439
+        },
+        {
+          "number": 3,
+          "title": "The Host Loop",
+          "duration": 113.87
+        },
+        {
+          "number": 4,
+          "title": "Loops That Cannot Stop",
+          "duration": 119.071
+        },
+        {
+          "number": 5,
+          "title": "Exact, Trainable, Wide",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-10-15T21:39:17.372Z",
+      "series": "Handwired",
+      "seriesOrder": 1
+    },
+    {
       "slug": "neural-networks-already-clean",
       "title": "Already Clean",
       "subtitle": "",
@@ -38,43 +164,6 @@
       "createdAt": "2026-10-15T18:00:31.597Z"
     },
     {
-      "slug": "handwired",
-      "title": "Handwired",
-      "subtitle": "If-else, loops and state as matrix multiply and relu",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#41607f",
-      "href": "?bundle=handwired",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Both Branches Run",
-          "duration": 108.623
-        },
-        {
-          "number": 2,
-          "title": "A Switch of Arithmetic",
-          "duration": 106.439
-        },
-        {
-          "number": 3,
-          "title": "The Host Loop",
-          "duration": 113.87
-        },
-        {
-          "number": 4,
-          "title": "Loops That Cannot Stop",
-          "duration": 119.071
-        },
-        {
-          "number": 5,
-          "title": "Exact, Trainable, Wide",
-          "duration": 122.276
-        }
-      ],
-      "createdAt": "2026-10-15T21:39:17.372Z"
-    },
-    {
       "slug": "jeva-fresh-decisions",
       "title": "Jeva: Fresh Decisions",
       "subtitle": "Fixed options, set-aware judgment, and reusable memory",
@@ -83,7 +172,7 @@
       "color": "#e07b1a",
       "animal": "generated/jeva-fresh-decisions/animal.webp",
       "href": "?bundle=jeva-fresh-decisions",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -153,7 +242,7 @@
         },
         {
           "number": 6,
-          "title": "{ fully managed · always on }",
+          "title": "{ fully managed \u00b7 always on }",
           "duration": 15.625
         }
       ],
@@ -168,7 +257,7 @@
       "color": "#1f6fb2",
       "animal": "generated/groundingpi-speaking-in-coordinates/animal.webp",
       "href": "?bundle=groundingpi-speaking-in-coordinates",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -235,7 +324,7 @@
     {
       "slug": "neural-net-history",
       "title": "Who Taught the Machine?",
-      "subtitle": "A case history of neural networks, 1943–2026",
+      "subtitle": "A case history of neural networks, 1943\u20132026",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -291,7 +380,7 @@
         },
         {
           "number": 8,
-          "title": "DEEP DIVE — The Night in Florence",
+          "title": "DEEP DIVE \u2014 The Night in Florence",
           "duration": 260.208
         },
         {
@@ -301,7 +390,7 @@
         },
         {
           "number": 10,
-          "title": "DEEP DIVE — Everything Looks at Everything",
+          "title": "DEEP DIVE \u2014 Everything Looks at Everything",
           "duration": 211.875
         },
         {
@@ -342,7 +431,7 @@
       "color": "#c79100",
       "animal": "generated/s-space-the-map-within/animal.webp",
       "href": "?bundle=s-space-the-map-within",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -365,13 +454,13 @@
     {
       "slug": "agentgarten-rendering-the-rules",
       "title": "Rendering the Rules",
-      "subtitle": "Inside AgentGarten’s released neural renderer",
+      "subtitle": "Inside AgentGarten\u2019s released neural renderer",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
       "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
       "href": "?bundle=agentgarten-rendering-the-rules",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -400,7 +489,7 @@
       "color": "#198a8a",
       "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
       "href": "?bundle=cross-tokenizer-sixteen-shared-words",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -429,7 +518,7 @@
       "color": "#c79100",
       "animal": "generated/when-memory-matters/animal.webp",
       "href": "?bundle=when-memory-matters",
-      "series": "Daily Papers by Hugging Face — October 2026",
+      "series": "Daily Papers by Hugging Face \u2014 October 2026",
       "chapters": [
         {
           "number": 1,
@@ -617,7 +706,7 @@
       "color": "#198a8a",
       "animal": "generated/deepseek-v41-kv-cache/animal.webp",
       "href": "?bundle=deepseek-v41-kv-cache",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -651,7 +740,7 @@
       "color": "#d6202b",
       "animal": "generated/limix-2-contextual-mechanism/animal.webp",
       "href": "?bundle=limix-2-contextual-mechanism",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -780,7 +869,7 @@
       "color": "#198a8a",
       "animal": "generated/composecl-memory/animal.webp",
       "href": "?bundle=composecl-memory",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -814,7 +903,7 @@
       "color": "#3a8b3a",
       "animal": "generated/ncp-archpreview/animal.webp",
       "href": "?bundle=ncp-archpreview",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -848,7 +937,7 @@
       "color": "#a01f3c",
       "animal": "generated/world-model-rl/animal.webp",
       "href": "?bundle=world-model-rl",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -882,7 +971,7 @@
       "color": "#e07b1a",
       "animal": "generated/neohorse-routing-harness/animal.webp",
       "href": "?bundle=neohorse-routing-harness",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -916,7 +1005,7 @@
       "color": "#41607f",
       "animal": "generated/repo-to-skill/animal.webp",
       "href": "?bundle=repo-to-skill",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -950,7 +1039,7 @@
       "color": "#1f6fb2",
       "animal": "generated/on-policy-self-adaptation/animal.webp",
       "href": "?bundle=on-policy-self-adaptation",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -1022,7 +1111,7 @@
       "color": "#c79100",
       "animal": "generated/looparena-runtime-controller/animal.webp",
       "href": "?bundle=looparena-runtime-controller",
-      "series": "Daily Papers by Hugging Face — September 2026",
+      "series": "Daily Papers by Hugging Face \u2014 September 2026",
       "chapters": [
         {
           "number": 1,
@@ -1056,7 +1145,7 @@
       "color": "#6a3f9e",
       "animal": "generated/the-world-compiler/animal.webp",
       "href": "?bundle=the-world-compiler",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1090,7 +1179,7 @@
       "color": "#198a8a",
       "animal": "generated/memory-before-silence/animal.webp",
       "href": "?bundle=memory-before-silence",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1157,7 +1246,7 @@
       "color": "#a01f3c",
       "animal": "generated/apodex-work-ledger/animal.webp",
       "href": "?bundle=apodex-work-ledger",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1190,7 +1279,7 @@
       "role": "Software Engineer at Replay",
       "color": "#d6202b",
       "href": "?bundle=envharness-adaptive-worlds",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1295,7 +1384,7 @@
       "color": "#d6202b",
       "animal": "generated/skills-procedural-anchor/animal.webp",
       "href": "?bundle=skills-procedural-anchor",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1437,7 +1526,7 @@
       "color": "#a01f3c",
       "animal": "generated/ra-bench-anchor-test/animal.webp",
       "href": "?bundle=ra-bench-anchor-test",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1470,7 +1559,7 @@
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
       "href": "?bundle=statem-durable-runbooks",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1537,7 +1626,7 @@
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
       "href": "?bundle=parallel-rl-coexistence",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1786,7 +1875,7 @@
       "color": "#6a3f9e",
       "animal": "generated/merchantbench/animal.webp",
       "href": "?bundle=merchantbench",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1820,7 +1909,7 @@
       "color": "#0f5870",
       "animal": "generated/mental-world-modeling/animal.webp",
       "href": "?bundle=mental-world-modeling",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1854,7 +1943,7 @@
       "color": "#2563eb",
       "animal": "generated/askchem/animal.webp",
       "href": "?bundle=askchem",
-      "series": "Daily Papers by Hugging Face — August 2026",
+      "series": "Daily Papers by Hugging Face \u2014 August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1961,7 +2050,7 @@
       "color": "#6a3f9e",
       "animal": "generated/hifi-umi/animal.webp",
       "href": "?bundle=hifi-umi",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1995,7 +2084,7 @@
       "color": "#c79100",
       "animal": "generated/kimi-k3/animal.webp",
       "href": "?bundle=kimi-k3",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -2082,7 +2171,7 @@
     },
     {
       "slug": "aes-mobius-bridge",
-      "title": "The Möbius Bridge",
+      "title": "The M\u00f6bius Bridge",
       "subtitle": "A Key Byte Disappears",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2118,7 +2207,7 @@
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
       "href": "?bundle=dataprep-bench",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -2152,7 +2241,7 @@
       "color": "#3a8b3a",
       "animal": "generated/arex/animal.webp",
       "href": "?bundle=arex",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -2229,7 +2318,7 @@
       "color": "#3a8b3a",
       "animal": "generated/slai-t-rex/animal.webp",
       "href": "?bundle=slai-t-rex",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -2262,7 +2351,7 @@
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
       "href": "?bundle=dp-harness-handbook",
-      "series": "Daily Papers by Hugging Face — July 2026",
+      "series": "Daily Papers by Hugging Face \u2014 July 2026",
       "chapters": [
         {
           "number": 1,
@@ -2969,7 +3058,7 @@
     {
       "slug": "explained-synthetic-data",
       "title": "Synthetic Data",
-      "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
+      "subtitle": "A copy of a copy \u2014 model collapse, the filter that saves it, and the wall made of text",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -3009,7 +3098,7 @@
     {
       "slug": "explained-ai-control",
       "title": "AI Control",
-      "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
+      "subtitle": "Getting useful work from a model you never trust \u2014 untrusted-monitor protocols, as a game",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
@@ -3088,7 +3177,7 @@
     {
       "slug": "explained-distributed-training",
       "title": "Distributed Training",
-      "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
+      "subtitle": "Four ways to cut a model that doesn't fit \u2014 and the communication bill each one pays",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
@@ -3114,7 +3203,7 @@
         },
         {
           "number": 4,
-          "title": "ZeRO — Shard the Redundancy",
+          "title": "ZeRO \u2014 Shard the Redundancy",
           "duration": 114.984
         },
         {
@@ -3128,7 +3217,7 @@
     {
       "slug": "explained-sandboxing",
       "title": "The Sandbox",
-      "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
+      "subtitle": "How we caged the agents in almostnode \u2014 a cross-origin wall, and what it costs",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -3168,7 +3257,7 @@
     {
       "slug": "explained-test-time",
       "title": "Test-Time Compute",
-      "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
+      "subtitle": "One sample is a lottery ticket \u2014 sampling, voting, grading, searching, and the new axis of scaling",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#a01f3c",
@@ -3406,7 +3495,7 @@
     {
       "slug": "explained-rlvr",
       "title": "Verifiable Rewards",
-      "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
+      "subtitle": "Rewards from executable checks \u2014 and the cliff between a solver and a lock pick",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
@@ -3446,7 +3535,7 @@
     {
       "slug": "explained-formal-verification",
       "title": "Proof or It Didn't Happen",
-      "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
+      "subtitle": "Formal verification meets language models \u2014 tests sample, critics hunt, kernels cover",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -3565,7 +3654,7 @@
     {
       "slug": "explained-agents",
       "title": "Agents",
-      "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
+      "subtitle": "From predictor to actor \u2014 and why an agent's word is the expensive claim",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
@@ -3605,7 +3694,7 @@
     {
       "slug": "explained-inference",
       "title": "Inference",
-      "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
+      "subtitle": "The memory wall, the cache, the seating problem \u2014 four attacks on seven milliseconds",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -3645,7 +3734,7 @@
     {
       "slug": "explained-durable-evals",
       "title": "Durable Evals",
-      "subtitle": "Saturation, leakage, Goodhart — and the design rules that let a benchmark outlive the frontier",
+      "subtitle": "Saturation, leakage, Goodhart \u2014 and the design rules that let a benchmark outlive the frontier",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -3685,7 +3774,7 @@
     {
       "slug": "explained-delta-rule",
       "title": "The Delta Rule",
-      "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
+      "subtitle": "Fast weights, error-correcting writes, decay, phase \u2014 and the chunk algebra that makes it trainable",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -3725,7 +3814,7 @@
     {
       "slug": "explained-causality",
       "title": "Causality",
-      "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
+      "subtitle": "Sign flips, severed wires, honest coins \u2014 and the features that survive",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -3765,7 +3854,7 @@
     {
       "slug": "explained-probabilistic",
       "title": "Probabilistic ML",
-      "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
+      "subtitle": "Two kinds of doubt, exact posteriors, wandering chains \u2014 and the calibration audit",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -3805,7 +3894,7 @@
     {
       "slug": "explained-graphs",
       "title": "Graph Learning",
-      "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
+      "subtitle": "Adjacency, message passing, over-smoothing, tasks \u2014 and the spectrum underneath",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -3885,7 +3974,7 @@
     {
       "slug": "explained-vision",
       "title": "Computer Vision",
-      "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
+      "subtitle": "Kernels, pooling, hierarchies, patches \u2014 and proof by occlusion",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -5076,7 +5165,7 @@
     {
       "slug": "effect-advanced",
       "title": "Effect",
-      "subtitle": "The Good Parts · Advanced",
+      "subtitle": "The Good Parts \u00b7 Advanced",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -5196,7 +5285,7 @@
     {
       "slug": "effect-good-parts-2",
       "title": "Effect",
-      "subtitle": "The Good Parts · Intermediate",
+      "subtitle": "The Good Parts \u00b7 Intermediate",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#c79100",
@@ -5236,7 +5325,7 @@
     {
       "slug": "effect-type",
       "title": "Effect",
-      "subtitle": "The Good Parts · for Beginners",
+      "subtitle": "The Good Parts \u00b7 for Beginners",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#41607f",
@@ -5620,7 +5709,7 @@
     {
       "slug": "sds-web-crawler",
       "title": "The Web Crawler",
-      "subtitle": "System Design, Solved №3",
+      "subtitle": "System Design, Solved \u21163",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -5660,7 +5749,7 @@
     {
       "slug": "key-value-store",
       "title": "The Key-Value Store",
-      "subtitle": "System Design, Solved №4",
+      "subtitle": "System Design, Solved \u21164",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -5700,7 +5789,7 @@
     {
       "slug": "social-feed",
       "title": "The Social Feed",
-      "subtitle": "System Design, Solved №2",
+      "subtitle": "System Design, Solved \u21162",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -5735,7 +5824,7 @@
     {
       "slug": "url-shortener",
       "title": "The URL Shortener",
-      "subtitle": "System Design, Solved №1",
+      "subtitle": "System Design, Solved \u21161",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -5890,7 +5979,7 @@
     {
       "slug": "explained-math",
       "title": "The Math",
-      "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
+      "subtitle": "Fourier, eigenvectors, and convolution \u2014 watched, not derived",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
