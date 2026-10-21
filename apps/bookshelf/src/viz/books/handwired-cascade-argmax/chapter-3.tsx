@@ -556,6 +556,7 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <>
+      <rect width={1280} height={720} fill={colors.BG} />
       <Camera {...cam}>
         {/* ======================== the comparator ======================== */}
         {plotOp > 0.005 && (

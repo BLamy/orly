@@ -1,0 +1,563 @@
+{
+  "version": 1,
+  "slug": "handwired-bitonic-sorter",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Wires and a Fold",
+      "claims": [
+        {
+          "id": "c1-network-is-data-blind",
+          "claim": "A sorting network is a fixed list of compare-and-swap steps, wired the same way for every input, so its structure does not depend on the data.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 109", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "109", "quote": "so its structure does not depend on the data" },
+            { "label": "Handwired guide, loops section, line 185", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "185", "quote": "A sorting network is a fixed list of compare-exchange steps that sorts any input" }
+          ]
+        },
+        {
+          "id": "c1-comparator-order",
+          "claim": "A comparator takes two numbers and puts the smaller on the top output and the larger on the bottom.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Handwired guide, loops section, line 185", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "185", "quote": "where each compare-exchange puts the smaller of two values first" },
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 26", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "X and Y represent the inputs, while H and L represent the higher and lower outputs, respectively." }
+          ]
+        },
+        {
+          "id": "c1-batcher-1968",
+          "claim": "Ken Batcher devised the bitonic sorter and published it in 1968.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The algorithm was devised by" },
+            { "label": "Batcher, Sorting networks and their applications (AFIPS 1968), cited in the article", "url": "https://doi.org/10.1145/1468075.1468121", "quote": "Proceedings of the April 30--May 2, 1968" }
+          ]
+        },
+        {
+          "id": "c1-eight-wires-24-comparators",
+          "claim": "By the article's level count, eight wires take six levels of four comparators, which means 24 comparators in all.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" },
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The resulting sorting networks consist of" }
+          ]
+        },
+        {
+          "id": "c1-bitonic-shape",
+          "claim": "A bitonic sequence rises to a peak and then falls, so the example one, two, six, seven, eight, five, three, zero is one.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 16", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "A sequence is bitonic when it consists of a non-decreasing sequence followed by a non-increasing sequence" }
+          ]
+        },
+        {
+          "id": "c1-half-cleaner-pairs",
+          "claim": "The half-cleaner compares each element of the first half with the corresponding element of the second half, so wire 0 pairs with wire 4 when there are eight wires.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 41-42", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "elements of the first half of the input sequence are pairwise compared against corresponding elements of the last" }
+          ]
+        },
+        {
+          "id": "c1-four-comparators-split",
+          "claim": "By the article's half-cleaner, the four comparators on 1, 2, 6, 7, 8, 5, 3, 0 leave the low values 1, 2, 3, 0 on the left and the high values 8, 5, 6, 7 on the right.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 41-42", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "elements of the first half of the input sequence are pairwise compared against corresponding elements of the last" }
+          ]
+        },
+        {
+          "id": "c1-halves-never-cross",
+          "claim": "The article says every element of one bitonic subsequence is guaranteed to be higher than every element of the other, so the two halves can be sorted separately.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 45-46", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "all elements in the red sequence are guaranteed to be higher than all elements in the blue series." }
+          ]
+        },
+        {
+          "id": "c1-border-values",
+          "claim": "On this input the largest low value is three and the smallest high value is five, which means no value needs to cross the border.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 45-46", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "all elements in the red sequence are guaranteed to be higher than all elements in the blue series." }
+          ]
+        },
+        {
+          "id": "c1-rotated-mountain",
+          "claim": "Read cyclically, the high half 8, 5, 6, 7 counts as a mountain, which means the split argument also needs rotated mountains.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 16", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "A sequence is bitonic when it consists of a non-decreasing sequence followed by a non-increasing sequence" }
+          ]
+        },
+        {
+          "id": "c1-straight-mountains-only",
+          "claim": "The article's definition allows only straight mountains: one non-decreasing run followed by one non-increasing run.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 16", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "A sequence is bitonic when it consists of a non-decreasing sequence followed by a non-increasing sequence" }
+          ]
+        },
+        {
+          "id": "c1-2083-no-failures",
+          "claim": "By the article's definition and the split above, checking all 2,083 eight-long mountains with values zero to three shows the split never failed.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 16", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "A sequence is bitonic when it consists of a non-decreasing sequence followed by a non-increasing sequence" },
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 45-46", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "all elements in the red sequence are guaranteed to be higher than all elements in the blue series." }
+          ]
+        },
+        {
+          "id": "c1-recursion-quarters-pairs",
+          "claim": "By the article's recursion, halving each half again gives quarters and then pairs, which means the pieces of this input end as zero, one, two, three, five, six, seven, eight.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 37", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "This structure may be extended recursively for higher values of" }
+          ]
+        },
+        {
+          "id": "c1-two-wires-comparator",
+          "claim": "A bitonic sorter for two wires is simply a comparator.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 26", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "is simply a comparator." }
+          ]
+        },
+        {
+          "id": "c1-three-rounds-distances",
+          "claim": "By the article's level count, three rounds at distances four, two and one sort eight numbers, which means six levels in all.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c1-merge-power-of-two",
+          "claim": "By the article's construction, the merge sorts a bitonic input whose length is a power of two, which means the merging machine works on any such mountain.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 20", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "is a perfect power of two" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Building the Mountains",
+      "claims": [
+        {
+          "id": "c2-pairs-build-up",
+          "claim": "By the article's construction, sorters on small blocks are recursively used to create two monotonic sequences, which means two numbers already form a bitonic pair and one comparator sets it to climb or fall.",
+          "caption": 0,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 81", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "bitonic sorters are recursively used to create two monotonic sequences" }
+          ]
+        },
+        {
+          "id": "c2-stage-zero-alternates",
+          "claim": "By the article's construction, the recursive sorters alternate increasing and decreasing blocks, which means stage zero on the example produces 3, 7, 8, 4, 2, 6, 5, 1.",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 81", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "one decreasing and one increasing" }
+          ]
+        },
+        {
+          "id": "c2-merge-blocks-of-four",
+          "claim": "By the article's construction, the sorted blocks feed a bitonic input to the next merge, which means two blocks of four are merged with half-cleaners at distances two and one.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 90", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "increasingly sorted sequence in order to create a bitonic input for the bitonic sorter." }
+          ]
+        },
+        {
+          "id": "c2-up-beside-down",
+          "claim": "Two sorted runs, one up and one down, form a bitonic series for the next stage.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 82", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "a bitonic series for the next stage" }
+          ]
+        },
+        {
+          "id": "c2-stage-three-half-cleaner",
+          "claim": "By the article's construction, the stage at distance four pairs each element of the first half with the corresponding element of the second half, which means the four smallest values land on the left.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, lines 41-42", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "elements of the first half of the input sequence are pairwise compared against corresponding elements of the last" }
+          ]
+        },
+        {
+          "id": "c2-last-two-stages",
+          "claim": "By the article's level count, the last two stages run at distances two and one, which means six stages in all for eight numbers.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c2-six-stages-24-comparators",
+          "claim": "Six stages of four comparators make 24 comparators, and each stage's comparators act on separate wires, so they run together in six steps in time.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The resulting sorting networks consist of" }
+          ]
+        },
+        {
+          "id": "c2-distances-sum",
+          "claim": "The merges at distances one, then two and one, then four, two and one add up to six stages, which means one plus two plus three.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c2-wiring-fixed",
+          "claim": "The comparators never choose where to look: a sorting network's structure does not depend on the data, only the swaps do.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 109", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "109", "quote": "so its structure does not depend on the data" }
+          ]
+        },
+        {
+          "id": "c2-zero-one-counts",
+          "claim": "By our zero-one count, which checked 256 inputs at eight wires and 65,536 at sixteen, all of them came out sorted, which means both sizes pass that check.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 18", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "Bitonic sorters can be used to build a bitonic sort network that can sort arbitrary sequences" }
+          ]
+        },
+        {
+          "id": "c2-random-check",
+          "claim": "By our random check against the built-in sort, lists from 2 to 64 wires matched, which means 32 and 64 wires were sampled rather than checked exhaustively.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 18", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "Bitonic sorters can be used to build a bitonic sort network that can sort arbitrary sequences" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "The Staircase",
+      "claims": [
+        {
+          "id": "c3-levels-formula",
+          "claim": "The article gives the number of levels as one half of k times k plus one, with n equal to two to the k.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 136", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "This sum can be reduced using the" },
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c3-stage-counts",
+          "claim": "By that formula, two to sixty-four wires need one, three, six, ten, fifteen and twenty-one stages.",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c3-comparator-counts",
+          "claim": "Half as many comparators as wires in each stage, times the stage count, gives one, six, twenty-four, eighty, two hundred forty and six hundred seventy-two comparators.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The resulting sorting networks consist of" }
+          ]
+        },
+        {
+          "id": "c3-shorthand-orders",
+          "claim": "The article gives the comparator count as order n times log squared n, and the delay as order log squared n.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "comparators and have a delay of" }
+          ]
+        },
+        {
+          "id": "c3-32-to-64-growth",
+          "claim": "By the stage and comparator formulas, going from 32 to 64 wires takes stages from 15 to 21 and comparators from 240 to 672, which means about 2.8 times as many comparators.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c3-gpu-lockstep",
+          "claim": "The article says the construction suits machines with many parallel execution units running in lockstep, such as a typical GPU.",
+          "caption": 4,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "a large number of parallel execution units running in" }
+          ]
+        },
+        {
+          "id": "c3-per-stage-32",
+          "claim": "By the formulas, 672 comparators over 21 stages is 32 comparators per stage at sixty-four wires.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The resulting sorting networks consist of" }
+          ]
+        },
+        {
+          "id": "c3-locality",
+          "claim": "The article says many consecutive operations in a bitonic sort retain a locality of reference, which makes implementations more cache-friendly.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 140", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "many of the consecutive operations in a bitonic sort retain a" }
+          ]
+        },
+        {
+          "id": "c3-power-of-two-design",
+          "claim": "The original design needs a sorter whose input length is a power of two.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 99", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "This overall scheme requires the sorter to have an input of sequence that is a power of two" }
+          ]
+        },
+        {
+          "id": "c3-sentinel-padding",
+          "claim": "The article suggests sentinel values for other lengths, and padding with a sentinel bigger than everything then dropping the extras worked for every length from one to sixty-four in our check.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 99", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "using sentinel values" }
+          ]
+        },
+        {
+          "id": "c3-loop-bound",
+          "claim": "The article's loop, read literally with its inclusive bound, runs one comparison too far, and by our count that fails 8 of the 256 zero-one lists at eight wires.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 109", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "'''for''' i ← ''low'' '''to''' ''low'' + k '''do'''" }
+          ]
+        },
+        {
+          "id": "c3-odd-even-543",
+          "claim": "Batcher's odd-even merge sort needs fewer comparators than bitonic: by our count 543 at sixty-four wires, against 672.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 140", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "Although the absolute number of comparisons is typically higher than Batcher's" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "What Handwired Pays",
+      "claims": [
+        {
+          "id": "c4-fixed-circuit-fp32",
+          "claim": "Handwired is a fixed list of arithmetic operations over 32-bit floats, mostly weighted sums and products with a ReLU.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired docs, README, line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/README.md", "lines": "3", "quote": "a fixed list of arithmetic operations over 32-bit floats" }
+          ]
+        },
+        {
+          "id": "c4-relu",
+          "claim": "ReLU keeps a positive number and turns a negative one into zero.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired README, line 18", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "README.md", "lines": "18", "quote": "Math.max(0, x) is ReLU" }
+          ]
+        },
+        {
+          "id": "c4-no-loops-no-branches",
+          "claim": "Handwired rewrites if-else and loops as matrix multiplication and ReGLU over floats, so the program itself has no loops and no branches.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Handwired README, line 7", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "README.md", "lines": "7", "quote": "Handwired transforms them into matrix multiplication + reglu over floats." }
+          ]
+        },
+        {
+          "id": "c4-layers",
+          "claim": "Operations that do not depend on each other share a layer, and each layer reads only earlier ones.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired execution model, line 40", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/execution-model.md", "lines": "40", "quote": "Independent instructions at the same dependency depth share a layer." }
+          ]
+        },
+        {
+          "id": "c4-branches-vs-network",
+          "claim": "A sort reaches each item's place through comparisons that depend on earlier comparisons, while a sorting network's structure does not depend on the data.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired patterns, line 358", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/patterns.md", "lines": "358", "quote": "A sort reaches each item's place through comparisons that depend on earlier comparisons" },
+            { "label": "Handwired exploration notes, outside techniques, line 109", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "109", "quote": "so its structure does not depend on the data" }
+          ]
+        },
+        {
+          "id": "c4-compare-exchange-cost",
+          "claim": "A compare-exchange on keys alone is a minimum and a maximum, four operations in three layers.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, loops section, line 185", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "185", "quote": "A compare-exchange on keys alone is a minimum and a maximum, 4 operations in 3 layers" },
+            { "label": "Handwired exploration notes, runtime, line 66", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/runtime.md", "lines": "66", "quote": "shares the difference and relu through deduplication" }
+          ]
+        },
+        {
+          "id": "c4-min-max-identity",
+          "claim": "By the identity minimum of a and b equals a minus relu of a minus b, the minimum takes a subtract, a relu, and a subtract, and the maximum adds the relu to b.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 26", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "higher and lower outputs, respectively." }
+          ]
+        },
+        {
+          "id": "c4-twenty-one-stages-63-layers",
+          "claim": "By the article's level count, twenty-one stages at three layers each predicts 63 layers for sixty-four keys.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 138", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "the number of levels in which each comparison can be done in parallel is given by" }
+          ]
+        },
+        {
+          "id": "c4-measured-64-keys",
+          "claim": "Handwired measured the bitonic network, keys only, at 64 layers and 2,752 operations.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 32", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "32", "quote": "bitonic network, keys only, `emitMinimum`/`emitMaximum` | 2,752 | 64" }
+          ]
+        },
+        {
+          "id": "c4-predicted-2688-gap",
+          "claim": "Four operations times 672 comparators would be 2,688, which means a gap of 64 against the measured 2,752 that the notes do not explain.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 32", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "32", "quote": "bitonic network, keys only, `emitMinimum`/`emitMaximum` | 2,752 | 64" },
+            { "label": "Wikipedia: Bitonic sorter, rev 1373262602, line 14", "url": "https://en.wikipedia.org/w/index.php?title=Bitonic_sorter&oldid=1373262602", "quote": "The resulting sorting networks consist of" }
+          ]
+        },
+        {
+          "id": "c4-payload-16-bitonic",
+          "claim": "With one payload value per item, the bitonic network at sixteen items was 1,248 operations in 50 layers.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, loops section, line 189", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "189", "quote": "16 items: a bitonic network was 1,248 operations and 50 layers" }
+          ]
+        },
+        {
+          "id": "c4-rank-ties",
+          "claim": "A rank counts the items ahead of this one, and equal keys break ties by index, so the count is the sorted position.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, ranks instead of sorting, line 16", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/patterns/ranks-instead-of-sorting.md", "lines": "16", "quote": "Items 0 and 2 have equal keys, and the earlier item comes first, like a stable sort." }
+          ]
+        },
+        {
+          "id": "c4-one-hot-payload",
+          "claim": "For each rank, a one-hot group of bits selects the item with that rank, and the sorted payload is a masked sum that lowers to a gather.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 113", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "113", "quote": "form a declared one-hot group" }
+          ]
+        },
+        {
+          "id": "c4-sixteen-counting-wins",
+          "claim": "At sixteen items, counting costs 1,056 operations in five layers, against 1,248 operations in fifty layers for the bitonic network.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, loops section, line 189", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "189", "quote": "ranks by counting with gathers were 1,056 operations and 5 layers" }
+          ]
+        },
+        {
+          "id": "c4-sixty-four-network-wins",
+          "claim": "At 64 items the network costs 10,624 operations in 105 layers, against 16,512 operations and 5 layers for counting.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, loops section, line 190", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/sections/loops.md", "lines": "190", "quote": "64 items: 10,624 operations and 105 layers, against 16,512 operations and 5 layers." }
+          ]
+        },
+        {
+          "id": "c4-pairs-grow-square",
+          "claim": "Counting's pairwise comparisons grow with the square of the item count, and the notes still call counting the better formulation for the item counts UIs usually have.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 113", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "113", "quote": "For the item counts UIs usually have, counting is the better formulation" },
+            { "label": "Handwired exploration notes, outside techniques, line 113 (cost)", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "113", "quote": "n² comparisons start to hurt around hundreds of items" }
+          ]
+        },
+        {
+          "id": "c4-fractional-drift",
+          "claim": "On fractional keys the Batcher odd-even network drifted: 20 to 24 percent of its outputs were not bit-equal to any sorted input, with errors up to 6e-5.",
+          "caption": 11,
+          "status": "paraphrase",
+          "sources": [
+            { "label": "Handwired exploration notes, runtime, line 237", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/runtime.md", "lines": "237", "quote": "on fractional values 20-24% of outputs aren't bit-equal to any sorted input (errors up to 6e-5)" },
+            { "label": "Handwired exploration notes, runtime, line 237 (network)", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/runtime.md", "lines": "237", "quote": "Batcher odd-even merge network of min/max compare-exchanges" }
+          ]
+        },
+        {
+          "id": "c4-verdict-open",
+          "claim": "Whether to package a sorting network for apps that sort well past 64 items is still an open question, next to ranks by counting.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired guide, review and decisions, line 269", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/ui-exploration/guide/review-and-decisions.md", "lines": "269", "quote": "Whether to package a sorting network for apps that sort well past 64 items" }
+          ]
+        },
+        {
+          "id": "c4-count-ranks-at-ui-sizes",
+          "claim": "For the item counts UIs usually have, the notes say counting is the better formulation, so counting ranks at interface sizes.",
+          "caption": 12,
+          "status": "verified",
+          "sources": [
+            { "label": "Handwired exploration notes, outside techniques, line 113", "repo": "chenglou/handwired@d01b763a4f0cee3a6047f66e007291a35c98193d", "path": "lab/ui-exploration/notes/outside-techniques.md", "lines": "113", "quote": "For the item counts UIs usually have, counting is the better formulation" }
+          ]
+        }
+      ]
+    }
+  ]
+}

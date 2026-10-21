@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "handwired-bitonic-sorter",
+      "title": "Bitonic Sorter",
+      "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3e9b73",
+      "href": "?bundle=handwired-bitonic-sorter",
+      "series": "Handwired",
+      "seriesOrder": 11,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Wires and a Fold",
+          "duration": 136.673
+        },
+        {
+          "number": 2,
+          "title": "Building the Mountains",
+          "duration": 120.373
+        },
+        {
+          "number": 3,
+          "title": "The Staircase",
+          "duration": 132.122
+        },
+        {
+          "number": 4,
+          "title": "What Handwired Pays",
+          "duration": 171.085
+        }
+      ],
+      "createdAt": "2026-10-21T20:32:29.736Z"
+    },
+    {
       "slug": "handwired-user-effort",
       "title": "User Effort",
       "subtitle": "A tiny circuit learns how long a click takes, then picks the faster layout",
@@ -9,7 +43,7 @@
       "color": "#8a9a5b",
       "href": "?bundle=handwired-user-effort",
       "series": "Handwired",
-      "seriesOrder": 13,
+      "seriesOrder": 14,
       "chapters": [
         {
           "number": 1,
@@ -38,7 +72,7 @@
       "color": "#b23a48",
       "href": "?bundle=handwired-json-search",
       "series": "Handwired",
-      "seriesOrder": 16,
+      "seriesOrder": 17,
       "chapters": [
         {
           "number": 1,
@@ -72,7 +106,7 @@
       "color": "#e0457b",
       "href": "?bundle=handwired-runtime-cost",
       "series": "Handwired",
-      "seriesOrder": 14,
+      "seriesOrder": 15,
       "chapters": [
         {
           "number": 1,
@@ -135,7 +169,7 @@
       "color": "#d6b82e",
       "href": "?bundle=handwired-reusable-layout",
       "series": "Handwired",
-      "seriesOrder": 11,
+      "seriesOrder": 12,
       "chapters": [
         {
           "number": 1,
@@ -193,7 +227,7 @@
       "color": "#5b8bd6",
       "href": "?bundle=handwired-knuth-plass",
       "series": "Handwired",
-      "seriesOrder": 15,
+      "seriesOrder": 16,
       "chapters": [
         {
           "number": 1,
@@ -222,7 +256,7 @@
       "color": "#4f7cc8",
       "href": "?bundle=handwired-learned-gallery",
       "series": "Handwired",
-      "seriesOrder": 12,
+      "seriesOrder": 13,
       "chapters": [
         {
           "number": 1,
