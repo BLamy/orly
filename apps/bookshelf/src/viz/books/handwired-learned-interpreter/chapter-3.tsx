@@ -589,6 +589,7 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <>
+      <rect width={1280} height={720} fill={colors.BG} />
       <Camera {...cam}>
         {/* ======================== the twelve chips (they later become table cells) ======================== */}
         {chipLayer > 0.005 && chipsU > 0.001 && (

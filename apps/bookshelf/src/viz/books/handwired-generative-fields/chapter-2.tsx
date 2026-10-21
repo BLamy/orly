@@ -697,6 +697,7 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <>
+      <rect width={1280} height={720} fill={colors.BG} />
       <Camera {...cam}>
         {/* ======================== the opening card (sample 4 → sample 7) ======================== */}
         <LayoutCard a={GEO_S4} b={GEO_S7} u={smooth(morphU)} x={cardX} y={cardY} s={cardS} opacity={cardOp} nums={shrinkU < 0.2}

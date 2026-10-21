@@ -781,6 +781,7 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <>
+      <rect width={1280} height={720} fill={colors.BG} />
       <Camera {...cam}>
         {/* ======================== the bracket(s) ======================== */}
         <Bracket g={gC} kind="cascade" res={RES_C[vi]} play={s.get(scene.playC)} op={bracketOp} focus={s.get(scene.focusU)}

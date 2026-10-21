@@ -1,0 +1,79 @@
+{
+  "slug": "handwired-bitonic-sorter",
+  "title": "Bitonic Sorter",
+  "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",
+  "animal": "pangolin",
+  "accent": "#3e9b73",
+  "chapters": [
+    {
+      "title": "Two Wires and a Fold",
+      "blurb": "A comparator, a mountain-shaped sequence, and the half-cleaner that splits a mountain into two independent halves.",
+      "captions": [
+        "Most sorting looks at the data and decides what to do next. A sorting network never decides. It is a fixed list of compare-and-swap steps, wired the same way for every input.",
+        "The one part is the comparator. Two numbers go in. The smaller comes out on the top wire, the larger on the bottom. Already in order, nothing happens. Out of order, they trade places.",
+        "In nineteen sixty-eight, Ken Batcher showed how to wire comparators into a bitonic sorter. For eight numbers it takes twenty-four comparators, and the same twenty-four sort any list of eight.",
+        "It rests on one shape: a sequence that climbs and then falls, which the name bitonic describes. Picture a mountain: one, two, six, seven, eight, five, three, zero.",
+        "Here is the half-cleaner. Pair each wire in the first half with its partner in the second half: wire zero with wire four, one with five, two with six, three with seven.",
+        "Four comparators fire at once. Each pair's smaller number drops into the left half, the larger into the right. The left half is now one, two, three, zero. The right is eight, five, six, seven.",
+        "Check the border. Everything on the left is at most three, and everything on the right is at least five. Nothing needs to cross, so the two halves can be sorted separately.",
+        "Each half is still a mountain, in a wider sense. The right half, eight, five, six, seven, dips like a valley, but start reading at the five and it climbs. A rotated mountain counts.",
+        "Wikipedia's definition allows only straight mountains, but the argument needs rotated ones too. Across all two thousand eighty-three eight-long mountains with values zero to three, the split never failed.",
+        "So split again. Half-clean each half into quarters, then each quarter into pairs. Run on this input, the pieces come out as zero, one, two, three, five, six, seven, eight.",
+        "Three rounds of this do it for eight numbers: pairs at distance four, then two, then one. Two wires is the smallest case, and a bitonic sorter of that size is simply a comparator.",
+        "That is the merging machine. Hand it any mountain whose length is a power of two, and it hands back a sorted line. What it cannot do yet is make mountains. That comes next."
+      ]
+    },
+    {
+      "title": "Building the Mountains",
+      "blurb": "Eight shuffled numbers become mountains of two, then four, then eight, and finally one sorted line in six stages.",
+      "captions": [
+        "A shuffled list is not a mountain, so build them from the bottom up. Any two numbers form a mountain already, and one comparator can set them to climb or to fall.",
+        "Take three, seven, four, eight, six, two, one, five. Stage zero compares neighbors, and the second and fourth pairs run downhill. Out comes three, seven, eight, four, two, six, five, one.",
+        "Now there are two mountains of four. Merge each with a half-cleaner, across a distance of two and then one. The first block sorts upward, the second downward.",
+        "That gives three, four, seven, eight, then six, five, two, one. Sorted up beside sorted down is exactly a mountain, which is why the directions alternate. Two sorted runs became one bigger mountain.",
+        "Stage three is the half-cleaner from before, across a distance of four. The four smallest values land on the left, three, four, two, one, and the four largest on the right.",
+        "Two more stages finish it, at distance two and then one. After the sixth stage: one, two, three, four, five, six, seven, eight.",
+        "Count the work. Six stages, each with four comparators on separate wires, so all four fire at the same moment. Twenty-four comparators, but only six steps in time.",
+        "The distances tell the story: one, then two and one, then four, two and one. Each merge is one stage longer than the last, so eight numbers take one plus two plus three, six stages.",
+        "Notice what the comparators never do: choose where to look. The wiring is the same for every input, and only the swaps depend on the values. That is what lets a fixed machine run it.",
+        "Does it sort everything? We ran all two hundred fifty-six lists of zeros and ones through eight wires, and all sixty-five thousand five hundred thirty-six through sixteen. Every one came out sorted.",
+        "Two thousand random lists per size, from two up to sixty-four wires, also matched the built-in sort. Thirty-two and sixty-four wires were sampled this way, not checked exhaustively."
+      ]
+    },
+    {
+      "title": "The Staircase",
+      "blurb": "How many stages and comparators a bitonic sorter needs as the list doubles, why a lockstep processor likes it, and two traps for implementers.",
+      "captions": [
+        "Let the list have two to the k wires. The last merge takes k stages, the merge before it k minus one, and so on down to one. Add them up: k times k plus one, over two.",
+        "For two, four, eight, sixteen, thirty-two and sixty-four wires, that is one, three, six, ten, fifteen and twenty-one stages. Each doubling adds only a few more stages.",
+        "Every stage has half as many comparators as wires. So the total is the number of wires times k times k plus one, over four: one, six, twenty-four, eighty, two hundred forty, six hundred seventy-two.",
+        "In the usual shorthand, comparators grow like n times log n squared, and stages like log n squared. From thirty-two to sixty-four wires, comparators nearly triple, while stages go only from fifteen to twenty-one.",
+        "That gap is why hardware likes it. A graphics processor has many units running in lockstep, and each stage gives all of them, thirty-two comparators for sixty-four numbers, work in the same instant.",
+        "The article also says many consecutive operations keep locality of reference, which makes them cache-friendly in practice. That is the article's claim, citing Batcher. We did not measure it.",
+        "The original design needs a length that is a power of two. For other lengths, pad with a sentinel bigger than everything, then drop the extras. That worked for every length from one to sixty-four in our check.",
+        "It is easy to get a stage wrong. The article's loop, read literally, runs one comparison too far, reaching into the neighboring block. At eight wires that fails eight of the two hundred fifty-six zeros-and-ones lists.",
+        "Bitonic is not the only Batcher network. His odd-even merge sort needs fewer comparators: five hundred forty-three at sixty-four wires, against six hundred seventy-two.",
+        "So the picture so far: half as many comparators as wires per stage, k times k plus one over two stages, and wiring that never looks at the data. Now a stranger machine, one with no swaps at all."
+      ]
+    },
+    {
+      "title": "What Handwired Pays",
+      "blurb": "A comparator as three layers of sums and relu, the measured price of a bitonic network, and why ranks by counting win at interface sizes.",
+      "captions": [
+        "Handwired writes a program as one fixed circuit of weighted sums and relu, over thirty-two-bit floats. Relu keeps a positive number and turns a negative one into zero. No loops, no branches.",
+        "The circuit is cut into layers. Operations that do not depend on each other share a layer, and each layer reads only earlier ones. So cost has two numbers: operations in all, and layers deep.",
+        "A sort that branches on comparisons cannot be written that way, but a sorting network can, because its comparators never depend on the data. The numbers ahead are measurements from Handwired's own exploration notes.",
+        "A comparator becomes arithmetic. Subtract the two keys, run the difference through relu, subtract that from the first key for the minimum, and add it to the second for the maximum. Four operations, three layers.",
+        "Twenty-one stages at three layers each predicts sixty-three layers for sixty-four keys. Handwired measured the bitonic network, keys only, at sixty-four layers and two thousand seven hundred fifty-two operations.",
+        "Four operations times six hundred seventy-two comparators would be two thousand six hundred eighty-eight. The notes do not explain the small gap, so read these as measurements, not a derivation.",
+        "Real lists carry a payload, like a photo that travels with its key. With one payload value per item, the bitonic network measured one thousand two hundred forty-eight operations in fifty layers at sixteen items.",
+        "The rival needs no network. A rank counts the items ahead of this one, so compare every pair and add. Equal keys break ties by index, and that count is the sorted position. A one-hot read fetches the payload.",
+        "At sixteen items, counting wins on work: one thousand fifty-six operations against one thousand two hundred forty-eight, in five layers against fifty.",
+        "At sixty-four, the network wins on work: ten thousand six hundred twenty-four operations against sixteen thousand five hundred twelve. But it is one hundred five layers deep, and counting stays at five.",
+        "Pairs grow with the square of the item count. Handwired's notes still call counting the better choice for the item counts interfaces usually have, with trouble starting around hundreds of items.",
+        "One caveat. Minimum and maximum built from arithmetic drift on fractional keys. On the odd-even network, twenty to twenty-four percent of outputs matched no input bit for bit, with errors up to six in a hundred thousand.",
+        "The verdict, from that historical record: at interface sizes, count ranks. Whether to package a sorting network for apps that sort well past sixty-four items is still an open question."
+      ]
+    }
+  ]
+}
