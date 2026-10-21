@@ -1,0 +1,64 @@
+{
+  "slug": "handwired-event-window",
+  "title": "Event Window",
+  "subtitle": "Drag, click and focus as latches and one narrowing ramp, checked against plain code",
+  "animal": "hummingbird",
+  "accent": "#7b61d1",
+  "chapters": [
+    {
+      "title": "Latches, Not History",
+      "blurb": "A press writes a record, a four-pixel crossing flips a latch, and only a release commits the window's position.",
+      "captions": [
+        "A window has to remember things. Is this a drag or a click? Which window has focus? Is it maximized? This lab asks whether that memory can live in a fixed circuit of weighted sums and relu.",
+        "Four windows sit on a twelve-eighty by eight-hundred stage. Each frame the circuit sees at most one input: a pointer down, a move, an up, or nothing. Its answer is where every window is drawn.",
+        "Plain code already does this job, so it acts as the referee: an oracle program written the ordinary way. The circuit has to match it frame for frame, bit for bit.",
+        "Press on a title bar, the top thirty pixels. At that instant, and only then, the circuit writes a press record: where the pointer landed, which window, where its corner was, and whether it hit the title.",
+        "Moves never touch that record. Each one just measures the larger of the sideways and vertical distance from the press point. Cross four pixels and a second latch, the drag-begin latch, flips on.",
+        "While that latch is on, the window is drawn at its grab position plus the pointer's travel, kept inside the stage. Sixty pixels to the right puts the left edge at four hundred sixty.",
+        "But the stored position hasn't changed. Only a release commits it, and only if the drag latch is on. Letting go writes four hundred sixty into memory; nothing before that did.",
+        "Now a click. Press on a window that isn't focused, and the press only gives it focus. Focus changes on a pointer down and at no other time.",
+        "Click the focused window's body and release without crossing four pixels. The drag latch is still off, so maximized flips by arithmetic: the old value plus a toggle times one minus twice the old value.",
+        "Cross the four pixels and drift back to the start, and the click is cancelled. The latch remembers the crossing until release, so a quick out-and-back can't sneak in a toggle.",
+        "Could the circuit skip the latches and look only at its last few inputs? A probe says no. One trace holds a drag, another holds nothing, and both end with the same last two hundred fifty-six inputs.",
+        "Yet the window ends in two places, four sixty and four hundred. No fixed window of raw inputs can tell them apart, for every length tested. A latch holds the committed total, so it can."
+      ]
+    },
+    {
+      "title": "A Ramp That Narrows",
+      "blurb": "One threshold shape, annealed from thirty-two pixels to a quarter pixel, recovers six parameters; held fixed, it drifts and fails.",
+      "captions": [
+        "The title test and the slop test share one shape: a ramp. Take the difference between a boundary and a measure, scale it by a sharpness, add one half, and clamp between zero and one.",
+        "Is a press on the title? The measure is how far below the window's top the pointer landed. The boundary sits at twenty-nine and a half, so twenty-nine pixels is title and thirty is body.",
+        "In the shipped circuit a rounding step snaps the ramp to exactly zero or one. The training copy has no rounding, so the ramp keeps its slope, and a slope is something gradient descent can follow.",
+        "Training adjusts six numbers: the title boundary, the slop boundary, and four relation cells saying whether a title or body press drags or toggles. The latch structure stays as authored.",
+        "It trains on single frames, never whole sessions. Each example pairs one input and the oracle's stored state with twenty-one decision bits, so no backpropagation through time is needed.",
+        "Start far off: the title boundary near eighty-six pixels, the slop boundary near thirteen. The first ramp is thirty-two pixels wide, so frames within sixteen pixels of a far boundary still pull on it.",
+        "Then the ramp narrows in three snaps: to four pixels, then one, then a quarter pixel. The learning rate drops for the last two, and the optimizer's memory resets at each snap.",
+        "The title boundary lands at twenty-nine point seven, inside the band from twenty-nine to thirty. The slop boundary lands at four and a half, inside the band from four to five.",
+        "Round the relation cells to zero or one and you have the hardened circuit. Played against the oracle on three fresh traces of ten thousand frames, it diverges zero times in thirty thousand.",
+        "Repeat from twenty scrambled starts. All twenty land inside both bands: titles from twenty-nine point three nine to twenty-nine point eight two, slops from four point one seven to four point eight four.",
+        "Now hold the ramp fixed at four pixels wide, and start from the true values. The title boundary drifts to about thirty point oh one, and the slop boundary to about three point nine seven.",
+        "Why? With a wide ramp the training loss is lowest at thirty, not twenty-nine and a half: about two point five nine thousandths at thirty, two point six three at twenty-nine and a half.",
+        "Hardened, that drifted circuit diverges from the oracle in nine thousand one hundred twenty of ten thousand frames, starting at frame one thirty-five. The narrowing isn't a detail. It's what makes recovery work."
+      ]
+    },
+    {
+      "title": "Exact, Within Limits",
+      "blurb": "The scorecard with each number's scope, the live cost, and what the status file says training did and did not show.",
+      "captions": [
+        "Now the scorecard, with each number's scope attached. First, the hand-set circuit running closed loop: its own state feeds the next frame, and the oracle is checked after every one.",
+        "Twelve seeds of ten thousand frames each make a hundred twenty thousand frames, with zero divergences. The comparison is exact equality, which works because every coordinate is a whole number.",
+        "All sixteen settings of the two-by-two relation table pass, two thousand frames each. Two hundred drags in a row, alternating plus seven and minus six pixels, leave the window exactly a hundred pixels right.",
+        "The trained circuits were checked on thirty thousand frames each, not a hundred twenty thousand. The committed test asks only that five of its six starts recover. Different checks, different sizes.",
+        "Now cost. One press record compiles to four hundred eighty operations, fifty-two layers deep. Each extra record adds thirty-six operations, and the depth stays at fifty-two.",
+        "The lab's own readme table says five hundred two operations and depth thirty-eight. Running the script at this commit prints four eighty and fifty-two, so this book uses the printed numbers.",
+        "Those extra records form an archive of older presses. It is built, but behavior never reads it. Behavior uses only the current record, so the added operations buy nothing yet.",
+        "So what did training learn? Six numbers. Every example handed it the oracle's correct internal state and labels, and which latches exist was authored. The lab says the same: it recovers cells, not structure.",
+        "The status file puts it plainly: training supplies correct internal state and decision labels, while persistent state and temporal dependencies remain. The result is narrowed to that scope, and holds there.",
+        "An earlier review found a demo bug: consecutive moves were squashed into the last one, which could erase a drag. It's fixed. The demo keeps every move, and a test checks that out-and-back cancels the click.",
+        "Still open: double-click, which would read the archive; flick speed, which needs a move archive; training on whole rollouts; fractional and batched inputs; discovering the latches. None is built.",
+        "So: a few latches written only on events, one ramp shape that narrows to recover six parameters, and exact agreement with plain code on the traces tested. The memory is real. Learning the memory isn't shown."
+      ]
+    }
+  ]
+}

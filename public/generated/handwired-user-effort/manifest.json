@@ -1,0 +1,76 @@
+{
+  "format": 3,
+  "slug": "handwired-user-effort",
+  "title": "User Effort",
+  "subtitle": "A tiny circuit learns how long a click takes, then picks the faster layout",
+  "animal": "animal.webp",
+  "accent": "#8a9a5b",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Law We Wrote",
+      "blurb": "A simulator we authored sets how long each pointer task takes, and a six-operation circuit gets only the same three features to learn it.",
+      "scene": "books/handwired-user-effort/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.275,
+        22.791,
+        36.212,
+        46.382,
+        56.077,
+        66.92,
+        75.569,
+        86.03,
+        96.664,
+        108.298
+      ],
+      "duration": 118.933
+    },
+    {
+      "number": 2,
+      "title": "Fitting It, Then Testing It",
+      "blurb": "Eight hundred Adam steps move five coefficients from zero to within a hundredth of the authored ones, and held-out error lands at the noise floor.",
+      "scene": "books/handwired-user-effort/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.855,
+        18.936,
+        29.397,
+        41.03,
+        54.695,
+        69.243,
+        80.284,
+        91.372,
+        101.055
+      ],
+      "duration": 114.197
+    },
+    {
+      "number": 3,
+      "title": "Choosing a Layout",
+      "blurb": "The fitted model scores four authored layouts for a stated task mix, and the result is 120 of 120, with a catch about how many choices were real.",
+      "scene": "books/handwired-user-effort/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.054,
+        20.329,
+        31.963,
+        46.522,
+        57.133,
+        67.408,
+        79.424,
+        92.683,
+        105.675,
+        117.378,
+        127.479,
+        140.075
+      ],
+      "duration": 151.674
+    }
+  ],
+  "sources": "sources.json"
+}

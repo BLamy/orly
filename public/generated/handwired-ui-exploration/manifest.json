@@ -1,0 +1,80 @@
+{
+  "format": 3,
+  "slug": "handwired-ui-exploration",
+  "title": "UI Exploration",
+  "subtitle": "One night, one question: how far can a fixed circuit write a user interface?",
+  "animal": "animal.webp",
+  "accent": "#4f7fd8",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Count, Don't Search",
+      "blurb": "Two loops that look sequential, picking a list's first row and breaking a paragraph into lines, become counts of yes-or-no bits.",
+      "scene": "books/handwired-ui-exploration/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.677,
+        24.962,
+        35.852,
+        46.753,
+        57.121,
+        67.895,
+        77.253,
+        87.365,
+        100.113,
+        111.456,
+        124.459,
+        133.91
+      ],
+      "duration": 141.735
+    },
+    {
+      "number": 2,
+      "title": "One Program, Many Photos",
+      "blurb": "Write the per-item program once and run it as instances, step springs as a matrix power, and read an array with one index operation.",
+      "scene": "books/handwired-ui-exploration/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.222,
+        24.88,
+        35.166,
+        45.952,
+        57.225,
+        70.472,
+        81.582,
+        93.053,
+        103.258,
+        114.09,
+        124.724
+      ],
+      "duration": 137.461
+    },
+    {
+      "number": 3,
+      "title": "What Held, What Narrowed",
+      "blurb": "A drag solver, a combined circuit, learned gates and timing each get a verdict with their scope, and the lab stays a historical record.",
+      "scene": "books/handwired-ui-exploration/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        15.743,
+        24.962,
+        33.831,
+        41.889,
+        57.075,
+        68.407,
+        78.206,
+        91.29,
+        101.147,
+        115.148,
+        128.871,
+        140.539
+      ],
+      "duration": 151.534
+    }
+  ],
+  "sources": "sources.json"
+}

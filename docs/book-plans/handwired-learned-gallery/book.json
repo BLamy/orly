@@ -1,0 +1,81 @@
+{
+  "slug": "handwired-learned-gallery",
+  "title": "Learned Gallery",
+  "subtitle": "A 244-weight network that lays photos out on your sketch and lines them up with a penalty, not a snap.",
+  "animal": "magpie",
+  "accent": "#4f7cc8",
+  "chapters": [
+    {
+      "title": "Photos from a sketch",
+      "blurb": "Twenty slot positions pass through 244 weights to become rectangles, and Adam steps move them onto a sketch.",
+      "captions": [
+        "You sketch ten rectangles on a stage, and ten photos should land in them. Here a small fixed program draws the layout, and training adjusts its weights until the photos fit.",
+        "This is the learned gallery from Handwired. Its author wanted the layout learned, not coded, so it comes out of weighted sums and relu, which keeps positive numbers and zeroes the rest.",
+        "The program has twenty output slots, and the page uses up to twelve of them, one per photo. A slot is only a position along a line, from minus one to plus one.",
+        "Each position becomes ten fixed features: a constant, the position itself, and a sine and a cosine at each of four frequencies. They're computed once, when the program is built.",
+        "Two layers follow, six gated units each. A gated unit multiplies one weighted sum by the relu of another, so each one is a small branch built from arithmetic.",
+        "Four weighted sums at the end read the second layer. They give the slot's left edge, top edge, width and height. Twenty slots in, twenty rectangles out.",
+        "Count the weights: a hundred thirty-two in the first layer, eighty-four in the second, twenty-eight at the output. That's two hundred forty-four, and each one is a source cell.",
+        "Unrolled, the whole program is 6,320 operations in eight layers. Its shape never changes. Only those two hundred forty-four numbers move.",
+        "From the seeded starting weights, the photos sit in a pile. Training takes steps with a method called Adam, nudging every weight to shrink the gap between photo edges and sketch edges.",
+        "Each sketch rectangle is paired with a photo by cheapest total matching, then scored edge by edge. Big misses count linearly, so one far-off edge can't dominate.",
+        "Pick a preset and the first fit stops after 679 steps for Story, 1,389 for Cinema and 879 for Contact sheet, in one run. That's about one, two and one and a half seconds.",
+        "Edit the sketch afterward and training continues from the current weights, so a photo follows its rectangle. A preset or the Retrain button starts over from the seeded weights."
+      ]
+    },
+    {
+      "title": "Lining up without snapping",
+      "blurb": "A misalignment penalty and slowly growing multipliers pull nearly aligned photo edges onto one line.",
+      "captions": [
+        "Hand-drawn sketches are crooked, so a row of photos has tops a few pixels apart. Cheng asked for a bigger or adjustable penalty for a grid that was unaligned.",
+        "The first answer was ordinary code that straightened the sketch before training. Cheng's verdict: snapping to alignment is just a simple thought, and the gallery should learn something.",
+        "So since October fourteenth nothing straightens the sketch. The loss gets a second part, a misalignment penalty, and photos line up only because training lowers it.",
+        "The penalty never reads the sketch, only the photos. For every two photo edges of one kind, say two tops, it charges for the gap between them.",
+        "The pull on a pair is five times the gap, capped at the reach minus the gap. So it's strongest between nearly aligned edges, and gone once the gap reaches one reach.",
+        "Reach is half the slider's number. The slider runs from off to eight percent of the stage width and starts at four, so reach is two percent: about eleven pixels on a stage 538 pixels wide.",
+        "A pair's charge is divided by how many edges share the line, so a row of four holds a photo no harder than a row of two. Ordinary code counts those lines at the start of each frame.",
+        "A pull alone stalls with a sliver of gap left. So ordinary code keeps one extra number per pair, a multiplier, and grows it by a tenth of the gap each step until the gap closes.",
+        "The multipliers aren't part of the loss the page shows. And the penalty waits, because the seeded pile has every edge within reach of every other. It switches on near the sketch, then ramps up over two hundred steps.",
+        "After 372 small edits at four percent, a line of photos ends one hundredth of a pixel apart at the median and sixteen hundredths at worst. Straightening gave four hundredths and fifty-two hundredths.",
+        "Photos meet in the middle. Drag one rectangle of a row of four twelve pixels down, and its photo stays in the row, nine pixels above the rectangle, while the other three move three pixels down.",
+        "A photo joins a line at half the distance at which it leaves one. A rectangle dragged fourteen pixels out of its row keeps its photo there, yet with the slider off and back on, the photo sits on its rectangle."
+      ]
+    },
+    {
+      "title": "Taking steps back",
+      "blurb": "Each frame of training is kept or undone, and the loop learns when to stop.",
+      "captions": [
+        "Adam at a fixed rate doesn't come to rest once the loss is low. Its steps keep their size while gradients shrink, and before October thirteenth six small drags made photos jump up to fourteen pixels.",
+        "Training runs at six hundred steps a second at any frame rate: ten steps a frame at sixty frames a second, five at a hundred twenty. A frame trains at most twenty, and no more than fit in six milliseconds.",
+        "Each frame is a bet. The program measures one function before the frame's steps and after them, with the multipliers, line counts and penalty weight frozen for that frame.",
+        "If the function went up, the frame is taken back. The weights and both of Adam's running averages are restored, and the learning rate halves, down to a sixty-fourth.",
+        "If it went down, the frame is kept and the rate grows by fifteen percent, or doubles below a sixty-fourth. Climbing from a sixty-fourth back to full takes about thirty kept frames.",
+        "At the floor there's a trap. After five frames in a row are taken back at the low rate, it keeps halving, to one four-thousand-ninety-sixth, and kept frames double it. Otherwise a photo could stall thirty pixels off.",
+        "A frame trains two steps or more, or none. After an undone one-step frame, the restored momentum can make the same step uphill at any rate, and every frame gets taken back while the photos freeze.",
+        "On a device taking five milliseconds a step, one-step frames stopped Contact sheet's first fit at 529 steps, with a line nearly half a pixel apart. Two-step frames reached 874 steps and three hundredths of a pixel.",
+        "The price is time. Where a step takes over three milliseconds, a frame's training can take up to twice the six millisecond budget, and the lab accepts that.",
+        "Stopping is trickier than it sounds. With the penalty on, the loss has no value that means done. It rests where its two parts balance, say at one hundred-thousandth, with a photo held nine pixels from its rectangle.",
+        "So the page watches the photos. A change gets at least 500 more steps, and training stops once no edge has moved more than a hundredth of a percent of the stage in 100 steps, or after 2,000.",
+        "Once photos rest, most frames are taken back: 238 of the 300 after Story's first fit. Many redo the same ten steps from identical weights, up to 171 in a row, until the multipliers change."
+      ]
+    },
+    {
+      "title": "What held, what didn't",
+      "blurb": "Four penalty forms, the measured alignment, the edges that still rest off target, and a status with no held-out test.",
+      "captions": [
+        "How was the penalty chosen? A probe compared four forms over 24 sessions of 40 small edits, counting edits that end with two photo edges stuck between half a pixel and eight pixels apart.",
+        "A fixed pull without multipliers left seventy-eight percent of edits stuck. Rounded less, forty-seven. Multipliers with a limit that stays full for two pixels, twenty-one percent.",
+        "Multipliers with a limit that falls from a gap of zero, the form that was kept, got it to one point eight percent. That probe used a reach of about one and a half percent, a little under the shipped two.",
+        "At the shipped setting, 96 sessions of 40 small edits ended stuck one point one percent of the time, between 0.7 and 1.4 by batch, against about two and a half percent for straightening.",
+        "In 8 sessions of 200 random edits the lab saw none in 1,600. A reviewer's own generator saw five in 1,600, and half a percent of 1,920 mixed edits. So read it as rare, not zero.",
+        "Fitting 200 variants of Story's proportions, every line ended within fifteen hundredths of a pixel when training stopped. Twenty-six variants used all 2,000 steps to get there.",
+        "Edits of 22 pixels pulled a photo off every line in 151 of 180 cases. Those photos ended a median twelve hundredths of a pixel from their rectangles, and 2.3 pixels at worst.",
+        "The open problem is an edge on no line. Twelve of those 200 variants end with one two to four pixels off, five after all 2,000 steps. Edges share 244 weights, and rest where all the slopes balance.",
+        "Story shows it: one edge rests six tenths of a pixel from where it's drawn. Its own error pulls 29 times harder than the total gradient, but the other edges pull the shared weights the other way.",
+        "Status: current, with that limit open. Forty-one tests pass, but the scripts behind the measurements aren't in the repo, and the numbers describe the page as it was on October fourteenth.",
+        "And there's no held-out test. The network is fitted to one sketch at a time, so the lab shows how well it fits a sketch, not how it handles one it never saw.",
+        "To recap: twenty slots feed 244 weights that output rectangles, a penalty with multipliers lines them up, and undoable frames keep them still. Alignment is learned and mostly holds; off-line edges remain open."
+      ]
+    }
+  ]
+}

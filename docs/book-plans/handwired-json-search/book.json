@@ -1,0 +1,81 @@
+{
+  "slug": "handwired-json-search",
+  "title": "JSON Search",
+  "subtitle": "Can a GPU search a hundred thousand JSON documents faster, one thread each, with the lab's own weighted-sum program?",
+  "animal": "bloodhound",
+  "accent": "#b23a48",
+  "chapters": [
+    {
+      "title": "One Thread Per Document",
+      "blurb": "One program, 100,000 generated JSON documents, and a GPU thread for each, checked against the CPU.",
+      "captions": [
+        "Cheng asked whether regex search or a JSON highlighter could run clearly faster on a graphics chip. The lab tests that on one hundred thousand generated JSON documents.",
+        "For a single document, no. The highlighter takes eighty microseconds on the CPU executor, and a round trip to the GPU alone costs six tenths of a millisecond or more.",
+        "Many documents are another story. Every document runs the same operations, and no document reads another one's values. That is a thread per document.",
+        "Each document is a row of up to five hundred twelve code points, followed by the text's length. One GPU thread reads its own row and never anyone else's.",
+        "Of the hundred thousand, 89,943 are valid and 10,057 are broken, spread over sixteen kinds of defect: a missing quote, a trailing comma, a bad escape, nesting too deep.",
+        "The highlighter is one step of work per position. Thirty-seven operations read a code point, and seventeen more close the document, so a full row costs 18,961 operations.",
+        "The step is written once, inside a loop over positions. That shader is 107 statements long, and it compiles in about four hundredths of a second.",
+        "Written out position by position, the first version of this shader took about two seconds to compile. The loop turned a compile limit into a detail.",
+        "Across the hundred thousand documents, that is about 1.9 billion operations in one pass, which is simple arithmetic: 18,961 times one hundred thousand.",
+        "With the documents already on the GPU, validating and highlighting all hundred thousand takes 2.2 milliseconds when passes follow each other.",
+        "The same program as generated JavaScript on the CPU takes about 2.1 seconds, extrapolated from 5,000 documents. On the CPU executor it takes 8.4 to 9.2 seconds. Every value from the GPU matched the CPU's.",
+        "Scope: one Apple M5 Max through Metal, headless Chrome, generated documents. The lab itself says another GPU or browser may differ."
+      ]
+    },
+    {
+      "title": "Search Is a Matrix Product",
+      "blurb": "The pattern is data, and each code point multiplies a zero-one state vector by a transition matrix, once backward and once forward.",
+      "captions": [
+        "Search is the harder program. The pattern is not code: its automaton sits in cells beside the text, so a new pattern writes cells and changes no program.",
+        "A pattern has one state per character or class it reads, plus one. The word error needs six states. The words connection reset need seventeen.",
+        "Each code point first becomes a class, found by counting how many class boundaries it has passed. A pattern may use up to sixteen classes and thirty-two boundaries.",
+        "The class picks a transition matrix of ones and zeros: which state leads to which. The set of live states is a zero-one vector, and one step multiplies the two.",
+        "Each product in that multiply is one table read, a single lookup per pair of states. Eight states mean sixty-four lookups per step, thirty-two mean 1,024.",
+        "The reverse pass walks from the end of the text. A one in the reach vector means: from this state, here, some path reads at least one code point and ends accepting.",
+        "The forward pass walks from the start. A code point belongs to a match when a state is both reached by the match in progress and marked by the reverse pass.",
+        "When no match is in progress, a new one starts where the reverse pass marks the initial state. So the forward pass already knows whether a longer match exists, and never backtracks.",
+        "On the text no error found, the reverse pass lights the start at the letter e, the forward pass carries the match through five letters, and five positions are marked.",
+        "Per position, the two passes cost 240 operations at eight states, 664 at sixteen, and 2,280 at thirty-two, whatever the length of the text.",
+        "Over a full 512-position document that is 122,888 operations at eight states, and 1,167,392 at thirty-two. Every value is an integer, so 32-bit floats are exact.",
+        "The search can also read the highlighter's display kinds, so a match stays inside one run, such as one string value, and never crosses an escape or a key."
+      ]
+    },
+    {
+      "title": "Packing the Bits",
+      "blurb": "The same search program went from 945 milliseconds to 5.24 at 32 states once its shader packed states into 32-bit words.",
+      "captions": [
+        "The first working search was slow for long patterns. For a hundred thousand documents it took 7.8, 69, and 945 milliseconds at eight, sixteen, and thirty-two states.",
+        "The reason is the arithmetic from before. At thirty-two states a pass has 1,025 table reads, and the shader holds 4,648 statements, each one a separate 32-bit float operation.",
+        "The fix is not a new program. On October 14 a second code writer, one that packs bits, rewrote only the shader text. The weighted sums and relu gates stayed as they were.",
+        "Its key identity: when both inputs are known to be bits, relu of a minus b is just a, AND the flip of b. A subtraction and a clamp become one logic operation.",
+        "A row of up to thirty-two states fits one 32-bit word. So a gate reading many table entries of the same row becomes one AND of two words, then a test against zero.",
+        "The writer only does this where the declared ranges prove a value is a whole number or a bit. Everywhere else it falls back to the same float statements.",
+        "At eight states the search went from 7.81 to 4.60 milliseconds, and at sixteen from 68.8 to 4.72, back to back, for a hundred thousand documents.",
+        "At thirty-two states it went from 945 to 5.24 milliseconds. That is 1.7, 15, and 180 times less, with no change to the program.",
+        "So the search no longer slows with the pattern's size. A hundred to ten thousand documents take 0.6 to 1.9 milliseconds at any of the three sizes.",
+        "Those are back-to-back times, where each search starts as soon as the last answer arrives. Searching after a pause is a different, slower number, in the next chapter.",
+        "The highlighter got nothing from the second writer, so the searcher still uses the first writer for it and the bit writer only for search.",
+        "Both writers give the same answers. 2.4 million match counts and marks across 18 searches agreed, with no differences, and so did 103 million highlighter values."
+      ]
+    },
+    {
+      "title": "Who Does It Beat",
+      "blurb": "The same GPU search races the CPU, RegExp and worker threads; the lab's own status says where it wins, loses and is still open.",
+      "captions": [
+        "So is the GPU clearly faster? That depends on who it races. Each opponent gets a bar on one time axis, all for a hundred thousand documents.",
+        "Against the same programs on the CPU, yes. The highlighter takes about 2.1 seconds, extrapolated, and a search 14 seconds. That is 950 to 3,100 times the GPU's time.",
+        "Against the browser's RegExp on one thread, counting every match of nine ordinary patterns in 8 to 43 milliseconds, the GPU is 1.5 to 9 times faster when searches follow each other.",
+        "At a keystroke, after a pause, the search takes 11 to 16 milliseconds. It beats RegExp on seven of ten patterns, ties one, and loses on a date and on connection reset.",
+        "On a pattern that makes RegExp backtrack, RegExp takes 2.1 seconds. The GPU takes 5 to 12 milliseconds.",
+        "The crossover is about 2,000 to 13,000 documents back to back, and 15,000 to 54,000 after a pause. Those counts are interpolated between four measured sizes.",
+        "Against JavaScript in several workers, no. Eight workers count a pattern's matches in 1.9 to 6.7 milliseconds, where the GPU takes 4.5 to 5.2 back to back. Workers were not timed after a pause.",
+        "For validating from raw text, it is not clearly faster either: 0.15 seconds on the GPU against 0.12 to 0.15 for a plain JavaScript highlighter.",
+        "A review corrected the first write-up where it had claimed more than the measurements show. The CPU times and crossover counts were narrowed, and the one-core baselines were disclosed.",
+        "Still open: why a search after a pause takes longer, which the lab says it did not find, and any other GPU or browser. The first-stage programs were removed, and survive in a tag.",
+        "So: a thread per document, a pattern kept as data, states packed into words. Faster than the same program on the CPU, often faster than RegExp, not faster than workers.",
+        "The lab itself says a demo is honest if it says what it shows, and not if it claims to beat RegExp on every pattern, or JavaScript in several workers."
+      ]
+    }
+  ]
+}

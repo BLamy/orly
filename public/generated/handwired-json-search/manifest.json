@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "handwired-json-search",
+  "title": "JSON Search",
+  "subtitle": "Can a GPU search a hundred thousand JSON documents faster, one thread each, with the lab's own weighted-sum program?",
+  "animal": "animal.webp",
+  "accent": "#b23a48",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Thread Per Document",
+      "blurb": "One program, 100,000 generated JSON documents, and a GPU thread for each, checked against the CPU.",
+      "scene": "books/handwired-json-search/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.194,
+        21.989,
+        30.766,
+        40.542,
+        54.323,
+        66.13,
+        76.045,
+        84.973,
+        96.154,
+        105.024,
+        121.22
+      ],
+      "duration": 131.007
+    },
+    {
+      "number": 2,
+      "title": "Search Is a Matrix Product",
+      "blurb": "The pattern is data, and each code point multiplies a zero-one state vector by a transition matrix, once backward and once forward.",
+      "scene": "books/handwired-json-search/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.567,
+        19.377,
+        29.014,
+        39.741,
+        50.991,
+        61.44,
+        70.705,
+        80.48,
+        89.977,
+        101.146,
+        117.144
+      ],
+      "duration": 125.527
+    },
+    {
+      "number": 3,
+      "title": "Packing the Bits",
+      "blurb": "The same search program went from 945 milliseconds to 5.24 at 32 states once its shader packed states into 32-bit words.",
+      "scene": "books/handwired-json-search/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.852,
+        27.609,
+        40.195,
+        52.931,
+        64.308,
+        73.318,
+        85.601,
+        97.571,
+        108.044,
+        117.9,
+        126.364
+      ],
+      "duration": 138.438
+    },
+    {
+      "number": 4,
+      "title": "Who Does It Beat",
+      "blurb": "The same GPU search races the CPU, RegExp and worker threads; the lab's own status says where it wins, loses and is still open.",
+      "scene": "books/handwired-json-search/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.288,
+        23.208,
+        35.016,
+        46.51,
+        54.161,
+        65.771,
+        80.655,
+        92.311,
+        102.076,
+        113.987,
+        126.712
+      ],
+      "duration": 135.419
+    }
+  ],
+  "sources": "sources.json"
+}

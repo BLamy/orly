@@ -1,0 +1,942 @@
+{
+  "version": 1,
+  "slug": "handwired-candidate-gallery",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three Layouts at Once",
+      "claims": [
+        {
+          "id": "c1-fixed-program",
+          "caption": 0,
+          "status": "paraphrase",
+          "claim": "A Handwired program is a fixed list of arithmetic operations, mostly weighted sums and products with a ReLU, and an if statement becomes arithmetic that runs in full.",
+          "sources": [
+            {
+              "label": "docs/README.md (what a program is)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "a fixed list of arithmetic operations"
+            },
+            {
+              "label": "README.md (if-else becomes matrix multiplication)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "7",
+              "quote": "Handwired transforms them into matrix multiplication + reglu over floats"
+            }
+          ]
+        },
+        {
+          "id": "c1-relu-zeroes",
+          "caption": 0,
+          "status": "verified",
+          "claim": "A ReLU is max(0, x), so it zeroes negative values.",
+          "sources": [
+            {
+              "label": "README.md (ReLU is Math.max)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "18",
+              "quote": "Math.max(0, x) is ReLU"
+            }
+          ]
+        },
+        {
+          "id": "c1-no-skip",
+          "caption": 0,
+          "status": "paraphrase",
+          "claim": "Both branches of a decision are computed, and a bit picks one, so the program cannot skip work the way an if statement does.",
+          "sources": [
+            {
+              "label": "README.md (both branches compute)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "20",
+              "quote": "Both branches compute, and above4 picks one"
+            }
+          ]
+        },
+        {
+          "id": "c1-argmax-after",
+          "caption": 1,
+          "status": "verified",
+          "claim": "The program computes three complete layouts, scores them, and only afterwards picks one with emitArgmax.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (the candidates)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "324",
+              "quote": "const candidates = [cinema, contact, story]"
+            },
+            {
+              "label": "candidate-gallery.ts (argmax picks the layout)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "326",
+              "quote": "const winner = emitArgmax(circuit, scores, unit)"
+            }
+          ]
+        },
+        {
+          "id": "c1-cinema-hero",
+          "caption": 2,
+          "status": "verified",
+          "claim": "Cinema is a hero image with a rail of thumbnails in two columns beside it, and clicking a thumbnail shows that photo in the hero.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (two columns)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "240",
+              "quote": "const column = slot % 2"
+            },
+            {
+              "label": "lab README (layout description and hero)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "3",
+              "quote": "a hero image with a rail of thumbnails in 2 columns beside it"
+            },
+            {
+              "label": "lab README (the hero shows the clicked photo)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "3",
+              "quote": "click a thumbnail to show that photo in the hero"
+            }
+          ]
+        },
+        {
+          "id": "c1-contact-story",
+          "caption": 3,
+          "status": "verified",
+          "claim": "The Contact sheet has no hero and shows twelve thumbnails in four columns and three rows; Story puts a hero above thumbnails in three columns.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (four columns)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "177",
+              "quote": "const column = item % 4"
+            },
+            {
+              "label": "candidate-gallery.ts (twelve photos)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "19",
+              "quote": "export const photoCount = 12"
+            },
+            {
+              "label": "candidate-gallery.ts (Contact has no hero)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "205",
+              "quote": "heroPresent: zero,"
+            },
+            {
+              "label": "candidate-gallery.ts (three columns)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "296",
+              "quote": "const column = slot % 3"
+            },
+            {
+              "label": "lab README (layout description)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "3",
+              "quote": "a contact sheet of 4 columns and 3 rows with no hero"
+            }
+          ]
+        },
+        {
+          "id": "c1-positions-are-sums",
+          "caption": 4,
+          "status": "verified",
+          "claim": "Positions are sums of the stage width, the stage height and a 14 pixel gap, with clamps; a Contact cell is the inner width, the width minus five gaps, divided by four.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (width minus five gaps)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "167",
+              "quote": "[sourceField.gap, -5],"
+            },
+            {
+              "label": "candidate-gallery.ts (cell width is a quarter)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "173",
+              "quote": "const contactCellWidth = circuit.affine([[contactInnerWidth, 1 / 4]])"
+            },
+            {
+              "label": "candidate-gallery.ts (gap is 14)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "404",
+              "quote": "source[sourceField.gap] = 14"
+            },
+            {
+              "label": "candidate-gallery.ts (a clamp: Story hero height is a minimum)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "268",
+              "quote": "const storyHeroHeight = emitMinimum("
+            }
+          ]
+        },
+        {
+          "id": "c1-contact-cell-numbers",
+          "caption": 5,
+          "status": "verified",
+          "claim": "At 1,400 by 680 a Contact cell is 332.5 by 208: (1400 - 5 x 14) / 4 and (680 - 4 x 14) / 3, arithmetic from the formulas.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (cell height is a third)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "174",
+              "quote": "const contactCellHeight = circuit.affine([[contactInnerHeight, 1 / 3]])"
+            },
+            {
+              "label": "candidate-gallery.ts (inner height minus four gaps)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "171",
+              "quote": "[sourceField.gap, -4],"
+            }
+          ]
+        },
+        {
+          "id": "c1-cinema-story-readouts",
+          "caption": 6,
+          "status": "verified",
+          "claim": "Cinema caps its rail at 280 pixels, which leaves a hero 1,078 by 652; Story is 394.4 tall, so its thumbnails are just over 50 pixels tall (arithmetic from the formulas).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (rail maximum 280)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "414",
+              "quote": "source[sourceField.cinemaRailMaximum] = 280"
+            },
+            {
+              "label": "candidate-gallery.ts (rail width is a minimum)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "208",
+              "quote": "const cinemaRailWidth = emitMinimum("
+            },
+            {
+              "label": "candidate-gallery.ts (Story hero height is a minimum)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "268",
+              "quote": "const storyHeroHeight = emitMinimum("
+            }
+          ]
+        },
+        {
+          "id": "c1-tiny-sizes-finite",
+          "caption": 7,
+          "status": "verified",
+          "claim": "Where a subtraction would go negative, a ReLU pins it at zero, so geometry stays finite even at tiny sizes.",
+          "sources": [
+            {
+              "label": "numeric-ui-core.ts (emitRelu)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "1934",
+              "quote": "export function emitRelu(circuit: Circuit, value: Wire): Wire {"
+            },
+            {
+              "label": "candidate-gallery.test.ts (tiny sizes are finite and bounded)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "100",
+              "quote": "test('candidate geometry remains finite and bounded at tiny sizes'"
+            },
+            {
+              "label": "candidate-gallery.test.ts (a 20 pixel sliver)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "105",
+              "quote": "    [20, 300],"
+            }
+          ]
+        },
+        {
+          "id": "c1-417-operations",
+          "caption": 8,
+          "status": "verified",
+          "claim": "The Dynamic UI demo, with its layouts, clicks and focus, is 417 operations in 60 layers.",
+          "sources": [
+            {
+              "label": "guide: run-every-candidate.md",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/ui-exploration/guide/patterns/run-every-candidate.md",
+              "lines": "52",
+              "quote": "is 417 operations in 60 layers"
+            }
+          ]
+        },
+        {
+          "id": "c1-no-branch-price",
+          "caption": 9,
+          "status": "inferred",
+          "claim": "My reading: because the circuit has no branch, building every answer is the cost of not having one, and nothing is skipped.",
+          "sources": [
+            {
+              "label": "README.md (both branches compute)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "20",
+              "quote": "Both branches compute, and above4 picks one"
+            },
+            {
+              "label": "docs/README.md (a fixed list of operations)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "docs/README.md",
+              "lines": "3",
+              "quote": "a fixed list of arithmetic operations"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The Worst Gauge Wins",
+      "claims": [
+        {
+          "id": "c2-gauge",
+          "caption": 0,
+          "status": "verified",
+          "claim": "A gauge for a size is the size times its scale, where the scale is the reciprocal of a target size, capped at 1.",
+          "sources": [
+            {
+              "label": "lab README (the gauge definition)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "3",
+              "quote": "the reciprocal of a target size, counts up to 1"
+            },
+            {
+              "label": "candidate-gallery.ts (size times scale, clamped)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "152",
+              "quote": "return clampQuality(emitMultiply(circuit, size, scale))"
+            },
+            {
+              "label": "candidate-gallery.ts (clamp is a minimum with one)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "148",
+              "quote": "return emitMinimum(circuit, unit, value)"
+            }
+          ]
+        },
+        {
+          "id": "c2-contact-240",
+          "caption": 1,
+          "status": "verified",
+          "claim": "A Contact cell targets 240 pixels, so its 208 pixel height reads 0.87 (208 divided by 240, arithmetic from the formulas).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (target 240)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "407",
+              "quote": "source[sourceField.contactCellScale] = 1 / 240"
+            },
+            {
+              "label": "candidate-gallery.ts (Contact height gauge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "201",
+              "quote": "scaledQuality(contactCellHeight, sourceField.contactCellScale),"
+            }
+          ]
+        },
+        {
+          "id": "c2-cinema-story-gauges",
+          "caption": 2,
+          "status": "verified",
+          "claim": "Cinema has four gauges, all 1 at 1,400 by 680; Story thumbnails are 50 pixels tall against a target of 60, so its weakest gauge reads 0.84.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (Cinema hero width gauge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "258",
+              "quote": "scaledQuality(cinemaHero.width, sourceField.cinemaHeroWidthScale),"
+            },
+            {
+              "label": "candidate-gallery.ts (Cinema thumbnail height gauge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "261",
+              "quote": "scaledQuality(cinemaThumbnailHeight, sourceField.cinemaThumbnailScale),"
+            },
+            {
+              "label": "candidate-gallery.ts (Story thumbnail target 60)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "413",
+              "quote": "source[sourceField.storyThumbnailScale] = 1 / 60"
+            }
+          ]
+        },
+        {
+          "id": "c2-worst-gauge",
+          "caption": 3,
+          "status": "verified",
+          "claim": "A layout is only as good as its worst gauge: its score is the smallest gauge, folded with emitMinimum.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (bottleneck)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "155",
+              "quote": "function bottleneck(values: readonly Wire[]) {"
+            },
+            {
+              "label": "candidate-gallery.ts (fold of emitMinimum)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "159",
+              "quote": "result = emitMinimum(circuit, result, values[index]!)"
+            }
+          ]
+        },
+        {
+          "id": "c2-minimum-formula",
+          "caption": 3,
+          "status": "paraphrase",
+          "claim": "The minimum of a and b is a minus a ReLU of their difference, a - relu(a - b), built from rounded operations; the minus is applied to the first operand, not to the smaller one.",
+          "sources": [
+            {
+              "label": "numeric-ui-core.ts (difference)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "1943",
+              "quote": "const difference = circuit.roundAffine([[a, 1], [b, -1]])"
+            },
+            {
+              "label": "numeric-ui-core.ts (minimum is a minus a relu)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "1957",
+              "quote": "const result = circuit.roundAffine([[a, 1], [emitRelu(circuit, difference), -1]])"
+            }
+          ]
+        },
+        {
+          "id": "c2-argmax-pairs",
+          "caption": 4,
+          "status": "verified",
+          "claim": "The argmax compares two scores at a time, Cinema against Contact and then the survivor against Story; one FP32 step above one half sends exact ties to the left candidate.",
+          "sources": [
+            {
+              "label": "numeric-ui-core.ts (comparison bias)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2736",
+              "quote": "const comparisonBias = 0.5000000596046448"
+            },
+            {
+              "label": "numeric-ui-core.ts (ties left)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2735",
+              "quote": "// One FP32 step above 0.5 makes exact ties choose left without exceeding 1."
+            },
+            {
+              "label": "numeric-ui-core.ts (the comparison bit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2743",
+              "quote": "const leftWins = circuit.boolean(comparison)"
+            },
+            {
+              "label": "lab/status.md (exact ties pick the left candidate)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "170",
+              "quote": "Exact ties pick the left candidate in both orders"
+            }
+          ]
+        },
+        {
+          "id": "c2-one-hot",
+          "caption": 5,
+          "status": "verified",
+          "claim": "The tournament leaves a one-hot selection: a 1 for the winner and a 0 for each loser; at 1,400 by 680 that is 1, 0, 0 with Cinema scoring 1.",
+          "sources": [
+            {
+              "label": "numeric-ui-core.ts (assumeOneHot on exit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2760",
+              "quote": "circuit.assumeOneHot(selected)"
+            },
+            {
+              "label": "candidate-gallery.test.ts (1400 by 680 picks Cinema)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "33",
+              "quote": "[1400, 680, layout.cinema],"
+            }
+          ]
+        },
+        {
+          "id": "c2-984-contact",
+          "caption": 6,
+          "status": "verified",
+          "claim": "At 984 by 730 Cinema hero is 666.5 pixels wide against a 900 target, so its gauge is 0.74; Contact wins with 0.94 over Story at 0.93 (arithmetic from the formulas).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (Cinema hero width target 900)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "408",
+              "quote": "source[sourceField.cinemaHeroWidthScale] = 1 / 900"
+            },
+            {
+              "label": "candidate-gallery.test.ts (984 by 730 picks Contact)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "34",
+              "quote": "[984, 730, layout.contact],"
+            }
+          ]
+        },
+        {
+          "id": "c2-610-contact-width",
+          "caption": 7,
+          "status": "verified",
+          "claim": "At 610 by 830 Contact cells are 135 pixels wide, a width gauge of 0.56; its height gauge is 1, but the worst gauge counts (arithmetic from the formulas).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (Contact cell width)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "173",
+              "quote": "const contactCellWidth = circuit.affine([[contactInnerWidth, 1 / 4]])"
+            },
+            {
+              "label": "candidate-gallery.ts (Contact width gauge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "200",
+              "quote": "scaledQuality(contactCellWidth, sourceField.contactCellScale),"
+            },
+            {
+              "label": "candidate-gallery.test.ts (610 by 830 picks Story)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "35",
+              "quote": "[610, 830, layout.story],"
+            }
+          ]
+        },
+        {
+          "id": "c2-story-hero-440",
+          "caption": 8,
+          "status": "verified",
+          "claim": "Story hero is 439 pixels tall against a 440 target, its other gauges are full, so Story scores 0.998.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (Story hero height target 440)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "412",
+              "quote": "source[sourceField.storyHeroHeightScale] = 1 / 440"
+            },
+            {
+              "label": "candidate-gallery.ts (Story hero height gauge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "315",
+              "quote": "scaledQuality(storyHero.height, sourceField.storyHeroHeightScale),"
+            }
+          ]
+        },
+        {
+          "id": "c2-tight-flip",
+          "caption": 9,
+          "status": "verified",
+          "claim": "The flip is tight: at 760 by 517 Contact wins, at 600 by 517 Story wins with 0.555 against 0.552, and an exact three-way tie at 1,280 by 800 goes to Cinema.",
+          "sources": [
+            {
+              "label": "candidate-gallery.test.ts (Story takes over when narrow)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.test.ts",
+              "lines": "45",
+              "quote": "test('Story takes over before the frame becomes extremely narrow'"
+            },
+            {
+              "label": "lab/status.md (ties go left)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "170",
+              "quote": "Exact ties pick the left candidate in both orders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Everyone Reads the Winner",
+      "claims": [
+        {
+          "id": "c3-winner-multiplies",
+          "caption": 0,
+          "status": "verified",
+          "claim": "The winner is a one-hot of a 1 and two 0s, and thumbnails and the hero get their rectangles by multiplying, not by an if.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (selectValue)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "334",
+              "quote": "function selectValue(values: readonly Wire[]) {"
+            },
+            {
+              "label": "candidate-gallery.ts (the bit multiplies each value)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "340",
+              "quote": "winner.selected[candidateIndex]!,"
+            },
+            {
+              "label": "numeric-ui-core.ts (one-hot declared)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2760",
+              "quote": "circuit.assumeOneHot(selected)"
+            }
+          ]
+        },
+        {
+          "id": "c3-left-edge-sum",
+          "caption": 1,
+          "status": "verified",
+          "claim": "Thumbnail zero's left edge is each layout's value multiplied by its own bit, then added.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (the sum of products)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "346",
+              "quote": "return circuit.affine(terms)"
+            }
+          ]
+        },
+        {
+          "id": "c3-cinema-rectangle",
+          "caption": 2,
+          "status": "verified",
+          "claim": "On the 1,400 by 680 stage the sum is Cinema's rectangle for thumbnail zero: left 1,106, top 14, 133 by 97 (arithmetic from the formulas: 14 + 1,078 + 14).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (rail left is hero left plus width plus gap)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "234",
+              "quote": "const cinemaRailLeft = circuit.affine(["
+            },
+            {
+              "label": "candidate-gallery.ts (the gap is 14)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "404",
+              "quote": "source[sourceField.gap] = 14"
+            },
+            {
+              "label": "candidate-gallery.ts (the rail width is a minimum)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "208",
+              "quote": "const cinemaRailWidth = emitMinimum("
+            }
+          ]
+        },
+        {
+          "id": "c3-four-sums",
+          "caption": 3,
+          "status": "verified",
+          "claim": "Every thumbnail and the hero run the same four sums (left, top, width, height), and the Contact sheet has no hero, so its hero flag is zero.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (four selectValue calls)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "349",
+              "quote": "function selectGeometry(geometries: readonly Geometry[]): Geometry {"
+            },
+            {
+              "label": "candidate-gallery.ts (Contact hero flag is zero)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "205",
+              "quote": "heroPresent: zero,"
+            }
+          ]
+        },
+        {
+          "id": "c3-bit-moves",
+          "caption": 4,
+          "status": "verified",
+          "claim": "At 984 by 730 the bit moves to Contact and thumbnail zero moves to the corner; at 610 by 830 it moves to Story, where thumbnail zero sits below the hero.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (Story thumbnail region starts below the hero)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "282",
+              "quote": "const storyThumbnailRegionTop = circuit.affine(["
+            },
+            {
+              "label": "candidate-gallery.ts (the hero height and gap)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "283",
+              "quote": "[storyHeroHeight, 1],"
+            },
+            {
+              "label": "numeric-ui-core.ts (argmax one-hot picks the layout)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2760",
+              "quote": "circuit.assumeOneHot(selected)"
+            }
+          ]
+        },
+        {
+          "id": "c3-gather-26",
+          "caption": 5,
+          "status": "verified",
+          "claim": "Declared a one-hot, the layout selection reads lower to gather reads: 26 reads in one group, and the stored weights fall from 940 to 848.",
+          "sources": [
+            {
+              "label": "gather-lowering.test.ts (26 reads)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/gather-lowering.test.ts",
+              "lines": "67",
+              "quote": "expect(lowered.readCount).toBe(26)"
+            },
+            {
+              "label": "lab/status.md (940 to 848)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/status.md",
+              "lines": "228",
+              "quote": "Sparse weights drop from 940 to 848 in the candidate gallery"
+            }
+          ]
+        },
+        {
+          "id": "c3-click-hit",
+          "caption": 6,
+          "status": "verified",
+          "claim": "A click uses the same rectangles: each thumbnail turns the distance from its nearest edge into a bit, and the first hit sets that photo focus cell to 1.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (one hit test per thumbnail)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "368",
+              "quote": "emitRectangleHit(circuit, sourceField.clickX, sourceField.clickY, thumbnail))"
+            },
+            {
+              "label": "candidate-gallery.ts (first active hit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "369",
+              "quote": "const clicked = emitFirstActive("
+            },
+            {
+              "label": "candidate-gallery.ts (distance is the minimum of four edges)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "482",
+              "quote": "const distance = emitMinimum(circuit, horizontal, vertical)"
+            },
+            {
+              "label": "candidate-gallery.ts (the hit becomes a bit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "487",
+              "quote": "  return circuit.boolean(score)"
+            },
+            {
+              "label": "candidate-gallery.ts (focus cell set from the hit)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "384",
+              "quote": "nextSource[focusField(item)] = nextFocus[item]!"
+            }
+          ]
+        },
+        {
+          "id": "c3-click-pixel",
+          "caption": 7,
+          "status": "verified",
+          "claim": "At 1,400 by 680 a click one pixel inside thumbnail seven hits it, and a quarter pixel inside misses, so focus stays put (checked by running the pinned code; no repo test pins these two points).",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (the hit test)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "466",
+              "quote": "function emitRectangleHit("
+            },
+            {
+              "label": "candidate-gallery.ts (distance to the nearest edge)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "482",
+              "quote": "const distance = emitMinimum(circuit, horizontal, vertical)"
+            }
+          ]
+        },
+        {
+          "id": "c3-14-atoms",
+          "caption": 8,
+          "status": "verified",
+          "claim": "The tests count exactly 14 rounding points, the boolean atoms: twelve thumbnail hit tests and two argmax comparisons.",
+          "sources": [
+            {
+              "label": "comparison.test.ts (14 boolean atoms)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/comparison.test.ts",
+              "lines": "12",
+              "quote": "expect(booleanWires.length).toBe(14)"
+            },
+            {
+              "label": "numeric-ui-core.ts (rounding points are reported)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "385",
+              "quote": "roundingPoints(): {wire: Wire, kind: RoundingPointKind}[] {"
+            },
+            {
+              "label": "numeric-ui-core.ts (argmax comparison bits)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "src/runtime/numeric-ui-core.ts",
+              "lines": "2743",
+              "quote": "const leftWins = circuit.boolean(comparison)"
+            }
+          ]
+        },
+        {
+          "id": "c3-rest-arithmetic",
+          "caption": 8,
+          "status": "inferred",
+          "claim": "My reading: the rest of the circuit is plain arithmetic, with no further boolean atom, which is why the count is 14.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (the hit test is the only other boolean)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "487",
+              "quote": "  return circuit.boolean(score)"
+            }
+          ]
+        },
+        {
+          "id": "c3-status",
+          "caption": 9,
+          "status": "paraphrase",
+          "claim": "The lab is a page you resize and click in a browser; it moved into the lab folder on September 17, 2026, runtime-cost measures it, and its scales are constants written by hand.",
+          "sources": [
+            {
+              "label": "lab README (the page)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "3",
+              "quote": "resize the browser window to watch the three scores and the selected layout change"
+            },
+            {
+              "label": "lab README (the move)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "5",
+              "quote": "It moved here from the repo root on September 17, 2026"
+            },
+            {
+              "label": "lab README (runtime-cost measures it)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/README.md",
+              "lines": "5",
+              "quote": "measures it"
+            },
+            {
+              "label": "candidate-gallery.ts (scales are constants)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "414",
+              "quote": "source[sourceField.cinemaRailMaximum] = 280"
+            }
+          ]
+        },
+        {
+          "id": "c3-nothing-learned",
+          "caption": 9,
+          "status": "paraphrase",
+          "claim": "Nothing is learned in this lab: the repository says its method has no training, and the gallery scales are written in by hand.",
+          "sources": [
+            {
+              "label": "README.md (no training)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "3",
+              "quote": "no training, exact, yet also fully differentiable!"
+            },
+            {
+              "label": "candidate-gallery.ts (hand-set scales)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "410",
+              "quote": "source[sourceField.cinemaThumbnailScale] = 1 / 90"
+            }
+          ]
+        },
+        {
+          "id": "c3-never-branches",
+          "caption": 10,
+          "status": "inferred",
+          "claim": "My reading: the program never branches. It builds every layout, scores each by its worst gauge, and multiplies the losers by zero, every frame.",
+          "sources": [
+            {
+              "label": "candidate-gallery.ts (argmax of all layouts)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "326",
+              "quote": "const winner = emitArgmax(circuit, scores, unit)"
+            },
+            {
+              "label": "candidate-gallery.ts (losers multiplied by zero)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "lab/candidate-gallery/candidate-gallery.ts",
+              "lines": "340",
+              "quote": "winner.selected[candidateIndex]!,"
+            },
+            {
+              "label": "README.md (both branches compute)",
+              "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46",
+              "path": "README.md",
+              "lines": "20",
+              "quote": "Both branches compute, and above4 picks one"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

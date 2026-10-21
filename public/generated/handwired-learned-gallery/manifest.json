@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "handwired-learned-gallery",
+  "title": "Learned Gallery",
+  "subtitle": "A 244-weight network that lays photos out on your sketch and lines them up with a penalty, not a snap.",
+  "animal": "animal.webp",
+  "accent": "#4f7cc8",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Photos from a sketch",
+      "blurb": "Twenty slot positions pass through 244 weights to become rectangles, and Adam steps move them onto a sketch.",
+      "scene": "books/handwired-learned-gallery/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.995,
+        23.394,
+        34.609,
+        45.58,
+        56.029,
+        66.803,
+        77.484,
+        87.642,
+        99.229,
+        109.644,
+        125.375
+      ],
+      "duration": 135.139
+    },
+    {
+      "number": 2,
+      "title": "Lining up without snapping",
+      "blurb": "A misalignment penalty and slowly growing multipliers pull nearly aligned photo edges onto one line.",
+      "scene": "books/handwired-learned-gallery/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.124,
+        20.19,
+        30.453,
+        39.358,
+        49.319,
+        61.951,
+        72.818,
+        84.288,
+        97.605,
+        111.258,
+        122.822
+      ],
+      "duration": 134.862
+    },
+    {
+      "number": 3,
+      "title": "Taking steps back",
+      "blurb": "Each frame of training is kept or undone, and the loop learns when to stop.",
+      "scene": "books/handwired-learned-gallery/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.831,
+        26.355,
+        36.954,
+        46.219,
+        57.944,
+        72.166,
+        86.563,
+        103.537,
+        113.962,
+        128.126,
+        140.943
+      ],
+      "duration": 155.572
+    },
+    {
+      "number": 4,
+      "title": "What held, what didn't",
+      "blurb": "Four penalty forms, the measured alignment, the edges that still rest off target, and a status with no held-out test.",
+      "scene": "books/handwired-learned-gallery/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.421,
+        20.224,
+        38.406,
+        51.142,
+        65.701,
+        77.671,
+        91.869,
+        106.997,
+        118.711,
+        131.842,
+        140.921
+      ],
+      "duration": 155.944
+    }
+  ],
+  "sources": "sources.json"
+}

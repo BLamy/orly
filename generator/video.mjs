@@ -77,7 +77,7 @@ function discoverChapters(slug) {
 }
 
 // Things TTS mangles. Captions ARE the spoken script — keep code on screen.
-const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS']);
+const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS', 'CPU', 'GPU', 'OS', 'ID', 'UI', 'AND']);
 function speakabilityProblems(text) {
   const problems = [];
   if (/https?:\/\/|www\.|\.(com|io|dev|md|ts|tsx|js|json)\b/.test(text)) problems.push('URL/domain/file extension');

@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "slug": "handwired-runtime-cost",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three ways to run one circuit",
+      "claims": [
+        {
+          "id": "c1-scope",
+          "claim": "The lab measures steady-state CPU execution on one unchanged input, to see what each call allocates and copies; it does not measure event processing, GPU work, compilation or browser frames.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "The purpose is to measure simple allocation and output-copying costs" },
+            { "label": "lab/runtime-cost/README.md line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "5", "quote": "This is steady-state CPU execution on an unchanged input, not event processing, GPU execution, compilation, or a browser frame benchmark." }
+          ]
+        },
+        {
+          "id": "c1-three-runners",
+          "claim": "The report compares three runners: literal reference execution, the tensor executor returning a full wire array, and the tensor executor with reusable buffers returning only the requested outputs.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 3", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "3", "quote": "compares literal reference execution, the existing tensor executor returning a full wire array, and the tensor executor with reusable buffers returning only requested outputs" }
+          ]
+        },
+        {
+          "id": "c1-reference-alloc",
+          "claim": "The reference runner allocates one fresh array on every call, sized for every source cell plus every operation, and then evaluates each operation as its own scalar step.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 1678", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1678", "quote": "const values = new Float32Array(circuit.sourceSize + circuit.operations.length)" }
+          ]
+        },
+        {
+          "id": "c1-tensor-alloc",
+          "claim": "The plain tensor executor creates a new workspace on every call, runs the layers, and then allocates a full-width array to hold every wire.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 1708", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1708", "quote": "const workspace = createTensorWorkspace(program)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 1710", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1710", "quote": "const values = new Float32Array(program.width)" }
+          ]
+        },
+        {
+          "id": "c1-reusable-alloc",
+          "claim": "The reusable evaluator allocates its workspace once, when it is created, plus one output array of the requested roots' length; each call runs the layers and copies out only those roots.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 772", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "772", "quote": "const outputs = new Float32Array(program.roots.length)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 770", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "770", "quote": "const workspace" }
+          ]
+        },
+        {
+          "id": "c1-overwrite",
+          "claim": "The reusable evaluator's output array is overwritten by the next call, so a caller that keeps a frame has to copy the output first.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 756", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "756", "quote": "The returned output array is reused and overwritten on the next call." },
+            { "label": "lab/runtime-cost/README.md line 7", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "7", "quote": "Callers that retain a frame must copy the output." }
+          ]
+        },
+        {
+          "id": "c1-validate-every-call",
+          "claim": "All three paths check every source value against its declared range on every call, so that check is part of every timing and not a difference between them.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 650 (reference)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "650", "quote": "this.validateSourceRanges(source)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 752 (full array)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "752", "quote": "this.validateSourceRanges(source)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 774 (reusable)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "774", "quote": "this.validateSourceRanges(source)" }
+          ]
+        },
+        {
+          "id": "c1-harness",
+          "claim": "The harness warms each method up 200 times, rotates the method order between samples, takes the median of seven samples, and throws if the checksums of the outputs disagree.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "5", "quote": "Each measurement reports the median of seven samples, rotates method order, warms each method, and consumes all requested outputs. Checksums must agree across methods." },
+            { "label": "lab/runtime-cost/report.ts line 33", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "33", "quote": "for (let warm = 0; warm < 200; warm++) run(source)" },
+            { "label": "lab/runtime-cost/report.ts line 42", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "42", "quote": "runtime result disagreement" }
+          ]
+        },
+        {
+          "id": "c1-window-manager-size",
+          "claim": "The test circuit is the HandwiredOS window manager: 234 source cells, 4,646 live operations and 130 layers.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "src/handwiredos/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/handwiredos/README.md", "lines": "13", "quote": "The program has 234 source cells, 4,646 live operations in 130 layers and 9,909 stored weights" },
+            { "label": "lab/runtime-cost/report.ts line 73", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "73", "quote": "measure('window manager', windows.circuit" }
+          ]
+        },
+        {
+          "id": "c1-window-manager-timings",
+          "claim": "In one local run of report.ts (Apple M4 Max, load about 9, not a repo result), the window manager took about 150 µs with the reference, 49 with the full array and 43 with the reusable evaluator.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 73", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "73", "quote": "measure('window manager', windows.circuit" },
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "Timings depend on the machine and concurrent work" }
+          ]
+        },
+        {
+          "id": "c1-reusable-ratio",
+          "claim": "On that one run, reusable is about 1.16 times faster than the full array and about 3.5 times faster than the reference; the lab says one ratio is not an architectural guarantee, so these figures are arithmetic on one run, not a result.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "rather than treating a single ratio as an architectural guarantee" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "What a layer costs by itself",
+      "claims": [
+        {
+          "id": "c2-question",
+          "claim": "The layer probe measures what a layer costs on the CPU executor, apart from the operations it holds.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 1", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "1", "quote": "What a layer costs on the CPU executor besides its operations" }
+          ]
+        },
+        {
+          "id": "c2-sixteen-thousand-sums",
+          "claim": "The probe builds 16,384 sums of two terms and arranges them as chains for 64, 1,024 or 16,384 layers.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 12", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "12", "quote": "const operationCount = 16_384" },
+            { "label": "lab/runtime-cost/layers.ts line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "13", "quote": "const layerCounts = [64, 1024, 16_384]" },
+            { "label": "lab/runtime-cost/layers.ts line 1", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "1", "quote": "the same 16,384 sums of two terms" }
+          ]
+        },
+        {
+          "id": "c2-chain-width",
+          "claim": "The chain count is the operation count divided by the layer count, so 64 layers run 256 chains side by side and 16,384 layers run one chain of one sum per layer.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 16", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "16", "quote": "const chainCount = operationCount / layerCount" }
+          ]
+        },
+        {
+          "id": "c2-depth-is-layer",
+          "claim": "Each operation's depth is one more than the deepest thing it reads, and the compiler gives each depth its own layer.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 625", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "625", "quote": "depth: depth + 1," },
+            { "label": "src/runtime/numeric-ui-core.ts line 824", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "824", "quote": "const layerIndex = depth - 1" }
+          ]
+        },
+        {
+          "id": "c2-layer-steps",
+          "claim": "Each layer copies its inputs out of one shared array, does its sparse sums rounding every product and partial sum to a 32-bit float, and then copies its results back.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            { "label": "src/runtime/numeric-ui-core.ts line 1746 (copy in)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1746", "quote": "input[column] = packedValues[layer.inputIndices[column]!]!" },
+            { "label": "src/runtime/numeric-ui-core.ts line 1881 (product)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1881", "quote": "const product = Math.fround(weights[index]! * input[columns[index]!]!)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 1882 (partial sum)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1882", "quote": "value = Math.fround(value + product)" },
+            { "label": "src/runtime/numeric-ui-core.ts line 1773 (copy out)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/runtime/numeric-ui-core.ts", "lines": "1773", "quote": "packedValues[availableValues + row] = projection[row]!" }
+          ]
+        },
+        {
+          "id": "c2-fixed-totals",
+          "claim": "All three shapes have the same totals: 32,768 input reads, 16,384 outputs and 32,768 stored weights. This follows from the code (each sum reads two inputs and writes one output) and from a local probe; it is not a repo result.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 27", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "27", "quote": "total = circuit.roundAffine([[total, 1], [cell(), 1]])" },
+            { "label": "lab/runtime-cost/layers.ts line 16", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "16", "quote": "const chainCount = operationCount / layerCount" }
+          ]
+        },
+        {
+          "id": "c2-layers-not-arithmetic",
+          "claim": "With the totals fixed, the timing gap across the three shapes follows the layer count. The lab shows that correlation and does not test the cause.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 8", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "8", "quote": "Each layer count runs in its own process" },
+            { "label": "lab/runtime-cost/layers.ts line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "13", "quote": "const layerCounts = [64, 1024, 16_384]" }
+          ]
+        },
+        {
+          "id": "c2-checked-answer",
+          "claim": "Each shape's answer is checked against its exact value: the chain's output must equal the fround of (layer count + 1) / 1024.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 44", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "44", "quote": "const expected = Math.fround((layerCount + 1) / 1024)" }
+          ]
+        },
+        {
+          "id": "c2-readme-numbers",
+          "claim": "The README reports 54 to 55 µs per evaluation at 64 layers, 64 to 65 µs at 1,024 and 210 to 214 µs at 16,384, measured in Bun 1.4.3 on an Apple M5 Max at a load average of about 4.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "13", "quote": "In Bun 1.4.3 on an Apple M5 Max, at a load average of about 4: 54 to 55 µs per evaluation in 64 layers, 64 to 65 µs in 1,024 and 210 to 214 µs in 16,384" }
+          ]
+        },
+        {
+          "id": "c2-slope-readme",
+          "claim": "The README puts the layer cost at about 10 µs per 1,000 layers.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "13", "quote": "about 10 µs per 1,000 layers" }
+          ]
+        },
+        {
+          "id": "c2-local-rerun",
+          "claim": "A local run of the probe on an Apple M4 Max at load about 9 (not a repo result) gave about 67, 77 and 250 µs for the three layer counts; the slope stayed near 10 µs per 1,000 layers, but the absolute numbers moved.",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/layers.ts line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "13", "quote": "const layerCounts = [64, 1024, 16_384]" }
+          ]
+        },
+        {
+          "id": "c2-copy-inference",
+          "claim": "The docs attribute the layer cost to copying values, but copy volume is the same in all three shapes, so the cost that grows is fixed work per layer. This is our inference from the code; the lab does not test it.",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "docs/patterns.md line 7", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "docs/patterns.md", "lines": "7", "quote": "for copying the values that it reads and the results that it writes" },
+            { "label": "lab/runtime-cost/layers.ts line 27", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/layers.ts", "lines": "27", "quote": "total = circuit.roundAffine([[total, 1], [cell(), 1]])" }
+          ]
+        },
+        {
+          "id": "c2-historical-executor",
+          "claim": "The lab's status page records an earlier executor at 16,384 layers taking 709 µs, and 250 µs after the executor changed how each layer's outputs are copied.",
+          "caption": 11,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/status.md line 89", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "89", "quote": "16,384 layers went from 709 to 250 µs" }
+          ]
+        },
+        {
+          "id": "c2-overhead-inference",
+          "claim": "The status figure suggests the per-layer cost is real and not just a fit to the README numbers. This is our inference from one historical measurement, not a tested result.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/status.md line 89", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "89", "quote": "an indexed copy of each layer's outputs instead of `set` on a new view" }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Real circuits, honest limits",
+      "claims": [
+        {
+          "id": "c3-window-shape",
+          "claim": "In a local compile of the window manager (not a repo result), the first layer holds 401 operations and the sixth holds 10; the layers are not uniform.",
+          "caption": 0,
+          "status": "inferred",
+          "sources": [
+            { "label": "src/handwiredos/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/handwiredos/README.md", "lines": "13", "quote": "in 130 layers" }
+          ]
+        },
+        {
+          "id": "c3-median-layer",
+          "claim": "The window manager's layers hold a median of 26.5 operations each.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/status.md line 34", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "34", "quote": "Its layers hold a median of 26.5 operations each" }
+          ]
+        },
+        {
+          "id": "c3-late-widening",
+          "claim": "In the same local compile, the layers widen again to 133 operations near the end of the circuit (not a repo result).",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            { "label": "src/handwiredos/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/handwiredos/README.md", "lines": "13", "quote": "in 130 layers" }
+          ]
+        },
+        {
+          "id": "c3-layer-toll",
+          "claim": "The window manager pays the per-layer toll 130 times, not 16,384, and that may be part of why the real circuit sits far from the worst case. The lab does not test that link.",
+          "caption": 2,
+          "status": "inferred",
+          "sources": [
+            { "label": "src/handwiredos/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/handwiredos/README.md", "lines": "13", "quote": "in 130 layers and 9,909 stored weights" }
+          ]
+        },
+        {
+          "id": "c3-gallery-timings",
+          "claim": "On the candidate gallery, one local run of report.ts (not a repo result) gave about 19 µs for the reference, 4.6 for the full array and 3.2 for the reusable evaluator.",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 72", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "72", "quote": "measure('candidate gallery', candidate.circuit" }
+          ]
+        },
+        {
+          "id": "c3-coordinate-timings",
+          "claim": "The coordinate transform is a four-operation, three-layer circuit with a direct scalar-JS baseline. In one local run (not a repo result) it took about 93 ns for the reference, 78 for the reusable evaluator and 29 for plain scalar JS.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 68", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "68", "quote": "measure('coordinate transform', coordinate" }
+          ]
+        },
+        {
+          "id": "c3-smallest-gains-most",
+          "claim": "In this one run, reusable beats full array by about 1.53 times on the coordinate transform, 1.46 on the gallery and 1.16 on the window manager. The smallest circuit gains most here, but one run cannot establish a rule.",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "rather than treating a single ratio as an architectural guarantee" }
+          ]
+        },
+        {
+          "id": "c3-copy-loop-code",
+          "claim": "The harness wraps the reference and full-array runners in select(), which copies the requested roots on each call; the reusable runner is passed in unwrapped.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 22", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "22", "quote": "['reference', select(input => circuit.evaluateReference(input))]," },
+            { "label": "lab/runtime-cost/report.ts line 23", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "23", "quote": "['tensor full array', select(input => circuit.evaluateTensor(input))]," },
+            { "label": "lab/runtime-cost/report.ts line 24", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "24", "quote": "['tensor reusable roots', circuit.createTensorEvaluator(roots)]," }
+          ]
+        },
+        {
+          "id": "c3-copy-gap",
+          "claim": "Part of the measured gap between the reusable and full-array timings may come from that extra copy loop. We have not measured its size.",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 23", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "23", "quote": "['tensor full array', select(input => circuit.evaluateTensor(input))]," }
+          ]
+        },
+        {
+          "id": "c3-one-process-warning",
+          "claim": "The README warns that timing several programs in one process can distort later timings, and the report runs its three circuits in one process.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 11", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "11", "quote": "timing several programs in one process can distort later timings" }
+          ]
+        },
+        {
+          "id": "c3-standalone-check",
+          "claim": "A standalone run of the window manager alone (one local run, not a repo result) gave about 47 µs against about 43 in the shared run, which is within noise, so it neither confirms nor refutes the warning.",
+          "caption": 7,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/report.ts line 73", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/report.ts", "lines": "73", "quote": "measure('window manager', windows.circuit" }
+          ]
+        },
+        {
+          "id": "c3-reusable-status",
+          "claim": "The status page says the reusable evaluator reuses execution buffers and returns only requested outputs, and that the runtime comparison is on the CPU only.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/status.md line 230", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "230", "quote": "reuses execution buffers and returns only requested outputs" },
+            { "label": "lab/status.md line 230 (CPU only)", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "230", "quote": "compare it with the evaluators that return full arrays, on the CPU" }
+          ]
+        },
+        {
+          "id": "c3-timings-one-run",
+          "claim": "The three-way absolute timings come from one run and should not be read as a standing result, since they depend on the machine and on concurrent work.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "Timings depend on the machine and concurrent work" }
+          ]
+        },
+        {
+          "id": "c3-not-measured",
+          "claim": "The lab does not measure event processing, GPU execution, compilation or a browser frame benchmark.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 5", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "5", "quote": "not event processing, GPU execution, compilation, or a browser frame benchmark" }
+          ]
+        },
+        {
+          "id": "c3-scheduling-parked",
+          "claim": "Smarter layer scheduling is parked, because the latest-legal version increased gathered inputs.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/status.md line 256", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/status.md", "lines": "256", "quote": "latest-legal scheduling increased gathered inputs" }
+          ]
+        },
+        {
+          "id": "c3-recap-rerun",
+          "claim": "Timings depend on the machine and concurrent work, so the lab says to rerun locally rather than trust a single ratio.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            { "label": "lab/runtime-cost/README.md line 9", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "lab/runtime-cost/README.md", "lines": "9", "quote": "rerun locally rather than treating a single ratio as an architectural guarantee" }
+          ]
+        },
+        {
+          "id": "c3-recap-shape",
+          "claim": "Real circuits are wide at first, thin in the middle and wider again at the end, as the local compile of the window manager shows (not a repo result).",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            { "label": "src/handwiredos/README.md line 13", "repo": "chenglou/handwired@4ea7fcb27ebe93acf49b9f29a93e162b975bad46", "path": "src/handwiredos/README.md", "lines": "13", "quote": "in 130 layers" }
+          ]
+        }
+      ]
+    }
+  ]
+}

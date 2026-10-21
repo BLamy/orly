@@ -1,0 +1,78 @@
+{
+  "format": 3,
+  "slug": "handwired-learned-interpreter",
+  "title": "Learned Program",
+  "subtitle": "Training two instructions of a tiny interpreter, what a fixed epsilon broke, and what integer examples cannot say.",
+  "animal": "animal.webp",
+  "accent": "#8d5fd3",
+  "voiceSpeed": 0.94,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Program in 123 Cells",
+      "blurb": "A two-instruction interpreter whose whole program is a table of dials, one per candidate instruction.",
+      "scene": "books/handwired-learned-interpreter/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.204,
+        21.792,
+        30.825,
+        43.05,
+        54.567,
+        66.188,
+        78.704,
+        90.975,
+        101.018,
+        113.312
+      ],
+      "duration": 121.718
+    },
+    {
+      "number": 2,
+      "title": "Cooling the Reels",
+      "blurb": "Score every program once, train probabilities over the table, and watch a tiny optimizer constant decide whether it works.",
+      "scene": "books/handwired-learned-interpreter/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.494,
+        21.78,
+        32.752,
+        46.416,
+        58.316,
+        69.555,
+        82.709,
+        91.684,
+        100.961,
+        113.546,
+        128.372
+      ],
+      "duration": 139.971
+    },
+    {
+      "number": 3,
+      "title": "What Integers Cannot Say",
+      "blurb": "Twelve programs pass on whole numbers, four survive exact float checks, and every route still scores the full table first.",
+      "scene": "books/handwired-learned-interpreter/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.034,
+        19.4,
+        27.574,
+        40.449,
+        53.046,
+        64.923,
+        76.998,
+        87.76,
+        100.252,
+        111.7,
+        123.519,
+        135.582
+      ],
+      "duration": 149.212
+    }
+  ],
+  "sources": "sources.json"
+}
