@@ -1,0 +1,18 @@
+{
+ "id": "m08",
+ "start": 789.55,
+ "end": 982.4,
+ "file": "films/handwired-explained/score/renders/m08.wav",
+ "duration": 198.85,
+ "I": -25.1,
+ "LRA": 9.8,
+ "TP": -6.5,
+ "expected": 198.85,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m08.png",
+ "cueSeconds": 192.85,
+ "cps": 0.2875,
+ "lastStrikeLocal": 189.92,
+ "lastStrike": 979.47
+}

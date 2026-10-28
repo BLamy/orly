@@ -1,0 +1,23 @@
+{
+ "shot": "ch02-s02",
+ "at": "2026-10-28T09:10:40.759Z",
+ "minCapPx": 22,
+ "sampled": 10,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "threshold 2: both inputs (AND)",
+   "capWhileSubject": 30.5,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "threshold 1: either input (OR)",
+   "capWhileSubject": 31,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

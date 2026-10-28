@@ -1,0 +1,78 @@
+{
+ "shot": "ch09-s01",
+ "at": "2026-10-28T14:35:34.954Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "June",
+   "capWhileSubject": 30.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "July",
+   "capWhileSubject": 30.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "August",
+   "capWhileSubject": 30.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "September",
+   "capWhileSubject": 30.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "October",
+   "capWhileSubject": 30.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "chapter ix",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Four Days in October",
+   "capWhileSubject": 46.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "OCTOBER 2026 · 689 COMMITS",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "13",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "14",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "15",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "16",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "242 · 200 · 113 · 128",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

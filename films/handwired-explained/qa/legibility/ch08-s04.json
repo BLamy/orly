@@ -1,0 +1,158 @@
+{
+ "shot": "ch08-s04",
+ "at": "2026-10-28T14:37:55.701Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 29,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "loss ×",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "two adds",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0 / 20",
+   "capWhileSubject": 28.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×1",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×10",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×100",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×1,000",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×10,000",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×1,000,000",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "100",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3 / 20",
+   "capWhileSubject": 28.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1,000",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10,000",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "9 / 20",
+   "capWhileSubject": 28.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "should change nothing",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1,000,000",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "20 of 20",
+   "capWhileSubject": 24.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "20 / 20",
+   "capWhileSubject": 29,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Adam's ε = 10",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "−8",
+   "capWhileSubject": 14.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "swamped tiny slopes",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "slope",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "not proof it scales",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

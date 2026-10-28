@@ -1,0 +1,54 @@
+{
+ "shot": "ch10-s04",
+ "at": "2026-10-28T17:42:02.882Z",
+ "step": 0.0833,
+ "sampled": 90,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "a Hacker News commenter",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.43
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch10-hn1",
+  "ch10-hn3",
+  "ch10-hn4"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch10-hn1",
+   "probed": true,
+   "from": 0.55,
+   "to": 7.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch10-hn3",
+   "probed": true,
+   "from": 0.55,
+   "to": 7.967,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch10-hn4",
+   "probed": true,
+   "from": 0.55,
+   "to": 7.967,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

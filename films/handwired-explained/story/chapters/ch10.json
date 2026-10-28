@@ -1,0 +1,367 @@
+{
+  "id": "ch10",
+  "number": 10,
+  "title": "Strangers with Pencils",
+  "blurb": "20 to 27 October 2026. The world reads the tags. On Hacker News a commenter calls it a little language for building circuits, and another sees a compiler, and the docs side with the first: tag 4 was struck in the first minutes. A stranger tries four and a half and gets eleven; tag 6 is turned over, and its back was never blank: the landing page's hidden comment had said so. A promise that states its limits is kept. Another asks why, and that question is hung on the line for the end. Of the lab itself, no public word: the strangers' pencils were gentler than the lab's own.",
+  "shots": [
+    {
+      "id": "ch10-s01",
+      "kind": "card",
+      "setting": "the copper line under a dusk sky, the hills beyond in mist; Hacker News, 20 to 22 October 2026, evening",
+      "era": "2020s",
+      "mood": "duskRose",
+      "transitionIn": "crossfade",
+      "leadIn": 1.6,
+      "holdAfter": 1,
+      "visual": "CHAPTER CARD: at the shot's first frame the chapter title 'Strangers with Pencils' sets in at upper left, holds, and is carried out of frame by the camera's drift on 'circuit'. Crossfade from the lit street of ch09 to the copper line (Device 1) strung across a duskRose sky, misty hills (mistyHills) layered behind, the Lifespan Rule along the bottom. FAR RIDGE (whole chapter): beyond the line, in the far plane (L2/L3, deep haze), a ridge of lit windows, skyline style 'bayArea' (gabled row houses with bay windows on misty hills, no landmarks, no lettering), lit about 0.35: 'the world' that reads the tags. Every stranger's card in this chapter arrives on a thin thread paid out from one window of that ridge, a different window each time, and the thread stays strung from window to line once the card lands. Nobody from Hacker News is ever drawn: their words arrive only as plain white text cards on threads from those windows, like letters pinned to the line. On 'Hacker' (beat hn) the date stamp sets in and a window on the ridge brightens; a plain white card, no site branding, slides down its thread to frame right. The quote is spoken, so the card carries only the small attribution 'a Hacker News commenter · 22 Oct 2026', no quoted text. TAG 4 (beat tagFour, on 'circuit'): the camera drifts left along the line to tag 4, the second suspect from ch01 (front: Suspect: a tool turned ordinary JavaScript into it; knot card: the README's tagline), already struck through in red since ch03. FAIRNESS (beat compiler, on 'compiler'): a second, smaller blank white card slides down a thread from another window and swings in from the other side, in equal light, so neither side is lit as the winner by the picture (no text on it: the narration carries the other reader's view). On 'docs' (beat docs) tag 4 turns on its thread enough to show its back: the docs' sentence written there in ch03, small grey ink as texture, not set as a reading item (the narration paraphrases it). On 'first' (beat critic) a thin copper thread runs from the docs' sentence on the tag's back to the first commenter's card: the docs side with the first. On 'struck' (beat already) the red-pencil hand, arrived with the first card as if to strike, finds the strike already there and rests the pencil beside the tag, unused. Hold on the line, the two cards on their threads from the ridge, the struck tag. TAG-LINE STAGING (meta staging.tagLine): OUT OF DOORS: the line taken outside to the misty hills at dusk (48%), the strangers' world; posts are fence stakes; no workshop walls.",
+      "lines": [
+        {
+          "id": "L1001",
+          "text": "On Hacker News, one commenter said it’s really “write your logic in a DSL that creates a neural-net-shaped circuit”. A DSL: a little language for one job.",
+          "direction": "warm, a touch amused, scrupulously fair; 'Hacker News' plain; read the commenter's words evenly as theirs, 'D-S-L' spelled out as letters; then the gloss 'A D-S-L: a little language for one job' in the narrator's own voice, plainly, for the listener who has never met the letters",
+          "pauseAfter": 0.6,
+          "spoken": "On Hacker News, one commenter said it’s really “write your logic in a DSL that creates a neural-net-shaped circuit”. A D-S-L: a little language for one job."
+        },
+        {
+          "id": "L1002",
+          "text": "Another saw a compiler. The docs side with the first: no tool converts your code.",
+          "direction": "even-handed: 'Another saw a compiler' given its full weight first; 'side with the first' plain, a ruling read from the record; 'We struck that tag in the first minutes' with a small smile, a callback, not a gotcha",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "chapterCard",
+          "at": {
+            "shotTime": 0.1
+          },
+          "what": "chapter title card sets in at upper left, holds about 3 s, fades"
+        },
+        {
+          "id": "hn",
+          "at": {
+            "line": "L1001",
+            "word": "Hacker"
+          },
+          "what": "date stamp; a window on the far ridge brightens and a plain white card (attribution only) slides down its thread"
+        },
+        {
+          "id": "tagFour",
+          "at": {
+            "line": "L1001",
+            "word": "circuit"
+          },
+          "what": "the camera drifts to tag 4, already struck in red since ch03"
+        },
+        {
+          "id": "compiler",
+          "at": {
+            "line": "L1002",
+            "word": "compiler"
+          },
+          "what": "a second, smaller blank card slides down a thread from another window and swings in, in equal light"
+        },
+        {
+          "id": "docs",
+          "at": {
+            "line": "L1002",
+            "word": "docs"
+          },
+          "what": "tag 4 turns on its thread to show its back: the docs' sentence from ch03, small, as texture"
+        },
+        {
+          "id": "critic",
+          "at": {
+            "line": "L1002",
+            "word": "first"
+          },
+          "what": "a thin copper thread runs from the docs' sentence on tag 4's back to the first commenter's card"
+        },
+        {
+          "id": "already",
+          "at": {
+            "line": "L1002",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "the red-pencil hand finds the strike already there and rests the pencil beside the tag, unused"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "props": [
+        "the copper line",
+        "the Lifespan Rule",
+        "the far ridge of lit windows (skyline bayArea, hazed)",
+        "tag 4, struck since ch03, the docs' sentence on its back",
+        "two plain white cards on threads from the ridge",
+        "red pencil"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "Strangers with Pencils",
+          "beat": "chapterCard",
+          "until": "tagFour"
+        },
+        {
+          "kind": "date",
+          "text": "HACKER NEWS · SHOW HN · 20 OCTOBER 2026",
+          "beat": "hn"
+        },
+        {
+          "kind": "label",
+          "text": "a Hacker News commenter · 22 Oct 2026",
+          "beat": "hn"
+        }
+      ],
+      "music": {
+        "cue": "strangers",
+        "note": "Dusk, after the October pulse: no beat at all. A low reed drone and paper room tone, intensity 0.2. The both-branches motif enters softly on its two lines, a whole tone apart, the gate wavering, then settles on the lower line as the copper thread joins the docs to the critic. The resting pencil is a single soft wooden tap. No chime."
+      },
+      "claims": [
+        "PJ26",
+        "PJ03",
+        "PJ02",
+        "PJ16"
+      ]
+    },
+    {
+      "id": "ch10-s02",
+      "kind": "card",
+      "setting": "the copper line at dusk: tag 6 hanging in the haze; Hacker News, 23 October 2026, nine days after the repository went public",
+      "era": "2020s",
+      "mood": "duskRose",
+      "transitionIn": "cut",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "Along the line to TAG 6, the README's example from ch01, re-tied as grid 1 in ch04: its front reads (a > 4) ? 10 : 12 with the small print For an integer a; its knot card, the README example. On 'stranger' (beat card) a third window on the far ridge (skyline bayArea, hazed) brightens and a plain white card slides down its thread to hang beside tag 6. Its words are spoken, so it carries only the attribution 'a Hacker News commenter · 23 Oct 2026', no quoted text. On 'eleven' (beat eleven) the image from ch01 returns in miniature on the card's corner: a marble halfway up a paper ramp, a tile reading 11. Then (beat flip, on 'over') the tag turns over with a paper snap and its back is NOT blank: it already carries, in grey ink from launch day, a hidden-comment slip from the landing page, paraphrased in the film's words (no quotation marks): a = 4.5 gives 11 · a = 16,777,222 gives 8. The red-pencil hand is absent: there is nothing for it to write. RIVET (beat rivet, on 'kept'): the narrator's hands turn the tag front again and punch a copper rivet through its corner with a dry clack; its thread drops to the Lifespan Rule at its age as of 27 October 2026, thirteen days since the README's small print of 14 October, so between 'a week' and 'a month', and ends there in a glowing open tip with a short copper arrow pointing right: still held, not past a lifetime. Hold on the riveted tag swinging gently, the stranger's card beside it on its thread from the ridge. TAG-LINE STAGING (meta staging.tagLine): OUT OF DOORS: the line taken outside to the misty hills at dusk (48%), the strangers' world; posts are fence stakes; no workshop walls.",
+      "lines": [
+        {
+          "id": "L1003",
+          "text": "Nine days after launch, a stranger tried four and a half: “you get 11.”",
+          "spoken": "Nine days after launch, a stranger tried four and a half: “you get eleven.”",
+          "direction": "delighted, a little rueful: the film's first image found by somebody else; 'you get eleven' read as the commenter's, plainly",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L1004",
+          "text": "Turn our whole-number tag over: the landing page's hidden comment already said so. A promise that states its limits is kept.",
+          "direction": "warm and settled; 'already said so' with quiet admiration; the last sentence a small verdict, unforced",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "card",
+          "at": {
+            "line": "L1003",
+            "word": "stranger"
+          },
+          "what": "a window on the far ridge brightens; a plain white card (attribution only) slides down its thread beside tag 6"
+        },
+        {
+          "id": "eleven",
+          "at": {
+            "line": "L1003",
+            "word": "11"
+          },
+          "what": "the ch01 marble-on-the-ramp image returns in miniature, a tile reading 11"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L1004",
+            "word": "over"
+          },
+          "what": "tag 6 is turned over: its back already carries the landing page's hidden-comment slip"
+        },
+        {
+          "id": "rivet",
+          "at": {
+            "line": "L1004",
+            "word": "kept"
+          },
+          "what": "the narrator's hands punch a copper rivet through the tag's corner; its thread drops to the Lifespan Rule between a week and a month (13 days as of 27 Oct) and ends in a glowing open tip with a short copper arrow pointing right"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "tag 6 with its knot card and small print",
+        "plain white card on a thread from the far ridge",
+        "the hidden-comment slip on tag 6's back",
+        "copper rivet",
+        "miniature marble on a paper ramp"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "a Hacker News commenter · 23 Oct 2026",
+          "beat": "card"
+        },
+        {
+          "kind": "label",
+          "text": "the landing page's hidden comment: a = 4.5 gives 11 · a = 16,777,222 gives 8",
+          "beat": "flip"
+        }
+      ],
+      "music": {
+        "cue": "strangers",
+        "note": "On 'four and a half' the both-branches gate slides to 0.5 and both lines sound at half level: the musical eleven, from ch01, unresolved for a breath. On 'over' the detent's paper snap; on 'kept' the rivet's dry clack, and the gate closes cleanly onto one line, resolved. The tag is kept, so the strike stroke is never played."
+      },
+      "claims": [
+        "PJ27",
+        "PJ19",
+        "TE03",
+        "PJ11"
+      ]
+    },
+    {
+      "id": "ch10-s03",
+      "kind": "card",
+      "setting": "the copper line at dusk: a small question tag hung on a slack thread; Hacker News, 22 October 2026",
+      "era": "2020s",
+      "mood": "duskRose",
+      "transitionIn": "cut",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "visual": "A fourth window on the far ridge (skyline bayArea, hazed) brightens and a plain white card slides down its thread to the line: it carries only the attribution 'a Hacker News commenter · 22 Oct 2026' (the quoted word is spoken). On 'why' (beat why) the camera finds the BLANK why tag hung at the far right of the row since ch01-s05; the narrator's hands (lower left) turn its face into the light and the red-pencil hand, carrying the stranger's mark as it carries every reader's, enters from frame right and writes a single word on it, why?, with a small question mark at its foot (the Device 1 sign for something nobody has tested yet), then withdraws: still no knot card, because a question has no holder. On 'end' (beat keep) the narrator's hands smooth the little tag once and withdraw; the camera eases back so it hangs small among the others, set apart, waiting for ch12. It stays in the frame's lower-right third, catching rim light. TAG-LINE STAGING (meta staging.tagLine): OUT OF DOORS: the line taken outside to the misty hills at dusk (48%), the strangers' world; posts are fence stakes; no workshop walls.",
+      "lines": [
+        {
+          "id": "L1005",
+          "text": "Another asked what the website never said: “why?”",
+          "direction": "a gentle, real question, not rhetorical; 'why' given its own small space",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L1006",
+          "text": "That's our blank tag. We'll keep it for the end.",
+          "direction": "soft, a promise to the viewer; warm",
+          "level": "soft",
+          "pauseAfter": 0.5,
+          "tts": {
+            "solo": true,
+            "speed": 0.8
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "askCard",
+          "at": {
+            "line": "L1005",
+            "word": "Another"
+          },
+          "what": "a window on the far ridge brightens; a plain white card (attribution only) slides down its thread"
+        },
+        {
+          "id": "why",
+          "at": {
+            "line": "L1005",
+            "word": "why"
+          },
+          "what": "the narrator's hands ink 'why?' on a small tag and hang it on a slack thread with a question mark"
+        },
+        {
+          "id": "keep",
+          "at": {
+            "line": "L1006",
+            "word": "end"
+          },
+          "what": "the hands smooth the tag once and withdraw; it hangs small and apart, waiting"
+        }
+      ],
+      "cast": [
+        "narrator-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "plain white card on a thread from the far ridge",
+        "a small question tag on a slack thread",
+        "pencilled question mark"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "a Hacker News commenter · 22 Oct 2026",
+          "beat": "askCard"
+        }
+      ],
+      "music": {
+        "cue": "strangers",
+        "note": "The detent's tie click as the question tag is hung, then nothing more of the figure: no flip, no strike, the bar left hanging. A single high reed note, held and not resolved, under 'for the end'."
+      },
+      "claims": [
+        "PJ27"
+      ]
+    },
+    {
+      "id": "ch10-s04",
+      "kind": "scene",
+      "setting": "the whole copper line at last light over misty hills, the far ridge of lit windows beyond; the lab's ledger closed and dark on a far table; 27 October 2026, dusk",
+      "era": "2020s",
+      "mood": "duskRose",
+      "transitionIn": "crossfade",
+      "leadIn": 1,
+      "holdAfter": 2.4,
+      "visual": "A slow pull back (about 10% over the shot) to the whole copper line at last light: every tag so far hanging over the misty hills, the struck ones with their single red strokes, tag 8's ten short red strokes on its back just visible, tag 6's new rivet catching the last of the sun, its thread's open copper tip resting on the rule between a week and a month, the little why? tag apart. Beyond, on the far ridge of lit windows (skyline bayArea, deep haze), the strangers' threads still run from their windows down to the line, faintly lit. At the line's end, in the far plane (L2, hazed), on a table, the lab's ledger lies closed and dark: it is the only thing in the frame that no thread reaches, no window lit toward it (beat ledger, on 'lab'). The date stamp sets in. On 'gentler' (beat gentler) the red-pencil hand, resting at the line's near end, lays its pencil down on the rail, the ridge's windows go out one by one, and the backlight dims a step toward night. Hold. TAG-LINE STAGING (meta staging.tagLine): OUT OF DOORS: the line taken outside to the misty hills at dusk (48%), the strangers' world; posts are fence stakes; no workshop walls.",
+      "lines": [
+        {
+          "id": "L1007",
+          "text": "About the lab, we found no public word: the strangers' pencils were gentler than its own.",
+          "direction": "plain and careful on the first half, a statement of what was searched and not found, no lament; then the chapter's turn, quiet, affectionate, a little wry, on 'gentler than its own'; let it close the chapter",
+          "pauseAfter": 0.5,
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "ledger",
+          "at": {
+            "line": "L1007",
+            "word": "lab"
+          },
+          "what": "the far table and the closed, dark ledger come into focus; no thread reaches it; date stamp sets in"
+        },
+        {
+          "id": "gentler",
+          "at": {
+            "line": "L1007",
+            "word": "gentler"
+          },
+          "what": "the red-pencil hand lays its pencil down on the rail; the ridge's windows go out; the backlight dims a step toward night"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand"
+      ],
+      "props": [
+        "the whole copper line with every tag so far",
+        "the Lifespan Rule",
+        "the far ridge of lit windows with the strangers' threads",
+        "the lab's ledger, closed, on a far table",
+        "red pencil"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "AS OF 27 OCTOBER 2026",
+          "beat": "ledger"
+        }
+      ],
+      "music": {
+        "cue": "strangers",
+        "note": "The reed drone thins to room tone; on 'gentler' one soft low woodblock, the pencil laid down, and a held note that fades into the cold air of chapter eleven. No chime."
+      },
+      "claims": [
+        "PJ28"
+      ]
+    }
+  ]
+}

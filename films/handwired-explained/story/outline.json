@@ -1,0 +1,2239 @@
+{
+ "slug": "handwired-explained",
+ "title": "Promises, Not Proofs",
+ "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",
+ "runtimeTargetSec": 1440,
+ "wordsTarget": 2280,
+ "wordsPerMinute": 95,
+ "totals": {
+  "minutes": 24.0,
+  "words": 2280,
+  "shots": 101,
+  "deepDiveMinutes": 10.75
+ },
+ "devices": [
+  "Promise Tags on the copper line over the log-scale Lifespan Rule: front = the belief (paraphrase unless verbatim), knot = who tied it on (empty knot when the bible names no holder), back = the red pencil's dissent; struck once in red when broken, copper rivet when kept or confirmed; signature grommet (stamped = the repo names it, empty = it doesn't) drawn only where the bible settles it (empty on 1943/1951/1990s, stamped on SKLANSKY 1960 and BRENT · KUNG 1982). Eleven tags plus one blank; no sub-tags.",
+  "Window Calendar: one lit pane per commit, exact counts (June 72, July 6, August dark with snow on the sill, September 58, October 689 with 683 in four columns); ch03, ch08, ch09, ch12.",
+  "X-ray desk: HandwiredOS revealed in ch01; then 4–6 s silent returns at the ends of ch03–ch07, one more real component lit each time (source table, ReGLU ramps and shutters, loom, host ratchet, a dark valve with its one line); plain again in ch12.",
+  "Score: the both-branches motif (two lines a whole tone apart always playing, a 0/1 gain gate choosing; both at half level for 4.5, the musical eleven) and the detent figure (tie, flip, strike; the third stroke withheld for beliefs still held, replaced by the gate at 0.5 for the two still contested). Machines clack, never chime.",
+  "Spoken refrains: 'Who tied it on. Who doubted it. How long it held.' in full exactly three times (ch01-s07, ch04-s09, ch08-s03), turned in ch12-s06; 'Hang that on the line.' exactly four times (ch01-s05, ch02-s03, ch03-s06, ch05-s06)."
+ ],
+ "tags": [
+  {
+   "n": 1,
+   "front": "The neuron is a logic gate",
+   "knot": "McCulloch & Pitts 1943; von Neumann 1945; Kleene 1951",
+   "tied": "ch02-s01",
+   "settled": "ch02-s04 (split: biology frayed ~16 years; engineering glowing)",
+   "claims": [
+    "FR01",
+    "FR03",
+    "FR06",
+    "FR07",
+    "FR10",
+    "FR11",
+    "FR12"
+   ]
+  },
+  {
+   "n": 2,
+   "front": "Learn the weights; don't write them",
+   "knot": "Sutton 2019",
+   "tied": "ch02-s05",
+   "settled": "open (Brooks; dominant, not consensus)",
+   "claims": [
+    "FR20"
+   ]
+  },
+  {
+   "n": 3,
+   "front": "Suspect: somebody trained it",
+   "knot": "empty (our guess)",
+   "tied": "ch01-s05",
+   "settled": "ch03-s06 struck (Q085)",
+   "claims": [
+    "OS01"
+   ]
+  },
+  {
+   "n": 4,
+   "front": "Suspect: a tool turned ordinary JavaScript into it",
+   "knot": "the README's tagline (Q001)",
+   "tied": "ch01-s05",
+   "settled": "ch03-s03 struck (Q014); re-read ch10-s01 (Q130)",
+   "claims": [
+    "PJ01",
+    "PJ02",
+    "PJ03"
+   ]
+  },
+  {
+   "n": 5,
+   "front": "Suspect: it isn't really a network",
+   "knot": "empty (our guess)",
+   "tied": "ch01-s05",
+   "settled": "ch05-s03 struck (PR04)",
+   "claims": [
+    "PR04"
+   ]
+  },
+  {
+   "n": 6,
+   "front": "(a > 4) ? 10 : 12 · For an integer a",
+   "knot": "the README example (Q003)",
+   "tied": "ch01-s07",
+   "settled": "re-tied as grid 1 ch04-s08; false at 4.5 ch04-s09; flipped and riveted ch10-s02 (hidden comment)",
+   "claims": [
+    "TE01",
+    "TE03",
+    "TE07",
+    "PJ19",
+    "PJ27"
+   ]
+  },
+  {
+   "n": 7,
+   "front": "One evaluation per frame is enough",
+   "knot": "HandwiredOS's own design",
+   "tied": "ch06-s05",
+   "settled": "ch06-s05 struck (until 15 Sept 2026)",
+   "claims": [
+    "HL17"
+   ]
+  },
+  {
+   "n": 8,
+   "front": "Established conclusions: take these as given (label)",
+   "knot": "the July briefs, an unnamed design conversation, not Cheng",
+   "tied": "ch08-s02",
+   "settled": "ch08-s03 ten strokes; struck ch08-s08 (about eight weeks)",
+   "claims": [
+    "LB01",
+    "LB02",
+    "LB03"
+   ]
+  },
+  {
+   "n": 9,
+   "front": "The GPU is the faster one (label)",
+   "knot": "the first JSON-search README, 13 Oct 09:01",
+   "tied": "ch09-s07",
+   "settled": "ch09-s07 struck within hours",
+   "claims": [
+    "JS21"
+   ]
+  },
+  {
+   "n": 10,
+   "front": "Fully differentiable",
+   "knot": "the README's tagline (Q001)",
+   "tied": "ch07-s05",
+   "settled": "open, contested inside the repo; nanoGPT question tag hangs from it (ch07-s11)",
+   "claims": [
+    "DG03",
+    "DG15",
+    "DG22"
+   ]
+  },
+  {
+   "n": 11,
+   "front": "Gradient descent can fill a parser's unused entries",
+   "knot": "the recovery experiment + the rule for failure written before the run",
+   "tied": "ch11-s02",
+   "settled": "ch11-s03/s04 border tag: JSON kept, TOML struck by its own rule; bison open",
+   "claims": [
+    "LB19",
+    "LB21",
+    "LB23",
+    "LB24",
+    "LB25"
+   ]
+  },
+  {
+   "n": "blank",
+   "front": "(blank)",
+   "knot": "the narrator's hands",
+   "tied": "ch12-s06",
+   "settled": "placed in the viewer's hand",
+   "claims": [
+    "OS18"
+   ]
+  }
+ ],
+ "finaleDepthMap": {
+  "rule": "column = 1 + the deepest column among the tags it depends on (the compiler's layering rule, CM01/Q039), applied to the film's teaching order; computed, not placed",
+  "needs": {
+   "1": [],
+   "4": [],
+   "2": [
+    "1"
+   ],
+   "5": [
+    "1"
+   ],
+   "8": [
+    "4"
+   ],
+   "3": [
+    "2"
+   ],
+   "6": [
+    "4",
+    "5"
+   ],
+   "7": [
+    "6"
+   ],
+   "10": [
+    "6"
+   ],
+   "9": [
+    "5",
+    "7"
+   ],
+   "11": [
+    "8",
+    "10"
+   ],
+   "why?": [
+    "4"
+   ],
+   "blank": [
+    "9",
+    "11"
+   ]
+  },
+  "columns": {
+   "1": 0,
+   "4": 0,
+   "2": 1,
+   "5": 1,
+   "8": 1,
+   "why?": 1,
+   "3": 2,
+   "6": 2,
+   "7": 3,
+   "10": 3,
+   "9": 4,
+   "11": 4,
+   "blank": 5
+  }
+ },
+ "moods": [
+  "parchment",
+  "candleAmber",
+  "winterBlue",
+  "labGreen",
+  "dawnGold",
+  "serverCyan",
+  "emberRed",
+  "duskRose"
+ ],
+ "chapters": [
+  {
+   "id": "ch01",
+   "number": 1,
+   "title": "Four and a Half",
+   "years": "October 2026",
+   "starts": "0:00",
+   "minutes": 1.75,
+   "words": 155,
+   "shots": 8,
+   "summary": "A copper thread resolves into the wire under HandwiredOS's dock. The desk is revealed early: a window glides and settles, Monitor shows 'State 234 · Operations 4,646 · Outputs 493', and the camera passes through into the wallpaper's 9,909 arcs, one per weight. The narrator ties the viewer's three likely guesses onto the copper line as suspect tags (somebody trained it; a tool turned ordinary code into it; it isn't really a network), two with empty knots: 'Hang them on the line.' Then the README's (a > 4) ? 10 : 12 as two ramps and a lever: five gives ten, three gives twelve, four and a half gives eleven, with both shutters half open and the score's two lines at half level. The tag inks itself with the README's small print 'For an integer a'; the red pencil stops short. First full refrain; title card with the detent figure's third stroke withheld.",
+   "tags": [
+    "3 tied",
+    "4 tied",
+    "5 tied",
+    "6 tied"
+   ],
+   "turn": "The machine isn't broken. It was built for whole numbers, and it took that on trust.",
+   "shotList": [
+    {
+     "id": "ch01-s01",
+     "kind": "scene",
+     "setting": "black void, haze; a copper thread drawing itself; resolves into the copper wire under a paper dock",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "First image: the copper wire under the dock (no narration, one relay clack).",
+     "machine": "copperLine",
+     "cast": [],
+     "claims": [
+      "OS18"
+     ]
+    },
+    {
+     "id": "ch01-s02",
+     "kind": "scene",
+     "setting": "the HandwiredOS desk as a toy theatre: paper-beige desktop, faint dot grid, Monitor / Notes / Photos windows on threads, a three-tile dock; Notes to-do list out of focus",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Reveal the desk: three windows, a dock, twelve photographs; a dragged window glides and settles. Plant Notes' out-of-focus last line.",
+     "machine": "handwiredosDesk",
+     "cast": [],
+     "claims": [
+      "OS01",
+      "OS15",
+      "OS16",
+      "OS18"
+     ],
+     "quotes": [
+      "Q084"
+     ]
+    },
+    {
+     "id": "ch01-s03",
+     "kind": "scene",
+     "setting": "slow push into the Monitor window; its sidebar 'THIS PROGRAM · State 234 · Operations 4,646 · Outputs 493', footer '130 layers · 9,909 weights' (no byte count)",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "The desk is one neural network, and Monitor shows it to itself, live. The both-branches motif enters.",
+     "machine": "handwiredosDesk",
+     "cast": [],
+     "claims": [
+      "OS02",
+      "OS12",
+      "PJ20"
+     ]
+    },
+    {
+     "id": "ch01-s04",
+     "kind": "scene",
+     "setting": "through Monitor into the wallpaper: hundreds of thin semicircular arcs, copper and indigo, parting like loom threads",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Even the wallpaper is drawn from the network: one arc per weight, 9,909 (label: copper adds · indigo subtracts).",
+     "machine": "wallpaperArcs",
+     "cast": [],
+     "claims": [
+      "OS14",
+      "OS02"
+     ]
+    },
+    {
+     "id": "ch01-s05",
+     "kind": "scene",
+     "setting": "pull back to the copper line strung in front of the desk; three blank tags swing in; the Lifespan Rule not yet shown",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Tie on the three suspect tags (two empty knots, one with the README tagline card): 'Hang them on the line. We'll test every one.' (refrain use 1)",
+     "machine": "promiseTags",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "OS01",
+      "PJ01"
+     ],
+     "quotes": [
+      "Q001"
+     ],
+     "tags": [
+      "3",
+      "4",
+      "5"
+     ]
+    },
+    {
+     "id": "ch01-s06",
+     "kind": "plate",
+     "setting": "parchment plate with the ternary; two hinged black boards (corners at 4 and 5) and a lever rise from it; two conveyor belts carrying 10 and 12 tiles behind, always moving",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Five gives ten, three gives twelve, four and a half gives eleven: both shutters half open, the score's gate at 0.5, 1.6 s of silence.",
+     "machine": "twoRampsAndLever+bothBranches",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "TE01",
+      "TE02",
+      "TE03",
+      "TE11"
+     ]
+    },
+    {
+     "id": "ch01-s07",
+     "kind": "scene",
+     "setting": "tilt up to the copper line: a fourth tag inks itself '(a > 4) ? 10 : 12' with the small print 'For an integer a'; the red-pencil hand stops at its edge; the empty Lifespan Rule fades up",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Tag 6 tied: 'It was built for whole numbers, and it took that on trust.' First full refrain: who tied them on, who doubted them, how long they held.",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "TE03",
+      "TE01"
+     ],
+     "quotes": [
+      "Q003"
+     ],
+     "tags": [
+      "6"
+     ]
+    },
+    {
+     "id": "ch01-s08",
+     "kind": "card",
+     "setting": "title card: more blank tags slide in along the line (a dozen); ink on parchment HANDWIRED / Promises, Not Proofs / subtitle",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Title. Detent figure plays tie, flip, and the bar hangs with no strike. No narration (minDuration 7).",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": []
+    }
+   ]
+  },
+  {
+   "id": "ch02",
+   "number": 2,
+   "title": "The Oldest Tags",
+   "years": "1943 → 2019 (framing)",
+   "starts": "1:45",
+   "minutes": 1.5,
+   "words": 140,
+   "shots": 6,
+   "summary": "Framing only, captioned 'context: the repo cites none of this work' [FR22]. A 1943 Chicago study: McCulloch and Pitts tie on tag 1 (the neuron is a logic gate), its signature grommet empty; Q133 read. Paper lanterns compute AND and OR, and nothing in them learns (planted for DD III); von Neumann's EDVAC report borrows the idea. 1951: Kleene finds part of it 'obscure', keeps the model, and proves such a net is a finite machine stepping once per tick; the patterns it recognises are regular events; 'Anything unbounded, like time itself, has to come from outside. Hang that on the line.' 1959's frog (the same two men; reading it as refutation came later) and 2020's graded dendritic spikes split tag 1's thread: as biology it frays at about sixteen years, as engineering it runs off the rule glowing. Tag 2: Sutton's bitter lesson against Brooks, dominant not consensus. The log-scale Lifespan Rule explained once for the ear. 'Eighty-three years later, someone wrote a network's weights by hand again. Not from that paper.'",
+   "tags": [
+    "1 tied + split",
+    "2 tied (held)"
+   ],
+   "turn": "Into that world comes a project that writes its weights by hand.",
+   "shotList": [
+    {
+     "id": "ch02-s01",
+     "kind": "scene",
+     "setting": "a 1940s study in Chicago: gothic window bay, desk lamp, a page of arrow-and-loop net diagrams; an older copper line strung across it",
+     "era": "1940s",
+     "mood": "candleAmber",
+     "purpose": "McCulloch and Pitts tie on tag 1; Q133 read in full; date card; empty signature grommet; framing caption.",
+     "machine": "promiseTags",
+     "cast": [
+      "mcculloch",
+      "pitts"
+     ],
+     "claims": [
+      "FR01",
+      "FR02",
+      "FR03",
+      "FR22"
+     ],
+     "quotes": [
+      "Q133"
+     ],
+     "tags": [
+      "1"
+     ]
+    },
+    {
+     "id": "ch02-s02",
+     "kind": "plate",
+     "setting": "parchment plate: paper lanterns with wicks and a threshold ring; a small von Neumann text card",
+     "era": "1940s",
+     "mood": "candleAmber",
+     "purpose": "AND and OR as lanterns; what the units were not (weighted sums, learning): 'Nothing in them learned. Someone chose every connection, by hand.' (plant for ch07-s03)",
+     "machine": "paperLanternThreshold",
+     "cast": [],
+     "claims": [
+      "FR03",
+      "FR05",
+      "FR06"
+     ],
+     "quotes": [
+      "Q138"
+     ]
+    },
+    {
+     "id": "ch02-s03",
+     "kind": "scene",
+     "setting": "RAND, December 1951: a generic academic at a typewriter, a 98-page memo stacking; a clock dial with a fixed ring of stops",
+     "era": "1950s",
+     "mood": "winterBlue",
+     "purpose": "Tag 1 flips: Kleene · 'obscure' (Q139 substring); he keeps it (Q141 'close to the biological reality'); a finite machine; regular events; time from outside. 'Hang that on the line.' (refrain use 2)",
+     "machine": "finiteDial",
+     "cast": [
+      "kleene",
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "FR07",
+      "FR08"
+     ],
+     "quotes": [
+      "Q139",
+      "Q141"
+     ],
+     "tags": [
+      "1"
+     ]
+    },
+    {
+     "id": "ch02-s04",
+     "kind": "scene",
+     "setting": "1959 lab: a frog before a silvered aluminium hemisphere, a dull black disk moved by a magnet outside; generic lab figures far back; a 2020 card",
+     "era": "1950s",
+     "mood": "labGreen",
+     "purpose": "Fair dissent: Q142 substring; the same two men wrote it; reading it as refutation is later; graded dendritic spikes (2020). Tag 1's thread splits: biology frays at ~16 years, engineering glows off the rule.",
+     "machine": "promiseTags",
+     "cast": [
+      "frog-lab-figure"
+     ],
+     "claims": [
+      "FR10",
+      "FR11",
+      "FR12"
+     ],
+     "quotes": [
+      "Q142"
+     ],
+     "tags": [
+      "1"
+     ]
+    },
+    {
+     "id": "ch02-s05",
+     "kind": "card",
+     "setting": "2019: tag 2 on a younger thread, two text cards with equal light",
+     "era": "2010s",
+     "mood": "duskRose",
+     "purpose": "Sutton (Q152) on the front, Brooks (Q154) on the back; dominant, not consensus; third detent stroke withheld.",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": [
+      "FR20"
+     ],
+     "quotes": [
+      "Q152",
+      "Q154"
+     ],
+     "tags": [
+      "2"
+     ]
+    },
+    {
+     "id": "ch02-s06",
+     "kind": "scene",
+     "setting": "pull out to the whole copper line and the long Lifespan Rule (hour · day · week · month · year · decade · lifetime)",
+     "era": "2010s",
+     "mood": "duskRose",
+     "purpose": "The log ruler explained once, in plain words. The echo, not lineage: 'Eighty-three years later, someone wrote a network's weights by hand again. Not from that paper: the repo never mentions it.'",
+     "machine": "lifespanRule",
+     "cast": [],
+     "claims": [
+      "FR20",
+      "FR22"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch03",
+   "number": 3,
+   "title": "A Recipe Read Every Frame",
+   "years": "June → September 2026",
+   "starts": "3:15",
+   "minutes": 1.5,
+   "words": 145,
+   "shots": 7,
+   "summary": "The Window Calendar's first pane lights: 3 June 2026, 20:24, 'Create numeric UI atom lab'; the nameplate re-letters Numeric UI Atom Lab → Indirect → Handwired; a second paper hand sits beside the author's at the keyboard, unexplained. What a program is, from the tutorial (Q016): the builder ribbon appending operations (Q017); suspect tag 4 struck by the docs' own line, Q014 (the doubt in the same box as the promise; you rewrite the logic as JavaScript that builds the network). The source table's 20 pigeonholes for the toggle, cells and wires (Q019, Q020). The four instructions plate, with 8,388,609 inside boolean(score), left without comment. Suspect tag 3 struck by Q085 (the empty knot: our guess, about three minutes). The tutorial was tested on readers and fixed on 15 October. Notes plant: 'The program holds no text.' Hang that on the line. X-ray beat: the 234-cell source table lights.",
+   "tags": [
+    "4 struck",
+    "3 struck"
+   ],
+   "turn": "Nobody trained it. Every number is written by a person, in builder code.",
+   "shotList": [
+    {
+     "id": "ch03-s01",
+     "kind": "scene",
+     "setting": "the Window Calendar: a tall paper building at night; one pane lights (3 June 2026 · 20:24), another 14 minutes later; a re-lettered nameplate; inside the pane, a lamp, a logo-less laptop, two paper hands and a second paper hand beside them",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The project's first night: first commit, three names in four months; the second hand at the keyboard glimpsed, unexplained.",
+     "machine": "windowCalendar",
+     "cast": [
+      "author-hands",
+      "agent-hand"
+     ],
+     "claims": [
+      "PJ05",
+      "PJ07",
+      "PJ09"
+     ]
+    },
+    {
+     "id": "ch03-s02",
+     "kind": "plate",
+     "setting": "parchment plate: the tutorial's definition; the builder ribbon, operation tags appended one by one, each pinned one column right of its deepest input",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "A program is a fixed list of FP32 operations (Q016); you write builder code that appends them (Q017); duplicates return the existing tag.",
+     "machine": "builderRibbon",
+     "cast": [],
+     "claims": [
+      "PR01",
+      "CB05",
+      "PJ02"
+     ],
+     "quotes": [
+      "Q016",
+      "Q017"
+     ]
+    },
+    {
+     "id": "ch03-s03",
+     "kind": "scene",
+     "setting": "the copper line in front of the desk: suspect tag 4 flips; the red pencil writes the docs' line on its back and strikes the front",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Tag 4 struck by Q014: you rewrite the logic yourself, by hand, as JavaScript that builds the network; the doubt is in the same box as the promise.",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "PJ02",
+      "PJ01",
+      "PJ03"
+     ],
+     "quotes": [
+      "Q014"
+     ],
+     "tags": [
+      "4"
+     ]
+    },
+    {
+     "id": "ch03-s04",
+     "kind": "plate",
+     "setting": "parchment plate: the toggle's source table, 20 numbered pigeonholes (1280, 800, event flags, a four-card spring-matrix rack, state cards); copper wire tags on the holes",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Cells, wires and the host: Q019, Q020, Q018 on screen; event flags pop to 1 and fall back to 0.",
+     "machine": "sourceTable",
+     "cast": [],
+     "claims": [
+      "CB01",
+      "CB03",
+      "CB09",
+      "HL02"
+     ],
+     "quotes": [
+      "Q019",
+      "Q020",
+      "Q018"
+     ]
+    },
+    {
+     "id": "ch03-s05",
+     "kind": "plate",
+     "setting": "parchment plate: the four instructions, each with its paper object (loom row, valve, detent, card drawer); the boolean line carries 8,388,609",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Four instructions, every step rounded to thirty-two-bit floats; 8,388,609 planted silently.",
+     "machine": "fourInstructions",
+     "cast": [],
+     "claims": [
+      "PR02",
+      "PR03",
+      "PR04"
+     ]
+    },
+    {
+     "id": "ch03-s06",
+     "kind": "scene",
+     "setting": "the copper line: suspect tag 3 struck; a red-pencil hand marking a tutorial page; the Notes window's to-do list in close-up",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Tag 3 struck by Q085 (empty knot: 'That guess was ours. It lasted about three minutes.'); the tutorial tested on readers, fixed 15 Oct; Notes plant Q087 'The program holds no text.' Hang that on the line (refrain use 3).",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "OS01",
+      "CB17"
+     ],
+     "quotes": [
+      "Q085",
+      "Q087"
+     ],
+     "tags": [
+      "3"
+     ]
+    },
+    {
+     "id": "ch03-s07",
+     "kind": "scene",
+     "setting": "X-ray desk: HandwiredOS slightly translucent; the 234-cell source table lights inside it",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Silent X-ray beat (5 s, relay clack): component 1, the source table.",
+     "machine": "xrayDesk",
+     "cast": [],
+     "claims": [
+      "OS02"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch04",
+   "number": 4,
+   "title": "Deep Dive I: Promises, Not Proofs",
+   "years": "the README's ternary, by hand",
+   "starts": "4:45",
+   "minutes": 4.0,
+   "words": 380,
+   "shots": 16,
+   "summary": "The README's (a > 4) ? 10 : 12 worked by hand on one growing machine. In JavaScript only the chosen arm runs. A bit of the copper line bends into a ReLU hinge and grows into the first ramp, max(0, a − 4), read at 3, 4, 5, 6, 100; the second ramp one step later; the lever's difference, clamp(a − 4, 0, 1), with whole numbers on its corners. Both belts always run and a 0/1 shutter picks; an infinity on the closed belt still poisons the tray to NaN. Four and a half gives 11 (4.25 gives 11.5); past 2^24, 16,777,222 gives 8. What the runtime builds: emitCompare demands a declared range, so tag 6 is re-tied onto the wire of a as 'grid 1' and the comparison shrinks to 2 operations (whole ternary 8 in 5 layers). Pushed to 4.5 under the grid tag it says 11 and the validator objects: Q029, 'Declarations are promises from the caller, not proofs.', the chapter's climax and the second full refrain. With no promise, the lens train magnifies by 2^149 in 16 operations and answers 10. One honest sentence saves fourteen operations. The 8,388,609 detent paid. What exact means (Q036; the 1,732 px window); why not doubles (18,820 of 20,000 labels wrong); a wall of 4,402 checks. Q038 planted silently. X-ray: ReGLU ramps and shutters light.",
+   "tags": [
+    "6 re-tied as grid 1 (riveted later)"
+   ],
+   "turn": "Every if here is a dimmer switch. The program's whole job is to keep it fully on, or fully off.",
+   "shotList": [
+    {
+     "id": "ch04-s01",
+     "kind": "plate",
+     "setting": "parchment plate: the ternary; a JavaScript fork in a paper road, only one arm lit; a border marker cut along a dotted line",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "In JavaScript only the chosen side runs; a network has no if.",
+     "machine": "twoRampsAndLever",
+     "cast": [],
+     "claims": [
+      "TE15"
+     ]
+    },
+    {
+     "id": "ch04-s02",
+     "kind": "plate",
+     "setting": "a bit of the copper line bends into a hinge (flat, then 45°) and grows into a hinged board; a marble; a ledger filling in ink",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "The first ramp, max(0, a − 4): 0, 0, 1, 2, 96 at 3, 4, 5, 6, 100; Q003's first clause; 'A ramp is all a ReLU is.'",
+     "machine": "copperHinge+twoRampsAndLever",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "TE01",
+      "TE02"
+     ],
+     "quotes": [
+      "Q003"
+     ]
+    },
+    {
+     "id": "ch04-s03",
+     "kind": "plate",
+     "setting": "the second board one step later; the lever between them; the marble's path drawn in copper",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "The second ramp (0, 0, 0, 1, 95), the difference (0, 0, 1, 1, 1), clamp(a − 4, 0, 1): whole numbers on the corners.",
+     "machine": "twoRampsAndLever",
+     "cast": [],
+     "claims": [
+      "TE02",
+      "TE03"
+     ]
+    },
+    {
+     "id": "ch04-s04",
+     "kind": "scene",
+     "setting": "two conveyor belts carrying 10 and 12 tiles, never stopping, behind two shutters; a formula plate",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Both branches always compute; a 0/1 shutter picks: above4 × 10 + (1 − above4) × 12; Q004 on screen.",
+     "machine": "bothBranches",
+     "cast": [],
+     "claims": [
+      "TE01",
+      "TE10"
+     ],
+     "quotes": [
+      "Q004"
+     ]
+    },
+    {
+     "id": "ch04-s05",
+     "kind": "scene",
+     "setting": "an infinity tile on the closed belt; the output tray filling with grey NaN sand",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "The poison: nought times infinity is not nought; Q082 on screen.",
+     "machine": "bothBranches",
+     "cast": [],
+     "claims": [
+      "TE11"
+     ],
+     "quotes": [
+      "Q082"
+     ]
+    },
+    {
+     "id": "ch04-s06",
+     "kind": "plate",
+     "setting": "the marble at 4.5, both shutters half open, an 11 tile; then the marble at 4.25",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "The prologue's eleven explained: 0.5 × 10 + 0.5 × 12 = 11; 4.25 gives 11.5; score gate at 0.5.",
+     "machine": "twoRampsAndLever+bothBranches",
+     "cast": [],
+     "claims": [
+      "TE03"
+     ]
+    },
+    {
+     "id": "ch04-s07",
+     "kind": "plate",
+     "setting": "a colder plate: 16,777,222 and its rounding to 16,777,216",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The second limit: past 2^24 whole numbers blur; a − 5 rounds, above4 becomes 2, the answer 8; Q058 on screen.",
+     "machine": "twoRampsAndLever",
+     "cast": [],
+     "claims": [
+      "PJ19",
+      "EX02"
+     ],
+     "quotes": [
+      "Q058"
+     ]
+    },
+    {
+     "id": "ch04-s08",
+     "kind": "scene",
+     "setting": "tag 6 untied from the copper line and re-tied onto the wire of a, rewritten as 'grid 1'; the rig shrinks to two ramps' worth; an op counter",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "What the runtime builds: emitCompare needs a declared range; with grid 1, ramp = relu(5 − a), bit = relu(1 − ramp): 2 ops, 2 layers, checked at 5, 4, 3; whole ternary 8 ops in 5 layers.",
+     "machine": "tagsOnWires",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "TE04",
+      "TE05",
+      "TE06",
+      "PR11"
+     ],
+     "tags": [
+      "6"
+     ]
+    },
+    {
+     "id": "ch04-s09",
+     "kind": "scene",
+     "setting": "the marble pushed to 4.5 under the grid tag; an 11 tile; a monospace validator label; the red pencil writes 'validator' on the tag's back",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "Climax: a false promise gives 11 and the validator objects; Q029 spoken; second full refrain; 'That lie lasted one evaluation.'",
+     "machine": "tagsOnWires",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "TE07",
+      "PR11"
+     ],
+     "quotes": [
+      "Q029"
+     ],
+     "tags": [
+      "6"
+     ]
+    },
+    {
+     "id": "ch04-s10",
+     "kind": "scene",
+     "setting": "the lens train: a hairline of copper light through six backlit lenses with stops, a seventh stage and a flip; a magnification dial; an op counter",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "No promise: ×2^14 then ×2^24 five times, 2^149 in all, any nonzero gap becomes a full bar; 16 ops in 15 layers; at 4.5 the answer is 10; Q033 on screen.",
+     "machine": "signCascadeLensTrain",
+     "cast": [],
+     "claims": [
+      "TE08",
+      "EX05"
+     ],
+     "quotes": [
+      "Q033"
+     ]
+    },
+    {
+     "id": "ch04-s11",
+     "kind": "plate",
+     "setting": "the two rigs side by side, 16 against 2; tag 6 returns to the copper line",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "'One honest sentence about your input saves fourteen operations.'",
+     "machine": "tagsOnWires",
+     "cast": [],
+     "claims": [
+      "PR12"
+     ]
+    },
+    {
+     "id": "ch04-s12",
+     "kind": "plate",
+     "setting": "the boolean-atom detent: a fine ruler slid onto a giant ruler that starts at 8,388,609, ticks 1 apart",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Payoff of ch03's silent plant: 0.49999997 snaps to 0, exactly 0.5 snaps up to 1 because the start mark is odd; Q056 on a card.",
+     "machine": "booleanDetent",
+     "cast": [],
+     "claims": [
+      "PR08"
+     ],
+     "quotes": [
+      "Q056"
+     ]
+    },
+    {
+     "id": "ch04-s13",
+     "kind": "plate",
+     "setting": "parchment plate with Q036 held four seconds; a paper window 1,732 px wide counting its columns",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "What exact means: equal to the stated FP32 calculation, not float64; f(f(1708) × f(1/244)) = 6.999999523162842, six columns where float64 says seven.",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "EX01",
+      "EX03"
+     ],
+     "quotes": [
+      "Q036"
+     ]
+    },
+    {
+     "id": "ch04-s14",
+     "kind": "plate",
+     "setting": "a study card (13 September); then a wall of 4,402 tiny ticks",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Why not just use doubles? Float64 everywhere got 18,820 of 20,000 percent labels wrong; FP32 order at rounding points fixed it; the comparison tests' 4,402 checks against JavaScript.",
+     "machine": "checkWall",
+     "cast": [],
+     "claims": [
+      "EX10",
+      "EX07",
+      "TE14"
+     ]
+    },
+    {
+     "id": "ch04-s15",
+     "kind": "plate",
+     "setting": "a parchment plate pinned beside the copper line, Q038 in type",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Silent plant for ch08-s05: two evaluators agreeing doesn't show the program matches the JavaScript it replaces.",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "EX01"
+     ],
+     "quotes": [
+      "Q038"
+     ]
+    },
+    {
+     "id": "ch04-s16",
+     "kind": "scene",
+     "setting": "X-ray desk: ReGLU ramps and 0/1 shutters light inside HandwiredOS",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "Silent X-ray beat (5 s): component 2, 2,776 gates and 59 detents.",
+     "machine": "xrayDesk",
+     "cast": [],
+     "claims": [
+      "OS02",
+      "EX08"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch05",
+   "number": 5,
+   "title": "One Big Matmul",
+   "years": "September → October 2026",
+   "starts": "8:45",
+   "minutes": 1.5,
+   "words": 140,
+   "shots": 7,
+   "summary": "The builder ribbon feeds the matmul loom: 130 thin frames by dependency depth (Q039), copper threads adding and indigo subtracting, mostly empty air. Sheets of sums fuse and stop dead at a gate frame (longest gate chain 71); Q006, 'a giant matmul'. Suspect tag 5 struck: it is a network in the plain sense, layers of weighted sums with ReLU gates (PR04). The camera exits the loom to find its threads are the wallpaper: 4,646 live operations · 130 layers · 9,909 weights; the site's build fails if those drift. The Notes plant paid: on 13 October, when Notes handed its text back to the browser's text box, the loom shed most of its threads, 19,851 → 4,251 operations. The cold furnace: everything runs as JavaScript on the CPU (Q041); an older 14,019-operation build on WebGPU, one machine, 16 September, ran about twenty-seven times slower and its 6.4 MB shader had not compiled in 28 minutes. 'So what is a GPU for? Hang that on the line.' X-ray: the loom lights.",
+   "tags": [
+    "5 struck"
+   ],
+   "turn": "So what is a GPU for?",
+   "shotList": [
+    {
+     "id": "ch05-s01",
+     "kind": "scene",
+     "setting": "the matmul loom: 130 thin frames, copper and indigo threads, ramps and detent wheels behind, mostly empty air; the builder ribbon feeding in",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Compilation: instructions at the same dependency depth share a layer (Q039); each frame a sparse sheet of weights; CPU order equals the reference order.",
+     "machine": "matmulLoom",
+     "cast": [],
+     "claims": [
+      "CM01",
+      "CM02",
+      "OS02"
+     ],
+     "quotes": [
+      "Q039"
+     ]
+    },
+    {
+     "id": "ch05-s02",
+     "kind": "scene",
+     "setting": "sheets of light fusing frame to frame, stopping dead at a gate frame",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Fusion is partial: nothing merges across a gate; longest gate chain 71; Q006 in the README's own voice.",
+     "machine": "matmulLoom",
+     "cast": [],
+     "claims": [
+      "CM07",
+      "CM05"
+     ],
+     "quotes": [
+      "Q006"
+     ]
+    },
+    {
+     "id": "ch05-s03",
+     "kind": "scene",
+     "setting": "the copper line strung before the loom; suspect tag 5 struck in red",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Tag 5 struck: the README's two primitives and the runtime's four instructions are the same network; 'That guess was ours too.'",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "PR04"
+     ],
+     "quotes": [
+      "Q007"
+     ],
+     "tags": [
+      "5"
+     ]
+    },
+    {
+     "id": "ch05-s04",
+     "kind": "scene",
+     "setting": "the camera exits the loom and turns: the loom's threads resolve into the HandwiredOS wallpaper arcs; exact figures in the site's type",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "The wallpaper is the loom: 4,646 live operations · 130 layers · 9,909 weights; the site's build fails if they drift.",
+     "machine": "matmulLoom+wallpaperArcs",
+     "cast": [],
+     "claims": [
+      "OS14",
+      "OS02",
+      "PJ20"
+     ]
+    },
+    {
+     "id": "ch05-s05",
+     "kind": "scene",
+     "setting": "the Notes window turns into a plain browser text box; most of the loom's threads fall away",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Notes payoff: peak 21,229 on 13 Oct; that evening 19,851 → 4,251 operations, about 4.7× smaller; 'The program holds no text.' returns on a card.",
+     "machine": "matmulLoom",
+     "cast": [],
+     "claims": [
+      "OS03",
+      "OS04"
+     ],
+     "quotes": [
+      "Q087"
+     ]
+    },
+    {
+     "id": "ch05-s06",
+     "kind": "scene",
+     "setting": "an emberRed furnace roaring under a single huge shader scroll, then cooling",
+     "era": "2020s",
+     "mood": "emberRed",
+     "purpose": "The cold furnace, scope on screen: an older 14,019-op build, 16 Sept, one machine: 2.2 ms vs 81 µs, about 27× slower; 6.4 MB shader uncompiled after 28 min; Q041, Q064. 'So what is a GPU for? Hang that on the line.' (refrain use 4)",
+     "machine": "coldFurnace",
+     "cast": [],
+     "claims": [
+      "CM04",
+      "CM08",
+      "CM09",
+      "OS08"
+     ],
+     "quotes": [
+      "Q041",
+      "Q064"
+     ]
+    },
+    {
+     "id": "ch05-s07",
+     "kind": "scene",
+     "setting": "X-ray desk: the 130-frame loom lights inside HandwiredOS",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Silent X-ray beat (5 s): component 3, the loom.",
+     "machine": "xrayDesk",
+     "cast": [],
+     "claims": [
+      "OS02",
+      "CM01"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch06",
+   "number": 6,
+   "title": "Deep Dive II: The Clockwork That Cannot Stop",
+   "years": "the host loop, springs and patterns",
+   "starts": "10:15",
+   "minutes": 3.5,
+   "words": 340,
+   "shots": 13,
+   "summary": "Q015 is the thesis: a program can't stop early, so a loop becomes a count, a tree, a table, or the same work on every item, and the four nouns become the four arms of a host clockwork. One turn: the toggle's handler only queues a timestamped token (Q026); at the frame the host writes inputs and four matrix cards into the pigeonholes, the loom runs once, next-state cards are copied back, the page moves from outputs, and the clock stops when nothing moves (Q027). Springs without loops: a brass 2×2 stamp turns −300, 0 into −298.608, 348; a squaring press folds 300 steps into 8 squarings while the program pays 14 operations in 3 layers for any step count. The 300-tooth ratchet snaps (snap versus carry is a design choice). Two desks at 10 and 120 fps: 359 px apart in the familiar order, identical in every bit in Handwired's, in the repo's tests; tag 7 (one evaluation per frame) struck at 15 September. The four arms: a count (findIndex as the counting rail, 3); a tree (the prefix loom with paper name tags SKLANSKY 1960 and BRENT · KUNG 1982, signed into the runtime as function names; Brent's 'unpopular'; 799.300048828125 vs 799.2999877929688; the CPU loop faster, the tree more accurate at 10,000 rows); a table (30,002 operations as arithmetic vs 1 index read); the same work on every item (ranks 2 0 3 1 with no swaps; the K-slot rack and Monitor's 'Only 64 rows are drawn at a time.'). Kleene paid: the network is one fixed, exact step and the host loop turns the crank (one card each for Siegelmann & Sontag and Maass & Orponen; Q127). X-ray: the ratchet lights.",
+   "tags": [
+    "7 struck"
+   ],
+   "turn": "The network is one fixed, exact step. The host loop turns the crank. It never stops early.",
+   "shotList": [
+    {
+     "id": "ch06-s01",
+     "kind": "plate",
+     "setting": "parchment plate with Q015; a loop of paper track with no exit ramp, jump or brake; the host clockwork's four arms labelled count · tree · table · same work on every item",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "The thesis read slowly: no jump, no break, no repeat; everything runs, every time.",
+     "machine": "hostClockwork",
+     "cast": [],
+     "claims": [
+      "HL01"
+     ],
+     "quotes": [
+      "Q015"
+     ]
+    },
+    {
+     "id": "ch06-s02",
+     "kind": "scene",
+     "setting": "the host clockwork beside the toggle (a 52 × 32 px paper track): a press stamps a token, a tray, an escapement, the source-table pigeonholes, the loom turning once, next-state cards sliding back",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "One turn of the clock: handlers only queue events (Q026); write, evaluate, copy back, move the page; the clock stops when nothing animates (Q027).",
+     "machine": "hostClockwork+sourceTable",
+     "cast": [],
+     "claims": [
+      "HL02",
+      "HL03",
+      "HL04",
+      "HL05",
+      "HL06",
+      "CB10"
+     ],
+     "quotes": [
+      "Q026",
+      "Q027",
+      "Q018"
+     ]
+    },
+    {
+     "id": "ch06-s03",
+     "kind": "plate",
+     "setting": "a 2×2 brass stamp (0.99536 · 0.00352 / −1.16 · 0.88) with cards in and out; then the squaring press folding the plate onto itself; an op counter frozen at 14 · 3",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Springs without loops (one continuous shot): one 4 ms step as a matrix, −300, 0 → −298.608, 348; 300 steps in 8 squarings (derived); '14 operations in 3 layers for any step count.'; stiffness never enters the program.",
+     "machine": "springStamp+squaringPress",
+     "cast": [],
+     "claims": [
+      "SP01",
+      "SP02",
+      "SP03"
+     ],
+     "quotes": [
+      "Q024",
+      "Q046",
+      "Q045"
+     ]
+    },
+    {
+     "id": "ch06-s04",
+     "kind": "scene",
+     "setting": "a 300-tooth ratchet with a release pawl; windows snapping home at rest; the backlog dropping through a trapdoor; a two-sided card",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "The static bound (Q049): past 300 steps, snap; snap versus carry is a design choice, not a refutation.",
+     "machine": "hostClockwork",
+     "cast": [],
+     "claims": [
+      "HL08",
+      "HL27"
+     ],
+     "quotes": [
+      "Q049"
+     ]
+    },
+    {
+     "id": "ch06-s05",
+     "kind": "scene",
+     "setting": "two paper desks side by side replaying one recorded session at 10 and 120 fps; a drift gauge; bit-strips; a carbon-copy tray for thrown-away frames; the copper line with tag 7",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "359 px apart in the familiar order; identical in every bit in Handwired's, in the repo's tests (events in order, no snap); the displayed frame is a rehearsal; tag 7 struck at 15 Sept.",
+     "machine": "twoDesks+promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "HL18",
+      "HL11",
+      "HL10",
+      "HL14",
+      "HL17"
+     ],
+     "quotes": [
+      "Q076"
+     ],
+     "tags": [
+      "7"
+     ]
+    },
+    {
+     "id": "ch06-s06",
+     "kind": "scene",
+     "setting": "the counting rail: pegs at 40, 80, 80, 140, 180, a pointer bar at 90, three flags dropping, a tally",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "A count: findIndex becomes a count of the yeses, 3; Q066; caption: the test must flip only once.",
+     "machine": "countingRail",
+     "cast": [],
+     "claims": [
+      "PT08",
+      "PT09"
+     ],
+     "quotes": [
+      "Q066"
+     ]
+    },
+    {
+     "id": "ch06-s07",
+     "kind": "scene",
+     "setting": "the prefix loom: tabs 3 1 4 1 5 9 2 6 joining into 3 4 8 9 14 23 25 31; paper name tags SKLANSKY 1960 and BRENT · KUNG 1982 on its threads, each with a stamped grommet",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "A tree: Brent-Kung 11 joins in 4 levels, Sklansky 3 levels; the two old names signed into the runtime as function names; Q164 'unpopular'; later-reading caption.",
+     "machine": "prefixLoom",
+     "cast": [],
+     "claims": [
+      "PT05",
+      "PT15",
+      "PT26",
+      "PT28"
+     ],
+     "quotes": [
+      "Q079",
+      "Q080",
+      "Q164"
+     ]
+    },
+    {
+     "id": "ch06-s08",
+     "kind": "plate",
+     "setting": "two plates: four row heights summed two ways; a CPU stopwatch; a 10,000-row drift gauge",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "The grouping is part of the result (Q061): 799.300048828125 vs 799.2999877929688; the CPU loop faster (Q062); the tree drifts 0.26 px to the loop's 5.67.",
+     "machine": "prefixLoom",
+     "cast": [],
+     "claims": [
+      "PT03",
+      "PT06",
+      "PT14"
+     ],
+     "quotes": [
+      "Q061",
+      "Q062"
+     ]
+    },
+    {
+     "id": "ch06-s09",
+     "kind": "scene",
+     "setting": "the index-read card drawer beside a 10,000-row table drawn as a tall card cabinet",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "A table: one row of 10,000 costs 30,002 operations as arithmetic, 1 as an index read.",
+     "machine": "indexDrawer",
+     "cast": [],
+     "claims": [
+      "PR17",
+      "PR18"
+     ]
+    },
+    {
+     "id": "ch06-s10",
+     "kind": "scene",
+     "setting": "the rank board: keys 30 10 30 20 flipping tiles in a 4×4 grid; cards sliding to their slots",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "The same work on every item: each card counts who comes before it (Q069): ranks 2 0 3 1, no swaps.",
+     "machine": "rankBoard",
+     "cast": [],
+     "claims": [
+      "PT16"
+     ],
+     "quotes": [
+      "Q069"
+     ]
+    },
+    {
+     "id": "ch06-s11",
+     "kind": "scene",
+     "setting": "the K-slot rack: eight items with visibility bits, a running count, three frames; a brass capacity card; Monitor's overflow line",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "Filter and slice into K: counts 0 1 2 2 3 3 4 5, slots take items 1, 2, 4; a fixed maximum (Q072); Monitor: 'Only 64 rows are drawn at a time.'",
+     "machine": "kSlotRack",
+     "cast": [],
+     "claims": [
+      "PT18",
+      "PT20",
+      "HL22"
+     ],
+     "quotes": [
+      "Q072",
+      "Q074"
+     ]
+    },
+    {
+     "id": "ch06-s12",
+     "kind": "scene",
+     "setting": "the clockwork turning the loom's crank once per tick; two equally lit chalk cards; a small card with the repo's own comparison",
+     "era": "2020s",
+     "mood": "labGreen",
+     "purpose": "Kleene paid: one fixed, exact step, and the host turns the crank; Siegelmann & Sontag (unbounded precision) vs Maass & Orponen (noise), contested; FP32 is finite; Q127.",
+     "machine": "hostClockwork+matmulLoom",
+     "cast": [],
+     "claims": [
+      "FR07",
+      "FR13",
+      "FR14",
+      "FR15",
+      "FR25"
+     ],
+     "quotes": [
+      "Q127"
+     ]
+    },
+    {
+     "id": "ch06-s13",
+     "kind": "scene",
+     "setting": "X-ray desk: the host clockwork's ratchet lights inside HandwiredOS",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Silent X-ray beat (5 s): component 4, the ratchet.",
+     "machine": "xrayDesk",
+     "cast": [],
+     "claims": [
+      "HL08"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch07",
+   "number": 7,
+   "title": "Deep Dive III: Unfreezing",
+   "years": "gradients through a handwritten program",
+   "starts": "13:45",
+   "minutes": 3.25,
+   "words": 315,
+   "shots": 12,
+   "summary": "The README's offer, Q010 (planted for the epilogue): a frozen weight-knob cracks its ice. One ReGLU valve by hand: w = 0.5, g = 0.25, b = −0.1 opens to 0.15 and outputs 0.225; backward, slopes 0.45 and 1.5. Lower b to −0.4 and the valve shuts: output 0, every gradient 0 (Q108); a whisper of decay keeps gates alive; ch02 paid: 'McCulloch and Pitts's neurons couldn't learn. These can, if you let them.' Backward rules run on the loom (Q052). Tag 10, 'fully differentiable', doubted from inside the repo: DD I's ramps are flat at every whole number (Q110); it stays hanging. The learned gallery on a misty-hills stage: 244 weights, 6,320 operations in 8 layers, photos piled as small squares; a clerk with a seating chart (plain JavaScript decides who, the network learns where); the Huber clamp caps each pull at 0.08 (far-off photos vote, they don't shout), the bias gradient formula, Adam's first step 0.5 → ≈0.492; photos fan out at 600 steps a second. The snapping shortcut refused (Q106, Q107). Honest scope: a small generic network compiled, not a hand-written one unfrozen; true unfreezing in drag-knobs solved 63.6% of drag frames in one step; the nanoGPT dream (Q011) hangs as a question tag, not attempted. X-ray: a dark valve, 'Not one of its weights is trained.'",
+   "tags": [
+    "10 tied (held, contested)",
+    "nanoGPT question tag"
+   ],
+   "turn": "The desktop has none of this switched on. Not one of its weights is trained.",
+   "shotList": [
+    {
+     "id": "ch07-s01",
+     "kind": "scene",
+     "setting": "a frozen weight-knob on a paper panel, ice cracking off as a hand turns it; the README card",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The offer: Q010 read in full (planted for ch12-s04).",
+     "machine": null,
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "PJ04"
+     ],
+     "quotes": [
+      "Q010"
+     ]
+    },
+    {
+     "id": "ch07-s02",
+     "kind": "plate",
+     "setting": "the ReGLU valve: flow from the left through an opening of max(0, gate); lantern light reversing along the threads",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "One valve by hand: gate 0.15, output 0.225; backward slopes 0.45 (w) and 1.5 (g), derived.",
+     "machine": "regluValve",
+     "cast": [],
+     "claims": [
+      "DG01"
+     ]
+    },
+    {
+     "id": "ch07-s03",
+     "kind": "plate",
+     "setting": "the valve shutting; backward arrows fading on twos; a hair of decay prising it open",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "b = −0.4: gate −0.15, output 0, every gradient 0 (Q108); decay of 0.0000002; 'McCulloch and Pitts's neurons couldn't learn. These can, if you let them.'",
+     "machine": "regluValve",
+     "cast": [],
+     "claims": [
+      "DG01",
+      "DG11",
+      "FR05"
+     ],
+     "quotes": [
+      "Q108"
+     ]
+    },
+    {
+     "id": "ch07-s04",
+     "kind": "scene",
+     "setting": "ch05's matmul loom with light running backwards across its frames",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Every operation has a backward rule; a valve passes gradient only while open; Q052.",
+     "machine": "matmulLoom",
+     "cast": [],
+     "claims": [
+      "DG01"
+     ],
+     "quotes": [
+      "Q052"
+     ]
+    },
+    {
+     "id": "ch07-s05",
+     "kind": "scene",
+     "setting": "the copper line: tag 10 tied from the README's tagline; DD I's ramps return with a slope gauge reading 0 at whole numbers; the red pencil writing from inside the repo",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Tag 10 doubted from inside the repo: differentiable as real arithmetic, but the decisions are flat; Q110; tag stays hanging, glowing.",
+     "machine": "promiseTags+twoRampsAndLever",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "DG03",
+      "DG15"
+     ],
+     "quotes": [
+      "Q110",
+      "Q001"
+     ],
+     "tags": [
+      "10"
+     ]
+    },
+    {
+     "id": "ch07-s06",
+     "kind": "scene",
+     "setting": "a 5:4 gallery stage set among misty hills at dawn; a hand sketching ten rectangles; twelve photos piled near the centre as small squares; counters",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The learned gallery: the only demo whose weights are trained; 244 weights, 6,320 ops in 8 layers; its only input is its weights.",
+     "machine": "galleryStage",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "DG04",
+      "DG05",
+      "DG06"
+     ]
+    },
+    {
+     "id": "ch07-s07",
+     "kind": "scene",
+     "setting": "a small paper clerk with a seating chart assigning photos to rectangles, in plain ink beside the stage",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Who goes where: a min-cost assignment in plain JavaScript; 'The network learns where. Plain JavaScript decides who.'",
+     "machine": "galleryStage",
+     "cast": [
+      "seating-clerk"
+     ],
+     "claims": [
+      "DG09"
+     ]
+    },
+    {
+     "id": "ch07-s08",
+     "kind": "plate",
+     "setting": "the Huber clamp: photo edges pulling a bias through springs that cap at 0.08; a formula plate; Adam's first step",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Far-off photos vote, they don't shout: ∂L/∂b = (1/40) Σ clipped edge errors; Adam moves the bias 0.5 → about 0.492.",
+     "machine": "huberClamp",
+     "cast": [],
+     "claims": [
+      "DG07",
+      "DG26",
+      "DG27",
+      "DG08"
+     ]
+    },
+    {
+     "id": "ch07-s09",
+     "kind": "scene",
+     "setting": "the photos fanning out to their rectangles; a loss chart falling; the mistyHills traveller with a lantern walking down it",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Learning seen as unfolding: training at 600 steps a second through the program's own backward pass (about ten seconds mostly music).",
+     "machine": "galleryStage+mistyHills",
+     "cast": [],
+     "claims": [
+      "DG06",
+      "DG10"
+     ]
+    },
+    {
+     "id": "ch07-s10",
+     "kind": "scene",
+     "setting": "a ghosted hand offering a ruler to snap the sketch to a grid; another hand pushing it away; a Misalignment penalty slider",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "The rejected shortcut: Q106 substring 'the spirit of the gallery is to learn something.'; Q107 read.",
+     "machine": "galleryStage",
+     "cast": [],
+     "claims": [
+      "DG13"
+     ],
+     "quotes": [
+      "Q106",
+      "Q107"
+     ]
+    },
+    {
+     "id": "ch07-s11",
+     "kind": "scene",
+     "setting": "a label of honest scope; a small drag-knobs panel with five knobs; a question-mark tag on a slack thread hanging from tag 10",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "Honest scope: a generic network compiled, not a hand-written one unfrozen; drag-knobs 63.6% solved in one step; Q011 (nanoGPT) not attempted.",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "DG06",
+      "DG20",
+      "DG22"
+     ],
+     "quotes": [
+      "Q011"
+     ],
+     "tags": [
+      "10"
+     ]
+    },
+    {
+     "id": "ch07-s12",
+     "kind": "scene",
+     "setting": "X-ray desk: a single valve drawn dark inside HandwiredOS",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "X-ray component 5 with its one line: 'The desktop has none of this switched on. Not one of its weights is trained.'",
+     "machine": "xrayDesk",
+     "cast": [],
+     "claims": [
+      "OS01",
+      "PJ20"
+     ],
+     "quotes": [
+      "Q085"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch08",
+   "number": 8,
+   "title": "The Summer's Certainties",
+   "years": "July → mid-September 2026",
+   "starts": "17:00",
+   "minutes": 1.75,
+   "words": 170,
+   "shots": 8,
+   "summary": "The Window Calendar dims: six panes in July, and August entirely dark with snow on the sill ('The record doesn't say why. So we won't guess.'). Lab round one lands four experiments on 8 July, and tag 8, 'established conclusions: take these as given' (a label), is tied on by the July briefs from an unnamed design conversation, not Cheng. At 06:13 on 3 September, a grey dawn: the reassessment, an AI agent's review by its own account, writes ten short red strokes on the tag's back, over the third and last full refrain. Three of them on plates: a 0/20 learning result became 20/20 when every loss was multiplied by a million (a tiny optimiser constant), with its own caution that this doesn't show the method scales; the checker that shared the bug (JavaScript 3, compiled 4, zero mismatches; Q116), with DD I's Q038 plate sliding back in beside it; the gradient of 3v at zero, 0 or 3 by operand order. Fixed that morning, 274 tests passing; Q118 names the danger. The film's one plain sentence about tooling, over the two hands at one keyboard: 825 commits authored by Cheng Lou, 756 crediting Claude Code, an earlier Codex discussion, and this film written with Claude; a process, not a scorecard. 14–15 September: the recommended option chosen each time; September's 58 panes relight; tag 8 hangs struck, about eight weeks.",
+   "tags": [
+    "8 tied + struck"
+   ],
+   "turn": "Mistakes made with agents were found by reviews run with agents, under his direction.",
+   "shotList": [
+    {
+     "id": "ch08-s01",
+     "kind": "scene",
+     "setting": "the Window Calendar at night: July's six panes; August's column entirely dark, snow on the sill",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The quiet months; 'The record doesn't say why. So we won't guess.'",
+     "machine": "windowCalendar",
+     "cast": [],
+     "claims": [
+      "PJ09"
+     ]
+    },
+    {
+     "id": "ch08-s02",
+     "kind": "scene",
+     "setting": "a cold blue lab set: window bay with snow light, a laptop, two paper hands; tag 8 tied on with a knot card 'an unnamed design conversation · not Cheng'",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "Lab round one (8 July, four experiments); tag 8 tied by the July briefs (a label, never quoted).",
+     "machine": "promiseTags",
+     "cast": [
+      "author-hands",
+      "agent-hand"
+     ],
+     "claims": [
+      "LB01",
+      "LB02"
+     ],
+     "tags": [
+      "8"
+     ]
+    },
+    {
+     "id": "ch08-s03",
+     "kind": "scene",
+     "setting": "3 September, 06:13: grey dawn through the window; tag 8 flips; the red pencil writes ten short strokes on its back",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The reassessment retires ten claims; third and last full refrain over the strokes.",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "LB03",
+      "LB12"
+     ],
+     "tags": [
+      "8"
+     ]
+    },
+    {
+     "id": "ch08-s04",
+     "kind": "plate",
+     "setting": "parchment plate: a 0/20 tally climbing to 20/20 as a loss-scale dial turns to a million; a caution label",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "Multiply every loss by a constant, which should change nothing: 0/20 → 20/20 (Adam's epsilon); caution: doesn't show the method scales.",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "LB04",
+      "LB05"
+     ],
+     "quotes": [
+      "Q117"
+     ]
+    },
+    {
+     "id": "ch08-s05",
+     "kind": "plate",
+     "setting": "parchment plate: the tiny program at x = 2, JavaScript 3, compiled 4, a checker reading 0 mismatches; DD I's Q038 plate sliding in beside it",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The checker that shared the bug (Q116); Q038 paid.",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "LB08"
+     ],
+     "quotes": [
+      "Q116",
+      "Q038"
+     ]
+    },
+    {
+     "id": "ch08-s06",
+     "kind": "plate",
+     "setting": "parchment plate: d(3·v)/dv at v = 0 reading 0 one way, 3 the other; a test counter at 274",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The gradient that depended on operand order; fixed that morning, 274 tests passing; Q118.",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "DG28",
+      "LB12"
+     ],
+     "quotes": [
+      "Q118",
+      "Q115"
+     ]
+    },
+    {
+     "id": "ch08-s07",
+     "kind": "scene",
+     "setting": "the two hands at one keyboard from ch03, lit by dawn",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The one plain sentence on tooling: 825 commits by Cheng Lou, 756 crediting Claude Code, an earlier Codex discussion, this film written with Claude; a process, not a scorecard (the film's only mention).",
+     "machine": null,
+     "cast": [
+      "author-hands",
+      "agent-hand"
+     ],
+     "claims": [
+      "PJ08",
+      "PJ21",
+      "PJ22"
+     ]
+    },
+    {
+     "id": "ch08-s08",
+     "kind": "scene",
+     "setting": "14–15 September: three runtime question cards each stamped with the recommended option; the Window Calendar's September column relighting; tag 8 hanging struck",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The decisions (index read, one comparison helper, host-written springs; a label, not a quote); 58 panes; tag 8 lasted about eight weeks.",
+     "machine": "windowCalendar+promiseTags",
+     "cast": [
+      "author-hands"
+     ],
+     "claims": [
+      "PJ23",
+      "PR22",
+      "SP20",
+      "PJ09"
+     ],
+     "tags": [
+      "8"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch09",
+   "number": 9,
+   "title": "Four Days in October",
+   "years": "13 → 14 October 2026",
+   "starts": "18:45",
+   "minutes": 2.0,
+   "words": 200,
+   "shots": 8,
+   "summary": "The Window Calendar blazes: October's 689 panes, 683 crowded into four columns for 13 to 16 October, lit in every hour. Two lamplit cards in Cheng's own lowercase: his GPU question (Q099 substring) and 'Maybe we should check before we build it.' (Q100 substring), the film's temperament in seven words. JSON search gets its own machine time: a map of 100,000 tiny cells, one document each, one GPU thread per document running the same small step; the GPU plant paid with Q090 (it is for many documents). Match cut: Kleene's typed RAND page becomes the search pattern written as cells, 'a new pattern writes cells and changes no program' (Q096): regular events, seventy-five years on, read by a hundred thousand threads, with the honest caption that the repo cites Thompson and Cox, not Kleene. Two clerks walk each strip backward then forward, because a program can't go back. The RegExp booth with its ten-second hourglass: 11–15 ms a keystroke against 8–28, and 2.1 seconds against about 11 ms on a backtracking pattern, one machine. Tag 9, 'the GPU is the faster one', tied at 09:01 and struck by a review within hours, the shortest thread in the film; Q092, Q095. The go-ahead in a commit (Q103), the repo public on the evening of 14 October, the launch post (Q104 substring).",
+   "tags": [
+    "9 tied + struck"
+   ],
+   "turn": "It held for hours.",
+   "shotList": [
+    {
+     "id": "ch09-s01",
+     "kind": "scene",
+     "setting": "the Window Calendar ablaze: October's column, 683 panes crowded into four sub-columns, lit in every hour of a clock face on the building",
+     "era": "2020s",
+     "mood": "emberRed",
+     "purpose": "The sprint: 689 in October, 683 on 13–16 Oct (242, 200, 113, 128); no claims about sleep or stamina.",
+     "machine": "windowCalendar",
+     "cast": [],
+     "claims": [
+      "PJ09"
+     ]
+    },
+    {
+     "id": "ch09-s02",
+     "kind": "card",
+     "setting": "two lamplit cards on a plain desk beside a lamp, in Cheng's own lowercase",
+     "era": "2020s",
+     "mood": "candleAmber",
+     "purpose": "Cheng's GPU question (Q099 substring) and 'Maybe we should check before we build it.' (Q100 substring); the million-document check used hand-written kernels; the demo stayed at 100,000.",
+     "machine": null,
+     "cast": [
+      "author-hands"
+     ],
+     "claims": [
+      "JS20",
+      "JS22"
+     ],
+     "quotes": [
+      "Q099",
+      "Q100"
+     ]
+    },
+    {
+     "id": "ch09-s03",
+     "kind": "scene",
+     "setting": "the JSON search map: 100,000 tiny cells in reading order filling with copper matches; one thread drawn per document strip",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "One program, 100,000 documents, one thread each running the same step; Q090 pays the GPU plant.",
+     "machine": "jsonSearchMap",
+     "cast": [],
+     "claims": [
+      "JS01",
+      "JS03",
+      "JS04"
+     ],
+     "quotes": [
+      "Q090",
+      "Q089"
+     ]
+    },
+    {
+     "id": "ch09-s04",
+     "kind": "scene",
+     "setting": "match cut: Kleene's typed RAND page dissolving into a search pattern written as cells in the table",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Regular events (1951) as a table of numbers read by 100,000 threads; Q096; caption: an echo, not a citation, the repo cites Thompson (1968) and Cox (2007).",
+     "machine": "jsonSearchMap",
+     "cast": [],
+     "claims": [
+      "FR07",
+      "JS07",
+      "JS26"
+     ],
+     "quotes": [
+      "Q096"
+     ]
+    },
+    {
+     "id": "ch09-s05",
+     "kind": "scene",
+     "setting": "two small clerks walking a 512-cell strip right to left, leaving notes, then left to right",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Two passes because a program can't go back (Q067); matches drawn larger than their cells.",
+     "machine": "jsonSearchMap",
+     "cast": [
+      "seating-clerk"
+     ],
+     "claims": [
+      "JS06"
+     ],
+     "quotes": [
+      "Q067"
+     ]
+    },
+    {
+     "id": "ch09-s06",
+     "kind": "scene",
+     "setting": "the RegExp booth with a ten-second hourglass and a trapdoor, beside the map; timing labels scoped to one machine",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "11–15 ms a keystroke vs RegExp 8–28 ms; ([a-z]+)+x: 2.1 s vs about 11 ms, the program never backtracks; the booth exists so RegExp can be stopped.",
+     "machine": "regexpBooth",
+     "cast": [],
+     "claims": [
+      "JS11",
+      "JS12",
+      "JS16"
+     ]
+    },
+    {
+     "id": "ch09-s07",
+     "kind": "scene",
+     "setting": "the copper line: tag 9 tied at 09:01 and struck the same day; the thread barely a millimetre on the Lifespan Rule",
+     "era": "2020s",
+     "mood": "serverCyan",
+     "purpose": "Tag 9 (a label: the GPU is the faster one), already hedged, struck by a same-day review (one of 18 cores); Q092; Q095 'RegExp is fast.'",
+     "machine": "promiseTags+lifespanRule",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "JS21",
+      "JS13"
+     ],
+     "quotes": [
+      "Q092",
+      "Q095"
+     ],
+     "tags": [
+      "9"
+     ]
+    },
+    {
+     "id": "ch09-s08",
+     "kind": "card",
+     "setting": "a lowercase commit card on the author's desk at evening; the Window Calendar's last October panes behind; the launch post as a text card",
+     "era": "2020s",
+     "mood": "emberRed",
+     "purpose": "The go-ahead (Q103); public on the evening of 14 Oct; the launch post (Q104 substring, curly apostrophe kept).",
+     "machine": null,
+     "cast": [],
+     "claims": [
+      "PJ11",
+      "PJ12",
+      "PJ14"
+     ],
+     "quotes": [
+      "Q103",
+      "Q104"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch10",
+   "number": 10,
+   "title": "Strangers with Pencils",
+   "years": "20 → 27 October 2026",
+   "starts": "20:45",
+   "minutes": 0.75,
+   "words": 85,
+   "shots": 4,
+   "summary": "Reception as text cards over a dusk sky; Hacker News commenters are never drawn. A Show HN on 20 October; the critic's 'DSL' line (Q130) reaches tag 4 and finds the strike already there in the repo's own hand (Q014), with the fair note that another reader read it as a compiler. The 4.5 → 11 finding (Q131), nine days after the repo went public: tag 6 flips, and its back already carried the landing page's hidden comment about the 11 and the 8; the rivet holds, a promise that states its limits is kept. 'why?' (Q132) is hung on the line as a question tag for the epilogue. No public discussion of the lab was found: the strangers' pencils were gentler than the lab's own.",
+   "tags": [
+    "4 re-read",
+    "6 flipped, riveted",
+    "why? hung"
+   ],
+   "turn": "The strangers' pencils were gentler than the lab's own.",
+   "shotList": [
+    {
+     "id": "ch10-s01",
+     "kind": "card",
+     "setting": "dusk sky; a Hacker News text card beside the copper line; tag 4 struck already",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "Show HN (20 Oct); Q130; the repo had already written the same doubt (Q014); another reader read it as a compiler; the docs side with the critic.",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "PJ26",
+      "PJ03"
+     ],
+     "quotes": [
+      "Q130",
+      "Q014"
+     ],
+     "tags": [
+      "4"
+     ]
+    },
+    {
+     "id": "ch10-s02",
+     "kind": "card",
+     "setting": "a text card with Q131; tag 6 flipping to show the hidden comment on its back; a copper rivet",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "The eleven found by hand on 23 Oct, nine days after going public; the landing page's hidden comment had already admitted it; tag 6 kept.",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": [
+      "PJ27",
+      "PJ19"
+     ],
+     "quotes": [
+      "Q131"
+     ],
+     "tags": [
+      "6"
+     ]
+    },
+    {
+     "id": "ch10-s03",
+     "kind": "card",
+     "setting": "a small question tag hung on the line",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "Q132, 'why?', hung for the epilogue.",
+     "machine": "promiseTags",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "PJ27"
+     ],
+     "quotes": [
+      "Q132"
+     ],
+     "tags": [
+      "why?"
+     ]
+    },
+    {
+     "id": "ch10-s04",
+     "kind": "scene",
+     "setting": "the copper line at dusk, the lab's ledger dark on a far table",
+     "era": "2020s",
+     "mood": "duskRose",
+     "purpose": "No public discussion of the lab, the reassessment or the recovery experiment by 27 Oct; 'The strangers' pencils were gentler than the lab's own.'",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": [
+      "PJ28"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch11",
+   "number": 11,
+   "title": "The Rule Written First",
+   "years": "15 → 16 October 2026",
+   "starts": "21:30",
+   "minutes": 1.0,
+   "words": 95,
+   "shots": 5,
+   "summary": "The last experiment before the pin, told as the film's model of how a belief should end. The recovery grid: about 1,560 table cells, about 240 lit on valid JSON's path, the other roughly 1,300 filled by training, so valid parsing is unchanged by construction (Q120). Tag 11 is tied on with a second card on its knot, the rule for failure written before the run; the test sets committed before training. JSON: Q122, its half of the border tag riveted. TOML: Q123, its half struck by its own pre-set rule, then scoped honestly by Q124. The bison track's final test not run: an open loop. The ledger's Still open drawer slides out with Q125 and stays open.",
+   "tags": [
+    "11 tied; split: JSON kept, TOML struck, bison open"
+   ],
+   "turn": "This is how a belief should end: by a rule it agreed to before the test.",
+   "shotList": [
+    {
+     "id": "ch11-s01",
+     "kind": "scene",
+     "setting": "the recovery grid: a lookup table of ~1,560 cells, ~240 glowing on the valid path; a paper hand filling the ~1,300 dark ones",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "Train only the entries valid input never reads; valid JSON unchanged by construction; Q120 (the pinned commit's message); about 240 commits on the branch.",
+     "machine": "recoveryGrid",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "LB19",
+      "PJ15"
+     ],
+     "quotes": [
+      "Q120"
+     ]
+    },
+    {
+     "id": "ch11-s02",
+     "kind": "scene",
+     "setting": "the copper line: tag 11 tied with a second card on its knot, 'the rule for failure, written before the run'; sealed test-set envelopes",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "The pre-registered rule; test sets committed before training.",
+     "machine": "promiseTags",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "LB25",
+      "LB20"
+     ],
+     "tags": [
+      "11"
+     ]
+    },
+    {
+     "id": "ch11-s03",
+     "kind": "plate",
+     "setting": "parchment plate with Q122; the JSON half of the border tag riveted",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "JSON: a clear success (Q122 whole).",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": [
+      "LB21"
+     ],
+     "quotes": [
+      "Q122"
+     ],
+     "tags": [
+      "11"
+     ]
+    },
+    {
+     "id": "ch11-s04",
+     "kind": "plate",
+     "setting": "parchment plate with Q123 then Q124; the TOML half struck by the red pencil",
+     "era": "2020s",
+     "mood": "winterBlue",
+     "purpose": "TOML fails by its own rule (Q123); honestly scoped (Q124); 'This is how a belief should end.'",
+     "machine": "promiseTags",
+     "cast": [
+      "red-pencil-hand"
+     ],
+     "claims": [
+      "LB23"
+     ],
+     "quotes": [
+      "Q123",
+      "Q124"
+     ],
+     "tags": [
+      "11"
+     ]
+    },
+    {
+     "id": "ch11-s05",
+     "kind": "scene",
+     "setting": "the bison thread ending in a small open loop; the lab ledger's 'Still open' drawer sliding out and staying open",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Bison's final test not run; Q125 on the drawer's label; it stays open into the epilogue.",
+     "machine": "ledger",
+     "cast": [],
+     "claims": [
+      "LB24",
+      "LB26"
+     ],
+     "quotes": [
+      "Q125"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch12",
+   "number": 12,
+   "title": "One More Neuron",
+   "years": "dawn, 27 October 2026",
+   "starts": "22:30",
+   "minutes": 1.5,
+   "words": 115,
+   "shots": 7,
+   "summary": "Out through a window bay onto misty hills at dawn: the copper line strung across the valley with all eleven tags at their lifespans, the Window Calendar dark after 16 October in the distance. The narrator's hands re-hang every tag one column to the right of the deepest tag you needed to understand it (the compiler's own rule, applied to the film's teaching order, computed not placed), and the washing line becomes a loom. A forward wave of copper light runs through every column; struck tags light too and are multiplied by zero ('The struck ones ran too. Multiplied by zero.'). Tags 2 and 10 glow off the rule, undecided (the score's two lines at half level); the 'why?' tag is answered by the README's own Q010. Back at the plain desk, Notes' last line: 'Wire one more neuron by hand'. The narrator bends a copper hinge, ties the blank tag to it and places it in the viewer's open hand: 'Who tied it on, we know. Who will doubt it, we don't. It's waiting for the next pair of hands.' The wire under the dock is the last light; end card: as of 27 October 2026, main is still at 257856e.",
+   "tags": [
+    "all re-hung by depth",
+    "blank tag given"
+   ],
+   "turn": "It's waiting for the next pair of hands.",
+   "shotList": [
+    {
+     "id": "ch12-s01",
+     "kind": "scene",
+     "setting": "misty hills at dawn; the copper line strung across the valley with all eleven tags over the Lifespan Rule laid along the valley floor; the Window Calendar dark in the distance; the Still open drawer below the window bay",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "The whole film's beliefs at a glance, each at its lifespan; no new panes after 16 October.",
+     "machine": "promiseTags+lifespanRule+mistyHills",
+     "cast": [],
+     "claims": [
+      "PJ09",
+      "PJ17"
+     ]
+    },
+    {
+     "id": "ch12-s02",
+     "kind": "scene",
+     "setting": "the narrator's hands re-hanging tags into computed columns; the threads re-tensioning into a loom",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Re-hang by dependency depth, one column right of the deepest tag you needed (the compiler's rule, Q039, applied to the film's teaching order).",
+     "machine": "promiseTags+matmulLoom",
+     "cast": [
+      "narrator-hands"
+     ],
+     "claims": [
+      "CM01"
+     ],
+     "quotes": [
+      "Q039"
+     ]
+    },
+    {
+     "id": "ch12-s03",
+     "kind": "scene",
+     "setting": "a forward wave of copper light running column by column through the tag-loom; small shutters closing behind struck tags",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "Every tag lights, struck ones too, multiplied by zero; the score's gate opening column by column; the film's structure shows the program's.",
+     "machine": "promiseTags+bothBranches",
+     "cast": [],
+     "claims": [
+      "TE10",
+      "TE11"
+     ]
+    },
+    {
+     "id": "ch12-s04",
+     "kind": "scene",
+     "setting": "the light settling on tags 2 and 10 (glowing off the rule) and riveted tag 6; the 'why?' tag turning",
+     "era": "2020s",
+     "mood": "dawnGold",
+     "purpose": "What is still held and contested (both score lines at half level); the README answers 'why?' with Q010.",
+     "machine": "promiseTags",
+     "cast": [],
+     "claims": [
+      "PJ04",
+      "FR20",
+      "DG03"
+     ],
+     "quotes": [
+      "Q010",
+      "Q132"
+     ]
+    },
+    {
+     "id": "ch12-s05",
+     "kind": "scene",
+     "setting": "the HandwiredOS desk, plain and warm, no X-ray; the Notes window racking into focus on its last line",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "Notes' last to-do line, 'Wire one more neuron by hand' (Q088), spoken with its quotation marks.",
+     "machine": "handwiredosDesk",
+     "cast": [],
+     "claims": [
+      "OS18"
+     ],
+     "quotes": [
+      "Q088"
+     ]
+    },
+    {
+     "id": "ch12-s06",
+     "kind": "scene",
+     "setting": "the narrator's hands bend copper into a ReLU hinge, tie the blank tag to it, and place it into an open generic hand rising into the lower third",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "The invitation: 'Who tied it on, we know. Who will doubt it, we don't. It's waiting for the next pair of hands.' Detent: tie, flip, no strike.",
+     "machine": "copperHinge+promiseTags",
+     "cast": [
+      "narrator-hands",
+      "viewer-hand"
+     ],
+     "claims": [
+      "OS18"
+     ]
+    },
+    {
+     "id": "ch12-s07",
+     "kind": "card",
+     "setting": "the copper wire under the dock as the last light; black; end card and credits on parchment",
+     "era": "2020s",
+     "mood": "parchment",
+     "purpose": "End card: as of 27 October 2026, main is still at 257856e; sources; single relay clack.",
+     "machine": "copperLine",
+     "cast": [],
+     "claims": [
+      "PJ17"
+     ]
+    }
+   ]
+  }
+ ]
+}

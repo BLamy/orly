@@ -1,0 +1,194 @@
+{
+ "shot": "ch05-s05",
+ "at": "2026-10-28T11:27:23.182Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 36,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Notes",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "19,851 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "density ~ operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "13 OCT 2026",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "19,577 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "17,925 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "19,851 → 4,251 · about 4.7× smaller",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4,259 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4,253 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4,507 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4,646 live operations",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "PINNED 27 OCT",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Monitor",
+   "maxCap": 28.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THIS PROGRAM",
+   "maxCap": 24.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "State",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "234",
+   "maxCap": 31,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Operations",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4,646",
+   "maxCap": 31,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Outputs",
+   "maxCap": 27,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "493",
+   "maxCap": 31,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0.000",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.875",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104.750",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "94.625",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84.500",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.375",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "64.250",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.125",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44.000",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "33.875",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "23.750",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13.625",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3.500",
+   "maxCap": 21,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "130 layers · 9,909 weights",
+   "maxCap": 25.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Wire one more neuron by hand",
+   "maxCap": 21.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Photos",
+   "maxCap": 19.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 24
+}

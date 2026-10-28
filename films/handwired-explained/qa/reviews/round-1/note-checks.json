@@ -1,0 +1,66 @@
+{
+  "ch09-s05": {
+    "present": [],
+    "absent": [
+      "c.scale(-1, 1)"
+    ]
+  },
+  "ch10-s01": {
+    "present": [
+      "another Hacker News commenter",
+      "No tool converts existing JavaScript"
+    ],
+    "absent": []
+  },
+  "ch09-s08": {
+    "present": [
+      "Do it quick plz, then publish",
+      "My dear friends"
+    ],
+    "absent": []
+  },
+  "ch06-s05": {
+    "present": [
+      "ordinary loop"
+    ],
+    "absent": []
+  },
+  "ch04-s07": {
+    "present": [
+      "no float there"
+    ],
+    "absent": []
+  },
+  "ch08-s06": {
+    "present": [
+      "which operand was written first"
+    ],
+    "absent": []
+  },
+  "ch02-s04": {
+    "present": [],
+    "absent": [
+      "lifeX(77 * Y)"
+    ]
+  },
+  "ch07-s03": {
+    "present": [
+      "its remedy: weight decay"
+    ],
+    "absent": [
+      "its cure: weight decay"
+    ]
+  },
+  "ch09-s07": {
+    "present": [
+      "vs 8 workers: no"
+    ],
+    "absent": []
+  },
+  "ch06-s06": {
+    "present": [
+      "empty row"
+    ],
+    "absent": []
+  }
+}

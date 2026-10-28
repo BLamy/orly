@@ -1,0 +1,53 @@
+{
+ "shot": "ch06-s11",
+ "at": "2026-10-28T12:57:10.025Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "3",
+   "capWhileSubject": 53.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "visible 0 1 1 0 1 0 1 1 → counts 0 1 2 2 3 3 4 5",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 34.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HandwiredOS · Monitor · 64 slots",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

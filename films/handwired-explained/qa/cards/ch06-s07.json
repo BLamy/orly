@@ -1,0 +1,168 @@
+{
+ "shot": "ch06-s07",
+ "at": "2026-10-28T17:39:54.737Z",
+ "step": 0.0833,
+ "sampled": 177,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s07-tab-0-card",
+  "ch06-s07-tab-1-card",
+  "ch06-s07-tab-2-card",
+  "ch06-s07-tab-3-card",
+  "ch06-s07-tab-4-card",
+  "ch06-s07-tab-5-card",
+  "ch06-s07-tab-6-card",
+  "ch06-s07-tab-7-card",
+  "ch06-s07-tot-0-card",
+  "ch06-s07-tot-1-card",
+  "ch06-s07-tot-3-card",
+  "ch06-s07-tot-5-card",
+  "ch06-s07-tot-7-card",
+  "ch06-s07-tot-2-card",
+  "ch06-s07-tot-4-card",
+  "ch06-s07-tot-6-card",
+  "ch06-s07-tag-sk",
+  "ch06-s07-caption-card",
+  "ch06-s07-tag-bk"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch06-s07-tab-0-card",
+   "probed": true,
+   "from": 0.05,
+   "to": 14.717,
+   "minInkWhilePaper": 0.96
+  },
+  {
+   "id": "ch06-s07-tab-1-card",
+   "probed": true,
+   "from": 0.133,
+   "to": 14.717,
+   "minInkWhilePaper": 0.78
+  },
+  {
+   "id": "ch06-s07-tab-2-card",
+   "probed": true,
+   "from": 0.217,
+   "to": 14.717,
+   "minInkWhilePaper": 0.46
+  },
+  {
+   "id": "ch06-s07-tab-3-card",
+   "probed": true,
+   "from": 0.3,
+   "to": 14.717,
+   "minInkWhilePaper": 0.99
+  },
+  {
+   "id": "ch06-s07-tab-4-card",
+   "probed": true,
+   "from": 0.467,
+   "to": 14.717,
+   "minInkWhilePaper": 0.85
+  },
+  {
+   "id": "ch06-s07-tab-5-card",
+   "probed": true,
+   "from": 0.55,
+   "to": 14.717,
+   "minInkWhilePaper": 0.57
+  },
+  {
+   "id": "ch06-s07-tab-6-card",
+   "probed": true,
+   "from": 0.633,
+   "to": 14.717,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s07-tab-7-card",
+   "probed": true,
+   "from": 0.8,
+   "to": 14.717,
+   "minInkWhilePaper": 0.91
+  },
+  {
+   "id": "ch06-s07-tot-0-card",
+   "probed": true,
+   "from": 7.633,
+   "to": 14.717,
+   "minInkWhilePaper": 0.61
+  },
+  {
+   "id": "ch06-s07-tot-1-card",
+   "probed": true,
+   "from": 7.717,
+   "to": 14.717,
+   "minInkWhilePaper": 0.09
+  },
+  {
+   "id": "ch06-s07-tot-3-card",
+   "probed": true,
+   "from": 8.883,
+   "to": 14.717,
+   "minInkWhilePaper": 0.26
+  },
+  {
+   "id": "ch06-s07-tot-5-card",
+   "probed": true,
+   "from": 9.3,
+   "to": 14.717,
+   "minInkWhilePaper": 0.07
+  },
+  {
+   "id": "ch06-s07-tot-7-card",
+   "probed": true,
+   "from": 9.3,
+   "to": 14.717,
+   "minInkWhilePaper": 0.07
+  },
+  {
+   "id": "ch06-s07-tot-2-card",
+   "probed": true,
+   "from": 9.8,
+   "to": 14.717,
+   "minInkWhilePaper": 0.02
+  },
+  {
+   "id": "ch06-s07-tot-4-card",
+   "probed": true,
+   "from": 9.8,
+   "to": 14.717,
+   "minInkWhilePaper": 0.02
+  },
+  {
+   "id": "ch06-s07-tot-6-card",
+   "probed": true,
+   "from": 9.8,
+   "to": 14.717,
+   "minInkWhilePaper": 0.02
+  },
+  {
+   "id": "ch06-s07-tag-sk",
+   "probed": true,
+   "from": 10.217,
+   "to": 14.717,
+   "minInkWhilePaper": 0.28
+  },
+  {
+   "id": "ch06-s07-caption-card",
+   "probed": true,
+   "from": 10.633,
+   "to": 14.717,
+   "minInkWhilePaper": 0.18
+  },
+  {
+   "id": "ch06-s07-tag-bk",
+   "probed": true,
+   "from": 10.8,
+   "to": 14.717,
+   "minInkWhilePaper": 0.28
+  }
+ ]
+}

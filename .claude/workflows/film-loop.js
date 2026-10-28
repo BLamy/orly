@@ -1,7 +1,7 @@
 export const meta = {
   name: 'film-loop',
   description: 'Produce a film end to end (research → story → narration → score + shots → assemble) and loop review → routed fixes until the excellence gate passes',
-  whenToUse: 'The production loop. One film: /film-loop {"slug":"<slug>"} (needs films/<slug>/brief.md). Queue mode: /film-loop {"queue":true} takes the next film from films/queue.json; run it under /loop to keep producing films. Resumable: every stage skips finished work. Args: {slug?, queue?, asOf?, runtimeTargetMin?, maxRounds?, preview?, budgetCredits?, stopAfter?, publish? (false = skip the shelf publish step), look? ("promo" = a product promo: every stage uses films/<slug>/look.md and the film-promo skill instead of the silhouette documentary defaults), applyVerdict? (act on the last review on disk instead of re-reviewing first), revoice? (after re-casting voice.json: re-narrate everything and re-fit every shot and cue in the first fix round)}',
+  whenToUse: 'The production loop. One film: /film-loop {"slug":"<slug>"} (needs films/<slug>/brief.md). Queue mode: /film-loop {"queue":true} takes the next film from films/queue.json; run it under /loop to keep producing films. Resumable: every stage skips finished work. Args: {slug?, queue?, asOf?, runtimeTargetMin?, maxRounds?, preview?, budgetCredits?, stopAfter?, publish? (false = skip the shelf publish step), bar? (excellence-gate mean, default 8.5), look? ("promo" = a product promo: every stage uses films/<slug>/look.md and the film-promo skill instead of the silhouette documentary defaults), applyVerdict? (act on the last review on disk instead of re-reviewing first), revoice? (after re-casting voice.json: re-narrate everything and re-fit every shot and cue in the first fix round)}',
   phases: [
     { title: 'Status', detail: 'pick the film, inspect what already exists' },
     { title: 'Produce', detail: 'research, story, narration, then score and shots in parallel' },
@@ -100,7 +100,7 @@ try {
       verdict.pass = false
     } else {
       round++
-      verdict = await run('film-review', { slug, round })
+      verdict = await run('film-review', { slug, round, ...(A.bar ? { bar: A.bar } : {}) })
     }
     log(`review round ${round}: pass=${verdict.pass} mean=${verdict.mean} ${JSON.stringify(verdict.scores)}`)
     if (verdict.pass) break

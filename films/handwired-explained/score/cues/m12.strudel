@@ -1,0 +1,85 @@
+// m12 · THE RULE WRITTEN FIRST (ch11-s01 … ch11-s05) · winterBlue, one low line
+// Window 1273.10-1368.40 (95.30 s, clock 1455.42 s). 58 BPM nominal, rubato: every event is placed by
+// cue-local seconds (absolute - 1273.10) from narration/timeline.json. M1 is ABSENT: a rule, not a gate.
+// One woody low line (cello + bowed pad, lpf 600), cold and patient, moving only in the breaths:
+//   G (the experiment) - F (the table nobody reads: a cold step down) - G (the tie) over a low D (the seal:
+//   the bar waits on a six-four) - A over F (JSON's verdict: the first warmth, F major, a fair verdict)
+//   - G over D (TOML) - the strike: D -> G in the bass, the drawer closes - room tone under the README -
+//   a warm line again (Bb C D) - the open list: tie, flip, the third stroke withheld - an unresolved low D
+//   struck after 'not delivered' (91.24 = 1364.34, the last strike), ringing through the hold into m13.
+setcpm(58/4)
+const CPS = 58/240, DUR = 95.30
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const bars = s => qn(s) / Q
+const loop = (pat, d) => pat.fast(bars(d))
+const hall = x => x.room(0.4).rsize(5)
+const at = (ts, d, p) => ts.map(t => [t, d, p])
+
+// ---------------------------------------------------------------- THE ONE LOW LINE
+$: hall(tl([0.0, 14.40, note("g2")], [14.40, 12.95, note("f2")], [27.35, 14.48, note("g2")],
+          [41.83, 12.95, note("a2")], [54.78, 6.9, note("g2")], [70.74, 3.9, note("bb2")], [74.64, 2.04, note("c3")],
+          [76.68, 12.8, note("d3")])
+  .s("gm_cello").velocity(0.16).attack(1.4).release(2.2).lpf(600))
+$: tl([0.0, 14.40, note("g2")], [14.40, 12.95, note("f2")], [27.35, 14.48, note("g2")], [41.83, 12.95, note("a2")], [54.78, 6.0, note("g2")])
+  .s("gm_pad_bowed").velocity(0.14).attack(2).release(2.5).lpf(600)
+// the bass under the line: nothing until the seal; then the held low D ('seal' 38.27), F under JSON's
+// verdict ('plate' 41.83), G for TOML, D on the card ('card' 59.14) -> G on the drawer (60.61)
+$: tl([38.27, 3.56, note("d2")], [41.83, 12.95, note("f1")], [54.78, 4.36, note("g1")], [59.14, 1.47, note("d2")], [60.61, 3.4, note("g1")])
+  .s("gm_contrabass").velocity(0.20).attack(0.9).release(2).lpf(380)
+// the first warmth: an F-major colour under JSON's verdict, very low and dark (lpf 700)
+$: hall(tl([41.83, 12.9, note("[f2,c3,f3]")]).s("gm_string_ensemble_1").velocity(0.09).attack(2).release(2.5).lpf(700))
+// room tone, the whole cue
+$: tl([0.0, 95.2, s("pink")]).hpf(250).lpf(1300).gain(0.0035).attack(2).release(2)
+
+// ---------------------------------------------------------------- ch11-s01 · one last experiment
+// a soft tick under the bead-threads ('valid' 3.67) and a dry relay clack on the stall ('stall' 7.76)
+$: tl([3.67, 0.2, note("a5")]).s("gm_woodblock").velocity(0.14).decay(0.025).sustain(0)
+$: tl([7.76, 0.2, note("g5")]).s("gm_woodblock").velocity(0.22).decay(0.035).sustain(0)
+$: tl([7.76, 0.2, s("white")]).hpf(2500).decay(0.025).sustain(0).gain(0.06)
+
+// ---------------------------------------------------------------- ch11-s01b · train only the unread entries
+// the wave of filled cells ('wave' 19.23): a fine ratchet of detent clicks on twos, held through the
+// narrator's long breath inside L1103 (after 'going' to 'after' 23.09)
+$: tl([19.23, 3.7, loop(note("[e6 e6 ~ ~]*8"), 3.7)]).s("gm_woodblock").velocity("0.20 0.13").decay(0.015).sustain(0).pan(perlin.range(0.35, 0.65))
+// the woodblock tick returns under the re-run threads ('pass' 27.56, in the gap before L1104)
+$: tl([27.56, 2.1, loop(note("a5 ~ a5 ~ a5 ~ a5 ~"), 2.1)]).s("gm_woodblock").velocity(0.14).decay(0.025).sustain(0)
+
+// ---------------------------------------------------------------- ch11-s02 · the tag tied before testing
+// the detent's TIE on 'tied' (31.51), the tonic barely touched below; then the bar waits
+$: tl([31.51, 0.2, note("e6")]).s("gm_woodblock").velocity(0.16).decay(0.03).sustain(0)
+$: tl([31.51, 1.3, note("g2")]).s("gm_pizzicato_strings").velocity(0.10).lpf(800)
+
+// ---------------------------------------------------------------- ch11-s03 · JSON: "a clear success."
+// the rivet on 'success' (43.75): the detent's dry clack, kept; on the tally the line simply holds
+$: tl([43.75, 0.2, note("g5")]).s("gm_woodblock").velocity(0.24).decay(0.03).sustain(0)
+$: tl([43.75, 0.2, s("white")]).hpf(3000).decay(0.015).sustain(0).gain(0.05)
+
+// ---------------------------------------------------------------- ch11-s04 · TOML: the strike
+// the detent figure completes for the first time in the chapter: the dry pencil scratch on 'lost'
+// (60.29) over the D, resolving into the wooden drawer closing, the bass D -> G (60.61)
+$: tl([60.29, 0.4, s("white")]).bpf(3000).bpq(2).attack(0.02).decay(0.30).sustain(0).gain(0.06)
+$: tl([60.61, 0.5, note("c2")]).s("gm_taiko_drum").velocity(0.26).decay(0.25).sustain(0).lpf(600)
+$: tl([60.61, 0.3, s("brown")]).lpf(300).decay(0.15).sustain(0).gain(0.17)
+// then near-silence (room tone) under the README's careful sentence; under L1109 ('belief' 70.74) the
+// single low line returns, warm (Bb, then C in the breath, then D, held under the open list): resolve, not loss
+$: hall(tl([70.74, 6.0, note("[bb1,f2]")]).s("gm_string_ensemble_1").velocity(0.08).attack(1.8).release(2).lpf(600))
+
+// ---------------------------------------------------------------- ch11-s05 · the open list (dawnGold)
+// a warm Bb colour under the open list, then the detent figure: TIE on 'loop' (76.68, in the gap) and
+// FLIP on 'question' (80.93), over D; the third stroke is WITHHELD
+$: hall(tl([76.68, 12.0, note("[bb2,d3,f3]")]).s("gm_string_ensemble_1").velocity(0.07).attack(2).release(3).lpf(650))
+$: tl([76.68, 0.2, note("e6")]).s("gm_woodblock").velocity(0.20).decay(0.03).sustain(0)
+$: tl([76.68, 1.3, note("g2")]).s("gm_pizzicato_strings").velocity(0.11).lpf(800)
+$: tl([80.93, 0.2, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.10)
+$: tl([80.93, 1.3, note("d3")]).s("gm_pizzicato_strings").velocity(0.11).lpf(800)
+// after 'not delivered' (91.24): the bar comes to rest on an unresolved low D, cello and contrabass struck
+// once: the last strike; it rings through the music-only hold and m13 picks up the same D
+$: hall(tl([91.24, 4.0, note("[d2,d3]")]).s("gm_cello").velocity(0.12).attack(0.2).release(4).lpf(600))
+$: tl([91.24, 4.0, note("d2")]).s("gm_contrabass").velocity(0.13).attack(0.25).release(4).lpf(380)
+
+all(x => x.postgain(1.95))

@@ -1,0 +1,129 @@
+{
+ "shot": "ch11-s05",
+ "at": "2026-10-28T15:16:46.009Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 23,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Known issues",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Open decisions",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Parked and deferred",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Still open",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bison",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "still open:",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "scaling",
+   "capWhileSubject": 22.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "scaling program lea",
+   "capWhileSubject": 22.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "scaling program learning",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "past a complete loss table",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "evidence from real",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "human tasks",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“…not delivered by",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "these",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "these experiments.”",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— lab/status.md",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Gradient",
+   "maxCap": 18.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "descent can",
+   "maxCap": 18.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fill a parser's",
+   "maxCap": 18.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "unused",
+   "maxCap": 18.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "entries",
+   "maxCap": 18.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the recovery experiment",
+   "maxCap": 9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the rule for failure, fixed beforehand",
+   "maxCap": 6,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 7
+}

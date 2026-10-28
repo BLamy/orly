@@ -1,0 +1,167 @@
+{
+ "shot": "ch04-s08",
+ "at": "2026-10-28T17:38:40.932Z",
+ "step": 0.0833,
+ "sampled": 131,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [
+   {
+    "from": "ch04-s14",
+    "out": "float64 everywhere: 18,820 of 20,000 percent labels wrong",
+    "in": "10",
+    "kind": "crossfade",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "minAlpha": 0.28,
+    "rect": {
+     "x": 1205,
+     "y": 265,
+     "w": 40,
+     "h": 9
+    }
+   }
+  ],
+  "carry": [
+   {
+    "side": "out",
+    "text": "13 Sept 2026",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "float64 everywhere: 18,820 of 20,000 percent labels wrong",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "FP32 order at rounding points only: 0 wrong",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "For an",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "integer a",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "3",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "4",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "5",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "10",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "10",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "10",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "12",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "12",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "12",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch04-s08/chip",
+  "ch04-s08/card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch04-s08/chip",
+   "probed": true,
+   "from": 1.717,
+   "to": 4.383,
+   "minInkWhilePaper": 0.14
+  },
+  {
+   "id": "ch04-s08/card",
+   "probed": true,
+   "from": 7.05,
+   "to": 11.383,
+   "minInkWhilePaper": 0.08
+  }
+ ]
+}

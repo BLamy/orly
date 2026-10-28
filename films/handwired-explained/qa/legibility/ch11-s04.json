@@ -1,0 +1,104 @@
+{
+ "shot": "ch11-s04",
+ "at": "2026-10-28T16:10:06.666Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“the track failed”",
+   "capWhileSubject": 62,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the recovery parser README, TOML",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the rule for",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "failure, fixed",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "beforehand",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "gradient descent, then trial and error, trained with TOML",
+   "capWhileSubject": 26.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "mistakes: level with 39 hand rules",
+   "capWhileSubject": 26.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "an hour",
+   "maxCap": 18.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 18.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 18.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 18.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "bison",
+   "maxCap": 19.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Gradient",
+   "maxCap": 27.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "descent can fill",
+   "maxCap": 27.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a parser's",
+   "maxCap": 27.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "unused entries",
+   "maxCap": 27.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JSON",
+   "maxCap": 19.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TOML",
+   "maxCap": 19.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 11
+}

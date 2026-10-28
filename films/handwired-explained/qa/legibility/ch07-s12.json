@@ -1,0 +1,18 @@
+{
+ "shot": "ch07-s12",
+ "at": "2026-10-28T13:43:57.279Z",
+ "minCapPx": 22,
+ "sampled": 6,
+ "texts": 1,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "HandwiredOS",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

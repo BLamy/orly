@@ -1,0 +1,170 @@
+// m13 — "One More Neuron" (handwired-explained, ch12-s01 … ch12-s07): the film's last cue.
+// CURRENT CLOCK (timeline 1455.42 s): window 1366.400-1437.000 (70.600 s = 17.650 cycles at setcpm(60/4)).
+// Cue-local seconds = absolute - 1366.400. Every hit below is placed by the word or beat it names in
+// narration/timeline.json (shot start + word start - 1366.400).
+//
+// Home G, tempo 60, ending hung on D (V): no final chord anywhere.
+//  1. IN (ch12-s01): m12's low D carries across (contrabass + cello D); on 'rise' M1 opens on felt piano, the
+//     two lines U (B D E D) and L (a whole tone down) both scheduled, the gate resting on U; strings G/D;
+//     a ghost relay clack on 'ruler' (under 'held').
+//  2. THE RE-HANG (ch12-s02): an even, patient harp pulse on the cascade's beat grid (one beat per second, the
+//     grid of 'order'); two ghost detent clicks on 'lift' and 'rule'; harmony G - C/G - D/F#; the cascade's six
+//     frame clacks from 'order' (ghost under the words, soft in the gap); on 'loom' a low wooden creak, the
+//     two piano lines widen (pan) and the swell starts on Em7 (a deceptive V -> vi after 'history').
+//  3. THE WAVE (ch12-s03), the film's last swell, placed in the speech-free gaps only: the crest grows from
+//     'loom' through the gap after 'history' (Em7 - Cmaj7, strings opening to lpf 2400) and the peak is a dry, short
+//     bow in the 1.2-s gap after 'lights' (decayed before 'struck'); under L1204 / L1205 everything is held back
+//     (critic round 1: harp <= 0.044 / lpf 850, strings <= 0.05 / lpf <= 900; voice-band margin >= 18 dB):
+//     Em7 - Cmaj7 - G/B ('wave') - Cadd9 - (peak) - G on 'struck'. The score becomes the select: a six-slot harp ostinato (one slot per loom
+//     column), U and L both running from 'loom' with their gates at 0; on 'wave' each column's gate opens as the
+//     ostinato reaches it (every tag lights: both branches at full, the hexatonic shimmer); from 'struck' the L
+//     branch's gates close column by column (the last on 'zero') while its notes keep being scheduled underneath
+//     (the struck branch ran too); the shimmer thins to plain G.
+//  4. THE CONTESTED (ch12-s04): from 'half' the piano gate sits at 0.5, both lines at half level a whole tone
+//     apart (the musical eleven, same voicing as m01), patient over a G pedal (G - Cmaj7/G - G - Am7/G - G6),
+//     notes only in the breaths of L1206/L1207; on 'find' U lifts a step (D -> E) while L holds C: a third, open.
+//  5. PARCHMENT (ch12-s05): one line, the octave below, close and warm; paper room tone; ghost clack on 'rack'.
+//  6. THE LAST HANDS (ch12-s06): tie on 'tie' (I, barely), flip on 'doubt' (V); the third stroke never comes:
+//     one warm low D (cello + contrabass) hangs and decays under 'palm', so L1210 is spoken in near-silence.
+//  7. THE END (ch12-s07): one dry relay clack on 'out' (the last strike); then nothing. The cards are silent.
+setcpm(60/4)
+const CPS = 60/240, DUR = 70.6
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (cur > end) throw new Error('tl past DUR')
+  // the period is one silent cycle longer than the body, so the loop's restart falls past the clip (never in it)
+  out.push([end + Q - cur, silence]); return stepcat(...out).slow((end + Q) / Q) }
+
+// ------------------------------------------------------------------ anchors (cue-local seconds)
+const RISE = 2.50, RULER = 6.86, LIFT = 10.20, RULE = 11.33, ORDER = 16.31, LOOM = 18.07
+const WAVE = 23.41, LIGHTS = 25.83, STRUCK = 27.61, ZERO = 30.41, HALF = 34.05, FIND = 49.58
+const LAMP = 51.225, RACK = 52.03, TIE = 58.13, DOUBT = 59.68, PALM = 61.49, OUT = 67.59
+// the narrator's lines (cue-local): onsets inside them are kept low; the gaps are where the music speaks
+const LINES = [[3.70, 7.25], [9.86, 15.15], [15.85, 17.77], [22.66, 26.23], [27.43, 30.75], [32.37, 42.85],
+  [43.55, 50.19], [51.82, 54.90], [57.32, 61.81], [63.11, 65.56]]
+const inLine = t => LINES.some(([a, b]) => t >= a - 0.05 && t < b)
+
+// ------------------------------------------------------------------ M1 · the select, felt piano
+// [time, dur, U, L (= U a whole tone down), velocity]. Both lines are ALWAYS scheduled; gateU(t) decides.
+// gate 1 = U heard; 0.5 from 'half' = the musical eleven; the single line of ch12-s05 is U alone again.
+const gateU = t => (t >= HALF - 0.01 && t < 50.2) ? 0.5 : 1
+const M1 = [
+  // ch12-s01: on 'rise', then one note per breath of L1201, the cadence note in the gap after 'held'
+  [RISE, 0.65, 'b4', 'a4', 0.2], [3.15, 2.1, 'd5', 'c5', 0.17], [5.27, 2.0, 'e5', 'd5', 0.13], [7.32, 2.4, 'd5', 'c5', 0.2],
+  // ch12-s02: the breath after 'does'; the gap before L1203
+  [11.97, 1.5, 'b4', 'a4', 0.11], [15.18, 0.34, 'd5', 'c5', 0.17], [15.52, 1.9, 'g5', 'f5', 0.13],
+  // after 'history' (the swell's gap): e d over Em7, then b d g over Cmaj7
+  [17.82, 0.7, 'e5', 'd5', 0.21], [18.52, 1.75, 'd5', 'c5', 0.2], [20.31, 0.85, 'b4', 'a4', 0.22],
+  [21.16, 0.5, 'd5', 'c5', 0.23], [21.66, 0.75, 'g5', 'f5', 0.26],
+  // the peak gap after 'lights' (over Cadd9)
+  [26.28, 1.3, 'e5', 'd5', 0.25],
+  // after 'nought': bar A, U alone (the struck branch is closed)
+  [30.80, 0.5, 'b4', 'a4', 0.2], [31.30, 0.5, 'd5', 'c5', 0.2], [31.80, 2.4, 'e5', 'd5', 0.17],
+  // ch12-s04, gate 0.5 from 'half': the eleven, one dyad per breath of L1206 / L1207
+  [34.82, 1.3, 'd5', 'c5', 0.27], [36.18, 1.15, 'b4', 'a4', 0.25], [37.38, 1.7, 'd5', 'c5', 0.25],
+  [39.10, 2.4, 'g5', 'f5', 0.22], [42.88, 2.2, 'e5', 'd5', 0.25], [45.17, 2.2, 'd5', 'c5', 0.25],
+  [47.45, 0.95, 'b4', 'a4', 0.23], [48.44, 1.1, 'd5', 'c5', 0.23],
+  // 'find': one line lifts a step (U D -> E); L stays on its C
+  [FIND, 0.65, 'e5', 'c5', 0.2],
+  // ch12-s05: the single line, the octave below, close and warm (gate back on U)
+  [50.25, 1.0, 'b3', 'a3', 0.2], [51.25, 3.6, 'd4', 'c4', 0.19], [54.95, 1.0, 'e4', 'd4', 0.18], [55.95, 2.1, 'd4', 'c4', 0.16]]
+const panU = t => t < LOOM ? 0.58 : t < LAMP ? 0.68 : 0.55        // 'loom': the two lines widen
+const piano = (side) => tl(...M1.map(([t, d, u, l, v]) => {
+  const g = side === 'U' ? gateU(t) : 1 - gateU(t)
+  const lp = t >= 50 ? 1300 : inLine(t) ? 1500 : 1900
+  return [t, d, note(side === 'U' ? u : l).velocity(v).gain(g).lpf(lp).pan(side === 'U' ? panU(t) : 1 - panU(t))] }))
+$: piano('U').s('piano').release(0.9).room(0.35).rsize(4).orbit(1)
+$: piano('L').s('piano').release(0.9).room(0.35).rsize(4).orbit(1)
+
+// ------------------------------------------------------------------ the low line: the shared D, the pedal
+$: tl([0, 9.06, note('d2').velocity(0.15)], [9.06, 8.7, note('g1').velocity(0.13)], [17.77, 2.5, note('e2').velocity(0.17)],
+      [20.31, 3.05, note('c2').velocity(0.19)], [WAVE, 1.45, note('b1').velocity(0.17)], [24.91, 2.65, note('c2').velocity(0.2)],
+      [STRUCK, 4.1, note('g1').velocity(0.15)], [31.77, 7.8, note('g1').velocity(0.13)], [39.61, 8.1, note('g1').velocity(0.12)],
+      [47.78, 3.4, note('g1').velocity(0.1)])
+  .s('gm_contrabass').attack(0.8).release(2.5).hpf(36).lpf(220).room(0.3).rsize(4).orbit(2)
+$: tl([0, 9.5, note('d3').velocity(0.11)],                                              // m12's D, carried
+      [50.20, 6.9, note('g2').velocity(0.11)])                                           // under the single line
+  .s('gm_cello').attack(0.6).release(2.6).lpf(900).room(0.35).rsize(4).orbit(2)
+// THE HANG on 'doubt': one warm low line on D (V), bowed once, let go on 'palm' so L1210 is spoken in near-silence
+$: tl([DOUBT + 0.02, 1.8, note('d3').velocity(0.11)]).s('gm_cello').attack(0.5).release(1.6).lpf(800).room(0.35).rsize(4).orbit(2)
+$: tl([DOUBT + 0.02, 1.5, note('d2').velocity(0.08)]).s('gm_contrabass').attack(0.5).release(1.4).hpf(36).lpf(220).room(0.3).rsize(4).orbit(2)
+
+// ------------------------------------------------------------------ strings: G/D, the re-hang, THE SWELL, the pedal
+// [time, dur, chord, velocity, lpf]; held material only under the lines (lpf <= 1200), open only in the gaps
+const STR = [
+  [RISE, 6.56, 'd3,g3,b3', 0.055, 800],
+  [9.06, 4.25, 'g2,d3,b3', 0.045, 800], [13.31, 2.0, 'g2,c3,e3', 0.055, 800], [15.31, 2.46, 'f#2,a2,d3', 0.06, 800],
+  // the swell: Em7 (deceptive, after 'history') - Cmaj7 (THE CREST, in the speech-free gap from 'loom') -
+  // G/B on 'wave' and Cadd9 held back under L1204 (<= 0.07, lpf <= 1000) - the peak - G on 'struck' (ghost)
+  [17.77, 2.54, 'e3,b3,d4,g4', 0.13, 1800], [20.31, 1.75, 'e3,g3,b3,e4', 0.17, 2400, 0.9],
+  [22.10, 1.31, 'e3,g3,b3,e4', 0.04, 850], [WAVE, 1.5, 'd3,g3,b3,d4', 0.045, 850], [24.91, 1.32, 'e3,g3,c4,d4', 0.05, 900],
+  [STRUCK, 2.8, 'd3,g3,b3,d4', 0.035, 800], [ZERO, 1.36, 'd3,g3,b3', 0.04, 800],
+  // the contested: a patient G pedal, the harmony moving underneath the eleven
+  [31.77, 3.5, 'd3,g3,b3', 0.06, 800], [35.27, 4.34, 'g2,c3,e3,b3', 0.06, 800], [39.61, 3.94, 'g2,d3,b3', 0.06, 800],
+  [43.55, 4.23, 'g2,c3,e3,a3', 0.055, 800], [47.78, 3.0, 'g2,d3,e3,b3', 0.05, 800]]
+$: tl(...STR.map(([t, d, c, v, f, r = 2.2]) => [t, d, note(mini('[' + c + ']')).velocity(v).lpf(f).release(r)]))
+  .s('gm_string_ensemble_1').attack(1.4).room(0.45).rsize(5).orbit(2)
+// THE PEAK, in the 1.2-s gap after 'lights': quick bow, dry and short, on its own orbit, decayed by 'struck'
+$: tl([LIGHTS + 0.42, 0.72, note(mini('[e3,g3,c4,d4,g4,e5]')).velocity(0.22).lpf(2400)])
+  .s('gm_string_ensemble_1').attack(0.22).release(0.4).room(0.15).rsize(2).orbit(6)
+
+// ------------------------------------------------------------------ the patient pulse (ch12-s02): harp, one note per beat
+// on the cascade's grid (ORDER - 7 … ORDER + 6), voicing the harmony; it hands over to the wave's ostinato
+const PULSE = ['g2', 'd3', 'b3', 'd3', 'c3', 'e3', 'f#2', 'a2', 'd3', 'e3', 'b2', 'c3', 'g3', 'e3']
+$: tl(...PULSE.map((n, k) => { const t = ORDER - 7 + k
+  const v = inLine(t) ? 0.055 : t > 22.0 ? 0.06 : t > 17.7 ? 0.09 + 0.012 * (t - 17.7) : 0.085   // swells after 'history'
+  return [t, 0.95, note(n).velocity(v)] }))
+  .s('gm_orchestral_harp').lpf(1100).release(1.0).room(0.4).rsize(4).orbit(3)
+
+// ------------------------------------------------------------------ THE WAVE: the score is the select
+// six slots = six loom columns, eighth notes anchored on 'wave' (slot n at WAVE + 0.5 n). U and L run from 'loom'
+// with their gates at 0 (the pass has not reached them); column k opens when the ostinato first reaches it after
+// 'wave' (WAVE + 0.5 k: column 5 on 'lights'). From 'struck' L's column k (1..5) closes at STRUCK + 0.7 (k - 1),
+// the last on 'zero'; its notes are still scheduled, multiplied by nought. Column 0 is the G both branches share.
+const OU = ['g4', 'b4', 'd5', 'e5', 'd5', 'b4'], OL = ['g4', 'a4', 'c5', 'd5', 'c5', 'a4']
+// held at 0.06-0.07 under L1204 (the wave lights, but under the words), the crest in the gap after 'lights',
+// ghost level under L1205 while the struck gates close
+const GAP = t => t >= LIGHTS + 0.38 && t < STRUCK - 0.2
+const swellVel = t => t < LIGHTS + 0.38 ? 0.034 + 0.01 * Math.min(1, (t - WAVE) / (LIGHTS - WAVE)) : GAP(t) ? 0.14 : 0.028 - 0.01 * Math.min(1, (t - STRUCK) / 3)
+const wave = (side) => { const evs = []
+  for (let n = -10; n <= 14; n++) { const t = WAVE + 0.5 * n, k = ((n % 6) + 6) % 6
+    let g = n >= 0 ? 1 : 0
+    if (side === 'L' && k > 0 && t >= STRUCK + 0.7 * (k - 1) - 0.01) g = 0
+    // the crest's notes are plucked short (0.3 + 0.2 release) so the last one is silent by 'struck'
+    evs.push([t, GAP(t) ? 0.3 : 0.5, note(side === 'U' ? OU[k] : OL[k]).velocity(swellVel(t)).gain(g)
+      .lpf(GAP(t) ? 3200 : 850).release(GAP(t) ? 0.2 : 0.9)]) }
+  return tl(...evs) }
+$: wave('U').s('gm_orchestral_harp').pan(0.62).room(0.3).rsize(3).orbit(3)
+$: wave('L').s('gm_orchestral_harp').pan(0.38).room(0.3).rsize(3).orbit(3)
+
+// ------------------------------------------------------------------ M2 · detents and relay clacks: dry, no tail
+// ghost level under the words (velocity <= 0.2, decay <= 0.04); the cascade's frames in the gap a little fuller
+const clack = (v) => stack(s('gm_woodblock').note('g5').velocity(v).decay(0.04).sustain(0),
+                           s('white').hpf(2500).decay(0.025).sustain(0).gain(0.22 * v))
+const detent = (v) => s('gm_woodblock').note('e6').velocity(v).decay(0.03).sustain(0)
+const CASCADE = [0, 1, 2, 3, 4, 5].map(k => { const t = ORDER + k; return [t, 0.3, clack(inLine(t) ? 0.15 : 0.27)] })
+$: tl([RULER, 0.3, clack(0.14)], [LIFT, 0.3, detent(0.16)], [RULE, 0.3, detent(0.15)], ...CASCADE,
+      [RACK, 0.3, clack(0.13)],
+      [TIE, 0.3, detent(0.18)],                                                        // the tie
+      [OUT, 0.3, clack(0.45)])                                                         // THE LAST STRIKE
+  .room(0).orbit(4)
+// the tie's tonic barely touched; the flip's paper snap over the dominant; the third stroke never comes
+$: tl([TIE, 1.0, note('g2').velocity(0.1)], [DOUBT, 1.0, note('d3').velocity(0.12)])
+  .s('gm_pizzicato_strings').lpf(1000).room(0.2).orbit(2)
+$: tl([DOUBT, 0.3, s('white').hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.1)]).room(0).orbit(4)
+
+// ------------------------------------------------------------------ 'loom': the paper-and-copper creak
+// a low wooden thunk, a bowed groan of brown noise, and a short irregular ratchet of fibres tensioning
+$: tl([LOOM, 0.8, s('gm_taiko_drum').note('c2').velocity(0.16).decay(0.3).sustain(0)])
+  .lpf(500).room(0.15).orbit(4)
+$: tl([LOOM, 0.9, s('brown').bpf(240).bpq(5).attack(0.12).decay(0.7).sustain(0).gain(0.16)]).orbit(5)
+$: tl([LOOM + 0.05, 0.7, s("white*9").bpf(1100).bpq(9).decay(0.018).sustain(0)
+        .gain("0.02 0.035 0.03 0.045 0.03 0.04 0.025 0.03 0.015")]).orbit(5)
+
+// ------------------------------------------------------------------ parchment: the paper room tone (ch12-s05 / s06)
+$: tl([LAMP, 13.0, s('pink').hpf(160).lpf(1400).attack(1.5).release(2.5).gain(0.004)]).orbit(5)
+
+// ------------------------------------------------------------------ master trim (render 1: -31.1 LUFS at 1.0; render 3: -24.6 at 2.2 before the voice pass; render 6: -25.2 at 2.4 after it; render 10: -25.2, -5.0 dBTP after the critic-1 swell move)
+all(x => x.postgain(2.5))

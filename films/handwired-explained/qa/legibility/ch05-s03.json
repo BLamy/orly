@@ -1,0 +1,169 @@
+{
+ "shot": "ch05-s03",
+ "at": "2026-10-28T11:25:50.124Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 31,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "It isn't",
+   "capWhileSubject": 60.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "really a",
+   "capWhileSubject": 60.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "network",
+   "capWhileSubject": 60.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the README's 2 primitives:",
+   "capWhileSubject": 66.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "matrix multiplication · reglu",
+   "capWhileSubject": 74.7,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "an hour",
+   "maxCap": 87.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 87.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 87.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 87.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The neuron",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Learn the",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "weights;",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "don't write",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "them",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1992–2026",
+   "maxCap": 47.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 39.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "For an",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "integer a",
+   "maxCap": 60.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 47.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 28.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 28.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 28.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 26
+}

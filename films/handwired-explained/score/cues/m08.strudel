@@ -1,0 +1,228 @@
+// m08 — DEEP DIVE III: UNFREEZING (handwired-explained), shots ch07-s01…ch07-s12.
+// Window 789.55-982.40 (192.85 s). 69 BPM, one 4/4 bar per cycle (cps 0.2875, bar 3.478 s): 55.444 cycles.
+// The learned gallery runs at its own 80 BPM (with a small accelerando in the bloom and a ritardando into the
+// duskRose shot); its notes are generated in JS so each one can drift off the grid and settle back.
+// Cue-local seconds = absolute - 789.55. Every hit is read from narration/timeline.json.
+//
+// Key plan: Bb major (dawnGold: the flat side of home, the first warm key since the clockwork) -> G minor for
+// the shut gate (the coldest moment) -> Bb again for the gallery -> G minor (duskRose) for the ruler and the
+// scope -> the contested interval held -> a whisper on the lower line, handed cold to m09's low G.
+//
+//    0.25  IN, alone before L0701: M1 in Bb, gate open on U (felt piano + a warm low string)
+//   13.37  'crack': a dry wooden snap, then a rising two-note figure left open (F -> G): 'Let's find out!'
+//   20.28  'flow': the valve's ostinato (Bb C D, rising, muted marimba), ghost-level under the numbers;
+//          29.71 'dials': a detent click per dial; 33.18 'open': a soft low pedal; 46.65 'back': the figure in
+//          REVERSE (D C Bb), a step slower, as the light runs back
+//   60.96  'shut': it stops dead on one dry clack; 63.25 'dark': near-silence, one low G (the coldest moment);
+//   74.95  'lanterns': M4, the ch02 reed, one faint phrase; 78.74 'can': the U line re-enters, warm and low
+//   83.15  'reverse': reversed figures clatter softly across the loom; 83.90 'gates': one muted ratchet tick;
+//   87.36  'rounding': one held Bb chord
+//   92.52  'tie' / 97.46 'flip' (tag 10); NO strike: the gate settles at 0.5 (both lines at half level, the
+//          slightly wrong interval) and holds, undecided, through 'rest'
+//  111.06  THE LEARNED GALLERY: M1's cell unfrozen into a marimba arpeggio (Bb Gm Eb F) whose notes drift off
+//          the grid and settle back; 112.97 'counters' (three clicks), 115.02 'pile' (a settling cluster),
+//          124.08 'pair' (ten pencil ticks), 127.85 'where' / 130.06 'who' (F -> Bb), 133.32 'springs' (creaks),
+//          135.94 'cap' (a click cluster), 138.22 'vote' (a tally), 138.52 'adam' (a ratchet click)
+//  139.31  THE BLOOM: strings join, the pulse quickens from 'train' and eases; the cadence home on 'settle'
+//  151.74  duskRose, G minor, slower: 153.42 'snap' (a hard, too-neat clack: the figure snaps to the grid),
+//          156.21 'decline' (it loosens), 161.02 'slider' (it climbs back and finds its line by itself)
+//  162.62  the scope: the figure thins to two voices; 183.10 'qtag': the gate drifts back to 0.5 (the same
+//          held interval as tag 10); 186.44 'pencil': a held breath of silence
+//  188.40  the lines at a whisper, gate closed on U (L heard; U still running at 0); 189.93 'valve': one dry
+//          relay clack, the LAST ONSET; it all decays into the fade (191.65) and m09's low G
+setcpm(69/4)
+const CPS = 69/240, DUR = 192.85
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (b <= a) throw new Error('tl empty slot at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const lanes = evs => { const s = [...evs].sort((a, b) => a[0] - b[0]), L = []
+  for (const e of s) { let l = L.find(l => l.end <= qn(e[0])); if (!l) { l = { end: 0, evs: [] }; L.push(l) }
+    l.evs.push(e); l.end = qn(e[0] + e[1]) }
+  return stack(...L.map(l => tl(...l.evs))) }
+const hits = list => lanes(list.map(([t, d, n, v]) => [t, d, note(n).velocity(v)]))
+const run = (t0, n, dt, notes, v0, v1 = v0, d = 0.05) =>
+  Array.from({ length: n }, (_, i) => [t0 + i * dt, Math.min(d, dt * 0.9), notes[i % notes.length], v0 + (v1 - v0) * i / Math.max(1, n - 1)])
+const room = x => x.room(0.35).rsize(4)
+
+const LINES = [[2.37, 7.21], [7.61, 13.99], [15.63, 27.93], [28.53, 38.41], [39.11, 45.95], [46.65, 55.95],
+  [57.55, 63.68], [65.28, 74.06], [74.76, 80.04], [81.68, 87.83], [91.05, 97.90], [98.50, 103.78], [104.48, 109.65],
+  [111.26, 118.97], [121.38, 130.30], [132.01, 136.37], [137.07, 139.31], [144.24, 148.47], [152.34, 160.82],
+  [163.22, 168.85], [169.35, 178.31], [179.01, 188.32]]
+const speech = (vs, vg = 1) => { const segs = []; let cur = 0
+  for (const [a, b] of LINES) { const qa = qn(a), qb = qn(b); if (qa > cur) segs.push([qa - cur, pure(vg)]); segs.push([qb - qa, pure(vs)]); cur = qb }
+  const end = qn(DUR); if (end > cur) segs.push([end - cur, pure(vg)]); return stepcat(...segs).slow(end / Q) }
+const inLine = t => LINES.some(([a, b]) => t >= a - 0.05 && t <= b)
+
+// ================================================================ 1. FROST (ch07-s01): M1 in Bb, gate open on U
+// U = D F G F (3-5-6-5 in Bb); L = C Eb F Eb, scheduled at gain 0 (the select: the lower branch runs unheard)
+$: room(tl([0.25, 2.1, note("d5@0.5 f5@0.5 g5@0.6 f5@0.5").gain(1)], [14.05, 1.5, note("f4@0.55 g4@0.95").gain(1)]))
+  .s("piano").velocity(0.2).lpf(1700).pan(0.58).release(0.8)
+$: room(tl([0.25, 2.1, note("c5@0.5 eb5@0.5 f5@0.6 eb5@0.5").gain(0)])).s("piano").velocity(0.2).lpf(1700).pan(0.42)
+// the warm low string under it, Bb, held through the frost
+$: room(tl([0.20, 14.0, note("[bb2,f3,d4]")])).s("gm_string_ensemble_1").velocity(0.075).attack(1.2).release(2).lpf(800)
+$: tl([0.20, 60.76, note("bb1")]).s("gm_contrabass").velocity(0.1).attack(1.5).release(0.6).lpf(260)
+// 'crack' (13.37): ice as paper: a small dry wooden snap ...
+$: tl([13.37, 0.1, s("white")]).hpf(2000).lpf(8000).decay(0.03).sustain(0).gain(0.1)
+$: tl([13.37, 0.1, note("c6")]).s("gm_woodblock").velocity(0.16).decay(0.03).sustain(0)
+// ... then the rising two-note question in the gap (F -> G, 5 -> 6 over Bb add9: it does not resolve; the
+// piano notes are in the first M1 layer above)
+$: room(tl([14.05, 1.6, note("[bb2,f3,c4]")])).s("gm_string_ensemble_1").velocity(0.07).attack(0.3).release(1.4).lpf(900)
+
+// ================================================================ 2. THE VALVE (ch07-s02): the ostinato
+// forward ('flow' 20.28): Bb C D rising, three eighths at the top of each bar, muted marimba, ghost-level
+// under the numbers; backward ('back' 46.65): D C Bb, a step slower (quarters), as the light runs back
+const fwd = "[bb4 c5] [d5 ~] ~ ~", back = "d5 c5 bb4 ~"
+const bars = s => qn(s) / Q
+$: tl([20.28, 26.37, note(fwd).fast(bars(26.37))], [46.65, 14.31, note(back).fast(bars(14.31))])
+  .s("gm_marimba").velocity(0.15).lpf(1200).pan(0.55).gain(1.5).mul(velocity(speech(0.55)))
+// 'dials' (29.71): one detent click per dial (w, g, b)
+$: hits(run(29.71, 3, 0.42, ["e6"], 0.12)).s("gm_woodblock").decay(0.03).sustain(0)
+// 'open' (33.18): a soft low pedal under the open gate (cello Bb, sustained until the gate shuts)
+$: room(tl([33.18, 27.78, note("bb2")])).s("gm_cello").velocity(0.08).attack(1.5).release(0.3).lpf(500)
+$: room(tl([20.28, 26.37, note("[bb2,f3]")], [46.65, 14.31, note("[g2,bb2,d3]")])).s("gm_string_ensemble_1")
+  .velocity(0.055).attack(1.5).release(0.3).lpf(650)
+
+// ================================================================ 3. THE SHUT GATE (ch07-s03, duskRose): G minor
+// 'shut' (60.96): the ostinato stops dead: one dry wooden clack, no reverb tail
+$: tl([60.96, 0.1, note("g5")]).s("gm_woodblock").velocity(0.3).decay(0.04).sustain(0)
+// 'dark' (63.25): near-silence: room tone and one low sustained G, the coldest moment of the dive
+$: tl([63.25, 17.0, note("g1")]).s("gm_contrabass").velocity(0.09).attack(2.5).release(2).lpf(200)
+$: tl([62.0, 19.0, s("pink")]).hpf(2500).lpf(7000).gain(0.005).attack(2).release(2)
+// 'lanterns' (74.95): M4, the ch02 reed, as a faint echo: its first phrase, at its own pitch (E G A G)
+$: room(tl([74.95, 4.0, note("e4@1 g4@1 a4@1.4 g4@0.6")])).s("gm_clarinet").velocity(0.09).attack(0.2).release(1.0).lpf(900)
+// 'can' (78.74): the U line re-enters warmly, low: D -> F G F into the gap (80.04-81.68), over Bb returning
+$: room(tl([78.74, 2.9, note("d4@1.3 f4@0.5 g4@0.6 f4@0.5")])).s("piano").velocity(0.17).lpf(1400).pan(0.58).release(0.8)
+$: room(tl([79.9, 1.9, note("[bb2,f3]")])).s("gm_string_ensemble_1").velocity(0.06).attack(0.8).release(1.0).lpf(700)
+
+// ================================================================ 4. RUNNING BACKWARDS (ch07-s04)
+// 'reverse' (83.15): reversed valve figures spread across the loom, overlapping softly, thinning
+$: hits([[83.15, 0.6, "d5", 0.1], [83.45, 0.6, "c5", 0.09], [83.75, 0.6, "bb4", 0.08],
+         [83.35, 0.6, "f5", 0.07], [83.65, 0.6, "eb5", 0.06], [83.95, 0.6, "d5", 0.06],
+         [84.10, 0.6, "bb5", 0.05], [84.40, 0.6, "a5", 0.045], [84.70, 0.6, "g5", 0.04],
+         [85.30, 0.6, "d5", 0.035], [85.60, 0.6, "c5", 0.03]])
+  .s("gm_marimba").lpf(1500).pan("<0.3 0.7 0.5>")
+// 'gates' (83.90): one muted ratchet tick where the light is stopped
+$: hits(run(83.90, 3, 0.04, ["a5", "g5", "f5"], 0.07, 0.05, 0.03)).s("gm_woodblock").decay(0.03).sustain(0).lpf(3000)
+// 'rounding' (87.36): it settles onto one held Bb chord (through the gap 87.83-91.05)
+$: room(tl([87.36, 4.0, note("[bb2,f3,d4,f4]")])).s("gm_string_ensemble_1").velocity(0.09).attack(0.8).release(1.5).lpf(1000)
+$: room(tl([87.83, 2.4, note("[bb3,d4,f4]")])).s("piano").velocity(0.15).lpf(1300).release(1.5)
+// the low Bb comes back after the coldest stretch (80.0) and holds under 'reverse' and tag 10's tie
+$: tl([80.0, 18.3, note("bb1")]).s("gm_contrabass").velocity(0.09).attack(1.5).release(1.2).lpf(260)
+$: room(tl([81.7, 5.6, note("[bb2,f3]")], [91.2, 6.3, note("[bb2,f3]")])).s("gm_string_ensemble_1").velocity(0.05).attack(1.5).release(1.2).lpf(650)
+
+// ================================================================ 5. TAG 10 (ch07-s05): tie, flip, and NO strike
+$: tl([92.52, 0.1, note("e6")]).s("gm_woodblock").velocity(0.17).decay(0.03).sustain(0)
+$: tl([92.52, 0.5, note("bb2")], [97.46, 0.5, note("f2")]).s("gm_pizzicato_strings").velocity(0.13).lpf(1200)
+$: tl([97.46, 0.1, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.12)
+// the third stroke never comes: the gate settles at 0.5 (both lines at half level, the slightly wrong
+// interval) in the breath after 'doubts', then holds undecided, low, through 'rest' (109.29)
+const ELEVEN_U = "d5@0.45 f5@0.45 g5@1.2", ELEVEN_L = "c5@0.45 eb5@0.45 f5@1.2"
+// (the same voicing both times; under L0721 it is struck softer and darker)
+$: room(tl([97.90, 2.1, note(ELEVEN_U).gain(0.5).velocity(0.3)], [183.10, 2.6, note(ELEVEN_U).gain(0.5).velocity(0.2)])).s("piano").lpf(1500).pan(0.58).release(1)
+$: room(tl([97.90, 2.1, note(ELEVEN_L).gain(0.5).velocity(0.3)], [183.10, 2.6, note(ELEVEN_L).gain(0.5).velocity(0.2)])).s("piano").lpf(1500).pan(0.42).release(1)
+$: room(tl([98.30, 12.6, note("[f4,g4]")], [183.50, 2.94, note("[f4,g4]")])).s("gm_string_ensemble_1").velocity(0.05).attack(1.2).release(0.6).lpf(900)
+$: tl([98.30, 12.6, note("eb2")]).s("gm_contrabass").velocity(0.08).attack(1.5).release(1.2).lpf(260)
+
+// ================================================================ 6-11. THE LEARNED GALLERY: M1 UNFROZEN
+// The cell (3-5-6-5 at the top of each chord) as a marimba arpeggio of eighths at 80 BPM (with a small
+// accelerando in the bloom and a ritardando into duskRose). Each note drifts off the grid by up to DRIFT(t)
+// seconds (a seeded random offset), and the drift settles to zero: the music learning its own places.
+// The ruler's snap ('snap' 153.42) forces it onto the grid for a moment; 'decline' lets it loosen again.
+const CHORDS = [ // [t, root midi, third, sixth]
+  [111.06, 58, 4, 21], [114.06, 55, 3, 20], [117.06, 51, 4, 21], [120.06, 53, 4, 21],
+  [123.06, 58, 4, 21], [125.30, 55, 3, 20], [126.60, 51, 4, 21], [127.85, 53, 4, 21], [130.06, 58, 4, 21],
+  [133.06, 55, 3, 20], [136.06, 51, 4, 21], [138.22, 53, 4, 21],
+  // the bloom: Bb Gm Eb ('train') Bb/D Cm ('traveller') F Gm Eb F -> Bb ('settle')
+  [139.31, 58, 4, 21], [141.00, 55, 3, 20], [142.74, 51, 4, 21], [144.24, 58, 4, 21], [145.07, 48, 3, 22],
+  [146.60, 53, 4, 21], [147.60, 55, 3, 20], [148.47, 51, 4, 21], [149.00, 53, 4, 21], [149.67, 58, 4, 21],
+  // duskRose: G minor, slower; 'snap', 'decline' (Cm), D (V), 'slider' (Gm, climbing back)
+  [151.74, 55, 3, 20], [154.80, 51, 4, 21], [156.21, 48, 3, 20], [158.50, 50, 4, 20], [161.02, 55, 3, 20],
+  // the scope: two voices only (see below)
+  [163.30, 51, 4, 21], [166.80, 48, 3, 20], [170.30, 50, 4, 20], [173.80, 55, 3, 20], [177.30, 51, 4, 21], [180.80, 55, 3, 20]]
+const GAL_END = 186.44                                              // 'pencil': a held breath of silence
+const bpmAt = t => t < 142.74 ? 80 : t < 145.07 ? 80 + 8 * (t - 142.74) / 2.33 : t < 149.67 ? 88 - 8 * (t - 145.07) / 4.6
+  : t < 151.74 ? 80 : t < 156.0 ? 80 - 10 * (t - 151.74) / 4.26 : 70
+const DRIFT = t => t < 112.5 ? 0.04 * (t - 111.06) / 1.44 : t < 128 ? 0.07 : t < 149.67 ? 0.07 * (149.67 - t) / 21.67
+  : t < 153.42 ? 0.0 : t < 156.21 ? 0.0 : t < 161.02 ? 0.06 : t < 168 ? 0.06 * (168 - t) / 6.98 : 0
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647
+const GAL = []
+{ let t = 111.06, i = 0, ci = 0
+  while (t < GAL_END - 0.05) {
+    while (ci + 1 < CHORDS.length && CHORDS[ci + 1][0] <= t + 1e-6) { ci++; i = 0 }
+    const [, R, th, sx] = CHORDS[ci]
+    const climb = t >= 161.02 && t < 163.3                           // 'slider': a gently rising arpeggio
+    const shape = climb ? [0, 7, 12 + th, 19, 24, 24 + th, 31, 36] : [0, 7, 12 + th, 19, sx, 19, 12 + th, 7]
+    const two = t >= 162.62                                          // the scope: two voices (root, top)
+    const k = i % 8, n = R + shape[k]
+    const off = (rnd() * 2 - 1) * DRIFT(t)
+    const bloom = t >= 139.31 && t < 151.74
+    let v = (k === 0 ? 0.3 : 0.22) * (bloom ? 1.0 : 1)   // render 1: the gallery sat at -44 LUFS under the lines * (t >= 151.74 ? 0.85 : 1)
+    if (t >= 153.42 && t < 156.21) v = 0.22                          // the ruler: every note the same, too neat
+    if (!two || k === 0 || k === 4) GAL.push([Math.max(111.06, t + off), 0.5, two && k === 4 ? R + 19 : n, two ? v * 0.8 : v])
+    t += 30 / bpmAt(t); i++ }
+}
+// the marimba soundfont is quiet: gain 1.5, but its attack is bright, so lpf 1200 (render 3 put -34 dB of
+// 1-4 kHz under the lines at lpf 2000)
+$: room(hits(GAL)).s("gm_marimba").lpf(1200).pan(0.52).gain(1.5).mul(velocity(speech(0.6)))
+// the gallery's soft pulse: pizz roots on each chord, and a felt-piano shadow of the root a tenth up in the gaps
+$: room(hits(CHORDS.filter(c => c[0] < GAL_END).map(([t, R], j, a) => [t, Math.min(1.2, (a[j + 1] ? a[j + 1][0] : GAL_END) - t), R - 12, 0.15])))
+  .s("gm_pizzicato_strings").lpf(900).pan(0.45)
+// 'counters' (112.97): three small detent clicks; 'pile' (115.02): a soft settling cluster
+$: hits(run(112.97, 3, 0.23, ["e6"], 0.1)).s("gm_woodblock").decay(0.03).sustain(0)
+$: room(hits([[115.02, 0.6, "[f4,bb4,c5,d5]", 0.07], [115.10, 0.6, "[g4,eb5]", 0.06], [115.22, 0.6, "[f4,bb4]", 0.05]])).s("gm_marimba").lpf(1600)
+// 'pair' (124.08): a dry pencil tick for each pairing: ten quick quiet ticks
+$: tl(...Array.from({ length: 10 }, (_, i) => [124.08 + i * 0.13, 0.08, s("white")])).bpf(3200).bpq(3).decay(0.03).sustain(0).gain(0.05)
+// 'where' (127.85) / 'who' (130.06): a small two-chord cadence, F -> Bb (felt piano, soft)
+$: room(tl([127.85, 2.1, note("[f3,c4,a4]")], [130.06, 2.4, note("[bb3,d4,f4]")])).s("piano").velocity(0.09).lpf(1300).release(1.2)
+// 'springs' (133.32): spring creaks, soft paper-and-wire; 'cap' (135.94): each collar stop a small dry click
+$: tl([133.32, 0.5, s("pink")], [133.95, 0.45, s("pink")], [134.55, 0.5, s("pink")]).bpf(sine.range(1800, 3400).slow(0.12)).bpq(8)
+  .attack(0.08).release(0.2).gain(0.02)
+$: hits([0, 0.05, 0.09, 0.16, 0.2, 0.27, 0.31, 0.38].map((d, i) => [135.94 + d, 0.04, ["c6", "b5", "d6", "a5"][i % 4], 0.07]))
+  .s("gm_woodblock").decay(0.02).sustain(0).lpf(4500)
+// 'vote' (138.22): a gentle tally of woodblock taps; 'adam' (138.52): a single ratchet click
+$: hits([...run(138.22, 5, 0.06, ["g5"], 0.06, 0.04, 0.04), ...run(138.55, 3, 0.035, ["c6", "b5", "a5"], 0.08, 0.06, 0.03)])
+  .s("gm_woodblock").decay(0.03).sustain(0)
+
+// ================================================================ 7. THE BLOOM (ch07-s09)
+// strings join (intensity 0.55 in the gaps, 0.35 under L0718), voiced to follow the chords; the top voice
+// sings M1's cell in the gaps; the cadence F -> Bb lands on 'settle' (149.67) and holds as the chart flattens
+$: room(lanes([[139.31, 1.69, note("[bb2,f3,d4,f4]").velocity(0.070)], [141.00, 1.74, note("[g2,d3,bb3,g4]").velocity(0.077)],
+               [142.74, 1.5, note("[eb2,bb2,g3,bb4]").velocity(0.084)], [144.24, 0.83, note("[d3,bb3,f4]").velocity(0.052)],
+               [145.07, 1.53, note("[c3,g3,eb4]").velocity(0.052)], [146.60, 1.0, note("[f2,c3,a3]").velocity(0.052)],
+               [147.60, 0.87, note("[g2,d3,bb3]").velocity(0.052)], [148.47, 0.53, note("[eb2,bb2,g3,eb4]").velocity(0.070)],
+               [149.00, 0.67, note("[f2,c3,a3,eb4]").velocity(0.084)], [149.67, 2.0, note("[bb1,f2,bb2,d3,f3,bb3,d4]").velocity(0.073)]]))
+  .s("gm_string_ensemble_1").attack(0.35).release(1.6).lpf(1200)
+$: room(hits([[139.40, 0.5, "d5", 0.15], [139.90, 0.5, "f5", 0.15], [140.40, 0.9, "g5", 0.16], [141.30, 1.2, "f5", 0.14],
+              [142.74, 0.6, "g5", 0.12], [143.35, 0.85, "bb5", 0.11],
+              [148.50, 0.5, "g5", 0.14], [149.00, 0.67, "a5", 0.15], [149.67, 2.2, "bb5", 0.13]]))
+  .s("gm_orchestral_harp").lpf(2400).pan(0.6).gain(0.8)
+$: tl([139.31, 12.4, note("bb1")]).s("gm_contrabass").velocity(0.09).attack(1.2).release(1.2).lpf(260)
+
+// ================================================================ 8. DUSKROSE (ch07-s10), G minor
+// 'snap' (153.42): the ruler's snap, a hard, too-neat clack
+$: tl([153.42, 0.1, note("e5")]).s("gm_woodblock").velocity(0.32).decay(0.04).sustain(0)
+$: tl([153.42, 0.1, s("white")]).hpf(2200).decay(0.02).sustain(0).gain(0.08)
+// the low G returns under the tender shot and the scope
+$: room(tl([151.74, 34.6, note("[g2,d3]")])).s("gm_string_ensemble_1").velocity(0.05).attack(2).release(0.4).lpf(600)
+$: tl([151.74, 34.7, note("g1")]).s("gm_contrabass").velocity(0.08).attack(2).release(0.4).lpf(220)
+
+// ================================================================ 9. THE SCOPE (ch07-s11): two voices; 'qtag' 0.5
+// (the figure thins in the GALLERY generator; the held interval at 'qtag' is in section 5, the same voicing as
+// tag 10's). 'pencil' (186.44): one held breath of silence: nothing sounds from here until the whisper.
+
+// ================================================================ 10. THE X-RAY (ch07-s12)
+// the lines at a whisper: the gate fully CLOSED on U (U runs at gain 0, inaudible; L is what we hear)
+$: tl([188.40, 2.4, note("c5@0.45 eb5@0.45 f5@1.5").gain(1)]).s("piano").velocity(0.09).lpf(1300).pan(0.42).release(1.5)
+$: tl([188.40, 2.4, note("d5@0.45 f5@0.45 g5@1.5").gain(0)]).s("piano").velocity(0.09).lpf(1300).pan(0.58)
+$: tl([188.40, 4.0, note("g1")]).s("gm_contrabass").velocity(0.06).attack(1).release(1.5).lpf(200)
+// 'valve' (189.93): one dry relay clack: the last strike
+$: tl([189.93, 0.1, note("g5")]).s("gm_woodblock").velocity(0.4).decay(0.04).sustain(0)
+$: tl([189.93, 0.08, s("white")]).hpf(2500).decay(0.025).sustain(0).gain(0.08)
+$: tl([188.0, 4.85, s("pink")]).hpf(2500).lpf(7000).gain(0.005).attack(1).release(1.5)
+
+// house level: about -24.5 LUFS integrated (render 1: -28.3 at postgain 3.0, gallery too quiet)
+all(x => x.mul(velocity(speech(0.75))).postgain(4.6))

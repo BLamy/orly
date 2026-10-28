@@ -1,0 +1,32 @@
+{
+ "shot": "ch04-s02",
+ "at": "2026-10-28T17:38:07.286Z",
+ "step": 0.0833,
+ "sampled": 204,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch04-s02-card",
+  "ch04-s02-ledger"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch04-s02-card",
+   "probed": true,
+   "from": 3.55,
+   "to": 16.967,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch04-s02-ledger",
+   "probed": true,
+   "from": 8.55,
+   "to": 16.967,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

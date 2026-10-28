@@ -1,0 +1,23 @@
+{
+ "shot": "ch08-s01",
+ "at": "2026-10-28T14:37:51.559Z",
+ "minCapPx": 22,
+ "sampled": 11,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "JULY 2026 · 6",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AUGUST 2026 · 0",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

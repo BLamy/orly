@@ -1,0 +1,33 @@
+{
+ "round": 1,
+ "at": "2026-10-28T18:13:00Z",
+ "pass": false,
+ "mean": 7.76,
+ "bar": {
+  "minDimension": 8,
+  "mean": 8.6,
+  "noCritical": true
+ },
+ "floor": 8,
+ "scores": {
+  "accuracy": 7.92,
+  "depth": 8.17,
+  "clarity": 7.25,
+  "story": 7.83,
+  "curiosity": 8,
+  "visual": 7.67,
+  "sync": 7.92,
+  "sound": 7.33
+ },
+ "notes": {
+  "accuracy": "Carefully sourced, with the on-screen arithmetic re-checked to the last digit and fair treatment of live disputes. It is held back by a few overreaches: the biology strand ends at 2020 when biology had moved on from 1959, 'for fun' is quoted out of context, and a 'cure' card overstates the evidence.",
+  "depth": "The three deep dives are real: worked ternaries, tie-to-even rounding, a 2^149 lens train and checkable gradients. A few steps an expert would ask for are still missing, such as why exactly 2^149 and why a − 5 reads two.",
+  "clarity": "This is the weakest dimension. Dense lines arrive with no bridge back after the FP32 detour, Deep Dive II contradicts itself on one run per frame, the JSON tape is drawn mirrored, and several key cards and quotes are blank or too small to read.",
+  "story": "The spine is strong, with a 4.5 → 11 hook paid off three times and a believer, a dissenter and a duration in every era. The second half drifts: a silent orphan plate in ch08, a timeline slip into ch11, and a finale whose answer to 'why?' rests on a misquote.",
+  "visual": "The backlit paper-cut light is lovely at its best (the commit building, the backward-pass beam, the passed tag). But the puppetry is one plain sleeve repeated about twenty times, the mid-film plates are flat, and there is a mirrored tape, a blank card and two ghost-text failures.",
+  "sync": "Most beats land on their words, and the arithmetic inks as it is spoken. A few key moments miss: the three beliefs named in the finale are never singled out, the drift number sits on Handwired's line for ten seconds, and quoted cards stay greeked while they are read aloud.",
+  "sound": "The mix is clean (-16 LUFS, every line at least 10 dB over the music), and the select-gate score is a real leitmotif system. Three cues still hold beating contrabass pedals under speech, the first payoff line is the quietest in the film, and the credits fall into near-silence.",
+  "curiosity": "Questions are planted and paid off: 'what is a GPU for?', Kleene's finite machine and the stranger's 'why?' all return. The film's best reversal, 'RegExp is fast', is humble and funny. The tag-strike ritual wears thin by the second half."
+ },
+ "summary": "Round 1 gate FAILS: mean 7.76 (bar 8.6) with clarity 7.25, sound 7.33, visual 7.67, story 7.83, accuracy 7.92 and sync 7.92 under 8. There are no critical issues. The highest-leverage fixes are a clarity and accuracy line pass (20 re-narrated lines, including the Deep Dive II contradiction, the 2^149 reason, the 'for fun' misquote and the ch11 chronology), the broken visuals (mirrored tape in ch09-s05, blank card in ch10-s01, greeked quotes in ch09-s08, ghost text in ch06-s02/s03), singling out the finale's three beliefs, re-bowing the beating contrabass in m03/m09, and a sustained D under the credits."
+}

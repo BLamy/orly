@@ -1,0 +1,144 @@
+{
+ "shot": "ch03-s07",
+ "at": "2026-10-28T09:35:27.745Z",
+ "minCapPx": 22,
+ "sampled": 6,
+ "texts": 26,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "HandwiredOS",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "source table · 234 cells",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Monitor",
+   "maxCap": 14.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THIS PROGRAM",
+   "maxCap": 14.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "State",
+   "maxCap": 14.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "234",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Operations",
+   "maxCap": 14.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4,646",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Outputs",
+   "maxCap": 14.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "493",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.875",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "94.625",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.375",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "64.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.125",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "33.875",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "23.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13.625",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "130 layers · 9,909 weights",
+   "maxCap": 14.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Notes",
+   "maxCap": 9.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Photos",
+   "maxCap": 9.8,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 24
+}

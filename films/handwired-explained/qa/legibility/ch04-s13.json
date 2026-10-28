@@ -1,0 +1,134 @@
+{
+ "shot": "ch04-s13",
+ "at": "2026-10-28T10:37:20.778Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 24,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "FP32",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "exact",
+   "capWhileSubject": 40.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= equal to the FP32 calculation,",
+   "capWhileSubject": 40.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "not float64",
+   "capWhileSubject": 40.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "float64",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1,732 px",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "f(1/244)",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "f(f(1732 − 24) ×",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "·   float64: 7",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "columns ≥ 7:",
+   "capWhileSubject": 37.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 37.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= 6.999999523162842",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0.49999997 → 0   ·   0.5 → 8,388,609.5 → 8,388,610 → 1",
+   "maxCap": 31.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8,388,608",
+   "maxCap": 29.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8,388,609",
+   "maxCap": 29.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8,388,610",
+   "maxCap": 29.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "8,388,611",
+   "maxCap": 29.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "5",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "6",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 12
+}

@@ -1,0 +1,39 @@
+{
+ "shot": "ch04-s11",
+ "at": "2026-10-28T11:37:39.620Z",
+ "minCapPx": 22,
+ "sampled": 11,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "grid 1",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a range only: 16 ops · 15 layers",
+   "capWhileSubject": 28.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "grid 1: 2 ops · 2 layers",
+   "capWhileSubject": 28.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "the README",
+   "maxCap": 7.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

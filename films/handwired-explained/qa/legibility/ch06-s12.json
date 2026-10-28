@@ -1,0 +1,28 @@
+{
+ "shot": "ch06-s12",
+ "at": "2026-10-28T12:57:17.774Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "an echo, not a citation",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“a fixed-depth circuit”",
+   "capWhileSubject": 24.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the lab guide",
+   "capWhileSubject": 24.2,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

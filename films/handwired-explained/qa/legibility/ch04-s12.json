@@ -1,0 +1,99 @@
+{
+ "shot": "ch04-s12",
+ "at": "2026-10-28T10:37:20.363Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 17,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "8,388,608",
+   "capWhileSubject": 29.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8,388,609",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8,388,610",
+   "capWhileSubject": 29.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8,388,611",
+   "capWhileSubject": 29.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= 2",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "23",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "+ 1",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "boolean(score) =",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "f(f(f(score) +",
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0.49999997",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 0",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "·   0.5",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 8,388,609.5",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 8,388,610",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 1",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1",
+   "maxCap": 16.5,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

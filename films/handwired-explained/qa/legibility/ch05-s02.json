@@ -1,0 +1,28 @@
+{
+ "shot": "ch05-s02",
+ "at": "2026-10-28T11:25:36.440Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“a giant matmul”",
+   "capWhileSubject": 41.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the README",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "sparsity: built · fusion: partial · scheduling: parked",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -1,0 +1,18 @@
+{
+ "id": "m01",
+ "start": 0,
+ "end": 100.5,
+ "file": "films/handwired-explained/score/renders/m01.wav",
+ "duration": 106.5,
+ "I": -24.4,
+ "LRA": 11.2,
+ "TP": -6.3,
+ "expected": 106.5,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m01.png",
+ "cueSeconds": 100.5,
+ "cps": 0.25,
+ "lastStrikeLocal": 97.02,
+ "lastStrike": 97.02
+}

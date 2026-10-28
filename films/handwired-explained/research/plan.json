@@ -1,0 +1,307 @@
+{
+  "working_title": "Handwired: How an Ordinary Program Becomes an Exact Neural Net (and Learns Anyway)",
+  "audience": "Curious general viewers (teenagers through adults) with no assumed math or CS background, plus working programmers and ML practitioners who want the real mechanics; every number and construction on screen must survive a practitioner checking it by hand or by running the code at chenglou/handwired@257856e.",
+  "central_questions": [
+    "What is a Handwired program: which primitives (FP32 weighted sums, gated relu / reglu, boolean and indexRead operations) does it reduce JavaScript to, and how are cells, wires, the source table and builder code appending to a Circuit organized?",
+    "How exactly does the README example (a > 4) ? 10 : 12 become relu arithmetic, with real numbers on screen, and why do both branches always run while a 0/1 selector picks one?",
+    "What does 'exact' mean in FP32 here: which declared ranges, rounding points, comparison rules (emitCompare) and magnitude limits make the arithmetic agree with JavaScript, and where are the limits (non-integers, dynamic division)?",
+    "How is a whole program compiled into one big matmul (layers, fusion, sparsity) and run on the JS CPU evaluator or WebGPU, and what do the measured costs look like?",
+    "How do loops and state become fixed-size arithmetic: the host loop (inputs in, evaluate, next state copied back, DOM writes), why a program cannot stop early, and the patterns (counts, trees, tables, prefix networks, sort, filter+slice into K nodes, same work on every item)?",
+    "How are springs and time handled inside a program with no clock of its own?",
+    "What do the three demos (HandwiredOS, the learned gallery, JSON search over 100,000 documents per keystroke) actually do and measure?",
+    "What does differentiability buy: how do gradients flow through a handwritten program, what happens when weights are unfrozen and trained end to end, and what did the lab find learns or does not?",
+    "Where does this sit relative to the old idea that neurons compute logic (McCulloch and Pitts, 1943) and modern work compiling programs into networks, and what is still open as of 2026-10-27?"
+  ],
+  "topics": [
+    {
+      "id": "framing-logic-neurons-to-compiled-programs",
+      "title": "Framing: From Logical Neurons to Programs Compiled into Networks",
+      "era": "1943-2026 (brief context only)",
+      "questions": [
+        "What exactly did McCulloch and Pitts (1943) claim a net of idealized threshold neurons could compute, in their own words, and how was that claim received and later qualified?",
+        "What did Kleene (1951/1956) and later Siegelmann and Sontag (1992/1995) show about what neural nets can compute, and with which caveats (rational weights, unbounded precision)?",
+        "What do modern 'compile a program into a network' efforts claim: RASP (Weiss, Goldberg, Yahav 2021), Tracr (Lindner et al. 2023), looped transformers as programmable computers (Giannou et al. 2023)? How do they differ from Handwired (transformer weights vs. matmul + relu/reglu for UI programs)?",
+        "Does the Handwired repo itself cite or position itself against any of this prior work (search README, docs, lab/research-sweep.md)? If not, the film must present the framing as context, not as the author's lineage.",
+        "What is the belief of the age today about hand-written vs. learned weights, and who argues for/against compiled networks (e.g., mechanistic interpretability uses of Tracr)?"
+      ],
+      "must_cover": [
+        "Warren McCulloch and Walter Pitts, 'A Logical Calculus of the Ideas Immanent in Nervous Activity' (Bulletin of Mathematical Biophysics, 1943) — verbatim key sentence only if verified",
+        "Stephen Kleene, 'Representation of Events in Nerve Nets and Finite Automata' (RAND 1951 / Automata Studies 1956)",
+        "Hava Siegelmann and Eduardo Sontag on Turing-complete recurrent nets (1992/1995) and the precision caveat",
+        "RASP: Gail Weiss, Yoav Goldberg, Eran Yahav, 'Thinking Like Transformers' (ICML 2021)",
+        "Tracr: David Lindner et al., DeepMind, 2023",
+        "Giannou et al., 'Looped Transformers as Programmable Computers' (ICML 2023)",
+        "Whether chenglou/handwired references any of these (lab/research-sweep.md); keep framing brief and labeled as context",
+        "Contested: whether 'neurons compute logic' was ever biologically right (later neuroscience dissent)"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "the-project-and-its-claim",
+      "title": "The Project: Handwired, Its Claim, Its Author and Its Repo",
+      "era": "June 2026 - October 2026",
+      "questions": [
+        "What does the README claim verbatim ('Turn your regular JavaScript code into a neural net; no training, exact, yet also fully differentiable!') and which use-cases does it list?",
+        "When did the repo start (first commit 2026-06-03 'Create numeric UI atom lab'), how many commits to 257856e, and what are the major milestones recorded in lab/status.md and git log (reassessment 2026-09-03, docs rewrite 2026-09-15, demo site 2026-10-13)?",
+        "What is the docs map (docs/README.md 'Words the docs use', 'Running', 'Where things are') and the repo layout (src/runtime, src/<demos>, template/, lab/, tests/runtime)?",
+        "What does the repo itself say about Cheng Lou (chenglou) and his decisions (status.md: 'with Cheng's approval', decisions 1-3)? No outside biography beyond verifiable public facts.",
+        "What license, toolchain (bun, TypeScript) and live demo site (https://chenglou.me/handwired/) exist?",
+        "Note: pinned commit 257856e is dated 2026-10-16; verify nothing newer is required for the as-of date 2026-10-27."
+      ],
+      "must_cover": [
+        "Cheng Lou (chenglou) — only what the repo says",
+        "README.md verbatim tagline and use-case list (quotes.json candidates)",
+        "git log: first commit 3d2c717 2026-06-03, commit count, 257856e 2026-10-16",
+        "lab/status.md milestones and 'Cheng's approval' decision record",
+        "docs/README.md vocabulary",
+        "Live demos at chenglou.me/handwired",
+        "Existing shelf books public/generated/handwired*/sources.json as leads to re-check"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "primitives-instruction-set",
+      "title": "The Primitives: FP32 Weighted Sums, ReLU/ReGLU, Booleans, One-Hot Groups and indexRead",
+      "era": "repo at 257856e",
+      "questions": [
+        "What instructions and macros does docs/execution-model.md ('Instructions and macros') define, and which are true primitives vs. macros lowered into them?",
+        "What is a gated relu / reglu in Handwired's sense (formula, where it appears in src/runtime/numeric-ui-core.ts), and why are weighted sums + reglu enough?",
+        "How are boolean operations (and/or/not) expressed as arithmetic on 0/1 decision bits (docs/expressions.md 'Decision bits')?",
+        "What are one-hot groups and gathers, and how does indexRead read from a table at a runtime index ('Index reads', tests/runtime/index-read.test.ts, gather-lowering.test.ts)?",
+        "What do 'Declarations' and 'Grids' declare, and what are the macro contracts for selection, min/max and clamping?"
+      ],
+      "must_cover": [
+        "docs/execution-model.md sections: FP32, Instructions and macros, Declarations, One-hot groups and gathers, Index reads, Grids, Macro contracts",
+        "docs/expressions.md: Familiar expressions, Decision bits",
+        "src/runtime/numeric-ui-core.ts instruction kinds (exact names with line numbers)",
+        "tests/runtime/index-read.test.ts and gather-lowering.test.ts",
+        "Exact formulas for min, max, clamp, select as relu arithmetic"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "ternary-by-hand",
+      "title": "Deep Dive 1: (a > 4) ? 10 : 12, Worked by Hand in ReLU Arithmetic",
+      "era": "repo at 257856e",
+      "questions": [
+        "Work the README example for a = 5, a = 4, a = 3, a = 6 and a = 100: values of max(0, a-4), max(0, a-5), above4, and result. Do they all match JavaScript?",
+        "What happens for a non-integer such as a = 4.5 (above4 = 0.5, result = 11)? What does the README's 'for an integer a' caveat imply, and how does the real library handle non-integer comparisons (emitCompare, declared step/range)?",
+        "Why do both branches always compute, and what does 'a 0/1 selector picks' cost compared with a JS branch?",
+        "How is this exact expression emitted by the real builder (find the code path: emitCompare / select macro) and how many operations/layers does it compile to (run it in the clone and record output)?",
+        "How does a nested or multi-way choice (else-if chains, one-hot selection over N options) generalize the same arithmetic?"
+      ],
+      "must_cover": [
+        "README.md example verbatim (lines with line numbers)",
+        "Hand-computed table of values checked by running a bun script in .orly-work/repos/handwired (record command and output)",
+        "The integer caveat and the a = 4.5 counterexample, stated honestly",
+        "emitCompare in src/runtime/numeric-ui-core.ts and docs/execution-model.md 'Comparisons'",
+        "tests/runtime/comparison.test.ts",
+        "One-hot selection for multi-way branches"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "exactness-in-fp32",
+      "title": "Exactness in FP32: Declared Ranges, Rounding Points, Comparisons and Magnitude Limits",
+      "era": "repo at 257856e",
+      "questions": [
+        "What does docs/execution-model.md 'FP32' say about which values are exact (integers up to 2^24, step sizes), and how does Handwired guarantee agreement with JavaScript?",
+        "What are declared ranges and why must every value carry one (tests/runtime/macro-ranges.test.ts)?",
+        "What are rounding points ('Rounding points' section) and where are they inserted?",
+        "How does emitCompare turn a comparison of non-integers into an exact decision (margin, step, declared range), and what fails if a range is wrong?",
+        "What are the magnitude limits ('Magnitude safety', 'Magnitude limits') and what is 'Dynamic division' and why is it parked?",
+        "How do the randomized hardened and builder-differential tests check exactness against JS (tests/runtime/random-hardened.test.ts, builder-differential.test.ts, numeric-semantics.test.ts)? Run them and record pass counts."
+      ],
+      "must_cover": [
+        "docs/execution-model.md: FP32, Comparisons, Rounding points, Magnitude limits",
+        "docs/expressions.md: Magnitude safety, Dynamic division",
+        "lab/status.md 'Correctness changes' and the parked dynamic-division item",
+        "bun test output for tests/runtime (command + counts)",
+        "Honest limits: what is exact vs. approximate"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "cells-builder-circuit",
+      "title": "Writing a Program: Cells, Wires, the Source Table and Builder Code Appending to a Circuit",
+      "era": "repo at 257856e",
+      "questions": [
+        "What is a cell and a wire in src/runtime/cells.ts, and what is the 'source table' (docs/tutorial.md 'Cells')?",
+        "What does builder code look like, and how does it append operations to a Circuit (docs/tutorial.md 'Builder code')?",
+        "Walk the template/ toggle app (toggle.ts, toggle-reference.ts, toggle.test.ts, main.ts): what is the reference JS version vs. the handwired version, and how is it tested against JavaScript ('Testing against JavaScript')?",
+        "What do the tutorial sections 'A program without state or animation' and 'Adding a second switch' build, step by step?",
+        "How do you start a new app folder ('A new app folder')?"
+      ],
+      "must_cover": [
+        "docs/tutorial.md sections with line numbers",
+        "src/runtime/cells.ts and tests/runtime/cells.test.ts",
+        "template/ files and template/README.md",
+        "The Circuit type and append API (exact names)",
+        "Reference-vs-circuit testing pattern"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "compilation-matmul-backends",
+      "title": "One Big Matmul: Compilation, Layers, Fusion, Sparsity and the CPU / WebGPU Backends",
+      "era": "repo at 257856e (measurements Sept-Oct 2026)",
+      "questions": [
+        "What does docs/execution-model.md 'Compilation' say happens to the appended operations (layering, scheduling into matmul + reglu layers)?",
+        "What concrete program sizes are recorded (e.g., HandwiredOS 5,253 operations in 192 layers in status.md) and what are the current numbers at 257856e?",
+        "Which of the README's claimed GPU techniques (fusion, sparsity, reordering) are actually implemented vs. aspirational?",
+        "What are the backends ('Backends' section): JS CPU evaluator and WebGPU; which demos run where; what only runs on the CPU?",
+        "What does lab/runtime-cost/report.ts measure (µs per evaluation, ops, layers)? Run it and record output.",
+        "What is 'Buffer lifetime'?"
+      ],
+      "must_cover": [
+        "docs/execution-model.md: Compilation, Buffer lifetime, Backends",
+        "README.md fusion/sparsity/reordering claim, checked against code",
+        "lab/status.md op/layer counts and 'HandwiredOS on WebGPU, and where a browser frame goes, September 16, 2026'",
+        "bun lab/runtime-cost/report.ts output (command + numbers)",
+        "Contested/limits: what the GPU path does not cover"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "host-loop-and-state",
+      "title": "Deep Dive 2a: The Host Loop, State, DOM Writes and Why a Program Cannot Stop Early",
+      "era": "repo at 257856e",
+      "questions": [
+        "What does docs/tutorial.md 'The host loop' and 'DOM writes' describe: inputs in, evaluate, next-state copied back, DOM writes — exact order and code (src/runtime/host-timing.ts)?",
+        "Why can a fixed matmul program not stop early or loop a data-dependent number of times, and what does 'Static bounds' require?",
+        "What are the behavior choices forced by this model (docs/behavior-choices.md: hit-test destinations, apply events at timestamps, read last frame's value, a fixed maximum with a named fallback, store what the user placed)?",
+        "Which evaluations write state back ('Which evaluations write state back')?",
+        "How does the host loop give a stateful program iteration across frames (state machine over queued events)?"
+      ],
+      "must_cover": [
+        "docs/tutorial.md: The host loop, DOM writes",
+        "src/runtime/host-timing.ts",
+        "docs/behavior-choices.md all seven choices",
+        "docs/execution-model.md: Static bounds, Which evaluations write state back",
+        "The 'cannot stop early' constraint stated in the repo's own words"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "patterns-loops-as-arithmetic",
+      "title": "Deep Dive 2b: Loops as Counts, Trees, Tables and Same Work on Every Item (patterns.md)",
+      "era": "repo at 257856e",
+      "questions": [
+        "What does docs/patterns.md say about 'Why a tree gives the loop's answer' and 'When a tree takes less time than the loop'?",
+        "How is findIndex done when the test flips once vs. when passing items can be anywhere (keep best score so far)?",
+        "How are running totals done with prefix networks (src/runtime/prefix-networks.ts, tests/runtime/prefix-networks.test.ts), and which classic prefix-sum construction does it use (Hillis-Steele / Kogge-Stone / Brent-Kung / Ladner-Fischer — verify from code)?",
+        "How is items.sort(compare) done (sorting network? which one — verify; cf. shelf book 'Bitonic Sorter') and items.filter(isVisible).slice(0, K) into K DOM nodes?",
+        "What are 'a loop over a set of states, as a tree of matrix products', 'a stack of one bit per level', 'following links one at a time', and 'work JavaScript does ahead of time'?",
+        "Compute small worked examples (e.g., a 4- or 8-item prefix sum and a filter+slice) by running the code."
+      ],
+      "must_cover": [
+        "docs/patterns.md sections with line numbers",
+        "src/runtime/prefix-networks.ts construction name verified from code",
+        "Sorting construction verified from code; Batcher (1968) bitonic sort only if the code uses it",
+        "filter+slice into K nodes and the fixed-maximum fallback",
+        "Worked numbers from running the code (command + output)",
+        "Shelf Handwired lab books as leads"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "springs-and-time",
+      "title": "Springs and Time: Animation Inside a Program with No Clock",
+      "era": "repo at 257856e",
+      "questions": [
+        "What does docs/execution-model.md 'Springs and time' say JavaScript writes and what the program computes?",
+        "How is a spring step represented as a matrix (tests/runtime/spring-matrix.test.ts), and what spring constants/step sizes are used?",
+        "What is 'The ordering rule' and 'Settling at fixed simulated times'?",
+        "How do 'Apply events at their timestamps, and write state back only at events and settle checks' (behavior-choices.md) interact with springs?",
+        "What are the gradient notes for springs ('Gradients' section)?"
+      ],
+      "must_cover": [
+        "docs/execution-model.md: Springs and time and its subsections",
+        "tests/runtime/spring-matrix.test.ts",
+        "src/runtime/host-timing.ts",
+        "A worked spring step with real numbers from the code"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "demo-handwiredos",
+      "title": "Demo 1: HandwiredOS — A Window Manager as a Neural Net",
+      "era": "Sept-Oct 2026",
+      "questions": [
+        "What does src/handwiredos/README.md say HandwiredOS does (window manager, photo gallery, value list, arrangement, monitor footer, wiring)?",
+        "How big is it (operations, layers) at 257856e, and what are its CPU and WebGPU timings per frame (status.md Sept 16 'where a browser frame goes')?",
+        "Which behaviors (drag, hit-test, scroll anchoring, native scroll selection) map to which patterns and behavior choices?",
+        "What does the live demo show (chenglou.me/handwired) and what does the asset assets/demos-handwiredos.webp depict?"
+      ],
+      "must_cover": [
+        "src/handwiredos/README.md and file list",
+        "Op/layer counts and timings with source (status.md or run output)",
+        "lab/status.md 'The demo site, October 13, 2026'",
+        "Limits/known issues in production code relevant to HandwiredOS"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "demo-json-search",
+      "title": "Demo 2: JSON Search over 100,000 Documents per Keystroke on WebGPU",
+      "era": "Sept-Oct 2026",
+      "questions": [
+        "What does src/json-search/README.md say the demo does, and how is the search program built (program.ts, search-step.ts, json-step.ts, table-loop.ts, loop-emit.ts, bit-emit.ts)?",
+        "Is it 100,000 documents, and what timings per keystroke are recorded (README says 'runs in milliseconds over 100k documents'); what do lab/json-search results and the 'million' folder show?",
+        "How does 'same work on every item' make it parallel on WebGPU, and what is the CPU / worker path (demo-worker.ts, plain-search.ts comparison)?",
+        "What happened to the JSON highlighter and regex search experiments (added Oct 13, removed Oct 14, 2026 per status.md) and why?"
+      ],
+      "must_cover": [
+        "src/json-search/README.md verbatim numbers",
+        "lab/json-search/README.md and results",
+        "lab/status.md Oct 13 and Oct 14 2026 sections",
+        "Comparison against plain JS search (plain-search.ts)",
+        "Honest limits: GPU required, document size caps"
+      ],
+      "deep_dive": false
+    },
+    {
+      "id": "differentiability-learned-gallery",
+      "title": "Deep Dive 3: Gradients Through a Handwritten Program — The Learned Gallery and End-to-End Training",
+      "era": "Sept-Oct 2026",
+      "questions": [
+        "What does src/learned-gallery/README.md say is trained, with what loss, using the program's own gradients (trainable-geometry.ts, learned-gallery.ts)?",
+        "How do gradients flow through relu/reglu and through hard 0/1 selectors (zero gradients at flat ramps; straight-through or soft relaxations? verify: lab/generative-fields/ste-backprop.ts, lab/cascade-argmax/ramp.test.ts)?",
+        "What does 'unfreezing the weights' do in practice; what does the 'What learns' table in lab/status.md report (learned interpreter 60/60 and 59/60 vs 15/60, reusable layout 121 parameters, user effort 1.68 ms, data adapters 868 programs)?",
+        "Has 'attach a frozen program to a generic neural net and train end-to-end (nanoGPT)' actually been done in the repo, or is it a stated possibility? State honestly.",
+        "Show a worked gradient for one parameter with real numbers from running the code."
+      ],
+      "must_cover": [
+        "src/learned-gallery/README.md and lab/learned-gallery/README.md",
+        "docs/execution-model.md 'Gradients'",
+        "lab/status.md 'What learns' table verbatim numbers and limitations",
+        "lab/learned-interpreter, lab/reusable-layout, lab/user-effort, lab/data-adapter READMEs",
+        "README.md end-to-end/nanoGPT claim, labeled as aspiration unless demonstrated",
+        "Straight-through estimator context (Bengio, Leonard, Courville 2013) only if the code uses it"
+      ],
+      "deep_dive": true
+    },
+    {
+      "id": "lab-findings-and-open-questions",
+      "title": "The Lab: What Was Tried, What Did Not Work, and What Is Still Open (to 2026-10-27)",
+      "era": "June 2026 - 2026-10-27",
+      "questions": [
+        "What did lab/reassessment-2026-09-03.md conclude, and what changed after it?",
+        "What do lab/status.md 'Known issues in production code', 'Open decisions', 'Still open', and 'Parked and deferred' list?",
+        "Which lab experiments explored what (hard-attend, knuth-plass, recovery-parser/lr/toml, event-window, generative-fields, trace-compiler, cascade-argmax, candidate-gallery) and which failed or were removed?",
+        "What does the latest commit (257856e, 2026-10-16: training a strict parser's unused table entries to recover from errors on JSON, TOML and a bison table) show?",
+        "What does lab/research-sweep.md say about related work and prior art?",
+        "Any public reception or discussion of Handwired by 2026-10-27 (web search; treat social posts as leads only)?"
+      ],
+      "must_cover": [
+        "lab/reassessment-2026-09-03.md",
+        "lab/status.md: Known issues, Open decisions, Still open, Parked and deferred, Verification and reproduction",
+        "lab/research-sweep.md",
+        "Commit 257856e message and lab/recovery-* READMEs",
+        "Experiments that did not work, stated honestly",
+        "External reception as of 2026-10-27, sourced or marked absent"
+      ],
+      "deep_dive": false
+    }
+  ]
+}

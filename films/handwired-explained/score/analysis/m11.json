@@ -1,0 +1,18 @@
+{
+ "id": "m11",
+ "start": 1219.5,
+ "end": 1274.1,
+ "file": "films/handwired-explained/score/renders/m11.wav",
+ "duration": 60.6,
+ "I": -26.3,
+ "LRA": 5.4,
+ "TP": -9.7,
+ "expected": 60.6,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m11.png",
+ "cueSeconds": 54.6,
+ "cps": 0.225,
+ "lastStrikeLocal": 51.96,
+ "lastStrike": 1271.46
+}

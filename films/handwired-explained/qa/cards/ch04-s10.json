@@ -1,0 +1,72 @@
+{
+ "shot": "ch04-s10",
+ "at": "2026-10-28T17:38:49.647Z",
+ "step": 0.0833,
+ "sampled": 210,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch04-s10/slip0",
+  "ch04-s10/card",
+  "ch04-s10/slip1",
+  "ch04-s10/slip2",
+  "ch04-s10/slip3",
+  "ch04-s10/slip4",
+  "ch04-s10/slip5"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch04-s10/slip0",
+   "probed": true,
+   "from": 5.55,
+   "to": 17.467,
+   "minInkWhilePaper": 0.57
+  },
+  {
+   "id": "ch04-s10/card",
+   "probed": true,
+   "from": 5.633,
+   "to": 17.467,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch04-s10/slip1",
+   "probed": true,
+   "from": 5.967,
+   "to": 17.467,
+   "minInkWhilePaper": 0.52
+  },
+  {
+   "id": "ch04-s10/slip2",
+   "probed": true,
+   "from": 6.467,
+   "to": 17.467,
+   "minInkWhilePaper": 0.7
+  },
+  {
+   "id": "ch04-s10/slip3",
+   "probed": true,
+   "from": 7.05,
+   "to": 17.467,
+   "minInkWhilePaper": 0.53
+  },
+  {
+   "id": "ch04-s10/slip4",
+   "probed": true,
+   "from": 7.55,
+   "to": 17.467,
+   "minInkWhilePaper": 0.75
+  },
+  {
+   "id": "ch04-s10/slip5",
+   "probed": true,
+   "from": 8.05,
+   "to": 17.467,
+   "minInkWhilePaper": 0.55
+  }
+ ]
+}

@@ -44,6 +44,23 @@ export function normText(s) {
   const out = [];
   let prevWordNum = null; // value of the previous token when it was a spelled number (for "nineteen sixty nine")
   for (let i = 0; i < toks.length; i++) {
+    // "six hundred and eighty-nine" -> 689 (scribe writes such numbers as digits; without this a correct take of a
+    // line with a spelled hundreds number failed its round trip on WER alone)
+    if (toks[i] === 'hundred' && prevWordNum != null && prevWordNum >= 1 && prevWordNum < 10) {
+      let v = prevWordNum * 100;
+      let j = i + 1;
+      if (toks[j] === 'and' && NUM[toks[j + 1]] != null && NUM[toks[j + 1]] > 0) j++;
+      const r0 = NUM[toks[j]];
+      if (r0 != null && r0 > 0 && r0 < 100) {
+        let r = r0;
+        if (TENS.has(r0) && NUM[toks[j + 1]] != null && NUM[toks[j + 1]] > 0 && NUM[toks[j + 1]] < 10) r += NUM[toks[++j]];
+        v += r;
+        i = j;
+      }
+      out[out.length - 1] = String(v);
+      prevWordNum = null;
+      continue;
+    }
     const n = NUM[toks[i]];
     if (n == null) {
       out.push(toks[i]);

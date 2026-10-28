@@ -1,0 +1,364 @@
+{
+ "shot": "ch01-s02",
+ "at": "2026-10-28T09:09:22.846Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 70,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "HandwiredOS",
+   "capWhileSubject": 37.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "one of Handwired's three live demos",
+   "capWhileSubject": 27.7,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Monitor",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THIS PROGRAM",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "State",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "234",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Operations",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4,646",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Outputs",
+   "maxCap": 20.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "493",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0.000",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.875",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104.750",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "18.750",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84.500",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.375",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "64.250",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "103.250",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44.000",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "33.875",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "23.750",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "62.750",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3.500",
+   "maxCap": 13.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Notes",
+   "maxCap": 13.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Photos",
+   "maxCap": 13.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12.250",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "94.625",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "96.750",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.125",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "56.250",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13.625",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "90.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "49.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "96.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "56.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "15.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "77.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "37.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "121.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "81.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "83.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "43.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "36.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "121.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "80.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "30.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "42.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "86.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "108.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "67.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "27.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "95.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "55.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14.500",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "99.000",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "101.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "61.250",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "20.750",
+   "maxCap": 10,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "42.250",
+   "maxCap": 10.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1.750",
+   "maxCap": 10.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "86.250",
+   "maxCap": 10.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.750",
+   "maxCap": 11.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14.250",
+   "maxCap": 11.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "98.750",
+   "maxCap": 11.6,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 68
+}

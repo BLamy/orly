@@ -1,0 +1,18 @@
+{
+ "shot": "ch11-s01b",
+ "at": "2026-10-28T16:09:43.474Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 1,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "training: about 40,000 broken payloads, 55 kinds of mistake",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -1,0 +1,72 @@
+{
+  "id": "patterns-loops-as-arithmetic",
+  "checked": 51,
+  "confirmed": 44,
+  "corrected": 3,
+  "unverifiable": 4,
+  "notes": "19 key claims, 22 repo quotes and 10 external/timeline items checked. Repo claims were re-read at 257856e and worked numbers recomputed independently in Node. Operation counts were matched to the values the repo's tests pin; bun test was refused by the sandbox, so they are asserted-by-test, not observed passing. Key claims 1-3 and 5-19 are confirmed. Claim 4 is confirmed, but its wording 'only in a lab example' is refined (correction 3).",
+  "corrections": [
+    {
+      "original": "Brent & Kung's own paper gives the same figures: about 2 log2 n - 2 delay levels and 2n - log2 n - 2 cells; Brent & Kung accepted 2 log2 n - 2 levels and got about 2n cells (sections 4, 5.4, S19)",
+      "verdict": "corrected",
+      "fix": "The 1982 paper states time proportional to log n. Theorem 3 gives carries in O(log n) time and O(n log n) area, and the abstract and section 6 give O(n) area with pipelining. Its n = 16 network (Fig. 5) finishes at T = 7. The exact counts 2k-2-log2 k and 2 log2 k - 2 come from the repo (prefix-networks.ts#L28-L29) and later literature, not from the paper.",
+      "sources": [
+        "https://maths-people.anu.edu.au/~brent/pd/rpb060.pdf",
+        "https://maths-people.anu.edu.au/~brent/pub/pub060.html",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/prefix-networks.ts#L26-L29"
+      ]
+    },
+    {
+      "original": "HandwiredOS's Monitor list shows 'Only 64 rows are drawn at a time.' (cited to value-list.ts#L434-L435 and #L753)",
+      "verdict": "corrected",
+      "fix": "The string is built at value-list.ts#L664 as `Only ${slotCount} rows are drawn at a time.`, with slotCount = 64 at L63. L434-L435 compute slotOverflow, and L753 shows the message when slotOverflow is 1. The quote itself is verbatim in behavior-choices.md#L87.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/handwiredos/value-list.ts#L664",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/handwiredos/value-list.ts#L63",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L87"
+      ]
+    },
+    {
+      "original": "Kogge-Stone appears only in a lab example (key claim 4; misconception 1)",
+      "verdict": "corrected",
+      "fix": "Kogge-Stone is absent from src/, but in lab/ it appears in more than one example. Lab code builds it (prefix-sums.ts#L78, plus executor.test.ts and report.ts; 9,217 ops in 10 layers at 1,024 rows). Lab docs discuss it: chains.md#L103, executor.md#L440/L485/L489 and loops.md#L32. The old index-read prototype and an earlier lists phase used it (lists/README.md#L219). Ladner-Fischer never appears; 'Ladner 1975' appears once, for the circuit value problem (chains.md#L174).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/examples/executor/prefix-sums.ts#L78",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/chains.md#L103",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/lists/README.md#L219"
+      ]
+    },
+    {
+      "original": "Sklansky quote: 'the maximum fanout is an increasing function of the summand length'",
+      "verdict": "unverifiable",
+      "fix": "No primary text was reachable (the Berkeley copy returned 404). Keep it labelled UNVERIFIED — do not use as a quote.",
+      "sources": [
+        "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4623982"
+      ]
+    },
+    {
+      "original": "Sept 2026: exploration branch exploration-2026-09 measured the odd-even and bitonic networks",
+      "verdict": "unverifiable",
+      "fix": "The date is inferred from the branch name only, and the branch notes are not in the 257856e tree. It is now labelled as inferred. The measurements themselves are confirmed as quoted in loops.md#L185-L192.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/loops.md#L185-L192"
+      ]
+    },
+    {
+      "original": "1990: Blelloch's scan",
+      "verdict": "unverifiable",
+      "fix": "The date is the repo's own attribution (chains.md#L103) and was not checked externally. Cite the repo if it goes on screen.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/chains.md#L103"
+      ]
+    },
+    {
+      "original": "Jack Sklansky biography: born 1928 NYC, RCA Laboratories 1955-1965, UC Irvine 1966-1994",
+      "verdict": "unverifiable",
+      "fix": "Prabook is a lead only, and no reliable source was found. Do not put this on screen.",
+      "sources": [
+        "https://prabook.com/web/jack.sklansky/373217"
+      ]
+    }
+  ]
+}
