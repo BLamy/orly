@@ -72,7 +72,7 @@ function posFor(i: number, m: number): P {
   if (m === 1) return i === 0 ? { x: 300, y: 380, o: 1 } : { x: 300, y: 380, o: 0 };
   if (m === 2) return i < 8 ? { x: 520, y: 202 + i * 50, o: 1 } : { x: 520, y: 380, o: 0 };
   if (m === 3) return { x: EVO_X(i % 5), y: EVO_Y(Math.floor(i / 5)), o: 1 };
-  return { x: WORLD[i].x, y: WORLD[i].y, o: 0.55 };
+  return { x: WORLD[i].x, y: WORLD[i].y, o: 0.3 };
 }
 
 const CAM_RLHF: CameraState = { x: 600, y: 330, k: 1.12 };
@@ -105,6 +105,8 @@ export function buildScene() {
   const resultU = tl.channel('resultU', 0);
   const stampU = tl.channel('stampU', 0);
   const worldU = tl.channel('worldU', 0);
+  const shapesU = tl.channel('shapesU', 0); // the three-shapes card at C3
+  const modelOut = tl.channel('modelOut', 0);
   const veil = tl.channel('veil', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -139,10 +141,13 @@ export function buildScene() {
   tl.tween(rankU, 0, { at: t, dur: 0.6, ease: ease.move });
   tl.tween(pullU, 0, { at: t, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: t, dur: 1.2, ease: ease.move });
-  tl.hold(t + 1.2, 1);
+  tl.tween(modelOut, 1, { at: t, dur: 0.8, ease: ease.move });
+  tl.tween(shapesU, 1, { at: t + 0.8, dur: 0.9, ease: ease.enter });
+  tl.hold(t + 1.7, 1);
 
   // C4 — thinking longer: one chip, a chain, no selection
   t = T[4];
+  tl.tween(shapesU, 0, { at: t, dur: 0.6, ease: ease.move });
   tl.tween(mode, 1, { at: t, dur: 1.2, ease: ease.move });
   tl.tween(markerOff, 1, { at: t, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_THINK, { at: t + 0.4, dur: 1.3, ease: ease.move });
@@ -203,7 +208,7 @@ export function buildScene() {
 
   return {
     tl, cam, chipIn, chipK, barU, marker, markerOff, poolU, mode, rankU, pullU, loopU, thinkU, gateU, selU, evoU,
-    resultU, stampU, worldU, veil, closeU,
+    resultU, stampU, worldU, shapesU, modelOut, veil, closeU,
   };
 }
 
@@ -277,10 +282,12 @@ export function Render({ s }: { s: SceneState }) {
       o *= clamp01(evoU - g);
       if (i % 5 === BEST_J[g]) glow = clamp01(evoU - g - 0.4);
     }
+    // C8 zooms on the judges: the evolution grid steps back to a whisper
+    if (mode > 2.5 && mode < 3.5) o *= 1 - 0.85 * clamp01(v(scene.stampU));
     return { x, y, o, dead, glow };
   };
 
-  const rlhfU = (1 - clamp01(mode)) * v(scene.poolU);
+  const rlhfU = (1 - clamp01(mode)) * v(scene.poolU) * (1 - v(scene.modelOut));
   const modelX = lerp(330, 470, v(scene.pullU));
 
   return (
@@ -361,7 +368,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ================= evolution lineage ================= */}
         {mode > 2.5 && mode < 3.5 && (
-          <g>
+          <g opacity={1 - 0.85 * clamp01(v(scene.stampU))}>
             {[0, 1, 2, 3].map((g) =>
               [0, 1, 2, 3, 4].map((j) => {
                 const u = clamp01(evoU - g - 1);
@@ -374,6 +381,27 @@ export function Render({ s }: { s: SceneState }) {
               <Txt key={g} x={230} y={EVO_Y(g) + 6} text={`gen ${g}`} size={15} anchor="end" color={colors.MUTED} u={clamp01(evoU - g)} mono />
             ))}
             <Txt x={EVO_X(2)} y={EVO_Y(4) + 54} text="the best seed the next round" size={16} anchor="middle" color={GOAL} u={clamp01(evoU - 2)} italic />
+          </g>
+        )}
+
+        {/* ================= the three shapes (C3) ================= */}
+        {v(scene.shapesU) > 0.01 && (
+          <g opacity={v(scene.shapesU)}>
+            {[
+              { x: 330, t: 'think longer', s: 'one mind' },
+              { x: 640, t: 'best-of-N', s: 'one round' },
+              { x: 950, t: 'mutate · test · repeat', s: 'generations' },
+            ].map((c, k) => (
+              <g key={k}>
+                <rect x={c.x - 135} y={214} width={270} height={112} rx={12} fill={colors.PANEL} stroke={k === 2 ? GOAL : colors.GRID} strokeWidth={k === 2 ? 2.2 : 1.4} />
+                <Txt x={c.x} y={256} text={c.t} size={21} anchor="middle" weight={650} />
+                <Txt x={c.x} y={286} text={c.s} size={16} anchor="middle" color={colors.MUTED} italic />
+                {k === 0 && [0, 1, 2, 3, 4].map((j) => <circle key={j} cx={c.x - 40 + j * 20} cy={306} r={4} fill={colors.SECONDARY} />)}
+                {k === 1 && [0, 1, 2, 3, 4].map((j) => <rect key={j} x={c.x - 50 + j * 21} y={300} width={14} height={12} rx={3} fill={j === 2 ? GOAL : colors.MUTED} opacity={j === 2 ? 1 : 0.5} />)}
+                {k === 2 && [0, 1, 2].map((j) => <rect key={j} x={c.x - 30 + j * 21} y={300 - j * 0} width={14} height={12} rx={3} fill={GOAL} opacity={0.5 + j * 0.25} />)}
+              </g>
+            ))}
+            <Txt x={950} y={352} text="only this one is evolution" size={17} anchor="middle" color={GOAL} weight={650} />
           </g>
         )}
 

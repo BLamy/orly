@@ -19,7 +19,7 @@
 //   C3  camera pans right: the breeder, a big face profile and a ruler that can only see the face
 //   C4  "proxy" stamped on the ruler; two meters: proxy (flat face) and goal (easy breathing)
 //   C5  generations tick 0→6: the muzzle shortens, the proxy meter climbs
-//   C6  the airway narrows; the BOAS label lands
+//   C6  a cross-section inset: the airway's soft tissue swells shut; the BOAS label lands
 //   C7  the goal meter falls while the proxy rises: the gap opens
 //   C8  the meters are renamed score / goal: reward hacking is this gap in a machine
 //   C9  veil; the question card: which kind of judge, and can anyone see what it built?
@@ -198,13 +198,11 @@ const scene = buildScene();
 // ---------------------------------------------------------------------------
 
 /** A dog head in profile, facing left. `flat` 0 = long muzzle, 1 = very short. */
-function DogHead({ cx, cy, s, flat, color, opacity = 1, airway = 0, flow = 0 }: { cx: number; cy: number; s: number; flat: number; color: string; opacity?: number; airway?: number; flow?: number }) {
+function DogHead({ cx, cy, s, flat, color, opacity = 1, airway = 0 }: { cx: number; cy: number; s: number; flat: number; color: string; opacity?: number; airway?: number }) {
   if (opacity <= 0.005) return null;
   const L = lerp(92, 12, flat); // muzzle length
   const mh = lerp(46, 58, flat); // a flatter face is a taller, wider muzzle
   const mx = -62 - L; // muzzle left edge (head radius 66)
-  const tube = lerp(15, 3.2, Math.pow(flat, 0.9)); // airway width
-  const ay = 14;
   return (
     <g transform={`translate(${cx},${cy}) scale(${s})`} opacity={opacity}>
       {/* ear */}
@@ -217,25 +215,63 @@ function DogHead({ cx, cy, s, flat, color, opacity = 1, airway = 0, flow = 0 }: 
       {flat > 0.45 && (
         <path d={`M ${mx + 18},${-2} q 14,-14 30,0 M ${mx + 22},${-14} q 16,-14 34,0`} fill="none" stroke="#7c2d12" strokeWidth={3 / s} opacity={win(flat, 0.45, 0.8)} />
       )}
-      {/* nose */}
+      {/* nose, with a nostril that narrows as the face flattens */}
       <ellipse cx={mx + 6} cy={6} rx={11} ry={9} fill="#1f2937" />
+      <ellipse cx={mx + 3} cy={8} rx={lerp(4.2, 0.9, flat)} ry={lerp(3.2, 0.8, flat)} fill="#0b1220" stroke="#475569" strokeWidth={0.8} />
       {/* eye */}
       <circle cx={-14} cy={-18} r={7} fill="#1f2937" />
-      {/* airway cutaway */}
+      {/* where the cross-section is taken: a dashed cut through the muzzle */}
       {airway > 0.01 && (
         <g opacity={airway}>
-          <path d={`M ${mx + 8},${ay} C ${mx + L * 0.5 + 10},${ay} ${-10},${ay + 4} ${30},${ay + 34}`} fill="none" stroke="#0b1220" strokeWidth={tube + 6} strokeLinecap="round" />
-          <path d={`M ${mx + 8},${ay} C ${mx + L * 0.5 + 10},${ay} ${-10},${ay + 4} ${30},${ay + 34}`} fill="none" stroke={GOAL} strokeWidth={tube} strokeLinecap="round" opacity={0.9} />
-          {/* airflow dots: spacing fixed, speed and brightness fall with the tube */}
-          {Array.from({ length: 5 }, (_, k) => {
-            const ph = ((flow * lerp(1, 0.18, flat) + k / 5) % 1 + 1) % 1;
-            const x0 = mx + 8;
-            const px = ph < 0.6 ? lerp(x0, -10, ph / 0.6) : lerp(-10, 30, (ph - 0.6) / 0.4);
-            const py = ph < 0.6 ? ay : lerp(ay, ay + 34, (ph - 0.6) / 0.4);
-            return <circle key={k} cx={px} cy={py} r={Math.max(1.4, tube * 0.35)} fill="#ecfdf5" opacity={lerp(0.95, 0.35, flat)} />;
-          })}
+          <line x1={mx + L * 0.5 + 18} y1={-12} x2={mx + L * 0.5 + 18} y2={mh + 8} stroke={colors.TEXT} strokeWidth={1.6} strokeDasharray="4 4" />
         </g>
       )}
+    </g>
+  );
+}
+
+/** The airway as a cross-section: a passage whose soft-tissue walls swell shut as the face flattens. */
+const INSET = { x: 690, y: 232, w: 178, h: 134 };
+function AirwayInset({ u, flat, flow }: { u: number; flat: number; flow: number }) {
+  if (u <= 0.01) return null;
+  const { x, y, w, h } = INSET;
+  const midY = y + 66;
+  const gap = lerp(44, 7, Math.pow(flat, 0.85)); // open passage height
+  const bulge = (44 - gap) / 2; // soft tissue swelling from each wall
+  const x0 = x + 14;
+  const x1 = x + w - 14;
+  // a smooth swelling profile, widest in the middle of the passage
+  const wall = (top: boolean) => {
+    const sgn = top ? 1 : -1;
+    const base = midY - sgn * 22;
+    const pts: string[] = [];
+    for (let k = 0; k <= 24; k++) {
+      const px = lerp(x0, x1, k / 24);
+      const bell = Math.sin((Math.PI * k) / 24);
+      pts.push(`${k === 0 ? 'M' : 'L'}${px.toFixed(1)},${(base + sgn * bulge * bell).toFixed(1)}`);
+    }
+    return `${pts.join(' ')} L${x1},${base - sgn * 14} L${x0},${base - sgn * 14} Z`;
+  };
+  const speed = lerp(1, 0.22, flat);
+  return (
+    <g opacity={u}>
+      <rect x={x} y={y} width={w} height={h} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.4} />
+      <text x={x + 12} y={y + 22} fontSize={14} fill={colors.MUTED}>
+        airway, cut through the muzzle
+      </text>
+      <rect x={x0} y={midY - 22} width={x1 - x0} height={44} fill="#0b1220" />
+      <path d={wall(true)} fill="#f0a8a0" />
+      <path d={wall(false)} fill="#f0a8a0" />
+      {Array.from({ length: 6 }, (_, k) => {
+        const ph = (((flow * speed * 0.6 + k / 6) % 1) + 1) % 1;
+        const px = lerp(x0 + 4, x1 - 4, ph);
+        const room = gap / 2 - 3;
+        const py = midY + (k % 3 - 1) * Math.max(0, room * 0.55);
+        return <circle key={k} cx={px} cy={py} r={2.6} fill={GOAL} opacity={lerp(0.95, 0.45, flat)} />;
+      })}
+      <text x={x + w / 2} y={y + h - 10} fontSize={14} textAnchor="middle" fill={flat > 0.55 ? colors.NEGATIVE : GOAL} fontWeight={650}>
+        {flat > 0.55 ? 'obstructed' : 'open passage'}
+      </text>
     </g>
   );
 }
@@ -312,7 +348,8 @@ export function Render({ s }: { s: SceneState }) {
         <Txt x={692} y={186} text="The breeder" size={24} weight={650} u={v(scene.brdPanelU)} />
         <Txt x={692} y={210} text="wants a goal, can only see traits" size={16} color={colors.MUTED} italic u={v(scene.brdPanelU)} />
 
-        <DogHead cx={BIG.cx} cy={BIG.cy} s={1} flat={flat} color="#d6a36b" opacity={v(scene.bigU)} airway={v(scene.airU)} flow={v(scene.flow)} />
+        <DogHead cx={BIG.cx} cy={BIG.cy} s={1} flat={flat} color="#d6a36b" opacity={v(scene.bigU)} airway={v(scene.airU)} />
+        <AirwayInset u={v(scene.airU)} flat={flat} flow={v(scene.flow)} />
         {/* generation strip */}
         {v(scene.bigU) > 0.01 && gen > 0.02 && (
           <g>
@@ -321,7 +358,7 @@ export function Render({ s }: { s: SceneState }) {
         )}
         {v(scene.boasU) > 0.01 && (
           <g opacity={v(scene.boasU)}>
-            <line x1={930} y1={330} x2={872} y2={384} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+            <line x1={INSET.x + INSET.w / 2} y1={INSET.y + INSET.h} x2={INSET.x + INSET.w / 2} y2={384} stroke={colors.NEGATIVE} strokeWidth={1.6} />
             <rect x={700} y={384} width={262} height={30} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.3} />
             <Txt x={831} y={405} text="narrowed airway (BOAS)" size={16} anchor="middle" color={colors.NEGATIVE} />
           </g>

@@ -227,7 +227,7 @@ export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const hackU = v(scene.hackU);
   const phaseB = v(scene.phaseB);
-  const codeOp = v(scene.codeU) * (1 - phaseB);
+  const codeOp = v(scene.codeU) * (1 - phaseB) * (1 - 0.85 * v(scene.statU));
   const statOp = v(scene.statU) * (1 - phaseB);
   const breach = v(scene.breachU);
   const victim = v(scene.victimU);
@@ -336,8 +336,10 @@ export function Render({ s }: { s: SceneState }) {
             {DOTS.map((d, i) => {
               const u = clamp01(v(scene.dotsU) * 1.6 - d.lag * 0.6);
               if (u <= 0.01) return null;
-              let x = d.x;
-              let y = d.y;
+              // a slow, deterministic drift (a function of the chapter clock) keeps the crowd alive
+              const ph = v(scene.hand) * 0.5 + i * 1.7;
+              let x = d.x + Math.sin(ph) * 4;
+              let y = d.y + Math.cos(ph * 0.8 + i) * 4;
               if (d.leaves && breach > 0.05) {
                 const p = win(breach, 0.15 + d.lag * 0.35, 0.55 + d.lag * 0.35);
                 x = p < 0.5 ? lerp(d.x, CRACK.x, p * 2) : lerp(CRACK.x, HF.x - 60 - (i % 3) * 14, (p - 0.5) * 2);

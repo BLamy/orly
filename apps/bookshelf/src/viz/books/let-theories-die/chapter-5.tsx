@@ -74,7 +74,7 @@ const LENS_STOPS: [number, number][] = [
   [640, 260], // C0 resting (hidden)
   [420, 360], // plate
   [760, 360], // tree: frames the root, iy
-  [420, 380], // V
+  [270, 300], // V: the microscope stands beside the neuron it is looking at
   [880, 360], // bars
   [380, 340], // read door window
 ];
