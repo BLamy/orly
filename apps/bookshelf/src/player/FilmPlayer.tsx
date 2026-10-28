@@ -531,7 +531,7 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
   // the card under the VCR: the film's score (its critic panel), its sources and its music, as tabs
   const filmScore: Score | null =
     review && review.mean != null
-      ? { mean: review.mean, bar: review.bar, floor: review.floor, pass: review.pass, scores: review.scores, notes: review.notes, by: `the film critic panel, round ${review.round}`, at: review.at ?? undefined }
+      ? { mean: review.mean, bar: Number(review.bar) || 8.5, floor: Number(review.floor) || 8, pass: review.pass, scores: review.scores, notes: review.notes, by: `the film critic panel, round ${review.round}`, at: review.at ?? undefined }
       : null;
   const cardTabs = ([['score', 'Score', !!filmScore], ['sources', 'Sources', !!sourcesDoc], ['music', 'Music', !!creditsDoc]] as const)
     .filter((x) => x[2])

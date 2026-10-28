@@ -55,7 +55,7 @@ function latestReview(P) {
   for (const n of rounds) {
     const v = readJson(path.join(dir, `round-${n}`, 'verdict.json'), null);
     if (!v?.scores) continue;
-    return { round: n, at: v.at ?? null, pass: !!v.pass, mean: v.mean ?? null, bar: v.bar ?? 8.5, floor: 8, scores: v.scores, notes: v.dimensionNotes ?? {}, summary: v.summary ?? '' };
+    return { round: n, at: v.at ?? null, pass: !!v.pass, mean: v.mean ?? null, bar: (typeof v.bar === 'object' && v.bar ? v.bar.mean : v.bar) ?? 8.5, floor: (typeof v.bar === 'object' && v.bar?.minDimension) || 8, scores: v.scores, notes: v.dimensionNotes ?? {}, summary: v.summary ?? '' };
   }
   return null;
 }
