@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "wolf-dog-model",
+      "title": "Wolf, Dog, Model",
+      "subtitle": "Domestication vs breeding in AI training",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7c3aed",
+      "href": "?bundle=wolf-dog-model",
+      "series": "Who Survives",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Kinds of Choosing",
+          "duration": 103.329
+        },
+        {
+          "number": 2,
+          "title": "The Fox Farm",
+          "duration": 110.249
+        },
+        {
+          "number": 3,
+          "title": "Three Layers of a Model",
+          "duration": 118.096
+        },
+        {
+          "number": 4,
+          "title": "Leash or Colleague",
+          "duration": 94.969
+        }
+      ],
+      "createdAt": "2026-10-28T04:26:04.148Z"
+    },
+    {
       "slug": "herding-the-swarm",
       "title": "Herding the Swarm",
       "subtitle": "Population control for AI agents",

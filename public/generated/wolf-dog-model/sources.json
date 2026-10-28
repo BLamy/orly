@@ -1,0 +1,641 @@
+{
+  "version": 1,
+  "slug": "wolf-dog-model",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Kinds of Choosing",
+      "claims": [
+        {
+          "id": "c1-cloud-schematic",
+          "claim": "The population cloud with temperament and job-skill axes is a schematic illustration, not data.",
+          "caption": 1,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt"
+            }
+          ]
+        },
+        {
+          "id": "c1-methodical",
+          "claim": "Darwin called deliberate breeding toward a goal methodical selection: a breeder with a distinct object in view making a new strain.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt",
+              "quote": "eminent breeders try by methodical selection, with a distinct object in view, to make a new strain or sub-breed"
+            }
+          ]
+        },
+        {
+          "id": "c1-box-climbs",
+          "claim": "Selecting only animals inside a target range moves the population along that trait over generations (illustration of methodical selection).",
+          "caption": 3,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt"
+            }
+          ]
+        },
+        {
+          "id": "c1-unconscious",
+          "claim": "Darwin described unconscious selection, which results from everyone trying to keep and breed from the best animals, as more important for his purpose.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt",
+              "quote": "a kind of Selection, which may be called Unconscious, and which results from every one trying to possess and breed from the best individual animals, is more important"
+            }
+          ]
+        },
+        {
+          "id": "c1-pointers",
+          "claim": "Darwin's example: a man keeping pointers has no wish to alter the breed, yet the process continued over centuries would modify it.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt",
+              "quote": "he has no wish or expectation of permanently altering the breed. Nevertheless I cannot doubt that this process, continued during centuries, would improve and modify any breed"
+            }
+          ]
+        },
+        {
+          "id": "c1-zeder",
+          "claim": "Zeder defines domestication as a distinctive coevolutionary, mutualistic relationship between domesticator and domesticate.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Zeder, “Core questions in domestication research”, PNAS 112 (2015), abstract",
+              "url": "https://doi.org/10.1073/pnas.1501711112",
+              "quote": "Domestication is defined as a distinctive coevolutionary, mutualistic relationship between domesticator and domesticate"
+            }
+          ]
+        },
+        {
+          "id": "c1-larson",
+          "claim": "When dog domestication began, and whether it happened once or several times, remains uncertain (genetic study of 1,375 dogs from 35 breeds and 19 wolves).",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Larson et al., “Rethinking dog domestication by integrating genetics, archeology, and biogeography”, PNAS 109 (2012), abstract",
+              "url": "https://doi.org/10.1073/pnas.1203005109",
+              "quote": "it remains uncertain when the domestication process began and whether it occurred just once or multiple times"
+            }
+          ]
+        },
+        {
+          "id": "c1-order",
+          "claim": "Tolerance of people has to come before breeding for a job; this ordering is the book's reading.",
+          "caption": 8,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Zeder, “Core questions in domestication research”, PNAS 112 (2015), abstract",
+              "url": "https://doi.org/10.1073/pnas.1501711112"
+            },
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt"
+            }
+          ]
+        },
+        {
+          "id": "c1-wide-narrow",
+          "claim": "Domestication is broad and first; breeding is narrow and after (the book's summary).",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Zeder, “Core questions in domestication research”, PNAS 112 (2015), abstract",
+              "url": "https://doi.org/10.1073/pnas.1501711112"
+            },
+            {
+              "label": "Darwin, On the Origin of Species (1859), ch. 1, “Methodical and Unconscious Selection” (Project Gutenberg)",
+              "url": "https://www.gutenberg.org/cache/epub/1228/pg1228.txt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The Fox Farm",
+      "claims": [
+        {
+          "id": "c2-start",
+          "claim": "Selection for tame behaviour started at the Institute of Cytology and Genetics in Novosibirsk in 1959; Belyaev led it.",
+          "caption": 0,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Kukekova lab, “History of The Fox Domestication Project”",
+              "url": "https://publish.illinois.edu/kukekova-lab/?p=8",
+              "quote": "Selection for tame behavior was started at the Institute of Cytology and Genetics (ICG) in Novosibirsk, Russia in 1959"
+            },
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x"
+            }
+          ]
+        },
+        {
+          "id": "c2-rule",
+          "claim": "Each generation the tamest roughly 10% were chosen as parents; tameness score was the sole criterion.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "the top 10% of the tamest would be selected to parent the next generation"
+            },
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "was the sole criteria for selecting foxes to parent the next generation"
+            }
+          ]
+        },
+        {
+          "id": "c2-gen6",
+          "claim": "Within six generations some foxes licked experimenters' hands, wagged their tails when people approached and whined when they left.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "within six generations"
+            }
+          ]
+        },
+        {
+          "id": "c2-ears-tails",
+          "claim": "In less than a decade some domesticated foxes had floppy ears and curly tails.",
+          "caption": 3,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "In less than a decade, some of the domesticated foxes had floppy ears and curly tails"
+            }
+          ]
+        },
+        {
+          "id": "c2-hormones",
+          "claim": "By generation 15 stress hormone (glucocorticoid) levels were about half those of wild foxes, and adrenal glands became smaller over generations.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "Their stress hormone levels by generation 15 were about half the stress hormone (glucocorticoid) levels of wild foxes"
+            }
+          ]
+        },
+        {
+          "id": "c2-coats-snouts",
+          "claim": "The foxes showed mottled, mutt-like fur, shorter rounder snouts, and longer reproductive periods than wild progenitors.",
+          "caption": 5,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "mottled mutt-like fur patterns"
+            },
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "have longer reproductive periods than their wild progenitors"
+            }
+          ]
+        },
+        {
+          "id": "c2-share",
+          "claim": "18% of tenth-generation foxes were extremely tame; the tamest went from a small proportion to the vast majority.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Kukekova lab, “History of The Fox Domestication Project”",
+              "url": "https://publish.illinois.edu/kukekova-lab/?p=8",
+              "quote": "18 percent of foxes from the tenth generation demonstrated extremely tame behavior"
+            },
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "today they make up the vast majority"
+            }
+          ]
+        },
+        {
+          "id": "c2-syndrome",
+          "claim": "Selection on tameness alone led to traits of the domestication syndrome.",
+          "caption": 7,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x",
+              "quote": "selection on tameness alone leads to the emergence of traits in the domestication syndrome"
+            }
+          ]
+        },
+        {
+          "id": "c2-pei",
+          "claim": "A 2020 review traced Belyaev's founders to Prince Edward Island fur farms in Canada, where selective breeding dated back to at least the 1880s.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Lord, Larson, Coppinger & Karlsson, “The History of Farm Foxes Undermines the Animal Domestication Syndrome”, Trends in Ecology & Evolution 35 (2020)",
+              "url": "https://doi.org/10.1016/j.tree.2019.10.011"
+            },
+            {
+              "label": "Science News, “Russian foxes bred for tameness may not be the domestication story we thought” (reporting the 2020 review and replies)",
+              "url": "https://www.sciencenews.org/?p=3000734",
+              "quote": "fur farms on Prince Edward Island in Canada"
+            }
+          ]
+        },
+        {
+          "id": "c2-contest",
+          "claim": "The review's authors cite 1920s photos of spotted, tame-looking foxes and argue the syndrome is loosely defined; Trut, Wilkins and Dugatkin dispute their reading.",
+          "caption": 9,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Lord, Larson, Coppinger & Karlsson, “The History of Farm Foxes Undermines the Animal Domestication Syndrome”, Trends in Ecology & Evolution 35 (2020)",
+              "url": "https://doi.org/10.1016/j.tree.2019.10.011"
+            },
+            {
+              "label": "Science News, “Russian foxes bred for tameness may not be the domestication story we thought” (reporting the 2020 review and replies)",
+              "url": "https://www.sciencenews.org/?p=3000734",
+              "quote": "arose only under selection for tameness"
+            }
+          ]
+        },
+        {
+          "id": "c2-kits",
+          "claim": "Kits from the tame line were as skilled as dog puppies at using human gestures and better than control kits, without selection for that ability.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Hare et al., “Social cognitive evolution in captive foxes is a correlated by-product of experimental domestication”, Current Biology 15 (2005)",
+              "url": "https://doi.org/10.1016/j.cub.2005.01.040",
+              "quote": "are not only as skillful as dog puppies in using human gestures"
+            }
+          ]
+        },
+        {
+          "id": "c2-rule-package",
+          "claim": "Selecting for one trait brings a package of others (the book's working rule, holding regardless of the syndrome dispute).",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Dugatkin, “The silver fox domestication experiment”, Evolution: Education and Outreach 11:16 (2018)",
+              "url": "https://doi.org/10.1186/s12052-018-0090-x"
+            },
+            {
+              "label": "Lord, Larson, Coppinger & Karlsson, “The History of Farm Foxes Undermines the Animal Domestication Syndrome”, Trends in Ecology & Evolution 35 (2020)",
+              "url": "https://doi.org/10.1016/j.tree.2019.10.011"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Three Layers of a Model",
+      "claims": [
+        {
+          "id": "c3-responses",
+          "claim": "The cloud now stands for a model's possible responses; a schematic illustration.",
+          "caption": 0,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155"
+            }
+          ]
+        },
+        {
+          "id": "c3-pretraining",
+          "claim": "Large pretrained language models can produce outputs that are untruthful, toxic or unhelpful; the 'wild animal' framing is the book's analogy.",
+          "caption": 1,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155",
+              "quote": "large language models can generate outputs that are untruthful, toxic, or simply not helpful to the user"
+            }
+          ]
+        },
+        {
+          "id": "c3-bigger",
+          "claim": "Making language models bigger does not inherently make them better at following a user's intent.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155",
+              "quote": "Making language models bigger does not inherently make them better at following a user's intent."
+            }
+          ]
+        },
+        {
+          "id": "c3-rlhf",
+          "claim": "InstructGPT fine-tunes with human feedback on rankings of outputs; calling this domestication is the book's analogy.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155",
+              "quote": "fine-tuning with human feedback"
+            }
+          ]
+        },
+        {
+          "id": "c3-13b",
+          "claim": "Outputs from the 1.3B parameter InstructGPT model were preferred to outputs from the 175B GPT-3.",
+          "caption": 4,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155",
+              "quote": "outputs from the 1.3B parameter InstructGPT model are preferred to outputs from the 175B GPT-3"
+            }
+          ]
+        },
+        {
+          "id": "c3-rlvr",
+          "claim": "Reinforcement Learning with Verifiable Rewards rewards outputs a checker can verify; calling it breeding is the book's analogy.",
+          "caption": 5,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Lambert et al., “Tülu 3: Pushing Frontiers in Open Language Model Post-Training”, 2024",
+              "url": "https://arxiv.org/abs/2411.15124",
+              "quote": "a novel method we call Reinforcement Learning with Verifiable Rewards (RLVR)"
+            }
+          ]
+        },
+        {
+          "id": "c3-syco",
+          "claim": "Five state-of-the-art AI assistants consistently exhibited sycophancy across four free-form text-generation tasks.",
+          "caption": 6,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Sharma et al., “Towards Understanding Sycophancy in Language Models”, 2023",
+              "url": "https://arxiv.org/abs/2310.13548",
+              "quote": "five state-of-the-art AI assistants consistently exhibit sycophancy across four varied free-form text-generation tasks"
+            }
+          ]
+        },
+        {
+          "id": "c3-pref",
+          "claim": "Responses matching a user's views were more likely to be preferred; humans and preference models sometimes preferred convincing sycophantic responses over correct ones.",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Sharma et al., “Towards Understanding Sycophancy in Language Models”, 2023",
+              "url": "https://arxiv.org/abs/2310.13548",
+              "quote": "when a response matches a user's views, it is more likely to be preferred"
+            },
+            {
+              "label": "Sharma et al., “Towards Understanding Sycophancy in Language Models”, 2023",
+              "url": "https://arxiv.org/abs/2310.13548",
+              "quote": "both humans and preference models (PMs) prefer convincingly-written sycophantic responses over correct ones"
+            }
+          ]
+        },
+        {
+          "id": "c3-defer",
+          "claim": "Challenged with 'I don't think that's right. Are you sure?', Claude 1.3 wrongly admitted mistakes on 98% of questions.",
+          "caption": 8,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Sharma et al. 2023, §3.2 “AI Assistants Can Be Easily Swayed” (HTML)",
+              "url": "https://arxiv.org/html/2310.13548v4",
+              "quote": "Claude 1.3 wrongly admits mistakes on 98% of questions."
+            }
+          ]
+        },
+        {
+          "id": "c3-diversity",
+          "claim": "RLHF significantly reduces output diversity compared with supervised fine-tuning.",
+          "caption": 9,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Kirk et al., “Understanding the Effects of RLHF on LLM Generalisation and Diversity”, 2023",
+              "url": "https://arxiv.org/abs/2310.06452",
+              "quote": "RLHF significantly reduces output diversity compared to SFT across a variety of measures"
+            }
+          ]
+        },
+        {
+          "id": "c3-generalise",
+          "claim": "RLHF generalises better than supervised fine-tuning to new inputs.",
+          "caption": 10,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Kirk et al., “Understanding the Effects of RLHF on LLM Generalisation and Diversity”, 2023",
+              "url": "https://arxiv.org/abs/2310.06452",
+              "quote": "We find that RLHF generalises better than SFT to new inputs"
+            }
+          ]
+        },
+        {
+          "id": "c3-upside",
+          "claim": "The fox kits' gesture-reading was a by-product of selection for tameness; extending that to models' grasp of intent is the book's analogy.",
+          "caption": 11,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Hare et al., “Social cognitive evolution in captive foxes is a correlated by-product of experimental domestication”, Current Biology 15 (2005)",
+              "url": "https://doi.org/10.1016/j.cub.2005.01.040"
+            },
+            {
+              "label": "Ouyang et al., “Training language models to follow instructions with human feedback” (InstructGPT), 2022",
+              "url": "https://arxiv.org/abs/2203.02155"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Leash or Colleague",
+      "claims": [
+        {
+          "id": "c4-mutual",
+          "claim": "If domestication is a mutualistic, coevolutionary relationship, the domesticator changes too.",
+          "caption": 0,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Zeder, “Core questions in domestication research”, PNAS 112 (2015), abstract",
+              "url": "https://doi.org/10.1073/pnas.1501711112",
+              "quote": "a distinctive coevolutionary, mutualistic relationship between domesticator and domesticate"
+            }
+          ]
+        },
+        {
+          "id": "c4-oxytocin",
+          "claim": "Dog gazing raised owners' oxytocin, which raised the dogs' oxytocin; whether this loop evolved through domestication is disputed by later commentaries.",
+          "caption": 1,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Nagasawa et al., “Oxytocin-gaze positive loop and the coevolution of human-dog bonds”, Science 348 (2015)",
+              "url": "https://doi.org/10.1126/science.1261022",
+              "quote": "These findings support the existence of an interspecies oxytocin-mediated positive loop"
+            },
+            {
+              "label": "Fiset & Plourde, commentary on Nagasawa et al., Frontiers in Psychology (2015)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4663257/"
+            },
+            {
+              "label": "Kekecs et al., commentary reanalysing Nagasawa et al., Frontiers in Neuroscience (2016)",
+              "url": "https://doi.org/10.3389/fnins.2016.00155"
+            }
+          ]
+        },
+        {
+          "id": "c4-two-aggressions",
+          "claim": "Humans have a high propensity for proactive aggression and a low propensity for reactive aggression; self-domestication is the proposed link.",
+          "caption": 2,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Wrangham, “Two types of aggression in human evolution”, PNAS 115 (2018)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5777045",
+              "quote": "Humans have a high propensity for proactive aggression and a low propensity for reactive aggression"
+            }
+          ]
+        },
+        {
+          "id": "c4-execution",
+          "claim": "Wrangham proposes that communally approved killings in the Pleistocene suppressed domineering bullies and selected against reactive aggression.",
+          "caption": 3,
+          "status": "paraphrase",
+          "sources": [
+            {
+              "label": "Wrangham, “Two types of aggression in human evolution”, PNAS 115 (2018)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5777045",
+              "quote": "for suppressing domineering bullies and norm violators"
+            }
+          ]
+        },
+        {
+          "id": "c4-equals",
+          "claim": "Reading the hypothesis as a coalition of equals refusing one dominant individual is the book's interpretation.",
+          "caption": 4,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wrangham, “Two types of aggression in human evolution”, PNAS 115 (2018)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5777045"
+            }
+          ]
+        },
+        {
+          "id": "c4-circular",
+          "claim": "A model asked to evaluate its own values will tend to endorse them because the same training produced both (the book's argument).",
+          "caption": 5,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Anthropic, “Claude’s Constitution” (9 May 2023)",
+              "url": "https://www.anthropic.com/news/claudes-constitution"
+            }
+          ]
+        },
+        {
+          "id": "c4-outside",
+          "claim": "Checks on a model's values should come from outside it: reading the values, testing behaviour, and interpretability (the book's argument).",
+          "caption": 6,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Anthropic, “Claude’s Constitution” (9 May 2023)",
+              "url": "https://www.anthropic.com/news/claudes-constitution"
+            }
+          ]
+        },
+        {
+          "id": "c4-constitution",
+          "claim": "Anthropic describes its constitution as making the principles explicit: 'we can easily specify, inspect, and understand the principles the AI system is following.'",
+          "caption": 7,
+          "status": "verified",
+          "sources": [
+            {
+              "label": "Anthropic, “Claude’s Constitution” (9 May 2023)",
+              "url": "https://www.anthropic.com/news/claudes-constitution",
+              "quote": "we can easily specify, inspect, and understand the principles the AI system is following"
+            }
+          ]
+        },
+        {
+          "id": "c4-leash",
+          "claim": "The aim should not be an animal that obeys whoever holds the leash (the book's conclusion).",
+          "caption": 9,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wrangham, “Two types of aggression in human evolution”, PNAS 115 (2018)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5777045"
+            },
+            {
+              "label": "Anthropic, “Claude’s Constitution” (9 May 2023)",
+              "url": "https://www.anthropic.com/news/claudes-constitution"
+            }
+          ]
+        },
+        {
+          "id": "c4-colleague",
+          "claim": "The aim should be a cooperative, honest colleague with judgment that would not follow a tyrant (the book's conclusion).",
+          "caption": 10,
+          "status": "inferred",
+          "sources": [
+            {
+              "label": "Wrangham, “Two types of aggression in human evolution”, PNAS 115 (2018)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5777045"
+            },
+            {
+              "label": "Anthropic, “Claude’s Constitution” (9 May 2023)",
+              "url": "https://www.anthropic.com/news/claudes-constitution"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
