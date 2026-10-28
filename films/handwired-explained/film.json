@@ -4725,7 +4725,7 @@
     },
     "publish": {
       "status": "done",
-      "finishedAt": "2026-10-28T18:14:21.305Z",
+      "finishedAt": "2026-10-28T18:16:35.472Z",
       "createdAt": "2026-10-28T17:42:51.285Z",
       "manifest": "public/generated/handwired-explained/manifest.json",
       "sources": {
@@ -4743,7 +4743,7 @@
       },
       "chapterSlices": 12,
       "deployed": false,
-      "updatedAt": "2026-10-28T18:14:21.305Z"
+      "updatedAt": "2026-10-28T18:16:35.473Z"
     },
     "review": {
       "round": 1,

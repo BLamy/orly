@@ -7,6 +7,7 @@ import {
   groupMatches,
   isChronologicalSeries,
   openBook,
+  RECENT_SHELF,
   registerAnimalPool,
   setFilmOpener,
   resolveAnimal,
@@ -393,8 +394,9 @@ const DIVIDER_WIDTHS = [170, 200, 185, 215];
 /** A block is what packing treats as indivisible: one whole series (or
  *  standalone group), or the plant that separates it from the next one. A
  *  series is never broken across two boards unless it is longer than a board
- *  can hold — books in a series belong shoulder to shoulder. */
-type ShelfBlock = { items: ShelfItem[]; width: number; splittable: boolean };
+ *  can hold — books in a series belong shoulder to shoulder. A block with
+ *  `ownBoard` stands alone: nothing else shares its board. */
+type ShelfBlock = { items: ShelfItem[]; width: number; splittable: boolean; ownBoard?: boolean };
 
 /** Every shelf group as one block, with a plant block between groups.
  *  Kinds/sizes/seeds come from the group index, so a given shelf always grows
@@ -418,12 +420,22 @@ function shelfBlocks(shelves: Shelves): ShelfBlock[] {
   };
 
   const blocks: ShelfBlock[] = [];
+  if (shelves.recent.length) {
+    // the top board: the newest books in their own slipcase, a board to themselves
+    blocks.push({
+      items: [{ kind: 'series', name: RECENT_SHELF, books: shelves.recent }],
+      width: SLEEVE_CHROME + shelves.recent.length * BOOK_W + ITEM_GAP,
+      splittable: false,
+      ownBoard: true,
+    });
+  }
   if (shelves.films.length) {
-    // the video library: every film as a VHS tape in one case, at the head of the shelf
+    // the video library: every film as a VHS tape in one case, on the board under Recently Added
     blocks.push({
       items: [{ kind: 'tapes', books: shelves.films }],
       width: SLEEVE_CHROME + shelves.films.length * TAPE_SLOT + ITEM_GAP,
       splittable: false,
+      ownBoard: true,
     });
   }
   groups.forEach(({ name, books }, g) => {
@@ -475,10 +487,11 @@ function packRows(blocks: ShelfBlock[], rowWidth: number): ShelfItem[][] {
   };
 
   for (const block of blocks) {
-    if (used + block.width > capacity && row.length) flush();
+    if ((block.ownBoard || used + block.width > capacity) && row.length) flush();
     if (block.width <= capacity || !block.splittable) {
       row.push(...block.items);
       used += block.width;
+      if (block.ownBoard) flush();
       continue;
     }
     // Longer than a whole board: lay it out board by board, contiguously.
@@ -511,7 +524,7 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
                     <SpineBook
                       key={b.slug}
                       book={b}
-                      seriesIndex={isChronologicalSeries(group.name) ? undefined : b.seriesOrder}
+                      seriesIndex={isChronologicalSeries(group.name) || group.name === RECENT_SHELF ? undefined : b.seriesOrder}
                     />
                   ))}
                 </div>

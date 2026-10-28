@@ -10,6 +10,8 @@ export const assetUrl = (p: string) => ASSET_BASE + String(p).replace(/^\//, '')
 // createdAt order the generator writes into library.json.
 export const PINNED_SLUG = 'the-orly-loop';
 export const RECENT_COUNT = 8;
+// The top board of the shelf: the newest books, ahead of the Video Library.
+export const RECENT_SHELF = 'Recently Added';
 export const LEAD_SERIES = 'The Explainers';
 // This series is the shelf's showcase: it always leads (its own top row) and
 // is excluded from the Recently Added strip.
