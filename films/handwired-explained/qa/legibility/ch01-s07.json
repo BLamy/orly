@@ -1,0 +1,239 @@
+{
+ "shot": "ch01-s07",
+ "at": "2026-10-28T09:01:20.782Z",
+ "minCapPx": 22,
+ "sampled": 28,
+ "texts": 45,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "the README",
+   "capWhileSubject": 22.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "For an",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "i",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "integer a",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "an hour",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a day",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a year",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a lifetime",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Monitor",
+   "maxCap": 12.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THIS PROGRAM",
+   "maxCap": 10.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "State",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "234",
+   "maxCap": 13.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Operations",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "4,646",
+   "maxCap": 13.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Outputs",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "493",
+   "maxCap": 13.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0.000",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.875",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104.750",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "94.625",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84.500",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.375",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "64.250",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.125",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44.000",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "33.875",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "23.750",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13.625",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3.500",
+   "maxCap": 9.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "130 layers · 9,909 weights",
+   "maxCap": 11.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Notes",
+   "maxCap": 12.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Wire one more neuron by hand",
+   "maxCap": 13.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Photos",
+   "maxCap": 12.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "suspect",
+   "maxCap": 15.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Somebody",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "trained it",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A tool",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "turned",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ordinary",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JavaScript",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "into it",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "It isn't",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "really a",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "network",
+   "maxCap": 22.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "11",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 37
+}

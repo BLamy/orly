@@ -1,0 +1,120 @@
+{
+ "shot": "ch11-s05",
+ "at": "2026-10-28T17:42:22.018Z",
+ "step": 0.0833,
+ "sampled": 217,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "“the track failed”",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "— the recovery parser README, TOML",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "gradient descent, then trial and error, trained with TOML",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "mistakes: level with 39 hand rules",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch11-s05-bison",
+  "ch11-s05-slip",
+  "ch11-s05-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@784,225",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.55,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s05-bison",
+   "probed": true,
+   "from": 1.133,
+   "to": 18.55,
+   "minInkWhilePaper": 0.68
+  },
+  {
+   "id": "fillRect@879,393",
+   "probed": false,
+   "from": 3.133,
+   "to": 18.55,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "fillRect@879,603",
+   "probed": false,
+   "from": 3.133,
+   "to": 18.55,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "fillRect@879,1025",
+   "probed": false,
+   "from": 3.133,
+   "to": 18.55,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "fillRect@879,814",
+   "probed": false,
+   "from": 3.133,
+   "to": 18.55,
+   "minInkWhilePaper": 0.69
+  },
+  {
+   "id": "ch11-s05-slip",
+   "probed": true,
+   "from": 8.05,
+   "to": 18.55,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@691,674",
+   "probed": false,
+   "from": 8.05,
+   "to": 8.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "ch11-s05-card",
+   "probed": true,
+   "from": 12.383,
+   "to": 18.55,
+   "minInkWhilePaper": 0.82
+  }
+ ]
+}

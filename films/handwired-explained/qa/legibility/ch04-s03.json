@@ -1,0 +1,98 @@
+{
+ "shot": "ch04-s03",
+ "at": "2026-10-28T10:18:30.213Z",
+ "minCapPx": 22,
+ "sampled": 19,
+ "texts": 17,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "2",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "100",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "a",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "96",
+   "capWhileSubject": 24,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "max(0, a − 4)",
+   "capWhileSubject": 31.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "max(0, a − 5)",
+   "capWhileSubject": 30.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 0 · 0 · 0 · 1 · 95",
+   "capWhileSubject": 30.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "95",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "above4 =",
+   "capWhileSubject": 28.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "max(0, a − 4) − max(0, a − 5)",
+   "capWhileSubject": 28.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= clamp(a − 4, 0, 1)",
+   "capWhileSubject": 28.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

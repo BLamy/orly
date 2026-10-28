@@ -1,0 +1,59 @@
+{
+  "voiceId": "UEKYgullGqaF0keqT8Bu",
+  "name": "Chris Brift (library voice UEKYgullGqaF0keqT8Bu) - mature, educated, well-spoken English male; smooth, soft, unhurried factual read; distinct from every other film's voice",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+  },
+  "seed": 20260603,
+  "format": "mp3_44100_192",
+  "wpm": 141.1,
+  "lockedAt": "2026-10-28T06:58:47.112Z",
+  "notes": "Library voice chosen by audition 2026-10-28 (10 auditions, 2,590 credits, eleven_multilingual_v2, the film opening L0101-L0107a, 589 chars). Not a clone or imitation of any real person; nothing added to the account. Ranking: 1 Chris Brift UEKYgullGqaF0keqT8Bu (mature, educated, smooth, soft; slowest natural pace, 141.1 wpm at 1.0; even level, LRA 3.1, sentence sd 1.0 dB); 2 Jay C5rG2JoeFeqEgocBWvLg (atmospheric, faster in-sentence 170 wpm); 3 Andy Berg Hn5BLInUAuTgmc75E5lg (uneven level, 8.5 dB sentence range); 4 James jhF1GdnTnHyB6ng0ODQg (fast, quiet -30 LUFS); 5 George JBFqnCBsd6RMkjVDRZzb (fastest, 157 wpm). Speed 1.0, not a 100-115 wpm slow-down: speeds 0.9 and 0.8 both measured ~127 wpm, and the story runtime gate estimates 25.5 min at 141.1 wpm (passes) but 26.7 min at 0.95 (fails the 26.4 min ceiling). Human listening check still recommended (s1 files for Chris Brift and Jay in voice/auditions).",
+  "listening": [
+    {
+      "term": "Kleene",
+      "line": "L0204",
+      "expect": "KLAY-nee (lexicon Clay-nee), also possessive in L0624 and L0908",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "new respelling; confirm by ear after narration"
+    },
+    {
+      "term": "Cheng Lou",
+      "line": "L0301",
+      "expect": "read plain; no pronunciation source found in the repo or research, so a human should confirm the read is acceptable (also Cheng in L0719, L0903, L0918)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "no lexicon entry by design"
+    },
+    {
+      "term": "TOML",
+      "line": "L1107",
+      "expect": "TOM-ul (lexicon Tommel)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "new respelling; confirm by ear after narration"
+    },
+    {
+      "term": "RegExp",
+      "line": "L0912",
+      "expect": "reg-exp, said as a word, not spelled out (also L0915, L0917, L0920)",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "new respelling; confirm by ear after narration"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+ "shot": "ch06-s01",
+ "at": "2026-10-28T11:42:07.680Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 5,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "DEEP DIVE II",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "THE CLOCKWORK THAT CANNOT STOP",
+   "capWhileSubject": 35.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "no jump",
+   "capWhileSubject": 31.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "no break",
+   "capWhileSubject": 31.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "no repeat",
+   "capWhileSubject": 31.8,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

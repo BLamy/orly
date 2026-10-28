@@ -1,0 +1,23 @@
+{
+ "shot": "ch08-s07",
+ "at": "2026-10-28T14:20:35.854Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "825 commits · all authored by Cheng Lou",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "756 also credit Claude Code · no model named",
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

@@ -1,0 +1,69 @@
+{
+ "shot": "ch04-s14",
+ "at": "2026-10-28T10:37:21.129Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "13 Sept 2026",
+   "capWhileSubject": 34.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "float64 everywhere:",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "of 20,000 percent labels",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "18,820",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "wrong",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "FP32 order at rounding points only:",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0 wrong",
+   "capWhileSubject": 27.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "For an",
+   "maxCap": 12.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "integer a",
+   "maxCap": 12.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 9.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the README",
+   "maxCap": 5.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 4
+}

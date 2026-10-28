@@ -1,0 +1,18 @@
+{
+ "id": "m07",
+ "start": 587.6,
+ "end": 790.25,
+ "file": "films/handwired-explained/score/renders/m07.wav",
+ "duration": 208.65,
+ "I": -25.2,
+ "LRA": 5.9,
+ "TP": -7,
+ "expected": 208.65,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m07.png",
+ "cueSeconds": 202.65,
+ "cps": 0.24000000000000002,
+ "lastStrikeLocal": 201.92,
+ "lastStrike": 789.52
+}

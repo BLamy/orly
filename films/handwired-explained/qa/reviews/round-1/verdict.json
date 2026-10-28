@@ -1,0 +1,213 @@
+{
+  "round": 1,
+  "film": "handwired-explained",
+  "pass": false,
+  "bar": {
+    "minDimension": 8,
+    "mean": 8.6,
+    "noCritical": true
+  },
+  "mean": 7.76,
+  "scores": {
+    "accuracy": 7.92,
+    "depth": 8.17,
+    "clarity": 7.25,
+    "story": 7.83,
+    "curiosity": 8.0,
+    "visual": 7.67,
+    "sync": 7.92,
+    "sound": 7.33
+  },
+  "weighting": "mean of the five reviewers, the owning lens counted double: accuracy=historian, depth+clarity=teacher, story+curiosity=story, visual+sync=art, sound=sound",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 8,
+      "depth": 8.5,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "teacher": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "story": {
+      "accuracy": 7.5,
+      "depth": 8.5,
+      "clarity": 7,
+      "story": 7.5,
+      "visual": 8,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "art": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "sound": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 7.5,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7,
+      "curiosity": 8
+    }
+  },
+  "criticalRemaining": 0,
+  "ledgerCheck": "Round 1: film.json stages.fixes is empty and there are no earlier reviews, so there are no fixed, partial or skipped ids to verify. The showrunner confirmed the ch09-s05 mirrored tape and the ch10-s01 blank card on their sheets.",
+  "fixes": {
+    "shots": {
+      "ch09-s05": "MAJOR (teacher+art, confirmed on sheet 19:20.4-19:24.1): pass 2 draws every glyph of the tape mirrored (cell() calls c.scale(-1, 1) when mirror), so the 'error' payoff reads 'ɿoɿɿɘ' and the byte codes read 411/511. Remove the glyph mirror entirely: show the tape's turnover/direction with motion (read-head travel plus a small arrow), and draw cells in reverse ORDER with upright glyphs if needed. Re-sheet and confirm 19:20.5, 19:22.3 and 19:24.1 show upright 'error' with codes 101 114 114 111 114.",
+      "ch10-s01": "MAJOR (art+historian, confirmed on sheet 20:35.3-20:41.7): the second stranger's card that rides in on 'compiler' (14.38) is a blank white card with no attribution for the rest of the shot, while the first gets 'a Hacker News commenter · 22 Oct 2026'. Give it the same attribution, 'another Hacker News commenter · 22 Oct 2026', at the same type role. On 'docs' (15.91) the docs' line on tag 4's back is ~8 px grey italic: set it as a legible card or enlarged back, ≥22 px cap, reading exactly 'No tool converts existing JavaScript' (Q014), and push in or lift it so it reads while L1002 is spoken.",
+      "ch09-s08": "MAJOR (art): both quotes the narration reads are greeked dash lines at the bottom right of a static 14 s shot. Set the real words: commit card (typewriter) 'Do it quick plz, then publish.' (Q103) and launch post (serif) 'My dear friends, I’d like to show you my latest toy project' (Q104), at ≥22 px cap, and push in toward the cards on 'commitCard' (3.20) and 'post' (8.96). Keep greeking only for text that is not read aloud.",
+      "ch12-s04": "MAJOR (teacher+art): L1206 names three beliefs still argued over but the wide holds ~20 illegible 30 px tags and nothing singles them out (23:20-23:28 barely changes). On 'half', 'tagline' and 'rivet' light each named tag in turn (warm rim, ~1.15x lift, readable at ≥22 px cap) while the settled tags dim to ~50%, or rack in to each; hold the three lit together before 'why' (12.79), then pull back wide for L1207. L1207 is being rewritten (drop 'for fun'): re-anchor 'answer' to the new line and keep the “Let’s find out!” slip.",
+      "ch06-s05": "MAJOR (art+historian): a 24 s locked-off comparison where the 359 px drift is only a tiny dial readout, and the drift gauge still reads 294-359 px while L0614 describes Handwired's method (11:11-11:21), so the big number attaches to Handwired. Draw the drift as a thick red bracket between the two windows' left edges, labelled ≥22 px cap, growing to 359 px on the drift beats; label that gauge 'ordinary loop' (matching the L0613 rewrite) and dim it from 'save'; push in slowly over L0613; on 'lock' snap both windows home and collapse the bracket to 0 px.",
+      "ch06-s02": "MAJOR (art; QA ghostText FAIL): the toggle label sits under 'toggle · track 52 × 32 px' from 6.88 to 24.05 s and rail-0 under 'write inputs' from 9.97 to 24.05 s, so the four host-loop rail labels read doubled. Keep one text layer per label (type kit textSwapOut, only one layer above 25% at a time); light each rail phrase on its beat (inputs 9.84, loom 12.01, copied 15.07, page 16.97) and hold the others at ~40%. Re-run the ghost-text check.",
+      "ch06-s03": "MAJOR (art+teacher; QA ghostText FAIL): 'distance from home' overlaps 7.47-9.72 s and '400 px' over the loupe 9.55-13.88 s; from +16 s the frame is the most crowded in the film. Swap overlapping labels with textSwapOut; retire the spring row, loupe and stamp once the press arrives on 'fold' (14.53); keep only the press, the doubling tiles and the 14 counter; light the counter as the single subject on 'counter' (21.70) and set the float64 card on a deeper plane. Re-run the ghost-text check.",
+      "ch04-s07": "MAJOR (teacher): the step that explains 'reads two' is missing on screen. On 'rounds' (7.20) ink two short lines under the ruler: 'a − 4 = 16,777,218 ✓' and 'a − 5 = 16,777,217 → 16,777,216 (no float there)', then 'bit = 218 − 216 = 2'; animate the a−5 pin dropping from the 217 gap into the 216 tick before the 'two' beat.",
+      "ch08-s06": "MAJOR (teacher+story): a 9 s silent plate with an undecoded bug (3·v vs v·3). Add one caption in the plate's hand, inked on 'corners': 'a multiply built from ramps: at v = 0 both sit on their corners, so the slope depended on which operand was written first' (bible #19, DG28), ≥22 px cap, and let it hold to the cut. No new narration line.",
+      "ch02-s04": "MAJOR (historian): the biology strand drops onto the Lifespan Rule at ~77 years (1943 to 2020), a lifespan the record does not support (bible E1: biology moved away from 1959 on; 2020 was one late blow). Draw the biology strand fraying over a span starting near 16 years (1959) and thinning to the 2020 mark, with no single 77-year tip; L0208b is being rewritten to say so. Check the reprises in ch02-s06 and ch12-s01 draw the same frayed end if they show the biology strand.",
+      "ch07-s03": "MINOR (historian+art): the card 'its cure: weight decay' overstates DG11 (decay cuts shut units from 2-4 to at most 2). Change it to 'its remedy: weight decay'. Also make 'goes dark' a lighting change: when the slopes go to 0, dim the valve to ~40% and draw the zeros larger in dark ink.",
+      "ch09-s07": "MINOR (historian+art): JS13 is contested, yet the whole 'The GPU is the faster one (for the highlighter half)' tag is struck. Strike only 'the faster one' and pin a small label 'vs 1 thread: often yes · vs 8 workers: no'; label the 8-worker benchmark card 'search' so it is not read as the highlighter measurement. Fade that benchmark overlay out before 'hours' (13.86) and ease the pull-back so the tag line never crosses the top safe area.",
+      "ch10-s02": "MINOR (art): during the push-in (+6.8-12.6 s) the 'a Hacker News commenter' card is cropped by the top edge, and the flipped tag's hidden comment (x = 4.5 gives 11) is ~12 px. Keep the card inside title-safe and enlarge the hidden-comment text to ≥22 px cap while it is the subject.",
+      "ch04-s14": "MINOR (art; QA crossfade ghost into ch04-s08): the outgoing caption 'float64 everywhere: 18,820 of 20,000 percent labels wrong' sits over ch04-s08's incoming '10'. Fade ch04-s14's caption out at least 0.3 s before its out-point.",
+      "ch05-s03": "MINOR (art): at 'strike' (+6.4 s) a second red pencil lies loose across the lower right while the arm holds one. Bind the pencil to the hand's grip for the whole stroke, or hide the free prop.",
+      "ch04-s09": "MINOR (art): from 'quote' (11.69) the 'promises from the caller, not proofs' card covers the 'grid 1' tag and ops counter, and at 'caller'/'flipTag' the arm hides the flipped side. Move the quote card upper right, clear of the tag, and withdraw the arm by ~19.3 s so the flipped tag holds unobstructed.",
+      "ch06-s06": "MINOR (teacher): the row-boundary plates read 40, 80, 80, 140, 180 and the repeated 80 looks like a typo. Keep the real data, but tag the zero-height row's plate 'empty row' so the repeat is explained."
+    },
+    "cues": {
+      "m09": "MAJOR (sound): the ch08 low point (981-1061 s) holds gm_contrabass G1 39.2 s, F1 41.2 s, G1 26.5 s; it beats at a 2.2 s period with a median 4.7 dB (max 7) 40-250 Hz swing, right under L0801-L0808a, plus a 330-400 Hz throb. Replace the long contrabass and bowed-pad holds with the re-bowed tuba pedal from m01/m02 (bows() on two alternating lanes, fresh bow every 1-2 bars, lpf 280-400). Re-render and confirm the low-band swing inside each hold is ≤1.5 dB.",
+      "m03": "MAJOR (sound): the ch03 pedal is gm_contrabass C2 held 0-35.4 s and 40.3-75.3 s cue-local, wowing a median 4.4 dB at a 1.6 s period (the artefact already fixed in m02). Swap in m02's re-bowed tuba bows() pedal, keeping the C to G moves on the flips and strikes; confirm ≤1.5 dB low-band swing. ALSO: on 'strike3' (270.00) keep only a ghost pencil scratch and move the drawer thump and the V-I bass fall to the breath after 'ours' (~272.2-272.8, before L0313), as m06 does for 'That guess was ours too.' Leave nothing heavy under L0312. Re-measure lastStrike.",
+      "m13": "MAJOR (sound): after the last relay clack (1433.98) the cue is gone by 1437.0, so the final 18.4 s of end card and credits sit on a -58 LUFS floor that reads as a dropout. Keep the clack as the last onset, but sustain one very soft low D (re-bowed tuba or cello D2-D3, lpf ~400, ~-36 LUFS) from ~1434.5 through the cards, fading over the last 4 s into black (1455.2). Extend m13's end to ~1455.4 and update the fade/lastStrike checks.",
+      "m12": "MINOR (sound): the gm_contrabass F1 held 12.95 s under JSON's verdict (1315-1328 s) beats at a 2.4 s period (median 4.7 dB). Re-bow it with the tuba bows() lanes, or drop the contrabass and let strings and cello carry the bass.",
+      "m02": "MINOR (sound): the last tuba re-bow swells at 191.08, inside the 190.2-191.4 crossfade into m03. End the final bow by ~189.6 so the join is a clean decay over m03's low C. Re-measure lastStrike."
+    },
+    "lines": {
+      "L0208b": "MAJOR (historian+teacher): as written, with L0209, the film dates the end of the biological logic-gate picture to 2020. Rewrite (bible E1, FR12): 'Biology had loosened that tag since 1959. In 2020, Gidon's team found one human neuron's branches answering either input, not both.' L0209 stays.",
+      "L0625": "MAJOR (story): L0625 re-asserts 'One frame is one evaluation' right after L0615 struck one-run-per-frame, so Deep Dive II contradicts itself. Rewrite: 'The lab's guide calls each run “a fixed-depth circuit”. The host turns the crank as often as it needs. The circuit never stops early.' (fragment of the existing quote; re-anchor ch06-s12's 'repo' beat to 'circuit').",
+      "L0615": "MAJOR (teacher+story): the 17 runs are never tied to the replay just described. Rewrite: 'One run per frame? That held until mid-September. Replaying from the last save, a busy drag frame now runs about seventeen.'",
+      "L0108": "MAJOR (sound): 'more than four, ten' has 0.06 s between 'four' and 'ten' and is heard (and transcribed) as 'four-ten'. Keep the written text; give the spoken field a forced break ('If a is more than four <break time=\"0.4s\"/> ten. If not, twelve.') and confirm a ≥0.35 s gap. Re-anchor ch01-s06 'check' if the length changes.",
+      "L0312": "MAJOR (sound): 'That guess was ours.' is the quietest line in the film (-30 LUFS raw, 10.4 dB over music), and the first payoff of the device. Re-narrate with fuller presence (same plain delivery, not a whisper), target -22 to -24 LUFS raw. Paired with the m03 strike move.",
+      "L0420": "MAJOR (teacher): 2^149 arrives with no reason. Rewrite (bible TE08, Q033): 'Promise only a range, and it must tell the tiniest difference from none. The smallest float is two to the minus hundred and forty-ninth, so it magnifies by two to the hundred and forty-ninth, in steps.' Re-time ch04-s10 'lenses' to 'in steps'.",
+      "L0414": "MAJOR (teacher+story): after the 60 s FP32 detour the viewer has lost which comparison is meant. Rewrite: 'Back to a greater than four. The real library won't compare until you promise a range.'",
+      "L1207": "MAJOR (historian+story): 'for fun' is lifted from Q006, where it qualifies the backend choice, so the film's longest-running question pays off on a context shift. Rewrite: 'To the stranger's “why?”, the README's nearest answer heads its list of funny use-cases: “Let's find out!”' (Q010).",
+      "L1101": "MAJOR (story): ch10 runs 20-27 October, then 'One last experiment' lands after Hacker News though it ran 15-16 October. Rewrite: 'Step back a week, to the days after launch, for one last experiment. The search demo's JSON highlighter stops at the first mistake.' Keep the 'experiment' beat on 'experiment'.",
+      "L0426": "MAJOR (teacher+historian+story): what is fitted, why floats fall short, and the consequence are all unsaid; and FP32 division alone gives exactly 7 (EX03). Rewrite: 'Fit columns two hundred and forty-four pixels wide in a window seventeen hundred and thirty-two wide. Doubles fit seven. Through a thirty-two-bit reciprocal, a hair short: one column vanishes.'",
+      "L0613": "MINOR (story+historian): 'the familiar loop' is never defined and the ear hears it as Handwired's. Rewrite: '...and an ordinary animation loop drifts up to three hundred and fifty-nine pixels apart.' (ch06-s05 labels its gauge 'ordinary loop').",
+      "L0412": "MINOR (story): 'Past nearly seventeen million' contradicts itself. Rewrite: 'Past about seventeen million, two to the twenty-fourth, floats skip whole numbers.'",
+      "L0503b": "MINOR (teacher): 71 vs 130 is unexplained. Rewrite: 'The loom is a hundred and thirty layers; the longest chain of gates runs seventy-one deep.'",
+      "L1005": "MINOR (historian): states the commenter's complaint as fact. Rewrite: 'Another said the website never answered the obvious question: “why?”'",
+      "L1007": "MINOR (story): PJ28 says no public discussion was found, not that strangers judged gently. Rewrite: 'About the lab, we found no public word. Its harshest critic was itself.'",
+      "L0813": "MINOR (story): flat chapter-out. Rewrite: 'In mid-September, he settled three questions with machines we've met: an index read, one comparison, and springs worked out in JavaScript.'",
+      "L0105": "MINOR (sound): the film's driving question is rushed (2.0 s, ~190 wpm, -28.6 LUFS raw) with only 0.5 s before L0106. Re-take slower with a spoken field ('Where did those weights... come from?') and open the gap to L0106 to ≥1.2 s inside ch01-s05.",
+      "L0303": "MINOR (sound): 'Its tutorial' is heard as 'It's tutorial'. Spoken form: 'The tutorial puts it this way: ...'; subtitles may keep the written text.",
+      "L0210": "MINOR (sound): 'learn the weights' transcribes as 'learned the weights'. Spoken form: 'In 2019, a younger tag. Learn the weights. Don't write them.' Confirm by STT.",
+      "L0918": "MINOR (sound): 'Cheng' is heard as 'Chung' here but 'Cheng' in L0719/L0903. Re-take with the same seed/settings as the majority read and confirm by STT."
+    },
+    "global": [
+      "MAJOR (art) silhouette craft: about 20 tag shots reuse one bare tube-sleeved arm from the bottom right, and the mid-film plates (ch06-s03, ch07-s02, ch07-s03, ch08-s04..s06, ch11-s03, ch11-s04) are flat cream with no cut-out edge. In cast.ts give the arm puppet a detailed cuff (lace edge, two buttons, a sleeve fold) and articulated fingers; vary the entry side and add a shoulder/profile silhouette at frame edge in at least a third of the tag shots; give the plate shots a dark foreground proscenium or desk-edge silhouette and a backlit window behind the plate (as ch08-s04 does). In wide tag-wall frames, push in to the tags the line names rather than repeating the same wide strike.",
+      "Hand-off to narration: re-narrate L0105, L0108, L0208b, L0210, L0303, L0312, L0412, L0414, L0420, L0426, L0503b, L0613, L0615, L0625, L0813, L0918, L1005, L1007, L1101, L1207, then re-lock the clock and re-fit every shot whose beats anchor to those lines (at least ch01-s05, ch01-s06, ch02-s04, ch02-s05, ch03-s02, ch03-s06, ch04-s07, ch04-s08, ch04-s10, ch04-s13, ch05-s02, ch06-s05, ch06-s05b, ch06-s12, ch08-s08, ch09-s08, ch10-s03, ch10-s04, ch11-s01, ch12-s04) and any cue whose strikes sit on them.",
+      "Pronunciation sign-off (all five reviewers): a human listens to Kleene (L0204, L0624, L0908; must be KLAY-nee), Cheng Lou (L0301, L0810, L0918), TOML (L1107) and RegExp (L0912-L0920), and records each with film:voice signoff. 'Lou' is pronounced 'Loo': treat STT 'Lu' as a homophone pass, do not add a 'Low' alias. Re-take L0702 if 'unfreezing' (0.91 s) sounds dragged.",
+      "MINOR (sound) macro-dynamics: all 13 cues sit within 2.5 LU with gainDb -4 and master LRA 4.8. Set gainDb per cue (m10 -3, m13 -3.5, m09 and m11 -5), add swell regions in the speech-free gaps of the final wave (1384.2-1389) and the m09 climb (1058.9-1070), target master LRA ~6-7 with every line still ≥10 dB over the music. Raise maxLevelingDb to 5 for lines measuring below -26 LUFS raw."
+    ]
+  },
+  "fixChecks": {
+    "ch09-s05": {
+      "present": [],
+      "absent": [
+        "c.scale(-1, 1)"
+      ]
+    },
+    "ch10-s01": {
+      "present": [
+        "another Hacker News commenter",
+        "No tool converts existing JavaScript"
+      ],
+      "absent": []
+    },
+    "ch09-s08": {
+      "present": [
+        "Do it quick plz, then publish",
+        "My dear friends"
+      ],
+      "absent": []
+    },
+    "ch06-s05": {
+      "present": [
+        "ordinary loop"
+      ],
+      "absent": []
+    },
+    "ch04-s07": {
+      "present": [
+        "no float there"
+      ],
+      "absent": []
+    },
+    "ch08-s06": {
+      "present": [
+        "which operand was written first"
+      ],
+      "absent": []
+    },
+    "ch02-s04": {
+      "present": [],
+      "absent": [
+        "lifeX(77 * Y)"
+      ]
+    },
+    "ch07-s03": {
+      "present": [
+        "its remedy: weight decay"
+      ],
+      "absent": [
+        "its cure: weight decay"
+      ]
+    },
+    "ch09-s07": {
+      "present": [
+        "vs 8 workers: no"
+      ],
+      "absent": []
+    },
+    "ch06-s06": {
+      "present": [
+        "empty row"
+      ],
+      "absent": []
+    }
+  },
+  "dimensionNotes": {
+    "accuracy": "Carefully sourced, with the on-screen arithmetic re-checked to the last digit and fair treatment of live disputes. It is held back by a few overreaches: the biology strand ends at 2020 when biology had moved on from 1959, 'for fun' is quoted out of context, and a 'cure' card overstates the evidence.",
+    "depth": "The three deep dives are real: worked ternaries, tie-to-even rounding, a 2^149 lens train and checkable gradients. A few steps an expert would ask for are still missing, such as why exactly 2^149 and why a − 5 reads two.",
+    "clarity": "This is the weakest dimension. Dense lines arrive with no bridge back after the FP32 detour, Deep Dive II contradicts itself on one run per frame, the JSON tape is drawn mirrored, and several key cards and quotes are blank or too small to read.",
+    "story": "The spine is strong, with a 4.5 → 11 hook paid off three times and a believer, a dissenter and a duration in every era. The second half drifts: a silent orphan plate in ch08, a timeline slip into ch11, and a finale whose answer to 'why?' rests on a misquote.",
+    "visual": "The backlit paper-cut light is lovely at its best (the commit building, the backward-pass beam, the passed tag). But the puppetry is one plain sleeve repeated about twenty times, the mid-film plates are flat, and there is a mirrored tape, a blank card and two ghost-text failures.",
+    "sync": "Most beats land on their words, and the arithmetic inks as it is spoken. A few key moments miss: the three beliefs named in the finale are never singled out, the drift number sits on Handwired's line for ten seconds, and quoted cards stay greeked while they are read aloud.",
+    "sound": "The mix is clean (-16 LUFS, every line at least 10 dB over the music), and the select-gate score is a real leitmotif system. Three cues still hold beating contrabass pedals under speech, the first payoff line is the quietest in the film, and the credits fall into near-silence.",
+    "curiosity": "Questions are planted and paid off: 'what is a GPU for?', Kleene's finite machine and the stranger's 'why?' all return. The film's best reversal, 'RegExp is fast', is humble and funny. The tag-strike ritual wears thin by the second half."
+  },
+  "summary": "Round 1 gate FAILS: mean 7.76 (bar 8.6) with clarity 7.25, sound 7.33, visual 7.67, story 7.83, accuracy 7.92 and sync 7.92 under 8. There are no critical issues. The highest-leverage fixes are a clarity and accuracy line pass (20 re-narrated lines, including the Deep Dive II contradiction, the 2^149 reason, the 'for fun' misquote and the ch11 chronology), the broken visuals (mirrored tape in ch09-s05, blank card in ch10-s01, greeked quotes in ch09-s08, ghost text in ch06-s02/s03), singling out the finale's three beliefs, re-bowing the beating contrabass in m03/m09, and a sustained D under the credits.",
+  "at": "2026-10-28T18:13:00Z",
+  "deferred": [
+    "L0617, L0423, L0608, L0508, L1201 (tag/guess/promise/belief naming), ch03-s02 builder code, ch11-s01 legibility, ch06-s10 hold, wpm air in L0404/L0405: all minor, held for a later round to keep this round lean."
+  ]
+}

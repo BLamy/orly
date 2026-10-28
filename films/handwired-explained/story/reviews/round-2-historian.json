@@ -1,0 +1,115 @@
+{
+  "reviewer": "historian",
+  "round": 2,
+  "lens": "accuracy and fairness",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug handwired-explained --check: 0 errors, 1 warning, 103 shots, 185 lines, 2748 words. Estimate 26.1 min (1568.6 s) at the locked 140 wpm, against a 24.0 min target. That is OUTSIDE the brief's 22-26 min range, by about 0.1 min. Round 1 was 2427 words at 25.8 min, so the round-1 fixes added about 320 words.",
+  "method": "I listed every narration line and on-screen text item in all 103 shots and checked each against the claim ids in shot.claims (claims.json), the bible's sensitive-topic guidance (sec. 9) and its do-not-use list (sec. 11). I matched every quoted span in text, spoken and onScreenText against quotes.json by script, checking speaker, date and context. I re-checked the worked arithmetic: 4.25 -> 11.5; 16,777,222 -> bit 2 -> 8; the 2^149 cascade (14 + 5x24 + 15); the spring step (-298.608, 348, 401.392); the valve (0.15, 0.225, 0.45, 1.5); 2.2 ms / 81 us = 27x and 2.2 ms / 140 us = 16x; 18,820/20,000 = 94%. All correct. I also checked whether the round-1 historian card was applied. 17 of its 19 items are fixed: the GPU 8-worker side, 'not Cheng', 'again', the cross-runtime GPU ratio, 'almost every whole number', Kleene's 'time', the 'close to the biological reality' card, LB21's agent-written row, partial fusion, 'ten earlier claims', the undated 0/20, the Q100 misplacement, the Q090 period, the tagline in ch12, the Maass & Orponen card, the 4,402 label and the LB26 open questions. The DG20 'moving' scope is still missing, and Kleene is now consistent only in ch02.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 7,
+    "voice": 8
+  },
+  "critical": [
+    "RUNTIME: the assemble check estimates 26.1 min (2748 words) at the locked 140 wpm, which is outside the brief's 22-26 min range. The script is also about 470 words over the 2280-word target. Cut at least 60 spoken words to get back inside the range; about 150 would leave margin (about 25 min). Candidates that keep every brief requirement: ch02-s04 (the 2020 dendrite shot; the brief allows history 'only as brief framing'), ch07-s11 L0720 (43 words; keep the DG06 scope and the 63.6%, and move the 24.6% to the label), ch08-s04 L0807 (45 words; the label already carries the multiplier dial), ch06-s05 L0613 (move '10 vs 120 fps' to the label), ch12-s02 L1203.",
+    "ch02-s05 L0210b, QUOTE INTEGRITY: Brooks is quoted as “I think Sutton is wrong.”, with the period inside the marks. The source (Q154) reads 'I think Sutton is wrong for a number of reasons.' The added full stop makes a truncated span read as his whole sentence. Round 1 flagged and fixed exactly this class of error ('It is for many documents.'), and assemble does not catch it. Fix: write ... replied, “I think Sutton is wrong” (period outside the marks), or quote the full sentence “I think Sutton is wrong for a number of reasons.” Apply the same change in text and spoken."
+  ],
+  "issues": [
+    {
+      "where": "ch09-s07 L0920 'Give RegExp eight workers, and the GPU isn't clearly faster.'",
+      "problem": "This understates the other side of contested JS13. The bible's settled view (sec. 3 E6, line 309) is 'not faster than 8 workers except on the backtracking pattern'. After a pause, which is what a human typing actually gets (JS19), the GPU takes 2-8x as long as RegExp in 8 workers. 'Isn't clearly faster' still leans toward the GPU.",
+      "fix": "Say: 'Give RegExp eight workers, and it wins, except on the one pattern that makes it backtrack.' Extend the 'workers' label: 'RegExp in 8 workers: 1.9–6.7 ms · GPU: 4.5–5.2 ms back to back, 2–8× as long after a pause'. Add JS19 to claims if the pause is mentioned."
+    },
+    {
+      "where": "ch09-s05 L0911 'First backwards, noting where a match could still finish; then forwards, counting.' (and the visual's per-state notes and the 'tally')",
+      "problem": "JS06 and the dossier (demo-json-search.md L217-L224) support only this: two passes, reverse then forward, 'since a longest match is only known after reading past its end, and a program can't go back'. Neither describes what the reverse pass records or says the forward pass counts. The shot's notes 'could a match still finish from here?' and its tally are an unverified mechanism presented as fact.",
+      "fix": "Ground it in the repo's own reason: 'First from the end, then from the start: a longest match is only known after reading past its end.' Drop 'counting' and the per-state note semantics from the visual, or verify them in src/json-search/search-step.ts and add a claim before keeping them."
+    },
+    {
+      "where": "ch03-s03 L0305 'One guess falls at once.' (and tag 4 struck in ch12-s04's visual)",
+      "problem": "The docs quote (Q014) is about the shipped library. The repo's own lab has a trace compiler that 'compiles a defined numeric subset of TypeScript' (LB09), and the Sept 3 review concluded 'compiling a defined numeric subset is feasible' (LB03). The film shows both later (ch08-s03 label, ch08-s05). PJ03 is a contested claim. Striking the tag outright, with no scope, simplifies the matter in a way an attentive viewer will notice in ch08.",
+      "fix": "Scope it once: 'One guess falls at once, for the library itself. The docs: “No tool converts existing JavaScript source into a program.”' Or add a small label in ch08-s05: 'a lab compiler: a defined numeric subset only (LB09)'."
+    },
+    {
+      "where": "ch12-s04 L1206 'Two are still contested. Learn the weights, don't write them. Fully differentiable. And the tagline still says “regular JavaScript”.'",
+      "problem": "The line announces two contested items and then lists three. The bible lists 'regular JavaScript' (PJ03) as contested too, so 'two' undercounts, and to the ear the line is confusing.",
+      "fix": "Say: 'Three are still argued over: learn the weights, don't write them; fully differentiable; and the tagline's “regular JavaScript”.'"
+    },
+    {
+      "where": "ch12-s04 L1207 'To the stranger's “why?”, the README's nearest answer: “Let's find out!”'",
+      "problem": "Q010's 'Let's find out!' answers 'what does that even do?' about one use case (unfreezing weights), not why anyone would build Handwired. The README's own framing of the whole project is closer: 'run it on JS or WebGPU, for fun' (Q006), and the launch post's 'my latest toy project' (Q104). The visual note admits the README wasn't replying. Using a quip about one use case as the author's motive leans on context.",
+      "fix": "Keep the line, but pair it honestly, for example: 'the README's nearest answers: “for fun”, and “Let's find out!”' (Q006 and Q010, both verbatim). Or say: 'The README never says. Its closest words: “Let's find out!”'"
+    },
+    {
+      "where": "ch06-s12 L0624 'Kleene's finite machine, with time coming from outside? Here it is.'",
+      "problem": "The ch02-s03 plant was fixed to 'anything unbounded must come from outside', but the payoff still says 'time' and frames the idea as Kleene's. The visual lays Kleene's dial over the loom, with no 'echo, not a citation' scope (FR22). ch09-s04 does carry that scope.",
+      "fix": "Make the payoff match the plant: 'A finite machine, with everything unbounded coming from outside? Here it is.' Add the small label 'an echo, not a citation' (FR22), as in ch09-s04."
+    },
+    {
+      "where": "ch06-s03 equation '(−300, 0) → (−298.608, 348) · window 400 → 401.392 px' under 'The windows move on springs'",
+      "problem": "SP03's worked step uses stiffness 290 and damping 30. SP02 gives HandwiredOS's window spring as 650/45 (matrix [0.9896, 0.00328, −2.6, 0.82]). As staged, the numbers read as a HandwiredOS window's.",
+      "fix": "Add to the label: 'stiffness 290 · damping 30 (a worked example; HandwiredOS: 650 / 45)'. Or recompute the step with 650/45: e' = 0.9896 × −300 = −296.88, v' = 780, drawn at 403.12."
+    },
+    {
+      "where": "ch05-s04 label 'site check fails if these drift' (beside '4,646 live operations · 130 layers · 9,909 weights')",
+      "problem": "PJ20: `bun run site:check` checks the landing card's figures (9,909 weights, 130 layers, training 0), not the 4,646 operation count.",
+      "fix": "Change to 'site check fails if 9,909 or 130 drift', or place the card under only those two figures."
+    },
+    {
+      "where": "ch07-s10 L0719 'An early fix just snapped the photos into place.'",
+      "problem": "DG13: the rejected first answer 'snapped the sketch with ordinary code', meaning the user's rectangles, not the photos.",
+      "fix": "Say: 'An early fix just snapped the sketch to a grid, in ordinary code.'"
+    },
+    {
+      "where": "ch04-s10 L0421 'Sixteen operations, and four and a half gives ten.' and label '16 ops · 15 layers · a = 4.5 → 10'",
+      "problem": "TE08's 16 operations / 15 layers is the comparison bit alone. The answer 10 also needs the select (TE10: 4 operations in 3 layers). The line merges the two.",
+      "fix": "Say: 'A sixteen-operation comparison, and four and a half gives ten. Correct.' Change the label to '> in 16 ops · 15 layers · bit 1 · result 10'."
+    },
+    {
+      "where": "ch06-s05 L0614 'Handwired keeps state only at events.'",
+      "problem": "HL10: under the template's and HandwiredOS's policy, the evaluations that write back are 'events', 'settle check' and 'snap'. Settle checks commit too, as HL14 and the narration's own 16-step commit imply.",
+      "fix": "Say: 'Handwired keeps state only at events and settle checks.'"
+    },
+    {
+      "where": "ch11-s04 L1108 'It lost to one simple rule, every run.'",
+      "problem": "This is accurate for gradient descent alone (LB23). LB23 also reports that gradient descent then trial and error, with TOML mistakes in the training data, came level with 39 hand rules (98.3/82.7 vs 98.7/81.7). After the ch11-s03 balance fix, leaving this out tilts TOML against the trained side. Per the do-not-use list, any mention must name BOTH conditions together.",
+      "fix": "Optionally add to the toml label: 'gradient descent then trial and error, with TOML mistakes in training: level with 39 hand rules'. Never write 'trial and error, or TOML mistakes'."
+    },
+    {
+      "where": "ch07-s11 L0720 'one gradient step solved nearly two drag frames in three'",
+      "problem": "This round-1 point is still open. DG20 measures 63.6% of MOVING drag frames, and 'nearly two in three' (66.7%) rounds a little generously.",
+      "fix": "Say 'nearly two in three of the frames that moved', or move the figures to a label: 'of moving drag frames: 63.6% solved in one gradient step · 24.6% zero gradient'. That also saves words."
+    },
+    {
+      "where": "brief coverage: 'builder code appending to a `Circuit`' (ch03-s02)",
+      "problem": "The brief names `Circuit` explicitly. The film says 'appends to it' (the list) but never shows or names Circuit, so a viewer could not find the API.",
+      "fix": "Change the ch03-s02 'card' label to 'builder code: ordinary JavaScript, run once · appends to a Circuit' (CB05, PJ02). No narration change needed."
+    },
+    {
+      "where": "ch09-s02 L0903 'Cheng asked whether the GPU could make a third demo, a search, “clearly more performant”.'",
+      "problem": "Q099 asks whether regex search or the JSON highlighter 'is clearly more performant from the gpu parallelism?', then 'we can make a demo'. The paraphrase reverses the order: the speed question came first and the demo was conditional on it. The quote is verbatim; the paraphrase around it is loose.",
+      "fix": "Say: 'Cheng asked whether search on the GPU was “clearly more performant”, and if so, worth a demo.'"
+    },
+    {
+      "where": "ch03-s01 L0302 'Four months and three names later: Handwired.'",
+      "problem": "PJ07: there were three names in all (Numeric UI Atom Lab, then Indirect, then Handwired), so two renames. 'Three names later' suggests three changes after the first.",
+      "fix": "Say: 'Four months and two renames later: Handwired.' The label already shows the chain."
+    },
+    {
+      "where": "spoken fields: ch03-s02 L0303, ch06-s11 L0623, ch10-s02 L1003",
+      "problem": "Inside quotation marks, 'spoken' spells out digits ('thirty-two-bit floats', 'Only sixty-four rows', 'you get eleven.'). These spans are not verbatim in quotes.json. Assemble passes them, and the audio is identical, but they are the one place the quote-integrity rule is bent on purpose.",
+      "fix": "Confirm that the assembler's quote check normalizes numerals by design. If not, keep the digits inside the marks and let voice/lexicon handle the pronunciation."
+    }
+  ],
+  "strengths": [
+    "17 of the round-1 accuracy items were fixed precisely and in the source's own terms: the 'not attributable to Cheng' card, 'Eighty-three years on' with the in-between makers shown, '15 to 27 times slower' (crossing Bun and Chrome honestly), 'almost every whole number', 'that one among them', the undated 0/20, the LB26 open questions voiced, and the 'regular JavaScript' tagline acknowledged at the end.",
+    "Quote integrity is otherwise excellent. All 45 quoted spans in narration and on screen are verbatim from quotes.json, attributed at the right level ('the docs', 'the HandwiredOS README', 'Cheng Lou · in the lab's gallery notes', 'a Hacker News commenter'), and quoted only where the repo marks Cheng's words. Cheng's informal register ('Do it quick plz, then publish.') is kept as written.",
+    "Every worked number checks under FP32: the 4.5 -> 11 and 4.25 -> 11.5 dimmer, 16,777,222 -> 8, the tie-to-even 0.5 -> 8,388,610 -> 1, the 1732 px column count, the two row sums one FP32 step apart, the spring step, the valve gradients, the Adam step to about 0.492 (marked 'derived').",
+    "Honest scoping is consistent: 'in its tests' for bit-identity, 'float64 copy' for the 359 px drift, 'one machine · Chrome 155 · RegExp on one thread' on the timings, 'an older 14,019-operation build' on the GPU figure, 'a prefix network only in a later reading' for Sklansky, and 'an echo, not a citation' for Kleene in ch09.",
+    "The AI-tooling passage (ch08-s07) follows the bible's even-handedness guidance to the letter. Claude Code and OpenAI's Codex are named in the same factual register, 'This film was written with Claude' is said once and plainly, and the mistakes and catches are framed as one process under Cheng's direction rather than as a vendor scorecard.",
+    "The contested matters now give both sides: Sutton and Brooks, snap vs carry framed as a design choice, 'fully differentiable' doubted by the repo itself, JSON recovery including the agent-written row where the rules win, the TOML failure with the README's own caveat, and 'The record doesn't say why. So we won't guess.' for August."
+  ]
+}

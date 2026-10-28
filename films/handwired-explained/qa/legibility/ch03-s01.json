@@ -1,0 +1,78 @@
+{
+ "shot": "ch03-s01",
+ "at": "2026-10-28T09:54:40.897Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Numeric UI Atom Lab",
+   "capWhileSubject": 870.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3 June",
+   "capWhileSubject": 889.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3 JUNE 2026 · 20:24",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Create nume",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Create numeric UI atom lab",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "cheng lou",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "author",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→  Indirect",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Indirect",
+   "capWhileSubject": 363.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6 June",
+   "capWhileSubject": 371.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→  Handwired",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Handwired",
+   "capWhileSubject": 363.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "6 October",
+   "capWhileSubject": 371.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

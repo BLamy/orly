@@ -1,0 +1,99 @@
+{
+  "id": "host-loop-and-state",
+  "checked": 48,
+  "confirmed": 33,
+  "corrected": 12,
+  "unverifiable": 3,
+  "corrections": [
+    {
+      "original": "All src/runtime execution is JS on the CPU ... only JSON search runs on WebGPU.",
+      "verdict": "corrected",
+      "fix": "Scope to the shipped demos: of the three src/ demos only src/json-search runs on WebGPU (the doc says 'e.g.'). Many lab experiments also run on WebGPU (lab/knuth-plass/gpu, lab/json-search/gpu, lab/ui-exploration/codegen, pixel-output, instanced-items, text-walker, event-time, user-population).",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L298", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/README.md#L26", "grep -rlE 'navigator\\.gpu|requestAdapter|GPUDevice' src lab in the clone at 257856e"]
+    },
+    {
+      "original": "A settle check is the only evaluation where a moving spring (within 0.01 px and 0.01 px/s) lands and stops.",
+      "verdict": "corrected",
+      "fix": "Add the repo's own exception: 'The one exception is a snap, which pins the thumb onto its destination when a frame would need more than 300 steps'.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/tutorial.md#L110"]
+    },
+    {
+      "original": "Every stored table and drawn output at a shared timestamp is bit-identical at every frame rate (with 'events and settle checks').",
+      "verdict": "corrected",
+      "fix": "It is a measured result 'in the same traces' of spring-matrix.test.ts (10/30/60/120 fps, 500 ms stalls). It holds 'as long as no snap runs' and while events arrive in timestamp order. Say 'in the repo's tests', not 'always'.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L226", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L48"]
+    },
+    {
+      "original": "Fiedler 2004 names the 'spiral of death' and describes the accumulator that carries leftover time; the familiar belief is to carry the backlog, capped.",
+      "verdict": "contested",
+      "fix": "Fiedler writes 'the so called \"spiral of death\"', so he did not coin it. His accumulator carries only the remainder below one dt, and his loop clamps frameTime to 0.25 s ('if ( frameTime > 0.25 ) frameTime = 0.25;'), so a long backlog is dropped. That is closer to discard than to ui.md's carry. The date Jun 10, 2004 is confirmed.",
+      "sources": ["https://gafferongames.com/post/fix_your_timestep/", "https://github.com/chenglou/chenguini/blob/main/docs/Animation.md"]
+    },
+    {
+      "original": "The cap of 300 steps is 75 times the 4 steps a normal 60 fps frame needs.",
+      "verdict": "corrected",
+      "fix": "About 72 times: 16.67 ms / 4 ms = 4.17 steps per 60 fps frame, and 300 / 4.17 = 72. Quote the doc instead: '300 steps against about 4 per frame at 60 fps'.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L95", "https://github.com/chenglou/chenguini/blob/main/docs/Animation.md"]
+    },
+    {
+      "original": "The toggle's press -> armed -> release -> flip works over two separate evaluations.",
+      "verdict": "corrected",
+      "fix": "That holds only when the press and release have distinct timestamps. Events that share a timestamp apply in one evaluation in the fixed order down, then up, then cancel (armedAfterDown), so the switch can arm and flip in one evaluation.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/tutorial.md#L93", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/tutorial.md#L165", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/template/toggle.test.ts#L71"]
+    },
+    {
+      "original": "Scenario C: simulated time always lands on exact 64 ms multiples, whatever the frame rate.",
+      "verdict": "corrected",
+      "fix": "Only committed settle-check times land on clock start + 64k ms (absent events). Frame previews are simulated to the frame time on the 4 ms step grid (e.g. 100 ms at 10 fps).",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L220", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/host-timing.ts#L329-L345"]
+    },
+    {
+      "original": "Event handlers only queue timestamped events.",
+      "verdict": "corrected",
+      "fix": "The quote is verbatim and correct in meaning: handlers don't evaluate or write state. But in the code each pointer handler also calls scheduleRender() to request a frame, and so does the resize listener. Don't animate handlers as doing nothing but enqueueing.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/template/toggle.ts#L163-L168", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/tutorial.md#L110"]
+    },
+    {
+      "original": "Quote 11 note: the line break falls after 'evaluations. It'.",
+      "verdict": "corrected",
+      "fix": "In host-timing.ts the comment's line 3 ends with 'It never' and line 4 begins 'builds operations'. The quote text itself is verbatim once the // markers are removed.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/host-timing.ts#L3-L4"]
+    },
+    {
+      "original": "About 5% of frames drew a different column count.",
+      "verdict": "corrected",
+      "fix": "'about 5% of frames at 60 fps drew a different column count'.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L65"]
+    },
+    {
+      "original": "Timeline: springs stored absolute positions until 2026-09-14; 'Measured afterwards' ...",
+      "verdict": "unverifiable",
+      "fix": "Removed 'Measured afterwards'. The source only says the absolute-position form lasted 'until September 14, 2026' and that the text was moved into status.md on October 15, 2026. When the measurement was taken is not stated.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/status.md#L12"]
+    },
+    {
+      "original": "Commit 257856e dated 2026-10-16.",
+      "verdict": "corrected",
+      "fix": "2026-10-16 17:33:49 -0700 is 2026-10-17T00:33:49Z in UTC (GitHub API). As of 2026-10-27 it is still the head of main (825 commits, 2,034 stars, MIT, public).",
+      "sources": ["https://api.github.com/repos/chenglou/handwired/commits/main", "https://api.github.com/repos/chenglou/handwired"]
+    },
+    {
+      "original": "The familiar render order (ui.md's, which is also his own guideline).",
+      "verdict": "unverifiable",
+      "fix": "Demoted to inference. The repo calls chenguini 'a set of engineering and UI guidelines' and never states who wrote it. It is only hosted under the chenglou account. Don't present authorship as a sourced fact.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L5", "https://github.com/chenglou/chenguini"]
+    },
+    {
+      "original": "Period details: Bun 1.4.x, headless Chrome, Apple M5 Max (R:docs/patterns.md#L7).",
+      "verdict": "corrected",
+      "fix": "patterns.md L7 names Bun 1.4.3 on an Apple M5 Max and no Chrome. Bun 1.4.0 with headless Chrome 153 on an Apple M5 Max comes from lab/status.md L44.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/patterns.md#L7", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/status.md#L44"]
+    },
+    {
+      "original": "Cheng, as recorded in the repo: 'No need to abide by the guide religiously. Back out what didn't'.",
+      "verdict": "unverifiable",
+      "fix": "It is verbatim as recorded in lab/status.md L44, but that is a second-hand, apparently truncated record, and Cheng's original wording is not available. Use it only attributed as 'recorded in the repo's lab/status.md', never as a direct statement.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/status.md#L44"]
+    }
+  ]
+}

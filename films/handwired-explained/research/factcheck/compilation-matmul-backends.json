@@ -1,0 +1,92 @@
+{
+  "id": "compilation-matmul-backends",
+  "checked": 22,
+  "confirmed": 13,
+  "corrected": 5,
+  "unverifiable": 4,
+  "notes": "Repo citations re-opened at chenglou/handwired@257856e in the local clone. Running bun (report.ts, layers.ts, the probe) was not permitted in this pass, so [RUN]-only numbers are unverifiable, not confirmed. Confirmed key claims: 1, 2, 6, 7, 9, 10, 11, 12, 15, 16, 17, 18, plus README quotes 1-3 and the WebGPU spec date.",
+  "corrections": [
+    {
+      "original": "On 2026-10-14, after the text layout left the program, it was 4,254 live operations in 123 layers. / Removing the text layout and merging two windows brought it down to 4,254 in 123 layers on 2026-10-14. / Curiosity hook: 21,229 -> 4,254 in one day.",
+      "verdict": "corrected",
+      "fix": "The text layout left on the evening of 2026-10-13: 19,851 -> 4,251 live operations, 217 -> 123 layers, 8,959 weights (the window merge, 21,229 -> 19,851, came earlier the same day). 4,254 live / 8,965 weights is 2026-10-14, after Monitor's 64-slot row rule added 3 ops. The one-day drop is 21,229 -> 4,251 (about 80%).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L22-L28"
+      ]
+    },
+    {
+      "original": "JSON search ... about 5 ms per search back to back and 11-15 ms at a keystroke, against 13-14 s for the same program on the CPU as generated JS. Against RegExp in 8 workers it is about even.",
+      "verdict": "corrected",
+      "fix": "Qualify: 13-14 s is the smallest search program (patterns up to 8 states); a 17-32-state pattern takes about 3 minutes as generated JS. 'About even' with 8 RegExp workers holds back to back only (1.9-6.7 ms vs 4.5-5.2 ms); after a keystroke pause the GPU's 11-16 ms is 2 to 8 times as long. The lab's answer to 'Is the GPU clearly faster?' against workers is 'no'.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L58",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L53",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L118-L126"
+      ]
+    },
+    {
+      "original": "Quote 19: \"The regex matching, JSON parsing & highlighting are all written in JS, then turned into WebGPU kernels\" (near-verbatim, from fetch summarizer)",
+      "verdict": "corrected",
+      "fix": "Full verbatim sentence: \"The regex matching, JSON parsing & highlighting are all written in JS, then turned into WebGPU kernels for massive parallelism.\" Source assets/demos.html L204 and assets/json-search.html L45; matches the live site.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L204",
+        "https://chenglou.me/handwired/"
+      ]
+    },
+    {
+      "original": "the live demo site (\"9,909 weights, 130 layers and 0 training\")",
+      "verdict": "corrected",
+      "fix": "Not a verbatim string: it is a stat panel (weights 9,909 / layers 130 / training 0). Present it as on-screen figures, not as a quotation.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/assets/demos.html#L142-L144",
+        "https://chenglou.me/handwired/"
+      ]
+    },
+    {
+      "original": "Citations lab/runtime-cost/README.md#L11 (layers.ts, about 10 us per 1,000 layers) and docs/execution-model.md#L46 (big-program build/compile costs)",
+      "verdict": "corrected",
+      "fix": "The layers.ts update is lab/runtime-cost/README.md#L13 (L11 is the polymorphic typed-array warning). The 2,367,454 / 6.9 million build and compile costs are docs/execution-model.md#L48.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/runtime-cost/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L48"
+      ]
+    },
+    {
+      "original": "One HandwiredOS evaluation takes about 41-44 us on the reusable tensor evaluator, against 162-167 us on the reference evaluator (Bun 1.4.3, Apple M4 Max, load ~10.5).",
+      "verdict": "unverifiable",
+      "fix": "This is the dossier's own report.ts run. The fact-check could not re-run it, though it did confirm the machine is an Apple M4 Max. The author's comparison figure (25.2-25.3 us at 4,254 live, M5 Max) is confirmed. Re-run `bun lab/runtime-cost/report.ts` before putting 41-44 us on screen, and label it with the machine and date.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L28",
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L10"
+      ]
+    },
+    {
+      "original": "HandwiredOS compiles to 234 source cells, 727 roots, 5,028 built and 4,646 live operations (1,811 sums, 2,776 ReGLU, 59 boolean, no gather or index reads), in 130 layers with 9,909 stored weights (114,476 bytes).",
+      "verdict": "unverifiable",
+      "fix": "Partly confirmed. The docs state 234 cells, 5,028 built, 4,646 live, 130 layers and 9,909 weights, and the 59 boolean count matches the 59 boolean atoms. The 727 roots, the 1,811/2,776 split and the 114,476 bytes come only from the dossier's probe. They add up (1,811 + 2,776 + 59 = 4,646), but the fact-check did not reproduce them. Re-run the probe before showing them.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L46",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L164"
+      ]
+    },
+    {
+      "original": "HandwiredOS stores 9,909 weights where dense per-layer matrices would need 623,442 entries, about 1.6% density.",
+      "verdict": "unverifiable",
+      "fix": "9,909 is confirmed. The 623,442 figure (sum of inputSize x (outputSize + gateRows)) was derived by the dossier's probe and is not stated in the repo. The fact-check could not re-run it. Keep it labeled 'derived' and re-run it before use.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/handwiredos/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/src/runtime/numeric-ui-core.ts#L167-L180"
+      ]
+    },
+    {
+      "original": "Re-run on 2026-10-27, 16,384 sums took 64.5 us in 64 layers, 72.1 us in 1,024 and 218.1 us in 16,384.",
+      "verdict": "unverifiable",
+      "fix": "The re-run figures were not reproduced. The author's figures are confirmed: 54-55 / 64-65 / 210-214 us (patterns.md rounds them to 55 / 65 / 210), M5 Max, load ~4, 'about 10 us per 1,000 layers', layers.ts committed 2026-10-14 (e012f08). Prefer the author's figures on screen.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/patterns.md#L7",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/runtime-cost/README.md#L13"
+      ]
+    }
+  ]
+}

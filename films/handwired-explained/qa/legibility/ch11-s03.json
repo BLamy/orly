@@ -1,0 +1,139 @@
+{
+ "shot": "ch11-s03",
+ "at": "2026-10-28T16:09:59.183Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 25,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "“a clear success”",
+   "capWhileSubject": 55,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— recovery parser README, 16 Oct 2026",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "% of payloads entirely right ·",
+   "capWhileSubject": 24.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "trained vs",
+   "capWhileSubject": 24.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "hand rules",
+   "capWhileSubject": 24.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "familiar mistakes",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "79.8",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "79.6",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "unseen mistake types",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "68.9",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "87.2",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "agent-written payloads",
+   "capWhileSubject": 23.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "46.3",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "56.7",
+   "capWhileSubject": 23.7,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "bison",
+   "maxCap": 16.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Gradient",
+   "maxCap": 24.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "descent can fill",
+   "maxCap": 24.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a parser's",
+   "maxCap": 24.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "unused entries",
+   "maxCap": 24.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JSON",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TOML",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the rule for failure,",
+   "maxCap": 8.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "fixed beforehand",
+   "maxCap": 8.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "the recovery",
+   "maxCap": 8.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "experiment",
+   "maxCap": 8.7,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 11
+}

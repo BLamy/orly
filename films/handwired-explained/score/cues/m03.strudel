@@ -1,0 +1,110 @@
+// m03 — THE RECIPE (handwired-explained), 190.20-279.60 (89.40 s), clock 1455.42 s.
+// setcpm(72/4): 26.82 cycles. Cue-local seconds = absolute - 190.20; every event placed by tl() on its word or beat.
+//
+// C major (IV of home: plain, orderly, white keys). M1 transposed to C: U = E G A G | E G C | A G, L a whole
+// tone lower (D F G F | D F Bb | G F), both always scheduled, the gate on U (1) all through: the recipe has one road.
+//
+//  0.0-2.8   cold and close after ch02's dusk: a low C (contrabass + bowed pad, lpf 500) and room tone alone.
+//  3.60      'pane1' (ghost, under 'June'); 10.17 'pane2' in the breath after 'commit': relay clacks.
+//  11.43     'june': a quick dry patter of tiny clacks as June fills (the commit grid), very low.
+//  12.92     'handwired': M1 enters very quietly in C, the cell completed in the 4-s gap after the name.
+//  25.74     'append': a light even tick per tag appended to the ribbon (ghosted under the line, a little
+//            clearer in the gap); it stops DEAD on 'fixedList', where the cell's lift arrives on C6.
+//  35.42     'flip' (paper-card snap over G), 39.96 'strike': pencil scratch -> the drawer closes as the bass
+//            falls G -> C, the film's FIRST CADENCE; the lines dip under it and resume in the gap after it.
+//  45.27     'cells': a soft click per card into its hole; tiny up-down detents for the event flags in the
+//            breaths; the lines continue, unhurried (C, Am/C, C).
+//  55.66     four even dry clacks, one per instruction: 'sum' thread pluck, 'gated' valve click, 'snap'
+//            ratchet tooth, 'read' drawer; nothing marks the odd number; a held C-E dyad under the small print.
+//  75.30     'flip3', 79.80 'strike3': the same cadence, lighter (a smaller drawer, pizz bass): a joke on us.
+//  82.0      the motif thins to one line under the push into Notes.
+//  86.68     'hang': the TIE as the new tag goes on, and the bar hangs on G (V of C): the LAST ONSET. It rings
+//            into the fade (278.60-279.60); the ch03-s07 X-ray clack belongs to m04.
+setcpm(72/4)
+const CPS = 72/240, DUR = 89.4
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const loop = (pat, d) => pat.fast(qn(d) / Q)
+const MIDI = n => { const m = n.match(/^([a-g])(#|b)?(-?\d)$/)
+  return 12 * (+m[3] + 1) + { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) }
+
+// ---------------------------------------------------------------- M1 in C (the select, gate on U)
+const chord = ns => mini('[' + ns.join(',') + ']')
+const sel = (evs, f) => stack(
+  f(tl(...evs.map(([t, d, ns, g, v]) => [t, d, note(chord(ns.map(MIDI))).velocity(v).gain(g)]))).pan(0.58),
+  f(tl(...evs.map(([t, d, ns, g, v]) => [t, d, note(chord(ns.map(n => MIDI(n) - 2))).velocity(v).gain(1 - g)]))).pan(0.42))
+const felt = x => x.s("piano").lpf(1500).release(0.6).room(0.3).rsize(3)
+$: sel([
+  // the nameplate re-letters ('handwired'), the cell completed in the gap after the name
+  [12.92, 0.80, ['e5'], 1, 0.18], [13.72, 0.80, ['g5'], 1, 0.26], [14.52, 1.40, ['a5'], 1, 0.26], [15.92, 3.4, ['g5'], 1, 0.25],
+  // the ribbon: E in the breath after 'floats'; the lift arrives on 'fixedList' as the ticks stop
+  [23.70, 5.5, ['e5'], 1, 0.19], [29.30, 0.45, ['e5'], 1, 0.26], [29.75, 0.69, ['g5'], 1, 0.22], [30.44, 3.8, ['c6'], 1, 0.22],
+  // dip under the flip and the strike; resume in the gap after 'program'
+  [34.30, 1.0, ['a5'], 1, 0.20],
+  [40.62, 0.75, ['a5'], 1, 0.26], [41.37, 4.9, ['g5'], 1, 0.25],
+  [46.33, 4.8, ['e5'], 1, 0.18], [51.20, 0.80, ['g5'], 1, 0.22], [52.00, 1.50, ['a5'], 1, 0.26],
+  // the held C-E dyad under the small print, struck in the breath after 'list'
+  [61.28, 6.8, ['c5', 'e5'], 1, 0.16],
+  [71.30, 1.40, ['g5'], 1, 0.25],
+  // after the second strike: thins to one line (the push into Notes)
+  [80.55, 1.40, ['e5'], 1, 0.20], [82.00, 1.65, ['g5'], 1, 0.22], [83.68, 3.0, ['e5'], 1, 0.18],
+  // 'hang': the bar hangs on G, open fifth (LAST ONSET)
+  [86.68, 2.72, ['g4', 'd5'], 1, 0.18]], felt)
+
+// ---------------------------------------------------------------- the low C, its plain harmony, the cadences
+// bass: C, then G at each flip, falling to C on each strike's drawer, G at the last tie
+$: tl([0.0, 35.42, note("c2")], [35.42, 4.86, note("g1")], [40.28, 34.98, note("c2")], [75.30, 4.82, note("g1")],
+      [80.12, 6.56, note("c2")], [86.68, 2.72, note("g1")])
+  .s("gm_contrabass").velocity(0.2).attack(1.2).release(1.6).lpf(320).gain(0.3)
+$: tl([0.0, 12.9, note("[c2,g2]").velocity(0.084)], [12.92, 22.5, note("[c3,g3]").velocity(0.056)],
+      [40.28, 6.05, note("[c3,g3,e4]").velocity(0.056)], [46.33, 4.87, note("[c3,a3,e4]").velocity(0.056)],
+      [51.20, 10.08, note("[c3,g3]").velocity(0.049)], [61.28, 14.0, note("[c3,g3]").velocity(0.042)],
+      [80.12, 6.56, note("[c3,g3,e4]").velocity(0.049)], [86.68, 2.72, note("[g2,d3]").velocity(0.056)])
+  .s("gm_pad_bowed").attack(1.4).release(1.8).lpf(520)
+// the small-print dyad held by strings (C-E)
+$: tl([61.30, 6.9, note("[c4,e4]")]).s("gm_string_ensemble_1").velocity(0.06).attack(1).release(1.4).lpf(850)
+
+// ---------------------------------------------------------------- M2 · detent strokes (C: I = c, V = g)
+const tie = v => stack(s("gm_woodblock").note("e6").velocity(v).decay(0.03).sustain(0),
+  note("g2").s("gm_pizzicato_strings").velocity(v * 0.7).lpf(1200))
+const flip = v => stack(s("white").hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(v * 0.75),
+  note("g2").s("gm_pizzicato_strings").velocity(v * 0.7).lpf(1200))
+const strike = (v, drawer) => stack(
+  s("white").bpf(3000).bpq(2).attack(0.02).decay(0.3).sustain(0).gain(0.32 * v),               // the pencil
+  s(drawer).note(drawer === "gm_taiko_drum" ? "c2" : "g2").velocity(v).decay(0.25).sustain(0).late(0.32),   // the drawer
+  s("brown").lpf(300).decay(0.15).sustain(0).gain(0.6 * v).late(0.32),
+  note("c3").s("gm_pizzicato_strings").velocity(0.8 * v).lpf(1000).late(0.32))                 // V -> I lands
+const relay = v => stack(s("gm_woodblock").note("g5").velocity(0.45 * v).decay(0.04).sustain(0),
+  s("white").hpf(2500).decay(0.025).sustain(0).gain(0.1 * v))
+// the four instructions, four dry timbres
+const pluck = v => note("c5").s("gm_pizzicato_strings").velocity(v).lpf(2000)
+const valve = v => stack(s("gm_woodblock").note("c4").velocity(v).decay(0.03).sustain(0), s("white").hpf(3000).decay(0.015).sustain(0).gain(0.08 * v))
+const ratchet = v => s("gm_woodblock*3").note("a5").velocity(v).decay(0.015).sustain(0)
+const drawer = v => stack(s("gm_melodic_tom").note("c3").velocity(v).decay(0.2).sustain(0), s("brown").lpf(250).decay(0.12).sustain(0).gain(0.5 * v))
+$: tl([3.60, 0.4, relay(0.4)], [10.17, 0.4, relay(0.55)],
+      [35.42, 0.4, flip(0.15)], [39.96, 1.0, strike(0.22, "gm_taiko_drum")],
+      [47.84, 0.12, s("gm_woodblock").note("e6").velocity(0.1).decay(0.02).sustain(0)], [47.96, 0.3, s("gm_woodblock").note("d6").velocity(0.09).decay(0.02).sustain(0)],
+      [48.40, 0.12, s("gm_woodblock").note("e6").velocity(0.06).decay(0.02).sustain(0)], [48.52, 0.3, s("gm_woodblock").note("d6").velocity(0.05).decay(0.02).sustain(0)],
+      [55.66, 0.5, pluck(0.2)], [56.72, 0.5, valve(0.2)], [58.43, 0.12, ratchet(0.12)], [60.25, 0.5, drawer(0.18)],
+      [75.30, 0.4, flip(0.16)], [79.80, 1.0, strike(0.18, "gm_melodic_tom")],
+      [86.68, 0.4, tie(0.16)])
+  .room(0)
+// 'june': the commit grid fills, a quick patter of tiny clacks, randomised in time and pitch
+$: tl([11.43, 1.7, s("gm_woodblock*26").note(irand(9).mul(2).add(76)).velocity(rand.range(0.05, 0.11))
+        .degradeBy(0.15).late(rand.range(0, 0.02))]).decay(0.02).sustain(0).room(0)
+// 'append': an even tick per tag (eighths at 72), ghosted under the line, stopping dead on 'fixedList'
+$: tl([25.74, 3.33, loop(s("gm_woodblock*8").note("g5").velocity(0.09), 3.33)],
+      [29.25, 1.19, loop(s("gm_woodblock*8").note("g5").velocity(0.14), 1.19)])
+  .decay(0.025).sustain(0).room(0)
+// 'cells': a soft click per card dropped into its hole
+$: tl([45.27, 2.5, loop(s("gm_woodblock*4").note("c6").velocity(0.07), 2.5)]).decay(0.02).sustain(0).room(0)
+
+// ---------------------------------------------------------------- the room
+$: tl([0.0, 89.4, s("pink")]).lpf(2400).hpf(150).gain(0.009).attack(1).release(1)
+
+// level: integrated about -24 LUFS
+all(x => x.postgain(4.3))

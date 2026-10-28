@@ -1,0 +1,18 @@
+{
+ "id": "m05",
+ "start": 428.95,
+ "end": 494.6,
+ "file": "films/handwired-explained/score/renders/m05.wav",
+ "duration": 71.65,
+ "I": -24.7,
+ "LRA": 8,
+ "TP": -6.7,
+ "expected": 71.65,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m05.png",
+ "cueSeconds": 65.65,
+ "cps": 0.275,
+ "lastStrikeLocal": 63.04,
+ "lastStrike": 491.99
+}

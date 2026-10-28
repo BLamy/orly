@@ -1,0 +1,148 @@
+{
+ "shot": "ch06-s12",
+ "at": "2026-10-28T17:40:07.849Z",
+ "step": 0.0833,
+ "sampled": 227,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "0",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "1",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "2",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "2",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "3",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "3",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "4",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "5",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "3",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "visible 0 1 1 0 1 0 1 1 → counts 0 1 2 2 3 3 4 5",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "HandwiredOS · Monitor · 64 slots",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s12-echo-label",
+  "ch06-s12-repo"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "drawImage@1313,252",
+   "probed": false,
+   "from": 0.88,
+   "to": 14.05,
+   "seconds": 13.17,
+   "rect": {
+    "x": 952,
+    "y": 314,
+    "w": 846,
+    "h": 510
+   },
+   "inkAfter": 0.89
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "drawImage@1313,252",
+   "probed": false,
+   "from": 0.883,
+   "to": 19.383,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s12-echo-label",
+   "probed": true,
+   "from": 1.633,
+   "to": 12.8,
+   "minInkWhilePaper": 0.12
+  },
+  {
+   "id": "ch06-s12-repo",
+   "probed": true,
+   "from": 13.8,
+   "to": 19.383,
+   "minInkWhilePaper": 0.03
+  }
+ ]
+}

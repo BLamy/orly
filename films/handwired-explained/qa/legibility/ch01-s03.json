@@ -1,0 +1,354 @@
+{
+ "shot": "ch01-s03",
+ "at": "2026-10-28T09:09:23.061Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 68,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "THIS PROGRAM",
+   "capWhileSubject": 32.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "State",
+   "capWhileSubject": 34.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "234",
+   "capWhileSubject": 38.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Operations",
+   "capWhileSubject": 34.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4,646",
+   "capWhileSubject": 38.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Outputs",
+   "capWhileSubject": 34.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "493",
+   "capWhileSubject": 38.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HandwiredOS",
+   "capWhileSubject": 81.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "one of Handwired's three live demos",
+   "capWhileSubject": 60.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "130 layers · 9,909 weights",
+   "capWhileSubject": 34.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "Notes",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Photos",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Monitor",
+   "maxCap": 32.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "0.000",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "114.875",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.500",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "94.625",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "84.500",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "74.375",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "14.000",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "54.125",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "44.000",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "33.875",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "98.500",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "13.625",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3.500",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "104.750",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "60.750",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "64.250",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "20.250",
+   "maxCap": 16.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "23.750",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1.250",
+   "maxCap": 17,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "85.750",
+   "maxCap": 17,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "45.250",
+   "maxCap": 17,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "48.000",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7.500",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "92.000",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "51.500",
+   "maxCap": 17.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1.000",
+   "maxCap": 17.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "85.500",
+   "maxCap": 17.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "45.000",
+   "maxCap": 17.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "7.250",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "91.750",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "51.250",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "66.500",
+   "maxCap": 18,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "26.000",
+   "maxCap": 18,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "110.500",
+   "maxCap": 18,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "119.500",
+   "maxCap": 18.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "79.000",
+   "maxCap": 18.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "38.500",
+   "maxCap": 18.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "123.000",
+   "maxCap": 18.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "72.500",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "32.000",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "116.500",
+   "maxCap": 19.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "66.000",
+   "maxCap": 21.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "25.500",
+   "maxCap": 21.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "110.000",
+   "maxCap": 21.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "69.500",
+   "maxCap": 21.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "19.000",
+   "maxCap": 22.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "103.500",
+   "maxCap": 22.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "63.000",
+   "maxCap": 22.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "90.750",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "50.250",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "9.750",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "12.500",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "97.000",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "56.500",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "16.000",
+   "maxCap": 23.3,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 58
+}

@@ -1,0 +1,278 @@
+// m07 — DEEP DIVE II: THE CLOCKWORK THAT CANNOT STOP (handwired-explained), shots ch05-s07, ch06-s01…ch06-s13.
+// Window 587.60-790.25 (202.65 s). 72 BPM with ONE FRAME PER CYCLE: a frame is five beats (four ticks and a
+// rest: the clock rests between frames, never inside one), setcpm(72/5), cps 0.24, frame 4.167 s, beat 0.833 s:
+// 48.636 cycles. Cue-local seconds = absolute - 587.60. Every hit is read from narration/timeline.json.
+//
+// Key plan: D major as a DOMINANT PEDAL (the loop that never cadences): the bed moves over a held D and never
+// lands a V-I except where a tag is struck. The patterns run in A (brisk, the escapement doubled to eighths).
+// The return is in D again, slower and fuller, and the cue stops on a tick, not a chord.
+// The bed changes colour by section (woodblock + pizz -> pizz forward -> two desks -> running eighths in A ->
+// low harp + woodblock, fuller), so the longest cue in the film is never one loop.
+//
+//    0.53  'light' (X-ray): one dry relay clack; M1's lines at a whisper, both at full gate, then thin
+//    3.82  'title': M3, the escapement (a5/e5 tick-tock, pizz D-A-F#-A frame), M1 as a hocket (U on beat 1, L on 3)
+//   11.53  'count' / 'tree' / 'table' / 'same': a soft ratchet click per arm
+//   26.57  'inputs' / 28.75 'loom' (+ whirr) / 31.81 'copied' / 33.70 'page': the frame's four ticks ARE the four
+//          phrases; 36.49 'rests': one detent lock and true silence for a beat
+//   45.68  'stamp': a dry brass clack; 55.31 'fold': eight clacks up the D scale; 62.47 'counter': a held low D
+//   67.67  'ratchet': the teeth accelerate; 72.50 'bound': pawl + thunk; half a frame of silence; the card:
+//          the two lines held at EQUAL level
+//   75.51  two desks: two escapements, out of phase; 78.69 'ghost': one drifts to 79 BPM; 92.02 'thrown': a
+//          paper slide; 93.82 'lock': one shared tick, the bed lands on D
+//   99.65  tag 7: tie, flip, 101.44 'strike' (drawer, bass A -> D); 105.02 'events': seventeen even clicks
+//  106.69  THE PATTERNS RUN in A: 110.54 'loop' (five ticks stop on the fourth), 117.02 'three' (one clack),
+//          122.78 'row' (seven slow clicks), 127.29 'pairs' (a rising tree), 129.95 'names' (a punch; the lines
+//          meet in unison in the gap), 140.37 'slow' / 141.55 'drift' (each line leads once; equal at the end),
+//          152.62 'arith' (a sweep), 155.55 'index' (one detent drop; a beat of silence), 162.86 'flip' (one
+//          clatter), 164.40 'slide' (a glide), 169.46 'counts' (a run), 172.40 'three' (three clunks),
+//          174.02 'monitor' (the pulse slows to the escapement, on A: the dominant)
+//  179.72  'crank': THE RETURN in D, slower and fuller; 180.62 'kleene': M4's first phrase on the reed; the lines
+//          resolve to a calm sixth (A3 / F#4) in the breath after L0624; bed alone under the repo card and in the hold
+//  200.32  'light': the X-ray relay clack (LAST STRIKE); three more soft ticks (200.80, 201.32, 201.92), slowing,
+//          and the clock stops inside the fade
+setcpm(72/5)
+const CPS = 72/300, DUR = 202.65, BEAT = 60/72
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (b <= a) throw new Error('tl empty slot at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const lanes = evs => { const s = [...evs].sort((a, b) => a[0] - b[0]), L = []
+  for (const e of s) { let l = L.find(l => l.end <= qn(e[0])); if (!l) { l = { end: 0, evs: [] }; L.push(l) }
+    l.evs.push(e); l.end = qn(e[0] + e[1]) }
+  return stack(...L.map(l => tl(...l.evs))) }
+const hits = list => lanes(list.map(([t, d, n, v]) => [t, d, note(n).velocity(v)]))
+const loop = (pat, d) => pat.fast(qn(d) / Q)        // one frame per cycle, repeated at tempo through a slot
+const run = (t0, n, dt, notes, v0, v1 = v0, d = 0.05) =>   // n even clicks from t0, notes cycled, velocity ramped
+  Array.from({ length: n }, (_, i) => [t0 + i * dt, Math.min(d, dt * 0.9), notes[i % notes.length], v0 + (v1 - v0) * i / Math.max(1, n - 1)])
+const accel = (t0, t1, d0, k, dmin) => { const out = []; let t = t0, d = d0; while (t < t1) { out.push([t, d]); t += d; d = Math.max(dmin, d * k) } return out }
+const room = x => x.room(0.25).rsize(3)
+
+const LINES = [[4.53, 15.72], [17.33, 22.36], [22.81, 26.12], [26.57, 34.62], [35.07, 39.75], [41.38, 44.38],
+  [44.83, 51.88], [52.58, 64.36], [67.88, 72.30], [75.71, 82.51], [82.96, 97.35], [99.65, 105.65], [107.29, 117.51],
+  [120.54, 130.63], [135.33, 142.62], [145.96, 156.32], [158.92, 165.24], [167.08, 172.78], [173.23, 178.30],
+  [179.92, 185.48], [186.18, 198.28]]
+const speech = (vs, vg = 1) => { const segs = []; let cur = 0
+  for (const [a, b] of LINES) { const qa = qn(a), qb = qn(b); if (qa > cur) segs.push([qa - cur, pure(vg)]); segs.push([qb - qa, pure(vs)]); cur = qb }
+  const end = qn(DUR); if (end > cur) segs.push([end - cur, pure(vg)]); return stepcat(...segs).slow(end / Q) }
+
+// ================================================================ THE ESCAPEMENT (M3): four ticks and a rest
+// Frame slots [start, length]; each slot starts on a frame boundary, so the clock rests only between frames.
+const F = 300 / 72 / 1                    // one frame in seconds (4.167)
+const TICK = "a5 e5 a5 e5 ~", RUN8 = "a5 e5 a5 e5 a5 e5 a5 e5 ~ ~"   // RUN8: eight eighths and a one-beat rest
+// accents ride inside the frame (so they follow each slot's phase): strong 1, lighter 2-4, the rest silent
+const tick = (v = 1, notes = TICK) => note(notes).velocity(mini([0.2, 0.14, 0.17, 0.14, 0].map(x => (x * v).toFixed(3)).join(' ')))
+// 1-2: the host (title -> the queued event); 3: springs (after the rest) -> ratchet; 4: the card; 6: tag 7;
+// 8: the return (tick never stops through the hold) -> the X-ray
+$: tl([3.82, 5 * F, loop(tick(), 5 * F)],
+      [37.40, 7 * F, loop(tick(), 7 * F)],
+      [74.60, 0.92, note("a5 e5").velocity(0.12)],
+      [97.20, 2 * F, loop(tick(), 2 * F)],
+      [174.02, 5.70, loop(tick(), 5.70)],
+      [179.72, 4.85 * F, loop(tick(1.15), 4.85 * F)])
+  .s("gm_woodblock").decay(0.03).sustain(0).pan(0.48).mul(velocity(speech(0.7)))
+// L0605: the frame's four ticks are the line's four phrases ('inputs', 'loom', 'copied', 'page'), then the
+// rest; 'rests' (36.49): a single detent lock, then true silence for a beat
+$: hits([[26.57, 0.1, "a5", 0.17], [28.75, 0.1, "e5", 0.15], [31.81, 0.1, "a5", 0.17], [33.70, 0.1, "e5", 0.15]])
+  .s("gm_woodblock").decay(0.03).sustain(0)
+$: tl([36.49, 0.1, note("d5")]).s("gm_woodblock").velocity(0.22).decay(0.05).sustain(0)
+$: tl([36.49, 0.2, note("d2")]).s("gm_taiko_drum").velocity(0.12).decay(0.1).sustain(0)
+// 'loom' (28.75): the loom's turn, a soft wooden whirr (a fast muted roll)
+$: hits(run(28.85, 14, 0.06, ["d5", "e5"], 0.07, 0.03)).s("gm_woodblock").decay(0.03).sustain(0).lpf(3000)
+// the arms' swings ('count', 'tree', 'table', 'same'): a soft three-tooth ratchet click each
+$: hits([11.53, 12.33, 13.13, 14.27].flatMap(t => run(t, 3, 0.045, ["c6", "b5", "a5"], 0.07, 0.05, 0.03)))
+  .s("gm_woodblock").decay(0.03).sustain(0).pan(0.6)
+
+// the frame ostinato on pizzicato (D A F# A, rest), the clockwork's other wheel; on L0605 it takes the
+// four phrases with the ticks (one note each)
+$: tl([3.82, 5 * F, loop(note("d2 a2 f#2 a2 ~"), 5 * F)],
+      [26.57, 0.6, note("d2")], [28.75, 0.6, note("a2")], [31.81, 0.6, note("f#2")], [33.70, 0.6, note("a2")],
+      [37.40, 7 * F, loop(note("d2 a2 f#2 a2 ~"), 7 * F)],
+      [97.20, 2 * F, loop(note("d2 a2 f#2 a2 ~"), 2 * F)])
+  .s("gm_pizzicato_strings").velocity(0.2).lpf(900).mul(velocity(speech(0.75)))
+
+// the pedal under the loop that cannot stop: D, held; it breaks for the rest (36.49) and the bound (72.50)
+$: tl([1.0, 35.55, note("d2")], [37.40, 35.1, note("d2")], [74.60, 25.0, note("d2")], [99.6, 2.16, note("a1")],
+      [101.76, 4.9, note("d2")], [179.72, 20.9, note("d2")])
+  .s("gm_contrabass").velocity(0.08).attack(1.2).release(0.5).lpf(260)   // render 2: the pedal was most of the loudness
+// the strings' low colour over the pedal: D, then G/D, A/D, D (it moves; the pedal never does)
+$: room(tl([3.82, 2 * F, note("[a2,d3,f#3]")], [3.82 + 2 * F, 2 * F, note("[b2,d3,g3]")], [3.82 + 4 * F, F + 0.2, note("[a2,c#3,e3]")],
+           [37.40, 3 * F, note("[a2,d3,f#3]")], [37.40 + 3 * F, 2 * F, note("[b2,e3,g3]")], [37.40 + 5 * F, 2 * F, note("[a2,d3,f#3]")]))
+  .s("gm_string_ensemble_1").velocity(0.06).attack(1.5).release(0.8).lpf(700)
+
+// ================================================================ M1, THE SELECT, in the clockwork
+// X-ray: both lines at a whisper, both at full gate (no decision), then the lower one thins away
+$: room(tl([0.80, 2.9, note("f#4@0.7 a4@0.7 b4@1 a4@0.5")])).s("piano").velocity(0.13).lpf(1500).pan(0.58).release(0.6)
+$: room(tl([0.80, 1.4, note("e4@0.7 g4@0.7")])).s("piano").velocity(0.09).lpf(1500).pan(0.42).release(0.6)
+// the hocket over the escapement: U on beat 1, L on beat 3 (both always run; both heard, never together)
+const HU = "<[f#4@2 ~@3] [a4@2 ~@3] [b4@2 ~@3] [a4@2 ~@3]>", HL = "<[~@2 e4@2 ~] [~@2 g4@2 ~] [~@2 a4@2 ~] [~@2 g4@2 ~]>"
+$: room(tl([3.82, 5 * F, loop(note(HU), 5 * F)], [37.40, 6 * F, loop(note(HU), 6 * F)])).s("piano").velocity(0.13).lpf(1300).pan(0.58)
+  .mul(velocity(speech(0.6)))
+$: room(tl([3.82, 5 * F, loop(note(HL), 5 * F)], [37.40, 6 * F, loop(note(HL), 6 * F)])).s("piano").velocity(0.13).lpf(1300).pan(0.42)
+  .mul(velocity(speech(0.6)))
+// the breath after L0601 (15.72-17.33): the cell, U then L, a whole tone apart, one after the other
+$: room(hits([[15.80, 0.45, "f#4", 0.2], [16.25, 0.45, "a4", 0.2], [16.70, 0.6, "b4", 0.18]])).s("piano").lpf(1700).pan(0.58)
+
+// ================================================================ ch06-s03: THE SPRINGS
+// 'stamp' (45.68): one dry brass clack (wood + a short metallic band of noise)
+$: tl([45.68, 0.1, note("c6")]).s("gm_woodblock").velocity(0.2).decay(0.04).sustain(0)
+$: tl([45.68, 0.1, s("white")]).bpf(3400).bpq(6).decay(0.06).sustain(0).gain(0.08)
+// 'fold' (55.31): eight folds of the press, each a slightly heavier clack, a step higher up the D scale
+$: hits(run(55.31, 8, 0.52, ["d5", "e5", "f#5", "g5", "a5", "b5", "c#6", "d6"], 0.1, 0.19)).s("gm_woodblock").decay(0.04).sustain(0)
+$: hits(run(55.31, 8, 0.52, ["d2", "e2", "f#2", "g2", "a2", "b2", "c#3", "d3"], 0.06, 0.12, 0.3)).s("gm_taiko_drum").decay(0.1).sustain(0)
+// 'counter' (62.47): the cost that does not grow: a held low D, the tick running on beneath, unchanged
+$: room(tl([62.47, 5.1, note("d2")])).s("gm_cello").velocity(0.13).attack(0.4).release(1.0).lpf(600)
+// the breath after L0609 (64.36-67.88): M1 in D, a whole phrase, over the held D
+$: room(hits([[64.50, 0.5, "f#4", 0.21], [65.00, 0.5, "a4", 0.21], [65.50, 0.9, "d5", 0.2], [66.40, 1.1, "b4", 0.17]])).s("piano").lpf(1700).pan(0.58)
+$: room(hits([[64.75, 0.5, "e4", 0.13], [65.25, 0.5, "g4", 0.13], [65.95, 0.9, "c5", 0.12]])).s("piano").lpf(1500).pan(0.42)
+
+// ================================================================ ch06-s04: THE BOUND
+// 'ratchet' (67.67): the teeth accelerate into a fast dry rattle ...
+$: lanes(accel(67.67, 72.40, 0.32, 0.9, 0.04).map(([t, d], i) => [t, Math.min(0.05, d * 0.9), note(i % 2 ? "b5" : "g5").velocity(0.05 + Math.min(0.08, i * 0.0015))]))
+  .s("gm_woodblock").decay(0.03).sustain(0).lpf(4000).pan(0.55)
+// ... one hard pawl release and a wooden thunk on 'bound' (72.50); half a frame of silence follows
+$: tl([72.50, 0.1, s("white")]).hpf(1500).lpf(6000).decay(0.04).sustain(0).gain(0.14)
+$: tl([72.50, 0.1, note("e5")]).s("gm_woodblock").velocity(0.3).decay(0.05).sustain(0)
+$: tl([72.56, 0.4, note("c2")]).s("gm_taiko_drum").velocity(0.3).decay(0.25).sustain(0)
+$: tl([72.56, 0.2, s("brown")]).lpf(280).decay(0.15).sustain(0).gain(0.16)
+// the two-sided card: the escapement resumes (two ticks) and the two lines are HELD at EQUAL level
+// (a choice, not a verdict): F# over E, struck together, felt piano and strings
+$: room(tl([74.60, 3.4, note("[e4,f#4]")])).s("piano").velocity(0.16).lpf(1300).release(1.5)
+$: room(tl([74.60, 5.5, note("[d3,e4,f#4]")])).s("gm_string_ensemble_1").velocity(0.06).attack(0.6).release(1.5).lpf(1000)
+
+// ================================================================ ch06-s05: TWO DESKS
+// desk A (left) at 72; desk B (right) out of phase, and from 'ghost' (78.69) drifting at about 79 BPM;
+// on 'lock' (93.82) they fall into one shared tick (centre)
+$: tl([75.51, 18.31, loop(tick(0.85), 18.31)]).s("gm_woodblock").decay(0.03).sustain(0).pan(0.2)
+  .mul(velocity(speech(0.6)))
+$: tl([75.51 + 0.42, 2.76, loop(note("g5 d5 g5 d5 ~"), 2.76)], [78.69, 15.13, loop(note("g5 d5 g5 d5 ~").fast(79 / 72), 15.13)])
+  .s("gm_woodblock").velocity(0.1).decay(0.03).sustain(0).pan(0.8).mul(velocity(speech(0.6)))
+$: tl([93.82, 3.38, loop(tick(1.2), 3.38)]).s("gm_woodblock").decay(0.03).sustain(0).pan(0.5)
+  .mul(velocity(speech(0.7)))
+// the bed under the drift: the harmony wanders over the pedal (D, Bm/D, G/D, A/D) and LANDS on D at the lock
+$: room(tl([75.51, 4.2, note("[a2,d3,f#3]")], [79.71, 4.6, note("[b2,d3,f#3]")], [84.31, 4.6, note("[b2,d3,g3]")],
+           [88.91, 4.91, note("[a2,c#3,e3,g3]")], [93.82, 5.6, note("[a2,d3,f#3,a3]")]))
+  .s("gm_string_ensemble_1").velocity(0.065).attack(1.2).release(1.2).lpf(750)
+// 'thrown' (92.02): a light paper slide under the carbon paper
+$: tl([92.02, 0.7, s("pink")]).bpf(sine.range(1200, 3000).slow(0.3)).bpq(2).attack(0.15).release(0.4).gain(0.03)
+// 'lock' (93.82): the satisfying lock: pizz D-A and a low thunk under the shared tick
+$: tl([93.82, 0.6, note("[d2,a2]")]).s("gm_pizzicato_strings").velocity(0.2).lpf(1000)
+$: tl([93.82, 0.3, note("d2")]).s("gm_taiko_drum").velocity(0.12).decay(0.15).sustain(0)
+// the breath after L0614 (97.35-99.65): M1, U then L, a whole tone apart, over the locked D
+$: room(hits([[97.45, 0.45, "f#4", 0.2], [97.90, 0.45, "a4", 0.2], [98.35, 1.0, "b4", 0.18]])).s("piano").lpf(1700).pan(0.58)
+$: room(hits([[97.68, 0.45, "e4", 0.12], [98.13, 0.45, "g4", 0.12], [98.58, 0.9, "a4", 0.11]])).s("piano").lpf(1500).pan(0.42)
+
+// ================================================================ ch06-s05b: TAG 7, the full detent figure (in D)
+// 'tag' (99.65): tie (detent click over the tonic, barely); the flip (a paper snap over A); 'strike' (101.44):
+// the pencil into the drawer, bass A -> D
+$: tl([99.65, 0.1, note("e6")], [105.70, 0.1, note("e6")]).s("gm_woodblock").velocity(0.18).decay(0.03).sustain(0)
+$: tl([99.65, 0.5, note("d3")], [100.55, 0.5, note("a2")]).s("gm_pizzicato_strings").velocity(0.13).lpf(1200)
+$: tl([100.55, 0.1, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.12)
+$: tl([101.44, 0.4, s("white")]).bpf(3000).bpq(2).attack(0.02).decay(0.3).sustain(0).gain(0.055)
+$: tl([101.76, 0.3, note("c2")]).s("gm_taiko_drum").velocity(0.24).decay(0.25).sustain(0)
+$: tl([101.76, 0.2, s("brown")]).lpf(300).decay(0.15).sustain(0).gain(0.12)
+$: tl([101.76, 1.6, note("d2")]).s("gm_pizzicato_strings").velocity(0.16).lpf(800)
+// 'events' (105.02): a row of small even clicks, one per run (seventeen)
+$: hits(run(105.02, 17, 0.085, ["a5"], 0.07, 0.07, 0.04)).s("gm_woodblock").decay(0.03).sustain(0).lpf(3500)
+
+// ================================================================ THE PATTERNS RUN (ch06-s06…s11), labGreen, in A
+// the escapement doubled to a light running pulse (eight eighths and a rest per frame), pizz quarters below
+// Slots leave the silence after 'index' (155.55-157.0) and stop on 'monitor' (174.02)
+const P1 = [106.69, 48.86], P2 = [157.00, 17.02]
+const run8 = note(RUN8).velocity("0.09 0.05 0.07 0.05 0.08 0.05 0.07 0.05 0 0")
+$: tl([P1[0], P1[1], loop(run8, P1[1])], [P2[0], P2[1], loop(run8, P2[1])])
+  .s("gm_woodblock").decay(0.03).sustain(0).lpf(3800).pan(0.45)
+  .mul(velocity(speech(0.6)))
+$: tl([P1[0], P1[1], loop(note("<[a2 e3 c#3 e3 ~] [a2 f#3 d3 f#3 ~] [g#2 e3 b2 e3 ~] [a2 e3 c#3 e3 ~]>"), P1[1])],
+      [P2[0], P2[1], loop(note("<[a2 e3 c#3 e3 ~] [a2 f#3 d3 f#3 ~] [g#2 e3 b2 e3 ~] [a2 e3 c#3 e3 ~]>"), P2[1])])
+  .s("gm_pizzicato_strings").velocity(0.17).lpf(1000).pan(0.55).mul(velocity(speech(0.75)))
+// the patterns' harmony over an A pedal: A, D/A, E/A, A (one chord per frame), soft
+$: room(tl([P1[0], P1[1], loop(note("<[a2,e3,c#4] [a2,d3,f#3] [a2,e3,b3] [a2,e3,c#4]>"), P1[1])],
+           [P2[0], P2[1], loop(note("<[a2,e3,c#4] [a2,d3,f#3] [a2,e3,b3] [a2,e3,c#4]>"), P2[1])]))
+  .s("gm_string_ensemble_1").velocity(0.05).attack(0.8).release(0.6).lpf(800)
+$: tl([P1[0], P1[1], note("a1")], [P2[0], P2[1], note("a1")]).s("gm_contrabass").velocity(0.1).attack(1).release(0.6).lpf(300)
+// the patterns' entrance in the breath before L0616: M1 in A, upper line, plucked (harp)
+$: room(hits([[105.75, 0.35, "c#5", 0.16], [106.10, 0.35, "e5", 0.16], [106.45, 0.7, "f#5", 0.15], [107.05, 0.25, "e5", 0.1]]))
+  .s("gm_orchestral_harp").lpf(2400).pan(0.6)
+
+// ch06-s06: 'loop' (110.54): five quick ticks planned, the run stops on the fourth (the first match)
+$: hits(run(110.54, 4, 0.13, ["e5", "f#5", "g#5", "a5"], 0.11, 0.15)).s("gm_woodblock").decay(0.03).sustain(0)
+// 'three' (117.02): the three flags drop as ONE clack
+$: tl([117.02, 0.1, note("[e5,a5]")]).s("gm_woodblock").velocity(0.2).decay(0.04).sustain(0)
+$: tl([117.02, 0.2, note("a2")]).s("gm_taiko_drum").velocity(0.12).decay(0.1).sustain(0)
+// the breath after L0616 (117.51-120.54): the two lines, L then U, answering across the pulse
+$: room(hits([[117.70, 0.4, "b4", 0.13], [118.10, 0.4, "d5", 0.13], [118.50, 0.8, "e5", 0.12]])).s("gm_pizzicato_strings").lpf(2400).pan(0.42)
+$: room(hits([[118.90, 0.4, "c#5", 0.15], [119.30, 0.4, "e5", 0.15], [119.70, 0.8, "a5", 0.14]])).s("gm_orchestral_harp").lpf(2400).pan(0.6)
+// ch06-s07: 'row' (122.78): the ghost chain, seven clicks, slow and plodding ...
+$: hits(run(122.78, 7, 0.46, ["e5"], 0.12, 0.1)).s("gm_woodblock").decay(0.03).sustain(0).pan(0.4)
+// ... 'pairs' (127.29): the tree's levels, quicker, rising: four pairs, two pairs, one pair
+$: hits([...run(127.29, 8, 0.07, ["a5", "a5"], 0.08, 0.1), ...run(127.95, 4, 0.08, ["c#6", "c#6"], 0.11, 0.12), ...run(128.45, 2, 0.09, ["e6"], 0.13)])
+  .s("gm_woodblock").decay(0.03).sustain(0).pan(0.6)
+// 'names' (129.95): a stamped brass punch for the grommets (the rivet's cousin, dry)
+$: tl([129.95, 0.1, note("c6")]).s("gm_woodblock").velocity(0.18).decay(0.04).sustain(0)
+$: tl([129.95, 0.1, s("white")]).bpf(3400).bpq(6).decay(0.06).sustain(0).gain(0.07)
+$: tl([129.99, 0.2, note("c2")]).s("gm_taiko_drum").velocity(0.12).decay(0.12).sustain(0)
+// ... and the two lines briefly in a warm unison, in the breath after L0617 (130.63-135.33): U climbs
+// c#-e-f#-e, L climbs b-d-e and they MEET on E (felt piano + soft strings), then rest on A
+$: room(lanes([[130.70, 3.6, note("c#5@0.5 e5@0.5 f#5@0.8 e5@1.8").velocity(0.16).pan(0.58)],
+               [130.70, 3.6, note("b4@0.5 d5@0.5 d5@0.8 e5@1.8").velocity(0.12).pan(0.42)]])).s("piano").lpf(1700).release(0.6)
+$: room(tl([131.95, 3.2, note("[a3,e4,e5]")])).s("gm_string_ensemble_1").velocity(0.06).attack(0.5).release(1.2).lpf(1300)
+
+// ch06-s08: the select in miniature: 'slow' (140.37): U leads (speed); 'drift' (141.55): L leads (accuracy)
+$: hits([[140.37, 0.4, "c#5", 0.12], [140.77, 0.6, "e5", 0.1]]).s("gm_orchestral_harp").lpf(1800).pan(0.62)
+$: hits([[141.55, 0.4, "b4", 0.12], [141.95, 0.6, "d5", 0.1]]).s("gm_pizzicato_strings").lpf(1800).pan(0.38)
+// ... and they end at EQUAL level in the breath after L0619 (142.62-145.96)
+$: room(tl([142.75, 3.0, note("[d5,e5]")])).s("piano").velocity(0.15).lpf(1500).release(1.2)
+$: room(tl([142.75, 3.0, note("[a3,d5,e5]")])).s("gm_string_ensemble_1").velocity(0.06).attack(0.4).release(1.0).lpf(1100)
+
+// ch06-s09: 'arith' (152.62): a long dry sweep of tiny clicks up the cabinet (thirty thousand operations)
+$: hits(Array.from({ length: 32 }, (_, i) => [152.62 + i * 0.085, 0.04, ["e5", "f#5", "g#5", "a5", "b5", "c#6", "d6", "e6"][Math.floor(i / 4)], 0.05 + i * 0.0015]))
+  .s("gm_woodblock").decay(0.03).sustain(0).lpf(4500).pan(0.55)
+// 'index' (155.55): a single clean detent drop; then a beat of silence (the joke lands in the quiet)
+$: tl([155.55, 0.1, note("a4")]).s("gm_woodblock").velocity(0.22).decay(0.05).sustain(0)
+$: tl([155.55, 0.3, note("a2")]).s("gm_pizzicato_strings").velocity(0.16).lpf(900)
+
+// ch06-s10: 'flip' (162.86): all sixteen tiles flip as ONE soft paper clatter (simultaneous, not a roll)
+$: tl([162.86, 0.15, s("white")]).hpf(1500).lpf(7000).decay(0.07).sustain(0).gain(0.1)
+$: tl([162.86, 0.1, note("[e5,a5,c#6]")]).s("gm_woodblock").velocity(0.09).decay(0.03).sustain(0)
+// 'slide' (164.40): a single smooth wooden glide
+$: tl([164.40, 0.8, s("brown")]).bpf(sine.range(300, 900).slow(0.4)).bpq(1.5).attack(0.15).release(0.4).gain(0.08)
+// the breath after L0621 (165.24-167.08): the cell, U, once, plucked
+$: room(hits([[165.35, 0.35, "c#5", 0.15], [165.70, 0.35, "e5", 0.15], [166.05, 0.8, "f#5", 0.13]])).s("gm_orchestral_harp").lpf(2400).pan(0.6)
+
+// ch06-s11: 'counts' (169.46): a quick ascending run of small clicks on the count rail ...
+$: hits(run(169.46, 10, 0.07, ["a5", "b5", "c#6", "d6", "e6"], 0.05, 0.09, 0.04)).s("gm_woodblock").decay(0.03).sustain(0).lpf(4500)
+// ... three solid slot clunks on 'three' (172.40)
+$: hits(run(172.40, 3, 0.26, ["a4"], 0.18, 0.18, 0.1)).s("gm_woodblock").decay(0.05).sustain(0)
+$: hits(run(172.40, 3, 0.26, ["e2"], 0.12, 0.12, 0.2)).s("gm_taiko_drum").decay(0.12).sustain(0)
+// 'monitor' (174.02): the pulse slows back to the even escapement, on A (the dominant): the return is prepared
+$: room(tl([174.02, 5.70, note("[a2,c#3,e3,g3]")])).s("gm_string_ensemble_1").velocity(0.06).attack(1.0).release(0.8).lpf(800)
+$: tl([174.02, 5.70, loop(note("a1 e2 c#2 e2 ~"), 5.70)]).s("gm_pizzicato_strings").velocity(0.15).lpf(800).mul(velocity(speech(0.75)))
+
+// ================================================================ ch06-s12: THE RETURN, in D, slower and fuller
+// the escapement is back (see THE ESCAPEMENT) with a low harp wheel under it and a fuller string bed
+$: tl([179.72, 4.85 * F, loop(note("d2 a2 f#2 a2 ~"), 4.85 * F)]).s("gm_orchestral_harp").velocity(0.18).lpf(800).pan(0.4)
+  .mul(velocity(speech(0.75)))
+$: room(tl([179.72, 6.2, note("[d3,a3]")], [185.92, 14.4, note("[d3,a3,f#4]")])).s("gm_string_ensemble_1")
+  .velocity(0.07).attack(1.5).release(1.4).lpf(900)
+// 'kleene' (180.62): M4, the 1943 reed, quotes its first phrase once (E-G-A-G): Kleene's finite machine, found again
+$: room(tl([180.62, 4.6, note("e4@1.1 g4@1.1 a4@1.6 g4@0.8")])).s("gm_clarinet").velocity(0.11).attack(0.2).release(1.0).lpf(900)
+// the breath after L0624 (185.48-186.18): the two lines resolve to a calm sixth, A3 under F#4, and hold
+$: room(tl([185.55, 3.0, note("[a3,f#4]")])).s("piano").velocity(0.15).lpf(1400).release(1.8)
+// the hold after L0625 (198.28-200.32): the bed alone; the cell once more, U, very soft
+$: room(hits([[198.40, 0.45, "f#4", 0.13], [198.85, 0.45, "a4", 0.13], [199.30, 0.9, "b4", 0.11]])).s("piano").lpf(1500).pan(0.58)
+
+// ================================================================ ch06-s13: THE X-RAY
+// 'light' (200.32): one dry relay clack (the last strike); then three soft ticks, slowing, and the clock stops
+$: tl([200.32, 0.1, note("g5")]).s("gm_woodblock").velocity(0.4).decay(0.04).sustain(0)
+$: tl([200.32, 0.08, s("white")]).hpf(2500).decay(0.025).sustain(0).gain(0.08)
+// (render 4 had the third tick at 202.55, 0.1 s before the window ends: inaudible under the fade and measured
+// as the last onset. Now 200.80 / 201.32 / 201.92, slowing, the third on the fade's first frame; they are
+// ghost-level decay of the clack's figure, so the composer's lastStrike stays on the clack, 787.92)
+$: hits([[200.80, 0.1, "a5", 0.07], [201.32, 0.1, "e5", 0.05], [201.92, 0.08, "a5", 0.035]]).s("gm_woodblock").decay(0.03).sustain(0)
+$: tl([0.0, 4.0, s("pink")], [199.8, 2.85, s("pink")]).hpf(2500).lpf(7000).gain(0.005).attack(0.6).release(1.5)
+
+// house level: about -24.5 LUFS integrated (render 2: -27 at postgain 3.0 with the louder pedal)
+all(x => x.mul(velocity(speech(0.75))).postgain(4.2))

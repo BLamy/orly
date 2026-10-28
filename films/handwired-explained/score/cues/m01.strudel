@@ -1,0 +1,134 @@
+// m01 — PROLOGUE AND TITLE (handwired-explained), 0.00-100.50 (100.50 s), clock 1455.42 s.
+// setcpm(60/4): one 4-s bar per cycle, 25.125 cycles. Cue start = 0, so cue-local seconds = film seconds.
+// Every event is placed in seconds by tl() on the word or beat it names (narration/timeline.json).
+//
+// The score is a select. M1's two lines, U (G major: B D E D | B D G | E D) and L (the same cell a whole
+// tone lower: A C D C | A C F | D C), are BOTH scheduled at every note; the gate g gives U gain g and L
+// gain 1-g, so the gate is literally the select in the source.
+//
+//  0.0-15.9  NO MUSIC: paper room tone, haze hiss, ONE dry relay clack on 'clack' 5.70 (the wire completes),
+//            a paper slide under 'drag', a soft detent click on 'settles' 14.28.
+//  15.95     'push': M1 is born on felt piano (gate 1, L running silent) over a soft G2 tuba pedal (re-bowed each bar).
+//            The cell's notes sit in the breaths of L0103 (19.05 after 'network'; E-D after 'live').
+//  25.16     'arcs': a low string swell (G2-D3, lpf 900) that has receded before 'thousand' (29.86).
+//  31.9      the gap after 'nine': the cell's lift, B D G, in clear air.
+//  34-53     the lines thin to one soft note per breath; a ghost TIE on each tag ('tag3' 36.94, 'tag4'
+//            38.17, 'tag5' 41.55) and a softer fourth on 'whyTie' 50.78. No flip, no strike.
+//  65.38     THE SELECT, scored live: 'five' gate 1 (B heard), 'three' gate 0 (A heard: the bit is the whole
+//            tone), 'half' 70.02 gate 0.5: B and A both at half level (THE MUSICAL ELEVEN voicing, kept for
+//            every return), held by a faint string dyad; the heavy 11-tile clack on 'clack' 71.28 is the
+//            only percussive hit; 'eleven' 72.18 is spoken over the soft held dyad.
+//  74.0      the gap after 'twelve': gate back to 1, D alone; a warm G / C/G / G string bed under L0112.
+//  84.36     the refrain's detent, ghost-level: tie on 'tied', flip on 'doubted' (the bass moves G -> D),
+//            NO third stroke on 'held' 87.72: the bar hangs on D.
+//  88.20     after 'held', in clear air: M1 STATED WHOLE, U alone on felt piano, compressed to 8 s:
+//            B D E | D | B D G | E D, over plain harmony (G, C/G, G, then D under the last bar). Its lift B-D-G
+//            is the title's three beats: B on 'title' (with the tie), D on 'flip' (with the flip), G on
+//            'subtitle'. The bar hangs: no strike.
+//  96.30     the closing bar RE-STRUCK at gate 0.5: E/D then D/C, the tune smeared against itself a whole tone
+//            apart (the musical eleven), hanging on the open D (strings D-A-D, tuba D). LAST ONSET 97.00; it
+//            rings 2.0 s before the fade (99.00-100.50); m02's reed takes the D as E minor's seventh.
+//
+// PEDALS: no soundfont pedal is held longer than two bars. The contrabass sample loop beats at ~1.3 s (a 6-8 dB
+// 40-250 Hz wow, even re-bowed), so the bass weight is a dark tuba (lpf 280, an even envelope), re-bowed every
+// two bars on two alternating lanes by bows() (blooms in over 1.5 s, dies over 2.5 s, short bow changes between);
+// no pitch is doubled on two sustained patches.
+setcpm(60/4)
+const CPS = 60/240, DUR = 100.5
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+// re-bowed pedal: [t0, t1, notes, velocity?] spans -> a fresh bow about every `step` s on two alternating lanes, so
+// no soundfont sample is held for long. A run of touching spans blooms in on its first bow (attack a0) and dies away
+// on its last (release r1); between bows the change is short (attack a, release r, overlap ov): two copies of one
+// sample at the same pitch interfere, and a long overlap dips 4-8 dB, while a short bow change measures under 1 dB.
+const bows = (spans, step, f, { a0 = 1.5, r1 = 2.5, a = 0.3, r = 0.4, ov = 0.1 } = {}) => { const ev = []
+  spans.forEach(([t0, t1, n, v], k) => {
+    const joinPrev = k > 0 && Math.abs(spans[k - 1][1] - t0) < 0.01, joinNext = k < spans.length - 1 && Math.abs(spans[k + 1][0] - t1) < 0.01
+    for (let t = t0; t < t1 - 0.05;) { const d = t1 - t < 1.5 * step ? t1 - t : step
+      const first = t === t0 && !joinPrev, last = t + d >= t1 - 0.05 && !joinNext
+      let p = note(mini(n)).attack(first ? a0 : a).release(last ? r1 : r); if (v != null) p = p.velocity(v)
+      ev.push([t, d + (last ? 0 : ov), p]); t += d } })
+  const lanes = [[], []]; ev.forEach((e, i) => lanes[i % 2].push(e))
+  return stack(...lanes.map(l => f(tl(...l)))) }
+const MIDI = n => { const m = n.match(/^([a-g])(#|b)?(-?\d)$/)
+  return 12 * (+m[3] + 1) + { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) }
+
+// ---------------------------------------------------------------- the select (M1)
+// evs: [t, dur, upper note, gate, velocity]; U at gain gate (pan .58), L a whole tone lower at gain 1-gate (pan .42)
+const sel = (evs, f) => stack(
+  f(tl(...evs.map(([t, d, n, g, v]) => [t, d, note(MIDI(n)).velocity(v).gain(g)]))).pan(0.58),
+  f(tl(...evs.map(([t, d, n, g, v]) => [t, d, note(MIDI(n) - 2).velocity(v).gain(1 - g)]))).pan(0.42))
+const felt = x => x.s("piano").lpf(1600).release(0.5).room(0.35).rsize(3)
+const M1 = [
+  // s03: born on 'push', the cell in the breaths of L0103
+  [15.95, 3.0, 'b4', 1, 0.36], [19.05, 4.1, 'd5', 1, 0.26], [23.22, 0.72, 'e5', 1, 0.34], [23.94, 4.0, 'd5', 1, 0.36],
+  // s04: the lift, in the gap after 'nine'
+  [31.90, 0.45, 'b4', 1, 0.38], [32.35, 0.45, 'd5', 1, 0.4], [32.80, 3.2, 'g5', 1, 0.3],
+  // s05: thinned to one soft note per breath
+  [36.08, 4.0, 'e5', 1, 0.24], [40.16, 1.85, 'd5', 1, 0.2], [42.05, 5.5, 'b4', 1, 0.24], [47.58, 5.1, 'd5', 1, 0.22],
+  [52.74, 3.9, 'e5', 1, 0.34],
+  // s06: the scrap of JavaScript, then the select scored live
+  [56.66, 4.7, 'd5', 1, 0.24], [61.40, 3.9, 'b4', 1, 0.3],
+  [65.38, 1.40, 'b4', 1, 0.3],      // 'five'  -> gate 1: B heard
+  [66.78, 3.24, 'b4', 0, 0.3],      // 'three' -> gate 0: A heard (the whole tone)
+  [70.02, 3.98, 'b4', 0.5, 0.5],    // 'half'  -> gate 0.5: B and A together, THE MUSICAL ELEVEN
+  // s07: one line again
+  [74.00, 2.6, 'd5', 1, 0.4], [76.60, 2.2, 'e5', 1, 0.26], [78.82, 2.1, 'd5', 1, 0.24], [80.92, 3.0, 'b4', 1, 0.28],
+  // after 'held': M1 WHOLE, once, in clear air (8 s): B D E | D | B D G | E D
+  [88.20, 0.50, 'b4', 1, 0.30], [88.70, 0.50, 'd5', 1, 0.31], [89.20, 1.00, 'e5', 1, 0.34],     // G
+  [90.20, 1.86, 'd5', 1, 0.31],                                                                 // C/G
+  [92.06, 0.40, 'b4', 1, 0.33], [92.46, 0.30, 'd5', 1, 0.34], [92.76, 1.30, 'g5', 1, 0.31],     // G: 'title' 'flip' 'subtitle'
+  [94.06, 0.95, 'e5', 1, 0.33], [95.01, 1.29, 'd5', 1, 0.29],                                   // D under the last bar
+  // the closing bar re-struck at gate 0.5: the tune against itself, THE MUSICAL ELEVEN, hanging on D (LAST ONSET 97.00)
+  [96.30, 0.70, 'e5', 0.5, 0.42], [97.00, 3.50, 'd5', 0.5, 0.42]]
+$: sel(M1, felt)
+// the eleven's closing dyad a register lower, the warmth of the hang
+$: sel([[97.00, 3.5, 'd4', 0.5, 0.24]], x => x.s("piano").lpf(1100).release(0.8).room(0.35).rsize(3))
+
+// ---------------------------------------------------------------- the pedal, the swell, the warm bed
+// tuba pedal, a fresh bow every two bars: G from 'push', D on 'doubted' (the hang), G under the phrase, D under its last bar
+$: bows([[15.95, 85.85, 'g2'], [85.85, 88.20, 'd2'], [88.20, 94.06, 'g2'], [94.06, 100.5, 'd2']], 8.0,
+  x => x.s("gm_tuba").velocity(0.2).lpf(280).gain(0.3))
+// 'arcs' 25.16: a slow swell, receded before 'thousand' 29.86
+$: tl([25.16, 2.9, note("[g2,d3]")]).s("gm_string_ensemble_1").velocity(0.26).attack(2.6).release(1.5).lpf(900)
+// the eleven held by a faint string dyad at half level each (same voicing as the piano)
+$: tl([70.10, 3.6, note("[b4,a4]")]).s("gm_string_ensemble_1").velocity(0.07).attack(0.7).release(1.0).lpf(1000).room(0.3)
+// s07: warm bed under L0112 (G, C/G on 'numbers', G on 'trust'), lpf 800
+$: tl([74.00, 4.8, note("[g2,d3,b3]")], [78.82, 2.1, note("[g2,c3,e3]")], [80.92, 4.93, note("[g2,d3,b3]")])
+  .s("gm_string_ensemble_1").velocity(0.09).attack(1.2).release(1.4).lpf(800)
+// the phrase's plain harmony (G, C/G, G, D), then the hang: open D-A-D under the eleven, released into the fade
+$: tl([88.20, 2.0, note("[d3,b3]").velocity(0.12)], [90.20, 1.86, note("[c3,e3,g3]").velocity(0.12)],
+      [92.06, 2.0, note("[d3,b3]").velocity(0.14)], [94.06, 2.24, note("[d3,f#3,a3]").velocity(0.13)],
+      [96.30, 4.2, note("[d3,a3,d4]").velocity(0.15)])
+  .s("gm_string_ensemble_1").attack(0.9).release(2.6).lpf(950).room(0.4).rsize(4)
+
+// ---------------------------------------------------------------- M2 · detent strokes and clacks (dry)
+const tie = (v, tonic) => stack(s("gm_woodblock").note("e6").velocity(v).decay(0.03).sustain(0),
+  ...(tonic ? [note("g2").s("gm_pizzicato_strings").velocity(v * 0.6).lpf(1200)] : []))
+const flip = v => stack(s("white").hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(v * 0.75),
+  note("d3").s("gm_pizzicato_strings").velocity(v * 0.7).lpf(1200))
+const relay = v => stack(s("gm_woodblock").note("g5").velocity(0.45 * v).decay(0.04).sustain(0),
+  s("white").hpf(2000).decay(0.03).sustain(0).gain(0.1 * v))
+const heavy = stack(s("gm_woodblock").note("c5").velocity(0.3).decay(0.05).sustain(0),
+  s("gm_taiko_drum").note("c2").velocity(0.22).decay(0.2).sustain(0),
+  s("white").hpf(1500).decay(0.03).sustain(0).gain(0.08))
+$: tl([5.70, 0.5, relay(0.8)],                     // 'clack': the copper wire completes (no music yet)
+      [14.28, 0.4, tie(0.17, false)],            // 'settles'
+      [36.94, 0.4, tie(0.16, true)], [38.17, 0.4, tie(0.16, true)], [41.55, 0.4, tie(0.16, true)],   // the three ties
+      [50.78, 0.4, tie(0.11, true)],             // 'whyTie': softer, not a belief yet
+      [71.28, 0.6, heavy],                       // 'clack': the 11 tile, the only percussive hit of the select
+      [84.36, 0.4, tie(0.17, true)], [85.85, 0.4, flip(0.15)],   // 'tied', 'doubted'; nothing on 'held'
+      [92.06, 0.4, tie(0.3, true)], [92.46, 0.3, flip(0.24)])    // TITLE: tie, flip, the bar hangs
+  .room(0)
+
+// ---------------------------------------------------------------- the room
+$: tl([0, 100.5, s("pink")]).lpf(3000).hpf(120).gain(0.012).attack(0.5).release(0.5)
+$: tl([0.6, 15.6, s("white")]).hpf(7000).gain(0.004).attack(2).release(2)          // haze hiss
+$: tl([11.94, 1.6, s("pink")]).hpf(4500).lpf(9000).gain(0.012).attack(0.5).release(0.6)   // paper slide under 'drag'
+
+// level: the integrated target is about -24 LUFS (the shape above is set by the velocities)
+all(x => x.postgain(3.25))

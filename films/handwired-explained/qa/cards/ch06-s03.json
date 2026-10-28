@@ -1,0 +1,164 @@
+{
+ "shot": "ch06-s03",
+ "at": "2026-10-28T17:39:41.116Z",
+ "step": 0.0833,
+ "sampled": 317,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s03-in0",
+  "ch06-s03-in1",
+  "ch06-s03-eq",
+  "ch06-s03-out0",
+  "ch06-s03-out1",
+  "ch06-s03-ctrlabel"
+ ],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@624,450",
+   "probed": false,
+   "from": 0.05,
+   "to": 3.72,
+   "seconds": 3.67,
+   "rect": {
+    "x": 562,
+    "y": 419,
+    "w": 154,
+    "h": 110
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [
+  {
+   "a": "ch06-s03-lhome",
+   "b": "distance from home",
+   "from": 7.47,
+   "to": 9.72,
+   "seconds": 2.25,
+   "minAlpha": 0.31,
+   "rect": {
+    "x": 628,
+    "y": 536,
+    "w": 323,
+    "h": 29
+   }
+  },
+  {
+   "a": "400 px",
+   "b": "ch06-s03-loupe",
+   "from": 9.55,
+   "to": 13.88,
+   "seconds": 4.33,
+   "minAlpha": 0.48,
+   "rect": {
+    "x": 0,
+    "y": 855,
+    "w": 98,
+    "h": 22
+   }
+  },
+  {
+   "a": "ch06-s03-eq1",
+   "b": "one 4 ms step: (−300, 0) → (−296.88, 780)",
+   "from": 11.22,
+   "to": 26.47,
+   "seconds": 15.25,
+   "minAlpha": 0.67,
+   "rect": {
+    "x": 142,
+    "y": 99,
+    "w": 904,
+    "h": 27
+   }
+  },
+  {
+   "a": "ch06-s03-eq2",
+   "b": "window 400 → 403.12 px",
+   "from": 11.22,
+   "to": 26.47,
+   "seconds": 15.25,
+   "minAlpha": 0.67,
+   "rect": {
+    "x": 351,
+    "y": 145,
+    "w": 485,
+    "h": 26
+   }
+  },
+  {
+   "a": "ch06-s03-led1",
+   "b": "damping 45",
+   "from": 14.97,
+   "to": 26.47,
+   "seconds": 11.5,
+   "minAlpha": 1,
+   "rect": {
+    "x": 1097,
+    "y": 348,
+    "w": 200,
+    "h": 22
+   }
+  }
+ ],
+ "cards": [
+  {
+   "id": "fillRect@624,450",
+   "probed": false,
+   "from": 0.05,
+   "to": 3.633,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s03-in0",
+   "probed": true,
+   "from": 5.3,
+   "to": 10.05,
+   "minInkWhilePaper": 0.71
+  },
+  {
+   "id": "ch06-s03-in1",
+   "probed": true,
+   "from": 5.3,
+   "to": 10.05,
+   "minInkWhilePaper": 0.71
+  },
+  {
+   "id": "ch06-s03-eq",
+   "probed": true,
+   "from": 10.967,
+   "to": 26.383,
+   "minInkWhilePaper": 0.78
+  },
+  {
+   "id": "ch06-s03-out0",
+   "probed": true,
+   "from": 11.05,
+   "to": 26.383,
+   "minInkWhilePaper": 0.55
+  },
+  {
+   "id": "ch06-s03-out1",
+   "probed": true,
+   "from": 11.05,
+   "to": 26.383,
+   "minInkWhilePaper": 0.55
+  },
+  {
+   "id": "fillRect@1707,193",
+   "probed": false,
+   "from": 15.133,
+   "to": 26.383,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s03-ctrlabel",
+   "probed": true,
+   "from": 21.467,
+   "to": 26.383,
+   "minInkWhilePaper": 0.44
+  }
+ ]
+}

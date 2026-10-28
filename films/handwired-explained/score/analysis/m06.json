@@ -1,0 +1,18 @@
+{
+ "id": "m06",
+ "start": 493.8,
+ "end": 588.6,
+ "file": "films/handwired-explained/score/renders/m06.wav",
+ "duration": 100.8,
+ "I": -25,
+ "LRA": 7.1,
+ "TP": -7.6,
+ "expected": 100.8,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m06.png",
+ "cueSeconds": 94.8,
+ "cps": 0.31666666666666665,
+ "lastStrikeLocal": 89.66,
+ "lastStrike": 583.46
+}

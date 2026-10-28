@@ -1,0 +1,84 @@
+// m11 · STRANGERS WITH PENCILS (ch10-s01 … ch10-s04) · duskRose, no beat at all
+// Window 1219.50-1274.10 (54.60 s, clock 1455.42 s). 54 BPM nominal, entirely rubato: every event is placed by
+// cue-local seconds (absolute - 1219.50) from narration/timeline.json.
+// E minor, M4's key: the strangers argue like the old voices. M1 keeps its home pitches (U = B D E D,
+// L = A C D C) and simply sounds over a low reed drone on E, so U reads as E aeolian (Em7) and L as Am/E:
+// the gate wavers between them phrase by phrase, one note per breath, as the commenters disagree, and settles
+// on L as the docs side with the first. The stranger's eleven is the film's one voicing of the eleven (both
+// lines at half level, B/A D/C E/D). The rivet closes the gate onto U, which steps D -> E, home: kept.
+// The question tag gets only its tie, and one high reed B held over nothing. The pencil laid down: one low
+// wooden tap with a low E under it ('gentler' 51.83 = 1271.33, the last strike), into the cold air of ch11.
+setcpm(54/4)
+const CPS = 54/240, DUR = 54.60
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = Math.ceil(DUR * CPS * Q); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const hall = x => x.room(0.45).rsize(5)
+
+// ---------------------------------------------------------------- the reed drone and the dusk room
+// IN, alone before L1001: dusk after the October pulse. The E-minor triad's G (shared with m10's G-major
+// chord) is heard first and leaves; the open E-B reed stays, lpf 800, voiced B2-E3 over the sine's E1-E2 (the
+// reed organ's B3 zone itself pulses by about 4.5 dB at its fundamental; B2 under E3 is the steadiest voicing).
+// ONE steady reed source (revision, critic round 1: the clarinet E3 doubling is gone; its third harmonic beat
+// against the reed's B3 in the voice's first-formant band). The reed is RE-ARTICULATED at the phrase breaths
+// (a fresh, slightly different breath for each speaker) instead of one 46-s held note: full in the open gap
+// before L1001, then about 3 dB lower under L1001-L1006. It is released before the high reed B on 'keep', so
+// that B sounds over the low contrabass E alone (no octave or third-harmonic to beat against), and the dusk
+// thins to room tone in ch10-s04.
+const REED = [[0.0, 3.2, 0.14], [2.75, 12.0, 0.09], [14.45, 8.3, 0.088], [22.35, 15.4, 0.09], [37.55, 5.9, 0.085]]
+const reed = i => tl(...REED.filter((_, k) => k % 2 === i).map(([t, d, v]) => [t, d, note("[b2,e3]").velocity(v)]))
+$: stack(reed(0), reed(1)).s("gm_reed_organ").attack(1.1).release(1.6).lpf(800)   // alternate breaths overlap
+$: tl([0.0, 3.4, note("g3")]).s("gm_reed_organ").velocity(0.09).attack(1.4).release(2).lpf(800)
+// the low E under it: a steady sine sub (E1 + E2, lpf 300). A held bowed contrabass swells by about 8 dB at 0.7 Hz
+// (the sample's own loop) in the voice's fundamental range; the sine stays put.
+$: tl([0.0, 46.9, note("[e1,e2]")]).s("sine").gain(0.045).attack(2.5).release(3).lpf(300)
+$: tl([0.0, 54.5, s("pink")]).hpf(250).lpf(1300).gain(0.004).attack(2).release(2)
+
+// ---------------------------------------------------------------- ch10-s01 · strangers argue
+// M1, one note per breath, the gate wavering. U in the open air before the line; L in the line's own
+// pauses (after 'DSL', after 'circuit', after the second 'DSL'); U again between the lines; then on
+// 'docs' (17.29) and 'critic' (18.33) the copper thread joins them and the gate settles on L, which
+// comes to rest on C in the gap before L1003.
+$: hall(tl([1.00, 0.6, note("b4")], [1.60, 0.6, note("d5")], [2.20, 2.0, note("e5")],      // U
+           [14.40, 2.0, note("d5")]).s("piano").velocity(0.26).lpf(1300).pan(0.58).release(1.4))
+$: hall(tl([7.35, 2.0, note("a4")], [10.65, 1.3, note("c5")], [12.00, 2.0, note("d5")],     // L
+           [17.29, 1.0, note("c5")], [18.33, 2.0, note("d5")], [22.00, 1.4, note("c5")]).s("piano").velocity(0.21).lpf(1300).pan(0.42).release(1.4))
+// the resting pencil ('already' 22.17): a single soft wooden tap
+$: tl([22.17, 0.3, note("c5")]).s("gm_woodblock").velocity(0.18).decay(0.04).sustain(0).room(0.1)
+
+// ---------------------------------------------------------------- ch10-s02 · the stranger's eleven
+// on '11' (27.78) the gate slides to 0.5: both lines at half level, the same tune a whole tone against
+// itself, unresolved for a breath
+$: hall(tl([27.78, 0.47, note("b4")], [28.25, 0.47, note("d5")], [28.72, 2.6, note("e5")])
+  .s("piano").velocity(0.30).gain(0.5).lpf(1400).pan(0.58).release(2.2))
+$: hall(tl([27.78, 0.47, note("a4")], [28.25, 0.47, note("c5")], [28.72, 2.6, note("d5")])
+  .s("piano").velocity(0.30).gain(0.5).lpf(1400).pan(0.42).release(2.2))
+// FLIP on 'over' (30.10): the detent's paper snap, over the dominant (B)
+$: tl([30.10, 0.2, s("white")]).hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(0.10)
+$: tl([30.10, 1.2, note("b2")]).s("gm_pizzicato_strings").velocity(0.10).lpf(900)
+// the RIVET on 'kept' (36.98): a dry clack (tag 6 is kept: no strike), and the gate closes cleanly onto
+// U alone, which steps D -> E in the gap: resolved
+$: tl([36.98, 0.2, note("g5")]).s("gm_woodblock").velocity(0.19).decay(0.03).sustain(0)
+$: tl([36.98, 0.2, s("white")]).hpf(3000).decay(0.015).sustain(0).gain(0.05)
+$: hall(tl([37.45, 0.5, note("d5")], [37.95, 2.6, note("e5")]).s("piano").velocity(0.27).lpf(1400).pan(0.58).release(2))
+$: hall(tl([37.45, 3.0, note("[e3,b3]")]).s("piano").velocity(0.12).lpf(800).release(2))
+
+// ---------------------------------------------------------------- ch10-s03 · the question tag is hung
+// the TIE as the card is hung ('askCard' 39.02), then nothing more of the figure: no flip, no strike
+$: tl([39.02, 0.2, note("e6")]).s("gm_woodblock").velocity(0.18).decay(0.03).sustain(0)
+$: tl([39.02, 1.4, note("e2")]).s("gm_pizzicato_strings").velocity(0.10).lpf(800)
+// one high reed note (a clarinet B, darker than an oboe), very soft, held and not resolved, under 'We'll keep it for the end' (in from the
+// breath after 'tag', 44.10)
+$: tl([44.10, 5.2, note("b4")]).s("gm_clarinet").velocity(0.12).attack(0.9).release(2.2).lpf(1150).room(0.4).rsize(5)
+
+// ---------------------------------------------------------------- ch10-s04 · the pencil laid down
+// the drone has thinned to room tone; on 'gentler' (51.83) one soft low woodblock with a low E held
+// under it: the last strike, fading into the cold air of ch11
+$: tl([51.83, 0.3, note("g4")]).s("gm_woodblock").velocity(0.26).decay(0.06).sustain(0).lpf(2500).room(0.2).rsize(4)
+$: tl([51.83, 2.7, note("e2")]).s("gm_cello").velocity(0.10).attack(0.12).release(3).lpf(500)
+$: tl([51.83, 2.7, note("e1")]).s("gm_contrabass").velocity(0.11).attack(0.15).release(3).lpf(300)
+
+all(x => x.postgain(2.75))

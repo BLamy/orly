@@ -1,0 +1,89 @@
+{
+ "shot": "ch04-s08",
+ "at": "2026-10-28T11:27:17.099Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 15,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "For an",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "integer a",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 26.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 26.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 26.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "12",
+   "capWhileSubject": 24.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "emitCompare: needs a declared range",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "grid 1",
+   "capWhileSubject": 26,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ramp = relu(5 − a)",
+   "capWhileSubject": 24.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ops",
+   "capWhileSubject": 23.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bit = relu(1 − ramp)",
+   "capWhileSubject": 24.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 37.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "the README",
+   "maxCap": 8.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 11.4,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

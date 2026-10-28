@@ -1,0 +1,58 @@
+{
+ "shot": "ch04-s05",
+ "at": "2026-10-28T10:18:31.420Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 9,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "0",
+   "capWhileSubject": 27.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10",
+   "capWhileSubject": 29,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "12",
+   "capWhileSubject": 29,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "result = above4 × 10",
+   "capWhileSubject": 40.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "+ (1 − above4) × 12",
+   "capWhileSubject": 40.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "×0",
+   "capWhileSubject": 30.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0 × ∞ = NaN",
+   "capWhileSubject": 40.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "NaN",
+   "capWhileSubject": 48.9,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

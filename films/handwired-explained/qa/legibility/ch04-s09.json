@@ -1,0 +1,104 @@
+{
+ "shot": "ch04-s09",
+ "at": "2026-10-28T11:27:25.214Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "3",
+   "capWhileSubject": 38.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 38.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "5",
+   "capWhileSubject": 38.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "10",
+   "capWhileSubject": 35.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "12",
+   "capWhileSubject": 35.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ramp = relu(5 − a)",
+   "capWhileSubject": 35.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bit = relu(1 − ramp)",
+   "capWhileSubject": 35.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2",
+   "capWhileSubject": 54.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ops",
+   "capWhileSubject": 29.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "grid 1",
+   "capWhileSubject": 36.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "11",
+   "capWhileSubject": 38.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "wire 0 must be a multiple of 1, got 4.5",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "“promises from the caller,",
+   "capWhileSubject": 37.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "not proofs”",
+   "capWhileSubject": 37.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "— the docs",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "validator",
+   "capWhileSubject": 31.8,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "the README",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "(a > 4) ? 10 : 12",
+   "maxCap": 16.1,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
+}

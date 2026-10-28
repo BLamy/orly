@@ -1,0 +1,69 @@
+{
+  "id": "springs-and-time",
+  "checked": 42,
+  "confirmed": 32,
+  "corrected": 9,
+  "unverifiable": 1,
+  "corrections": [
+    {
+      "original": "Glenn Fiedler's 'Fix Your Timestep!' (2004) is 'the canonical game-dev statement' and 'the game-programming article that named the spiral of death'.",
+      "verdict": "corrected",
+      "fix": "The article calls it 'the so called \"spiral of death\"', so it did not coin the term. Reworded to 'a widely cited article that discusses the so-called spiral of death'. Date Jun 10, 2004 and the quotes are confirmed verbatim.",
+      "sources": ["https://gafferongames.com/post/fix_your_timestep/"]
+    },
+    {
+      "original": "Belief of the age: chenguini/index.ts hold the fixed-step-plus-cap belief; key claim 17 says Handwired snaps 'instead of carrying the backlog as chenguini's Animation.md recommends'.",
+      "verdict": "contested",
+      "fix": "Since commit 2026-02-28 ('Docs: prefer closed-form animations over numerical stepping'), Animation.md has preferred closed-form springs (section 'Closed-Form vs Numerical': 'no catch-up loop, no accumulated integration drift, and no spiral-of-death cap'). Cap-and-carry (N = 300, 'no time skip') is its guidance for numerical springs only; the cap was added 2026-02-27. Dated timeline rows and nuance added; the claim that Handwired's snap departs from Animation.md's numerical-spring guidance still stands.",
+      "sources": ["https://github.com/chenglou/chenguini/blob/main/docs/Animation.md", "https://api.github.com/repos/chenglou/chenguini/commits?path=docs/Animation.md"]
+    },
+    {
+      "original": "index.ts is grouped with the practice 'to prevent the spiral of death, cap the steps'.",
+      "verdict": "corrected",
+      "fix": "index.ts runs every pending step with no cap: line 408 has steps = Math.floor((now - newAnimatedUntilTime) / msPerAnimationStep) and no Math.min. host-timing.ts L123-L124 says the same. Nuance added.",
+      "sources": ["https://github.com/chenglou/chenglou.github.io/blob/master/index.ts#L408", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/host-timing.ts#L121-L124"]
+    },
+    {
+      "original": "In-program matrix power costs 546 operations for the frame matrix 'vs 14 for reading host-written cells (differentiability.md L5)'.",
+      "verdict": "corrected",
+      "fix": "differentiability.md L5 compares 546 with 119 ('when spring-bank writes the powers into weights'). The 14 is execution-model.md L178's cost for emitApplySpringMatrix, and L287 says source-matrix 'adds none' to the clock. Each number is now attributed to its own source.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/differentiability.md#L5", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/differentiability.md#L287", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L178"]
+    },
+    {
+      "original": "Key claim 16: the older emitSpring with 4 in-program Euler steps is 46 operations in 33 layers.",
+      "verdict": "corrected",
+      "fix": "Re-measured 46 ops / 33 layers only when the parameters are declared nonnegative and unit is declared 1, as in costs.ts buildHandwiredOsSpring. With no declared ranges the same call compiles to 78 ops / 45 layers. Caveat added: say '46 operations in 33 layers, as HandwiredOS built it'.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/examples/springs/costs.ts#L193-L213", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/execution-model.md#L206"]
+    },
+    {
+      "original": "Key claim 18: the chain rule gives -0.50469 for damping after 16 steps.",
+      "verdict": "corrected",
+      "fix": "The docs print -0.5047 (differentiability.md L271 and L281; tables-javascript-writes.md L52). The fifth digit comes only from an earlier report.ts run that this pass could not repeat. Use -0.5047 on screen. Stiffness 0.1055 is confirmed and pinned by test.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/differentiability.md#L281", "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/patterns/tables-javascript-writes.md#L52"]
+    },
+    {
+      "original": "Damping gradients at n = 150 (-0.0011773) and n = 300 (-1.52e-6).",
+      "verdict": "unverifiable",
+      "fix": "These are in no doc (the differentiability.md L354-L360 table gives stiffness only, which matches) and report.ts could not be re-run. Marked unverifiable: do not show.",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/differentiability.md#L354-L360"]
+    },
+    {
+      "original": "60 fps trajectory, frame 5 position 533.44 px.",
+      "verdict": "corrected",
+      "fix": "Recomputed with the real springStepMatrix and countSpringSteps: 533.4349, so 533.43. The other trajectory values are confirmed (412.26, 437.32, 468.51, 501.46, 569.71, 699.10, peak 700.317 at frame 26).",
+      "sources": ["command: bun traj.ts (scratch) importing src/runtime/host-timing.ts at 257856e"]
+    },
+    {
+      "original": "Peak speed is about 2,057 px/s around 64 ms.",
+      "verdict": "corrected",
+      "fix": "The peak speed is about 2,066 px/s (2065.5) at step 15 (60 ms). 2,057.5 px/s is the speed at 16 steps (64 ms), not the peak.",
+      "sources": ["command: bun traj.ts (scratch) importing src/runtime/host-timing.ts at 257856e"]
+    },
+    {
+      "original": "ui.md frame order cited as R:lab/ui-exploration/guide/sections/springs.md#L259.",
+      "verdict": "corrected",
+      "fix": "The sentence is at L261 (L259 is the '### The problem' heading). Also added ui.md's own wording: 'Handle inputs / New layout & cursor / Animation tick' (ui.md L17-L19).",
+      "sources": ["https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/lab/ui-exploration/guide/sections/springs.md#L261", "https://github.com/chenglou/chenguini/blob/main/docs/ui.md"]
+    }
+  ]
+}

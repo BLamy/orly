@@ -1,0 +1,1105 @@
+{
+ "shots": {
+  "ch02-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 3,
+   "at": "2026-10-28T17:37:28.921Z"
+  },
+  "ch02-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:43.517Z"
+  },
+  "ch01-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:16.680Z"
+  },
+  "ch01-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:22.794Z"
+  },
+  "ch01-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'an hour' up to 69 % over the other shot -0.16..0.26 s",
+    "outgoing 'a day' up to 69 % over the other shot -0.16..0.26 s",
+    "outgoing 'a year' up to 69 % over the other shot -0.16..0.26 s",
+    "outgoing 'a lifetime' up to 69 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:37:25.258Z"
+  },
+  "ch01-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:36:59.560Z"
+  },
+  "ch01-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:01.778Z"
+  },
+  "ch01-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "incoming '234' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '4,646' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '493' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:37:04.167Z"
+  },
+  "ch01-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '234' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '4,646' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '493' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:37:06.287Z"
+  },
+  "ch01-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:12.006Z"
+  },
+  "ch02-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '“propositional logic”' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing '— mcculloch & pitts, 1943' up to 66 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:37:30.286Z"
+  },
+  "ch02-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 2,
+   "at": "2026-10-28T17:37:34.683Z"
+  },
+  "ch02-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:37.752Z"
+  },
+  "ch02-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:37:40.769Z"
+  },
+  "ch03-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:38:01.108Z"
+  },
+  "ch03-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:38:02.058Z"
+  },
+  "ch03-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:46.609Z"
+  },
+  "ch03-s02": {
+   "fails": [],
+   "suspects": [
+    "fillRect@-57,419 8.05-13.55 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:49.471Z"
+  },
+  "ch03-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:37:51.576Z"
+  },
+  "ch03-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:37:53.798Z"
+  },
+  "ch03-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '1280' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '800' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'x' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'y' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'x' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'y' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'window' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'pointer events' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'state' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'spring' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'state' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '9' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '17' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'sum' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '20' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'source table · 20 cells' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'wire = the position of a number' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:37:57.762Z"
+  },
+  "ch04-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'HandwiredOS' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'source table · 234 cells' up to 71 % over the other shot -0.16..0.26 s",
+    "incoming 'a > 4' up to 71 % over the other shot -0.16..0.26 s",
+    "incoming '12' up to 71 % over the other shot -0.16..0.26 s",
+    "incoming '10' up to 71 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:38:03.844Z"
+  },
+  "ch04-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 2,
+   "at": "2026-10-28T17:38:07.286Z"
+  },
+  "ch04-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:38:14.122Z"
+  },
+  "ch04-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '0' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'NaN' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing '0 × ∞ = NaN' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '4' up to 67 % over the other shot -0.13..0.21 s",
+    "incoming '5' up to 67 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:38:17.498Z"
+  },
+  "ch04-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 2,
+   "at": "2026-10-28T17:38:20.348Z"
+  },
+  "ch04-s12": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 2,
+   "at": "2026-10-28T17:38:24.015Z"
+  },
+  "ch04-s13": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 9,
+   "at": "2026-10-28T17:38:28.061Z"
+  },
+  "ch04-s14": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:38:37.817Z"
+  },
+  "ch04-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 2,
+   "at": "2026-10-28T17:38:10.071Z"
+  },
+  "ch04-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:38:11.870Z"
+  },
+  "ch05-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:39:27.244Z"
+  },
+  "ch05-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '16 SEP 2026' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'an older 14,019-operation build · one machine' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'HandwiredOS' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:39:28.028Z"
+  },
+  "ch04-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [
+    "crossfade from ch04-s14: 'float64 everywhere: 18,820 of 20,000 percent labels wrong' x '10' -0.13..0.21 s (cut-relative)"
+   ],
+   "transCarry": [
+    "outgoing '13 Sept 2026' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'float64 everywhere: 18,820 of 20,000 percent labels wrong' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'FP32 order at rounding points only: 0 wrong' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'For an' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'integer a' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '3' up to 67 % over the other shot -0.13..0.21 s",
+    "incoming '4' up to 67 % over the other shot -0.13..0.21 s",
+    "incoming '5' up to 67 % over the other shot -0.13..0.21 s",
+    "incoming '10' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '10' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '10' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '12' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '12' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '12' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 2,
+   "at": "2026-10-28T17:38:40.932Z"
+  },
+  "ch04-s09": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 3,
+   "at": "2026-10-28T17:38:46.096Z"
+  },
+  "ch04-s10": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 7,
+   "at": "2026-10-28T17:38:49.647Z"
+  },
+  "ch04-s11": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '×2²⁴' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '×2²⁴' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '×2²⁴' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '×2²⁴' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '×2²⁴' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '10' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '16' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ops' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '×2¹⁴ · ×2²⁴ ×5 · ×2¹⁵  =  2¹⁴⁹' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'a > 4 in 16 ops · 15 layers · bit 1 → 10' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'grid 1' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:38:51.099Z"
+  },
+  "ch04-s16": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:38:54.971Z"
+  },
+  "ch06-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'HandwiredOS' up to 71 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:39:30.743Z"
+  },
+  "ch06-s02": {
+   "fails": [],
+   "suspects": [
+    "drawImage@999,43 0.55-24.05 s"
+   ],
+   "ghosts": [
+    "'ch06-s02-toggle' x 'toggle · track 52 × 32 px' 6.88-24.05 s",
+    "'ch06-s02-rail-0' x 'write inputs' 9.97-24.05 s",
+    "'ch06-s02-rail-2' x 'copy next state back' 15.22-24.05 s",
+    "'ch06-s02-rail-3' x 'write the page' 17.13-24.05 s"
+   ],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:35.731Z"
+  },
+  "ch06-s03": {
+   "fails": [],
+   "suspects": [
+    "fillRect@624,450 0.05-3.72 s"
+   ],
+   "ghosts": [
+    "'ch06-s03-lhome' x 'distance from home' 7.47-9.72 s",
+    "'400 px' x 'ch06-s03-loupe' 9.55-13.88 s",
+    "'ch06-s03-eq1' x 'one 4 ms step: (−300, 0) → (−296.88, 780)' 11.22-26.47 s",
+    "'ch06-s03-eq2' x 'window 400 → 403.12 px' 11.22-26.47 s",
+    "'ch06-s03-led1' x 'damping 45' 14.97-26.47 s"
+   ],
+   "probed": 6,
+   "at": "2026-10-28T17:39:41.116Z"
+  },
+  "ch06-s04": {
+   "fails": [],
+   "suspects": [
+    "fillRect@286,17 0.05-7.3 s",
+    "fillRect@418,60 0.05-7.3 s",
+    "fillRect@1036,48 0.05-7.3 s",
+    "fillRect@1312,66 0.05-7.3 s",
+    "fillRect@1338,415 3.88-6.05 s",
+    "fillRect@1475,478 6.3-7.3 s"
+   ],
+   "ghosts": [],
+   "probed": 2,
+   "at": "2026-10-28T17:39:42.594Z"
+  },
+  "ch06-s05": {
+   "fails": [],
+   "suspects": [
+    "drawImage@120,167 0.55-24.05 s",
+    "fillRect@434,345 0.55-3.97 s",
+    "drawImage@1045,167 0.55-24.05 s",
+    "fillRect@1364,345 0.55-3.97 s",
+    "fillRect@508,332 18.8-24.05 s",
+    "fillRect@1471,332 18.8-24.05 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 2,
+   "at": "2026-10-28T17:39:47.541Z"
+  },
+  "ch05-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'HandwiredOS' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2,776 ReGLU gates · 59 boolean atoms' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:39:04.785Z"
+  },
+  "ch05-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:14.279Z"
+  },
+  "ch05-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:17.032Z"
+  },
+  "ch05-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:20.283Z"
+  },
+  "ch05-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 3,
+   "at": "2026-10-28T17:39:23.519Z"
+  },
+  "ch06-s10": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 25,
+   "at": "2026-10-28T17:40:01.269Z"
+  },
+  "ch06-s11": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 10,
+   "at": "2026-10-28T17:40:03.766Z"
+  },
+  "ch06-s12": {
+   "fails": [],
+   "suspects": [
+    "drawImage@1313,252 0.88-14.05 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '4' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '5' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'visible 0 1 1 0 1 0 1 1 → counts 0 1 2 2 3 3 4 5' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'HandwiredOS · Monitor · 64 slots' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 2,
+   "at": "2026-10-28T17:40:07.849Z"
+  },
+  "ch07-s06": {
+   "fails": [],
+   "suspects": [
+    "drawImage@950,444 8.97-10.13 s",
+    "drawImage@957,440 8.97-10.13 s",
+    "drawImage@909,425 8.97-10.13 s",
+    "drawImage@943,444 8.97-10.13 s",
+    "drawImage@954,455 8.97-10.13 s",
+    "drawImage@860,423 8.97-10.13 s",
+    "drawImage@943,450 8.97-10.13 s",
+    "drawImage@931,449 8.97-10.13 s",
+    "drawImage@855,421 8.97-10.13 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:40:36.249Z"
+  },
+  "ch07-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:40:38.316Z"
+  },
+  "ch07-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:40:40.480Z"
+  },
+  "ch07-s09": {
+   "fails": [],
+   "suspects": [
+    "drawImage@913,528 0.55-5.8 s",
+    "drawImage@907,532 0.55-5.38 s",
+    "drawImage@899,531 0.55-8.97 s",
+    "drawImage@899,538 0.55-8.97 s",
+    "drawImage@886,537 0.55-0.88 s",
+    "drawImage@808,508 0.55-1.13 s",
+    "fillRect@537,885 0.55-8.97 s",
+    "drawImage@913,532 0.97-2.22 s",
+    "drawImage@888,544 0.97-1.72 s",
+    "fillRect@908,497 0.97-1.97 s",
+    "drawImage@657,572 1.05-2.97 s",
+    "drawImage@608,587 1.13-2.88 s",
+    "drawImage@807,613 1.13-2.38 s",
+    "drawImage@554,630 1.13-2.38 s",
+    "fillRect@925,440 1.3-5.3 s",
+    "drawImage@793,610 1.3-2.3 s",
+    "fillRect@721,667 1.38-2.13 s",
+    "drawImage@586,679 1.63-1.97 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '0.5' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'b' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '∂L/∂b = (1/40) Σ [clip(e_left) + clip(e_right)] · clip ±0.08' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Adam: b 0.5 → ≈ 0.492 (derived)' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:40:42.403Z"
+  },
+  "ch07-s10": {
+   "fails": [],
+   "suspects": [
+    "fillRect@1035,225 0.55-10.38 s",
+    "drawImage@1044,187 0.55-10.38 s",
+    "drawImage@1237,257 9.88-10.38 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '679' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'step' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:40:44.607Z"
+  },
+  "ch06-s05b": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:48.982Z"
+  },
+  "ch06-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:39:51.758Z"
+  },
+  "ch06-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 19,
+   "at": "2026-10-28T17:39:54.737Z"
+  },
+  "ch06-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 8,
+   "at": "2026-10-28T17:39:56.893Z"
+  },
+  "ch06-s09": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 3,
+   "at": "2026-10-28T17:39:59.605Z"
+  },
+  "ch07-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:40:11.575Z"
+  },
+  "ch07-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:40:19.982Z"
+  },
+  "ch07-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:40:25.309Z"
+  },
+  "ch07-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '−0.15' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '× w' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'w 0.5' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'g 0.25' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'b −0.4' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1.5 × 0 = 0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'b = −0.4 → gate −0.15  ·  y = 0  ·  every slope 0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'y = 3w · max(0, g + b)' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'the learned gallery's README' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'its cure: weight decay' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:40:30.132Z"
+  },
+  "ch07-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:40:34.082Z"
+  },
+  "ch06-s13": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "incoming 'HandwiredOS' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:40:08.682Z"
+  },
+  "ch07-s11": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'Misalignment penalty' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '4%' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 2,
+   "at": "2026-10-28T17:40:49.971Z"
+  },
+  "ch07-s12": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'the README's second use-case' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'not attempted in the repo' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'HandwiredOS' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:40:50.788Z"
+  },
+  "ch08-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:41:08.852Z"
+  },
+  "ch08-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:41:12.485Z"
+  },
+  "ch08-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 4,
+   "at": "2026-10-28T17:41:13.876Z"
+  },
+  "ch09-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:41:16.978Z"
+  },
+  "ch09-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'OCTOBER 2026 · 689 COMMITS' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '242 · 200 · 113 · 128' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 's' up to 69 % over the other shot -0.13..0.21 s",
+    "incoming 'c' up to 67 % over the other shot -0.13..0.21 s",
+    "incoming 'm' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'o' up to 68 % over the other shot -0.13..0.21 s",
+    "incoming 'er' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'e' up to 59 % over the other shot -0.13..0.21 s",
+    "incoming 'a' up to 62 % over the other shot -0.13..0.21 s",
+    "incoming 'l' up to 63 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:41:19.014Z"
+  },
+  "ch09-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:41:23.004Z"
+  },
+  "ch09-s03b": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:41:24.693Z"
+  },
+  "ch09-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'The GPU is' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'the faster' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'one' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing '09:01' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing '(for the' up to 64 % over the other shot -0.16..0.26 s",
+    "outgoing 'highlighter half)' up to 64 % over the other shot -0.16..0.26 s",
+    "outgoing '13 OCTOBER 2026 · 09:01' up to 71 % over the other shot -0.16..0.26 s",
+    "incoming 'error' up to 71 % over the other shot -0.16..0.26 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:41:29.210Z"
+  },
+  "ch08-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:40:52.680Z"
+  },
+  "ch08-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'AUGUST 2026 · 0' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:40:55.858Z"
+  },
+  "ch08-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 3,
+   "at": "2026-10-28T17:40:59.466Z"
+  },
+  "ch08-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:41:03.330Z"
+  },
+  "ch08-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 4,
+   "at": "2026-10-28T17:41:07.026Z"
+  },
+  "ch11-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '“the track failed”' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '— the recovery parser README, TOML' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'gradient descent, then trial and error, trained with TOML' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'mistakes: level with 39 hand rules' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 3,
+   "at": "2026-10-28T17:42:22.018Z"
+  },
+  "ch09-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:41:31.827Z"
+  },
+  "ch09-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:41:36.033Z"
+  },
+  "ch09-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:41:40.195Z"
+  },
+  "ch09-s08": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 2,
+   "at": "2026-10-28T17:41:46.494Z"
+  },
+  "ch11-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:05.856Z"
+  },
+  "ch11-s01b": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:08.612Z"
+  },
+  "ch11-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:11.149Z"
+  },
+  "ch11-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:42:13.770Z"
+  },
+  "ch11-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-28T17:42:18.161Z"
+  },
+  "ch10-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing '14 OCTOBER 2026 · EVENING' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Cheng Lou · launch post' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 1,
+   "at": "2026-10-28T17:41:53.438Z"
+  },
+  "ch10-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 2,
+   "at": "2026-10-28T17:41:58.039Z"
+  },
+  "ch10-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 3,
+   "at": "2026-10-28T17:42:00.296Z"
+  },
+  "ch10-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'a Hacker News commenter' up to 43 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 3,
+   "at": "2026-10-28T17:42:02.882Z"
+  },
+  "ch12-s07": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:42.139Z"
+  },
+  "ch12-s06": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:37.672Z"
+  },
+  "ch12-s01": {
+   "fails": [],
+   "suspects": [
+    "fillRect@576,247 0.8-1.13 s"
+   ],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'scaling program learning' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'past a complete loss table' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'evidence from real' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'human tasks' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing '“…not delivered by' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'these experiments.”' up to 69 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 0,
+   "at": "2026-10-28T17:42:25.300Z"
+  },
+  "ch12-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:28.066Z"
+  },
+  "ch12-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:42:30.039Z"
+  },
+  "ch12-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 1,
+   "at": "2026-10-28T17:42:33.866Z"
+  },
+  "ch12-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-28T17:42:35.693Z"
+  }
+ },
+ "at": "2026-10-28T17:42:42.183Z",
+ "rule": "review round 3: no card shows paper > 50% with text < 20% for more than 0.3 s (probed cards fail, unprobed paper warns)",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s"
+}

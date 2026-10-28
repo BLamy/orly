@@ -1,0 +1,119 @@
+{
+  "reviewer": "story-editor",
+  "round": 2,
+  "lens": "story, curiosity and voice",
+  "method": "Read all 185 narration lines in script.json (text and spoken) shot by shot, with the visuals for the key shots (ch01-s07, ch10-s02, ch11-s02, ch12-s06, ch12-s07). Checked against round 1. Spot-checked the lines I rewrite against bible.md, claims.json and quotes.json (LB02, LB03, LB04, LB08, DG28, EX03, EX10, HL17, PJ04, PJ23, TE07, Q006, Q010, Q118). Ran `script.mjs assemble --check`: 2,748 words, 26.1 min (1568.6 s) at 140 wpm (there is no voice/voice.json yet, so the house default pace applies), 0 errors, 1 warning. Most round-1 fixes landed well: the 'why' plant, the ch04 reorder, the answered refrain at L0419, the named Sklansky/Brent-Kung, the ch09 tie-test-strike order, Cheng's quoted go-ahead, the ch08 culprit, and a single title motto.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 7.5,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "RUNTIME: `script.mjs assemble --check` estimates 26.1 min (1568.6 s), outside the brief's 22-26 min range. Cut at least 7 s to get under the ceiling, and aim for 25.5 min or less (about 35 s), because recorded narration drifts from the wpm guess. Air is the cheapest cut: ch12-s07 end card minDuration 23.2 s down to 15 s (-8 s); ch01-s08 title card 10.8 s down to 8.5 s (-2 s); holdAfter 4.8 s down to 3.5 s on ch05-s07 and ch06-s13 (-2.6 s). Then cut words: drop L0114 entirely, L0809 (move it to the ch08-s06 plate as a label) and 'A second edge, far out.' from L0412 (about -24 words, -10 s). Finally, either take L0808a out of narration or cut L0503b (about -5 to -9 s). The rewrites in the issues below are near word-neutral overall (about -4 words). Re-run --check after the changes."
+  ],
+  "issues": [
+    {
+      "where": "ch08-s02/s03 L0803-L0806 (tag 8), against ch03-s03, ch10-s01 L1002 and ch11-s05 L1110b",
+      "problem": "Tag 8 is 'compiling ordinary code was a dead end', and we hear that the review retired it. We never hear what replaced it. The ear concludes 'so compiling does work', but the film has already struck 'a tool converts your code' (L0305), repeats it at L1002, and ends with 'a general JavaScript compiler is not delivered' (L1110b). Without its replacement, the back half's one intellectual reversal sounds like a contradiction. LB03 gives the replacement: compiling a defined numeric subset is feasible.",
+      "fix": "After L0805, add one sentence: 'Its replacement was narrower: a small, defined subset of code can be compiled.' (LB03; about +12 words, paid for by the L0809 cut). Then L1110b closes the thread instead of contradicting it."
+    },
+    {
+      "where": "ch12-s06 L1209",
+      "problem": "'Who tied it on, we know. Who will doubt it, we don't.' The visual says the blank tag has 'no name in the knot', and the narrator's own hands tie it, so 'we know' contradicts the picture and confuses who the tag belongs to. It is also the last spoken line of the refrain, and it closes only half of it.",
+      "fix": "End the refrain as three open questions, the only time it is left unanswered: 'Who ties the next one on? Who doubts it? How long will it hold?' Then L1210 'It's waiting for the next pair of hands.' Time each question to the open palm rising (+1 word)."
+    },
+    {
+      "where": "ch12-s04 L1207 (the payoff of the 'why' tag planted at L0107a)",
+      "problem": "The 'why' is the film's longest planted question (minute 1 to minute 23). It is answered with 'Let's find out!', which the audience heard in ch07 as the README's answer to a different question (what does unfreezing do?). Calling it 'the README's nearest answer' is honest, but by ear the payoff sounds borrowed, not earned. The film already has a fitting device: 'The record doesn't say why. So we won't guess.' (L0802).",
+      "fix": "'To the stranger's “why?”, the repo gives no single answer. Its nearest is a list of funny use-cases, ending: “Let's find out!”' (PJ04, Q010; +7 words). This rhymes with L0802's refusal to guess motives and makes the borrowing explicit, which is the wry, honest note the film strikes best."
+    },
+    {
+      "where": "ch06-s02 L0606, against the chapter title and L0625",
+      "problem": "'When nothing moves, the clock stops.' The chapter is called 'The Clockwork That Cannot Stop', and four lines later L0625 says 'It never stops early.' Without a gloss, the ear hears a contradiction in the deep dive's central idea.",
+      "fix": "'When nothing moves, the clock rests: between frames, never inside one.' (+5 words). This turns the apparent contradiction into the lesson."
+    },
+    {
+      "where": "ch06-s03 L0607-L0609",
+      "problem": "L0607 ends 'writes four numbers into the table' before the listener knows what a step, a stamp or a fold is. So the four numbers arrive as a riddle, and the explanation (L0608-L0609) comes afterwards. The order runs backwards for the ear.",
+      "fix": "L0607: 'The windows move on springs, and springs need time.' L0608 unchanged. L0609 unchanged. Then add after it: 'JavaScript counts the four-millisecond steps, folds them, and writes four numbers in.' (net -2 words). Move the beat that cues the four numbers to the new final sentence."
+    },
+    {
+      "where": "ch04-s14 L0428",
+      "problem": "'Kept only at its rounding points, that order fixed every label.' 'That order' has nothing to refer to ('thirty-two-bit order' is never said), and the dangling participle tangles the deep dive's precision lesson.",
+      "fix": "'More precision broke it. Keep thirty-two-bit order at the rounding points alone, and every label came back.' (EX10; -5 words)."
+    },
+    {
+      "where": "ch04-s13 L0426",
+      "problem": "'Doubles say seven; thirty-two-bit floats, a hair under.' The consequence that makes the example matter is never spoken: a hair under seven means the seventh column never appears. The ear is left with 'so what?'.",
+      "fix": "'Doubles say seven; thirty-two-bit floats, a hair under, so no seventh column.' (EX03; +4 words)."
+    },
+    {
+      "where": "ch07-s11 L0720",
+      "problem": "39 words with a cluster of fractions: 'nearly two drag frames in three; in one in four, every slope started at zero'. 'In one in four' trips the ear, and this line closes the film's most important honesty beat.",
+      "fix": "'To be fair, that's a small generic network, not a hand-written program unfrozen. The lab did unfreeze five design numbers. One gradient step solved nearly two drag frames in three. A quarter of starts had every slope at zero.' (word-neutral)."
+    },
+    {
+      "where": "ch08-s04 L0807",
+      "problem": "'One undated test...' The word 'undated' is a research note, not narration, and it is the first thing said in a 43-word line.",
+      "fix": "'One test, learning two additions, scored nought out of twenty.' (-1 word). The rest of the line stays as written."
+    },
+    {
+      "where": "ch08-s08 L0813 (chapter out)",
+      "problem": "'In mid-September, he settled three questions, each the recommended option.' 'Recommended' by whom? The chapter about certainties ends on a bureaucratic, unanswered clause, and it is the weakest chapter-out in the film.",
+      "fix": "Either cut it to 'In mid-September, he settled three questions.' (-4 words; the three cards on screen carry the content), or 'In mid-September, he settled three questions, each time choosing the recommended option.' (PJ23 wording). Let the relit September panes and the music carry the release."
+    },
+    {
+      "where": "ch08-s03 L0805 (optional, if runtime allows)",
+      "problem": "The chapter shows that the July briefs said 'take as given', but not why that was dangerous. quotes.json has the review's own line on exactly this: Q118. It is the most on-theme sentence in the research for a film about beliefs passed along a line, and right now it is unused.",
+      "fix": "If seconds remain after the runtime cuts, add this to L0805: 'Of “take as given”, it wrote that “it passes yesterday's interpretation to tomorrow's agents as a constraint.”' (Q118, verbatim; credit it to the reassessment, never to Cheng). Otherwise put it on the ch08-s03 ledger as on-screen text, if read time allows."
+    },
+    {
+      "where": "ch05-s01 L0501a (plant for ch12-s02 L1202)",
+      "problem": "The finale's turn ('re-hang them the way the loom does: each belief one layer after those it needs') relies on a rule the narration never states. L0501a gives the inverse ('Within a layer, no step waits on another'), so the payoff only half-lands by ear.",
+      "fix": "L0501a: 'Each step drops into the first layer after the steps it needs.' (+3 words). L1202 then echoes it word for word."
+    },
+    {
+      "where": "ch10-s02 L1004",
+      "problem": "'Our whole-number tag flips' means the paper turns over, but by ear 'flips' means 'reverses its verdict', which is the opposite of what happens: the promise is kept.",
+      "fix": "'Turn our whole-number tag over: the landing page's hidden comment already said so. A promise that states its limits is kept.' (+1 word; move the flip beat to 'over')."
+    },
+    {
+      "where": "ch11-s02 L1104 and ch11-s04 L1109",
+      "problem": "Tag 11 is tied on silently. The ear never hears the belief (only the screen shows 'Gradient descent can fill a parser's unused entries'), so the strike at L1107-L1109 has nothing spoken to strike. And L1109 'by a rule it agreed to' has the belief agreeing to things, when the chapter's own title gives the better phrase.",
+      "fix": "L1104: 'Before testing, the lab tied on a tag, training can fill those entries, and fixed its rule for failure beside it. The test sets were committed first.' L1109: 'This is how a belief should end: by a rule written before the test.' (echoes 'The Rule Written First'; net about +8 words, so pay for them from the runtime cuts)."
+    },
+    {
+      "where": "ch04-s09 L0419",
+      "problem": "'Who doubted it? A test.' Two lines earlier the listener heard 'A validator objects.' Answering with a different noun weakens the film's best refrain payoff.",
+      "fix": "'Who doubted it? The validator.' (TE07; +1 word)."
+    },
+    {
+      "where": "ch01-s07 L0114",
+      "problem": "'Below, a ruler for how long.' A legend for the device, read aloud: a production note right after the film's thesis line (L0113), which deserves the silence instead.",
+      "fix": "Cut the line (-6 words). The Lifespan Rule's on-screen label ('an hour · a day · a year · a lifetime') carries it; move its fade-up to L0113's 'held'."
+    },
+    {
+      "where": "ch07-s03 L0708",
+      "problem": "'McCulloch and Pitts's neurons couldn't learn.' 'Pitts's' is a sibilant pile-up for a slow narrator, at the chapter's quietest moment.",
+      "fix": "'The neurons of 1943 couldn't learn. These can, if you let them.' (spoken: 'nineteen forty-three'; -1 word). It still calls back ch02."
+    },
+    {
+      "where": "ch08 overall (s04-s06)",
+      "problem": "Better than round 1: the culprit is named. But the chapter still reads as three bug anecdotes in a row, and the third (L0809) has no resolution in narration, so it trails off. The humbling of the lab is the back half's emotional turn, and it lands best as two clean stories, not three.",
+      "fix": "Cut L0809 from narration (it is part of the runtime cut). Keep the 0-or-3 gradient on the ch08-s06 plate as a silent label ('a gradient: 0 or 3, by operand order · fixed that morning', DG28). The warm light then lands on the tooling statement."
+    }
+  ],
+  "strengths": [
+    "The question spine now runs the whole length. 'Where did those weights come from?' (paid ch03 to ch05), 'what is a GPU for?' (ch05 to ch09, with 'It is for many documents'), Kleene's time-from-outside (ch02 to ch06 to ch09), the odd number, the Notes window (ch03 to ch05 to ch12), eleven (ch01 to ch04 to ch10), and now the blank 'why' tag (L0107a to L1005 to L1207). Every planted question gets paid.",
+    "The ch04 reorder works: the deep dive now climbs through the snap and exactness to the title quote, and ends on 'One honest sentence about your input saves fourteen operations.' The answered refrain at L0419 ('How long it held? While the input stayed honest.') is the emotional centre of the first half.",
+    "The ch09 restructure turns tag 9 into real drama: tied at 09:01, tested in the race, struck the same day, then 'The lab, with good grace: “RegExp is fast.”' The quoted go-ahead ('Do it quick plz, then publish.') and the launch line give Cheng warmth without inventing a word.",
+    "The cold open is still the best minute: 'Drag a window. It glides, and settles.', then the reveal, then 'Give it four and a half.' / 'Eleven. Neither ten nor twelve.' It is concrete, you can check it by hand, and it is strange.",
+    "Lines with the warm, wry voice the brief asks for: 'Every if here is a dimmer switch.', 'the whole trick, and the whole caveat', 'Inputs in. The loom runs once. Next state copied back. The page moves.', 'Far-off photos vote. They don't shout.', 'The record doesn't say why. So we won't guess.', 'The strangers' pencils were gentler than the lab's own.', 'The struck ones ran too. Multiplied by nought.'",
+    "The finale's forward pass through the film's own beliefs, with the struck tags running too, multiplied by nought, is a superb structural rhyme with Deep Dive I. The closing image, a hinge with a blank tag placed in the viewer's open palm, is an ending worth earning.",
+    "The film is fair and honest in tone: the tooling statement is plain and even-handed (Claude Code, Codex, 'one process, under his direction'), the learned gallery's scope is stated, TOML fails by its own rule with the README's careful caveat, and the drawer stays open."
+  ]
+}

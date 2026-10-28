@@ -1,0 +1,78 @@
+{
+ "shot": "ch06-s06",
+ "at": "2026-10-28T13:14:57.421Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "40",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "80",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "140",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "180",
+   "capWhileSubject": 27.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "90",
+   "capWhileSubject": 28.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0",
+   "capWhileSubject": 46.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "bits 1 1 1 0 0",
+   "capWhileSubject": 29.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 47,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "4",
+   "capWhileSubject": 47,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ count 3",
+   "capWhileSubject": 29.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= findIndex,",
+   "capWhileSubject": 29.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "if the test flips once",
+   "capWhileSubject": 32.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

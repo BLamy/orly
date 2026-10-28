@@ -1,0 +1,124 @@
+{
+ "shot": "ch09-s06",
+ "at": "2026-10-28T15:47:46.520Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 22,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "10 s",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "this program",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "RegExp",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Chrome 155 · 100,000 documents · per keystroke · RegExp on one thread",
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "error",
+   "capWhileSubject": 23.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "11–15 ms",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "8–28 ms",
+   "capWhileSubject": 25.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "([a",
+   "capWhileSubject": 23.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "32 ms",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "([a-z]+)",
+   "capWhileSubject": 23.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "([a-z]+)+x : RegExp 2.1 s · this program 11.0 ms",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "11.0 ms",
+   "capWhileSubject": 27.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "80 ms",
+   "capWhileSubject": 26.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "([a-z]+)+x",
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "323 ms",
+   "capWhileSubject": 27.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1.3 s",
+   "capWhileSubject": 27.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2.1 s",
+   "capWhileSubject": 27.7,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "0",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "10",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "20",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "30",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ms",
+   "maxCap": 16,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 5
+}

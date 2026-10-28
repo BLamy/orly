@@ -1,0 +1,159 @@
+// m04 — DEEP DIVE I, part 1: TWO RAMPS AND A LEVER (handwired-explained), 278.60-429.55 (150.95 s), clock 1455.42 s.
+// setcpm(66/4): 41.511 cycles. Cue-local seconds = absolute - 278.60; every event placed by tl() on its word or beat.
+// Dry and close, small-room reverb only; the barest bed under the numbers (ch04 is the film's arithmetic).
+//
+// M1 in G, U = B D E D | B D G | E D, L a whole tone lower; the gate g gives U gain g and L gain 1-g.
+//
+//  0-5.4     the ch03 X-ray: room tone; ONE dry relay clack on 'clack' (282.78); near-silence into the dive.
+//  8.34      'code': a single woodblock tick. 'fork': M1 on ONE line only (U; L is not even scheduled: in
+//            JavaScript only the chosen side runs); cut dead on 'noif', leaving room tone.
+//  13.96     'hinge': a soft wire-bend creak. One dry pitched tick per marble stop: 'four' and 'three' flat on
+//            G, 'five' a step up on A, then a string run sweeping away for the hundred. U returns, patient.
+//  33.34     'lever': a two-note wooden knock. 'path': a low cello tone holds on G, rises a WHOLE TONE to A
+//            between 'one' and 'five' and holds: the bit IS the whole tone. A faint scratch on 'caveat'.
+//  45.29     'belts': both lines running as two soft pizzicato belts, gate exactly 1 (U heard); on 'swap' one
+//            dry clack and the audible belt switches (gate 0, L heard).
+//  55.79     'inf': the silent belt rises for a moment and smears (a detuned grey string wash, lpf 750, faint: a
+//            colour under L0408's numbers, not a wash); from 'nan' the belts stop and a soft dry sand hiss fills the
+//            tray (band-passed noise, falling). No chime, no sting.
+//  67.02     THE ELEVEN, explained: struck in the breath after 'four and a half' (not on the word): gate 0.5, B and
+//            A at half level (the SAME voicing as m01), then only the faint string dyad under the rest of L0409's
+//            numbers; air after 'eleven';
+//            on 'quarter' the balance tips (U 0.75, L 0.25), softly; on 'full' the gate snaps to 1, B rings clean.
+//  81.86     winterBlue: a sustained low E, one far-off pair (E5 then D5, unresolved on 'eight'); a hollow knock
+//            per tick on the spread ruler from 'far'; a dull clunk on 'two'.
+//  95.48     the exact detent: E minor -> C; a precise wooden ratchet on 'snap'; from 'tie' two string voices a
+//            semitone apart (F# and G over D), resolving UPWARD to G on 'up' (over G).
+//  113.3     spare: the two lines very quiet in the breaths of the definition; from 'window' a soft pitched tick
+//            per column card climbing the G scale (G A B C D E), the seventh (F#) withheld on 'seven': the
+//            phrase hangs.
+//  133.6     a C/G bed under the study; a dry scatter of pencil ticks on 'wrong'; SILENCE under 'More precision
+//            broke it'; a soft copper click per pin from 'fixed' over a low D; the LAST ONSET is the held G-D on
+//            'points' (426.31), ringing through 'every label came back' into the fade (428.95-429.55).
+//
+// PEDALS: no soundfont pedal is held longer than two bars. The contrabass sample loop beats at 1.6-2.2 s on G1/E2
+// (a 6 dB 40-250 Hz wow), so the bass weight is a dark tuba (lpf 220, an even envelope), re-bowed every two bars on
+// two alternating lanes by bows(); the bowed pad above it is re-bowed too and never doubles the tuba's pitch.
+setcpm(66/4)
+const CPS = 66/240, DUR = 150.95
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+// re-bowed pedal: [t0, t1, notes, velocity?] spans -> a fresh bow about every `step` s on two alternating lanes, so
+// no soundfont sample is held for long. A run of touching spans blooms in on its first bow (attack a0) and dies away
+// on its last (release r1); between bows the change is short (attack a, release r, overlap ov): two copies of one
+// sample at the same pitch interfere, and a long overlap dips 4-8 dB, while a short bow change measures under 1 dB.
+const bows = (spans, step, f, { a0 = 1.5, r1 = 2.5, a = 0.3, r = 0.4, ov = 0.1 } = {}) => { const ev = []
+  spans.forEach(([t0, t1, n, v], k) => {
+    const joinPrev = k > 0 && Math.abs(spans[k - 1][1] - t0) < 0.01, joinNext = k < spans.length - 1 && Math.abs(spans[k + 1][0] - t1) < 0.01
+    for (let t = t0; t < t1 - 0.05;) { const d = t1 - t < 1.5 * step ? t1 - t : step
+      const first = t === t0 && !joinPrev, last = t + d >= t1 - 0.05 && !joinNext
+      let p = note(mini(n)).attack(first ? a0 : a).release(last ? r1 : r); if (v != null) p = p.velocity(v)
+      ev.push([t, d + (last ? 0 : ov), p]); t += d } })
+  const lanes = [[], []]; ev.forEach((e, i) => lanes[i % 2].push(e))
+  return stack(...lanes.map(l => f(tl(...l)))) }
+const loop = (pat, d) => pat.fast(qn(d) / Q)
+const MIDI = n => { const m = n.match(/^([a-g])(#|b)?(-?\d)$/)
+  return 12 * (+m[3] + 1) + { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) }
+const chord = ns => mini('[' + ns.join(',') + ']')
+const dry = x => x.room(0.18).rsize(1.5)
+
+// ---------------------------------------------------------------- M1 · the select on felt piano
+// evs [t, dur, upper notes, gate, velocity]; gate null = U alone (L not scheduled at all: JavaScript's one road)
+const sel = (evs, f) => stack(
+  f(tl(...evs.map(([t, d, ns, g, v]) => [t, d, note(chord(ns.map(MIDI))).velocity(v).gain(g == null ? 1 : g)]))).pan(0.58),
+  f(tl(...evs.filter(e => e[3] != null).map(([t, d, ns, g, v]) => [t, d, note(chord(ns.map(n => MIDI(n) - 2))).velocity(v).gain(1 - g)]))).pan(0.42))
+const felt = x => dry(x.s("piano").lpf(1500).release(0.35))
+$: sel([
+  // s01: one road ('fork'), cut dead on 'noif'
+  [9.30, 1.20, ['b4'], null, 0.16], [10.50, 1.32, ['d5'], null, 0.22],
+  // s02: U returns, patient, in the breaths
+  [19.45, 2.0, ['b4'], 1, 0.2], [25.60, 2.9, ['d5'], 1, 0.18], [28.62, 0.85, ['e5'], 1, 0.22], [29.47, 1.5, ['d5'], 1, 0.24],
+  // s06: THE ELEVEN (same voicing as m01), struck once in the breath after 'four and a half' and damped as the
+  // line resumes: under the rest of L0409 only the faint string dyad holds it
+  [67.02, 0.75, ['b4'], 0.5, 0.31],
+  // 'quarter': the balance tips; 'full': the gate snaps to 1, one line clean
+  [73.32, 2.9, ['b4'], 0.75, 0.2], [80.60, 2.6, ['b4'], 1, 0.24],
+  // s13: very quiet, in the breaths of the definition
+  [115.50, 1.45, ['b4'], 1, 0.16], [116.97, 2.8, ['d5'], 1, 0.15], [119.80, 3.0, ['e5'], 1, 0.15], [122.85, 1.9, ['d5'], 1, 0.15]], felt)
+// the eleven held by a faint string dyad at half level each (the same support as m01)
+$: tl([67.02, 4.6, note("[b4,a4]")]).s("gm_string_ensemble_1").velocity(0.035).attack(0.7).release(1.0).lpf(800).room(0.2)
+// s07: the far-off pair (E5, then D5 unresolved after 'two'), distant
+$: tl([86.05, 6.5, note("e5")], [92.66, 3.4, note("d5")]).s("piano").velocity(0.13).lpf(900).release(1).room(0.55).rsize(6).pan(0.6)
+
+// ---------------------------------------------------------------- the belts (M1 as two pizzicato belts)
+// both always running; gate 1 from 'belts', 0 on 'swap'; on 'inf' the silent belt rises and smears; stop on 'nan'
+const BELT = ['b4', 'd5', 'e5', 'd5', 'b4', 'd5', 'g5', 'd5'].map(MIDI)
+const beltU = mini(BELT.join(' ')), beltL = mini(BELT.map(m => m - 2).join(' '))
+const belt = (t, d, gU) => [[t, d, loop(note(beltU).gain(gU), d)], [t, d, loop(note(beltL).gain(1 - gU), d)]]
+const BELTS = [belt(45.29, 6.05, 1), belt(51.34, 4.45, 0), belt(55.79, 1.6, 0.55), belt(57.39, 6.14, 0)]
+$: tl(...BELTS.map(b => b[0])).s("gm_pizzicato_strings").velocity(0.11).lpf(1300).pan(0.58).room(0.15)
+$: tl(...BELTS.map(b => b[1])).s("gm_pizzicato_strings").velocity(0.11).lpf(1300).pan(0.42).room(0.15)
+// the belts' axle: a soft low G on each beat pair
+$: tl([45.29, 18.24, loop(note("g2 ~ ~ ~ d2 ~ ~ ~"), 18.24)]).s("gm_pizzicato_strings").velocity(0.12).lpf(700)
+// the infinity smear: a detuned grey wash on the silent line's pitches
+$: tl([55.79, 2.2, note("[70.6,71.35,68.7,69.4]")]).s("gm_string_ensemble_1").velocity(0.038).attack(0.4).release(1.2).lpf(750)
+  .room(0.3)
+
+// ---------------------------------------------------------------- the low lines: pedals, the copper path, the cool, the tie
+// tuba pedal, a fresh bow every two bars (7.27 s)
+$: bows([[9.30, 11.82, 'g1'], [13.96, 63.53, 'g1'], [67.02, 71.80, 'g1'], [74.32, 81.82, 'g1'], [81.86, 96.06, 'e2'],
+         [96.08, 107.88, 'c2'], [107.88, 111.25, 'd2'], [111.25, 132.55, 'g1'], [134.21, 143.31, 'c2'],
+         [145.21, 147.71, 'd2'], [147.71, 150.95, 'g1']], 7.27,
+  x => x.s("gm_tuba").velocity(0.2).lpf(220).gain(0.23), { a0: 1.2, r1: 1.4 })
+// the copper path: G holds, rises a whole tone to A across four to five, holds (cello)
+$: tl([35.08, 1.82, note("g2")], [36.90, 3.4, note("a2")]).s("gm_cello").velocity(0.11).attack(0.25).release(0.9).lpf(700)
+// winterBlue: a sustained low E (tuba E2 under the bowed pad's B and G), then the pad's C, D, G and C
+$: bows([[81.86, 95.86, '[b2,g3]', 0.06], [96.08, 107.88, '[c3,g3]', 0.045], [107.88, 111.25, '[d3,a3]', 0.045],
+         [111.25, 113.85, '[d3,b3]', 0.07], [134.21, 143.31, '[c3,g3]', 0.055]], 7.27,
+  x => x.s("gm_pad_bowed").lpf(520), { a0: 1.5, r1: 1.6, a: 0.6, r: 0.8, ov: 0.2 })
+// the tie: F# and G a semitone apart over D, resolving UPWARD to G on 'up'
+$: tl([107.88, 3.37, note("[f#4,g4]")], [111.25, 2.4, note("[g3,g4]")]).s("gm_string_ensemble_1").velocity(0.065)
+  .attack(0.5).release(1.3).lpf(1000).room(0.2)
+// the run sweeping away for the hundred
+$: tl([26.50, 2.0, note("g3 a3 b3 c4 d4 e4 f#4 g4 a4 b4 c5 d5 e5 f#5 g5 a5")]).s("gm_string_ensemble_1")
+  .velocity("0.05 0.055 0.06 0.065 0.07 0.075 0.08 0.085 0.09 0.09 0.085 0.08 0.075 0.07 0.06 0.05").legato(1.6).lpf(1400)
+// the last held interval, G-D, on 'points' (LAST ONSET)
+$: tl([147.71, 3.24, note("[g3,d4]")]).s("piano").velocity(0.13).lpf(1200).release(1.2).room(0.25).rsize(2)
+$: tl([147.71, 3.24, note("[g2,d3]")]).s("gm_string_ensemble_1").velocity(0.1).attack(0.6).release(2).lpf(800)
+
+// ---------------------------------------------------------------- clacks, knocks, ticks (dry)
+const relay = v => stack(s("gm_woodblock").note("g5").velocity(0.45 * v).decay(0.04).sustain(0),
+  s("white").hpf(2500).decay(0.025).sustain(0).gain(0.1 * v))
+const wood = (n, v) => s("gm_woodblock").note(n).velocity(v).decay(0.03).sustain(0)
+const knock = v => stack(s("gm_woodblock").note("c4").velocity(v).decay(0.05).sustain(0), s("gm_melodic_tom").note("e3").velocity(v * 0.5).decay(0.1).sustain(0))
+const clunk = v => stack(s("gm_taiko_drum").note("c2").velocity(v).decay(0.2).sustain(0), s("brown").lpf(250).decay(0.12).sustain(0).gain(v))
+const stop = (n, v) => stack(wood("g5", v * 0.6), note(n).s("gm_pizzicato_strings").velocity(v).lpf(1400))
+const creak = s("pink*6").bpf("400 470 540 620 700 780").bpq(6).decay(0.09).sustain(0).gain(0.1)
+const scratch = s("white").bpf(2600).bpq(3).attack(0.03).decay(0.25).sustain(0).gain(0.05)
+const ratchet = v => s("gm_woodblock*4").note("a5").velocity(v).decay(0.012).sustain(0)
+const copper = v => stack(s("gm_woodblock").note("b6").velocity(v).decay(0.015).sustain(0), s("white").hpf(5000).decay(0.01).sustain(0).gain(0.05 * v))
+const pencil = s("white*12").bpf(3200).bpq(2).decay(0.015).sustain(0).gain(rand.range(0.02, 0.05)).late(rand.range(0, 0.03))
+$: tl([4.18, 0.5, relay(0.55)],                                        // ch03 X-ray: the strip completes
+      [8.34, 0.4, wood("g5", 0.16)],                                  // 'code' inks in
+      [13.96, 0.6, creak],                                            // 'hinge'
+      [21.34, 0.4, stop("g4", 0.13)], [22.45, 0.4, stop("g4", 0.13)], [24.10, 0.4, stop("a4", 0.14)],   // 'four', 'three', 'five'
+      [33.34, 0.16, knock(0.16)], [33.50, 0.4, knock(0.13)],          // 'lever'
+      [42.76, 0.5, scratch],                                          // 'caveat'
+      [51.34, 0.4, relay(0.2)],                                       // 'swap'
+      [86.96, 0.4, knock(0.13)], [87.92, 0.4, knock(0.12)], [89.06, 0.5, knock(0.12)], [90.60, 0.5, knock(0.11)],   // the spread ruler
+      [92.39, 0.5, clunk(0.12)],                                      // 'two': the lever bends its stop
+      [106.27, 0.3, ratchet(0.12)],                                   // 'snap'
+      [124.80, 0.4, stop("g4", 0.1)], [125.44, 0.4, stop("a4", 0.1)], [126.08, 0.4, stop("b4", 0.1)],
+      [126.72, 0.4, stop("c5", 0.1)], [127.36, 0.4, stop("d5", 0.1)], [128.00, 0.4, stop("e5", 0.11)],    // the seventh withheld
+      [142.32, 1.0, pencil],                                          // 'wrong'
+      [145.21, 0.4, copper(0.14)], [145.62, 0.4, copper(0.12)], [146.03, 0.4, copper(0.13)], [146.44, 0.4, copper(0.12)],
+      [146.85, 0.4, copper(0.11)], [147.26, 0.4, copper(0.1)])        // 'fixed': a pin each
+  .room(0)
+// 'nan': the tray fills with sand (band-passed pink noise, falling)
+$: tl([63.53, 0.8, s("pink").bpf(2600)], [64.33, 0.8, s("pink").bpf(1800)], [65.13, 0.9, s("pink").bpf(1200)])
+  .bpq(1.2).gain(0.03).attack(0.25).release(0.5)
+
+// ---------------------------------------------------------------- the room
+$: tl([0.0, 150.95, s("pink")]).lpf(2400).hpf(150).gain(0.009).attack(1).release(0.6)
+
+// level: integrated about -24 LUFS
+all(x => x.postgain(6.0))

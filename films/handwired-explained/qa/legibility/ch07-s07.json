@@ -1,0 +1,69 @@
+{
+ "shot": "ch07-s07",
+ "at": "2026-10-28T13:17:48.355Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 11,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "weights",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "operations",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "layers",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "min-cost assignment · ordinary JavaScript",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "before every step",
+   "capWhileSubject": 24.5,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "2",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "4",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 6
+}

@@ -1,0 +1,98 @@
+{
+  "id": "demo-json-search",
+  "checked": 26,
+  "confirmed": 17,
+  "corrected": 9,
+  "unverifiable": 0,
+  "corrections": [
+    {
+      "original": "Claim 16 / dossier §4: early on Oct 13 the project claimed the GPU was 'clearly faster', and one minute later (d79d9aa) corrected sentences that 'claimed more than was measured'.",
+      "verdict": "corrected",
+      "fix": "The 'clearly faster' claim (0732d26) covered only the highlighter half, and it was already hedged ('not when every evaluation uploads them'; with an upload per evaluation it 'isn't a clear win'). d79d9aa corrected three other sentences: a compared-values count, the unrun default-limits failing case, and a table note. It did not retract 'clearly faster'. The walk-back came from the review later that day, after which the summary 'no longer call[s] the highlighter's part of a combined app clearly faster'. The review's findings (baselines on one of 18 cores; a second pass compared with a first) are confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/commit/0732d26",
+        "https://github.com/chenglou/handwired/commit/d79d9aa",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L789-L805"
+      ]
+    },
+    {
+      "original": "Claim 17: a kernel keystroke cost 14 ms at 8 states against 58 to 315 ms for JS on one thread.",
+      "verdict": "corrected",
+      "fix": "The kernel took 14 / 18 / 25 ms at 8 / 16 / 32 states, for 'which documents have a match' as a bit, after a pause. JS on one thread took 58 to 315 ms over five ordinary patterns. The 58 ms is the 16-state date pattern, for which the kernel takes 18 ms; at 8 states RegExp takes 185 to 315 ms. Use the repo's pairing: '3 to 22 times faster than one thread', e.g. 14 ms against 185 ms for 'error'. The million folder's other facts are confirmed: hand-written kernels that are not the program, 644 MB as bytes, and the demo staying at 100,000.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/million/README.md#L7",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/million/README.md#L17-L26"
+      ]
+    },
+    {
+      "original": "Claim 18: both pages and the experiments' code were removed on Oct 14 at Cheng Lou's request ('the demos should disappear'), since the JSON search page runs both programs.",
+      "verdict": "corrected",
+      "fix": "There were two steps on Oct 14. First the pages left the demo site, 'since the JSON search's page runs both programs' (status.md L97). Later that day the experiments' code was removed at Cheng's request, in commits authored 18:09 to 19:53; status.md L127 says 'whose own pages left the demo site earlier this day'. Sept 17 start, Oct 13 pages, and the tag json-regex-experiments-2026-10 = 4a80450 are all confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L97",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L127",
+        "https://github.com/chenglou/handwired/tree/json-regex-experiments-2026-10"
+      ]
+    },
+    {
+      "original": "Claim 7: the search step is 240 operations at 8 states (122,888 per 512-position document).",
+      "verdict": "corrected",
+      "fix": "These figures are correct for the plain (unmasked) step, which tests pin as [8,148,92] and 122,888 per document. The page's searcher reads display kinds, and its stages are [8,151,92], i.e. 243 operations per position. By the README's formula that is 124,424 per document, a figure computed here and not stated by the repo. The highlighter's 37 operations and 18,961 per document, and one GPU thread per document, are confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/tests/json-search/search.test.ts#L183-L193",
+        "https://github.com/chenglou/handwired/blob/257856e/tests/json-search/searcher.test.ts#L121",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L173",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/loop-emit.ts#L1"
+      ]
+    },
+    {
+      "original": "Dossier §3: agents and reviewers; 'do not claim which model or vendor they were; the repo doesn't say.'",
+      "verdict": "corrected",
+      "fix": "All 825 commits up to the pin are authored 'Cheng Lou', and 756 carry 'Co-Authored-By: Claude Code <noreply@anthropic.com>'. No model or version is named. The guidance not to depict identifiable humans stays.",
+      "sources": [
+        "git log 257856e --format='%(trailers:key=Co-Authored-By,valueonly)' in chenglou/handwired",
+        "https://github.com/chenglou/handwired/commit/d79d9aa"
+      ]
+    },
+    {
+      "original": "Dossier §5.4: match counts (error 10,559, connection reset 1,440, ([a-z]+)+x 47,577) are over the 'measurement set'.",
+      "verdict": "corrected",
+      "fix": "These counts come from writers-run.ts over the demo page's 100,000 documents, which are all valid JSON. They are not over the seed-20261013 set with 1 in 10 broken. This is why 10,559 equals the page's example line, so claim 4 stands.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L612",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L639-L647",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L30"
+      ]
+    },
+    {
+      "original": "Dossier §8: about 13 to 14 s per CPU search, cited to src/json-search/README.md#L39.",
+      "verdict": "corrected",
+      "fix": "The '13 to 14 s' figure is in lab/status.md#L103. src/json-search/README.md#L53 gives 13 s. These are the line's figures, i.e. the search program's own time. The first CPU search takes 21.4 to 23.3 s on the clock, because the highlighter runs too. Claim 14's content (generated JS in a worker, pieces of about 8 ms, the map filling from the top) is confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L103",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L107-L109",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L39-L43"
+      ]
+    },
+    {
+      "original": "Dossier §9 hook 2: 'As a loop, the shader compiles in 0.02 to 0.05 s.'",
+      "verdict": "corrected",
+      "fix": "The loop rewrite on Oct 13 (loop-emit) took the 8-state search to 0.05 to 0.1 s; status.md gives 0.05 to 0.11 s. The 0.02 to 0.05 s figure belongs to today's four shaders. The 107 to 130 s was a scratch probe at 256 positions, not 512. Claim 8 itself is confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L55",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L114",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/README.md#L126",
+        "https://github.com/chenglou/handwired/blob/257856e/src/json-search/search-step.ts#L4-L5"
+      ]
+    },
+    {
+      "original": "Dossier §7: 'Documents near 300 code points favor RegExp.'",
+      "verdict": "corrected",
+      "fix": "Reworded to the repo's words: 'shorter documents favor RegExp and documents near 512 favor the GPU' (median 300 code points).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/json-search/README.md#L168"
+      ]
+    }
+  ],
+  "notes": "Confirmed unchanged: key claims 1-6, 8-15, 19 and 20. Claim 20's '184 tests, about 45 s' rests on the repo's docs (README L9, status.md L159); the 10 files were listed. The test run was refused by this session's permission policy. The timeline was re-checked: its times are author dates, and the removal commits were re-committed at 23:19. Web checks: the GitHub README at 257856e; the live page; the WebGPU spec default maxStorageBufferBindingSize of '134217728 bytes (128 MiB)', giving 65,408 = floor(134217728/2052); the V8 blog of 2021-01-11 by Martin Bidlingmaier; Russ Cox (2007) citing Thompson, CACM 11(6), 1968, pp. 419-422."
+}

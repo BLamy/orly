@@ -1,0 +1,37 @@
+{
+ "shot": "ch09-s08",
+ "at": "2026-10-28T17:41:46.494Z",
+ "step": 0.0833,
+ "sampled": 156,
+ "transition": {
+  "kind": "lampChange",
+  "sampled": 14,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch09-s08-commit",
+  "ch09-s08-post"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch09-s08-commit",
+   "probed": true,
+   "from": 2.983,
+   "to": 13.567,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch09-s08-post",
+   "probed": true,
+   "from": 8.733,
+   "to": 13.567,
+   "minInkWhilePaper": 0.78
+  }
+ ]
+}

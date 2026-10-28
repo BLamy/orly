@@ -1,6 +1,92 @@
 {
   "books": [
     {
+      "slug": "handwired-explained",
+      "title": "Promises, Not Proofs",
+      "subtitle": "How a program becomes a hand-wired neural network, told in the things people were sure of",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "href": "?film=handwired-explained",
+      "sources": "generated/handwired-explained/sources/",
+      "kind": "film",
+      "runtime": 1455.42,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "grid",
+        "icons": [
+          "neuron",
+          "gear",
+          "chip",
+          "lightbulb"
+        ],
+        "tagline": "Every weight wired by hand!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Four and a Half",
+          "duration": 101.792
+        },
+        {
+          "number": 2,
+          "title": "The Oldest Tags",
+          "duration": 90.208
+        },
+        {
+          "number": 3,
+          "title": "A Recipe Read Every Frame",
+          "duration": 92
+        },
+        {
+          "number": 4,
+          "title": "Deep Dive I: Two Ramps and a Lever",
+          "duration": 214.542
+        },
+        {
+          "number": 5,
+          "title": "One Big Matmul",
+          "duration": 92.583
+        },
+        {
+          "number": 6,
+          "title": "Deep Dive II: The Clockwork That Cannot Stop",
+          "duration": 199.792
+        },
+        {
+          "number": 7,
+          "title": "Deep Dive III: Unfreezing",
+          "duration": 192.167
+        },
+        {
+          "number": 8,
+          "title": "The Summer's Certainties",
+          "duration": 111.042
+        },
+        {
+          "number": 9,
+          "title": "Four Days in October",
+          "duration": 126.75
+        },
+        {
+          "number": 10,
+          "title": "Strangers with Pencils",
+          "duration": 54.125
+        },
+        {
+          "number": 11,
+          "title": "The Rule Written First",
+          "duration": 93.5
+        },
+        {
+          "number": 12,
+          "title": "One More Neuron",
+          "duration": 86.917
+        }
+      ],
+      "createdAt": "2026-10-28T17:42:51.285Z"
+    },
+    {
       "slug": "handwired-bitonic-sorter",
       "title": "Bitonic Sorter",
       "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",

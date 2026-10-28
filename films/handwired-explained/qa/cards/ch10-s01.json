@@ -1,0 +1,46 @@
+{
+ "shot": "ch10-s01",
+ "at": "2026-10-28T17:41:53.438Z",
+ "step": 0.0833,
+ "sampled": 251,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "14 OCTOBER 2026 · EVENING",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "Cheng Lou · launch post",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch10-hn1"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch10-hn1",
+   "probed": true,
+   "from": 2.217,
+   "to": 21.383,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

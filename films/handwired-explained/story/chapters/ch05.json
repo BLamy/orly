@@ -1,0 +1,641 @@
+{
+  "id": "ch05",
+  "number": 5,
+  "title": "One Big Matmul",
+  "blurb": "September to October 2026. The builder ribbon feeds the matmul loom: 130 thin frames, one per layer, copper threads adding and indigo subtracting, mostly empty air, every thread one real stored weight. A matmul is many weighted sums at once; some sums fold together, but nothing merges across a gate, and the longest chain of gates runs 71 deep. The third suspect is struck: it is a network in the plain sense. The loom's threads turn out to be the desk's wallpaper; when Notes hands its text back to the browser, the loom sheds most of them. And a furnace that should have been faster runs cold: everything here is JavaScript on the processor, and on a graphics card an older build ran fifteen to twenty-seven times slower. So what is a GPU for?",
+  "shots": [
+    {
+      "id": "ch05-s01",
+      "kind": "scene",
+      "setting": "the matmul loom · a dark workshop of light · no date · night",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the giant matmul revealed as a loom. CAMERA: starts tight on the BUILDER RIBBON from ch03-s02 (operation tags on a paper ribbon, each pinned one column right of its deepest input), which runs out of frame left; a slow lateral dolly follows the ribbon right until it feeds, like warp thread, into the MATMUL LOOM. The loom is a long run of 130 THIN UPRIGHT FRAMES receding in multiplane depth (L2 to L4), each frame a backlit paper lattice, one per layer. As the ribbon reaches the loom (on 'loom'), its tags drop off the ribbon into the frames by depth: every tag whose inputs are equally deep falls into the SAME frame, so frames fill side by side, not one after another (on 'layer', one tag drops into the first frame after the frames of the tags it reads, and two tags in one frame glow together with no thread between them: neither waits on the other). Between frames run fine THREADS OF LIGHT, one per stored weight: copper threads for adding weights, indigo (grey-blue) for subtracting, exactly the wallpaper's two colours (on 'Copper', the copper threads catch the rim; on 'Indigo', the indigo ones). Behind the frames, half in haze: small hinged ReLU ramps and a few toothed detent wheels, the gates that sit after the sums. On 'empty': the camera racks focus through one frame; it is a sparse lattice, a handful of threads crossing a big field of dark air, because each layer's matrix is mostly zeros. DATA BINDING (style bible §6): every thread, frame and gate fixture is drawn from the real compiled program, not illustrative density. Export it headlessly from a checkout of chenglou/handwired at 257856e: `createWindowManagerMachine()` from src/handwiredos/window-manager.ts, then its `tensorProgram`; per frame (layer) draw one thread per stored weight in `layer.weights` (indigo where the weight is negative, copper otherwise), each thread running from the value it reads (`layer.inputIndices[layer.columns[k]]`) to the operation that reads it, exactly as src/handwiredos/wiring.ts draws the wallpaper; mount a ReLU ramp for each row in `layer.gateRows` and a detent wheel for each row in `layer.booleanRows`. A summary export reportedly matched the bible's figures on 2026-10-28 (130 layers, 4,646 live operations, 9,909 weights, longest ReGLU/boolean chain 71 [OS02, CM07]); the shots stage runs the full export, films/handwired-explained/tools/export-handwiredos-circuit.ts, and checks those totals before drawing (meta staging.buildList.matmulLoom). The shots stage commits the export (JSON) beside the shot and records the command in sources.json; the ch01-s04 and ch05-s04 wallpaper arcs are generated from the same export. TEXT: the only words on screen are the small brass plate on the loom's end post, 130 LAYERS; no quote card (the narration defines the layer), no colour legend (the narration says it). Haze drifts through the lattices; the loom never moves except for a faint shimmer along the threads, as if under tension.",
+      "lines": [
+        {
+          "id": "L0501",
+          "text": "Now feed the program's operations into a loom, a hundred and thirty layers deep.",
+          "direction": "fresh chapter energy, unhurried; a small beat after 'loom'"
+        },
+        {
+          "id": "L0501a",
+          "text": "Each step drops into the first layer after the steps it needs.",
+          "direction": "plain teaching, a rule given kindly (the finale echoes it word for word); light stress on 'first' and 'needs'",
+          "pauseAfter": 0.5,
+          "tts": {
+            "solo": true,
+            "speed": 0.9
+          }
+        },
+        {
+          "id": "L0502",
+          "text": "Copper threads add. Indigo threads subtract. Most of it is empty air.",
+          "direction": "three plain beats, one per sentence; a touch of wonder on 'empty air'",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "ribbon",
+          "at": {
+            "line": "L0501",
+            "word": "operations",
+            "edge": "start"
+          },
+          "what": "the dolly picks up the builder ribbon running right"
+        },
+        {
+          "id": "loom",
+          "at": {
+            "line": "L0501",
+            "word": "loom",
+            "edge": "start"
+          },
+          "what": "the ribbon feeds the loom; tags drop into frames by depth, side by side"
+        },
+        {
+          "id": "frames",
+          "at": {
+            "line": "L0501",
+            "word": "hundred",
+            "edge": "start"
+          },
+          "what": "the camera's lateral move reveals the long run of frames receding; the end-post plate 130 LAYERS catches light"
+        },
+        {
+          "id": "layer",
+          "at": {
+            "line": "L0501a",
+            "word": "layer",
+            "edge": "start"
+          },
+          "what": "a tag drops into the first frame after its inputs; two tags in one frame glow together, no thread between them"
+        },
+        {
+          "id": "copper",
+          "at": {
+            "line": "L0502",
+            "word": "Copper",
+            "edge": "start"
+          },
+          "what": "copper threads catch the rim"
+        },
+        {
+          "id": "indigo",
+          "at": {
+            "line": "L0502",
+            "word": "Indigo",
+            "edge": "start"
+          },
+          "what": "indigo threads catch the rim"
+        },
+        {
+          "id": "empty",
+          "at": {
+            "line": "L0502",
+            "word": "empty",
+            "edge": "start"
+          },
+          "what": "rack focus through one sparse frame: a few threads across dark air"
+        }
+      ],
+      "props": [
+        "builder ribbon of operation tags",
+        "the matmul loom (130 thin frames, threads from the real compiled program)",
+        "copper and indigo threads",
+        "ReLU ramps and detent wheels behind the frames",
+        "brass end-post plate"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "130 LAYERS",
+          "beat": "frames"
+        }
+      ],
+      "music": {
+        "cue": "ch05-loom",
+        "note": "serverCyan cool: the both-branches motif's two lines enter thin and high, a whole tone apart, both audible (no decision is being made here); a soft wooden shuttle clack each time a tag drops into a frame, thinning to a steady pulse as the loom fills. Intensity 3. No chimes."
+      },
+      "claims": [
+        "CM01",
+        "CM02",
+        "OS02",
+        "OS14"
+      ]
+    },
+    {
+      "id": "ch05-s02",
+      "kind": "scene",
+      "setting": "inside the matmul loom · sheets of light fusing frame to frame",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "leadIn": 0.5,
+      "holdAfter": 1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: fusion, partial, and where it stops. CAMERA: a slow push along the loom's length at frame height, frames sliding past in parallax. A parchment slip clipped to a near frame carries only the README's phrase and its attribution (the line speaks it). On 'fold': fusion as the code actually does it, partial [CM05]: here and there a small sum's threads slide forward and fold into the operation that reads it (a small sum copied into its reader), and a ramp's two input bundles twist into one (a ReGLU's left side and gate from one product); most threads stay where they are. On 'nothing': a folding bundle meets a GATE FIXTURE (a hinged ReLU ramp with a 0/1 shutter, drawn darker and heavier) and stops dead: nothing slides past it. Pull back on 'chain' to show the whole loom: gate fixtures stand out along its length like the ribs of a boat (placed from the export's real gate rows, see ch05-s01 DATA BINDING; nearly every frame carries some); a thin copper line traces the real longest chain of gates, 71 of them, one after another, each one a small brass notch on the line (no numerals: the narration says the number). The ribs stay separate. TEXT: two items only, the slip and the status label.",
+      "lines": [
+        {
+          "id": "L0503",
+          "text": "The README calls it \"a giant matmul\": a matrix multiplication, the sums graphics cards are built for.",
+          "direction": "the quoted phrase light and affectionate, as the README means it; then a plain gloss, teaching",
+          "pauseAfter": 0.4
+        },
+        {
+          "id": "L0503a",
+          "text": "Sums of sums are still sums, so some fold together. But a gate is a bend: nothing merges across one.",
+          "direction": "the chapter's key idea, slow and clear; a small turn on 'But'; land 'nothing merges across one' firmly",
+          "pauseAfter": 0.5
+        },
+        {
+          "id": "L0503b",
+          "text": "The longest chain of gates runs seventy-one deep.",
+          "direction": "evenly, a fact set down for later",
+          "pauseAfter": 0.5
+        }
+      ],
+      "beats": [
+        {
+          "id": "slip",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the README's slip, its phrase only, is in frame on a near frame"
+        },
+        {
+          "id": "fuse",
+          "at": {
+            "line": "L0503a",
+            "word": "fold",
+            "edge": "start"
+          },
+          "what": "partial fusion: a few small sums fold into their readers; most threads stay"
+        },
+        {
+          "id": "stop",
+          "at": {
+            "line": "L0503a",
+            "word": "nothing",
+            "edge": "start"
+          },
+          "what": "a folding bundle stops dead against a gate fixture"
+        },
+        {
+          "id": "chain",
+          "at": {
+            "line": "L0503b",
+            "word": "chain",
+            "edge": "start"
+          },
+          "what": "pull back: gate fixtures as ribs; the real 71-gate chain traced in copper, one notch per gate"
+        }
+      ],
+      "props": [
+        "the matmul loom",
+        "gate fixtures with ReLU ramps and shutters",
+        "parchment slip",
+        "copper chain line with brass notches"
+      ],
+      "onScreenText": [
+        {
+          "kind": "quote",
+          "text": "a giant matmul — the README",
+          "beat": "slip",
+          "until": "fuse"
+        },
+        {
+          "kind": "label",
+          "text": "sparsity: built · fusion: partial · scheduling: parked",
+          "beat": "fuse"
+        }
+      ],
+      "music": {
+        "cue": "ch05-loom",
+        "note": "the shuttle pulse speeds slightly as a few sums fold (a small sliding paper whoosh under it), then one hard wooden clack on the gate and a half-bar of silence; the two lines resume underneath at the same level; on the chain, a soft run of dry ratchet ticks along the copper line. Intensity 3 to 4."
+      },
+      "claims": [
+        "CM05",
+        "CM07",
+        "OS02",
+        "PR04"
+      ]
+    },
+    {
+      "id": "ch05-s03",
+      "kind": "scene",
+      "setting": "the copper line strung in front of the loom · the third suspect tag",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "leadIn": 0.5,
+      "holdAfter": 1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: suspect tag 5 struck. CAMERA: the camera drops from the loom to the COPPER LINE strung across the foreground at 58% frame height, the loom now a cyan-lit lattice behind it in haze. Hanging on a slack thread with an EMPTY KNOT (no name card through the eyelet: nobody in the record held it) is tag 5, its front inked SUSPECT: IT ISN'T REALLY A NETWORK. Pinned beside it on the line, a small README slip reading the README's two primitives: matrix multiplication · reglu. On 'network', a thin rim of light connects the slip to the loom behind: the frames are the matrix multiplications, the ramps behind them the reglu gates. TIMING (one action per phrase, so the pictogram reads): on 'network', the NARRATOR'S HANDS (lower left) flip the tag (paper snap); from 'weighted' to 'between', the RED-PENCIL HAND enters from frame right and draws on its back, in red, a tiny pictogram (no words), one frame with a ramp after it, held long enough to read; at the end of L0504 plus 0.3 s, the narrator's hands flip it front again and the pencil draws ONE firm red stroke through the front (dry pencil scratch), the strike shot as a tight insert. On 'ours', the camera holds on the empty knot. The slack thread does not drop to the Lifespan Rule: a suspect has no date to measure. The red-pencil hand withdraws right. TAG-LINE STAGING (meta staging.tagLine): THROUGH THE LOOM: the line is threaded through the loom's two nearest end frames (64% height), so tags hang in front of the lattice and the threads of light run behind them; the pencil rests on the loom's end post.",
+      "lines": [
+        {
+          "id": "L0504",
+          "text": "So it is a network, in the plain sense: weighted sums, with ReLU gates between.",
+          "direction": "settling a question kindly; slight emphasis on 'is'",
+          "pauseAfter": 0.3
+        },
+        {
+          "id": "L0505",
+          "text": "That guess was ours too.",
+          "direction": "wry, warm, a small smile; soft",
+          "level": "soft",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "tag",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "tag 5 on its slack thread, empty knot; the README slip pinned beside it"
+        },
+        {
+          "id": "network",
+          "at": {
+            "line": "L0504",
+            "word": "network",
+            "edge": "start"
+          },
+          "what": "a rim of light links the slip's two primitives to the loom's frames and ramps; the narrator's hands flip the tag (paper snap)"
+        },
+        {
+          "id": "pictogram",
+          "at": {
+            "line": "L0504",
+            "word": "weighted",
+            "edge": "start"
+          },
+          "what": "the red-pencil hand draws the pictogram on the tag's back across 'weighted sums, with ReLU gates between': one frame, then a ramp after it"
+        },
+        {
+          "id": "strike",
+          "at": {
+            "line": "L0504",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "the hands flip the tag front again; one firm red stroke through the front, tight insert"
+        },
+        {
+          "id": "ours",
+          "at": {
+            "line": "L0505",
+            "word": "ours",
+            "edge": "start"
+          },
+          "what": "hold on the empty knot"
+        }
+      ],
+      "cast": [
+        "red-pencil-hand",
+        "narrator-hands"
+      ],
+      "props": [
+        "copper line",
+        "Promise Tag 5 (suspect, empty knot)",
+        "README slip",
+        "red pencil"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "SUSPECT: IT ISN'T REALLY A NETWORK",
+          "beat": "tag"
+        },
+        {
+          "kind": "label",
+          "text": "the README's 2 primitives: matrix multiplication · reglu",
+          "beat": "network"
+        }
+      ],
+      "music": {
+        "cue": "ch05-loom",
+        "note": "the detent figure in full: tie (already tied in ch01, so it starts at the flip), paper snap, then the strike: dry pencil scratch resolving into a wooden drawer closing. The two lines continue underneath. Intensity 3."
+      },
+      "claims": [
+        "PR04",
+        "CM01"
+      ]
+    },
+    {
+      "id": "ch05-s04",
+      "kind": "scene",
+      "setting": "the HandwiredOS desk · the loom's threads become the wallpaper",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 2.7,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: the wallpaper is the loom. CAMERA: a long dolly back and a slow turn, out of the loom's far end. As the camera retreats, the lamp changes from serverCyan to candleAmber (lampChange), and the loom's threads, seen end-on and from further away, resolve into the HandwiredOS WALLPAPER from ch01-s04: hundreds of thin semicircular arcs on warm paper-beige, mostly copper, some grey-blue indigo, each arc running from the value it reads to the operation that reads it, one arc per stored weight. The arcs are generated from the same export as the loom's threads (ch05-s01 DATA BINDING), laid out as src/handwiredos/wiring.ts lays them out, so the dissolve is literal: each thread becomes its own arc, 9,909 in all. If the export cannot be run (meta staging.buildList.matmulLoom), the loom and the wallpaper stand side by side as two drawings of one program instead, and no thread becomes an arc. The three paper windows (Monitor, Notes, Photos) and the dock slide into place in front on their threads; the copper wire under the dock catches the rim. On 'wallpaper', the figures ink in along the bottom of the frame in the site's own plain type, one at a time: 4,646 LIVE OPERATIONS · 130 LAYERS · 9,909 WEIGHTS. A small card then slides out, on 'threads', from under Monitor's footer (do not show the footer's byte count): the site's check fails if the 9,909 weights or 130 layers drift from the live page (the check covers those figures and training 0, not the operation count). The arcs breathe faintly; nothing on the desk moves.",
+      "lines": [
+        {
+          "id": "L0506",
+          "text": "Step back. The wallpaper draws these same threads: one arc per weight.",
+          "direction": "quiet reveal; a breath after 'Step back'; let 'wallpaper' land with a smile of recognition",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "back",
+          "at": {
+            "line": "L0506",
+            "word": "Step",
+            "edge": "start"
+          },
+          "what": "dolly back out of the loom; lamp change to candleAmber"
+        },
+        {
+          "id": "wall",
+          "at": {
+            "line": "L0506",
+            "word": "wallpaper",
+            "edge": "start"
+          },
+          "what": "the threads resolve into the wallpaper arcs; windows and dock slide in; the figures ink in"
+        },
+        {
+          "id": "check",
+          "at": {
+            "line": "L0506",
+            "word": "threads",
+            "edge": "start"
+          },
+          "what": "the site-check card slides out from under Monitor"
+        }
+      ],
+      "props": [
+        "HandwiredOS desk",
+        "wallpaper arcs",
+        "Monitor, Notes, Photos windows",
+        "dock",
+        "copper wire under the dock",
+        "small card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "4,646 live operations · 130 layers · 9,909 weights",
+          "beat": "wall"
+        },
+        {
+          "kind": "label",
+          "text": "site check fails if 9,909 or 130 drift",
+          "beat": "check"
+        }
+      ],
+      "music": {
+        "cue": "ch05-loom",
+        "note": "the lamp change warms the score: the two lines move down an octave into a softer register (felt piano or muted strings), the shuttle pulse drops away; a single soft relay clack as the figures complete. Intensity 2."
+      },
+      "claims": [
+        "OS14",
+        "OS02",
+        "PJ20"
+      ]
+    },
+    {
+      "id": "ch05-s05",
+      "kind": "scene",
+      "setting": "flashback · the HandwiredOS desk · 13 October 2026 · evening · the Notes window",
+      "era": "2020s",
+      "mood": "serverCyan",
+      "leadIn": 0.6,
+      "holdAfter": 3.4,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: the Notes payoff (planted ch03-s06), staged as a FLASHBACK so the loom's data binding stays honest. CAMERA: push in on the Notes window; the lamp cools back to serverCyan as we pass through its paper. What lies behind it is not the pinned loom but a GHOST LOOM: the same loom form in a cooler, paler cyan tint with softened edges and a faint paper grain, a 13 OCT 2026 date stamp, and in the upper corner a small inset of the Window Calendar, its October column with one pane lit for the thirteenth. Notes stands as a silhouette in the foreground with the ghost loom visible through it. No export of the 13 October build exists, so the ghost loom's threads are not individual weights: its THREAD DENSITY is drawn in proportion to the operation counts, with a small label, density ~ operations. Its end-post counter reads 19,851 LIVE OPERATIONS (that day, after Files merged into Monitor), the ghost loom dense. On 'browser', the Notes window's paper contents (the lines of text, laid out by the program) fold away and are replaced by a plain, blank-edged browser text box, a simple rectangle cut-out with a caret. On 'shed', most of the ghost loom's threads go slack and fall away like cut warp threads, drifting down through the haze in a slow cascade, density falling in proportion (19,851 to 4,251, so about four threads in five drop; the windows' springs and rectangles remain); whole frames empty. The counter rolls 19,851 → 4,251 and the label reads about 4.7× smaller. Then, after the line, the ghost tint dissolves back to the PINNED LOOM in its warm data-bound colours (the ch05-s01 export) and the end-post counter ticks up from 4,251 to 4,646, with the small plate 4,646 · PINNED 27 OCT. Hold briefly on the pinned loom, the native text box glowing in the Notes window in front of it.",
+      "lines": [
+        {
+          "id": "L0507",
+          "text": "And the Notes window? On the thirteenth of October its text moved to the browser, and the loom shed most of its threads.",
+          "direction": "the payoff of a plant: a knowing lift on 'Notes window?'; then narrate plainly, a step back in time; slow on 'shed most of its threads'",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "date",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "push into Notes; ghost loom in cool tint; 13 OCT stamp and Window Calendar inset; counter 19,851; density label"
+        },
+        {
+          "id": "box",
+          "at": {
+            "line": "L0507",
+            "word": "browser",
+            "edge": "start"
+          },
+          "what": "Notes' laid-out text folds away into a plain native text box"
+        },
+        {
+          "id": "shed",
+          "at": {
+            "line": "L0507",
+            "word": "shed",
+            "edge": "start"
+          },
+          "what": "most ghost threads fall away in proportion; counter rolls 19,851 → 4,251"
+        },
+        {
+          "id": "now",
+          "at": {
+            "line": "L0507",
+            "edge": "end",
+            "offset": 0
+          },
+          "what": "ghost tint dissolves back to the pinned loom; counter ticks 4,251 → 4,646; plate 4,646 · PINNED 27 OCT"
+        }
+      ],
+      "props": [
+        "Notes window",
+        "native text box cut-out with caret",
+        "ghost loom (flashback tint)",
+        "Window Calendar inset (October column)",
+        "the pinned matmul loom",
+        "falling threads",
+        "end-post counter"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "13 OCT 2026",
+          "beat": "date"
+        },
+        {
+          "kind": "label",
+          "text": "density ~ operations",
+          "beat": "date",
+          "until": "shed"
+        },
+        {
+          "kind": "label",
+          "text": "19,851 → 4,251 · about 4.7× smaller",
+          "beat": "shed"
+        },
+        {
+          "kind": "label",
+          "text": "4,646 · pinned 27 Oct",
+          "beat": "now"
+        }
+      ],
+      "music": {
+        "cue": "ch05-loom",
+        "note": "a fine, falling scatter of dry paper ticks as the threads drop (each a tiny shuttle clack, never a chime), thinning out; the two lines lighten to a single sustained interval. Intensity 2, a little relief."
+      },
+      "claims": [
+        "OS03",
+        "OS04",
+        "OS02"
+      ]
+    },
+    {
+      "id": "ch05-s06",
+      "kind": "scene",
+      "setting": "the cold furnace · a paper foundry beside the loom · 16 September 2026 · one machine",
+      "era": "2020s",
+      "mood": "emberRed",
+      "leadIn": 0.5,
+      "holdAfter": 1,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: the cold furnace; the GPU question planted. CAMERA: lamp change to emberRed (low chroma; the frame's only warm-red in this chapter) and a slow crane down to a cut-paper FURNACE beside the loom, its mouth glowing. First, a small brass processor emblem (a chip silhouette, no lettering) is fixed on the loom's post: the loom is what actually runs, as JavaScript on the processor [CM04]. Then, on 'graphics card', the date stamp 16 SEP 2026 and a scope plate slide in beneath the furnace, fixed for the whole shot: AN OLDER 14,019-OPERATION BUILD · ONE MACHINE. The loom's threads are fed into the furnace; it roars (embers rise in the haze) but its output gauge crawls. On 'fifteen': THREE stopwatches side by side, numeral-free, their hands showing proportion only (the furnace's GPU watch far behind; two processor watches, one for Bun and a slightly slower one for Chrome), with the equation set beneath them: WebGPU 2.2 ms · CPU 81 µs (Bun) · ~140 µs (Chrome). Only times measured together compare, so both processor figures from the same run stand side by side [CM08]. On 'one after another', inside the furnace's mouth the fed threads are seen passing one at a time in single file, never side by side: one table's steps running in a line in one shader [CM08]. On 'for', the furnace cools: embers dim, the glow drains from red to ash grey; the camera lifts back to the copper line, where nothing is tied yet: the question is spoken, not written. Hold on the cooling furnace with the loom quietly working beside it. TEXT: the date stamp plus two items only, the scope plate and the equation.",
+      "lines": [
+        {
+          "id": "L0508",
+          "text": "The desktop runs as JavaScript on the main processor. On a graphics card, an older build ran fifteen to twenty-seven times slower, its steps one after another.",
+          "direction": "a mild surprise, told straight; no mockery of the experiment; 'fifteen to twenty-seven times slower' evenly; the last clause a plain reason, slow on 'one after another'",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0510",
+          "text": "So what is a graphics card, a GPU, for? Hang that on the line.",
+          "direction": "the plant refrain (fourth and last use): a genuine question, then the refrain lightly, almost to himself",
+          "pauseAfter": 0.4
+        }
+      ],
+      "beats": [
+        {
+          "id": "cpu",
+          "at": {
+            "shotTime": 0.5
+          },
+          "what": "lamp change; the brass processor emblem on the loom's post"
+        },
+        {
+          "id": "gpu",
+          "at": {
+            "line": "L0508",
+            "word": "graphics",
+            "edge": "start"
+          },
+          "what": "date stamp and scope plate slide in; threads fed to the furnace; it roars"
+        },
+        {
+          "id": "slow",
+          "at": {
+            "line": "L0508",
+            "word": "fifteen",
+            "edge": "start"
+          },
+          "what": "the three stopwatches and the equation"
+        },
+        {
+          "id": "serial",
+          "at": {
+            "line": "L0508",
+            "word": "after",
+            "edge": "start"
+          },
+          "what": "inside the furnace mouth, the fed threads pass one at a time in single file, never side by side"
+        },
+        {
+          "id": "cool",
+          "at": {
+            "line": "L0510",
+            "word": "for",
+            "edge": "start"
+          },
+          "what": "the furnace cools to ash grey; camera lifts toward the copper line"
+        }
+      ],
+      "props": [
+        "cut-paper furnace",
+        "the matmul loom",
+        "brass processor emblem",
+        "three stopwatches",
+        "copper line"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "16 SEP 2026",
+          "beat": "gpu"
+        },
+        {
+          "kind": "label",
+          "text": "an older 14,019-operation build · one machine",
+          "beat": "gpu"
+        },
+        {
+          "kind": "equation",
+          "text": "WebGPU 2.2 ms · CPU 81 µs (Bun) · ~140 µs (Chrome)",
+          "beat": "slow"
+        }
+      ],
+      "music": {
+        "cue": "ch05-furnace",
+        "note": "emberRed: a low, effortful bellows drone and a slow, heavy ratchet (the furnace labouring), the both-branches lines gone quiet; the furnace's roar never becomes melodic. On the cooling, the drone falls away to room tone and one unresolved low note; on 'Hang that on the line' the tie stroke of the detent figure, alone, with no flip and no strike (a question tied on, not settled). Intensity 4 down to 1."
+      },
+      "claims": [
+        "CM04",
+        "CM08",
+        "OS08"
+      ]
+    },
+    {
+      "id": "ch05-s07",
+      "kind": "scene",
+      "setting": "the X-ray desk · HandwiredOS, translucent · the loom lit inside it",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.4,
+      "holdAfter": 2.5,
+      "minDuration": 4.0,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: silent X-ray beat (Device 3, component 3 of 5). CAMERA: locked-off wide on the HandwiredOS desk, a little more translucent than at the end of ch04: the source table's 234 pigeonholes (lit after ch03) and the ReGLU ramps and 0/1 shutters (lit after ch04) still glow faintly inside it. At 1.0 s, with one relay clack, the third component lights: the 130 thin frames of the loom, stacked inside the desk from left to right in dependency order, a faint copper and indigo lattice, the threads matching the wallpaper's arcs (the same export, see ch05-s01 DATA BINDING). No new text, no narration, no index drawer (HandwiredOS has no index reads). Hold, then dissolve.",
+      "lines": [],
+      "beats": [
+        {
+          "id": "light",
+          "at": {
+            "shotTime": 1
+          },
+          "what": "relay clack; the 130-frame loom lights inside the translucent desk"
+        }
+      ],
+      "props": [
+        "HandwiredOS desk (X-ray)",
+        "source table pigeonholes (lit)",
+        "ReGLU ramps and shutters (lit)",
+        "the loom's 130 frames (newly lit)"
+      ],
+      "onScreenText": [],
+      "music": {
+        "cue": "ch05-xray",
+        "note": "room tone and a single dry relay clack on the light; the both-branches lines return at a whisper, both at full gate (no decision), then fade. Intensity 1."
+      },
+      "claims": [
+        "OS02",
+        "CM01"
+      ]
+    }
+  ]
+}

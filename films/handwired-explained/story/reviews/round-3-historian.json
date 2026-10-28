@@ -1,0 +1,92 @@
+{
+  "reviewer": "historian",
+  "round": 3,
+  "lens": "accuracy and fairness",
+  "runtimeCheck": "node generator/film/script.mjs assemble --slug handwired-explained --check: 0 errors, 1 warning, 12 chapters, 103 shots, 182 lines, 2741 words. Estimate 25.6 min (1538.1 s) at the locked 140 wpm, against a 24.0 min target. That is inside the brief's 22-26 min range, so runtime is not critical. Headroom is only about 0.4 min, and the script is still about 460 words over the 2280-word target, so every fix below should cost no words or save some.",
+  "method": "I listed every narration line, spoken override and on-screen text in all 103 shots and checked each one against the claim ids in shot.claims (claims.json, all ids resolve) and against bible sections 9 and 11. I matched every quoted span, in lines and in onScreenText, against quotes.json by script, checking speaker, date and context. I confirmed in script.mjs that the quote check allows numerals in `spoken` by design (NUMBERISH), which closes round 2's last item. I checked sklanskyPrefix and brentKungPrefix in the clone at 257856e. I re-checked the arithmetic: 4.5 -> 11; 4.25 -> 2.5 + 9 = 11.5; 16,777,222 -> a-5 rounds to 2^24 -> bit 2 -> 8; 8,388,609.5 -> 8,388,610 -> 1; 14 + 5x24 + 15 = 149; the 650/45 spring step (0.9896 x -300 = -296.88, -2.6 x -300 = 780, 700 - 296.88 = 403.12); the valve (0.15, 0.225, 0.45, 1.5); 2.2 ms / 140 us = 16x and 2.2 ms / 81 us = 27x; 18,820 of 20,000; 683 of 689; 8 July -> 3 Sept = 57 days. All correct. All 19 round-2 items are addressed: the Brooks period, the runtime, eight workers, the two passes, the 'for the library itself' scope, 'three' contested, 'for fun', the Kleene label, the spring recomputed at 650/45, site:check, 'the sketch', '16-op comparison', settle checks, the TOML label, 'moving frames', Circuit, the Q099 order, 'two renames', and spoken numerals.",
+  "scores": {
+    "accuracy": 8,
+    "depth": 8,
+    "clarity": 7,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 7,
+    "voice": 8
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch08-s03 L0806 'It held about eight weeks.' (after L0805 '...Its narrower replacement: a defined numeric subset can be compiled.')",
+      "problem": "To the ear, 'It' refers to the last thing named, the narrower replacement. That replacement still stands at the pin (LB03, LB09). What held 8 July -> 3 September (LB02, LB03) was the dead-end claim. As written, the refrain answer states something false.",
+      "fix": "Say: 'The dead end had held about eight weeks.' (+2 words), or move the refrain before the replacement: '...that one among them. It had held about eight weeks. Its narrower replacement: a defined numeric subset can be compiled.'"
+    },
+    {
+      "where": "ch04-s13 L0426 'Doubles fit seven; thirty-two-bit floats fall a hair short.'",
+      "problem": "EX03: only this way of computing it falls short, because the reciprocal f(1/244) rounds first. EX03 also states that a plain FP32 division f(1708/244) is exactly 7. A viewer would leave thinking FP32 cannot fit seven columns. The equation on screen is right; the sentence over-generalises.",
+      "fix": "Say: 'Doubles fit seven. In thirty-two-bit floats, multiplying by a rounded reciprocal falls a hair short.' Or keep the line and add a label: 'the reciprocal rounds first · f(1708 / 244) = 7 exactly'."
+    },
+    {
+      "where": "ch06-s03 L0608 'One step multiplies two numbers, the window's distance from home and its speed: at rest, it comes out moving.'",
+      "problem": "Heard aloud, 'multiplies two numbers, the distance and its speed' means distance times speed. SP01/SP02: one step is a 2x2 matrix (four numbers) applied to the pair (displacement, velocity). The visual's four-number stamp is right; the sentence teaches the wrong operation.",
+      "fix": "Say: 'One step runs two numbers, the window's distance from home and its speed, through four fixed ones: at rest, it comes out moving.' Also mark the ch06-s03 equation '(derived)', as ch07 does, because the 650/45 step is computed from SP02, not quoted from the repo."
+    },
+    {
+      "where": "ch06-s02 L0605 'Inputs in. The loom runs once. Next state copied back.' and label 'write inputs → evaluate once → copy next state back → write the page'",
+      "problem": "At the pin, the template and HandwiredOS plan each frame as settle checks, one 'events' evaluation per event timestamp and a 'frame' evaluation (HL03). The frame evaluation runs on a copy that is thrown away (HL10). A toggle press therefore runs at least two evaluations, and only some of them copy back. Three shots later the film says so itself ('One run per frame? That held until mid-September'), so the present-tense 'once' contradicts its own later correction.",
+      "fix": "Drop 'once' from the line and the label: 'Inputs in. The loom runs. Next state copied back.' and 'write inputs → evaluate → copy next state back → write the page'. This saves a word and leaves ch06-s05/s05b to deliver the refinement."
+    },
+    {
+      "where": "ch09-s02 (visual: 'dissolves through one lit pane of the 13 October sub-column'; placed right after 'Nearly all of them in four days')",
+      "problem": "Q099 is 'undated in source; before the 2026-10-13 measurements'. The highlighter and regex experiments began on 2026-09-17 (JS20). Staging the question inside a 13 October pane, inside the four-days sequence, gives an undated quotation a date the bible does not support.",
+      "fix": "Dissolve from a neutral pane (or the September block), not the 13 October column, and add a small date card: 'undated · before the 13 Oct measurements'. No narration change is needed."
+    },
+    {
+      "where": "ch10-s03 L1005 'Another asked what the website never said: “why?”'",
+      "problem": "Q132 is the commenter's opinion ('Website is missing the #1 thing ... why?'). The narrator states it as fact. It also sits awkwardly with ch12-s04, where the README is credited with answers ('for fun', 'Let's find out!').",
+      "fix": "Say: 'Another said the website was missing one thing: “why?”' This attributes the judgement to the commenter and keeps the quote verbatim."
+    },
+    {
+      "where": "ch09-s01 visual: the 24-hour dial 'mounted on the crown of the 13 October column ... until every hour on the dial is lit'",
+      "problem": "PJ09 and bible item 29 say the commits fell 'in every hour of the clock' across the four October days, not on 13 October alone. Mounting the dial on one day's column claims a single-day, round-the-clock record that the bible does not establish.",
+      "fix": "Mount the dial above all four sub-columns and light each hour from any of the four days' commits, or check the 13 Oct hours in git log and add a claim before keeping it on one column."
+    },
+    {
+      "where": "ch12-s04 L1207 '...the README's nearest answers: “for fun”, and “Let's find out!”'",
+      "problem": "Both are verbatim, and 'nearest' hedges them. But in Q006, 'for fun' modifies 'either run it on JS or WebGPU', not the reason for building Handwired. The launch post's 'my latest toy project' (Q104, already quoted in ch09-s08) is closer to a statement of motive.",
+      "fix": "Optional: keep it as is, since the hedge carries it, or swap to the launch post's words: 'the nearest answers: “my latest toy project”, and “Let's find out!”'. Then the README credit becomes 'Cheng's and the README's'."
+    },
+    {
+      "where": "ch12-s04 L1206 'Three beliefs are still argued over.'",
+      "problem": "The bible marks more items as contested than these three: snap vs carry (HL27), GPU vs RegExp (JS13) and the JSON recovery result (LB21). The film's struck and kept tags treat those as settled, so 'three beliefs' overstates how settled the rest are.",
+      "fix": "Say: 'Three of our tags are still argued over.' (+1 word.)"
+    },
+    {
+      "where": "ch10-s01 L1001 'one commenter said it's really “write your logic in a DSL...”'",
+      "problem": "Q130 opens 'As far as I understand, this doesn't turn \"regular\" JavaScript into a NN, it's rather ...'. Dropping the commenter's own hedge makes the criticism sound firmer than it was.",
+      "fix": "Say: 'one commenter, as he understood it, said it's really ...' (+4 words), or 'one commenter suggested it's really ...' (net 0)."
+    },
+    {
+      "where": "ch03-s05 L0310 'a number that keeps about seven digits' and ch05-s02 L0503 'the sums graphics cards are built for'",
+      "problem": "Both are true as general knowledge, but neither has a claim in claims.json, and the hard rule is that every fact traces to the bible.",
+      "fix": "Add a claim for FP32 precision (24-bit significand, about 7.2 decimal digits; IEEE 754) and one for GPUs and matrix multiplication, or cut the two glosses ('a number with limited precision'; 'a matrix multiplication')."
+    },
+    {
+      "where": "ch08-s03 L0805 'an AI agent's review'",
+      "problem": "The bible's sourcing (Q115) is 'an AI agent's review by its own account'. Elsewhere the reassessment's writer is unnamed. The label 'an agent-run review' is fine. The narration states it a little more firmly than the source.",
+      "fix": "Optional: 'a review, by its own account an AI agent's, retired ten earlier claims'. Or leave as is: the label carries the attribution."
+    },
+    {
+      "where": "whole script: word count",
+      "problem": "The script has 2741 words against a 2280-word target. That is inside the brief's range at 25.6 min, but only 0.4 min from its edge. The fixes above total about +2 to +7 words if all are taken.",
+      "fix": "Pay for any additions with cuts in already-labelled detail, e.g. ch06-s03 L0609 ('JavaScript works it out ahead, as four numbers; the program applies them in fourteen operations, for any count': the label already says '14 operations · 3 layers · any step count'), or ch04-s14 L0428's 'More precision broke it.'"
+    }
+  ],
+  "strengths": [
+    "All 19 round-2 accuracy items were applied, in the source's own terms: the Brooks quote now ends outside the marks, eight workers is stated fairly ('keeps up, and wins after a pause, except on that one pattern'), the two search passes rest only on the repo's stated reason, 'for the library itself' scopes the converter suspect, and the spring step was recomputed correctly at HandwiredOS's 650/45.",
+    "Quote integrity is clean. Every quoted span, in narration and on screen, is verbatim in quotes.json and attributed at the right level: the docs, the tutorial, the HandwiredOS README, the learned gallery's README, lab/status.md, 'Cheng Lou · in the lab's gallery notes', a Hacker News commenter with the date. Spliced spans ('a general JavaScript compiler' ... 'not delivered by these experiments.') come from a single sentence and keep its meaning.",
+    "The worked numbers are real and check by hand under FP32 rounding: the dimmer at 4.5 and 4.25, the 2^24 failure giving 8, the tie-to-even boolean atom, the 1732 px column count, the 2^149 cascade, the two row sums one FP32 step apart, the valve gradients, and the Adam step marked '(derived)'.",
+    "Limits are stated honestly throughout: 'in its tests' with 'events in order, no snap'; 'float64 copy' on the 359 px drift; 'an older 14,019-operation build · one machine'; 'not proof it scales'; 'a prefix network only in a later reading'; 'an echo, not a citation'; 'not attempted in the repo' for nanoGPT; and the TOML failure paired with the README's own 'does not say that training cannot work there'.",
+    "Contested matters give both sides, and the AI-tooling passage follows the bible's even-handedness rule: Claude Code and OpenAI's Codex in the same register, 'This film was written with Claude' said once, mistakes and catches framed as one process, the July beliefs marked 'not attributable to Cheng', and 'The record doesn't say why. So we won't guess.' for August.",
+    "Every requirement in the brief is covered, including the ones that were thin before: `Circuit` is now named on screen, both backends are placed honestly (CPU in production, WebGPU only for JSON search), and the lab's open questions are voiced from lab/status.md."
+  ]
+}

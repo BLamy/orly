@@ -1,0 +1,18 @@
+{
+ "id": "m12",
+ "start": 1273.1,
+ "end": 1368.4,
+ "file": "films/handwired-explained/score/renders/m12.wav",
+ "duration": 101.3,
+ "I": -26.9,
+ "LRA": 6,
+ "TP": -14.1,
+ "expected": 101.3,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/handwired-explained/score/analysis/m12.png",
+ "cueSeconds": 95.3,
+ "cps": 0.24166666666666667,
+ "lastStrikeLocal": 91.46,
+ "lastStrike": 1364.56
+}

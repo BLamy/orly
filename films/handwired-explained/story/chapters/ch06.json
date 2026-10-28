@@ -1,0 +1,1295 @@
+{
+  "id": "ch06",
+  "number": 6,
+  "title": "Deep Dive II: The Clockwork That Cannot Stop",
+  "blurb": "The host loop, springs and patterns. A program cannot stop early, so every loop must become a count, a tree, a table, or the same work on every item, and the four nouns become the four arms of a clockwork. One turn of the clock; springs squared into four numbers and fourteen operations; a ratchet that snaps at three hundred steps; two desks at ten and a hundred and twenty frames a second that match in every bit, in the repo's tests, because the frame you see is a rehearsal thrown away; tag 7 struck. Then the four shapes of a loop, each with its own machine, and two old names signed into the runtime, on screen. A finite machine paid off, an echo of Kleene and not a citation: the network is one fixed, exact step, and the host turns the crank.",
+  "shots": [
+    {
+      "id": "ch06-s01",
+      "kind": "plate",
+      "setting": "a parchment plate · the host clockwork in silhouette behind it",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 1,
+      "holdAfter": 1,
+      "transitionIn": "inkBleed",
+      "visual": "THIS SHOT: the thesis, heard slowly. CAMERA: locked on a parchment plate, then a slow pull back to the clockwork behind it. The chapter title inks in first (DEEP DIVE II · THE CLOCKWORK THAT CANNOT STOP) and stays. The quotation (Q015) is HEARD, not set: no sentence is inked on the plate. On 'program', under the title a STRAIGHT, ONE-WAY STRIP OF PAPER TRACK draws itself left to right across the plate, with a row of small stations along it; a small paper bead sets off at the left and crosses at an even pace, passing EVERY station, never skipping one. Along the track sit three tiny empty sockets, where a jump, a break and a repeat would sit, visibly vacant (no exit ramp, no points, no way back); one small label under them reads no jump · no break · no repeat. As the voice names the four nouns, four brass ARMS swing out from the hub of a HOST CLOCKWORK silhouetted behind the plate (escapement, ratchet wheel, a crank), each arm's tip a different small machine-shape (a peg rail for the count, a forked thread for the tree, a drawer for the table, a row of identical tiles for the same work on every item): shapes, not words. Just after the quotation (beat every), the bead reaches the end of the track and drops into the clockwork's tray; the escapement gives one tick and a NEW bead sets off from the left. The program runs once, straight through; the repetition belongs to the host.",
+      "lines": [
+        {
+          "id": "L0601",
+          "text": "In the docs' words: \"The program runs every operation on every frame and can't stop early, so a loop becomes a count, a tree, a table, or the same work on every item.\"",
+          "direction": "the chapter's thesis: read the quotation slowly and exactly, as a quotation; a small breath before 'so a loop becomes'; give each of the four nouns its own weight",
+          "pauseAfter": 0.7
+        }
+      ],
+      "beats": [
+        {
+          "id": "title",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "chapter title inks onto the plate"
+        },
+        {
+          "id": "quote",
+          "at": {
+            "line": "L0601",
+            "word": "program",
+            "edge": "start"
+          },
+          "what": "the straight one-way track and its bead appear under the title; the vacant-socket label"
+        },
+        {
+          "id": "count",
+          "at": {
+            "line": "L0601",
+            "word": "count",
+            "edge": "start"
+          },
+          "what": "the count arm (peg rail) swings out from the clockwork hub"
+        },
+        {
+          "id": "tree",
+          "at": {
+            "line": "L0601",
+            "word": "tree",
+            "edge": "start"
+          },
+          "what": "the tree arm (forked thread) swings out from the clockwork hub"
+        },
+        {
+          "id": "table",
+          "at": {
+            "line": "L0601",
+            "word": "table",
+            "edge": "start"
+          },
+          "what": "the table arm (drawer) swings out from the clockwork hub"
+        },
+        {
+          "id": "same",
+          "at": {
+            "line": "L0601",
+            "word": "same",
+            "edge": "start"
+          },
+          "what": "the same-work arm (row of tiles) swings out from the clockwork hub"
+        },
+        {
+          "id": "every",
+          "at": {
+            "line": "L0601",
+            "edge": "end",
+            "offset": 0.5
+          },
+          "what": "the bead reaches the end of the track and drops into the clockwork's tray; one escapement tick; a new bead starts at the left"
+        }
+      ],
+      "props": [
+        "parchment plate",
+        "straight one-way strip of paper track with stations and three vacant sockets",
+        "paper beads",
+        "host clockwork silhouette with four arms and a tray"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "DEEP DIVE II · THE CLOCKWORK THAT CANNOT STOP",
+          "beat": "title"
+        },
+        {
+          "kind": "label",
+          "text": "no jump · no break · no repeat",
+          "beat": "quote"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "Deep Dive II's bed: the detent figure slowed into the host clockwork's escapement, an even, patient tick (a 4 ms idea, slowed for the ear) on woodblock, under two quiet lines a whole tone apart; each arm's swing is a soft ratchet click. Intensity 2, steady, never rushing. Machines clack, never chime."
+      },
+      "claims": [
+        "HL01"
+      ]
+    },
+    {
+      "id": "ch06-s02",
+      "kind": "scene",
+      "setting": "the host clockwork beside the template's toggle switch · one frame",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: one turn of the clock, step by step. CAMERA: a medium shot on the HOST CLOCKWORK, set beside a small paper TOGGLE SWITCH (a rounded 52 × 32 px track with a thumb; a label gives its size). To the right, THE SOURCE TABLE from ch03-s04: a strip of 20 numbered pigeonholes (1280 and 800 in slots 0 and 1, event-flag holes, a four-card spring-matrix rack, state cards). Behind, the LOOM, small, in haze. On 'host', the clockwork's case lights: it sits OUTSIDE the loom, connected only by a crank. On 'toggle', a paper hand-cut cursor presses the toggle; a little PRESS in the clockwork stamps a paper TOKEN with the event and its time and drops it into a tray, and a bell-less paper flag pops up: frame requested (no caption: the voice says it). Nothing else moves yet: the handler has not run the program. Then the escapement ticks once per phrase of L0605, exactly in sync: on 'Inputs' the host slides the pointer and the event cards from the tray into their pigeonholes and four matrix cards into the spring rack; on 'loom' the crank turns ONE revolution and a wave of light crosses the loom's frames left to right, once; on 'copied' the next-state cards slide out of the loom's far end and back into their state pigeonholes; on 'page' the toggle's thumb slides along its track (the DOM moves from the outputs alone; a thin thread runs from the loom's output to the thumb). The step rail (one label) inks in along a rail under the clockwork on the first tick, and each tick lights its own phrase on it. On 'rests', between frames, the thumb has settled; the escapement locks and the clock goes silent; the requested-frame flag drops (no caption). Hold on the still mechanism.",
+      "lines": [
+        {
+          "id": "L0603",
+          "text": "The looping lives outside, in the host: the plain JavaScript around it.",
+          "direction": "the answer to the plate, simply"
+        },
+        {
+          "id": "L0604",
+          "text": "Flick the toggle, and the event is queued with its time.",
+          "direction": "light, practical; a small beat after 'toggle'",
+          "tts": {
+            "solo": true,
+            "speed": 0.85
+          }
+        },
+        {
+          "id": "L0605",
+          "text": "Inputs in. The loom runs once. Next state copied back. The page moves.",
+          "direction": "four short strokes, one per tick of the escapement: even, measured, a slight pause between each",
+          "insertGaps": {
+            "in": 0.25,
+            "once": 0.25,
+            "back": 0.25
+          }
+        },
+        {
+          "id": "L0606",
+          "text": "When nothing moves, the clock rests: between frames, never inside one.",
+          "direction": "quiet satisfaction; a small beat after 'rests'; 'between frames, never inside one' plain and exact",
+          "pauseAfter": 0.4
+        }
+      ],
+      "beats": [
+        {
+          "id": "host",
+          "at": {
+            "line": "L0603",
+            "word": "host",
+            "edge": "start"
+          },
+          "what": "the clockwork's case lights, outside the loom, joined to it only by a crank"
+        },
+        {
+          "id": "toggle",
+          "at": {
+            "line": "L0604",
+            "word": "toggle",
+            "edge": "start"
+          },
+          "what": "the cursor presses the toggle"
+        },
+        {
+          "id": "queue",
+          "at": {
+            "line": "L0604",
+            "word": "queued",
+            "edge": "start"
+          },
+          "what": "the press stamps a timestamped token into the tray; the frame-request flag pops up"
+        },
+        {
+          "id": "inputs",
+          "at": {
+            "line": "L0605",
+            "word": "Inputs",
+            "edge": "start"
+          },
+          "what": "escapement tick: pointer, event cards and four matrix cards slide into the pigeonholes"
+        },
+        {
+          "id": "loom",
+          "at": {
+            "line": "L0605",
+            "word": "loom",
+            "edge": "start"
+          },
+          "what": "escapement tick: the crank turns once; one wave of light crosses the loom"
+        },
+        {
+          "id": "copied",
+          "at": {
+            "line": "L0605",
+            "word": "copied",
+            "edge": "start"
+          },
+          "what": "escapement tick: next-state cards slide back into their pigeonholes"
+        },
+        {
+          "id": "page",
+          "at": {
+            "line": "L0605",
+            "word": "page",
+            "edge": "start"
+          },
+          "what": "escapement tick: the toggle's thumb slides, moved only by the outputs"
+        },
+        {
+          "id": "rests",
+          "at": {
+            "line": "L0606",
+            "word": "rests",
+            "edge": "start"
+          },
+          "what": "between frames: the escapement locks; the clock is silent; the frame-request flag drops"
+        }
+      ],
+      "props": [
+        "host clockwork (press, token tray, escapement, crank)",
+        "paper toggle switch",
+        "the source table (20 pigeonholes)",
+        "the loom (small, behind)",
+        "event tokens",
+        "four spring-matrix cards",
+        "next-state cards"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "toggle · track 52 × 32 px",
+          "beat": "toggle"
+        },
+        {
+          "kind": "label",
+          "text": "write inputs → evaluate once → copy next state back → write the page",
+          "beat": "inputs"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "the escapement ticks exactly on the four phrases of L0605 (a woodblock tick per step, the loom's turn a soft wooden whirr), then a single detent lock on 'rests' and true silence for a beat before the bed resumes. Intensity 2 to 3."
+      },
+      "claims": [
+        "HL02",
+        "HL03",
+        "HL04",
+        "HL05",
+        "HL06",
+        "CB10"
+      ]
+    },
+    {
+      "id": "ch06-s03",
+      "kind": "plate",
+      "setting": "a parchment plate · a brass spring stamp and a squaring press",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 2.9,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT (one continuous shot, no cuts): springs without loops. CAMERA: a slow lateral track across a wide parchment plate, left to right, stamp then press then table; the equation is pinned to the plate's top margin and stays in frame. LEFT: a small paper window on a rail at 400 px, its destination marked at 700 px (a copper pin), the spring between them drawn as a paper coil; a 4 ms escapement on the host clockwork ticks evenly in the background. On 'multiplies', a 2×2 BRASS STAMP drops into frame with its four numbers engraved on its face as part of the object (0.9896 · 0.00328 / −2.6 · 0.82; HandwiredOS's stiffness 650, damping 45, one 4 ms step: SP02), and two input cards slide under it: −300 (distance from home) and 0 (speed). On 'moving', the stamp comes down with a dry clack; two cards come out, −296.88 and 780; the paper window creeps from 400 to 403.12 px and its coil begins to move; the one equation inks in at the top margin. On 'squared', the camera tracks right to the SQUARING PRESS: the stamp's plate is squared again and again, each fold a heavier clack, its exponent stamped on each folded plate (M², M⁴, M⁸ … M²⁵⁶), until one plate is marked M³⁰⁰. On 'JavaScript', a small paper LEDGER beside the clockwork (the host side) copies the four numbers off the M³⁰⁰ plate onto four cards, and the cards slide into four pigeonholes of the source table. Above the press, an OPERATION COUNTER with a step dial: as the dial spins 2 → 300 the counter stays FROZEN; on 'fourteen' the label inks in beside it. After the line (beat stiff), the ledger's stiffness and damping entries glow briefly on the JavaScript side, and a dotted line from them stops short of the loom (no caption: the picture carries it). Hold on the frozen counter while the dial keeps spinning.",
+      "lines": [
+        {
+          "id": "L0607",
+          "text": "The windows move on springs, and springs need time.",
+          "direction": "patient, explaining; set up the problem plainly"
+        },
+        {
+          "id": "L0608",
+          "text": "One step multiplies two numbers, the window's distance from home and its speed: at rest, it comes out moving.",
+          "direction": "clear and concrete; name the two numbers plainly; a beat before 'at rest', small delight on 'comes out moving'",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0609",
+          "text": "Three hundred steps is that multiplication, squared and squared again. JavaScript works it out ahead, as four numbers; the program applies them in fourteen operations, for any count.",
+          "direction": "the chapter's quiet marvel: even, unhurried; slight stress on 'JavaScript' (the host, not the program); land 'fourteen operations, for any count' with satisfaction",
+          "pauseAfter": 0.7
+        }
+      ],
+      "beats": [
+        {
+          "id": "stamp",
+          "at": {
+            "line": "L0608",
+            "word": "multiplies",
+            "edge": "start"
+          },
+          "what": "the brass stamp (650/45, one 4 ms step) drops in; cards −300 and 0 slide under it"
+        },
+        {
+          "id": "press",
+          "at": {
+            "line": "L0608",
+            "word": "moving",
+            "edge": "start"
+          },
+          "what": "the stamp clacks; cards −296.88 and 780 come out; the window creeps to 403.12 px"
+        },
+        {
+          "id": "fold",
+          "at": {
+            "line": "L0609",
+            "word": "squared",
+            "edge": "start"
+          },
+          "what": "track right to the squaring press; the plate folds M², M⁴ … M²⁵⁶ into M³⁰⁰"
+        },
+        {
+          "id": "steps",
+          "at": {
+            "line": "L0609",
+            "word": "JavaScript",
+            "edge": "start"
+          },
+          "what": "the host's ledger copies the four numbers onto four cards, which slide into the table"
+        },
+        {
+          "id": "counter",
+          "at": {
+            "line": "L0609",
+            "word": "fourteen",
+            "edge": "start"
+          },
+          "what": "the step dial spins 2 → 300; the counter stays frozen; its label inks in"
+        },
+        {
+          "id": "stiff",
+          "at": {
+            "line": "L0609",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "stiffness and damping glow in the float64 ledger; a dotted line stops short of the loom"
+        }
+      ],
+      "props": [
+        "paper window on a rail",
+        "copper destination pin",
+        "paper spring coil",
+        "float64 ledger",
+        "2×2 brass stamp",
+        "input and output cards",
+        "squaring press",
+        "operation counter with step dial"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "one 4 ms step: (−300, 0) → (−296.88, 780) · window 400 → 403.12 px",
+          "beat": "press"
+        },
+        {
+          "kind": "label",
+          "text": "14 operations · 3 layers · any step count",
+          "beat": "counter"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "the escapement tick continues; the stamp is one dry brass clack; each fold of the press a slightly heavier clack, eight of them, rising a step in pitch on woodblock (never a chime); then the counter's freeze is a held note with the tick still running beneath, unchanged: the sound of a cost that does not grow. Intensity 3."
+      },
+      "claims": [
+        "SP01",
+        "SP02",
+        "SP03",
+        "HL04"
+      ]
+    },
+    {
+      "id": "ch06-s04",
+      "kind": "scene",
+      "setting": "inside the host clockwork · the 300-tooth ratchet",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 2.8,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the static bound. CAMERA: close on a large RATCHET WHEEL inside the clockwork, 300 fine teeth, with a release pawl; a pointer advances one tooth per 4 ms step. A long stall (a paper hourglass tipping) feeds steps in faster than the frame can take them; the pointer races round. On 'stops', at tooth 300 the RELEASE PAWL lifts: on the desk above (seen through the clockwork's open top), every paper window SNAPS onto its destination and stops dead, at rest; the backlog of unspent step tokens drops through a TRAPDOOR beneath the ratchet and is gone. A label: 300 steps = 1,200 ms. Then the ratchet resets to tooth 0, empty: nothing carries over (no quotation on screen). On 'every' (beat card), a TWO-SIDED CARD turns in the light, equally lit on both faces: one face drawn as a backlog of tokens carried on into the next frame (others carry the time), the other as the snapped, emptied ratchet (Handwired snaps); the single label names both faces. Neither face is struck: a design choice, not a mistake. Hold on the card turning slowly.",
+      "lines": [
+        {
+          "id": "L0611",
+          "text": "Past three hundred steps in one frame, stepping stops, and every window snaps home.",
+          "direction": "a crisp event, told plainly; 'stepping stops' even; a small beat before 'snaps home'"
+        }
+      ],
+      "beats": [
+        {
+          "id": "ratchet",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "the 300-tooth ratchet; the stall feeds steps; the pointer races"
+        },
+        {
+          "id": "slip",
+          "at": {
+            "line": "L0611",
+            "word": "stops",
+            "edge": "start"
+          },
+          "what": "the pawl lifts at tooth 300; windows snap home at rest; the backlog drops through the trapdoor"
+        },
+        {
+          "id": "bound",
+          "at": {
+            "line": "L0611",
+            "edge": "end",
+            "offset": 0.2
+          },
+          "what": "the ratchet resets to tooth 0, empty: no time carries into the next frame"
+        },
+        {
+          "id": "card",
+          "at": {
+            "line": "L0611",
+            "word": "every",
+            "edge": "start"
+          },
+          "what": "the two-sided card turns, equally lit"
+        }
+      ],
+      "props": [
+        "300-tooth ratchet wheel",
+        "release pawl",
+        "paper hourglass",
+        "trapdoor",
+        "paper windows on the desk above",
+        "brass plate",
+        "two-sided card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "300 steps = 1,200 ms",
+          "beat": "slip"
+        },
+        {
+          "kind": "label",
+          "text": "others carry time · Handwired snaps",
+          "beat": "card"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "the ratchet's teeth accelerate into a fast dry rattle, then one hard pawl release and a wooden thunk for the trapdoor; a half-bar of silence; the escapement resumes at its even pace under the two-sided card, with the two lines held at equal level (a choice, not a verdict). Intensity 3 to 2."
+      },
+      "claims": [
+        "HL08",
+        "HL27"
+      ]
+    },
+    {
+      "id": "ch06-s05",
+      "kind": "scene",
+      "setting": "two paper desks side by side · one recorded session · 10 and 120 frames a second",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.6,
+      "holdAfter": 1.8,
+      "transitionIn": "paperWipe",
+      "visual": "THIS SHOT: two desks, one bit. CAMERA: wide on TWO PAPER DESKS side by side (split-screen held throughout), each a small HandwiredOS desk with one window, the same recorded drag replaying on both from a paper tape: the left desk flickers slowly, the right smoothly; each desk's brass plaque is cut with its rate, 10 and 120 (set dressing, not a caption). On 'familiar', a GHOST of the window on each desk follows the usual loop (handle the input, then step the animation by the frame's time) and the two ghosts begin to drift apart; the first label inks in and a DRIFT GAUGE between the desks swings, reaching 359 on 'pixels'. On 'saves', heavier COMMITTED CARDS (the kept state) are laid on each desk only at event marks and at evenly spaced checkpoint marks on the tape. On 'replay', each displayed frame is drawn on a sheet of CARBON PAPER worked out from the last committed card; on 'drawn' it lights; on 'thrown' it slides off into a CARBON-COPY TRAY and is gone, while only the committed cards stay on the desk. On 'tests', the ghosts fade and the two real windows lock into the same place at every shared timestamp; a BIT-STRIP (a row of 32 paper cells) under each desk shows identical bits, cell for cell, and the gauge falls to 0; the second label (the tests' conditions) replaces the first and stays to the end. No quotation on screen. Hold on the two locked desks.",
+      "lines": [
+        {
+          "id": "L0613",
+          "text": "Replay one session at two frame rates, and the familiar loop drifts up to three hundred and fifty-nine pixels apart.",
+          "direction": "set up the experiment cleanly; 'the familiar loop' plain, no judgement; let the number come plainly"
+        },
+        {
+          "id": "L0614",
+          "text": "Handwired saves only at events and fixed checkpoints. Other frames replay from the last save, are drawn, and thrown away. In its tests, every frame rate then matches exactly.",
+          "direction": "the mechanism first, then the wonder: three small strokes on 'replay', 'drawn', 'thrown away'; quiet wonder on 'matches exactly'",
+          "pauseAfter": 0.7
+        }
+      ],
+      "beats": [
+        {
+          "id": "desks",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "two desks replay one session at 10 and 120 fps"
+        },
+        {
+          "id": "ghost",
+          "at": {
+            "line": "L0613",
+            "word": "familiar",
+            "edge": "start"
+          },
+          "what": "ghost windows follow the usual order and drift apart; the drift label; the gauge swings, reaching 359 on pixels"
+        },
+        {
+          "id": "save",
+          "at": {
+            "line": "L0614",
+            "word": "saves",
+            "edge": "start"
+          },
+          "what": "committed cards laid only at event and checkpoint marks"
+        },
+        {
+          "id": "rehearsal",
+          "at": {
+            "line": "L0614",
+            "word": "replay",
+            "edge": "start"
+          },
+          "what": "a carbon sheet worked from the last committed card"
+        },
+        {
+          "id": "thrown",
+          "at": {
+            "line": "L0614",
+            "word": "thrown",
+            "edge": "start"
+          },
+          "what": "the carbon sheet slides into the carbon-copy tray; the committed cards stay"
+        },
+        {
+          "id": "lock",
+          "at": {
+            "line": "L0614",
+            "word": "tests",
+            "edge": "start"
+          },
+          "what": "ghosts fade; the windows lock together; identical bit-strips; gauge to 0; the conditions label"
+        }
+      ],
+      "props": [
+        "two paper desks with frame-rate plaques (10, 120)",
+        "paper tape of a recorded session",
+        "drift gauge",
+        "two bit-strips",
+        "carbon paper sheets",
+        "carbon-copy tray",
+        "heavier committed-table cards"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "input, then animation (float64 copy): up to 359 px",
+          "beat": "ghost",
+          "until": "lock"
+        },
+        {
+          "kind": "label",
+          "text": "in the tests: events in order, no snap",
+          "beat": "lock"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "two escapements, one per desk, ticking at different rates and out of phase while the ghosts drift; on 'tests' they fall into one shared tick, a satisfying lock. Under the carbon paper, a light paper slide on 'thrown'. Intensity 3."
+      },
+      "claims": [
+        "HL18",
+        "HL11",
+        "HL10",
+        "HL14"
+      ]
+    },
+    {
+      "id": "ch06-s05b",
+      "kind": "scene",
+      "setting": "the copper line in front of the desks · tag 7 · 15 September 2026",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.5,
+      "holdAfter": 1,
+      "transitionIn": "cut",
+      "cast": [
+        "narrator-hands",
+        "red-pencil-hand"
+      ],
+      "props": [
+        "copper line",
+        "Promise Tag 7",
+        "knot card",
+        "Lifespan Rule",
+        "date tag"
+      ],
+      "visual": "THIS SHOT: tag 7 tied and struck. CAMERA: tilted down from the desks to the COPPER LINE strung in front of them, the desks a soft silhouette above. On 'One', the NARRATOR'S HANDS tie on TAG 7, ONE EVALUATION PER FRAME (its one label), with its small knot card (HandwiredOS's own design) on a PLAIN thread (no fray: fraying is tag 1's sign for 'refuted as biology' and is not used here). On 'held', the NARRATOR'S HANDS flip the tag and the RED-PENCIL HAND enters from frame right and writes on its back a row of little event marks each with its own tick of time (a drawing, no words); the narrator's hands flip it front and the pencil strikes it once, as a tight insert; the thread drops to the Lifespan Rule at its measured lifespan, about three months (HandwiredOS, then IndirectOS, from 8 June to 15 September 2026: between a month and a year, nearer the month), and ends there in a plain cut end at a small date tag, UNTIL 15 SEPT 2026. On 'seventeen', a row of seventeen small paper tokens runs past along the line, sixteen event tokens each stopping at its own timestamp mark and one frame token last (no caption: the voice says it). Hold on the struck tag. TAG-LINE STAGING (meta staging.tagLine): ABOVE THE CLOCKWORK: the line runs high (40%) over the host clockwork, the camera low, looking up; tags hang above the turning ratchet; the pencil rests on the escapement bridge. LIFESPAN ENCODING (film-wide): a struck or ended thread drops to the rule at its measured lifespan; a still-held thread drops to its age as of 27 Oct 2026 and ends in a glowing open tip with a short copper arrow pointing right.",
+      "lines": [
+        {
+          "id": "L0615",
+          "text": "One run per frame? That held until mid-September. Now a busy drag frame runs about seventeen.",
+          "direction": "brisk, a raised eyebrow on the question; matter-of-fact on the answer; 'about seventeen' plain, landing as the tokens run past"
+        }
+      ],
+      "beats": [
+        {
+          "id": "tag",
+          "at": {
+            "line": "L0615",
+            "word": "One",
+            "edge": "start"
+          },
+          "what": "the narrator's hands tie on tag 7, plain thread"
+        },
+        {
+          "id": "strike",
+          "at": {
+            "line": "L0615",
+            "word": "held",
+            "edge": "start"
+          },
+          "what": "the red pencil flips tag 7, marks its back, strikes it; the thread drops to about three months; the date tag"
+        },
+        {
+          "id": "events",
+          "at": {
+            "line": "L0615",
+            "word": "seventeen",
+            "edge": "start"
+          },
+          "what": "seventeen tokens run along the line, sixteen events at their own times and one frame"
+        }
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "ONE EVALUATION PER FRAME",
+          "beat": "tag"
+        },
+        {
+          "kind": "date",
+          "text": "UNTIL 15 SEPT 2026",
+          "beat": "strike"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "tag 7, the full detent figure: tie (soft detent click), flip (paper snap), strike (dry pencil scratch into a wooden drawer closing); on 'seventeen', a row of small even clicks, one per token. Intensity 3."
+      },
+      "claims": [
+        "HL17",
+        "HL03",
+        "PJ07"
+      ]
+    },
+    {
+      "id": "ch06-s06",
+      "kind": "scene",
+      "setting": "the counting rail · the COUNT arm of the clockwork",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 2.4,
+      "transitionIn": "lampChange",
+      "visual": "THIS SHOT: a count (findIndex). CAMERA: the lamp changes to labGreen as we follow the COUNT arm out from the clockwork to the COUNTING RAIL: a vertical paper rail with five pegs, each peg cut with its row bottom (40, 80, 80, 140, 180: part of the object), and a horizontal POINTER BAR sliding down to 90. First (on 'loop'), a ghost paper bead runs down the rail the JavaScript way and STOPS at the first peg past the pointer (140); no caption. Then (on 'every'), the ghost fades and ALL FIVE pegs answer at once: each peg above the pointer drops a small paper flag (1), the two below stay up (0): three flags drop TOGETHER, in one layer, not one after another, and the one equation inks in under the rail (its last clause, if the test flips once, is the caveat: a rail of row bottoms that ever goes back up would miscount, with no error). On 'three', a tally drum below the rail clicks to 3: the same index the loop would have found.",
+      "lines": [
+        {
+          "id": "L0616",
+          "text": "A count. Which row is under the pointer? A loop stops at the first match. Here every row answers, and we count the yeses: three.",
+          "direction": "brisk and clear, one machine per beat; a small pleased pause before 'three'",
+          "insertGaps": {
+            "yeses": 0.3
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "rail",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "lamp change; the counting rail with pegs 40 80 80 140 180; the pointer slides to 90"
+        },
+        {
+          "id": "loop",
+          "at": {
+            "line": "L0616",
+            "word": "loop",
+            "edge": "start"
+          },
+          "what": "a ghost bead runs down and stops at 140"
+        },
+        {
+          "id": "every",
+          "at": {
+            "line": "L0616",
+            "word": "every",
+            "edge": "start"
+          },
+          "what": "all five pegs answer at once; three flags drop together; the equation"
+        },
+        {
+          "id": "three",
+          "at": {
+            "line": "L0616",
+            "word": "three",
+            "edge": "start"
+          },
+          "what": "the tally drum clicks to 3"
+        }
+      ],
+      "props": [
+        "counting rail with five pegs",
+        "pointer bar",
+        "paper flags",
+        "tally drum",
+        "ghost bead",
+        "slip"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "bits 1 1 1 0 0 → count 3 = findIndex, if the test flips once",
+          "beat": "every"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "labGreen: the patterns run begins, brisk, one machine per beat; the escapement tick doubles to a light running pulse. The ghost bead's run is five quick ticks stopping on the fourth; the three flags drop as ONE clack (not three); the tally drum a single detent click. Intensity 3."
+      },
+      "claims": [
+        "PT08",
+        "PT09"
+      ]
+    },
+    {
+      "id": "ch06-s07",
+      "kind": "scene",
+      "setting": "the prefix loom · the TREE arm of the clockwork",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 4.1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: a tree (running totals as a prefix network); the signature grommet paid. CAMERA: front-on at a small PREFIX LOOM: eight paper tabs across the top reading 3 1 4 1 5 9 2 6; the totals row below them is the one equation. On 'row', a GHOST CHAIN first: one thread hops tab to tab, each join waiting for the last, seven knots stacked seven levels deep down the frame (a level ruler at the side counts 1…7). On 'pairs', the ghost chain fades and copper threads join neighbouring tabs in pairs, then (on the second 'pairs') pairs of pairs, then back down: the Brent-Kung pattern, four levels, each join a small knot of light; a ghost overlay beside it shows Sklansky's three levels, with one partial fanning into four threads at once; the level ruler now stops at 3 and 4. The totals ink in along the bottom row: 3 4 8 9 14 23 25 31. On 'three', as the level ruler stops at 3 and 4, the camera pushes in on two threads; then (beat sk) a PAPER NAME TAG lights in the film's tag style, SKLANSKY 1960, with the runtime's function name sklanskyPrefix in monospace, and under it a small caption, a prefix network only in a later reading (PT28); just after the line (beat bk) the second tag lights, BRENT · KUNG 1982, brentKungPrefix. Each tag carries a STAMPED brass grommet at its lower corner (the first stamped grommets in the film: the repo names these ideas in its own code). No figures are drawn for Sklansky, Brent or Kung. (Brent's own later note, Q164, moves to the sources page.) The two old names are NOT spoken: the tags, their grommets and the function names carry them in the hold.",
+      "lines": [
+        {
+          "id": "L0617",
+          "text": "A tree. Running totals in a row: each waits for the last, seven steps deep. In pairs, then pairs of pairs: three or four.",
+          "direction": "following the threads with the eye; name 'running totals' clearly; a little weary on 'seven steps deep', a small lift on the second 'pairs', satisfied on 'three or four'",
+          "pauseAfter": 0.4
+        }
+      ],
+      "beats": [
+        {
+          "id": "tabs",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "eight tabs 3 1 4 1 5 9 2 6"
+        },
+        {
+          "id": "row",
+          "at": {
+            "line": "L0617",
+            "word": "row",
+            "edge": "start"
+          },
+          "what": "a ghost chain: seven joins, seven levels deep"
+        },
+        {
+          "id": "pairs",
+          "at": {
+            "line": "L0617",
+            "word": "pairs",
+            "edge": "start"
+          },
+          "what": "Brent-Kung joins, level by level; totals ink in; Sklansky's ghost pattern beside it"
+        },
+        {
+          "id": "names",
+          "at": {
+            "line": "L0617",
+            "word": "three",
+            "edge": "start"
+          },
+          "what": "push in on the two threads"
+        },
+        {
+          "id": "sk",
+          "at": {
+            "line": "L0617",
+            "word": "three",
+            "edge": "start",
+            "offset": 0.3
+          },
+          "what": "the SKLANSKY 1960 tag with its grommet and function name; the later-reading caption"
+        },
+        {
+          "id": "bk",
+          "at": {
+            "line": "L0617",
+            "word": "four",
+            "edge": "start"
+          },
+          "what": "the BRENT · KUNG 1982 tag with its grommet and function name"
+        }
+      ],
+      "props": [
+        "prefix loom",
+        "eight paper tabs",
+        "copper threads with knots of light",
+        "two paper name tags with stamped grommets",
+        "small card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "3 1 4 1 5 9 2 6 → 3 4 8 9 14 23 25 31",
+          "beat": "tabs",
+          "until": "names"
+        },
+        {
+          "kind": "nameCard",
+          "text": "SKLANSKY 1960 · sklanskyPrefix",
+          "beat": "sk"
+        },
+        {
+          "kind": "nameCard",
+          "text": "BRENT · KUNG 1982 · brentKungPrefix",
+          "beat": "bk"
+        },
+        {
+          "kind": "label",
+          "text": "a prefix network only in a later reading",
+          "beat": "sk"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "each join a soft paired click; the ghost chain's seven clicks slow and plodding, the tree's levels quicker, rising in pitch on woodblock; as the name tags light, a single stamped brass punch for the grommets (the rivet's cousin, a dry clack) and the two lines briefly in a warm unison. Intensity 3."
+      },
+      "claims": [
+        "PT15",
+        "PT05",
+        "PT26",
+        "PT28"
+      ]
+    },
+    {
+      "id": "ch06-s08",
+      "kind": "plate",
+      "setting": "two parchment plates · four row heights summed two ways · a stopwatch and a drift gauge",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 2.7,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: the grouping is part of the answer. CAMERA: two parchment plates side by side. LEFT plate: four paper row strips, 229, 167.4, 208.5 and 194.4 px, stacked and summed IN A ROW (a chain of three joins), result 799.300048828125. RIGHT plate: the same four strips summed IN PAIRS (two joins, then one), result 799.2999877929688. The two results differ only in their last digits, which glow; a tiny ruler shows the gap is one thirty-two-bit step. (No quotation on screen: the voice says it.) On 'slower', a small CPU STOPWATCH between the plates shows the chain finishing first (its hands only, no caption). On 'drifts', a tall DRIFT GAUGE, its scale engraved 10,000 ROWS, rises behind the plates: the chain's needle swings to 5.67 px, the tree's barely moves, 0.26 px (both measured against float64 sums of the same heights). Neither plate is struck: each wins at something.",
+      "lines": [
+        {
+          "id": "L0619",
+          "text": "In thirty-two-bit floats, grouping changes the final digit. The tree is slower here, but drifts far less.",
+          "direction": "even-handed: one advantage each, no winner; a beat after 'last bit'",
+          "insertGaps": {
+            "digit": 0.4
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "sums",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "four strips summed in a row and in pairs; the two results, last digits glowing"
+        },
+        {
+          "id": "group",
+          "at": {
+            "line": "L0619",
+            "word": "grouping",
+            "edge": "start"
+          },
+          "what": "the two results’ last digits glow"
+        },
+        {
+          "id": "slow",
+          "at": {
+            "line": "L0619",
+            "word": "slower",
+            "edge": "start"
+          },
+          "what": "the CPU stopwatch: the chain finishes first"
+        },
+        {
+          "id": "drift",
+          "at": {
+            "line": "L0619",
+            "word": "drifts",
+            "edge": "start"
+          },
+          "what": "the 10,000-row drift gauge: chain 5.67 px, tree 0.26 px"
+        }
+      ],
+      "props": [
+        "two parchment plates",
+        "four paper row strips",
+        "CPU stopwatch",
+        "10,000-row drift gauge"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "229 + 167.4 + 208.5 + 194.4 → in a row 799.300048828125 · in pairs 799.2999877929688",
+          "beat": "sums"
+        },
+        {
+          "kind": "label",
+          "text": "drift: loop 5.67 px · tree 0.26 px",
+          "beat": "drift"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "the both-branches motif in miniature: the two lines alternate, each taking the lead once (one for speed, one for accuracy), and end at equal level. Intensity 2 to 3."
+      },
+      "claims": [
+        "PT03",
+        "PT06",
+        "PT14"
+      ]
+    },
+    {
+      "id": "ch06-s09",
+      "kind": "scene",
+      "setting": "the index-read card drawer beside a 10,000-row card cabinet · the TABLE arm",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 2.0,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: a table (the ch04 shutters reused). CAMERA: follow the TABLE arm to a TALL CARD CABINET of 10,000 thin drawers rising out of frame into haze. LEFT, the arithmetic way: on 'test', every drawer at once pushes its card toward ONE FUNNEL at the cabinet's foot, each card passing its own little ReGLU SHUTTER from ch04: one shutter open, 9,999 shut, so 9,999 cards arrive as blanks (multiplied by nought) and one arrives whole; on 'thirty', all of them pour into the funnel and are added, while an operation counter beside it spins up to 30,002. RIGHT, on 'index': the INDEX-READ CARD DRAWER: a rotary selector arm swings to one drawer, drops into its detent and lifts a single card; its counter reads 1. The cabinet behind the right side stays dark except for that one drawer. Hold on the two counters, 30,002 and 1.",
+      "lines": [
+        {
+          "id": "L0620",
+          "text": "A table. As arithmetic, you test all ten thousand rows, zero out all but one, and add: thirty thousand operations. Or one index read.",
+          "direction": "brisk, explaining the waste with a straight face; a small comic pause before 'Or one index read'",
+          "insertGaps": {
+            "operations": 0.35
+          }
+        }
+      ],
+      "beats": [
+        {
+          "id": "cabinet",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "the tall 10,000-drawer cabinet rises into haze"
+        },
+        {
+          "id": "test",
+          "at": {
+            "line": "L0620",
+            "word": "test",
+            "edge": "start"
+          },
+          "what": "every drawer pushes a card past its own shutter: 1 open, 9,999 shut"
+        },
+        {
+          "id": "arith",
+          "at": {
+            "line": "L0620",
+            "word": "thirty",
+            "edge": "start"
+          },
+          "what": "the cards pour into the funnel and are summed; the counter spins to 30,002"
+        },
+        {
+          "id": "index",
+          "at": {
+            "line": "L0620",
+            "word": "index",
+            "edge": "start"
+          },
+          "what": "the selector arm drops into one detent and lifts one card; counter 1"
+        }
+      ],
+      "props": [
+        "10,000-drawer card cabinet",
+        "one-hot lamp row",
+        "rotary selector arm (index-read drawer)",
+        "two operation counters"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "one row of a 10,000-row table",
+          "beat": "cabinet"
+        },
+        {
+          "kind": "equation",
+          "text": "arithmetic: 30,002 operations · index read: 1",
+          "beat": "arith"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "a long dry sweep of tiny clicks up the cabinet for the arithmetic, then a single clean detent drop for the index read, followed by a beat of silence (the joke lands in the quiet). Intensity 3."
+      },
+      "claims": [
+        "PR17",
+        "PR02"
+      ]
+    },
+    {
+      "id": "ch06-s10",
+      "kind": "scene",
+      "setting": "the rank board · the SAME WORK ON EVERY ITEM arm",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 1.2,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: sorting without sorting. CAMERA: front-on at the RANK BOARD: four paper cards on the left reading keys 30, 10, 30, 20, and a 4×4 grid of FLIP TILES between them and four empty slots on the right. On 'counts', every tile flips at once, in one layer: the tile in row i, column j turns to 1 when card j comes before card i (smaller key, or the same key and an earlier position), else 0. Each row's tiles sum at its end: 2, 0, 3, 1. On 'Nothing', the four cards slide straight across to slots 2, 0, 3 and 1 along parallel paths that never cross or swap; the two 30s keep their order (tie broken by position).",
+      "lines": [
+        {
+          "id": "L0621",
+          "text": "To sort, do the same work on every item: each card counts who comes before it. Nothing swaps.",
+          "direction": "clear and light; a small smile on 'Nothing swaps'"
+        }
+      ],
+      "beats": [
+        {
+          "id": "cards",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "four cards 30 10 30 20 and the 4×4 grid of flip tiles"
+        },
+        {
+          "id": "flip",
+          "at": {
+            "line": "L0621",
+            "word": "counts",
+            "edge": "start"
+          },
+          "what": "all sixteen tiles flip at once; rows sum to 2 0 3 1"
+        },
+        {
+          "id": "slide",
+          "at": {
+            "line": "L0621",
+            "word": "Nothing",
+            "edge": "start"
+          },
+          "what": "cards slide to slots 2 0 3 1 on parallel paths, no swaps"
+        }
+      ],
+      "props": [
+        "four key cards",
+        "4×4 grid of flip tiles",
+        "four slots"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "keys 30 10 30 20 → ranks 2 0 3 1",
+          "beat": "flip"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "all sixteen tiles flip as one soft paper clatter (simultaneous, not a roll); the cards' slide a single smooth wooden glide. Intensity 3."
+      },
+      "claims": [
+        "PT16"
+      ]
+    },
+    {
+      "id": "ch06-s11",
+      "kind": "scene",
+      "setting": "the K-slot rack · the HandwiredOS Monitor list behind it",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "cut",
+      "visual": "THIS SHOT: filter and slice into a fixed number of slots; every maximum needs a plan. CAMERA: front-on at the K-SLOT RACK: eight paper items in a row, each with a small visibility lamp (lit or dark); beneath them a running-count rail (a Brent-Kung count, drawn as the prefix loom's threads in miniature); above, THREE FRAMES (slots). On 'counts', the counts ink in left to right and the one equation inks in under the rail; on 'three', slot 0 takes item 1 (where the count first reaches 1), slot 1 takes item 2, slot 2 takes item 4; the later visible items wait outside the rack, unplaced, and a small brass CAPACITY plate bolted to the rack shows the number 3 only. On 'Monitor', the camera pulls back to show the same rack in HandwiredOS's Monitor window, its list drawn into a fixed rack of 64 slots; at the list's foot Monitor's overflow line lights as a pale ruled line (its words are spoken, not set). The equation stays pinned at the bottom of frame through the pull-back.",
+      "lines": [
+        {
+          "id": "L0622",
+          "text": "Filtering too: each item counts its place, and a fixed rack takes the first three.",
+          "direction": "brisk; the last of the four shapes"
+        },
+        {
+          "id": "L0623",
+          "text": "The desktop's Monitor window admits it: \"Only 64 rows are drawn at a time.\"",
+          "direction": "read the quotation as Monitor's own plain words, with a little affection",
+          "pauseAfter": 0.4,
+          "spoken": "The desktop's Monitor window admits it: \"Only sixty-four rows are drawn at a time.\""
+        }
+      ],
+      "beats": [
+        {
+          "id": "items",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "eight items with visibility lamps 0 1 1 0 1 0 1 1; three empty slots"
+        },
+        {
+          "id": "counts",
+          "at": {
+            "line": "L0622",
+            "word": "counts",
+            "edge": "start"
+          },
+          "what": "the running counts ink in: 0 1 2 2 3 3 4 5"
+        },
+        {
+          "id": "three",
+          "at": {
+            "line": "L0622",
+            "word": "three",
+            "edge": "start"
+          },
+          "what": "slots take items 1, 2 and 4; the capacity plate"
+        },
+        {
+          "id": "monitor",
+          "at": {
+            "line": "L0623",
+            "word": "Monitor",
+            "edge": "start"
+          },
+          "what": "pull back to Monitor's 64-slot list; its overflow line lights"
+        }
+      ],
+      "props": [
+        "eight paper items with visibility lamps",
+        "running-count rail",
+        "three slot frames",
+        "brass capacity card",
+        "HandwiredOS Monitor window"
+      ],
+      "onScreenText": [
+        {
+          "kind": "equation",
+          "text": "visible 0 1 1 0 1 0 1 1 → counts 0 1 2 2 3 3 4 5",
+          "beat": "counts"
+        },
+        {
+          "kind": "label",
+          "text": "HandwiredOS · Monitor · 64 slots",
+          "beat": "monitor"
+        }
+      ],
+      "music": {
+        "cue": "ch06-patterns",
+        "note": "the count rail a quick ascending run of small clicks; three solid slot clunks; on Monitor, the patterns pulse slows back toward the host clockwork's even escapement, preparing the return. Intensity 3 to 2."
+      },
+      "claims": [
+        "PT18",
+        "PT20",
+        "HL22"
+      ]
+    },
+    {
+      "id": "ch06-s12",
+      "kind": "scene",
+      "setting": "the host clockwork turning the loom's crank · two chalk cards · a small repo card",
+      "era": "2020s",
+      "mood": "labGreen",
+      "leadIn": 0.6,
+      "holdAfter": 1,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: Kleene paid (planted ch02-s03); the deep dive's turn. CAMERA: a slow pull back to the whole mechanism: the HOST CLOCKWORK, its four arms folded home, turning the LOOM's crank ONE revolution per tick of the escapement; each turn sends one wave of light across the 130 frames and the next-state cards slide back into the source table. On 'finite', a faint echo of the ch02-s03 image appears in the haze above: the clock dial with a fixed ring of stops from Kleene's finite machine, and it settles over the loom, one stop per state (the ring is closed and countable: the machine really is finite). On 'outside', the camera finds the crank's HANDLE on the outside of the loom, on the host's side: everything unbounded comes from there. On 'circuit' (beat repo), as the narrator reads the lab guide's words, a SMALL REPO CARD in the docs' plain type hangs from the crank handle: the one text item, only the fragment a fixed-depth circuit with its attribution (Q127, the repo's own comparison, FR25). The crank keeps turning, tick after tick, through the whole hold. No other text. (Siegelmann & Sontag 1992 and Maass & Orponen 1998 move to the sources page as context the repo does not cite; if they are ever restored on screen, the Maass & Orponen card must read: contested: Siegelmann & Sontag (1994) claimed some robustness [FR15].) A small label under the echo reads an echo, not a citation (the repo does not cite Kleene: FR22).",
+      "lines": [
+        {
+          "id": "L0624",
+          "text": "Kleene's finite machine, with everything unbounded coming from outside? Here it is.",
+          "direction": "the payoff of a plant: 'Kleene's' a light reminder of chapter two; warm, a knowing smile; a breath before 'Here it is'",
+          "pauseAfter": 0.7
+        },
+        {
+          "id": "L0625",
+          "text": "The guide to the project's lab of experiments says: “One frame is one evaluation of a fixed-depth circuit”. The host turns the crank. It never stops early.",
+          "direction": "the turn of the deep dive: 'the project's lab of experiments' plain, a first introduction; read the quotation plainly, as a quotation; then the two short sentences slow and even",
+          "pauseAfter": 0.6
+        }
+      ],
+      "beats": [
+        {
+          "id": "crank",
+          "at": {
+            "shotTime": 0.4
+          },
+          "what": "pull back: the clockwork turns the loom's crank once per tick"
+        },
+        {
+          "id": "kleene",
+          "at": {
+            "line": "L0624",
+            "word": "finite",
+            "edge": "start"
+          },
+          "what": "the echo of Kleene's dial with its fixed ring of stops settles over the loom; the 'an echo, not a citation' label"
+        },
+        {
+          "id": "outside",
+          "at": {
+            "line": "L0624",
+            "word": "outside",
+            "edge": "start"
+          },
+          "what": "the crank's handle, on the host's side, outside the loom"
+        },
+        {
+          "id": "repo",
+          "at": {
+            "line": "L0625",
+            "word": "circuit",
+            "edge": "start"
+          },
+          "what": "in the hold, the small repo card (trimmed Q127) hangs from the crank handle"
+        }
+      ],
+      "props": [
+        "host clockwork with folded arms",
+        "the matmul loom and its crank",
+        "echo of Kleene's clock dial",
+        "two chalk cards",
+        "small repo card"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "an echo, not a citation",
+          "beat": "kleene"
+        },
+        {
+          "kind": "quote",
+          "text": "“a fixed-depth circuit” — the lab guide",
+          "beat": "repo"
+        }
+      ],
+      "music": {
+        "cue": "ch06-clockwork",
+        "note": "the host clockwork's even escapement returns, slower and fuller, the both-branches lines resolving to a calm interval over it; under the repo card in the hold, the bed alone (no voice). The tick never stops through the hold: the crank keeps turning. Intensity 3 to 2."
+      },
+      "claims": [
+        "FR07",
+        "FR25",
+        "FR22"
+      ]
+    },
+    {
+      "id": "ch06-s13",
+      "kind": "scene",
+      "setting": "the X-ray desk · HandwiredOS, translucent · the host ratchet lit inside it",
+      "era": "2020s",
+      "mood": "candleAmber",
+      "leadIn": 0.4,
+      "holdAfter": 2.5,
+      "minDuration": 4.0,
+      "transitionIn": "crossfade",
+      "visual": "THIS SHOT: silent X-ray beat (Device 3, component 4 of 5). CAMERA: locked-off wide on the HandwiredOS desk, a little more translucent again: the source table's 234 pigeonholes, the ReGLU ramps and shutters, and the loom's 130 frames all glow faintly inside it. At 1.0 s, with one relay clack, the fourth component lights beneath the desk: the host clockwork's 300-tooth RATCHET and its release pawl, turning slowly, connected to the loom by a single crank. No text, no narration. Hold, then dissolve.",
+      "lines": [],
+      "beats": [
+        {
+          "id": "light",
+          "at": {
+            "shotTime": 1
+          },
+          "what": "relay clack; the host clockwork's ratchet lights inside the translucent desk"
+        }
+      ],
+      "props": [
+        "HandwiredOS desk (X-ray)",
+        "source table pigeonholes (lit)",
+        "ReGLU ramps and shutters (lit)",
+        "the loom's 130 frames (lit)",
+        "300-tooth ratchet (newly lit)"
+      ],
+      "onScreenText": [],
+      "music": {
+        "cue": "ch06-xray",
+        "note": "room tone; one dry relay clack on the light; the escapement ticks three more times, softly, and stops. Intensity 1."
+      },
+      "claims": [
+        "HL08"
+      ]
+    }
+  ]
+}

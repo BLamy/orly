@@ -1,0 +1,100 @@
+{
+  "id": "exactness-in-fp32",
+  "checked": 58,
+  "confirmed": 47,
+  "corrected": 9,
+  "unverifiable": 1,
+  "corrections": [
+    {
+      "original": "The common assumption, held by most programmers and stated by MDN, is that floats are \"approximate\".",
+      "verdict": "corrected",
+      "fix": "MDN's Math.fround page never uses the word 'approximate'. The sourced framing is now Goldberg 1991, verbatim: \"Squeezing infinitely many real numbers into a finite number of bits requires an approximate representation\", alongside MDN's verbatim warning that a 64/32-bit equality check \"may fail even though the numbers are seemingly identical\".",
+      "sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/fround",
+        "https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html"
+      ]
+    },
+    {
+      "original": "held by most programmers",
+      "verdict": "unverifiable",
+      "fix": "No survey or source supports a claim about what most programmers believe. Keep it as narration framing only, not as a sourced fact.",
+      "sources": []
+    },
+    {
+      "original": "2026-09-15: HandwiredOS window hit tests move to emitCompare integer bits; HandwiredOS goes from 5,253 to 3,654 live operations and 192 to 124 layers ([S4] L12)",
+      "verdict": "corrected",
+      "fix": "Per lab/status.md L14, the 5,253 to 3,654 ops and 192 to 124 layers came with the whole Sept-15 move to the runtime additions (shared spring matrix/emitAnimatedObject, advanceFrame, timestamped events, and the hit tests as integer bits), not with the hit tests alone. Citation corrected to L14.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L14"
+      ]
+    },
+    {
+      "original": "Rounding points are operations where 'the exact FP32 evaluation, term order and operand wires matter'; a backend may reorder or fuse every other sum.",
+      "verdict": "corrected",
+      "fix": "Both quotes are verbatim (docs L157; status.md L11). Nuance added: only 'boolean' and 'marked' operations need the stored order. For 'integer bit' and 'sign cascade' operations a backend may add terms in any order, fuse them, or use float64 within each operation, as long as each operation stays separate and reads the same wires.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L157-L164",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L11"
+      ]
+    },
+    {
+      "original": "GPU shader compilers (wgpu and Dawn) folded the boolean atom ... and fused multiply-adds",
+      "verdict": "corrected",
+      "fix": "The lab attributes this to 'the compiler behind both stacks', and 'only Apple's Metal compiler was tested'. Credit the folding and fusing to the shader compiler under wgpu and Dawn on one Apple machine, not to wgpu or Dawn as such. The probe counts (0 strict; max guard 8/8 and 2/2) are confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/codegen/README.md#L109-L127",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/codegen/README.md#L176"
+      ]
+    },
+    {
+      "original": "comparison.test.ts is the test that compares bits against native JavaScript comparisons / 'the one that compares against native JavaScript'",
+      "verdict": "corrected",
+      "fix": "It is the native-JS check for comparison bits (nativeCompare, L71/L290/L396/L456). It is not the only native-JS check in tests/runtime: macro-ranges.test.ts compares emitMinimum/emitMaximum with Math.min/Math.max (L104-149).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/comparison.test.ts#L71",
+        "https://github.com/chenglou/handwired/blob/257856e/tests/runtime/macro-ranges.test.ts#L104-L149"
+      ]
+    },
+    {
+      "original": "lab/status.md's 'Correctness changes' list ends: 'This is not a proof of all possible circuits or all JavaScript programs.'",
+      "verdict": "corrected",
+      "fix": "The quote is verbatim (L224). It is the closing paragraph of the 'Correctness changes' section, after the bullet list (L216-222), not the last list item.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L214-L224"
+      ]
+    },
+    {
+      "original": "2026-10-14 Repo made public, after a history rewrite ([S4] L34)",
+      "verdict": "corrected",
+      "fix": "Citation corrected to lab/status.md L36.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L36"
+      ]
+    },
+    {
+      "original": "July 2026: arbitrary division deferred ([S4] L270)",
+      "verdict": "corrected",
+      "fix": "The source says only 'In July'. The year 2026 is inferred from context and now marked as such.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L270"
+      ]
+    },
+    {
+      "original": "Boolean atom citation [S2] L24, L127",
+      "verdict": "corrected",
+      "fix": "L127 does not discuss the atom. Corrected to execution-model.md L24, L28, L126, L159 and expressions.md L32.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L24",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/expressions.md#L32"
+      ]
+    },
+    {
+      "original": "bun test tests/runtime ... in 2.13 s",
+      "verdict": "contested",
+      "fix": "The counts reproduce exactly (174 pass, 0 fail, 155,853 expect(), 11 files). The wall time varies: 2.05 s in the fact-check rerun. Say 'about 2 seconds'.",
+      "sources": [
+        "local run: cd .orly-work/repos/handwired && bun test tests/runtime (Bun 1.4.3, 2026-10-27)"
+      ]
+    }
+  ]
+}

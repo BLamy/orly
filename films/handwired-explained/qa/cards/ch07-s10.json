@@ -1,0 +1,108 @@
+{
+ "shot": "ch07-s10",
+ "at": "2026-10-28T17:40:44.607Z",
+ "step": 0.0833,
+ "sampled": 118,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "679",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "step",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [
+  {
+   "card": "fillRect@1035,225",
+   "probed": false,
+   "from": 0.55,
+   "to": 10.38,
+   "seconds": 9.83,
+   "rect": {
+    "x": 860,
+    "y": 165,
+    "w": 304,
+    "h": 186
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@1044,187",
+   "probed": false,
+   "from": 0.55,
+   "to": 10.38,
+   "seconds": 9.83,
+   "rect": {
+    "x": 869,
+    "y": 127,
+    "w": 284,
+    "h": 228
+   },
+   "inkAfter": null
+  },
+  {
+   "card": "drawImage@1237,257",
+   "probed": false,
+   "from": 9.88,
+   "to": 10.38,
+   "seconds": 0.5,
+   "rect": {
+    "x": 1197,
+    "y": 244,
+    "w": 147,
+    "h": 118
+   },
+   "inkAfter": null
+  }
+ ],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1035,225",
+   "probed": false,
+   "from": 0.55,
+   "to": 10.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "drawImage@1044,187",
+   "probed": false,
+   "from": 0.55,
+   "to": 10.3,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "fillRect@1507,714",
+   "probed": false,
+   "from": 9.05,
+   "to": 10.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "drawImage@1237,257",
+   "probed": false,
+   "from": 9.883,
+   "to": 10.3,
+   "minInkWhilePaper": 0
+  }
+ ]
+}

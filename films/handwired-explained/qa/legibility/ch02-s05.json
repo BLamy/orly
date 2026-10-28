@@ -1,0 +1,139 @@
+{
+ "shot": "ch02-s05",
+ "at": "2026-10-28T09:12:31.941Z",
+ "minCapPx": 22,
+ "sampled": 19,
+ "texts": 25,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "Le",
+   "capWhileSubject": 22.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Lear",
+   "capWhileSubject": 22.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Learn the",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "weights;",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "don'",
+   "capWhileSubject": 22.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "don't write",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "them",
+   "capWhileSubject": 22.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "rich sutton",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "The Bitter Lesson · 13 March 2019",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "rodney brooks",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "A Better Lesson · 19 March 2019",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "the dominant view, but contested",
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "Br",
+   "capWhileSubject": 31.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Brooks,",
+   "capWhileSubject": 31.6,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2019",
+   "capWhileSubject": 31.6,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "an hour",
+   "maxCap": 33.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a day",
+   "maxCap": 33.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a year",
+   "maxCap": 33.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a lifetime",
+   "maxCap": 33.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "The neuron",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "is a logic",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "gate",
+   "maxCap": 23,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "McCulloch & Pitts, 1943",
+   "maxCap": 10.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Kleene, 1951",
+   "maxCap": 10.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Sutton, 2019",
+   "maxCap": 10.9,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 10
+}

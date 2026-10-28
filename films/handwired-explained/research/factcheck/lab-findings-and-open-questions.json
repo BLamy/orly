@@ -1,0 +1,130 @@
+{
+  "id": "lab-findings-and-open-questions",
+  "checked": 78,
+  "confirmed": 64,
+  "corrected": 13,
+  "unverifiable": 1,
+  "corrections": [
+    {
+      "original": "In July 2026 the learned interpreter reported 0/20 on both tasks (key claim 1; timeline row 'July 2026'; summary lists it with lab round one)",
+      "verdict": "unverifiable",
+      "fix": "The repo calls it 'The previous report' and never dates it. lab/learned-interpreter first appears in commit c6bf933 (2026-09-03), and the July round one (a137ccd, 2026-07-08) has four experiments and no learned interpreter. Say 'an earlier report' (before 2026-09-03), not 'July'. The 0/20 -> 20/20 at x1,000,000 result is confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L21-L36",
+        "https://github.com/chenglou/handwired/commit/c6bf933",
+        "https://github.com/chenglou/handwired/commit/a137ccd"
+      ]
+    },
+    {
+      "original": "Summary: the recovery experiment was 'a failure by its own pre-registered rule on TOML and on a bison-generated LR table, rescued only by fairer starts measured on validation data'",
+      "verdict": "corrected",
+      "fix": "Only TOML carries the explicit 'By the rule fixed beforehand the track failed' verdict, from a final test that ran once. On bison, gradient descent alone 'did not carry over' on validation data, and the final test has not run. On TOML's final test, gradient descent + trial and error with TOML mistakes in the data reached the hand rules (98.3/82.7 vs 98.7/81.7). So the rescue was not only through validation-data fairer starts.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L3",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L89-L101",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L140",
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+      ]
+    },
+    {
+      "original": "Trial-and-error search, or training with TOML mistakes in the data, brought it level with the hand-written rules (key claim 12)",
+      "verdict": "corrected",
+      "fix": "It took the combination: 'With trial and error, and with TOML mistakes in the training data, the result is level with the hand-written rules' (98.3/82.7 vs 98.7/81.7). Trial and error alone on random damage reached 93.8/46.3, above the one-rule baseline (89.8/37.9) but well below the hand rules.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L93-L101"
+      ]
+    },
+    {
+      "original": "AlphaSignal calls him \"a former React core team member\"",
+      "verdict": "corrected",
+      "fix": "Verbatim wording: \"Engineer Cheng Lou, formerly a member of the React core team, presents the project as a toy compiler...\"",
+      "sources": [
+        "https://alphasignal.ai/news/cheng-lou-s-handwired-compiles-javascript-directly-into-neural-networks-without"
+      ]
+    },
+    {
+      "original": "AlphaSignal confirms \"No lab or institution is named.\"",
+      "verdict": "corrected",
+      "fix": "This sentence is not in the article's visible text or its metadata/JSON-LD; removed. The repo itself names no lab or institution.",
+      "sources": [
+        "https://alphasignal.ai/news/cheng-lou-s-handwired-compiles-javascript-directly-into-neural-networks-without"
+      ]
+    },
+    {
+      "original": "The records repeatedly note \"one machine shared with other agents' work\" (R-lab/status.md#L236)",
+      "verdict": "corrected",
+      "fix": "This wording is not in the repo. status.md L275 says runs were 'on a machine that ran other jobs'. The old quote is demoted to UNVERIFIED — do not use as a quote.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L275"
+      ]
+    },
+    {
+      "original": "Tests are run as `bun run test` (1,264 tests, 159 s)",
+      "verdict": "corrected",
+      "fix": "Last recorded full run at 259c5d2 (2026-10-14): 1,264 passing, 2 skipped, no failures, 160 files, 159 s.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L275"
+      ]
+    },
+    {
+      "original": "Q6 \"Compare alternatives without presuming that attention must emerge.\" dated June 2026 (the June hardAttend entry)",
+      "verdict": "corrected",
+      "fix": "The words are verbatim, but they were written into todo.md's hardAttend entry in commit c6bf933 on 2026-09-03 (git log -S). The entry moved to status.md on 2026-09-15. Only the hardAttend plan itself dates from June (the 'June 3 plan', commit dae4aa1).",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L257",
+        "https://github.com/chenglou/handwired/commit/c6bf933",
+        "https://github.com/chenglou/handwired/commit/dae4aa1"
+      ]
+    },
+    {
+      "original": "Q18 \"Website is missing the #1 thing I imagine most readers would want to know:  why ?\" (double space in original)",
+      "verdict": "corrected",
+      "fix": "Verbatim: \"Website is missing the #1 thing I imagine most readers would want to know: why?\" It has a single space, 'why' is in italics (<i>why</i>?), and there is no space before the question mark.",
+      "sources": [
+        "https://news.ycombinator.com/item?id=50172984",
+        "https://hn.algolia.com/api/v1/items/50172984"
+      ]
+    },
+    {
+      "original": "'The trained parser beat hand-written rules' is true only for JSON, familiar mistakes, chars right",
+      "verdict": "corrected",
+      "fix": "On JSON's final test the trained parser won on familiar mistakes on both measures (98.1/79.8 vs 96.6/79.6) and on characters for agent-written payloads (85.6 vs 82.7). The rules won on the 4 unseen types on both measures (98.9/87.2 vs 97.1/68.9) and on agent-written whole payloads (56.7 vs 46.3). 'Trained' is the mean of 5 runs.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L55-L67"
+      ]
+    },
+    {
+      "original": "Over a third of July's 'repaired' layouts (1,408 of 4,154) were valid only because they hid items",
+      "verdict": "corrected",
+      "fix": "The source says 1,408 of the 4,154 repairs 'hid previously visible items' (one removed ten of sixteen). It does not say they were valid only because of hiding, and it calls hiding 'allowed by the experiment, not an implementation error'.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L100"
+      ]
+    },
+    {
+      "original": "Belief-of-the-age table presented as the July beliefs; holders 'the July experiment briefs and the agents that wrote them'",
+      "verdict": "corrected",
+      "fix": "Both columns are condensed paraphrases of the reassessment's table, and its left column is the reassessment's own restatement. The July brief's verbatim heading is 'Established conclusions from the design conversation (take these as given)'. Its dead-end line reads 'A JS-to-circuit compiler for arbitrary code is a dead end'. The latch row verbatim is 'A latch is attention with one slot, so the event formulation removes recurrence.' The participants are not named, so do not attribute the beliefs to Cheng. Quote only from reassessment L115-L124.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L111-L124",
+        "https://github.com/chenglou/handwired/blob/a137ccd/lab/briefs/context-shared.md#L32"
+      ]
+    },
+    {
+      "original": "Section 5.12 line citations: scoring #L45, soft parser #L31, method #L19-L31",
+      "verdict": "corrected",
+      "fix": "Scoring is L39, the soft parser and 'The whole run as one circuit was not built' is L25, the method is L19-L23, and the 55 mistake types / ~40,000 payloads are L29.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/recovery-parser/README.md#L19-L39"
+      ]
+    },
+    {
+      "original": "Key claim 9: commit 257856e merged a 238-commit experiment",
+      "verdict": "corrected",
+      "fix": "The commit message says 238, but git rev-list 257856e^1..257856e^2 counts 239 (112 dated Oct 15, 127 dated Oct 16 PDT). Quote '238' as the message states it, or say 'about 240'. The dossier already flagged this; it is logged here for the record. Date 2026-10-16 17:33:49 -0700 confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/commit/257856e3b221140acb4cc4460626b850c0bd4ff1"
+      ]
+    }
+  ]
+}

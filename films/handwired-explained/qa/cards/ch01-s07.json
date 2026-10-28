@@ -1,0 +1,41 @@
+{
+ "shot": "ch01-s07",
+ "at": "2026-10-28T17:37:22.794Z",
+ "step": 0.0833,
+ "sampled": 184,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "drawImage@407,33",
+   "probed": false,
+   "from": 0.55,
+   "to": 15.8,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@465,148",
+   "probed": false,
+   "from": 0.55,
+   "to": 13.217,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@683,169",
+   "probed": false,
+   "from": 1.467,
+   "to": 9.883,
+   "minInkWhilePaper": 0.83
+  }
+ ]
+}

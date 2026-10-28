@@ -1,0 +1,123 @@
+{
+ "shot": "ch07-s02",
+ "at": "2026-10-28T13:19:13.021Z",
+ "minCapPx": 22,
+ "sampled": 51,
+ "texts": 22,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "0",
+   "capWhileSubject": 17.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "y = 3w · max(0, g + b)",
+   "capWhileSubject": 30.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3",
+   "capWhileSubject": 22.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "× w",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "w 0.5",
+   "capWhileSubject": 22.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3w = 1.5",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "g 0.25",
+   "capWhileSubject": 22.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "b −0.1",
+   "capWhileSubject": 22.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0.15",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1.5 × 0.15",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= 0.225",
+   "capWhileSubject": 22.7,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "w 0.52",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 0.234",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "→ 0.233921",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "∂y/∂w =",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "0.45",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3 × 0.15",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= 0.45",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "·   ∂y/∂g =",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "1.5",
+   "capWhileSubject": 26.9,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "3w",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "= 1.5",
+   "capWhileSubject": 25.3,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

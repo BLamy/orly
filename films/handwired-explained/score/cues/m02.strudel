@@ -1,0 +1,130 @@
+// m02 — THE OLDEST TAG (handwired-explained), 99.00-191.40 (92.40 s), clock 1455.42 s.
+// setcpm(56/4): 21.56 cycles. Cue-local seconds = absolute - 99.00; every event placed by tl() on its word or beat.
+//
+// M4 (the reed): M1's contour in E minor and augmentation, E G A G E, on a muted clarinet, a gramophone in the
+// next room. The reed only speaks in the gaps and breaths; under the names, dates and the quote: a held low E.
+//
+//  0.0-4.4   enter under m01's fading D: the reed alone, E -> G, over a low E and gramophone dust.
+//  7.44      'tied' (106.44): a ghost detent tie.  Under the quote (L0202) only the low E.
+//  20.0      the gap after 'logic': A G; the lanterns: two dry clacks for AND ('andGate'), one for OR
+//            ('orGate', in the breath after 'learned'), the reed's E settling there.
+//  26.3      winterBlue, Kleene: the reed drops a register (E3 G3); ghost tie on 'kleene'; the dial's three
+//            ticks on 'dial' (M3's first appearance: tick-tock-tick, A5 E5 A5, 72 bpm); on the beat 'reading'
+//            the low E and the dust go and the reed is alone (a held G3), a falling A G in the breath after
+//            'outside'; ghost tie on 'hang'.
+//  48.5      labGreen: the reed in G colour (D4 G4 B4) in the gap after 'line'; under L0208b and L0209 only a soft
+//            reed note per breath (A3, G4, lpf 900-1000). THE SPLIT in clear air, after 'down' (end of L0209): the
+//            reed's B4, then a second reed (english horn) a whole tone below on A4: M4 behaves like M1 for the
+//            first time; the lower voice frays into breath noise in the same gap, the upper held warm past the
+//            end of the shot, fading under the start of L0210.
+//  64.8      duskRose: ghost tie on 'tag' (over E), ghost flip on 'brooks' (over B); the third stroke REPLACED
+//            by the eleven voicing (B/A at half level on piano) in the breath after 'replied'; the two reeds
+//            take up the same whole tone (B4/A4) only after 'wrong', held through the pause after L0210b: contested.
+//  81.0      the present: a C bed (IV of G); the reed warms and lifts (G4 in the breath, A4 on 'years', -4 dB,
+//            lpf 900) and hands over to M1 on felt piano, gate 1 (B in the breath after 'tag', then D); the LAST
+//            ONSET is the plain G-major sonority on 'hand' (188.29), let ring through 'desktop' into the fade.
+//
+// UNDER THE LINES the reed holds are 4 dB down and behind lpf 900; its melodic statements live in the gaps.
+// PEDALS: no soundfont pedal is held longer than one bar: the bass weight is a dark tuba (lpf 260, an even
+// envelope; the contrabass sample loop beats at ~1.6 s on E2), re-bowed every two bars on two alternating lanes (short bow changes), and
+// the bowed pad above it, re-bowed every two bars, never doubles the tuba's pitch.
+setcpm(56/4)
+const CPS = 56/240, DUR = 92.4
+const Q = 256, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+// re-bowed pedal: [t0, t1, notes, velocity?] spans -> a fresh bow about every `step` s on two alternating lanes, so
+// no soundfont sample is held for long. A run of touching spans blooms in on its first bow (attack a0) and dies away
+// on its last (release r1); between bows the change is short (attack a, release r, overlap ov): two copies of one
+// sample at the same pitch interfere, and a long overlap dips 4-8 dB, while a short bow change measures under 1 dB.
+const bows = (spans, step, f, { a0 = 1.5, r1 = 2.5, a = 0.3, r = 0.4, ov = 0.1 } = {}) => { const ev = []
+  spans.forEach(([t0, t1, n, v], k) => {
+    const joinPrev = k > 0 && Math.abs(spans[k - 1][1] - t0) < 0.01, joinNext = k < spans.length - 1 && Math.abs(spans[k + 1][0] - t1) < 0.01
+    for (let t = t0; t < t1 - 0.05;) { const d = t1 - t < 1.5 * step ? t1 - t : step
+      const first = t === t0 && !joinPrev, last = t + d >= t1 - 0.05 && !joinNext
+      let p = note(mini(n)).attack(first ? a0 : a).release(last ? r1 : r); if (v != null) p = p.velocity(v)
+      ev.push([t, d + (last ? 0 : ov), p]); t += d } })
+  const lanes = [[], []]; ev.forEach((e, i) => lanes[i % 2].push(e))
+  return stack(...lanes.map(l => f(tl(...l)))) }
+const loop = (pat, d) => pat.fast(qn(d) / Q)          // a one-cycle figure kept at tempo through a slot
+const MIDI = n => { const m = n.match(/^([a-g])(#|b)?(-?\d)$/)
+  return 12 * (+m[3] + 1) + { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) }
+
+// ---------------------------------------------------------------- M4 · the reed (muted clarinet)
+// r(t, dur, note, velocity, lpf): statements in the gaps at lpf 1100; holds under a line 4 dB down at lpf 900
+const r = (t, d, n, v, lp = 1100) => [t, d, note(n).velocity(v).lpf(lp)]
+const reed = x => x.s("gm_clarinet").attack(0.18).release(1.1).room(0.35).rsize(4)
+$: reed(tl(
+  // the oldest tag, candleAmber: E -> G alone before L0201
+  r(1.00, 1.55, "e4", 0.23), r(2.55, 1.80, "g4", 0.2),
+  // the gap after 'logic' (L0202): A G; then E in the breath after 'learned' ('orGate'), 4 dB down, short
+  r(20.05, 0.75, "a4", 0.24), r(20.80, 0.60, "g4", 0.18), r(23.24, 1.6, "e4", 0.08, 900),
+  // winterBlue: dropped a register, in the gap after 'hand'
+  r(26.30, 0.90, "e3", 0.27), r(27.20, 0.90, "g3", 0.24),
+  // in the breath after 'events'; alone from the beat 'reading' (held under L0206: 4 dB down); A G before 'Hang'
+  r(38.47, 0.60, "a3", 0.18), r(41.22, 4.0, "g3", 0.10, 900), r(46.30, 0.45, "a3", 0.17), r(46.75, 1.2, "g3", 0.11, 900),
+  // labGreen, in the gap after 'line': G colour, lighter
+  r(48.48, 0.55, "d4", 0.22), r(49.03, 0.55, "g4", 0.22), r(49.58, 1.1, "b4", 0.20),
+  // one soft note per breath under L0208b / before L0209
+  r(55.36, 1.5, "a3", 0.10, 900), r(58.62, 0.9, "g4", 0.12, 1000),
+  // THE SPLIT, in clear air after 'down': the upper voice, held warm past the end of the shot
+  r(63.80, 1.9, "b4", 0.17),
+  // contested: the reeds' whole tone after 'wrong', through the pause
+  r(77.35, 2.6, "b4", 0.10),
+  // the present: warms and lifts (G in the breath, A on 'years' 4 dB down), handing over to the piano
+  r(84.32, 1.26, "g4", 0.13), r(85.58, 1.40, "a4", 0.095, 900)))
+// the second reed, a whole tone below: the split's lower voice (fraying into breath at once), the contested pair
+$: tl([64.05, 1.0, note("a4").velocity(0.19)], [77.35, 2.6, note("a4").velocity(0.11)])
+  .s("gm_english_horn").attack(0.35).release(1.3).lpf(1000).room(0.35).rsize(4)
+// the fraying: breath noise swallows the lower voice, inside the gap after 'down'
+$: tl([64.25, 1.0, s("pink")]).bpf(900).bpq(0.7).lpf(1600).gain(0.032).attack(0.45).release(0.7)
+
+// ---------------------------------------------------------------- the low E, the cold, the lab, the dusk, the present
+// tuba pedal, a bow every two bars (8.57 s): E, (gone from 'reading'), G, E, B, C, G
+$: bows([[0.30, 41.53, 'e2'], [48.48, 63.79, 'g2'], [64.79, 74.59, 'e2'], [74.59, 81.03, 'b1'], [81.03, 89.29, 'c2'],
+         [89.29, 92.4, 'g1']], 8.57,
+  x => x.s("gm_tuba").velocity(0.2).lpf(260).gain(0.45))
+// the bowed pad above it, a bow every two bars, never on the tuba's pitch
+$: bows([[0.30, 41.53, '[b2,e3]', 0.055], [48.48, 63.79, '[d3,g3]', 0.045], [64.79, 74.59, '[b2,g3]', 0.06],
+         [74.59, 81.03, '[f#2,b2]', 0.06], [81.03, 89.29, '[c3,g3,e4]', 0.055], [89.29, 92.4, '[d3,b3]', 0.1]], 8.57,
+  x => x.s("gm_pad_bowed").lpf(650), { a0: 2, r1: 2.4, a: 0.6, r: 0.8, ov: 0.2 })
+
+// ---------------------------------------------------------------- M1 returns: the eleven (contested), then the present
+// evs [t, dur, upper notes, gate, velocity]; U at gain gate, L a whole tone lower at gain 1-gate
+const sel = (evs, f) => stack(
+  f(tl(...evs.map(([t, d, ns, g, v]) => [t, d, note(mini('[' + ns.map(MIDI).join(',') + ']')).velocity(v).gain(g)]))).pan(0.58),
+  f(tl(...evs.map(([t, d, ns, g, v]) => [t, d, note(mini('[' + ns.map(n => MIDI(n) - 2).join(',') + ']')).velocity(v).gain(1 - g)]))).pan(0.42))
+const felt = x => x.s("piano").lpf(1600).release(0.6).room(0.35).rsize(3)
+$: sel([[75.50, 5.4, ['b4'], 0.5, 0.36],            // tag 2 contested: the eleven voicing, B/A at half level
+        [87.05, 1.00, ['b4'], 1, 0.2],              // the breath after 'tag': M1 back, gate open on U
+        [88.05, 1.24, ['d5'], 1, 0.22],
+        [89.29, 3.11, ['g4', 'b4', 'd5'], 1, 0.21]], felt)   // 'hand': the plain G-major sonority (LAST ONSET)
+$: tl([89.29, 3.1, note("[g2,g3]")]).s("piano").velocity(0.15).lpf(900).release(1).room(0.35).rsize(3)
+
+// ---------------------------------------------------------------- detent strokes, lantern clacks, the dial
+const tie = (v, tonic) => stack(s("gm_woodblock").note("e6").velocity(v).decay(0.03).sustain(0),
+  note(tonic).s("gm_pizzicato_strings").velocity(v * 0.6).lpf(1200))
+const flip = (v, dom) => stack(s("white").hpf(1800).lpf(7000).decay(0.035).sustain(0).gain(v * 0.75),
+  note(dom).s("gm_pizzicato_strings").velocity(v * 0.7).lpf(1200))
+const relay = v => stack(s("gm_woodblock").note("g5").velocity(0.45 * v).decay(0.04).sustain(0),
+  s("white").hpf(2500).decay(0.025).sustain(0).gain(0.1 * v))
+const tick = (n, v) => s("gm_woodblock").note(n).velocity(v).decay(0.04).sustain(0).pan(0.45)
+$: tl([7.44, 0.4, tie(0.16, "e2")],                                   // 'tied'
+      [21.80, 0.25, relay(0.45)], [22.05, 0.3, relay(0.4)],          // AND: two wicks (under 'Nothing': ghosted)
+      [23.40, 0.4, relay(0.8)],                                      // OR: one wick, in the breath
+      [30.56, 0.4, tie(0.14, "e2")],                                 // 'kleene': the knot card
+      [33.48, 0.8, tick("a5", 0.17)], [34.31, 0.8, tick("e5", 0.22)], [35.15, 0.5, tick("a5", 0.14)],   // 'dial': M3
+      [47.02, 0.4, tie(0.15, "e2")],                                 // 'hang'
+      [66.74, 0.4, tie(0.15, "e2")],                                 // 'tag'
+      [74.59, 0.4, flip(0.13, "b2")])                                // 'brooks' (the third stroke never comes)
+  .room(0)
+
+// ---------------------------------------------------------------- the room: gramophone dust and paper
+$: tl([0.0, 41.53, loop(s("white*64").degradeBy(0.9), 41.53)]).decay(0.008).sustain(0).hpf(3000).lpf(9000).gain(0.05)
+$: tl([0.0, 41.53, s("pink")], [48.48, 43.9, s("pink")]).lpf(2500).hpf(150).gain(0.008).attack(1.5).release(1.5)
+
+// level: integrated about -24 LUFS
+all(x => x.postgain(2.85))

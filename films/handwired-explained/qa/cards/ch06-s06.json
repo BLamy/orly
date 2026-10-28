@@ -1,0 +1,29 @@
+{
+ "shot": "ch06-s06",
+ "at": "2026-10-28T17:39:51.758Z",
+ "step": 0.0833,
+ "sampled": 151,
+ "transition": {
+  "kind": "lampChange",
+  "sampled": 14,
+  "ghosts": [],
+  "carry": []
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s06-eq-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch06-s06-eq-card",
+   "probed": true,
+   "from": 7.317,
+   "to": 13.15,
+   "minInkWhilePaper": 0.8
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "shot": "ch01-s04",
+ "at": "2026-10-28T09:09:23.276Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "copper adds",
+   "capWhileSubject": 30.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "indigo subtracts",
+   "capWhileSubject": 30.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "9,909",
+   "capWhileSubject": 30.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "arcs  ·  one per weight",
+   "capWhileSubject": 30.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [],
+ "textureTexts": 0
+}

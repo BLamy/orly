@@ -1,0 +1,45 @@
+{
+  "id": "cells-builder-circuit",
+  "checked": 22,
+  "confirmed": 18,
+  "corrected": 4,
+  "unverifiable": 0,
+  "corrections": [
+    {
+      "original": "Every Circuit builder method (affine, reglu, boolean, indexRead, multiply, select, constant) ends in Circuit.append, which pushes one Operation and returns wire sourceSize + operations.length (key claim 6; dossier section 1).",
+      "verdict": "corrected",
+      "fix": "affine, constant (via affine), roundAffine, reglu, boolean, multiply and select end in Circuit.append; indexRead does not: it calls indexReadAffine, which pushes its own 'index' operation (append's kind excludes 'index') or returns a candidate wire for a constant index. multiply with unknown-sign operands appends 3 operations and select up to 4, so one call = one operation only for affine/reglu/boolean. Branded Wire, the returned wire number and the identity/duplicate-expression short-circuits are confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L422-L470",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L480-L555",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/numeric-ui-core.ts#L557-L647"
+      ]
+    },
+    {
+      "original": "table.createCircuit (new Circuit(cells.length) with every range, grid, bit and one-hot declared) (key claim 5).",
+      "verdict": "corrected",
+      "fix": "Clarified: one-hot groups are declared to the circuit only when declareToCircuit is set (the default); table.atMostOne rules are validator-only. The rest of the two-phase sequence and finish() returning {circuit, nextSource, initialSource, validate} is confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/cells.ts#L167-L196",
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/src/runtime/cells.ts#L224-L237"
+      ]
+    },
+    {
+      "original": "Timeline 2026-06-03: First commits 592f296 'Set up minimal Bun TypeScript project' and 3d2c717 'Create numeric UI atom lab'.",
+      "verdict": "corrected",
+      "fix": "Order reversed: git log --reverse gives 3d2c717 'Create numeric UI atom lab' (2026-06-03 20:24 -0700) first, then 592f296 (20:38 -0700).",
+      "sources": [
+        "https://github.com/chenglou/handwired/commit/3d2c717",
+        "https://github.com/chenglou/handwired/commit/592f296"
+      ]
+    },
+    {
+      "original": "HandwiredOS windows tested as \"stored and drawn rectangles equal a plain JavaScript reference\" (R:docs/behavior-choices.md#L118-L122), presented in quotation marks.",
+      "verdict": "corrected",
+      "fix": "A paraphrase in quotes. Verbatim (L118): \"a test can compare stored and drawn rectangles with a plain JavaScript reference over random viewports\".",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e3b221140acb4cc4460626b850c0bd4ff1/docs/behavior-choices.md#L118"
+      ]
+    }
+  ]
+}

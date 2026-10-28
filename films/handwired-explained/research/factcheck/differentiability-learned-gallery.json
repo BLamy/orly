@@ -1,0 +1,121 @@
+{
+  "id": "differentiability-learned-gallery",
+  "checked": 21,
+  "confirmed": 13,
+  "corrected": 5,
+  "unverifiable": 2,
+  "corrections": [
+    {
+      "original": "Claim 6 / Summary: straight-through is used in generative-fields and drag-knobs, 'where it was measured as biased (up to ~1.5x phantom gradient)'.",
+      "verdict": "corrected",
+      "fix": "'Up to ~1.5x' (173 vs true 120) is generative-fields' measurement only. drag-knobs measured a far larger leak: 592 of 2,250 checks off, e.g. gradient 692,700 where the finite difference is 0. Do not present 1.5x as the general size of the bias.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/generative-fields/README.md#L80",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/generative-fields/README.md#L126",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/drag-knobs/README.md#L242",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L111"
+      ]
+    },
+    {
+      "original": "Claim 15 / Q9: 'Cheng asked for a misalignment penalty' (dated 2026-10-13).",
+      "verdict": "corrected",
+      "fix": "His words were 'a bigger penalty or adjustable one for learned gallery for grid being unaligned'. The request is undated in the source; only the first (snapping) answer is dated October 13, 2026. The rejection quote is verbatim (typo 'alignemtn' in source). Since Oct 14 the photos line up only through the penalty: confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-gallery/README.md#L13",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L21"
+      ]
+    },
+    {
+      "original": "Timeline 2013-08-15 row: 'the repo uses the term, never this citation' (Bengio, Léonard, Courville arXiv:1308.3432).",
+      "verdict": "corrected",
+      "fix": "The repo does cite it once: lab/ui-exploration/learned-bits/README.md L264 lists Bengio, Léonard and Courville 2013 (arXiv 1308.3432) as the source of the straight-through estimator.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/learned-bits/README.md#L264",
+        "https://arxiv.org/abs/1308.3432"
+      ]
+    },
+    {
+      "original": "Q16 'No method here avoids exhaustive evaluation by learning from executions alone.' cited at learned-interpreter README L78.",
+      "verdict": "corrected",
+      "fix": "Quote is verbatim but at L80.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-interpreter/README.md#L80"
+      ]
+    },
+    {
+      "original": "Section 5.7 presets: Story has '2 rows of 4 below'; Cinema 'a 2 × 5 rail'.",
+      "verdict": "corrected",
+      "fix": "Story: hero 0.6 × 0.52, two beside it, and a 4 × 2 grid below with 7 of 8 cells filled (10 rectangles). Cinema: hero plus a 2 × 5 rail with 8 of 10 cells filled (9). Contact sheet: 4 × 3 with 11 of 12 filled.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/learned-gallery.ts#L81-L125",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L15"
+      ]
+    },
+    {
+      "original": "Claim 7: an integer bit relu(v-4)-relu(v-5) reports slope 0 at whole numbers and 1 at the threshold.",
+      "verdict": "contested",
+      "fix": "True for the README's hand-written expression (guide table: v=5 -> 1). But docs/execution-model.md L143 says emitCompare's integer bits give a nonzero gradient only when D is strictly fractional, i.e. only when a grid declaration is false, so on true grid values they report 0 at the threshold too. Scope the claim to the README expression. The [0,0] argmax result and 160/160 soft ramp are confirmed.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L68-L71",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/ui-exploration/guide/sections/differentiability.md#L91",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L143",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/cascade-argmax/ramp.test.ts#L16-L25",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/status.md#L202"
+      ]
+    },
+    {
+      "original": "Claim 8: R1 gradients for parameter 240: backprop 0.00236120680, central difference 0.00236120684, hand formula 0.00236120684.",
+      "verdict": "unverifiable",
+      "fix": "Re-running the R1 script was blocked by the permission classifier. The hand formula (1/40)·Σ[clip(e_left)+clip(e_right)] matches the code's gradient seeding (gradientScale = 1/(targets×4); right edge adds to left and width), and the dossier's 4-decimal table sums to 0.0945/40 = 0.0023625. Digits rest on one run record; re-run before showing on screen.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L703-L739",
+        "R1 run record (scratchpad grad.ts, 2026-10-27)"
+      ]
+    },
+    {
+      "original": "Adam 'Good default settings' caption (α=0.001, β1=0.9, β2=0.999, ε=1e-8).",
+      "verdict": "unverifiable",
+      "fix": "PDF text still not extractable; keep as UNVERIFIED, do not quote. The gallery's values come from its code, which is confirmed.",
+      "sources": [
+        "https://arxiv.org/abs/1412.6980",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/trainable-geometry.ts#L740-L768"
+      ]
+    },
+    {
+      "original": "Claim 13: a step takes about 0.2 ms in Bun and 0.34-0.41 ms in Chrome 155 on an Apple M5 Max.",
+      "verdict": "corrected",
+      "fix": "Confirmed as the README's figure (counted as confirmed). Nuance added: a code comment gives an earlier Oct 13 measurement of 0.26 ms in Bun and about 0.4 ms in Chrome; use one source and don't mix them.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/README.md#L34",
+        "https://github.com/chenglou/handwired/blob/257856e/src/learned-gallery/learned-gallery.ts#L275-L276"
+      ]
+    },
+    {
+      "original": "Claim 10: the ε change took recovery from 0/20 to 19-20 of 20 per seed group.",
+      "verdict": "corrected",
+      "fix": "Confirmed for the integer training domain (counted as confirmed). Nuance added: under full fractional certification the two-add rows recover only 5, 3 and 7 of 20. Say 'integer domain' whenever the figure is used.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-interpreter/README.md#L7",
+        "https://github.com/chenglou/handwired/blob/257856e/lab/learned-interpreter/README.md#L67-L74"
+      ]
+    },
+    {
+      "original": "Claim 16: multiply's gradient at zero was wrong: 3*x at x=0 reported 0.",
+      "verdict": "corrected",
+      "fix": "Confirmed (counted as confirmed); the reassessment and the macro fix are both in commit c6bf933, 2026-09-03 06:13 PDT. Nuance added: 'Reversing the operand order gives three', so the bug depended on which operand sat in the gate.",
+      "sources": [
+        "https://github.com/chenglou/handwired/blob/257856e/lab/reassessment-2026-09-03.md#L78",
+        "https://github.com/chenglou/handwired/blob/257856e/docs/execution-model.md#L34"
+      ]
+    },
+    {
+      "original": "S21: Hestenes 1969 'No DOI was verified this session'; Powell 1969.",
+      "verdict": "corrected",
+      "fix": "Hestenes, JOTA 4:303-320 (1969), DOI 10.1007/BF00934777. Powell's chapter is dated 1969 by most sources and 1972 by Rockafellar 1973; page numbers not independently verified. Context only.",
+      "sources": [
+        "https://link.springer.com/doi/10.1007/BF00934777",
+        "https://apps.dtic.mil/sti/pdfs/ADA113075.pdf"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+ "shot": "ch09-s02",
+ "at": "2026-10-28T17:41:19.014Z",
+ "step": 0.0833,
+ "sampled": 91,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "OCTOBER 2026 · 689 COMMITS",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "242 · 200 · 113 · 128",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "s",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.69
+   },
+   {
+    "side": "in",
+    "text": "c",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "in",
+    "text": "m",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "o",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.68
+   },
+   {
+    "side": "in",
+    "text": "er",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "e",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.59
+   },
+   {
+    "side": "in",
+    "text": "a",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.62
+   },
+   {
+    "side": "in",
+    "text": "l",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.63
+   }
+  ]
+ },
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch09-s02-card"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch09-s02-card",
+   "probed": true,
+   "from": 0.55,
+   "to": 8.05,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

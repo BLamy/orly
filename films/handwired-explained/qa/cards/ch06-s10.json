@@ -1,0 +1,216 @@
+{
+ "shot": "ch06-s10",
+ "at": "2026-10-28T17:40:01.269Z",
+ "step": 0.0833,
+ "sampled": 97,
+ "transition": null,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch06-s10-card0",
+  "ch06-s10-card1",
+  "ch06-s10-card2",
+  "ch06-s10-card3",
+  "ch06-s10-t00",
+  "ch06-s10-t01",
+  "ch06-s10-t02",
+  "ch06-s10-t03",
+  "ch06-s10-t10",
+  "ch06-s10-t11",
+  "ch06-s10-t12",
+  "ch06-s10-t13",
+  "ch06-s10-t20",
+  "ch06-s10-t21",
+  "ch06-s10-t22",
+  "ch06-s10-t23",
+  "ch06-s10-t30",
+  "ch06-s10-t31",
+  "ch06-s10-t32",
+  "ch06-s10-t33",
+  "ch06-s10-eq",
+  "ch06-s10-sum0",
+  "ch06-s10-sum1",
+  "ch06-s10-sum2",
+  "ch06-s10-sum3"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch06-s10-card0",
+   "probed": true,
+   "from": 0.05,
+   "to": 8.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s10-card1",
+   "probed": true,
+   "from": 0.05,
+   "to": 8.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s10-card2",
+   "probed": true,
+   "from": 0.05,
+   "to": 8.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s10-card3",
+   "probed": true,
+   "from": 0.05,
+   "to": 8.05,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch06-s10-t00",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t01",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t02",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t03",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t10",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t11",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t12",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t13",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t20",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t21",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t22",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t23",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t30",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t31",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t32",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-t33",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0
+  },
+  {
+   "id": "ch06-s10-eq",
+   "probed": true,
+   "from": 4.717,
+   "to": 8.05,
+   "minInkWhilePaper": 0.1
+  },
+  {
+   "id": "ch06-s10-sum0",
+   "probed": true,
+   "from": 4.883,
+   "to": 8.05,
+   "minInkWhilePaper": 0.95
+  },
+  {
+   "id": "ch06-s10-sum1",
+   "probed": true,
+   "from": 4.883,
+   "to": 8.05,
+   "minInkWhilePaper": 0.95
+  },
+  {
+   "id": "ch06-s10-sum2",
+   "probed": true,
+   "from": 4.883,
+   "to": 8.05,
+   "minInkWhilePaper": 0.95
+  },
+  {
+   "id": "ch06-s10-sum3",
+   "probed": true,
+   "from": 4.883,
+   "to": 8.05,
+   "minInkWhilePaper": 0.95
+  }
+ ]
+}
