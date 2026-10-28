@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "let-theories-die",
+      "title": "Let Theories Die",
+      "subtitle": "Selection, proxies and readable minds",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c2410c",
+      "href": "?bundle=let-theories-die",
+      "series": "Who Survives",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Score Is the Outcome",
+          "duration": 82.802
+        },
+        {
+          "number": 2,
+          "title": "Every Proxy Gets Hacked",
+          "duration": 108.576
+        },
+        {
+          "number": 3,
+          "title": "Who Decides What's Kept",
+          "duration": 110.249
+        },
+        {
+          "number": 4,
+          "title": "Fit Isn't Good",
+          "duration": 105.141
+        },
+        {
+          "number": 5,
+          "title": "Readable Minds",
+          "duration": 116.053
+        }
+      ],
+      "createdAt": "2026-10-28T04:23:42.283Z"
+    },
+    {
       "slug": "handwired-bitonic-sorter",
       "title": "Bitonic Sorter",
       "subtitle": "Ken Batcher's fixed wiring of comparators, and what a circuit of sums and relu pays to run it.",
