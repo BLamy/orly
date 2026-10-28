@@ -320,7 +320,8 @@ export function Render({ s }: { s: SceneState }) {
               const x = cx + p.ox * sx;
               const y = cy + p.oy * sy;
               const culled = Math.max(p.oy > 0.25 ? culling : 0, p.ox < -0.35 ? domCull : 0);
-              const col = toDog(clamp01(dom * 0.9 + climbA * 0.25 + breed * 0.1));
+              // colour carries temperament: grey (fearful) on the left, warm (calm around people) on the right
+              const col = toDog(clamp01((x - X0 - 60) / (X1 - X0 - 160)));
               return <circle key={i} cx={x} cy={y} r={5.2} fill={col} opacity={enter * (1 - 0.8 * culled)} />;
             })}
           </g>
@@ -337,8 +338,8 @@ export function Render({ s }: { s: SceneState }) {
               const pose = mixPose({ ear: 0.6, tail: 0.3, snout: 0.35, spots: 0.5 }, { ear: 0.8, tail: 0.25, snout: 0.6, spots: 0.75 }, k / 4);
               return (
                 <g key={k} opacity={lerp(0.25, 1, u)}>
-                  <Canid x={950 + k * 66} y={470} s={0.28} pose={pose} color={DOG} />
-                  <Label x={950 + k * 66} y={512} text={`c.${k + 1}`} size={13} color={colors.MUTED} anchor="middle" mono />
+                  <Canid x={940 + k * 68} y={470} s={0.29} pose={pose} color={DOG} />
+                  <Label x={948 + k * 68} y={512} text={`c.${k + 1}`} size={13} color={colors.MUTED} anchor="middle" mono />
                 </g>
               );
             })}

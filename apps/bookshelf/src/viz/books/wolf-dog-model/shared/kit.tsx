@@ -91,61 +91,75 @@ export function Canid({
 }) {
   if (opacity <= 0.005) return null;
   const { ear, tail, snout, spots } = pose;
-  // head and snout: a long wedge (wolf) shortens and rounds (dog)
-  const head: V2 = [92, -30];
-  const hr = lerp(19, 21, snout);
-  const snoutLen = lerp(34, 15, snout);
-  const snoutTip: V2 = [head[0] + 14 + snoutLen, lerp(-22, -25, snout)];
-  const snoutD = `M${pt([head[0] + 4, -44])} Q${pt([snoutTip[0] - 10, lerp(-34, -40, snout)])} ${pt(snoutTip)} Q${pt([snoutTip[0] - 4, -12])} ${pt([head[0] + 2, lerp(-14, -12, snout)])} Z`;
-  // ears: bases fixed on the crown, tips swing from pricked up to hanging beside the head
+  // Proportions that read as a canid, not a horse: a deep chest, a short neck that carries the head about level with
+  // the back, short sturdy legs with paws, and a muzzle that is long and narrow (wolf) or short and blunt (dog).
+  const head: V2 = [86, -30];
+  const hr = lerp(20, 23, snout);
+  const muzzleLen = lerp(36, 16, snout);
+  const mTop = lerp(-38, -40, snout);
+  const mBot = lerp(-16, -12, snout);
+  const tipX = head[0] + 12 + muzzleLen;
+  const snoutTip: V2 = [tipX, lerp(-26, -27, snout)];
+  const snoutD = `M${pt([head[0] + 4, mTop - 4])} L${pt([tipX - 6, lerp(-32, -36, snout)])} Q${pt([tipX + lerp(2, 6, snout), lerp(-30, -32, snout)])} ${pt([tipX, lerp(-22, -20, snout)])} Q${pt([tipX - 4, mBot])} ${pt([tipX - 12, mBot])} L${pt([head[0] + 2, mBot + 2])} Z`;
+  // ears: bases on the crown; tips swing from pricked up to hanging beside the cheek
   const ear1D = (() => {
-    const A: V2 = [80, -44];
-    const B: V2 = [94, -49];
-    const tip = lp([84, -74], [76, -12], ear);
-    const ctl = lp([92, -64], [90, -20], ear);
+    const A: V2 = [72, -44];
+    const B: V2 = [88, -50];
+    const tip = lp([74, -74], [70, -10], ear);
+    const ctl = lp([88, -64], [84, -18], ear);
     return `M${pt(A)} L${pt(tip)} Q${pt(ctl)} ${pt(B)} Z`;
   })();
   const ear0D = (() => {
-    const A: V2 = [72, -40];
-    const B: V2 = [84, -46];
-    const tip = lp([72, -70], [66, -14], ear);
+    const A: V2 = [64, -40];
+    const B: V2 = [76, -46];
+    const tip = lp([62, -68], [58, -12], ear);
     return `M${pt(A)} L${pt(tip)} L${pt(B)} Z`;
   })();
-  // tail: a bushy brush from the rump; hanging (wolf) → curled over the back (dog)
-  const t0: V2 = [-68, -8];
-  const c1 = lp([-96, 0], [-104, -34], tail);
-  const c2 = lp([-108, 26], [-92, -70], tail);
-  const t1 = lp([-108, 46], [-56, -54], tail);
+  // tail: a bushy brush from the rump; hanging low (wolf) → curled up over the back (dog)
+  const t0: V2 = [-64, -12];
+  const c1 = lp([-90, -4], [-98, -40], tail);
+  const c2 = lp([-100, 22], [-86, -72], tail);
+  const t1 = lp([-98, 40], [-52, -56], tail);
   const tailD = `M${pt(t0)} C${pt(c1)} ${pt(c2)} ${pt(t1)}`;
+  // short legs: hind legs bend at the hock, forelegs straight; every leg ends in a paw
   const legs: V2[][] = [
-    [[-56, 10], [-64, 32], [-56, 54]],
-    [[-40, 14], [-46, 34], [-40, 54]],
-    [[46, 14], [46, 54]],
-    [[62, 12], [64, 54]],
+    [[-50, 14], [-58, 32], [-52, 48]],
+    [[-34, 18], [-40, 34], [-34, 48]],
+    [[42, 20], [42, 48]],
+    [[58, 18], [60, 48]],
   ];
   const stroke = outline ?? 'none';
   return (
     <g transform={`translate(${x},${y}) scale(${flip ? -s : s},${s})`} opacity={opacity}>
-      <path d={ear0D} fill={color} opacity={0.75} />
+      <path d={ear0D} fill={color} opacity={0.72} />
       <path d={tailD} fill="none" stroke={color} strokeWidth={lerp(22, 15, tail)} strokeLinecap="round" />
-      {legs.map((l, i) => (
-        <polyline key={i} points={l.map(pt).join(' ')} fill="none" stroke={color} strokeWidth={13} strokeLinecap="round" strokeLinejoin="round" opacity={i % 2 === 1 ? 0.8 : 1} />
-      ))}
-      <ellipse cx={0} cy={0} rx={74} ry={lerp(27, 30, snout)} fill={color} stroke={stroke} strokeWidth={1.5} />
-      {/* chest and neck */}
-      <ellipse cx={52} cy={4} rx={26} ry={28} fill={color} />
-      <path d={`M40,-18 Q62,-46 ${head[0] - 6},-46 L${head[0] + 4},-18 Q70,0 56,22 Z`} fill={color} />
+      {legs.map((l, i) => {
+        const end = l[l.length - 1];
+        const back = i % 2 === 1;
+        return (
+          <g key={i} opacity={back ? 0.78 : 1}>
+            <polyline points={l.map(pt).join(' ')} fill="none" stroke={color} strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+            <ellipse cx={end[0] + 4} cy={end[1] + 3} rx={10} ry={5} fill={color} />
+          </g>
+        );
+      })}
+      {/* body: a long barrel with a deep chest and a slight tuck at the belly */}
+      <path d="M-70,-6 Q-66,-30 -30,-30 L40,-30 Q74,-30 76,0 Q76,26 52,32 Q20,30 0,22 Q-30,28 -54,24 Q-74,16 -70,-6 Z" fill={color} stroke={stroke} strokeWidth={1.5} />
+      {/* short neck: the head rides about level with the back */}
+      <path d={`M48,-28 Q60,-50 ${head[0] - 4},-48 L${head[0] + 8},-14 Q70,6 56,10 Z`} fill={color} />
       <circle cx={head[0]} cy={head[1]} r={hr} fill={color} />
       <path d={snoutD} fill={color} />
-      <path d={ear1D} fill={color} stroke={PLATE} strokeOpacity={0.4 * ear} strokeWidth={1.4} />
+      <path d={ear1D} fill={color} stroke={PLATE} strokeOpacity={0.45 * ear} strokeWidth={1.4} />
       {spots > 0.01 &&
         SPOT_SEEDS.map((sp, i) => {
           const u = clamp01((spots - sp.k) * 3);
           return u > 0.01 ? <ellipse key={i} cx={sp.x} cy={sp.y} rx={sp.rx * u} ry={sp.ry * u} fill="#f8fafc" opacity={0.85} /> : null;
         })}
-      {spots > 0.3 && <path d={`M${head[0] + 2},-48 Q${head[0] + 10},-36 ${head[0] + 8},-24`} stroke="#f8fafc" strokeWidth={6 * clamp01((spots - 0.3) * 2)} fill="none" strokeLinecap="round" opacity={0.85} />}
-      <circle cx={head[0] + 9} cy={-36} r={2.8} fill={PLATE} />
-      <circle cx={snoutTip[0] - 1} cy={snoutTip[1] - 1} r={3.6} fill={PLATE} />
+      {spots > 0.3 && <path d={`M${head[0] + 4},-50 Q${head[0] + 12},-38 ${head[0] + 10},-24`} stroke="#f8fafc" strokeWidth={6 * clamp01((spots - 0.3) * 2)} fill="none" strokeLinecap="round" opacity={0.85} />}
+      {/* eye, mouth line, nose */}
+      <circle cx={head[0] + 8} cy={-36} r={2.8} fill={PLATE} />
+      <path d={`M${head[0] + 10},${mBot - 3} L${tipX - 8},${mBot - 4}`} stroke={PLATE} strokeOpacity={0.4} strokeWidth={1.6} strokeLinecap="round" />
+      <circle cx={snoutTip[0] - 1} cy={snoutTip[1] - 2} r={4} fill={PLATE} />
     </g>
   );
 }

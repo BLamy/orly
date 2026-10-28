@@ -330,8 +330,8 @@ export function Render({ s }: { s: SceneState }) {
               {/* pointing arm */}
               <line x1={958} y1={452} x2={lerp(958, 860, v(scene.pointU))} y2={lerp(452, 500, v(scene.pointU))} stroke="#e2e8f0" strokeWidth={8} strokeLinecap="round" />
               {/* two cups */}
-              <path d="M720,560 L760,560 L752,520 L728,520 Z" fill="#475569" />
-              <path d="M820,560 L860,560 L852,520 L828,520 Z" fill="#475569" stroke={colors.WARM} strokeWidth={v(scene.pointU) * 2.5} />
+              <path d="M720,560 L760,560 L752,520 L728,520 Z" fill="#64748b" stroke="#94a3b8" strokeWidth={1.5} />
+              <path d="M820,560 L860,560 L852,520 L828,520 Z" fill="#64748b" stroke={colors.WARM} strokeWidth={1.5 + v(scene.pointU) * 2} />
               <Canid x={lerp(560, 760, kitWalk)} y={525} s={0.36} pose={FULL} color={SILVER} />
               <Label x={760} y={400} text="tame kits ≈ dog puppies at following gestures" size={17} anchor="middle" color={colors.TEXT} weight={650} />
               <Label x={760} y={424} text="kits from the unselected control line did worse" size={14} anchor="middle" color={colors.MUTED} />

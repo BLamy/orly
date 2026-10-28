@@ -54,6 +54,7 @@ const CHECKS = [
   { label: 'a look inside the network', x: 560, y: 560 },
 ];
 const TYRANT_AT = { x: 1040, y: 540 };
+const SOURCES = ['pretraining', 'human feedback', 'verifiers'];
 
 const CHIP_TEXT = ['Zeder 2015 · Nagasawa et al. 2015 (disputed)', 'Wrangham 2018 · a hypothesis', 'this book’s argument', 'Anthropic, 2023', 'the series'];
 
@@ -302,7 +303,7 @@ export function Render({ s }: { s: SceneState }) {
               {bullyU > 0.01 && (
                 <g opacity={bullyU * (1 - bullyOut)}>
                   <Person x={RING_C.x} y={RING_C.y + 100} s={lerp(1.0, 0.5, bullyOut)} color={colors.NEGATIVE} />
-                  <Label x={RING_C.x} y={RING_C.y - 34} text="a domineering bully" size={16} anchor="middle" color={colors.NEGATIVE} u={1 - bullyOut} />
+                  <Label x={RING_C.x} y={RING_C.y + 100 + ringR * 0.8 + 34} text="a domineering bully" size={16} anchor="middle" color={colors.NEGATIVE} u={1 - bullyOut} />
                 </g>
               )}
               {equalsU > 0.01 && (
@@ -330,6 +331,17 @@ export function Render({ s }: { s: SceneState }) {
                 <circle key={i} cx={MIND.x + p.ox * 34} cy={MIND.y + p.oy * 22} r={3.6} fill={ACCENT} opacity={0.8} />
               ))}
               <Label x={MIND.x} y={MIND.y + 110} text="a model’s values" size={18} anchor="middle" weight={650} />
+              {/* where the values came from: the same process that will be asked to judge them */}
+              <g opacity={loopU * (1 - checksU)}>
+                <Label x={250} y={232} text="the same process" size={16} anchor="middle" color={colors.MUTED} weight={650} />
+                {SOURCES.map((src, i) => (
+                  <g key={src}>
+                    <rect x={170} y={250 + i * 52} width={160} height={36} rx={9} fill={colors.BG} stroke={ACCENT} strokeOpacity={0.55} />
+                    <Label x={250} y={274 + i * 52} text={src} size={16} anchor="middle" />
+                    <Arrow a={[334, 268 + i * 52]} b={[MIND.x - 116, MIND.y - 22 + i * 22]} u={loopU} color={ACCENT} width={2} head={9} opacity={0.7} />
+                  </g>
+                ))}
+              </g>
               {/* the self-endorsement loop */}
               <g opacity={loopU * (1 - 0.7 * loopX)}>
                 <path d={`M${MIND.x + 90},${MIND.y - 80} C${MIND.x + 240},${MIND.y - 250} ${MIND.x - 240},${MIND.y - 250} ${MIND.x - 90},${MIND.y - 84}`} fill="none" stroke={colors.WARM} strokeWidth={3} strokeDasharray={`${640 * loopU} 700`} />
