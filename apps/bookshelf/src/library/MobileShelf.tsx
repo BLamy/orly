@@ -19,6 +19,8 @@ import {
   isChronologicalSeries,
   isDailyPapersSeries,
   openBook,
+  RECENT_COUNT,
+  RECENT_SHELF,
   resolveAnimal,
   searchBooks,
   sortSeriesBooks,
@@ -350,6 +352,15 @@ export function MobileShelf({
     () => (books ?? []).filter((b) => b.kind === 'film').sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? '')),
     [books],
   );
+  // The newest books lead the page, above the Video Library (they stay in the A-Z list too).
+  const recent = useMemo(
+    () =>
+      (books ?? [])
+        .filter((b) => b.kind !== 'film' && !isDailyPapersSeries(b.series))
+        .sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''))
+        .slice(0, RECENT_COUNT),
+    [books],
+  );
   const featured = useMemo(
     () => {
       if (!entries || featuredFilms.length) return null;
@@ -551,25 +562,37 @@ export function MobileShelf({
             onIndexInteraction={() => blockChromeReveal()}
             showIndex={active && !covered && !q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
-            beforeSections={featuredFilms.length ? (
-              <section className="libm-letter-section libm-featured libm-featured-films">
-                <h2 className="libm-letter-head">Featured · Video Library</h2>
-                <div className="libm-rows">
-                  {featuredFilms.map((b) => (
-                    <BookRow key={b.slug} book={b} onOpen={() => open(b)} />
-                  ))}
-                </div>
-              </section>
-            ) : featured && (
-              <section className="libm-letter-section libm-featured">
-                <h2 className="libm-letter-head">Featured</h2>
-                <SeriesRow
-                  name={featured.name}
-                  books={featured.books}
-                  onOpen={() => pushSeries(featured.name)}
-                />
-              </section>
-            )}
+            beforeSections={<>
+              {recent.length > 0 && (
+                <section className="libm-letter-section libm-featured libm-featured-recent">
+                  <h2 className="libm-letter-head">{RECENT_SHELF}</h2>
+                  <div className="libm-rows">
+                    {recent.map((b) => (
+                      <BookRow key={b.slug} book={b} onOpen={() => open(b)} />
+                    ))}
+                  </div>
+                </section>
+              )}
+              {featuredFilms.length ? (
+                <section className="libm-letter-section libm-featured libm-featured-films">
+                  <h2 className="libm-letter-head">Featured · Video Library</h2>
+                  <div className="libm-rows">
+                    {featuredFilms.map((b) => (
+                      <BookRow key={b.slug} book={b} onOpen={() => open(b)} />
+                    ))}
+                  </div>
+                </section>
+              ) : featured && (
+                <section className="libm-letter-section libm-featured">
+                  <h2 className="libm-letter-head">Featured</h2>
+                  <SeriesRow
+                    name={featured.name}
+                    books={featured.books}
+                    onOpen={() => pushSeries(featured.name)}
+                  />
+                </section>
+              )}
+            </>}
           />
         )}
 
