@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "herding-the-swarm",
+      "title": "Herding the Swarm",
+      "subtitle": "Population control for AI agents",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#0f766e",
+      "href": "?bundle=herding-the-swarm",
+      "series": "Who Survives",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Swarm Is a Population",
+          "duration": 125.389
+        },
+        {
+          "number": 2,
+          "title": "Anatomy of a Breakout",
+          "duration": 157.895
+        },
+        {
+          "number": 3,
+          "title": "The Hive and the Monoculture",
+          "duration": 114.103
+        },
+        {
+          "number": 4,
+          "title": "The Cuckoo and the Outside Killer",
+          "duration": 125.202
+        }
+      ],
+      "createdAt": "2026-10-28T04:30:20.831Z"
+    },
+    {
       "slug": "let-theories-die",
       "title": "Let Theories Die",
       "subtitle": "Selection, proxies and readable minds",
