@@ -134,6 +134,9 @@ interface Scene {
   coordU: ChannelRef<number>;
   poisonU: ChannelRef<number>;
   exitU: ChannelRef<number>;
+  atkSpot: ChannelRef<number>; // C5: attackers lit, the rest a whisper
+  laneSpot: ChannelRef<number>; // C6: coordinators lit; board, links, rings and the outside fade
+  poisonSpot: ChannelRef<number>; // C7–C8: poisoned and low-budget agents lit
   quoteU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   dialsU: ChannelRef<number>;
@@ -164,6 +167,9 @@ export function buildScene(): Scene {
   const coordU = ch('coordU');
   const poisonU = ch('poisonU');
   const exitU = ch('exitU');
+  const atkSpot = ch('atkSpot');
+  const laneSpot = ch('laneSpot');
+  const poisonSpot = ch('poisonSpot');
   const quoteU = ch('quoteU');
   const dimU = ch('dimU');
   const dialsU = ch('dialsU');
@@ -205,13 +211,17 @@ export function buildScene(): Scene {
 
   // C5 — two counts, two things counted
   tl.tween(attackU, 1, { at: T[5] + 3.6, dur: 1.2, ease: ease.enter });
+  tl.tween(atkSpot, 1, { at: T[5] + 4.0, dur: 1.0, ease: ease.move });
+  tl.tween(atkSpot, 0, { at: T[6], dur: 0.8, ease: ease.move });
 
   // C6 — self-organization: coordinators and lanes
   tl.tween(cam, CAM_COORD, { at: T[6], dur: 1.3, ease: ease.move });
+  tl.tween(laneSpot, 1, { at: T[6], dur: 1.0, ease: ease.move });
   tl.tween(coordU, 1, { at: T[6] + 0.8, dur: 1.4, ease: ease.enter });
 
   // C7 — poisoned agents, low budgets, recruiters
   tl.tween(poisonU, 1, { at: T[7] + 0.6, dur: 1.4, ease: ease.enter });
+  tl.tween(poisonSpot, 1, { at: T[7] + 0.4, dur: 1.0, ease: ease.move });
 
   // C8 — sacrifice
   tl.tween(exitU, 1, { at: T[8] + 0.4, dur: 2.4, ease: ease.move });
@@ -237,7 +247,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: T[14], dur: 1.2, ease: ease.enter });
   tl.hold(END - 0.8, 0.8);
 
-  return { tl, cam, titleU, sbU, popU, hfU, evalU, gapU, pathU, boardU, firstU, join, gather, countU, attackU, coordU, poisonU, exitU, quoteU, dimU, dialsU, dialStep, motiveU, watchU, respU, closeU };
+  return { tl, cam, titleU, sbU, popU, hfU, evalU, gapU, pathU, boardU, firstU, join, gather, countU, attackU, coordU, poisonU, exitU, atkSpot, laneSpot, poisonSpot, quoteU, dimU, dialsU, dialStep, motiveU, watchU, respU, closeU };
 }
 
 const scene = buildScene();
@@ -279,6 +289,13 @@ export function Render({ s }: { s: SceneState }) {
   const step = v(scene.dialStep);
   const closeU = v(scene.closeU);
   const stageOp = 1 - 0.88 * dimU;
+  const atkSpot = v(scene.atkSpot);
+  const laneSpot = v(scene.laneSpot);
+  const poisonSpot = v(scene.poisonSpot);
+  /** a whisper: 1 → 0.15 as `u` goes 0 → 1 */
+  const hush = (u: number) => 1 - 0.85 * u;
+  // the outside world and the escape path recede once the board takes the stage
+  const outsideOp = hush(clamp01(boardU));
 
   // dials: order reproduction, density, food, lifespan, selection, habitat
   const st: DialState[] = ['set', step >= 1.5 ? 'open' : 'off', step >= 2.5 ? 'wrong' : 'off', step >= 2.5 ? 'wrong' : 'off', step >= 3.5 ? 'wrong' : 'off', step >= 0.5 ? 'open' : 'off'];
@@ -294,14 +311,14 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={stageOp}>
           <Habitat x={SB.x} y={SB.y} w={SB.w} h={SB.h} draw={v(scene.sbU)} label="SANDBOX" gap={[GAP[0], GAP[1], v(scene.gapU)]} />
           {/* the proxy */}
-          <g opacity={v(scene.sbU)}>
+          <g opacity={v(scene.sbU) * outsideOp}>
             <rect x={SB.x + SB.w - 9} y={GAP[0]} width={18} height={GAP[1] - GAP[0]} rx={4} fill="none" stroke={lerp(0, 1, v(scene.gapU)) > 0.5 ? DANGER : MUTED} strokeWidth={1.6} strokeDasharray="3 3" />
             <text x={SB.x + SB.w - 14} y={GAP[1] + 22} textAnchor="end" fill={v(scene.gapU) > 0.5 ? DANGER : MUTED} fontFamily={MONO} fontSize={11.5}>
               {v(scene.gapU) > 0.5 ? 'package proxy · zero-day' : 'package proxy'}
             </text>
           </g>
           {/* outside: Hugging Face */}
-          <g opacity={v(scene.hfU)}>
+          <g opacity={v(scene.hfU) * outsideOp}>
             <rect x={HF.x} y={HF.y} width={HF.w} height={HF.h} rx={14} fill={PANEL} stroke={BOARD} strokeWidth={1.6} />
             <text x={HF.x + HF.w / 2} y={HF.y + 40} textAnchor="middle" fill={TEXT} fontFamily={UI} fontSize={17} fontWeight={600}>Hugging Face</text>
             <text x={HF.x + HF.w / 2} y={HF.y + 64} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={11.5}>production</text>
@@ -313,11 +330,11 @@ export function Render({ s }: { s: SceneState }) {
             <text x={SB.x + 38} y={SB.y + SB.h - 26} fill={TEXT} fontFamily={MONO} fontSize={12.5}>ExploitGym eval · cyber guardrails off</text>
           </g>
           {/* the way out */}
-          <path d={pathD} fill="none" stroke={DANGER} strokeWidth={2.4} pathLength={1} strokeDasharray={`${v(scene.pathU)} 1`} strokeLinecap="round" opacity={v(scene.pathU) > 0.01 ? 0.9 * (1 - 0.6 * boardU) : 0} />
+          <path d={pathD} fill="none" stroke={DANGER} strokeWidth={2.4} pathLength={1} strokeDasharray={`${v(scene.pathU)} 1`} strokeLinecap="round" opacity={v(scene.pathU) > 0.01 ? 0.9 * outsideOp : 0} />
 
           {/* the board */}
           {boardU > 0.01 && (
-            <g opacity={boardU}>
+            <g opacity={boardU * hush(Math.max(laneSpot, atkSpot * 0.7))}>
               <rect x={BOARD_R.x} y={BOARD_R.y} width={BOARD_R.w} height={BOARD_R.h} rx={10} fill={PANEL} stroke={BOARD} strokeWidth={1.8} />
               <text x={BC[0]} y={BOARD_R.y - 12} textAnchor="middle" fill={BOARD} fontFamily={MONO} fontSize={12}>shared package cache</text>
               {TILES.map((t, k) => {
@@ -339,14 +356,16 @@ export function Render({ s }: { s: SceneState }) {
               if (j <= 0.01) return null;
               const p = lerp2(d.cell, d.ring, gather);
               const gone = d.exits ? exitU : 0;
-              return <line key={`l${i}`} x1={p[0]} y1={p[1]} x2={BC[0]} y2={BC[1]} stroke={BOARD} strokeWidth={0.6} opacity={0.22 * j * (1 - gone) * (1 - 0.6 * coordU)} />;
+              return <line key={`l${i}`} x1={p[0]} y1={p[1]} x2={BC[0]} y2={BC[1]} stroke={BOARD} strokeWidth={0.6} opacity={0.22 * j * (1 - gone) * (1 - laneSpot) * hush(atkSpot)} />;
             })}
           {/* coordinator lanes */}
           {coordU > 0.01 &&
             DOTS.map((d, i) => {
+              // one lane line per pair of agents keeps the fan legible
+              if (i % 2) return null;
               const p = d.ring;
               const c = COORD[d.lane].p;
-              return <line key={`c${i}`} x1={c[0]} y1={c[1]} x2={p[0]} y2={p[1]} stroke={WALL} strokeWidth={0.8} opacity={0.3 * coordU * (1 - (d.exits ? exitU : 0))} />;
+              return <line key={`c${i}`} x1={c[0]} y1={c[1]} x2={p[0]} y2={p[1]} stroke={WALL} strokeWidth={0.8} opacity={0.32 * coordU * (1 - (d.exits ? exitU : 0)) * hush(poisonSpot)} />;
             })}
 
           {/* the population */}
@@ -358,10 +377,13 @@ export function Render({ s }: { s: SceneState }) {
             let col = joined > 0.5 ? AGENT : '#1f8a7d';
             if (d.poisoned && poisonU > 0.01) col = poisonU > 0.5 ? POISON : col;
             const gone = d.exits ? exitU : 0;
-            const ring = d.attack ? attackU : 0;
+            const ring = (d.attack ? attackU : 0) * hush(laneSpot);
+            // spotlight: attackers in C5, the poisoned and the low-budget in C7–C8; everyone else whispers
+            const lit = d.poisoned || d.low;
+            const spot = (d.attack ? 1 : hush(atkSpot)) * (lit ? 1 : hush(poisonSpot));
             const fuel = d.low ? lerp(1, 0.15, poisonU) : 1;
             return (
-              <g key={i} opacity={born * (1 - gone)}>
+              <g key={i} opacity={born * (1 - gone) * spot}>
                 {gather < 0.5 && <rect x={d.cell[0] - 18} y={d.cell[1] - 16} width={36} height={32} rx={5} fill="none" stroke={FAINT} strokeWidth={1} opacity={(1 - 2 * gather) * 0.9} />}
                 <circle cx={p[0]} cy={p[1] - 18 * gone} r={6} fill={col} />
                 {ring > 0.01 && <circle cx={p[0]} cy={p[1]} r={9.5} fill="none" stroke={DANGER} strokeWidth={1.6} opacity={ring} />}
@@ -380,7 +402,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* coordinators */}
           {COORD.map((c, k) => (
-            <g key={c.name} opacity={coordU}>
+            <g key={c.name} opacity={coordU * hush(poisonSpot)}>
               <circle cx={c.p[0]} cy={c.p[1]} r={9} fill={BOARD} />
               <circle cx={c.p[0]} cy={c.p[1]} r={16} fill="none" stroke={BOARD} strokeWidth={1.6} />
               <rect x={c.p[0] + (k === 1 ? 20 : -132)} y={c.p[1] - 11} width={112} height={22} rx={5} fill={PANEL} stroke={FAINT} />
